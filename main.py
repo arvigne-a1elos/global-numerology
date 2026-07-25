@@ -850,41 +850,6 @@ def _send_email(to, subject, body, pdf_path=None):
 
 # ── INICIALIZAÇÃO ──
 if __name__ == "__main__":
-
-    def _send_email(to, subject, body, pdf_path=None):
-    """Envia email com PDF via SMTP Gmail."""
-    smtp_pass = os.getenv("SMTP_PASSWORD", "")
-    from_email = os.getenv("FROM_EMAIL", "arvigne@gmail.com")
-    if not smtp_pass or not from_email:
-        logger.warning(f"SMTP não configurado — PDF não enviado para {to}")
-        return False
-    try:
-        import smtplib
-        from email.mime.text import MIMEText
-        from email.mime.multipart import MIMEMultipart
-        from email.mime.base import MIMEBase
-        from email import encoders
-        msg = MIMEMultipart()
-        msg["From"] = from_email
-        msg["To"] = to
-        msg["Subject"] = subject
-        msg.attach(MIMEText(body, "plain", "utf-8"))
-        if pdf_path and os.path.exists(pdf_path):
-            with open(pdf_path, "rb") as f:
-                part = MIMEBase("application", "octet-stream")
-                part.set_payload(f.read())
-            encoders.encode_base64(part)
-            part.add_header("Content-Disposition", "attachment", filename="Documento_A1ELOS.pdf")
-            msg.attach(part)
-        with smtplib.SMTP("smtp.gmail.com", 587) as s:
-            s.starttls()
-            s.login(from_email, smtp_pass)
-            s.send_message(msg)
-        logger.info(f"Email enviado para {to}")
-        return True
-    except Exception as e:
-        logger.error(f"Falha email: {e}")
-        return False
     import uvicorn
     port = int(os.getenv("PORT", "10000"))
     uvicorn.run(app, host="0.0.0.0", port=port)
