@@ -470,22 +470,18 @@ def calculate(req: PayReq):
         res = calc_mapa(req.name, req.birth_date)
         cid = uuid.uuid4().hex[:8]
         # Envia Mapa Express grátis se tiver email
-        if req.email:
-            try:
-                pf = pdf8(res, req.name, req.birth_date)
-                _send_email(req.email, "Seu Mapa Express!",
-                           f"Olá {req.name},\n\nSeu mapa foi gerado.\n\nA1ELOS", pf)
-                if pf and os.path.exists(pf):
-                    os.remove(pf)
-            except:
-                pass
-        return {"id": cid, **res, "email_sent": True}
-    except HTTPException:
-        raise
+        # Envia PDF grátis SOMENTE se email foi preenchido
+if req.email and req.email.strip():
+    try:
+        pf = pdf8(res, req.name, req.birth_date)
+        _send_email(req.email.strip(), "Seu Mapa Express!",
+                   f"Olá {req.name},\n\nSeu mapa foi gerado.\n\nA1ELOS", pf)
+        if pf and os.path.exists(pf):
+            os.remove(pf)
     except Exception as e:
-        logger.error(f"Calc: {e}")
-        raise HTTPException(500, "Erro")
-
+        logger.error(f"Falha ao enviar email: {e}")
+        pass  # Não quebra o cálculo se o email falhar
+        
 # ═══════════════════════════════════════
 # ROTA 3: Pagamento Stripe (Produtos 1-2)
 # ═══════════════════════════════════════
@@ -854,6 +850,41 @@ def _send_email(to, subject, body, pdf_path=None):
 
 # ── INICIALIZAÇÃO ──
 if __name__ == "__main__":
+
+    def _send_email(to, subject, body, pdf_path=None):
+    """Envia email com PDF via SMTP Gmail."""
+    smtp_pass = os.getenv("SMTP_PASSWORD", "")
+    from_email = os.getenv("FROM_EMAIL", "arvigne@gmail.com")
+    if not smtp_pass or not from_email:
+        logger.warning(f"SMTP não configurado — PDF não enviado para {to}")
+        return False
+    try:
+        import smtplib
+        from email.mime.text import MIMEText
+        from email.mime.multipart import MIMEMultipart
+        from email.mime.base import MIMEBase
+        from email import encoders
+        msg = MIMEMultipart()
+        msg["From"] = from_email
+        msg["To"] = to
+        msg["Subject"] = subject
+        msg.attach(MIMEText(body, "plain", "utf-8"))
+        if pdf_path and os.path.exists(pdf_path):
+            with open(pdf_path, "rb") as f:
+                part = MIMEBase("application", "octet-stream")
+                part.set_payload(f.read())
+            encoders.encode_base64(part)
+            part.add_header("Content-Disposition", "attachment", filename="Documento_A1ELOS.pdf")
+            msg.attach(part)
+        with smtplib.SMTP("smtp.gmail.com", 587) as s:
+            s.starttls()
+            s.login(from_email, smtp_pass)
+            s.send_message(msg)
+        logger.info(f"Email enviado para {to}")
+        return True
+    except Exception as e:
+        logger.error(f"Falha email: {e}")
+        return False
     import uvicorn
     port = int(os.getenv("PORT", "10000"))
     uvicorn.run(app, host="0.0.0.0", port=port)
