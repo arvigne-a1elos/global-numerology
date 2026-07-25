@@ -53,6 +53,11 @@ Base.metadata.create_all(bind=engine)
 
 # ── APP ──
 app = FastAPI()
+# Servir arquivos estáticos (logo, etc.)
+import os
+static_dir = os.path.join(os.path.dirname(__file__), ".")
+if os.path.exists(os.path.join(static_dir, "Logo.png")):
+    app.mount("/", StaticFiles(directory=static_dir, html=True), name="static")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True,
                    allow_methods=["*"], allow_headers=["*"])
 
