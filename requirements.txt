@@ -1,8 +1,0 @@
-fastapi
-uvicorn[standard]
-pydantic
-stripe
-reportlab
-python-dateutil
-sendgrid
-python-multipart
