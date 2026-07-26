@@ -1,9 +1,8 @@
 fastapi
 uvicorn[standard]
-sqlalchemy
 pydantic
 stripe
 reportlab
-fpdf2
 python-dateutil
+sendgrid
 python-multipart
