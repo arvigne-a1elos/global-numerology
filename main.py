@@ -1,15 +1,14 @@
-import os, json, uuid, logging, math
+# -*- coding: utf-8 -*-
+# main.py - Global Numerology API (completo, autossuficiente)
+import os, json, uuid, logging
 from datetime import date, datetime
 from typing import Optional
 
 import stripe
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
+from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel, EmailStr
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail, Attachment, FileContent, FileName, FileType, Disposition
-import base64
+from pydantic import BaseModel
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -19,7 +18,7 @@ stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 STRIPE_PUB = os.getenv("STRIPE_PUBLISHABLE_KEY", "")
 SENDGRID_KEY = os.getenv("SENDGRID_API_KEY")
 FROM_EMAIL = os.getenv("FROM_EMAIL", "noreply@a1elos.com.br")
-SITE_URL   = os.getenv("SITE_URL", "https://global-numerology.onrender.com")
+SITE_URL = os.getenv("SITE_URL", "https://global-numerology.onrender.com")
 
 # ── App ─────────────────────────────────────────────
 app = FastAPI(title="Global Numerology")
@@ -50,114 +49,139 @@ class EleitoralPayReq(BaseModel):
     email: Optional[str] = ""
     phone: Optional[str] = ""
 
-# ── Números Mestres ─────────────────────────────────
-NUM_MASTER = {11, 22, 33}
-
-def red(n):
-    while n > 9 and n not in NUM_MASTER:
+# ── Cálculo Numerológico ────────────────────────────
+def reduzir(n, permitir_mestre=True):
+    while n > 9:
+        if permitir_mestre and n in (11, 22, 33):
+            return n
         n = sum(int(d) for d in str(n))
     return n
 
-def soma_data(dia, mes, ano):
-    return red(dia) + red(mes) + red(ano)
-
 def calc_mapa(nome, data_nasc):
-    nome = nome.strip().upper()
-    parts = data_nasc.replace("/", "-").split("-")
-    d, m, a = int(parts[0]), int(parts[1]), int(parts[2])
+    from dateutil.parser import parse as dp
+    bd = dp(data_nasc).date()
+    d, m, a = bd.day, bd.month, bd.year
 
-    vog = "A1E5I9O6U3"
-    con = {"B":2,"C":3,"D":4,"F":6,"G":7,"H":8,"J":1,"K":2,"L":3,"M":4,"N":5,"P":7,"Q":8,"R":9,"S":1,"T":2,"V":4,"W":5,"X":6,"Y":7,"Z":8}
+    vida = reduzir(d + m + a)
 
-    sv = 0
-    sc = 0
-    for ch in nome:
-        if ch in vog:
-            sv += int(vog[vog.index(ch)+1])
-        elif ch in con:
-            sc += con[ch]
+    t = {c: (i % 9 or 9) for i, c in enumerate("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 1)}
+    nu = nome.upper().replace(" ", "")
+    total_e = total_v = total_p = 0
+    for ch in nu:
+        val = t.get(ch, 0)
+        total_e += val
+        if ch in "AEIOU":
+            total_v += val
+        else:
+            total_p += val
 
-    vida = soma_data(d, m, a)
-    dest = red(vida + red(sc + sv))
-    exp = red(sc + sv)
-    mot = red(sv)
-    pers = red(sc)
+    exp = reduzir(total_e)
+    mot = reduzir(total_v)
+    pers = reduzir(total_p)
+    dest = reduzir(vida + exp)
 
-    # dicionários
-    vib_dict = {
-        "1": "Liderança, independência, pioneirismo, determinação, autoconfiança.",
-        "2": "Cooperação, sensibilidade, equilíbrio, diplomacia, intuição.",
-        "3": "Criatividade, comunicação, otimismo, expressão, entusiasmo.",
-        "4": "Disciplina, praticidade, estabilidade, lealdade, trabalho.",
-        "5": "Liberdade, versatilidade, aventura, mudança, adaptabilidade.",
-        "6": "Responsabilidade, amor, harmonia, cuidado, justiça.",
-        "7": "Sabedoria, análise, espiritualidade, perfeccionismo, introspecção.",
-        "8": "Poder, realização, ambição, autoridade, sucesso material.",
-        "9": "Comp放松ão, humanitarismo, idealismo, generosidade, altruísmo.",
-        "11": "Intuição elevada, sensibilidade espiritual, inspiração, idealismo.",
-        "22": "Construtor do impossível, visão prática, mestre da matéria.",
-        "33": "Mestre da comp放松ão, amor universal, cura espiritual."
-    }
-    signo_map = {
-        (3,21,4,20):"Áries", (4,21,5,20):"Touro", (5,21,6,20):"Gêmeos",
-        (6,21,7,22):"Câncer", (7,23,8,22):"Leão", (8,23,9,22):"Virgem",
-        (9,23,10,22):"Libra", (10,23,11,21):"Escorpião", (11,22,12,21):"Sagitário",
-        (12,22,1,20):"Capricórnio", (1,21,2,19):"Aquário", (2,20,3,20):"Peixes"
+    vib = {
+        1: "Liderança, independência, pioneirismo.",
+        2: "Cooperação, sensibilidade, equilíbrio.",
+        3: "Criatividade, comunicação, otimismo.",
+        4: "Disciplina, praticidade, estabilidade.",
+        5: "Liberdade, versatilidade, aventura.",
+        6: "Responsabilidade, amor, harmonia.",
+        7: "Sabedoria, análise, espiritualidade.",
+        8: "Poder, realização, ambição.",
+        9: "Compaixão, humanitarismo, idealismo.",
+        11: "Intuição elevada, inspiração.",
+        22: "Construtor do impossível.",
+        33: "Mestre da compaixão."
     }
 
-    def calc_idade(d,m,a):
-        hoje = date.today()
-        nasc = date(a,m,d)
-        idade = hoje.year - nasc.year
-        if hoje.month < nasc.month or (hoje.month==nasc.month and hoje.day<nasc.day):
-            idade -= 1
-        return idade
+    signos = [
+        (3,21,4,20,"Áries"), (4,21,5,20,"Touro"), (5,21,6,20,"Gêmeos"),
+        (6,21,7,22,"Câncer"), (7,23,8,22,"Leão"), (8,23,9,22,"Virgem"),
+        (9,23,10,22,"Libra"), (10,23,11,21,"Escorpião"), (11,22,12,21,"Sagitário"),
+        (12,22,1,20,"Capricórnio"), (1,21,2,19,"Aquário"), (2,20,3,20,"Peixes")
+    ]
 
-    def calc_signo(d,m):
-        for (mi,di,mf,df),s in signo_map.items():
-            if (m==mi and d>=di) or (m==mf and d<=df):
+    idade = date.today().year - a - ((date.today().month, date.today().day) < (m, d))
+
+    def calc_signo(d, m):
+        for mi, di, mf, df, s in signos:
+            if (m == mi and d >= di) or (m == mf and d <= df):
                 return s
         return "Capricórnio"
 
-    idade = calc_idade(d,m,a)
-    signo = calc_signo(d,m)
-
-    anos_pessoais = {}
     ano_atual = datetime.now().year
+    anos_p = {}
     for i in range(5):
-        ap = red(d + m + (ano_atual + i))
-        anos_pessoais[ano_atual + i] = str(ap)
+        anos_p[ano_atual + i] = str(reduzir(d + m + (ano_atual + i)))
 
-    res = {
-        "life_path": str(vida), "expression": str(exp), "soul_urge": str(mot),
-        "personality": str(pers), "destiny": str(dest),
-        "vib_life_path": vib_dict.get(str(vida), ""),
-        "vib_expression": vib_dict.get(str(exp), ""),
-        "vib_soul_urge": vib_dict.get(str(mot), ""),
-        "vib_personality": vib_dict.get(str(pers), ""),
-        "vib_destiny": vib_dict.get(str(dest), ""),
-        "age": idade, "sign": signo,
-        "personal_years": anos_pessoais,
-        "full_name": nome, "birth_date": data_nasc
+    return {
+        "life_path": str(vida), "expression": str(exp),
+        "soul_urge": str(mot), "personality": str(pers), "destiny": str(dest),
+        "vib_life_path": vib.get(vida, ""), "vib_expression": vib.get(exp, ""),
+        "vib_soul_urge": vib.get(mot, ""), "vib_personality": vib.get(pers, ""),
+        "vib_destiny": vib.get(dest, ""),
+        "age": idade, "sign": calc_signo(d, m),
+        "personal_years": anos_p, "full_name": nome.upper(),
+        "birth_date": data_nasc
     }
-    return res
 
-# ── Email ───────────────────────────────────────────
-def send_email(to, subject, text, pdf_path=None):
-    if not SENDGRID_KEY:
-        logger.warning("SendGrid sem chave")
-        return
-    msg = Mail(from_email=FROM_EMAIL, to_emails=to, subject=subject, plain_text_content=text)
-    if pdf_path and os.path.exists(pdf_path):
-        with open(pdf_path, "rb") as f:
-            data = base64.b64encode(f.read()).decode()
-        msg.add_attachment(Attachment(
-            FileContent(data), FileName("Mapa.pdf"), FileType("application/pdf"), Disposition("attachment")
-        ))
-    try:
+# ── PDF + Email ─────────────────────────────────────
+def gerar_pdf_enviar(nome, data, res, email):
+    from sendgrid import SendGridAPIClient
+    from sendgrid.helpers.mail import Mail, Attachment, FileContent, FileName, FileType, Disposition
+    import base64
+    from reportlab.lib.pagesizes import A4
+    from reportlab.lib import colors
+    from reportlab.lib.enums import TA_CENTER
+    from reportlab.lib.styles import ParagraphStyle
+    from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
+
+    G = colors.HexColor("#B8860B")
+    L = colors.HexColor("#f0f0f0")
+    D = colors.HexColor("#222")
+
+    def es(n, f, s, c, a, sb=0, sa=0):
+        return ParagraphStyle(n, fontName=f, fontSize=s, textColor=c, alignment=a,
+                              spaceBefore=sb, spaceAfter=sa, leading=s * 1.5)
+
+    pf = f"/tmp/pdf_{uuid.uuid4().hex[:8]}.pdf"
+    doc = SimpleDocTemplate(pf, pagesize=A4, leftMargin=50, rightMargin=50)
+    el = [Spacer(1, 30)]
+    el.append(Paragraph("MAPA NUMEROLOGICO", es("T", "Helvetica-Bold", 20, G, TA_CENTER, sa=40)))
+    el.append(Paragraph(nome.upper(), es("N", "Helvetica-Bold", 16, D, TA_CENTER, sa=4)))
+    el.append(Paragraph(data, es("D", "Helvetica", 12, colors.HexColor("#888"), TA_CENTER, sa=20)))
+
+    td = [["Número", "Valor"],
+          ["Caminho de Vida", res["life_path"]],
+          ["Expressão", res["expression"]],
+          ["Motivação", res["soul_urge"]],
+          ["Personalidade", res["personality"]],
+          ["Destino", res["destiny"]]]
+    tbl = Table(td, colWidths=[200, 150])
+    tbl.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (-1, 0), G),
+        ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+        ("FONTSIZE", (0, 0), (-1, -1), 12),
+        ("GRID", (0, 0), (-1, -1), 0.5, colors.grey),
+        ("ALIGN", (1, 0), (1, -1), "CENTER"),
+        ("BACKGROUND", (0, 1), (-1, -1), L)
+    ]))
+    el.append(tbl)
+    el.append(Paragraph("Copyright A1ELOS", es("F", "Helvetica", 10, colors.HexColor("#888"), TA_CENTER, sb=40)))
+    doc.build(el)
+
+    msg = Mail(from_email=FROM_EMAIL, to_emails=email,
+               subject="Seu Mapa Numerológico",
+               plain_text_content=f"Olá {nome},\n\nSeu mapa foi gerado com sucesso.\n\nA1ELOS Consultoria")
+    with open(pf, "rb") as f:
+        data_b64 = base64.b64encode(f.read()).decode()
+    msg.add_attachment(Attachment(FileContent(data_b64), FileName("Mapa.pdf"),
+                                  FileType("application/pdf"), Disposition("attachment")))
+    if SENDGRID_KEY:
         SendGridAPIClient(SENDGRID_KEY).send(msg)
-    except Exception as e:
-        logger.error(f"SendGrid: {e}")
+    if os.path.exists(pf):
+        os.remove(pf)
 
 # ── Rotas ───────────────────────────────────────────
 @app.get("/")
@@ -173,97 +197,83 @@ def calculate(req: PayReq):
     if len(req.name.strip()) < 2:
         raise HTTPException(400, "Nome curto")
     if not req.birth_date:
-        raise HTTPException(400, "Data obrigatoria")
+        raise HTTPException(400, "Data obrigatória")
     try:
         res = calc_mapa(req.name, req.birth_date)
         cid = uuid.uuid4().hex[:8]
         if req.email and req.email.strip():
             try:
-                from reportlab.lib.pagesizes import A4
-                from reportlab.lib import colors
-                from reportlab.lib.enums import TA_CENTER, TA_LEFT
-                from reportlab.lib.styles import ParagraphStyle
-                from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
-                G = colors.HexColor("#B8860B")
-                L = colors.HexColor("#f0f0f0")
-                D = colors.HexColor("#222")
-                def es(n, f, s, c, a, sb=0, sa=0):
-                    return ParagraphStyle(n, fontName=f, fontSize=s, textColor=c, alignment=a, spaceBefore=sb, spaceAfter=sa, leading=s*1.5)
-                pf = f"/tmp/pdf_{uuid.uuid4().hex[:8]}.pdf"
-                doc = SimpleDocTemplate(pf, pagesize=A4, leftMargin=50, rightMargin=50, topMargin=45, bottomMargin=45)
-                el = []
-                el.append(Spacer(1, 30))
-                el.append(Paragraph("MAPA NUMEROLOGICO", es("T", "Helvetica-Bold", 20, G, TA_CENTER, sa=40)))
-                el.append(Paragraph(req.name.upper(), es("N", "Helvetica-Bold", 16, D, TA_CENTER, sa=4)))
-                el.append(Paragraph(req.birth_date, es("D", "Helvetica", 12, colors.HexColor("#888"), TA_CENTER, sa=20)))
-                td = [["Numero", "Valor"], ["Caminho de Vida", str(res["life_path"])], ["Expressao", str(res["expression"])], ["Motivacao", str(res["soul_urge"])], ["Personalidade", str(res["personality"])], ["Destino", str(res["destiny"])]]
-                tbl = Table(td, colWidths=[200, 150])
-                tbl.setStyle(TableStyle([("BACKGROUND", (0, 0), (-1, 0), G), ("TEXTCOLOR", (0, 0), (-1, 0), colors.white), ("FONTSIZE", (0, 0), (-1, -1), 12), ("GRID", (0, 0), (-1, -1), 0.5, colors.grey), ("ALIGN", (1, 0), (1, -1), "CENTER"), ("BACKGROUND", (0, 1), (-1, -1), L)]))
-                el.append(tbl)
-                el.append(Paragraph("Copyright A1ELOS", es("F", "Helvetica", 10, colors.HexColor("#888"), TA_CENTER, sb=40)))
-                doc.build(el)
-                send_email(req.email.strip(), "Seu Mapa Express!", f"Ola {req.name},\n\nSeu mapa foi gerado.\n\nA1ELOS", pf)
-                if os.path.exists(pf):
-                    os.remove(pf)
+                gerar_pdf_enviar(req.name, req.birth_date, res, req.email.strip())
             except Exception as e:
-                logger.error(f"Falha email gratis: {e}")
+                logger.error(f"Falha email grátis: {e}")
         return {"id": cid, **res}
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Calc: {e}")
-        raise HTTPException(500, "Erro no calculo")
+        logger.error(f"Erro calc: {e}")
+        raise HTTPException(500, "Erro no cálculo")
 
 @app.post("/calculate/urna")
 def calc_urna(req: UrnaPayReq):
     res = calc_mapa(req.nome_completo, req.data_nascimento)
     res["nome_urna"] = req.nome_urna
-    res["type"] = "urna"
     return res
 
 @app.post("/calculate/eleitoral")
 def calc_eleitoral(req: EleitoralPayReq):
-    numbers = [int(c) for c in req.numero_titulo if c.isdigit()][:12]
-    while len(numbers) < 12:
-        numbers.append(0)
+    nums = [int(c) for c in req.numero_titulo if c.isdigit()][:12]
+    while len(nums) < 12:
+        nums.append(0)
     res = calc_mapa(req.nome_completo, req.data_nascimento)
     res["numero_titulo"] = req.numero_titulo
-    res["titulo_sum"] = sum(numbers)
-    res["titulo_reduced"] = red(sum(numbers))
-    res["type"] = "eleitoral"
+    res["titulo_sum"] = sum(nums)
+    res["titulo_reduced"] = reduzir(sum(nums))
     return res
 
 # ── Stripe Checkout ─────────────────────────────────
-def _create_checkout(price, name, metadata, req_data=None):
+def _checkout(price, name, metadata):
     try:
         session = stripe.checkout.Session.create(
             payment_method_types=["card", "boleto"],
-            line_items=[{"price_data": {"currency": "brl", "product_data": {"name": name}, "unit_amount": price}, "quantity": 1}],
+            line_items=[{
+                "price_data": {
+                    "currency": "brl",
+                    "product_data": {"name": name},
+                    "unit_amount": price
+                },
+                "quantity": 1
+            }],
             mode="payment",
             success_url=f"{SITE_URL}/static/sucesso.html",
             cancel_url=f"{SITE_URL}/static/cancelado.html",
-            metadata=metadata or {},
+            metadata=metadata
         )
         return {"id": session.id, "url": session.url}
     except Exception as e:
         logger.error(f"Stripe: {e}")
-        raise HTTPException(500, "Erro no pagamento")
+        raise HTTPException(500, "Erro ao criar pagamento")
 
 @app.post("/pay/express")
 def pay_express(req: PayReq):
-    return _create_checkout(800, "Mapa Numerologico Express", {"type":"express","name":req.name,"birth":req.birth_date})
+    return _checkout(800, "Mapa Numerológico Express",
+                     {"type": "express", "name": req.name, "birth": req.birth_date})
 
 @app.post("/pay/complete")
 def pay_complete(req: PayReq):
-    return _create_checkout(1700, "Mapa Numerologico Completo", {"type":"complete","name":req.name,"birth":req.birth_date})
+    return _checkout(1700, "Mapa Numerológico Completo",
+                     {"type": "complete", "name": req.name, "birth": req.birth_date})
 
 @app.post("/pay/urna")
 def pay_urna(req: UrnaPayReq):
-    return _create_checkout(2600, "Nome de Urna", {"type":"urna","name":req.nome_completo,"birth":req.data_nascimento,"urna":req.nome_urna})
+    return _checkout(2600, "Nome de Urna",
+                     {"type": "urna", "name": req.nome_completo,
+                      "birth": req.data_nascimento, "urna": req.nome_urna})
 
 @app.post("/pay/eleitoral")
 def pay_eleitoral(req: EleitoralPayReq):
-    return _create_checkout(2600, "Numero Eleitoral", {"type":"eleitoral","name":req.nome_completo,"birth":req.data_nascimento,"titulo":req.numero_titulo})
+    return _checkout(2600, "Número Eleitoral",
+                     {"type": "eleitoral", "name": req.nome_completo,
+                      "birth": req.data_nascimento, "titulo": req.numero_titulo})
 
 # ── Webhook Stripe ──────────────────────────────────
 @app.post("/stripe-webhook")
@@ -275,11 +285,11 @@ async def stripe_webhook(req: Request):
         try:
             event = stripe.Webhook.construct_event(payload, sig, whsec)
         except Exception:
-            raise HTTPException(400, "Invalid signature")
+            raise HTTPException(400, "Assinatura inválida")
     else:
         data = json.loads(payload)
         event = {"type": data.get("type", ""), "data": data.get("data", {})}
     if event["type"] == "checkout.session.completed":
         sess = event["data"]["object"]
-        logger.info(f"Pagamento OK: {sess.get('id')}")
+        logger.info(f"Pagamento confirmado: {sess.get('id')}")
     return {"ok": True}
