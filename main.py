@@ -197,6 +197,23 @@ def index():
 def config():
     return {"stripe_pk": STRIPE_PUB}
 
+@app.get("/criar-checkout")
+async def criar_checkout(lang: str = "pt", produto: str = "express"):
+    if lang not in PRICE_IDS or produto not in PRICE_IDS[lang]:
+        raise HTTPException(status_code=400, detail="Idioma ou produto inválido")
+    
+    price_id = PRICE_IDS[lang][produto]
+    
+    session = stripe.checkout.Session.create(
+        payment_method_types=["card", "boleto"],
+        line_items=[{"price": price_id, "quantity": 1}],
+        mode="payment",
+        locale=lang if lang in ["pt", "en", "es", "fr", "de", "it", "ja", "zh"] else "auto",
+        success_url=f"{SITE_URL}/static/sucesso.html?session_id={{CHECKOUT_SESSION_ID}}",
+        cancel_url=f"{SITE_URL}/static/cancelado.html",
+    )
+    return {"url": session.url}
+
 @app.post("/calculate")
 def calculate(req: PayReq):
     if len(req.name.strip()) < 2:
@@ -282,20 +299,3 @@ async def stripe_webhook(req: Request):
         sess = event["data"]["object"]
         logger.info(f"Pagamento confirmado: {sess.get('id')}")
     return {"ok": True}
-
-@app.post("/criar-checkout")
-async def criar_checkout(lang: str = "pt", produto: str = "express"):
-    if lang not in PRICE_IDS or produto not in PRICE_IDS[lang]:
-        raise HTTPException(status_code=400, detail="Idioma ou produto inválido")
-    
-    price_id = PRICE_IDS[lang][produto]
-    
-    session = stripe.checkout.Session.create(
-        payment_method_types=['card'],
-        line_items=[{'price': price_id, 'quantity': 1}],
-        mode='payment',
-        locale=lang if lang in ["pt", "en", "es", "fr", "de", "it", "ja", "zh"] else "auto",
-        success_url=f"{SITE_URL}/static/sucesso.html?session_id={{CHECKOUT_SESSION_ID}}",
-        cancel_url=f"{SITE_URL}/static/cancelado.html",
-    )
-    return {"url": session.url}
