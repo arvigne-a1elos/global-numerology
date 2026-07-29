@@ -18,6 +18,81 @@ SENDGRID_KEY = os.getenv("SENDGRID_API_KEY")
 FROM_EMAIL = os.getenv("FROM_EMAIL", "noreply@a1elos.com.br")
 SITE_URL = os.getenv("SITE_URL", "https://global-numerology.onrender.com")
 
+PRICE_IDS = {
+    "de": {  # Alemão
+        "express": "price_1TyFJaBMLa84bVJ0BDPNQUjz",
+        "completo": "price_1TyFLKBMLa84bVJ0RT0bkKpW",
+        "urna": "price_1TyFO2BMLa84bVJ0FIoh7co1",
+        "eleitoral": "price_1TyFTxBMLa84bVJ0qw6LQvVI"
+    },
+    "ar": {  # Árabe
+        "express": "price_1TyHXkBMLa84bVJ0DDl7y8rT",
+        "completo": "price_1TyHerBMLa84bVJ0UIFTeKLW",
+        "urna": "price_1TyHpxBMLa84bVJ0Z9Ck3rk3",
+        "eleitoral": "price_1TyHrvBMLa84bVJ0RWjoe4Gz"
+    },
+    "zh": {  # Chinês
+        "express": "price_1TyKXeBMLa84bVJ07Q6w0j6G",
+        "completo": "price_1TyKZfBMLa84bVJ0bgYSm8e2",
+        "urna": "price_1TyKdWBMLa84bVJ0TIP0Knbi",
+        "eleitoral": "price_1TyKitBMLa84bVJ0lFgyKya0"
+    },
+    "es": {  # Espanhol
+        "express": "price_1TyD2oBMLa84bVJ0HvSTMozS",
+        "completo": "price_1TyD6NBMLa84bVJ0s5y2OtSr",
+        "urna": "price_1TyDB0BMLa84bVJ0baUEGa2P",
+        "eleitoral": "price_1TyDCsBMLa84bVJ0NRp5uOKU"
+    },
+    "fr": {  # Francês
+        "express": "price_1TyDnQBMLa84bVJ0K9DBz2mk",
+        "completo": "price_1TyDrjBMLa84bVJ0cstgcPbY",
+        "urna": "price_1TyDw1BMLa84bVJ0EV0OnINW",
+        "eleitoral": "price_1TyDxsBMLa84bVJ0n2t4jOfZ"
+    },
+    "he": {  # Hebraico
+        "express": "price_1TyIKeBMLa84bVJ0W02dbXOt",
+        "completo": "price_1TyIO0BMLa84bVJ08P0j9THk",
+        "urna": "price_1TyIPbBMLa84bVJ08GnGksRk",
+        "eleitoral": "price_1TyISQBMLa84bVJ0sb7xjIyV"
+    },
+    "hi": {  # Hindi
+        "express": "price_1TyG1uBMLa84bVJ0NY4TpZnO",
+        "completo": "price_1TyG84BMLa84bVJ05zeaelyO",
+        "urna": "price_1TyGD5BMLa84bVJ0hEnIEwaS",
+        "eleitoral": "price_1TyGFYBMLa84bVJ0zZTHtAuT"
+    },
+    "en": {  # Inglês
+        "express": "price_1TxotnBMLa84bVJ00SGo4kjO",
+        "completo": "price_1TxoxfBMLa84bVJ0VgQVddZX",
+        "urna": "price_1Txp1jBMLa84bVJ06W4559rN",
+        "eleitoral": "price_1Txp5aBMLa84bVJ0GqrvBrIk"
+    },
+    "it": {  # Italiano
+        "express": "price_1TyEtPBMLa84bVJ02T3hWgMD",
+        "completo": "price_1TyEwfBMLa84bVJ0Fh9etZKk",
+        "urna": "price_1TyEz0BMLa84bVJ0Qkjg7Y0X",
+        "eleitoral": "price_1TyF2PBMLa84bVJ0lropcWH8"
+    },
+    "ja": {  # Japonês
+        "express": "price_1TyJ5HBMLa84bVJ00nZLnuV1",
+        "completo": "price_1TyJJgBMLa84bVJ0fkO5nSFT",
+        "urna": "price_1TyJOzBMLa84bVJ0BAPegYVD",
+        "eleitoral": "price_1TyJRwBMLa84bVJ0PLA1CIuH"
+    },
+    "pt": {  # Português
+        "express": "price_1TxocVBMLa84bVJ0EL0kb9Dn",
+        "completo": "price_1TxohlBMLa84bVJ0jVj9307b",
+        "urna": "price_1TxollBMLa84bVJ0Wk5zIak6",
+        "eleitoral": "price_1TxopFBMLa84bVJ0jvtJExVj"
+    },
+    "ru": {  # Russo
+        "express": "price_1TyJxhBMLa84bVJ0aQxWf1Tp",
+        "completo": "price_1TyK1CBMLa84bVJ0SsvJjSqb",
+        "urna": "price_1TyK3NBMLa84bVJ0GCSVqMe0",
+        "eleitoral": "price_1TyK7hBMLa84bVJ004FNS2fZ"
+    }
+}
+
 app = FastAPI(title="Global Numerology")
 
 STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
