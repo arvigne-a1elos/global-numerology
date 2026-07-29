@@ -51,7 +51,7 @@ PRODUTOS = {
 
 app = FastAPI(title="Global Numerology")
 
-STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
+STATIC_DIR = os.path.join(os.path.dirname(__file__), "estática")
 if os.path.isdir(STATIC_DIR):
     app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
