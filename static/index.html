@@ -317,6 +317,15 @@ function setLang(c){
   localStorage.setItem('a1elos-lang',c);
   applyLang();
   renderEnergyGrid();
+  reCalcLabels();
+}
+function reCalcLabels(){
+  var rd=document.getElementById('calcResult');
+  if(rd&&rd.style.display!=='none'){
+    var items=['calc_life_path','calc_expression','calc_soul_urge','calc_personality','calc_destiny'];
+    var labels=rd.querySelectorAll('.num-box .label');
+    items.forEach(function(k,i){if(labels[i])labels[i].textContent=t(k)});
+  }
 }
 (function(){
   var c=document.getElementById('langSelector');
@@ -329,16 +338,9 @@ function setLang(c){
     c.appendChild(b);
   });
 })();
-function scrollToEl(id){
-  var el=document.getElementById(id);
-  if(el){el.classList.remove('section-hidden');el.scrollIntoView({behavior:'smooth',block:'start'})}
-}
+function scrollToEl(id){var el=document.getElementById(id);if(el){el.classList.remove('section-hidden');el.scrollIntoView({behavior:'smooth',block:'start'})}}
 var selPayment='card';
-function setPayment(method,el){
-  selPayment=method;
-  document.querySelectorAll('.payment-option').forEach(function(x){x.classList.remove('active')});
-  if(el) el.classList.add('active');
-}
+function setPayment(method,el){selPayment=method;document.querySelectorAll('.payment-option').forEach(function(x){x.classList.remove('active')});if(el)el.classList.add('active')}
 var energyData=[
   {n:1,key:'energy_1',txt:['Liderança, independência, originalidade','Leadership, independence, originality','Liderazgo, independencia, originalidad']},
   {n:2,key:'energy_2',txt:['Cooperação, diplomacia, sensibilidade','Cooperation, diplomacy, sensitivity','Cooperación, diplomacia, sensibilidad']},
@@ -351,18 +353,10 @@ var energyData=[
   {n:9,key:'energy_9',txt:['Humanitarismo, compaixão, generosidade','Humanitarianism, compassion, generosity','Humanitarismo, compasión, generosidad']}
 ];
 function renderEnergyGrid(){
-  var g=document.getElementById('energyGrid');
-  if(!g) return;
-  var l=localStorage.getItem('a1elos-lang')||'pt';
-  var idx={pt:0,en:1,es:2};
-  var i=idx[l]||0;
+  var g=document.getElementById('energyGrid');if(!g)return;
+  var l=localStorage.getItem('a1elos-lang')||'pt';var idx={pt:0,en:1,es:2};var i=idx[l]||0;
   g.innerHTML='';
-  energyData.forEach(function(d){
-    var c=document.createElement('div');
-    c.className='energy-card';
-    c.innerHTML='<h4>'+d.n+'</h4><p style="color:var(--gray);font-size:.9rem">'+d.txt[i]+'</p>';
-    g.appendChild(c);
-  });
+  energyData.forEach(function(d){var c=document.createElement('div');c.className='energy-card';c.innerHTML='<h4>'+d.n+'</h4><p style="color:var(--gray);font-size:.9rem">'+d.txt[i]+'</p>';g.appendChild(c)});
 }
 async function calculate(){
   var n=document.getElementById('mainName').value.trim();
@@ -378,61 +372,29 @@ async function calculate(){
     var data=await r.json();
     var items=[{key:'life_path',label:t('calc_life_path')},{key:'expression',label:t('calc_expression')},{key:'soul_urge',label:t('calc_soul_urge')},{key:'personality',label:t('calc_personality')},{key:'destiny',label:t('calc_destiny')}];
     rg.innerHTML='';
-    items.forEach(function(i){
-      var b=document.createElement('div');b.className='num-box';
-      b.innerHTML='<div class="val">'+data[i.key]+'</div><div class="label">'+i.label+'</div>';
-      rg.appendChild(b);
-    });
+    items.forEach(function(i){var b=document.createElement('div');b.className='num-box';b.innerHTML='<div class="val">'+data[i.key]+'</div><div class="label">'+i.label+'</div>';rg.appendChild(b)});
     rd.style.display='block';
   }catch(ex){rg.innerHTML='<p style="color:#e74c3c;text-align:center">Erro ao calcular</p>';rd.style.display='block'}
   btn.textContent=t('btn_calc');btn.disabled=false;
 }
 async function buyProduct(produto){
-  var btn=event.target;
-  var nm=document.getElementById('mainName').value.trim();
-  var dt=document.getElementById('mainDate').value;
-  if(!nm||!dt){
-    alert('Preencha nome e data na calculadora primeiro');
-    scrollToEl('calc');
-    return;
-  }
+  var btn=event.target;var nm=document.getElementById('mainName').value.trim();var dt=document.getElementById('mainDate').value;
+  if(!nm||!dt){alert('Preencha nome e data na calculadora primeiro');scrollToEl('calc');return}
   btn.textContent='Redirecionando...';btn.disabled=true;
-  try{
-    var lang=localStorage.getItem('a1elos-lang')||'pt';
-    var r=await fetch('/criar-checkout?lang='+lang+'&produto='+produto);
-    var data=await r.json();
-    if(data.url){window.location.href=data.url}
-    else{alert('Erro ao criar pagamento');btn.textContent='Comprar';btn.disabled=false}
-  }catch(ex){alert('Erro de conexão');btn.textContent='Comprar';btn.disabled=false}
+  try{var lang=localStorage.getItem('a1elos-lang')||'pt';var r=await fetch('/criar-checkout?lang='+lang+'&produto='+produto);var data=await r.json();if(data.url)window.location.href=data.url;else{alert('Erro ao criar pagamento');btn.textContent='Comprar';btn.disabled=false}}
+  catch(ex){alert('Erro de conexão');btn.textContent='Comprar';btn.disabled=false}
 }
 async function payUrna(){
-  var btn=document.getElementById('urnaBtn');
-  btn.textContent='Redirecionando...';btn.disabled=true;
-  try{
-    var lang=localStorage.getItem('a1elos-lang')||'pt';
-    var r=await fetch('/criar-checkout?lang='+lang+'&produto=urna');
-    var data=await r.json();
-    if(data.url){window.location.href=data.url}
-    else{alert('Erro');btn.textContent='🔒 Pagar R$ 26';btn.disabled=false}
-  }catch(ex){alert('Erro de conexão');btn.textContent='🔒 Pagar R$ 26';btn.disabled=false}
+  var btn=document.getElementById('urnaBtn');btn.textContent='Redirecionando...';btn.disabled=true;
+  try{var lang=localStorage.getItem('a1elos-lang')||'pt';var r=await fetch('/criar-checkout?lang='+lang+'&produto=urna');var data=await r.json();if(data.url)window.location.href=data.url;else{alert('Erro');btn.textContent='🔒 Pagar R$ 26';btn.disabled=false}}
+  catch(ex){alert('Erro de conexão');btn.textContent='🔒 Pagar R$ 26';btn.disabled=false}
 }
 var selCargo='vereador';
-function setCargo(c,b){
-  selCargo=c;
-  document.getElementById('eleitoralCargo').value=c;
-  document.querySelectorAll('.tab-btn').forEach(function(x){x.classList.remove('active')});
-  if(b) b.classList.add('active');
-}
+function setCargo(c,b){selCargo=c;document.getElementById('eleitoralCargo').value=c;document.querySelectorAll('.tab-btn').forEach(function(x){x.classList.remove('active')});if(b)b.classList.add('active')}
 async function payEleitoral(){
-  var btn=document.getElementById('eleitoralBtn');
-  btn.textContent='Redirecionando...';btn.disabled=true;
-  try{
-    var lang=localStorage.getItem('a1elos-lang')||'pt';
-    var r=await fetch('/criar-checkout?lang='+lang+'&produto=eleitoral');
-    var data=await r.json();
-    if(data.url){window.location.href=data.url}
-    else{alert('Erro');btn.textContent='🔒 Pagar R$ 26';btn.disabled=false}
-  }catch(ex){alert('Erro de conexão');btn.textContent='🔒 Pagar R$ 26';btn.disabled=false}
+  var btn=document.getElementById('eleitoralBtn');btn.textContent='Redirecionando...';btn.disabled=true;
+  try{var lang=localStorage.getItem('a1elos-lang')||'pt';var r=await fetch('/criar-checkout?lang='+lang+'&produto=eleitoral');var data=await r.json();if(data.url)window.location.href=data.url;else{alert('Erro');btn.textContent='🔒 Pagar R$ 26';btn.disabled=false}}
+  catch(ex){alert('Erro de conexão');btn.textContent='🔒 Pagar R$ 26';btn.disabled=false}
 }
 document.addEventListener('DOMContentLoaded',function(){applyLang();renderEnergyGrid()});
 </script>
