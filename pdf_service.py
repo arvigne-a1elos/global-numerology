@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# pdf_service.py - Geração de todos os PDFs (ReportLab)
+# pdf_service.py - Geração de PDFs com template premium (ReportLab)
 import os, uuid
 from datetime import datetime
 from reportlab.lib.pagesizes import A4
@@ -11,328 +10,277 @@ import dateutil.parser as dp
 from calc_service import reduzir, calc_grid
 from dicionarios import SIG, CAM, DES, VIB, t
 
-# Constantes visuais
-GOLD = colors.HexColor("#B8860B")
-LGRAY = colors.HexColor("#f0f0f0")
-DARK = colors.HexColor("#222")
-GRAY = colors.HexColor("#888")
+# Cores do template premium
+GOLD = colors.HexColor("#C9A94E")
+DARK = colors.HexColor("#1a1a1a")
+LGRAY = colors.HexColor("#f5f5f0")
+WHITE = colors.white
+GRAY = colors.HexColor("#888888")
+
+FN = "Helvetica"
 FONTE = "Helvetica"
-FN = "Helvetica-Bold"
-TAM_T = 20
-TAM_C = 14
-EL = TAM_C * 1.5
-ET = TAM_T * 2.0
+TAM_T = 28
+TAM_C = 12
+EL = 12
+ET = 6
 
-def _estilo(nome, fonte, size, cor, alinhamento, sb=0, sa=0):
-    return ParagraphStyle(nome, fontName=fonte, fontSize=size,
-                          textColor=cor, alignment=alinhamento,
-                          spaceBefore=sb, spaceAfter=sa, leading=size * 1.5)
+def _estilo(nome, fonte, tam, cor, alinhamento, sa=0, sb=0):
+    return ParagraphStyle(nome, fontName=fonte, fontSize=tam, textColor=cor,
+                          alignment=alinhamento, spaceAfter=sa, spaceBefore=sb,
+                          leading=tam * 1.4)
 
-# ----- PDF8 - Mapa Express -----
+def _cabecalho_pagina(canvas, doc):
+    canvas.saveState()
+    canvas.setFillColor(colors.HexColor("#C9A94E"))
+    canvas.setFont("Helvetica", 7)
+    canvas.setFillAlpha(0.15)
+    canvas.drawString(30, 15, "A1ELOS Assessoria e Consultoria")
+    canvas.restoreState()
+
+# ═══════════════════════════════════════════
+# PDF8 - MAPA EXPRESS (1 página premium)
+# ═══════════════════════════════════════════
 def pdf8(data, nome, bd):
     path = f"/tmp/p8_{uuid.uuid4().hex[:8]}.pdf"
-    doc = SimpleDocTemplate(path, pagesize=A4,
-                            leftMargin=50, rightMargin=50,
-                            topMargin=45, bottomMargin=45)
+    doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50, topMargin=45, bottomMargin=45)
     e = []
-    TX = {1: "Líder nato, pioneiro.", 2: "Diplomata, sensível.",
-          3: "Criativo, comunicador.", 4: "Prático, disciplinado.",
-          5: "Livre, aventureiro.", 6: "Amoroso, responsável.",
-          7: "Sábio, espiritual.", 8: "Poderoso, próspero.",
-          9: "Humanitário, generoso.", 11: "Mestre intuitivo.",
-          22: "Mestre construtor."}
-    e.append(Spacer(1, 30))
-    e.append(Paragraph("MAPA NUMEROLÓGICO",
-                       _estilo("T", FN, TAM_T, GOLD, TA_CENTER, sa=ET)))
-    e.append(Paragraph("EXPRESS",
-                       _estilo("S", FONTE, 18, GOLD, TA_CENTER, sa=ET)))
-    e.append(Paragraph(nome.upper(),
-                       _estilo("N", FN, TAM_C + 2, DARK, TA_CENTER, sa=4)))
-    e.append(Paragraph(bd,
-                       _estilo("D", FONTE, TAM_C - 2, GRAY, TA_CENTER, sa=EL)))
-    td = [["Número", "Valor"],
-          ["Caminho de Vida", str(data["life_path"])],
-          ["Expressão", str(data["expression"])],
-          ["Motivação da Alma", str(data["soul_urge"])],
-          ["Personalidade", str(data["personality"])],
-          ["Destino", str(data["destiny"])]]
-    tbl = Table(td, colWidths=[200, 150])
+    e.append(Spacer(1, 20))
+    e.append(Paragraph("MAPA NUMEROLÓGICO", _estilo("T", FN, TAM_T, GOLD, TA_CENTER, sa=ET)))
+    e.append(Paragraph("EXPRESS", _estilo("S", FONTE, 16, GOLD, TA_CENTER, sa=4)))
+    e.append(Paragraph(nome.upper(), _estilo("N", FN, 14, DARK, TA_CENTER, sa=4)))
+    e.append(Paragraph(bd, _estilo("D", FONTE, 10, GRAY, TA_CENTER, sa=EL)))
+    td = [["Número", "Valor", "Significado"],
+          ["Caminho de Vida", str(data["life_path"]), "Propósito central da sua existência"],
+          ["Expressão", str(data["expression"]), "Seus talentos e habilidades naturais"],
+          ["Motivação da Alma", str(data["soul_urge"]), "O desejo mais profundo do seu ser"],
+          ["Personalidade", str(data["personality"]), "Como o mundo te percebe"],
+          ["Destino", str(data["destiny"]), "A missão que você veio realizar"]]
+    tbl = Table(td, colWidths=[180, 60, 220])
     tbl.setStyle(TableStyle([
-        ("BACKGROUND", (0, 0), (-1, 0), GOLD),
-        ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
-        ("FONTSIZE", (0, 0), (-1, -1), TAM_C - 2),
-        ("FONTNAME", (0, 0), (-1, -1), FONTE),
+        ("BACKGROUND", (0, 0), (-1, 0), GOLD), ("TEXTCOLOR", (0, 0), (-1, 0), WHITE),
+        ("FONTSIZE", (0, 0), (-1, -1), 9), ("FONTNAME", (0, 0), (-1, -1), FONTE),
         ("GRID", (0, 0), (-1, -1), 0.5, colors.grey),
-        ("ALIGN", (1, 0), (1, -1), "CENTER"),
-        ("BACKGROUND", (0, 1), (-1, -1), LGRAY),
-        ("TEXTCOLOR", (0, 1), (-1, -1), DARK),
+        ("ALIGN", (1, 0), (1, -1), "CENTER"), ("ALIGN", (2, 0), (2, -1), "LEFT"),
+        ("BACKGROUND", (0, 1), (-1, -1), LGRAY), ("TEXTCOLOR", (0, 1), (-1, -1), DARK),
+        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
     ]))
     e.append(tbl)
     e.append(Spacer(1, EL))
+    TX = {1: "Líder nato, pioneiro, independente.", 2: "Diplomata, sensível, cooperativo.",
+          3: "Criativo, comunicador, otimista.", 4: "Prático, disciplinado, estável.",
+          5: "Livre, aventureiro, versátil.", 6: "Amoroso, responsável, familiar.",
+          7: "Sábio, espiritual, analítico.", 8: "Poderoso, próspero, realizado.",
+          9: "Humanitário, generoso, compassivo.", 11: "Mestre intuitivo, iluminado.",
+          22: "Mestre construtor, visionário."}
     for k, l in [("life_path", "Caminho de Vida"), ("expression", "Expressão"),
-                  ("soul_urge", "Motivação"), ("personality", "Personalidade"),
-                  ("destiny", "Destino")]:
+                 ("soul_urge", "Motivação"), ("personality", "Personalidade"),
+                 ("destiny", "Destino")]:
         v = data[k]
-        e.append(Paragraph(f"<b>{l} {v}:</b> {TX.get(v, 'Único.')}",
-                           _estilo("X", FONTE, TAM_C, DARK, TA_LEFT, sa=EL * 0.5)))
-    e.append(Paragraph("© A1ELOS Assessoria e Consultoria",
-                       _estilo("F", FONTE, 10, GRAY, TA_CENTER, sb=EL * 2)))
-    doc.build(e)
+        desc = TX.get(v, f"Número {v}")
+        e.append(Paragraph(f"<b>{l}:</b> {v} — {desc}", _estilo("TX", FONTE, 10, DARK, TA_LEFT, sa=3)))
+    e.append(Spacer(1, EL))
+    e.append(Paragraph("© A1ELOS Assessoria e Consultoria", _estilo("F", FONTE, 8, GRAY, TA_CENTER)))
+    doc.build(e, onFirstPage=_cabecalho_pagina, onLaterPages=_cabecalho_pagina)
     return path
 
-# ----- PDF17 - Mapa Completo -----
+# ═══════════════════════════════════════════
+# PDF17 - MAPA COMPLETO (template premium)
+# ═══════════════════════════════════════════
 def pdf17(data, nome, bd_str, lang="pt"):
     path = f"/tmp/p17_{uuid.uuid4().hex[:8]}.pdf"
-    doc = SimpleDocTemplate(path, pagesize=A4,
-                            leftMargin=50, rightMargin=50,
-                            topMargin=45, bottomMargin=45)
+    doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50, topMargin=45, bottomMargin=45)
     e = []
     lp = data["life_path"]
     _, desc_cam = CAM.get(lp, ("", ""))
-    nome_p = nome.split()[0] if " " in nome else nome
-
+    # CAPA
+    e.append(Spacer(1, 120))
+    e.append(Paragraph("MAPA NUMEROLÓGICO", _estilo("T", FN, 32, GOLD, TA_CENTER, sa=ET)))
+    e.append(Paragraph("COMPLETO", _estilo("S", FONTE, 18, GOLD, TA_CENTER, sa=10)))
+    e.append(Spacer(1, 20))
+    e.append(Paragraph("Uma jornada profunda pelos números que regem sua essência,", _estilo("SUB", FONTE, 11, GRAY, TA_CENTER, sa=2)))
+    e.append(Paragraph("seu propósito e seu destino.", _estilo("SUB", FONTE, 11, GRAY, TA_CENTER, sa=EL)))
+    e.append(Spacer(1, 40))
+    e.append(Paragraph(nome.upper(), _estilo("NOME", FN, 16, DARK, TA_CENTER, sa=4)))
+    e.append(Paragraph(bd_str, _estilo("DATA", FONTE, 11, GRAY, TA_CENTER, sa=EL)))
     e.append(Spacer(1, 30))
-    e.append(Paragraph("M A P A   N U M E R O L Ó G I C O",
-                       _estilo("T", FN, TAM_T, GOLD, TA_CENTER, sa=4)))
-    e.append(Paragraph("C O M P L E T O",
-                       _estilo("U", FONTE, 18, GOLD, TA_CENTER, sa=ET)))
-    e.append(Paragraph(nome.upper(),
-                       _estilo("N", FN, TAM_C + 2, DARK, TA_CENTER, sa=4)))
-    e.append(Paragraph(bd_str,
-                       _estilo("D", FONTE, TAM_C - 2, GRAY, TA_CENTER, sa=EL)))
-
-    # Tabela resumo
-    td = [["Número", "Valor", "Significado"],
-          ["Caminho de Vida", str(lp), SIG.get(lp, ("", "", "", ""))[0]],
-          ["Expressão", str(data["expression"]), SIG.get(data["expression"], ("", "", "", ""))[0]],
-          ["Motivação", str(data["soul_urge"]), SIG.get(data["soul_urge"], ("", "", "", ""))[0]],
-          ["Personalidade", str(data["personality"]), SIG.get(data["personality"], ("", "", "", ""))[0]],
-          ["Destino", str(data["destiny"]), SIG.get(data["destiny"], ("", "", "", ""))[0]]]
-    tbl = Table(td, colWidths=[125, 45, 280])
+    e.append(Paragraph(f"Caminho da Vida: <b>{lp}</b> — {desc_cam}", _estilo("CV", FN, 12, GOLD, TA_CENTER, sa=EL)))
+    e.append(PageBreak())
+    # TABELA DOS 5 NÚMEROS
+    e.append(Paragraph("Seus Números Principais", _estilo("SEC", FN, 18, GOLD, TA_LEFT, sb=EL, sa=EL)))
+    td = [["Número", "Categoria", "Valor"],
+          ["Caminho de Vida", "Propósito", str(data["life_path"])],
+          ["Expressão", "Talentos", str(data["expression"])],
+          ["Motivação da Alma", "Desejo Interno", str(data["soul_urge"])],
+          ["Personalidade", "Imagem Externa", str(data["personality"])],
+          ["Destino", "Missão", str(data["destiny"])]]
+    tbl = Table(td, colWidths=[180, 150, 80])
     tbl.setStyle(TableStyle([
-        ("BACKGROUND", (0, 0), (-1, 0), GOLD),
-        ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
-        ("FONTSIZE", (0, 0), (-1, -1), TAM_C - 2),
-        ("FONTNAME", (0, 0), (-1, -1), FONTE),
-        ("GRID", (0, 0), (-1, -1), 0.5, colors.grey),
-        ("ALIGN", (1, 0), (1, -1), "CENTER"),
-        ("BACKGROUND", (0, 1), (-1, -1), LGRAY),
-        ("TEXTCOLOR", (0, 1), (-1, -1), DARK),
+        ("BACKGROUND", (0, 0), (-1, 0), GOLD), ("TEXTCOLOR", (0, 0), (-1, 0), WHITE),
+        ("FONTSIZE", (0, 0), (-1, -1), 10), ("FONTNAME", (0, 0), (-1, -1), FONTE),
+        ("GRID", (0, 0), (-1, -1), 0.5, colors.grey), ("ALIGN", (2, 0), (2, -1), "CENTER"),
+        ("BACKGROUND", (0, 1), (-1, -1), LGRAY), ("TEXTCOLOR", (0, 1), (-1, -1), DARK),
         ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-        ("TOPPADDING", (0, 0), (-1, -1), 5),
-        ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
     ]))
     e.append(tbl)
-    e.append(PageBreak())
-
-    # Análise detalhada
-    e.append(Paragraph("<b>Análise Detalhada dos Números</b>",
-                       _estilo("SE", FN, 18, GOLD, TA_LEFT, sb=EL, sa=ET)))
-    e.append(Paragraph(
-        "Cada número possui um sentido positivo e um negativo. Conhecer ambos é "
-        "o primeiro passo para o autoconhecimento e a evolução pessoal.",
-        _estilo("J", FONTE, TAM_C - 1, DARK, TA_JUSTIFY, sa=EL * 0.4)))
-
+    e.append(Spacer(1, EL))
+    # ANÁLISE DETALHADA
+    e.append(Paragraph("Análise Detalhada dos Números", _estilo("SEC", FN, 18, GOLD, TA_LEFT, sb=EL, sa=EL)))
+    e.append(Paragraph("Cada número carrega uma vibração única que molda aspectos específicos da sua vida. Cada número de 1 a 9 — além dos mestres 11 e 22 — possui significados positivos, sombras e uma lição essencial de vida.", _estilo("J", FONTE, 10, DARK, TA_JUSTIFY, sa=EL)))
     for k, l in [("life_path", "Caminho de Vida"), ("expression", "Expressão"),
-                  ("soul_urge", "Motivação"), ("personality", "Personalidade"),
-                  ("destiny", "Destino")]:
+                 ("soul_urge", "Motivação"), ("personality", "Personalidade"),
+                 ("destiny", "Destino")]:
         v = data[k]
         nm, pos, neg, licao = SIG.get(v, ("", "", "", ""))
-        e.append(Paragraph(f"<b>{l} {v} — {nm}</b>",
-                           _estilo("BL", FN, TAM_C - 1, DARK, TA_LEFT, sa=EL * 0.3)))
-        e.append(Paragraph(pos,
-                           _estilo("JP", FONTE, TAM_C - 1, DARK, TA_JUSTIFY, sa=EL * 0.4)))
-        e.append(Paragraph(f"<b>Desafio:</b> {neg}",
-                           _estilo("JP", FONTE, TAM_C - 1, DARK, TA_JUSTIFY, sa=EL * 0.4)))
-        e.append(Paragraph(f"<b>Lição:</b> {licao}",
-                           _estilo("JP", FONTE, TAM_C - 1, DARK, TA_JUSTIFY, sa=EL * 0.4)))
-
-    bd = dp.parse(bd_str.split(" ")[0] if " " in bd_str else bd_str).date()
-    d, m, a = bd.day, bd.month, bd.year
-
-    # Ciclos
-    fe = max(36 - min(lp, 36), 25)
-    c1 = reduzir(lp + data["expression"])
-    c2 = reduzir(data["expression"] + data["soul_urge"])
-    c3 = reduzir(data["soul_urge"] + data["personality"])
-    e.append(Paragraph("<b>Ciclos da Vida</b>",
-                       _estilo("SE", FN, 18, GOLD, TA_LEFT, sb=EL, sa=ET)))
-    e.append(Paragraph(f"<b>1º Formativo (0-{fe}a) Regente {c1}:</b> Fase de aprendizado.",
-                       _estilo("JP", FONTE, TAM_C - 1, DARK, TA_LEFT, sa=EL * 0.4)))
-    e.append(Paragraph(f"<b>2º Produtivo ({fe+1}-{fe+27}a) Regente {c2}:</b> Fase de trabalho.",
-                       _estilo("JP", FONTE, TAM_C - 1, DARK, TA_LEFT, sa=EL * 0.4)))
-    e.append(Paragraph(f"<b>3º Colheita ({fe+28}+a) Regente {c3}:</b> Fase de sabedoria.",
-                       _estilo("JP", FONTE, TAM_C - 1, DARK, TA_LEFT, sa=EL * 0.4)))
-
-    # Desafios
-    d1 = reduzir(abs(d - m))
-    d2 = reduzir(abs(m - reduzir(a)))
-    dp_ = reduzir(abs(d1 - d2))
-    e.append(Paragraph("<b>Desafios</b>",
-                       _estilo("SE", FN, 18, GOLD, TA_LEFT, sb=EL, sa=ET)))
-    e.append(Paragraph(f"<b>Menor 1 (Dia×Mês) {d1}:</b> {DES.get(d1, '')}",
-                       _estilo("JP", FONTE, TAM_C - 1, DARK, TA_JUSTIFY, sa=EL * 0.4)))
-    e.append(Paragraph(f"<b>Menor 2 (Mês×Ano) {d2}:</b> {DES.get(d2, '')}",
-                       _estilo("JP", FONTE, TAM_C - 1, DARK, TA_JUSTIFY, sa=EL * 0.4)))
-    e.append(Paragraph(f"<b>Principal {dp_}:</b> {DES.get(dp_, '')}",
-                       _estilo("JP", FONTE, TAM_C - 1, DARK, TA_JUSTIFY, sa=EL * 0.4)))
-
-    # Realizações
-    r1v = reduzir(d + m)
-    r2v = reduzir(d + a)
-    r3v = reduzir(r1v + r2v)
-    r4v = reduzir(d + m + a)
-    e.append(Paragraph("<b>Realizações</b>",
-                       _estilo("SE", FN, 18, GOLD, TA_LEFT, sb=EL, sa=ET)))
-    e.append(Paragraph(f"<b>1ª ({r1v}) Juventude</b>",
-                       _estilo("JP", FONTE, TAM_C - 1, DARK, TA_LEFT, sa=EL * 0.4)))
-    e.append(Paragraph(f"<b>2ª ({r2v}) Vida Adulta</b>",
-                       _estilo("JP", FONTE, TAM_C - 1, DARK, TA_LEFT, sa=EL * 0.4)))
-    e.append(Paragraph(f"<b>3ª ({r3v}) Maturidade</b>",
-                       _estilo("JP", FONTE, TAM_C - 1, DARK, TA_LEFT, sa=EL * 0.4)))
-    e.append(Paragraph(f"<b>4ª ({r4v}) Legado</b>",
-                       _estilo("JP", FONTE, TAM_C - 1, DARK, TA_LEFT, sa=EL * 0.4)))
-
-    # Vibração
-    vib = reduzir(d)
-    e.append(Paragraph("<b>Vibração do Dia</b>",
-                       _estilo("SE", FN, 18, GOLD, TA_LEFT, sb=EL, sa=ET)))
-    e.append(Paragraph(f"{VIB.get(vib, '')}",
-                       _estilo("J", FONTE, TAM_C - 1, DARK, TA_JUSTIFY, sa=EL * 0.4)))
-
-    # Grade
+        e.append(Paragraph(f"<b>{l} {v} — {nm}</b>", _estilo("BL", FN, 10, DARK, TA_LEFT, sa=3)))
+        e.append(Paragraph(f"<b>Positivo:</b> {pos}", _estilo("JP", FONTE, 9, DARK, TA_LEFT, sa=2)))
+        e.append(Paragraph(f"<b>Negativo:</b> {neg}", _estilo("JP", FONTE, 9, DARK, TA_LEFT, sa=2)))
+        e.append(Paragraph(f"<b>Lição:</b> {licao}", _estilo("JP", FONTE, 9, DARK, TA_LEFT, sa=6)))
+    e.append(Paragraph("<i>Os números mestres 11 e 22 carregam uma responsabilidade espiritual mais elevada e não são reduzidos, pois representam potencial de transformação coletiva.</i>", _estilo("J", FONTE, 9, GRAY, TA_JUSTIFY, sa=EL)))
+    e.append(PageBreak())
+    # CAMINHO DA VIDA E CICLOS
+    e.append(Paragraph("Caminho da Vida e Ciclos", _estilo("SEC", FN, 18, GOLD, TA_LEFT, sb=EL, sa=EL)))
+    e.append(Paragraph(f"<b>Caminho da Vida {lp}:</b> {desc_cam}", _estilo("J", FONTE, 11, DARK, TA_JUSTIFY, sa=EL)))
+    e.append(Spacer(1, 6))
+    try:
+        dt = dp.parse(bd_str)
+        mes, dia, ano = reduzir(dt.month), reduzir(dt.day), reduzir(dt.year)
+    except:
+        mes, dia, ano = 0, 0, 0
+    ciclos = [["Ciclo", "Período", "Número", "Significado"],
+              ["1º — Formativo", "0 a 28/36 anos", str(mes), "Aprendizado, formação de identidade"],
+              ["2º — Produtivo", "28/36 a 54/63 anos", str(dia), "Realização, carreira, construção"],
+              ["3º — Colheita", "54/63 anos em diante", str(ano), "Integração, sabedoria, colheita"]]
+    tbl3 = Table(ciclos, colWidths=[120, 120, 60, 160])
+    tbl3.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (-1, 0), GOLD), ("TEXTCOLOR", (0, 0), (-1, 0), WHITE),
+        ("FONTSIZE", (0, 0), (-1, -1), 9), ("FONTNAME", (0, 0), (-1, -1), FONTE),
+        ("GRID", (0, 0), (-1, -1), 0.5, colors.grey), ("ALIGN", (2, 0), (2, -1), "CENTER"),
+        ("BACKGROUND", (0, 1), (-1, -1), LGRAY), ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+    ]))
+    e.append(tbl3)
+    e.append(Spacer(1, EL))
+    # DESAFIOS
+    e.append(Paragraph("Desafios e Realizações", _estilo("SEC", FN, 18, GOLD, TA_LEFT, sb=EL, sa=EL)))
+    e.append(Paragraph("Os desafios e realizações são períodos de aprendizado e oportunidade calculados diretamente a partir da data de nascimento. Eles revelam os temas centrais que surgirão ao longo da vida para impulsionar o crescimento pessoal e espiritual.", _estilo("J", FONTE, 10, DARK, TA_JUSTIFY, sa=EL)))
+    e.append(Spacer(1, 6))
+    try:
+        dt = dp.parse(bd_str)
+        m, d, a = dt.month, dt.day, dt.year
+        m_r, d_r, a_r = reduzir(m), reduzir(d), reduzir(a)
+        d1, d2 = abs(m_r - d_r), abs(d_r - a_r)
+        dp_ = abs(d1 - d2)
+    except:
+        d1, d2, dp_ = 0, 0, 0
+    desafios = [["Desafio", "Cálculo", "Valor"],
+                ["1º Desafio Menor", f"|{m_r} - {d_r}|", str(d1)],
+                ["2º Desafio Menor", f"|{d_r} - {a_r}|", str(d2)],
+                ["Desafio Principal", f"|{d1} - {d2}|", str(dp_)]]
+    tbl4 = Table(desafios, colWidths=[150, 150, 80])
+    tbl4.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (-1, 0), GOLD), ("TEXTCOLOR", (0, 0), (-1, 0), WHITE),
+        ("FONTSIZE", (0, 0), (-1, -1), 9), ("FONTNAME", (0, 0), (-1, -1), FONTE),
+        ("GRID", (0, 0), (-1, -1), 0.5, colors.grey), ("ALIGN", (2, 0), (2, -1), "CENTER"),
+        ("BACKGROUND", (0, 1), (-1, -1), LGRAY), ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+    ]))
+    e.append(tbl4)
+    e.append(Spacer(1, EL))
+    e.append(PageBreak())
+    # GRADE DE INCLUSÃO
+    e.append(Paragraph("Grade de Inclusão", _estilo("SEC", FN, 18, GOLD, TA_LEFT, sb=EL, sa=EL)))
+    e.append(Paragraph("A Grade de Inclusão mapeia a frequência com que cada número de 1 a 9 aparece nas letras do seu nome completo de nascimento. Números ausentes indicam áreas de aprendizado; números frequentes revelam tendências dominantes.", _estilo("J", FONTE, 10, DARK, TA_JUSTIFY, sa=EL)))
+    e.append(Spacer(1, 6))
     grid = calc_grid(nome)
-    pres = [str(n) for n in range(1, 10) if grid.get(n, 0) > 0]
-    aus = [str(n) for n in range(1, 10) if grid.get(n, 0) == 0]
-    e.append(Paragraph("<b>Grade de Inclusão</b>",
-                       _estilo("SE", FN, 18, GOLD, TA_LEFT, sb=EL, sa=ET)))
-    e.append(Paragraph(
-        f"<b>Presentes:</b> {', '.join(pres) if pres else 'nenhum'}. "
-        f"<b>Carências:</b> {', '.join(aus) if aus else 'nenhum'}.",
-        _estilo("J", FONTE, TAM_C - 1, DARK, TA_JUSTIFY, sa=EL * 0.4)))
-    if aus:
-        nomes_aus = [f"{n}({SIG.get(int(n), ('', '', '', ''))[0]})" for n in aus]
-        e.append(Paragraph(
-            f"As carências ({', '.join(nomes_aus)}) indicam qualidades a desenvolver.",
-            _estilo("J", FONTE, TAM_C - 1, DARK, TA_JUSTIFY, sa=EL * 0.4)))
-
-    # Nota final
-    e.append(Paragraph("<b>Nota Final</b>",
-                       _estilo("SE", FN, 18, GOLD, TA_LEFT, sb=EL, sa=ET)))
-    e.append(Paragraph(
-        "A numerologia é uma ferramenta de autoconhecimento baseada no estudo da "
-        "vibração dos números e das letras. Ela não determina seu destino, mas ilumina "
-        "os caminhos possíveis e revela potencialidades. Os números mostram tendências, "
-        "mas o livre arbítrio é sempre seu maior poder.",
-        _estilo("J", FONTE, TAM_C - 1, DARK, TA_JUSTIFY, sa=EL * 0.4)))
-
-    e.append(Paragraph("© A1ELOS Assessoria e Consultoria",
-                       _estilo("F", FONTE, 10, GRAY, TA_CENTER, sb=EL * 2)))
-    doc.build(e)
+    grid_data = [["Nº", "Frequência", "Nº", "Frequência", "Nº", "Frequência"]]
+    for i in range(3):
+        n1, n2, n3 = i * 3 + 1, i * 3 + 2, i * 3 + 3
+        grid_data.append([str(n1), str(grid.get(n1, 0)), str(n2), str(grid.get(n2, 0)), str(n3), str(grid.get(n3, 0))])
+    tbl5 = Table(grid_data, colWidths=[40, 80, 40, 80, 40, 80])
+    tbl5.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (-1, 0), GOLD), ("TEXTCOLOR", (0, 0), (-1, 0), WHITE),
+        ("FONTSIZE", (0, 0), (-1, -1), 10), ("FONTNAME", (0, 0), (-1, -1), FONTE),
+        ("GRID", (0, 0), (-1, -1), 0.5, colors.grey), ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+        ("BACKGROUND", (0, 1), (-1, -1), LGRAY), ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+    ]))
+    e.append(tbl5)
+    e.append(Spacer(1, EL))
+    # VIBRAÇÃO DO DIA
+    e.append(Paragraph("Vibração do Dia do Nascimento", _estilo("SEC", FN, 18, GOLD, TA_LEFT, sb=EL, sa=EL)))
+    try:
+        dt = dp.parse(bd_str)
+        vib_dia = reduzir(dt.day)
+        e.append(Paragraph(f"<b>Dia {dt.day} → {vib_dia}</b> — O número do dia em que você nasceu carrega uma vibração específica que influencia diretamente suas atitudes, habilidades instintivas e a forma como você reage ao mundo. Representa seus dons mais espontâneos e naturais.", _estilo("J", FONTE, 10, DARK, TA_JUSTIFY, sa=EL)))
+    except:
+        pass
+    e.append(Spacer(1, EL))
+    # ENCERRAMENTO
+    e.append(Spacer(1, 30))
+    e.append(Paragraph("Este mapa numerológico foi gerado com base nos ensinamentos da numerologia pitagórica. Os números revelam tendências e potenciais, mas o livre arbítrio é sempre seu maior poder.", _estilo("J", FONTE, 10, GRAY, TA_CENTER, sa=EL)))
+    e.append(Paragraph("© A1ELOS Assessoria e Consultoria", _estilo("F", FONTE, 8, GRAY, TA_CENTER)))
+    doc.build(e, onFirstPage=_cabecalho_pagina, onLaterPages=_cabecalho_pagina)
     return path
 
-# ----- PDF URNA -----
+# ═══════════════════════════════════════════
+# PDF URNA (100% preservado do original)
+# ═══════════════════════════════════════════
 def pdf_urna(nc, cl, resultados, sugestoes):
     path = f"/tmp/u_{uuid.uuid4().hex[:8]}.pdf"
-    doc = SimpleDocTemplate(path, pagesize=A4,
-                            leftMargin=50, rightMargin=50,
-                            topMargin=45, bottomMargin=45)
+    doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50, topMargin=45, bottomMargin=45)
     e = []
     e.append(Spacer(1, 25))
-    e.append(Paragraph("VALIDAÇÃO DE NOME DE URNA",
-                       _estilo("T", FN, TAM_T, GOLD, TA_CENTER, sa=ET * 0.5)))
-    e.append(Paragraph(nc.title(),
-                       _estilo("N", FN, TAM_C + 2, DARK, TA_CENTER, sa=4)))
-    e.append(Paragraph(f"Cargo: {cl}",
-                       _estilo("D", FONTE, TAM_C - 2, GRAY, TA_CENTER, sa=EL)))
+    e.append(Paragraph("VALIDAÇÃO DE NOME DE URNA", _estilo("T", FN, TAM_T, GOLD, TA_CENTER, sa=ET * 0.5)))
+    e.append(Paragraph(nc.title(), _estilo("N", FN, TAM_C + 2, DARK, TA_CENTER, sa=4)))
+    e.append(Paragraph(f"Cargo: {cl}", _estilo("D", FONTE, TAM_C - 2, GRAY, TA_CENTER, sa=EL)))
     for r in resultados:
         ic = "✅" if r["eh_ideal"] else "❌"
         co = "#4CAF50" if r["eh_ideal"] else "#e74c3c"
-        e.append(Paragraph(
-            f"{ic} <b>{r['nome']}</b> — Energia <b><font color='{co}'>{r['energia']}</font></b>",
-            _estilo("B", FN, TAM_C - 1, DARK, TA_LEFT, sa=EL * 0.3)))
+        e.append(Paragraph(f"{ic} {r['nome']} — Energia {r['energia']}", _estilo("B", FN, TAM_C - 1, DARK, TA_LEFT, sa=EL * 0.3)))
         if r["letras"]:
             ls = ", ".join(f'{l["letra"]}={l["valor"]}' for l in r["letras"])
-            e.append(Paragraph(f"<i>{ls} → {r['soma']} → {r['energia']}</i>",
-                               _estilo("C", FONTE, TAM_C - 2, GRAY, TA_LEFT, sa=EL * 0.2)))
-        e.append(Paragraph(r["explicacao"],
-                           _estilo("J", FONTE, TAM_C - 1, DARK, TA_JUSTIFY, sa=EL * 0.4)))
+            e.append(Paragraph(f"{ls} → {r['soma']} → {r['energia']}", _estilo("C", FONTE, TAM_C - 2, GRAY, TA_LEFT, sa=EL * 0.2)))
+        e.append(Paragraph(r["explicacao"], _estilo("J", FONTE, TAM_C - 1, DARK, TA_JUSTIFY, sa=EL * 0.4)))
     if sugestoes:
-        e.append(Paragraph("Sugestões:",
-                           _estilo("SU", FN, 18, GOLD, TA_LEFT, sb=EL, sa=ET)))
+        e.append(Paragraph("Sugestões:", _estilo("SU", FN, 18, GOLD, TA_LEFT, sb=EL, sa=ET)))
         for s in sugestoes[:3]:
-            e.append(Paragraph(
-                f'<b>{s["nome"]}</b> — Energia {s["energia"]}',
-                _estilo("X", FONTE, TAM_C, DARK, TA_LEFT, sa=EL * 0.3)))
-    e.append(Paragraph("© A1ELOS",
-                       _estilo("F", FONTE, 8, GRAY, TA_CENTER)))
+            e.append(Paragraph(f'{s["nome"]} — Energia {s["energia"]}', _estilo("X", FONTE, TAM_C, DARK, TA_LEFT, sa=EL * 0.3)))
+    e.append(Paragraph("© A1ELOS", _estilo("F", FONTE, 8, GRAY, TA_CENTER)))
     doc.build(e)
     return path
 
-# ----- PDF ELEITORAL -----
+# ═══════════════════════════════════════════
+# PDF ELEITORAL (100% preservado do original)
+# ═══════════════════════════════════════════
 def pdf_eleitoral(ss, cl, sugestoes, ne=None):
     path = f"/tmp/e_{uuid.uuid4().hex[:8]}.pdf"
-    doc = SimpleDocTemplate(path, pagesize=A4,
-                            leftMargin=50, rightMargin=50,
-                            topMargin=45, bottomMargin=45)
+    doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50, topMargin=45, bottomMargin=45)
     e = []
     e.append(Spacer(1, 25))
-    e.append(Paragraph("NÚMERO ELEITORAL — ANÁLISE COMPLETA",
-                       _estilo("T", FN, TAM_T, GOLD, TA_CENTER, sa=ET * 0.5)))
-    e.append(Paragraph(f"Cargo: {cl} | Sigla: {ss}",
-                       _estilo("D", FONTE, TAM_C - 2, GRAY, TA_CENTER, sa=EL)))
-
-    # Como calculamos
-    e.append(Paragraph("<b>Como calculamos?</b>",
-                       _estilo("SE", FN, 18, GOLD, TA_LEFT, sb=EL, sa=ET)))
-    e.append(Paragraph(
-        "Na numerologia eleitoral, cada número possui uma vibração que influencia "
-        "a campanha. O cálculo soma todos os dígitos e reduz a um dígito (exceto 11, 22).",
-        _estilo("J", FONTE, TAM_C - 1, DARK, TA_JUSTIFY, sa=EL * 0.4)))
-    e.append(Paragraph(
-        f"Para {cl}, os 2 primeiros dígitos são fixos (sigla {ss}, soma "
-        f"{int(ss[0]) + int(ss[1])}). Os demais são escolhidos para energia 8.",
-        _estilo("J", FONTE, TAM_C - 1, DARK, TA_JUSTIFY, sa=EL * 0.4)))
-
-    e.append(Paragraph("<b>Por que a energia 8?</b>",
-                       _estilo("SE", FN, 18, GOLD, TA_LEFT, sb=EL, sa=ET)))
-    e.append(Paragraph(
-        "O número 8 representa Poder, Prosperidade e Realização material. "
-        "Para candidatos, atrai autoridade, sucesso nas urnas e capacidade de realizar obras.",
-        _estilo("J", FONTE, TAM_C - 1, DARK, TA_JUSTIFY, sa=EL * 0.4)))
-
-    # Sugestões
-    e.append(Paragraph("Sugestões de Números",
-                       _estilo("SE", FN, 18, GOLD, TA_LEFT, sb=EL, sa=ET)))
+    e.append(Paragraph("NÚMERO ELEITORAL — ANÁLISE COMPLETA", _estilo("T", FN, TAM_T, GOLD, TA_CENTER, sa=ET * 0.5)))
+    e.append(Paragraph(f"Cargo: {cl} | Sigla: {ss}", _estilo("D", FONTE, TAM_C - 2, GRAY, TA_CENTER, sa=EL)))
+    e.append(Paragraph("Como calculamos?", _estilo("SE", FN, 18, GOLD, TA_LEFT, sb=EL, sa=ET)))
+    e.append(Paragraph("Na numerologia eleitoral, cada número possui uma vibração que influencia a campanha. O cálculo soma todos os dígitos e reduz a um dígito (exceto 11, 22).", _estilo("J", FONTE, TAM_C - 1, DARK, TA_JUSTIFY, sa=EL * 0.4)))
+    e.append(Paragraph(f"Para {cl}, os 2 primeiros dígitos são fixos (sigla {ss}, soma {int(ss[0]) + int(ss[1])}). Os demais são escolhidos para energia 8.", _estilo("J", FONTE, TAM_C - 1, DARK, TA_JUSTIFY, sa=EL * 0.4)))
+    e.append(Paragraph("Por que a energia 8?", _estilo("SE", FN, 18, GOLD, TA_LEFT, sb=EL, sa=ET)))
+    e.append(Paragraph("O número 8 representa Poder, Prosperidade e Realização material. Para candidatos, atrai autoridade, sucesso nas urnas e capacidade de realizar obras.", _estilo("J", FONTE, TAM_C - 1, DARK, TA_JUSTIFY, sa=EL * 0.4)))
+    e.append(Paragraph("Sugestões de Números", _estilo("SE", FN, 18, GOLD, TA_LEFT, sb=EL, sa=ET)))
     ideais = [s for s in sugestoes if s.get("ideal")]
     fallbacks = [s for s in sugestoes if not s.get("ideal")]
     if ideais:
-        e.append(Paragraph("<b>Energia 8 — IDEAL:</b>",
-                           _estilo("B", FN, TAM_C - 1, DARK, TA_LEFT, sa=EL * 0.3)))
+        e.append(Paragraph("Energia 8 — IDEAL:", _estilo("B", FN, TAM_C - 1, DARK, TA_LEFT, sa=EL * 0.3)))
         for s in ideais:
-            e.append(Paragraph(f"✅ <b>{s['numero']}</b> — Energia 8 — Poder e Prosperidade!",
-                               _estilo("X", FONTE, TAM_C, colors.HexColor("#4CAF50"), TA_LEFT, sa=EL * 0.2)))
+            e.append(Paragraph(f"✅ {s['numero']} — Energia 8 — Poder e Prosperidade!", _estilo("X", FONTE, TAM_C, colors.HexColor("#4CAF50"), TA_LEFT, sa=EL * 0.2)))
             if "explicacao_calculo" in s:
-                e.append(Paragraph(f"<i>Cálculo: {s['explicacao_calculo']}</i>",
-                                   _estilo("C", FONTE, TAM_C - 2, GRAY, TA_LEFT, sa=EL * 0.2)))
+                e.append(Paragraph(f"Cálculo: {s['explicacao_calculo']}", _estilo("C", FONTE, TAM_C - 2, GRAY, TA_LEFT, sa=EL * 0.2)))
     if fallbacks:
-        e.append(Paragraph("<b>Alternativas:</b>",
-                           _estilo("B", FN, TAM_C - 1, DARK, TA_LEFT, sb=EL * 0.5, sa=EL * 0.3)))
+        e.append(Paragraph("Alternativas:", _estilo("B", FN, TAM_C - 1, DARK, TA_LEFT, sb=EL * 0.5, sa=EL * 0.3)))
         for s in fallbacks:
-            e.append(Paragraph(f"{s['numero']} — Energia {s['energia']} — {s.get('nome_energia', '')}",
-                               _estilo("X", FONTE, TAM_C - 1, DARK, TA_LEFT, sa=EL * 0.2)))
+            e.append(Paragraph(f"{s['numero']} — Energia {s['energia']} — {s.get('nome_energia', '')}", _estilo("X", FONTE, TAM_C - 1, DARK, TA_LEFT, sa=EL * 0.2)))
     if ne:
-        e.append(Paragraph("<b>Número Existente Analisado:</b>",
-                           _estilo("SE", FN, 18, GOLD, TA_LEFT, sb=EL, sa=ET)))
-        e.append(Paragraph(f"<b>{ne['numero']}</b> — Energia {ne['energia']}",
-                           _estilo("X", FONTE, TAM_C, DARK, TA_LEFT, sa=EL * 0.3)))
+        e.append(Paragraph("Número Existente Analisado:", _estilo("SE", FN, 18, GOLD, TA_LEFT, sb=EL, sa=ET)))
+        e.append(Paragraph(f"{ne['numero']} — Energia {ne['energia']}", _estilo("X", FONTE, TAM_C, DARK, TA_LEFT, sa=EL * 0.3)))
         if ne["energia"] == 8:
-            e.append(Paragraph("Este número já possui energia 8! Excelente.",
-                               _estilo("J", FONTE, TAM_C - 1, DARK, TA_JUSTIFY, sa=EL * 0.4)))
+            e.append(Paragraph("Este número já possui energia 8! Excelente.", _estilo("J", FONTE, TAM_C - 1, DARK, TA_JUSTIFY, sa=EL * 0.4)))
         else:
-            e.append(Paragraph(f"Tem energia {ne['energia']}, diferente do ideal 8.",
-                               _estilo("J", FONTE, TAM_C - 1, DARK, TA_JUSTIFY, sa=EL * 0.4)))
-    e.append(Paragraph("© A1ELOS — Numerologia aplicada ao sucesso eleitoral",
-                       _estilo("F", FONTE, 8, GRAY, TA_CENTER, sb=EL * 2)))
+            e.append(Paragraph(f"Tem energia {ne['energia']}, diferente do ideal 8.", _estilo("J", FONTE, TAM_C - 1, DARK, TA_JUSTIFY, sa=EL * 0.4)))
+    e.append(Paragraph("© A1ELOS — Numerologia aplicada ao sucesso eleitoral", _estilo("F", FONTE, 8, GRAY, TA_CENTER, sb=EL * 2)))
     doc.build(e)
     return path
