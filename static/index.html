@@ -84,6 +84,7 @@ footer{padding:60px 20px;text-align:center;border-top:1px solid #222;color:#444;
 <a onclick="scrollToEl('eleitoral')" data-i18n="nav_elec">Nº Eleitoral</a>
 <a onclick="scrollToEl('energias')" data-i18n="nav_energy">Energias</a>
 </nav>
+<!-- HERO -->
 <section id="inicio" class="hero">
 <img src="/static/Logo.png" class="logo-img" alt="A1ELOS" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22130%22 height=%22130%22><rect fill=%22%23111%22 width=%22130%22 height=%22130%22 rx=%2265%22/><text x=%2265%22 y=%2275%22 text-anchor=%22middle%22 fill=%22%23C9A94E%22 font-size=%2230%22 font-weight=%22bold%22 font-family=%22serif%22>A1</text></svg>'">
 <h1 data-i18n="hero_title">MAPA NUMEROLÓGICO</h1>
@@ -93,6 +94,7 @@ footer{padding:60px 20px;text-align:center;border-top:1px solid #222;color:#444;
 <button class="btn btn-outline" onclick="scrollToEl('produtos')" data-i18n="hero_btn2">Ver Produtos</button>
 </div>
 </section>
+<!-- CALCULADORA GRÁTIS -->
 <section id="calc">
 <div class="form-container">
 <h2 style="text-align:center;margin-bottom:30px;font-family:'Playfair Display';color:var(--gold)" data-i18n="calc_title">Calcule seu Mapa</h2>
@@ -112,6 +114,7 @@ footer{padding:60px 20px;text-align:center;border-top:1px solid #222;color:#444;
 </div>
 </div>
 </section>
+<!-- PRODUTOS -->
 <section id="produtos">
 <h2 style="text-align:center;color:var(--gold);font-family:'Playfair Display';margin-bottom:10px" data-i18n="prod_title">Produtos e Serviços</h2>
 <p style="text-align:center;color:#888;margin-bottom:30px;font-size:.9rem" data-i18n="prod_subtitle">Escolha o produto ideal para sua análise numerológica</p>
@@ -131,6 +134,7 @@ footer{padding:60px 20px;text-align:center;border-top:1px solid #222;color:#444;
 </div>
 </div>
 <div class="cards-grid cards-grid-2">
+<!-- Mapa Express -->
 <div class="product-card">
 <div class="icon">📋</div>
 <div class="tag" data-i18n="tag_basic">Básico</div>
@@ -145,6 +149,7 @@ footer{padding:60px 20px;text-align:center;border-top:1px solid #222;color:#444;
 </ul>
 <button class="btn btn-full btn-sm" onclick="buyProduct('express')" data-i18n="btn_buy">Comprar R$ 8</button>
 </div>
+<!-- Mapa Completo -->
 <div class="product-card">
 <div class="icon">📘</div>
 <div class="tag" style="background:rgba(201,169,78,0.3)" data-i18n="tag_recommended">Recomendado</div>
@@ -163,6 +168,7 @@ footer{padding:60px 20px;text-align:center;border-top:1px solid #222;color:#444;
 </div>
 </div>
 <div class="cards-grid cards-grid-2" style="margin-top:20px">
+<!-- Nome de Urna -->
 <div class="product-card">
 <div class="icon">🗳️</div>
 <h3 data-i18n="prod_urna_title">Validação Nome de Urna</h3>
@@ -176,6 +182,7 @@ footer{padding:60px 20px;text-align:center;border-top:1px solid #222;color:#444;
 </ul>
 <a href="#urna" class="btn btn-full btn-sm btn-outline" style="text-align:center" data-i18n="btn_urna_start">Iniciar Validação</a>
 </div>
+<!-- Nº Eleitoral -->
 <div class="product-card">
 <div class="icon">🔢</div>
 <h3 data-i18n="prod_elec_title">Número Eleitoral</h3>
@@ -192,6 +199,7 @@ footer{padding:60px 20px;text-align:center;border-top:1px solid #222;color:#444;
 </div>
 </div>
 </section>
+<!-- NOME DE URNA -->
 <section id="urna" class="section-hidden">
 <div class="form-container slide-section">
 <h2 style="text-align:center;margin-bottom:10px;font-family:'Playfair Display';color:var(--gold)" data-i18n="urna_title">Validação do Nome de Urna</h2>
@@ -216,6 +224,7 @@ footer{padding:60px 20px;text-align:center;border-top:1px solid #222;color:#444;
 </form>
 </div>
 </section>
+<!-- Nº ELEITORAL -->
 <section id="eleitoral" class="section-hidden">
 <div class="form-container slide-section">
 <h2 style="text-align:center;margin-bottom:10px;font-family:'Playfair Display';color:var(--gold)" data-i18n="elec_title">Cálculo do Número Eleitoral</h2>
@@ -236,6 +245,7 @@ footer{padding:60px 20px;text-align:center;border-top:1px solid #222;color:#444;
 </form>
 </div>
 </section>
+<!-- ENERGIAS -->
 <section id="energias">
 <h2 style="text-align:center;color:var(--gold);font-family:'Playfair Display';margin-bottom:40px" data-i18n="energy_title">Significado das Energias</h2>
 <p style="text-align:center;color:#888;max-width:700px;margin:0 auto 20px" data-i18n="energy_sub">Cada número carrega uma vibração específica que influencia sua personalidade e seu destino.</p>
@@ -243,7 +253,7 @@ footer{padding:60px 20px;text-align:center;border-top:1px solid #222;color:#444;
 </section>
 <footer><p>© A1ELOS — <span data-i18n="footer_text">A ciência dos números aplicada ao seu sucesso</span></p></footer>
 <script>
-// ═══════════════ IDIOMAS ═══════════════
+// ═══ IDIOMAS ═══
 const LANGUAGES=[
 {code:'pt',label:'🇧🇷 PT'},{code:'en',label:'🇺🇸 EN'},{code:'es',label:'🇪🇸 ES'},
 {code:'fr',label:'🇫🇷 FR'},{code:'de',label:'🇩🇪 DE'},{code:'it',label:'🇮🇹 IT'},
@@ -319,7 +329,6 @@ function setLang(c){
     c.appendChild(b);
   });
 })();
-// ═══════════════ UTILIDADES ═══════════════
 function scrollToEl(id){
   var el=document.getElementById(id);
   if(el){el.classList.remove('section-hidden');el.scrollIntoView({behavior:'smooth',block:'start'})}
@@ -330,7 +339,6 @@ function setPayment(method,el){
   document.querySelectorAll('.payment-option').forEach(function(x){x.classList.remove('active')});
   if(el) el.classList.add('active');
 }
-// ═══════════════ ENERGIAS ═══════════════
 var energyData=[
   {n:1,key:'energy_1',txt:['Liderança, independência, originalidade','Leadership, independence, originality','Liderazgo, independencia, originalidad']},
   {n:2,key:'energy_2',txt:['Cooperação, diplomacia, sensibilidade','Cooperation, diplomacy, sensitivity','Cooperación, diplomacia, sensibilidad']},
@@ -356,7 +364,6 @@ function renderEnergyGrid(){
     g.appendChild(c);
   });
 }
-// ═══════════════ CALCULADORA ═══════════════
 async function calculate(){
   var n=document.getElementById('mainName').value.trim();
   var d=document.getElementById('mainDate').value;
@@ -380,7 +387,6 @@ async function calculate(){
   }catch(ex){rg.innerHTML='<p style="color:#e74c3c;text-align:center">Erro ao calcular</p>';rd.style.display='block'}
   btn.textContent=t('btn_calc');btn.disabled=false;
 }
-// ═══════════════ COMPRA PRODUTO ═══════════════
 async function buyProduct(produto){
   var btn=event.target;
   var nm=document.getElementById('mainName').value.trim();
@@ -399,7 +405,6 @@ async function buyProduct(produto){
     else{alert('Erro ao criar pagamento');btn.textContent='Comprar';btn.disabled=false}
   }catch(ex){alert('Erro de conexão');btn.textContent='Comprar';btn.disabled=false}
 }
-// ═══════════════ URNA ═══════════════
 async function payUrna(){
   var btn=document.getElementById('urnaBtn');
   btn.textContent='Redirecionando...';btn.disabled=true;
@@ -411,7 +416,6 @@ async function payUrna(){
     else{alert('Erro');btn.textContent='🔒 Pagar R$ 26';btn.disabled=false}
   }catch(ex){alert('Erro de conexão');btn.textContent='🔒 Pagar R$ 26';btn.disabled=false}
 }
-// ═══════════════ ELEITORAL ═══════════════
 var selCargo='vereador';
 function setCargo(c,b){
   selCargo=c;
@@ -430,7 +434,6 @@ async function payEleitoral(){
     else{alert('Erro');btn.textContent='🔒 Pagar R$ 26';btn.disabled=false}
   }catch(ex){alert('Erro de conexão');btn.textContent='🔒 Pagar R$ 26';btn.disabled=false}
 }
-// ═══════════════ INICIALIZAÇÃO ═══════════════
 document.addEventListener('DOMContentLoaded',function(){applyLang();renderEnergyGrid()});
 </script>
 </body>
