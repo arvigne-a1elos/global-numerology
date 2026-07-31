@@ -280,36 +280,7 @@ const KEYS=[
 'elec_title','elec_sub','elec_mask','elec_sigla_label','elec_existente','elec_email_label',
 'energy_title','energy_sub','energy_1','energy_2','energy_3','energy_4','energy_5',
 'energy_6','energy_7','energy_8','energy_9',
-'calc_life_path','calc_expression','calc_soul_urge','calc_personality','calc_destiny', // Novos produtos
-'tag_permanent','tag_baby','tag_business','tag_signature','tag_business_pack','tag_ia','tag_couple','tag_premium','tag_building',
-'prod_artistic_title','prod_artistic_desc','feat_artistic1','feat_artistic2','feat_artistic3','btn_artistic_start',
-'prod_baby_title','prod_baby_desc','feat_baby1','feat_baby2','feat_baby3','btn_baby_start',
-'prod_business_title','prod_business_desc','feat_business1','feat_business2','feat_business3','btn_business_start',
-'prod_signature_title','prod_signature_desc','feat_signature1','feat_signature2','feat_signature3','btn_signature_start',
-'prod_couple_title','prod_couple_desc','feat_couple1','feat_couple2','feat_couple3','btn_couple_start',
-'prod_family_title','prod_family_desc','feat_family1','feat_family2','feat_family3','btn_family_start',
-'prod_businesspack_title','prod_businesspack_desc','feat_businesspack1','feat_businesspack2','feat_businesspack3','feat_businesspack4','btn_businesspack_start',
-'prod_ia_title','prod_ia_desc','feat_ia1','feat_ia2','feat_ia3','btn_ia_start',
-'prod_building_title','prod_building_desc','feat_building1','feat_building2','feat_building3','btn_building_start',
-// Seções
-'artistic_title','artistic_sub','artistic_name','artistic_email_label','artistic_6names',
-'baby_title','baby_sub','baby_name','baby_email_label','baby_number_label','baby_6names',
-'baby_num1','baby_num2','baby_num3','baby_num4','baby_num5','baby_num6','baby_num7','baby_num8','baby_num9',
-'business_title','business_sub','business_name','business_email_label','business_8names',
-'signature_title','signature_sub','signature_name','signature_email_label','signature_number_label','signature_5names',
-'couple_title','couple_sub','couple_person1','couple_person2','couple_name1','couple_date1','couple_name2','couple_date2','couple_email',
-'family_title','family_sub','family_key','family_key_name','family_key_date','family_members','family_3members',
-'family_member1_name','family_member1_date','family_member2_name','family_member2_date','family_member3_name','family_member3_date','family_email',
-'businesspack_title','businesspack_sub','businesspack_section1','businesspack_section2','businesspack_section3','businesspack_section4',
-'businesspack_name','businesspack_date','businesspack_sign_sub','businesspack_sign_energy',
-'businesspack_property_sub','businesspack_property_energy','businesspack_property_building','businesspack_property_apt','businesspack_property_room',
-'businesspack_product_sub','businesspack_email',
-'ia_title','ia_sub','ia_name','ia_email_label','ia_energy_label','ia_motive_label',
-'ia_motive1','ia_motive2','ia_motive3','ia_motive4','ia_motive5','ia_motive6','ia_motive7','ia_motive8','ia_motive9','ia_motive10',
-'building_title','building_sub','building_name','building_email_label','building_number_label','building_3spaces',
-'building_space1','building_space2','building_space3',
-// Navegação novos
-'nav_artistic','nav_baby','nav_business','nav_signature','nav_couple','nav_family','nav_businesspack','nav_ia','nav_building' 
+'calc_life_path','calc_expression','calc_soul_urge','calc_personality','calc_destiny',
 'footer_text'
 ];
 
@@ -358,7 +329,7 @@ function setLang(c){
 function reCalcLabels(){
   var rd=document.getElementById('calcResult');
   if(rd&&rd.style.display!=='none'){
-    var items=['calc_life_path','calc_expression','calc_soul_urge','calc_personality','calc_destiny, |Permanente|Planejamento|Negócios|Assinaturas|Pacote|IA|Casal|Premium|Imóvel|Validação Nome Artístico|6 tentativas + cálculo letra a letra + PDF sigiloso por email. Produto permanente — válido para toda a vida.|6 nomes testados|Sugestões com energia 2|Cálculo letra a letra|Iniciar Validação|Validação do Nome Artístico|6 tentativas + cálculo letra a letra + PDF sigiloso — R$ 35 — Produto permanente|Nome Completo da Pessoa|Email (resultado sigiloso)|Insira até 6 opções de nome artístico:|Planejamento Nome de Bebê|6 nomes testados + número alvo (1 a 9) + descrição energética + PDF sigiloso por email. Sincronize o nome com a data de nascimento.|6 nomes testados|Escolha do número alvo (1 a 9)|Descrição energética por nome|Planejar Nome|Planejamento do Nome de Bebê|6 nomes testados + número alvo + descrição energética — R$ 35|Nome Completo da Pessoa (responsável)|Email (resultado sigiloso)|Número alvo (1 a 9):|Insira até 6 opções de nome completo para o bebê (independente do gênero):|1 — Liderança|2 — Cooperação|3 — Criatividade|4 — Disciplina|5 — Liberdade|6 — Família|7 — Sabedoria|8 — Poder|9 — Compaixão|Nome para Negócio/Produto|8 nomes testados + energia 8 (dinheiro) + PDF com análise energética completa. Descubra a vibração ideal para sua empresa ou produto.|8 nomes testados|Energia 8 (Poder/Prosperidade)|PDF com análise energética|Testar Nomes|Validação de Nome para Negócio/Produto|8 nomes testados + energia 8 (dinheiro) + PDF com análise energética completa — R$ 44|Nome Completo do Responsável|Email (resultado sigiloso)|Insira até 8 opções de nome para negócio ou produto:|Validação de Assinaturas|5 assinaturas testadas + escolha da energia alvo (1 a 9) + PDF com análise energética completa. Descubra a vibração da sua assinatura.|5 assinaturas testadas|Escolha da energia alvo (1 a 9)|PDF com análise energética|Testar Assinaturas|Validação de Assinaturas|5 assinaturas testadas + escolha da energia alvo + PDF com análise — R$ 35|Nome Completo|Email (resultado sigiloso)|Energia alvo da assinatura (1 a 9):|Escreva abaixo as letras que deseja usar em cada assinatura (apenas as letras, sem espaços):|Mapa do Casal|2 mapas individuais completos + cálculo de compatibilidade pela tabela da página 159. Descubra se a relação é Dissonância, Média, Acordo ou Perfeita.|2 mapas individuais completos|Cálculo de compatibilidade (pág. 159)|PDF até 10 páginas|Calcular Mapa do Casal|Mapa do Casal|2 mapas individuais + compatibilidade pela tabela da pág. 159 — R$ 44|Pessoa 1|Pessoa 2|Nome Completo da Pessoa 1|Data de Nascimento da Pessoa 1|Nome Completo da Pessoa 2|Data de Nascimento da Pessoa 2|Email (resultado sigiloso)|Mapa Família Premium|1 nome chave + 3 familiares com mapas completos + 4 cruzamentos de compatibilidade. Relação da pessoa chave com cada familiar.|4 mapas individuais completos|4 cruzamentos de compatibilidade|PDF até 20 páginas|Calcular Mapa Família|Mapa Família Premium|1 nome chave + 3 familiares + 4 cruzamentos de compatibilidade — R$ 98|Nome Chave (principal)|Nome Completo da Pessoa Chave|Data de Nascimento|Familiares|Insira os dados de até 3 familiares:|Nome Completo do Familiar 1|Data de Nascimento do Familiar 1|Nome Completo do Familiar 2|Data de Nascimento do Familiar 2|Nome Completo do Familiar 3|Data de Nascimento do Familiar 3|Email (resultado sigiloso)|Pacote Empresa Completa|Mapa Completo do indivíduo + Assinatura (8 testes) + Número do Imóvel + Nome para Negócio/Produto (17 testes). PDF único com análise completa.|Mapa Completo individual|Assinatura: 8 testes|Número do Imóvel|Nome Negócio/Produto: 17 testes|Contratar Pacote|Pacote Empresa Completa|Mapa Completo + Assinatura (8 testes) + Nº do Imóvel + Nome Negócio/Produto (17 testes) — R$ 152|1. Mapa Completo do Indivíduo|2. Assinatura|3. Número do Imóvel|4. Nome para Negócio/Produto|Nome Completo|Data de Nascimento|Teste até 8 opções de assinatura (apenas letras, sem espaços):|Energia alvo da assinatura (1 a 9):|Insira os números (podem conter letras, ex: 345B):|Energia alvo do imóvel (1 a 9):|Prédio|Apt/Loja|Sala|Teste até 17 nomes para seu negócio ou produto (energia 8):|Email (resultado sigiloso)|Pesquisa IA|Escolha a energia desejada (1 a 9) e o motivo. A IA sugere 5 nomes com aquela vibração energética. PDF com análise completa.|5 nomes sugeridos pela IA|Escolha da energia alvo (1 a 9)|10 motivos disponíveis|Pesquisar Nomes|Pesquisa IA de Nomes|Escolha a energia e o motivo — a IA sugere 5 nomes com aquela vibração — R$ 17|Nome Completo|Email (resultado sigiloso)|Energia desejada (1 a 9):|Motivo:|Nome de bebê|Nome artístico|Nome de empresa|Nome de produto|Nome de marca/equipe|Nome de loja/negócio local|Nome de canal/blog (conteúdo)|Nome de projeto/startup|Nome para ONG/projeto social|Apelido/nome de guerra|Número do Imóvel|3 espaços (Prédio, Apt/Loja, Sala) + letras e números + energia alvo (1 a 9) + PDF com análise. Descubra a energia do seu imóvel.|3 espaços testados|Letras e números aceitos|Energia alvo (1 a 9)|Calcular Nº do Imóvel|Cálculo do Número do Imóvel|3 espaços + letras/números + energia alvo — R$ 26|Nome Completo|Email (resultado sigiloso)|Energia desejada para o imóvel (1 a 9):|Insira os números dos espaços (podem conter letras, ex: 345B):|Prédio (ex: 345B)|Apt/Loja (ex: 261G)|Sala (ex: 1C)|Nome Artístico|Nome do Bebê|Nome Negócio|Assinaturas|Mapa Casal|Mapa Família|Pacote Empresa|Pesquisa IA|Nº do Imóvel'];
+    var items=['calc_life_path','calc_expression','calc_soul_urge','calc_personality','calc_destiny'];
     var labels=rd.querySelectorAll('.num-box .label');
     items.forEach(function(k,i){if(labels[i])labels[i].textContent=t(k)});
   }
