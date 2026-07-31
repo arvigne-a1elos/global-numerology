@@ -85,7 +85,12 @@ footer{padding:60px 20px;text-align:center;border-top:1px solid #222;color:#444;
 <a onclick="scrollToEl('urna')" data-i18n="nav_urna">Nome de Urna</a>
 <a onclick="scrollToEl('eleitoral')" data-i18n="nav_elec">Nº Eleitoral</a>
 <a onclick="scrollToEl('energias')" data-i18n="nav_energy">Energias</a>
-</nav>
+<a onclick="scrollToEl('casal')" data-i18n="nav_couple">Mapa Casal</a>
+<a onclick="scrollToEl('familia')" data-i18n="nav_family">Mapa Família</a>
+<a onclick="scrollToEl('empresa-completa')" data-i18n="nav_businesspack">Pacote Empresa</a>
+<a onclick="scrollToEl('pesquisa-ia')" data-i18n="nav_ia">Pesquisa IA</a>
+<a onclick="scrollToEl('imovel')" data-i18n="nav_building">Nº do Imóvel</a>
+</nav>  
 <!-- HERO -->
 <section id="inicio" class="hero">
 <img src="/static/Logo.png" class="logo-img" alt="A1ELOS" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22130%22 height=%22130%22><rect fill=%22%23111%22 width=%22130%22 height=%22130%22 rx=%2265%22/><text x=%2265%22 y=%2275%22 text-anchor=%22middle%22 fill=%22%23C9A94E%22 font-size=%2230%22 font-weight=%22bold%22 font-family=%22serif%22>A1</text></svg>'">
@@ -852,8 +857,7 @@ function renderEnergyGrid(){
   var g=document.getElementById('energyGrid');if(!g)return;
   var l=localStorage.getItem('a1elos-lang')||'pt';var idx={pt:0,en:1,es:2};var i=idx[l]||0;
   g.innerHTML='';
-  energyData.forEach(function(d){var c=document.createElement('div');c.className='energy-card';c.innerHTML='<h4>'+d.n+'</h4><p style="color:var(--gray);font-size:.9rem">'+d.txt[i]+'</p>';g.appendChild(c)});
-}
+  energyData.forEach(function(d){var c=document.createElement('div');c.className='energy-card';c.innerHTML='<h4>'+d.n+'</h4><p style="color:var(--gray);font-size:.9rem">'+d.txt[i]+'</p><div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;justify-content:center"><button class="btn btn-sm" style="font-size:.65rem;padding:8px 16px" onclick="window.location.href=\'#bebe\'">'+t('btn_baby_start')+'</button><button class="btn btn-sm btn-outline" style="font-size:.65rem;padding:8px 16px" onclick="window.location.href=\'#assinatura\'">'+t('btn_signature_start')+'</button><button class="btn btn-sm" style="font-size:.65rem;padding:8px 16px;background:transparent;border:1px solid var(--gold);color:var(--gold)" onclick="document.getElementById(\'iaEnergy\').value='+d.n+';window.location.href=\'#pesquisa-ia\'">'+t('btn_ia_start')+'</button></div>';}
 async function calculate(){
   var n=document.getElementById('mainName').value.trim();
   var d=document.getElementById('mainDate').value;
@@ -892,6 +896,51 @@ async function payEleitoral(){
   try{var lang=localStorage.getItem('a1elos-lang')||'pt';var r=await fetch('/criar-checkout?lang='+lang+'&produto=eleitoral');var data=await r.json();if(data.url)window.location.href=data.url;else{alert('Erro');btn.textContent='🔒 Pagar R$ 26';btn.disabled=false}}
   catch(ex){alert('Erro de conexão');btn.textContent='🔒 Pagar R$ 26';btn.disabled=false}
 }
+async function payArtistico(){
+  var btn=document.getElementById('artisticBtn');btn.textContent='Redirecionando...';btn.disabled=true;
+  try{var lang=localStorage.getItem('a1elos-lang')||'pt';var r=await fetch('/criar-checkout?lang='+lang+'&produto=artistico');var data=await r.json();if(data.url)window.location.href=data.url;else{alert('Erro');btn.textContent='🔒 Pagar R$ 35';btn.disabled=false}}
+  catch(ex){alert('Erro de conexão');btn.textContent='🔒 Pagar R$ 35';btn.disabled=false}
+}
+async function payBaby(){
+  var btn=document.getElementById('babyBtn');btn.textContent='Redirecionando...';btn.disabled=true;
+  try{var lang=localStorage.getItem('a1elos-lang')||'pt';var r=await fetch('/criar-checkout?lang='+lang+'&produto=bebe');var data=await r.json();if(data.url)window.location.href=data.url;else{alert('Erro');btn.textContent='🔒 Pagar R$ 35';btn.disabled=false}}
+  catch(ex){alert('Erro de conexão');btn.textContent='🔒 Pagar R$ 35';btn.disabled=false}
+}
+async function payBusiness(){
+  var btn=document.getElementById('businessBtn');btn.textContent='Redirecionando...';btn.disabled=true;
+  try{var lang=localStorage.getItem('a1elos-lang')||'pt';var r=await fetch('/criar-checkout?lang='+lang+'&produto=negocio');var data=await r.json();if(data.url)window.location.href=data.url;else{alert('Erro');btn.textContent='🔒 Pagar R$ 44';btn.disabled=false}}
+  catch(ex){alert('Erro de conexão');btn.textContent='🔒 Pagar R$ 44';btn.disabled=false}
+}
+async function paySignature(){
+  var btn=document.getElementById('signatureBtn');btn.textContent='Redirecionando...';btn.disabled=true;
+  try{var lang=localStorage.getItem('a1elos-lang')||'pt';var r=await fetch('/criar-checkout?lang='+lang+'&produto=assinatura');var data=await r.json();if(data.url)window.location.href=data.url;else{alert('Erro');btn.textContent='🔒 Pagar R$ 35';btn.disabled=false}}
+  catch(ex){alert('Erro de conexão');btn.textContent='🔒 Pagar R$ 35';btn.disabled=false}
+}
+async function payCouple(){
+  var btn=document.getElementById('coupleBtn');btn.textContent='Redirecionando...';btn.disabled=true;
+  try{var lang=localStorage.getItem('a1elos-lang')||'pt';var r=await fetch('/criar-checkout?lang='+lang+'&produto=casal');var data=await r.json();if(data.url)window.location.href=data.url;else{alert('Erro');btn.textContent='🔒 Pagar R$ 44';btn.disabled=false}}
+  catch(ex){alert('Erro de conexão');btn.textContent='🔒 Pagar R$ 44';btn.disabled=false}
+}
+async function payFamily(){
+  var btn=document.getElementById('familyBtn');btn.textContent='Redirecionando...';btn.disabled=true;
+  try{var lang=localStorage.getItem('a1elos-lang')||'pt';var r=await fetch('/criar-checkout?lang='+lang+'&produto=familia');var data=await r.json();if(data.url)window.location.href=data.url;else{alert('Erro');btn.textContent='🔒 Pagar R$ 98';btn.disabled=false}}
+  catch(ex){alert('Erro de conexão');btn.textContent='🔒 Pagar R$ 98';btn.disabled=false}
+}
+async function payBusinessPack(){
+  var btn=document.getElementById('businesspackBtn');btn.textContent='Redirecionando...';btn.disabled=true;
+  try{var lang=localStorage.getItem('a1elos-lang')||'pt';var r=await fetch('/criar-checkout?lang='+lang+'&produto=empresa-completa');var data=await r.json();if(data.url)window.location.href=data.url;else{alert('Erro');btn.textContent='🔒 Pagar R$ 152';btn.disabled=false}}
+  catch(ex){alert('Erro de conexão');btn.textContent='🔒 Pagar R$ 152';btn.disabled=false}
+}
+async function payIA(){
+  var btn=document.getElementById('iaBtn');btn.textContent='Redirecionando...';btn.disabled=true;
+  try{var lang=localStorage.getItem('a1elos-lang')||'pt';var energia=document.getElementById('iaEnergy').value;var motivo=document.getElementById('iaMotive').value;var r=await fetch('/criar-checkout?lang='+lang+'&produto=ia&energia='+energia+'&motivo='+motivo);var data=await r.json();if(data.url)window.location.href=data.url;else{alert('Erro');btn.textContent='🔒 Pagar R$ 17';btn.disabled=false}}
+  catch(ex){alert('Erro de conexão');btn.textContent='🔒 Pagar R$ 17';btn.disabled=false}
+}
+async function payBuilding(){
+  var btn=document.getElementById('buildingBtn');btn.textContent='Redirecionando...';btn.disabled=true;
+  try{var lang=localStorage.getItem('a1elos-lang')||'pt';var r=await fetch('/criar-checkout?lang='+lang+'&produto=imovel');var data=await r.json();if(data.url)window.location.href=data.url;else{alert('Erro');btn.textContent='🔒 Pagar R$ 26';btn.disabled=false}}
+  catch(ex){alert('Erro de conexão');btn.textContent='🔒 Pagar R$ 26';btn.disabled=false}
+}  
 document.addEventListener('DOMContentLoaded',function(){applyLang();renderEnergyGrid()});
 </script>
 </body>
