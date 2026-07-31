@@ -431,7 +431,6 @@ footer{padding:60px 20px;text-align:center;border-top:1px solid #222;color:#444;
 </form>
 </div>
 </section>
-
 <!-- NÚMERO DO IMÓVEL -->
 <section id="imovel" class="section-hidden">
 <div class="form-container slide-section">
@@ -495,6 +494,83 @@ footer{padding:60px 20px;text-align:center;border-top:1px solid #222;color:#444;
 </ul>
 <a href="#empresa-completa" class="btn btn-full btn-sm btn-outline" style="text-align:center" data-i18n="btn_businesspack_start">Contratar Pacote</a>
 </div>
+<!-- ASSINATURAS -->
+<section id="assinatura" class="section-hidden">
+<div class="form-container slide-section">
+<h2 style="text-align:center;margin-bottom:10px;font-family:'Playfair Display';color:var(--gold)" data-i18n="signature_title">Validação de Assinaturas</h2>
+<p style="text-align:center;color:#888;margin-bottom:30px;font-size:.9rem" data-i18n="signature_sub">5 assinaturas testadas + escolha da energia alvo + PDF com análise — <strong style="color:var(--gold)">R$ 35</strong></p>
+<form id="signatureForm" onsubmit="event.preventDefault(); paySignature()">
+<div class="form-group"><label data-i18n="signature_name">Nome Completo</label><input type="text" id="signatureFullName" required></div>
+<div class="form-group"><label data-i18n="signature_email_label">Email (resultado sigiloso)</label><input type="email" id="signatureEmail" required></div>
+<div class="form-group"><label data-i18n="signature_number_label">Energia alvo da assinatura (1 a 9):</label>
+<select id="signatureNumber" required>
+<option value="1" data-i18n="baby_num1">1 — Liderança</option>
+<option value="2" data-i18n="baby_num2">2 — Cooperação</option>
+<option value="3" data-i18n="baby_num3">3 — Criatividade</option>
+<option value="4" data-i18n="baby_num4">4 — Disciplina</option>
+<option value="5" data-i18n="baby_num5">5 — Liberdade</option>
+<option value="6" data-i18n="baby_num6">6 — Família</option>
+<option value="7" data-i18n="baby_num7">7 — Sabedoria</option>
+<option value="8" data-i18n="baby_num8">8 — Poder</option>
+<option value="9" data-i18n="baby_num9">9 — Compaixão</option>
+</select></div>
+<p style="color:#888;font-size:.8rem;margin-bottom:15px" data-i18n="signature_5names">Escreva abaixo as letras que deseja usar em cada assinatura (apenas as letras, sem espaços):</p>
+<div class="form-group"><label>Assinatura 1</label><input type="text" id="signatureLetras1" placeholder="Ex: A1ELOS" required></div>
+<div class="form-group"><label>Assinatura 2</label><input type="text" id="signatureLetras2" placeholder="Ex: A1ELOS"></div>
+<div class="form-group"><label>Assinatura 3</label><input type="text" id="signatureLetras3" placeholder="Ex: A1ELOS"></div>
+<div class="form-group"><label>Assinatura 4</label><input type="text" id="signatureLetras4" placeholder="Ex: A1ELOS"></div>
+<div class="form-group"><label>Assinatura 5</label><input type="text" id="signatureLetras5" placeholder="Ex: A1ELOS"></div>
+<button type="submit" class="btn btn-full" style="font-size:1rem;padding:16px" id="signatureBtn">🔒 Pagar R$ 35 — Resultado por Email</button>
+</form>
+</div>
+</section>
+
+<!-- MAPA CASAL -->
+<section id="casal" class="section-hidden">
+<div class="form-container slide-section">
+<h2 style="text-align:center;margin-bottom:10px;font-family:'Playfair Display';color:var(--gold)" data-i18n="couple_title">Mapa do Casal</h2>
+<p style="text-align:center;color:#888;margin-bottom:30px;font-size:.9rem" data-i18n="couple_sub">2 mapas individuais + compatibilidade pela tabela da pág. 159 — <strong style="color:var(--gold)">R$ 44</strong></p>
+<form id="coupleForm" onsubmit="event.preventDefault(); payCouple()">
+<h3 style="color:var(--gold);margin-bottom:15px;font-size:1rem" data-i18n="couple_person1">Pessoa 1</h3>
+<div class="form-group"><label data-i18n="couple_name1">Nome Completo da Pessoa 1</label><input type="text" id="coupleName1" required></div>
+<div class="form-group"><label data-i18n="couple_date1">Data de Nascimento da Pessoa 1</label><input type="date" id="coupleDate1" required></div>
+<h3 style="color:var(--gold);margin-bottom:15px;margin-top:25px;font-size:1rem" data-i18n="couple_person2">Pessoa 2</h3>
+<div class="form-group"><label data-i18n="couple_name2">Nome Completo da Pessoa 2</label><input type="text" id="coupleName2" required></div>
+<div class="form-group"><label data-i18n="couple_date2">Data de Nascimento da Pessoa 2</label><input type="date" id="coupleDate2" required></div>
+<div class="form-group" style="margin-top:20px"><label data-i18n="couple_email">Email (resultado sigiloso)</label><input type="email" id="coupleEmail" required></div>
+<button type="submit" class="btn btn-full" style="font-size:1rem;padding:16px" id="coupleBtn">🔒 Pagar R$ 44 — Resultado por Email</button>
+</form>
+</div>
+</section>
+
+<!-- MAPA FAMÍLIA PREMIUM -->
+<section id="familia" class="section-hidden">
+<div class="form-container slide-section">
+<h2 style="text-align:center;margin-bottom:10px;font-family:'Playfair Display';color:var(--gold)" data-i18n="family_title">Mapa Família Premium</h2>
+<p style="text-align:center;color:#888;margin-bottom:30px;font-size:.9rem" data-i18n="family_sub">1 nome chave + 3 familiares + 4 cruzamentos de compatibilidade — <strong style="color:var(--gold)">R$ 98</strong></p>
+<form id="familyForm" onsubmit="event.preventDefault(); payFamily()">
+<h3 style="color:var(--gold);margin-bottom:15px;font-size:1rem" data-i18n="family_key">Nome Chave (principal)</h3>
+<div class="form-group"><label data-i18n="family_key_name">Nome Completo da Pessoa Chave</label><input type="text" id="familyKeyName" required></div>
+<div class="form-group"><label data-i18n="family_key_date">Data de Nascimento</label><input type="date" id="familyKeyDate" required></div>
+<h3 style="color:var(--gold);margin-bottom:15px;margin-top:25px;font-size:1rem" data-i18n="family_members">Familiares</h3>
+<p style="color:#888;font-size:.8rem;margin-bottom:15px" data-i18n="family_3members">Insira os dados de até 3 familiares:</p>
+<div style="border:1px solid #222;border-radius:12px;padding:15px;margin-bottom:15px">
+<div class="form-group"><label data-i18n="family_member1_name">Nome Completo do Familiar 1</label><input type="text" id="familyMember1Name" required></div>
+<div class="form-group"><label data-i18n="family_member1_date">Data de Nascimento do Familiar 1</label><input type="date" id="familyMember1Date" required></div>
+</div>
+<div style="border:1px solid #222;border-radius:12px;padding:15px;margin-bottom:15px">
+<div class="form-group"><label data-i18n="family_member2_name">Nome Completo do Familiar 2</label><input type="text" id="familyMember2Name"></div>
+<div class="form-group"><label data-i18n="family_member2_date">Data de Nascimento do Familiar 2</label><input type="date" id="familyMember2Date"></div>
+</div>
+<div style="border:1px solid #222;border-radius:12px;padding:15px;margin-bottom:15px">
+<div class="form-group"><label data-i18n="family_member3_name">Nome Completo do Familiar 3</label><input type="text" id="familyMember3Name"></div>
+<div class="form-group"><label data-i18n="family_member3_date">Data de Nascimento do Familiar 3</label><input type="date" id="familyMember3Date"></div>
+</div>
+<div class="form-group"><label data-i18n="family_email">Email (resultado sigiloso)</label><input type="email" id="familyEmail" required></div>
+<button type="submit" class="btn btn-full" style="font-size:1rem;padding:16px" id="familyBtn">🔒 Pagar R$ 98 — Resultado por Email</button>
+</form>
+</div>
+</section>  
 <!-- Pesquisa IA -->
 <div class="product-card">
 <div class="icon">🤖</div>
