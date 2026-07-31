@@ -524,7 +524,129 @@ footer{padding:60px 20px;text-align:center;border-top:1px solid #222;color:#444;
 </form>
 </div>
 </section>
+<!-- PACOTE EMPRESA COMPLETA -->
+<section id="empresa-completa" class="section-hidden">
+<div class="form-container slide-section">
+<h2 style="text-align:center;margin-bottom:10px;font-family:'Playfair Display';color:var(--gold)" data-i18n="businesspack_title">Pacote Empresa Completa</h2>
+<p style="text-align:center;color:#888;margin-bottom:30px;font-size:.9rem" data-i18n="businesspack_sub">Mapa Completo + Assinatura (8 testes) + Nº do Imóvel + Nome Negócio/Produto (17 testes) — <strong style="color:var(--gold)">R$ 152</strong></p>
+<form id="businesspackForm" onsubmit="event.preventDefault(); payBusinessPack()">
 
+<h3 style="color:var(--gold);margin-bottom:15px;font-size:1rem" data-i18n="businesspack_section1">1. Mapa Completo do Indivíduo</h3>
+<div class="form-group"><label data-i18n="businesspack_name">Nome Completo</label><input type="text" id="bpName" required></div>
+<div class="form-group"><label data-i18n="businesspack_date">Data de Nascimento</label><input type="date" id="bpDate" required></div>
+
+<h3 style="color:var(--gold);margin-bottom:15px;margin-top:25px;font-size:1rem" data-i18n="businesspack_section2">2. Assinatura</h3>
+<p style="color:#888;font-size:.8rem;margin-bottom:10px" data-i18n="businesspack_sign_sub">Teste até 8 opções de assinatura (apenas letras, sem espaços):</p>
+<div class="form-group"><label data-i18n="businesspack_sign_energy">Energia alvo da assinatura (1 a 9):</label>
+<select id="bpSignEnergy">
+<option value="1" data-i18n="baby_num1">1 — Liderança</option>
+<option value="2" data-i18n="baby_num2">2 — Cooperação</option>
+<option value="3" data-i18n="baby_num3">3 — Criatividade</option>
+<option value="4" data-i18n="baby_num4">4 — Disciplina</option>
+<option value="5" data-i18n="baby_num5">5 — Liberdade</option>
+<option value="6" data-i18n="baby_num6">6 — Família</option>
+<option value="7" data-i18n="baby_num7">7 — Sabedoria</option>
+<option value="8" data-i18n="baby_num8">8 — Poder</option>
+<option value="9" data-i18n="baby_num9">9 — Compaixão</option>
+</select></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+<div class="form-group"><label>Assinatura 1</label><input type="text" id="bpSign1" placeholder="Ex: A1ELOS"></div>
+<div class="form-group"><label>Assinatura 2</label><input type="text" id="bpSign2"></div>
+<div class="form-group"><label>Assinatura 3</label><input type="text" id="bpSign3"></div>
+<div class="form-group"><label>Assinatura 4</label><input type="text" id="bpSign4"></div>
+<div class="form-group"><label>Assinatura 5</label><input type="text" id="bpSign5"></div>
+<div class="form-group"><label>Assinatura 6</label><input type="text" id="bpSign6"></div>
+<div class="form-group"><label>Assinatura 7</label><input type="text" id="bpSign7"></div>
+<div class="form-group"><label>Assinatura 8</label><input type="text" id="bpSign8"></div>
+</div>
+
+<h3 style="color:var(--gold);margin-bottom:15px;margin-top:25px;font-size:1rem" data-i18n="businesspack_section3">3. Número do Imóvel</h3>
+<p style="color:#888;font-size:.8rem;margin-bottom:10px" data-i18n="businesspack_property_sub">Insira os números (podem conter letras, ex: 345B):</p>
+<div class="form-group"><label data-i18n="businesspack_property_energy">Energia alvo do imóvel (1 a 9):</label>
+<select id="bpPropertyEnergy">
+<option value="1" data-i18n="baby_num1">1 — Liderança</option>
+<option value="2" data-i18n="baby_num2">2 — Cooperação</option>
+<option value="3" data-i18n="baby_num3">3 — Criatividade</option>
+<option value="4" data-i18n="baby_num4">4 — Disciplina</option>
+<option value="5" data-i18n="baby_num5">5 — Liberdade</option>
+<option value="6" data-i18n="baby_num6">6 — Família</option>
+<option value="7" data-i18n="baby_num7">7 — Sabedoria</option>
+<option value="8" data-i18n="baby_num8">8 — Poder</option>
+<option value="9" data-i18n="baby_num9">9 — Compaixão</option>
+</select></div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+<div class="form-group"><label data-i18n="businesspack_property_building">Prédio</label><input type="text" id="bpProperty1" placeholder="Ex: 345B"></div>
+<div class="form-group"><label data-i18n="businesspack_property_apt">Apt/Loja</label><input type="text" id="bpProperty2" placeholder="Ex: 261G"></div>
+<div class="form-group"><label data-i18n="businesspack_property_room">Sala</label><input type="text" id="bpProperty3" placeholder="Ex: 1C"></div>
+</div>
+
+<h3 style="color:var(--gold);margin-bottom:15px;margin-top:25px;font-size:1rem" data-i18n="businesspack_section4">4. Nome para Negócio/Produto</h3>
+<p style="color:#888;font-size:.8rem;margin-bottom:10px" data-i18n="businesspack_product_sub">Teste até 17 nomes para seu negócio ou produto (energia 8):</p>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+<div class="form-group"><label>Nome 1</label><input type="text" id="bpProd1"></div>
+<div class="form-group"><label>Nome 2</label><input type="text" id="bpProd2"></div>
+<div class="form-group"><label>Nome 3</label><input type="text" id="bpProd3"></div>
+<div class="form-group"><label>Nome 4</label><input type="text" id="bpProd4"></div>
+<div class="form-group"><label>Nome 5</label><input type="text" id="bpProd5"></div>
+<div class="form-group"><label>Nome 6</label><input type="text" id="bpProd6"></div>
+<div class="form-group"><label>Nome 7</label><input type="text" id="bpProd7"></div>
+<div class="form-group"><label>Nome 8</label><input type="text" id="bpProd8"></div>
+<div class="form-group"><label>Nome 9</label><input type="text" id="bpProd9"></div>
+<div class="form-group"><label>Nome 10</label><input type="text" id="bpProd10"></div>
+<div class="form-group"><label>Nome 11</label><input type="text" id="bpProd11"></div>
+<div class="form-group"><label>Nome 12</label><input type="text" id="bpProd12"></div>
+<div class="form-group"><label>Nome 13</label><input type="text" id="bpProd13"></div>
+<div class="form-group"><label>Nome 14</label><input type="text" id="bpProd14"></div>
+<div class="form-group"><label>Nome 15</label><input type="text" id="bpProd15"></div>
+<div class="form-group"><label>Nome 16</label><input type="text" id="bpProd16"></div>
+<div class="form-group"><label>Nome 17</label><input type="text" id="bpProd17"></div>
+</div>
+
+<div class="form-group" style="margin-top:20px"><label data-i18n="businesspack_email">Email (resultado sigiloso)</label><input type="email" id="bpEmail" required></div>
+<button type="submit" class="btn btn-full" style="font-size:1rem;padding:16px" id="businesspackBtn">🔒 Pagar R$ 152 — Resultado por Email</button>
+</form>
+</div>
+</section>
+
+<!-- PESQUISA IA -->
+<section id="pesquisa-ia" class="section-hidden">
+<div class="form-container slide-section">
+<h2 style="text-align:center;margin-bottom:10px;font-family:'Playfair Display';color:var(--gold)" data-i18n="ia_title">Pesquisa IA de Nomes</h2>
+<p style="text-align:center;color:#888;margin-bottom:30px;font-size:.9rem" data-i18n="ia_sub">Escolha a energia e o motivo — a IA sugere 5 nomes com aquela vibração — <strong style="color:var(--gold)">R$ 17</strong></p>
+<form id="iaForm" onsubmit="event.preventDefault(); payIA()">
+<div class="form-group"><label data-i18n="ia_name">Nome Completo</label><input type="text" id="iaFullName" required></div>
+<div class="form-group"><label data-i18n="ia_email_label">Email (resultado sigiloso)</label><input type="email" id="iaEmail" required></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:15px">
+<div class="form-group"><label data-i18n="ia_energy_label">Energia desejada (1 a 9):</label>
+<select id="iaEnergy" required>
+<option value="1" data-i18n="baby_num1">1 — Liderança</option>
+<option value="2" data-i18n="baby_num2">2 — Cooperação</option>
+<option value="3" data-i18n="baby_num3">3 — Criatividade</option>
+<option value="4" data-i18n="baby_num4">4 — Disciplina</option>
+<option value="5" data-i18n="baby_num5">5 — Liberdade</option>
+<option value="6" data-i18n="baby_num6">6 — Família</option>
+<option value="7" data-i18n="baby_num7">7 — Sabedoria</option>
+<option value="8" data-i18n="baby_num8">8 — Poder</option>
+<option value="9" data-i18n="baby_num9">9 — Compaixão</option>
+</select></div>
+<div class="form-group"><label data-i18n="ia_motive_label">Motivo:</label>
+<select id="iaMotive" required>
+<option value="bebe" data-i18n="ia_motive1">Nome de bebê</option>
+<option value="artistico" data-i18n="ia_motive2">Nome artístico</option>
+<option value="empresa" data-i18n="ia_motive3">Nome de empresa</option>
+<option value="produto" data-i18n="ia_motive4">Nome de produto</option>
+<option value="marca" data-i18n="ia_motive5">Nome de marca/equipe</option>
+<option value="loja" data-i18n="ia_motive6">Nome de loja/negócio local</option>
+<option value="conteudo" data-i18n="ia_motive7">Nome de canal/blog (conteúdo)</option>
+<option value="startup" data-i18n="ia_motive8">Nome de projeto/startup</option>
+<option value="ong" data-i18n="ia_motive9">Nome para ONG/projeto social</option>
+<option value="apelido" data-i18n="ia_motive10">Apelido/nome de guerra</option>
+</select></div>
+</div>
+<button type="submit" class="btn btn-full" style="font-size:1rem;padding:16px" id="iaBtn">🔒 Pagar R$ 17 — Resultado por Email</button>
+</form>
+</div>
+</section>
 <!-- MAPA CASAL -->
 <section id="casal" class="section-hidden">
 <div class="form-container slide-section">
