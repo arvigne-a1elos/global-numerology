@@ -296,6 +296,57 @@ footer{padding:60px 20px;text-align:center;border-top:1px solid #222;color:#444;
 </div>
 </div> 
 <div class="cards-grid cards-grid-2" style="margin-top:20px">
+<!-- NOME ARTÍSTICO -->
+<section id="artistico" class="section-hidden">
+<div class="form-container slide-section">
+<h2 style="text-align:center;margin-bottom:10px;font-family:'Playfair Display';color:var(--gold)" data-i18n="artistic_title">Validação do Nome Artístico</h2>
+<p style="text-align:center;color:#888;margin-bottom:30px;font-size:.9rem" data-i18n="artistic_sub">6 tentativas + cálculo letra a letra + PDF sigiloso — <strong style="color:var(--gold)">R$ 35</strong> — Produto permanente</p>
+<form id="artisticForm" onsubmit="event.preventDefault(); payArtistico()">
+<div class="form-group"><label data-i18n="artistic_name">Nome Completo da Pessoa</label><input type="text" id="artisticFullName" required></div>
+<div class="form-group"><label data-i18n="artistic_email_label">Email (resultado sigiloso)</label><input type="email" id="artisticEmail" required></div>
+<p style="color:#888;font-size:.8rem;margin-bottom:15px" data-i18n="artistic_6names">Insira até 6 opções de nome artístico:</p>
+<div class="form-group"><label>Nome 1</label><input type="text" id="artisticNome1" required></div>
+<div class="form-group"><label>Nome 2</label><input type="text" id="artisticNome2"></div>
+<div class="form-group"><label>Nome 3</label><input type="text" id="artisticNome3"></div>
+<div class="form-group"><label>Nome 4</label><input type="text" id="artisticNome4"></div>
+<div class="form-group"><label>Nome 5</label><input type="text" id="artisticNome5"></div>
+<div class="form-group"><label>Nome 6</label><input type="text" id="artisticNome6"></div>
+<button type="submit" class="btn btn-full" style="font-size:1rem;padding:16px" id="artisticBtn">🔒 Pagar R$ 35 — Resultado por Email</button>
+</form>
+</div>
+</section>
+
+<!-- NOME DO BEBÊ -->
+<section id="bebe" class="section-hidden">
+<div class="form-container slide-section">
+<h2 style="text-align:center;margin-bottom:10px;font-family:'Playfair Display';color:var(--gold)" data-i18n="baby_title">Planejamento do Nome de Bebê</h2>
+<p style="text-align:center;color:#888;margin-bottom:30px;font-size:.9rem" data-i18n="baby_sub">6 nomes testados + número alvo + descrição energética — <strong style="color:var(--gold)">R$ 35</strong></p>
+<form id="babyForm" onsubmit="event.preventDefault(); payBaby()">
+<div class="form-group"><label data-i18n="baby_name">Nome Completo da Pessoa (responsável)</label><input type="text" id="babyFullName" required></div>
+<div class="form-group"><label data-i18n="baby_email_label">Email (resultado sigiloso)</label><input type="email" id="babyEmail" required></div>
+<div class="form-group"><label data-i18n="baby_number_label">Número alvo (1 a 9):</label>
+<select id="babyNumber" required>
+<option value="1" data-i18n="baby_num1">1 — Liderança</option>
+<option value="2" data-i18n="baby_num2">2 — Cooperação</option>
+<option value="3" data-i18n="baby_num3">3 — Criatividade</option>
+<option value="4" data-i18n="baby_num4">4 — Disciplina</option>
+<option value="5" data-i18n="baby_num5">5 — Liberdade</option>
+<option value="6" data-i18n="baby_num6">6 — Família</option>
+<option value="7" data-i18n="baby_num7">7 — Sabedoria</option>
+<option value="8" data-i18n="baby_num8">8 — Poder</option>
+<option value="9" data-i18n="baby_num9">9 — Compaixão</option>
+</select></div>
+<p style="color:#888;font-size:.8rem;margin-bottom:15px" data-i18n="baby_6names">Insira até 6 opções de nome completo para o bebê (independente do gênero):</p>
+<div class="form-group"><label>Nome 1</label><input type="text" id="babyNome1" required></div>
+<div class="form-group"><label>Nome 2</label><input type="text" id="babyNome2"></div>
+<div class="form-group"><label>Nome 3</label><input type="text" id="babyNome3"></div>
+<div class="form-group"><label>Nome 4</label><input type="text" id="babyNome4"></div>
+<div class="form-group"><label>Nome 5</label><input type="text" id="babyNome5"></div>
+<div class="form-group"><label>Nome 6</label><input type="text" id="babyNome6"></div>
+<button type="submit" class="btn btn-full" style="font-size:1rem;padding:16px" id="babyBtn">🔒 Pagar R$ 35 — Resultado por Email</button>
+</form>
+</div>
+</section>  
 <!-- Nome Negócio/Produto -->
 <div class="product-card">
 <div class="icon">🏪</div>
