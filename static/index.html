@@ -410,6 +410,58 @@ footer{padding:60px 20px;text-align:center;border-top:1px solid #222;color:#444;
 </ul>
 <a href="#casal" class="btn btn-full btn-sm btn-outline" style="text-align:center" data-i18n="btn_couple_start">Calcular Mapa do Casal</a>
 </div>
+<!-- NOME PARA NEGÓCIO/PRODUTO -->
+<section id="negocio" class="section-hidden">
+<div class="form-container slide-section">
+<h2 style="text-align:center;margin-bottom:10px;font-family:'Playfair Display';color:var(--gold)" data-i18n="business_title">Validação de Nome para Negócio/Produto</h2>
+<p style="text-align:center;color:#888;margin-bottom:30px;font-size:.9rem" data-i18n="business_sub">8 nomes testados + energia 8 (dinheiro) + PDF com análise energética completa — <strong style="color:var(--gold)">R$ 44</strong></p>
+<form id="businessForm" onsubmit="event.preventDefault(); payBusiness()">
+<div class="form-group"><label data-i18n="business_name">Nome Completo do Responsável</label><input type="text" id="businessFullName" required></div>
+<div class="form-group"><label data-i18n="business_email_label">Email (resultado sigiloso)</label><input type="email" id="businessEmail" required></div>
+<p style="color:#888;font-size:.8rem;margin-bottom:15px" data-i18n="business_8names">Insira até 8 opções de nome para negócio ou produto:</p>
+<div class="form-group"><label>Nome 1</label><input type="text" id="businessNome1" required></div>
+<div class="form-group"><label>Nome 2</label><input type="text" id="businessNome2"></div>
+<div class="form-group"><label>Nome 3</label><input type="text" id="businessNome3"></div>
+<div class="form-group"><label>Nome 4</label><input type="text" id="businessNome4"></div>
+<div class="form-group"><label>Nome 5</label><input type="text" id="businessNome5"></div>
+<div class="form-group"><label>Nome 6</label><input type="text" id="businessNome6"></div>
+<div class="form-group"><label>Nome 7</label><input type="text" id="businessNome7"></div>
+<div class="form-group"><label>Nome 8</label><input type="text" id="businessNome8"></div>
+<button type="submit" class="btn btn-full" style="font-size:1rem;padding:16px" id="businessBtn">🔒 Pagar R$ 44 — Resultado por Email</button>
+</form>
+</div>
+</section>
+
+<!-- NÚMERO DO IMÓVEL -->
+<section id="imovel" class="section-hidden">
+<div class="form-container slide-section">
+<h2 style="text-align:center;margin-bottom:10px;font-family:'Playfair Display';color:var(--gold)" data-i18n="building_title">Cálculo do Número do Imóvel</h2>
+<p style="text-align:center;color:#888;margin-bottom:30px;font-size:.9rem" data-i18n="building_sub">3 espaços + letras/números + energia alvo — <strong style="color:var(--gold)">R$ 26</strong></p>
+<form id="buildingForm" onsubmit="event.preventDefault(); payBuilding()">
+<div class="form-group"><label data-i18n="building_name">Nome Completo</label><input type="text" id="buildingFullName" required></div>
+<div class="form-group"><label data-i18n="building_email_label">Email (resultado sigiloso)</label><input type="email" id="buildingEmail" required></div>
+<div class="form-group"><label data-i18n="building_number_label">Energia desejada para o imóvel (1 a 9):</label>
+<select id="buildingNumber" required>
+<option value="1" data-i18n="baby_num1">1 — Liderança</option>
+<option value="2" data-i18n="baby_num2">2 — Cooperação</option>
+<option value="3" data-i18n="baby_num3">3 — Criatividade</option>
+<option value="4" data-i18n="baby_num4">4 — Disciplina</option>
+<option value="5" data-i18n="baby_num5">5 — Liberdade</option>
+<option value="6" data-i18n="baby_num6">6 — Família</option>
+<option value="7" data-i18n="baby_num7">7 — Sabedoria</option>
+<option value="8" data-i18n="baby_num8">8 — Poder</option>
+<option value="9" data-i18n="baby_num9">9 — Compaixão</option>
+</select></div>
+<p style="color:#888;font-size:.8rem;margin-bottom:15px" data-i18n="building_3spaces">Insira os números dos espaços (podem conter letras, ex: 345B):</p>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+<div class="form-group"><label data-i18n="building_space1">Prédio (ex: 345B)</label><input type="text" id="buildingSpace1" required></div>
+<div class="form-group"><label data-i18n="building_space2">Apt/Loja (ex: 261G)</label><input type="text" id="buildingSpace2"></div>
+<div class="form-group"><label data-i18n="building_space3">Sala (ex: 1C)</label><input type="text" id="buildingSpace3"></div>
+</div>
+<button type="submit" class="btn btn-full" style="font-size:1rem;padding:16px" id="buildingBtn">🔒 Pagar R$ 26 — Resultado por Email</button>
+</form>
+</div>
+</section>  
 <!-- Mapa Família Premium -->
 <div class="product-card">
 <div class="icon">🌟</div>
