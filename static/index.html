@@ -299,6 +299,12 @@
 </div>
 <button class="btn btn-full" onclick="confirmarBC()" data-i18n="bc_confirm">📋 Confirmar Resumo e Ir para Pagamento</button>
 </div>
+<!-- BANNER TOPO -->
+<div id="banner-topo" style="display:none;text-align:center;padding:10px 5%;background:rgba(201,169,78,.05);border-bottom:1px solid #1a1a1a"></div>
+<!-- BANNER LATERAL (se tiver barra lateral) -->
+<div id="banner-lateral" style="display:none;margin:20px 0"></div>
+<!-- BANNER RODAPÉ -->
+<div id="banner-rodape" style="display:none;text-align:center;padding:20px 5%;border-top:1px solid #1a1a1a"></div>        
 </section>        
             
         /* Footer */
@@ -396,6 +402,29 @@
             </div>
         </div>
     </section>
+
+    <!-- ABA INVESTIDORES -->
+<section id="investidores" class="section">
+<h2 class="section-title" data-i18n="inv_title">Investidores e Parceiros</h2>
+<p class="section-sub" data-i18n="inv_sub">Baixe a apresentação empresarial da A1ELOS no seu idioma, gratuitamente.</p>
+<div class="cards-grid">
+<!-- PDF Português -->
+<div class="product-card">
+<div class="icon">📄</div>
+<h3>🇧🇷 Português</h3>
+<p class="desc">Apresentação empresarial completa em português.</p>
+<a href="investidores/A1ELOS_Investidores_PT.pdf" target="_blank" class="btn btn-full btn-outline">Baixar PDF</a>
+</div>
+<!-- PDF Inglês -->
+<div class="product-card">
+<div class="icon">📄</div>
+<h3>🇺🇸 English</h3>
+<p class="desc">Complete business presentation in English.</p>
+<a href="investidores/A1ELOS_Investidores_EN.pdf" target="_blank" class="btn btn-full btn-outline">Download PDF</a>
+</div>
+<!-- ... e assim para os 12 idiomas ... -->
+</div>
+</section>
 
     <section id="numbers">
         <div class="section-header">
@@ -992,6 +1021,42 @@ function confirmarBC(){
             setLanguage(defaultLang);
         }
 
+// ===== SISTEMA DE BANNERS GEOLOCALIZADOS =====
+function detectarPais(){
+  // Tenta detectar via API gratuita de geolocalização por IP
+  return fetch("https://ipapi.co/json/")
+    .then(function(r){return r.json()})
+    .then(function(data){return data.country_code || "BR"})
+    .catch(function(){return "BR"}) // fallback: Brasil
+}
+
+function carregarBanner(posicao){
+  var container = document.getElementById("banner-" + posicao);
+  if(!container) return;
+  detectarPais().then(function(pais){
+    fetch("/api/banner?posicao=" + posicao + "&pais=" + pais)
+      .then(function(r){return r.json()})
+      .then(function(data){
+        if(data.ok && data.banner){
+          var b = data.banner;
+          container.innerHTML = '<a href="' + b.url_anunciante + '" target="_blank" rel="sponsored">'
+            + '<img src="' + b.imagem_url + '" alt="' + b.marca + '" style="max-width:100%;border-radius:12px">'
+            + '</a>';
+          container.style.display = "block";
+        } else {
+          container.style.display = "none";
+        }
+      })
+      .catch(function(){container.style.display = "none"});
+  });
+}
+
+// Chamar no DOMContentLoaded para cada posição
+document.addEventListener("DOMContentLoaded", function(){
+  carregarBanner("topo");
+  carregarBanner("lateral");
+  carregarBanner("rodape");
+});        
         window.onload = init;
     </script>
 </body>
