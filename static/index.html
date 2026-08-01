@@ -231,6 +231,76 @@
             color: var(--gold);
         }
 
+<!-- BÔNUS DE INSERÇÃO (CLIENTE FINAL) -->
+<section id="bonus-insercao" class="section">
+<div class="form-container" style="border:2px solid var(--gold);background:rgba(201,169,78,.05)">
+<h2 class="section-title" data-i18n="bi_title">🎁 Ativar Código Bônus</h2>
+<p class="section-sub" data-i18n="bi_sub">Recebeu um código? Insira abaixo e ative para gerar seu presente — sem pagamento.</p>
+<div class="form-group">
+<label for="biCodigo" data-i18n="bi_label">Código Bônus</label>
+<input type="text" id="biCodigo" placeholder="Ex: A1-XXXX-XXXX" style="text-align:center;letter-spacing:2px;font-weight:bold" autocomplete="off">
+</div>
+<button class="btn btn-full" onclick="ativarBonusInserido()" data-i18n="bi_btn">🎁 Ativar Código</button>
+<p id="biStatus" class="hint" style="text-align:center;margin-top:12px"></p>
+</div>
+</section>
+
+<!-- BÔNUS COLETIVO / EMPRESARIAL -->
+<section id="corporativo" class="section">
+<h2 class="section-title" data-i18n="bc_title">🏢 Bônus Coletivo / Empresarial</h2>
+<p class="section-sub" data-i18n="bc_sub">Contrate brindes numerológicos para seus clientes ou funcionários. Escolha um plano pronto ou monte sob medida. Descontos de 10% a 70%.</p>
+
+<!-- PLANOS PRONTOS -->
+<div style="max-width:1100px;margin:0 auto 40px">
+<h3 style="color:var(--gold);text-align:center;margin-bottom:20px" data-i18n="bc_plans_title">Planos Prontos</h3>
+<div class="cards-grid" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">
+<div class="product-card">
+<h3 data-i18n="bc_plan1_name">Plano Básico</h3>
+<div class="price" data-i18n="bc_plan1_price">50 códigos</div>
+<p class="desc" data-i18n="bc_plan1_desc">50x Mapa Express (R$ 8) — ideal para presentear clientes</p>
+<button class="btn btn-full btn-outline" onclick="usarPlanoPronto(50,0,0,0)">Selecionar</button>
+</div>
+<div class="product-card">
+<h3 data-i18n="bc_plan2_name">Plano Intermediário</h3>
+<div class="price" data-i18n="bc_plan2_price">100 códigos</div>
+<p class="desc" data-i18n="bc_plan2_desc">50x Mapa Express + 50x Pesquisa IA (R$ 17) — para equipes</p>
+<button class="btn btn-full btn-outline" onclick="usarPlanoPronto(50,0,50,0)">Selecionar</button>
+</div>
+<div class="product-card">
+<h3 data-i18n="bc_plan3_name">Plano Premium</h3>
+<div class="price" data-i18n="bc_plan3_price">200 códigos</div>
+<p class="desc" data-i18n="bc_plan3_desc">100x Mapa Express + 100x Mapa Completo (R$ 17) — programas completos</p>
+<button class="btn btn-full btn-outline" onclick="usarPlanoPronto(100,0,100,0)">Selecionar</button>
+</div>
+</div>
+</div>
+
+<!-- TABELA SOB MEDIDA -->
+<div class="form-container" style="max-width:900px">
+<h3 style="color:var(--gold);text-align:center;margin-bottom:10px" data-i18n="bc_custom_title">Montar Sob Medida</h3>
+<p class="section-sub" data-i18n="bc_custom_sub">Marque a quantidade desejada de cada serviço. O desconto é aplicado automaticamente.</p>
+<table style="width:100%;border-collapse:collapse;margin-bottom:20px">
+<thead>
+<tr style="border-bottom:1px solid #333">
+<th style="padding:10px;text-align:left;color:var(--gold)" data-i18n="bc_tbl_service">Serviço</th>
+<th style="padding:10px;text-align:center;color:var(--gold)" data-i18n="bc_tbl_price">Valor</th>
+<th style="padding:10px;text-align:center;color:var(--gold)" data-i18n="bc_tbl_qty">Quantidade</th>
+</tr>
+</thead>
+<tbody id="bcTabelaCorpo">
+<!-- Preenchido via JavaScript -->
+</tbody>
+</table>
+<div id="bcResumo" style="background:#151515;border:1px solid #333;border-radius:12px;padding:20px;margin-bottom:20px">
+<div style="color:#ccc;font-size:.9rem;margin-bottom:6px"><span data-i18n="bc_total">Total bruto:</span> <strong id="bcTotalBruto" style="color:#fff">R$ 0</strong></div>
+<div style="color:#ccc;font-size:.9rem;margin-bottom:6px"><span data-i18n="bc_discount">Desconto aplicado:</span> <strong id="bcDesconto" style="color:#28a745">R$ 0</strong></div>
+<div style="color:#ccc;font-size:.9rem;margin-bottom:6px"><span data-i18n="bc_final">Total final:</span> <strong id="bcTotalFinal" style="color:var(--gold);font-size:1.2rem">R$ 0</strong></div>
+<div style="color:#888;font-size:.75rem;margin-top:4px" id="bcFaixaInfo"></div>
+</div>
+<button class="btn btn-full" onclick="confirmarBC()" data-i18n="bc_confirm">📋 Confirmar Resumo e Ir para Pagamento</button>
+</div>
+</section>        
+            
         /* Footer */
         footer {
             padding: 60px 20px;<br/>
@@ -758,6 +828,129 @@
 
         function setLanguage(lang) {
             localStorage.setItem('selectedLang', lang);
+
+            // ===== BÔNUS DE INSERÇÃO (CLIENTE FINAL) =====
+function ativarBonusInserido(){
+  var codigo=document.getElementById("biCodigo").value.trim();
+  var st=document.getElementById("biStatus");
+  if(!codigo){st.style.color="#dc3545";st.textContent="Digite seu código bônus.";return}
+  st.style.color="var(--gold)";st.textContent="Validando código...";
+  fetch("/ativar-bonus",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({codigo:codigo})
+  })
+  .then(function(r){return r.json()})
+  .then(function(data){
+    if(data.ok){
+      st.style.color="#28a745";
+      st.textContent="Código ativado! Gerando seu PDF...";
+      // Redireciona para o bloco do produto que o código vale
+      setTimeout(function(){window.location.href="/#"+data.target},800);
+    }else{
+      st.style.color="#dc3545";
+      st.textContent="Código inválido ou já utilizado.";
+    }
+  })
+  .catch(function(){
+    st.style.color="#dc3545";
+    st.textContent="Erro na ativação. Tente novamente.";
+  });
+}
+
+// ===== BÔNUS COLETIVO / EMPRESARIAL =====
+// [produto_id, nome, preco, icone]
+var BC_PRODUTOS=[
+  ["express","Mapa Express",8,"🔮"],
+  ["vida","Qual Vida/Ano",8,"🔢"],
+  ["completo","Mapa Completo",17,"📘"],
+  ["ia","Pesquisa IA de Nomes",17,"🤖"],
+  ["urna","Validação Nome de Urna",26,"🗳️"],
+  ["eleitoral","Número Eleitoral",26,"🔢"],
+  ["imovel","Número do Imóvel",26,"🏠"],
+  ["calendario","Calendário Mensal",26,"📅"],
+  ["artistico","Nome Artístico",35,"🎭"],
+  ["bebe","Nome de Bebê",35,"👶"],
+  ["assinatura","Assinaturas",35,"✍️"],
+  ["negocio","Nome para Negócio",44,"🏪"],
+  ["casal","Mapa do Casal",44,"💞"],
+  ["familia","Mapa Família Premium",98,"🌟"]
+];
+
+var BC_QUANTIDADES={}; // guarda qtd por produto
+
+function montarTabelaBC(){
+  var corpo=document.getElementById("bcTabelaCorpo");
+  if(!corpo)return;
+  corpo.innerHTML="";
+  BC_PRODUTOS.forEach(function(p){
+    var tr=document.createElement("tr");
+    tr.style.borderBottom="1px solid #222";
+    tr.innerHTML='<td style="padding:10px;color:#ccc">'+p[3]+' '+p[1]+'</td>'
+      +'<td style="padding:10px;text-align:center;color:var(--gold)">R$ '+p[2]+'</td>'
+      +'<td style="padding:10px;text-align:center"><input type="number" min="0" max="1000" value="0" data-prod="'+p[0]+'" style="width:70px;text-align:center;background:#181818;border:1px solid #333;border-radius:8px;color:#fff;padding:6px" oninput="atualizarResumoBC()"></td>';
+    corpo.appendChild(tr);
+  });
+}
+
+function atualizarResumoBC(){
+  var bruto=0, qtdTotal=0;
+  document.querySelectorAll("#bcTabelaCorpo input[data-prod]").forEach(function(inp){
+    var q=parseInt(inp.value)||0;
+    BC_QUANTIDADES[inp.getAttribute("data-prod")]=q;
+    var prod=BC_PRODUTOS.find(function(p){return p[0]===inp.getAttribute("data-prod")});
+    if(prod){bruto+=q*prod[2];qtdTotal+=q}
+  });
+  var descontoPct=descontoBC(qtdTotal);
+  var desconto=Math.round(bruto*descontoPct/100);
+  var final=bruto-desconto;
+  document.getElementById("bcTotalBruto").textContent="R$ "+bruto.toLocaleString("pt-BR");
+  document.getElementById("bcDesconto").textContent="R$ "+desconto.toLocaleString("pt-BR")+" ("+descontoPct+"%)";
+  document.getElementById("bcTotalFinal").textContent="R$ "+final.toLocaleString("pt-BR");
+  document.getElementById("bcFaixaInfo").textContent="Quantidade total: "+qtdTotal+" códigos";
+}
+
+function descontoBC(qtd){
+  if(qtd>=1000)return 70;
+  if(qtd>=500)return 50;
+  if(qtd>=200)return 40;
+  if(qtd>=100)return 30;
+  if(qtd>=50)return 20;
+  if(qtd>=10)return 10;
+  return 0;
+}
+
+function usarPlanoPronto(qExpress,qVida,qIa,qCompleto){
+  // Ajusta os inputs conforme o plano escolhido
+  var mapa={express:qExpress,vida:qVida,ia:qIa,completo:qCompleto};
+  document.querySelectorAll("#bcTabelaCorpo input[data-prod]").forEach(function(inp){
+    var prod=inp.getAttribute("data-prod");
+    inp.value=mapa[prod]||0;
+  });
+  atualizarResumoBC();
+  document.getElementById("corporativo").scrollIntoView({behavior:"smooth"});
+}
+
+function confirmarBC(){
+  var itens=[];
+  for(var id in BC_QUANTIDADES){
+    if(BC_QUANTIDADES[id]>0){
+      var prod=BC_PRODUTOS.find(function(p){return p[0]===id});
+      if(prod)itens.push({produto:id,nome:prod[1],preco:prod[2],qtd:BC_QUANTIDADES[id]});
+    }
+  }
+  if(itens.length===0){alert("Selecione pelo menos 1 serviço.");return}
+  var bruto=itens.reduce(function(a,i){return a+i.preco*i.qtd},0);
+  var qtdTotal=itens.reduce(function(a,i){return a+i.qtd},0);
+  var pct=descontoBC(qtdTotal);
+  var final=bruto-Math.round(bruto*pct/100);
+  // Monta resumo visual
+  var linhas=itens.map(function(i){return i.nome+": "+i.qtd+"x R$ "+i.preco+" = R$ "+(i.qtd*i.preco)}).join("\n");
+  var msg="RESUMO DO PEDIDO\n\n"+linhas+"\n\nTotal bruto: R$ "+bruto+"\nDesconto ("+pct+"%): R$ "+Math.round(bruto*pct/100)+"\nTOTAL FINAL: R$ "+final+"\n\nConfirmar e ir para pagamento?";
+  if(!confirm(msg))return;
+  // Envia para o checkout Stripe
+  checkout("bonus-coletivo","&qtd="+qtdTotal+"&total="+final+"&itens="+encodeURIComponent(JSON.stringify(itens)));
+}
             
             // Update buttons
             document.querySelectorAll('.lang-btn').forEach(btn => {
