@@ -8,6 +8,74 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
+# ===== SISTEMA DE BÔNUS (A1ELOS) =====
+import json, secrets, string, os
+from datetime import datetime
+
+ARQ_BONUS = "bonus_codes.json"
+
+def _carregar_codigos():
+    try:
+        with open(ARQ_BONUS, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return {}
+
+def _salvar_codigos(dados):
+    with open(ARQ_BONUS, "w", encoding="utf-8") as f:
+        json.dump(dados, f, ensure_ascii=False, indent=2)
+
+def _gerar_codigo_bonus():
+    # Formato: A1-XXXX-XXXX (letras e números alternados)
+    chars = string.ascii_uppercase + string.digits
+    p1 = "".join(secrets.choice(chars) for _ in range(4))
+    p2 = "".join(secrets.choice(chars) for _ in range(4))
+    return f"A1-{p1}-{p2}"
+
+# Mapeamento: produto -> seção do site (para onde o código redireciona)
+PRODUTO_TARGET = {
+    "express":"mapa", "vida":"vida", "completo":"mapa", "ia":"pesquisa-ia",
+    "urna":"urna", "eleitoral":"eleitoral", "imovel":"imovel", "calendario":"calendario",
+    "artistico":"artistico", "bebe":"bebe", "assinatura":"assinatura",
+    "negocio":"negocio", "casal":"casal", "familia":"familia"
+}
+
+class AtivarBonusReq(BaseModel):
+    codigo: str
+
+@app.post("/ativar-bonus")
+async def ativar_bonus(req: AtivarBonusReq):
+    """Ativa um código bônus (uso único) e retorna para onde redirecionar."""
+    codigos = _carregar_codigos()
+    info = codigos.get(req.codigo)
+    if not info:
+        return {"ok": False, "msg": "Código não encontrado"}
+    if info.get("usado"):
+        return {"ok": False, "msg": "Código já utilizado"}
+    # Marca como usado (uso único)
+    info["usado"] = True
+    info["data_uso"] = datetime.now().isoformat()
+    _salvar_codigos(codigos)
+    target = PRODUTO_TARGET.get(info.get("produto"), "inicio")
+    return {"ok": True, "target": target, "produto": info.get("produto")}
+
+# Geração de códigos (após pagamento do Bônus Coletivo confirmado no Stripe)
+@app.post("/gerar-codigos-coletivo")
+async def gerar_codigos_coletivo(req):
+    """Recebe a lista de itens pagos e gera os códigos bônus."""
+    corpo = await req.json()
+    itens = corpo.get("itens", [])  # [{"produto":"express","qtd":50},...]
+    codigos = _carregar_codigos()
+    gerados = []
+    for item in itens:
+        for _ in range(item["qtd"]):
+            cod = _gerar_codigo_bonus()
+            codigos[cod] = {"produto": item["produto"], "usado": False}
+            gerados.append({"codigo": cod, "produto": item["produto"]})
+    _salvar_codigos(codigos)
+    # Aqui: gerar o PDF com todos os códigos (sem limite de páginas)
+    # e devolver para download
+    return {"ok": True, "total": len(gerados), "codigos": gerados}
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
