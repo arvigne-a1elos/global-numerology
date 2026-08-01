@@ -299,3 +299,60 @@ async def stripe_webhook(req: Request):
         sess = event["data"]["object"]
         logger.info(f"Pagamento confirmado: {sess.get('id')}")
     return {"ok": True}
+
+# ===== CAIXA DE SUGESTÕES + BÔNUS (A1ELOS) =====
+import os, secrets, smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from pydantic import BaseModel
+
+ADMIN_EMAIL = "arvigne@gmail.com"   # não revelar no frontend
+
+class SugestaoReq(BaseModel):
+    mensagem: str
+
+class BonusReq(BaseModel):
+    nome: str
+    email: str
+    produto: str
+    mensagem: str
+
+def _enviar_email(destinatario: str, assunto: str, corpo: str):
+    msg = MIMEMultipart()
+    msg["From"] = os.getenv("SMTP_USER", "no-reply@a1elos.com")
+    msg["To"] = destinatario
+    msg["Subject"] = assunto
+    msg.attach(MIMEText(corpo, "plain", "utf-8"))
+    with smtplib.SMTP(os.getenv("SMTP_HOST"), int(os.getenv("SMTP_PORT", 587))) as s:
+        s.starttls()
+        s.login(os.getenv("SMTP_USER"), os.getenv("SMTP_PASS"))
+        s.send_message(msg)
+
+@app.post("/sugestao")
+async def receber_sugestao(req: SugestaoReq):
+    try:
+        _enviar_email(ADMIN_EMAIL, "Nova sugestão/reclamação — A1ELOS",
+                      "Mensagem:\n" + req.mensagem +
+                      "\n\n(Se educada e útil, cliente ganha 1 pesquisa IA grátis.)")
+        return {"ok": True}
+    except Exception:
+        return {"ok": False}
+
+@app.post("/bonus")
+async def solicitar_bonus(req: BonusReq):
+    codigo = "BONUS-" + secrets.token_hex(3).upper()
+    try:
+        corpo = (f"Cliente: {req.nome}\nEmail: {req.email}\nProduto: {req.produto}\n"
+                 f"Código gerado: {codigo}\nRelato:\n{req.mensagem}\n\n"
+                 "Ação: garantir o produto comprado, liberar nova pesquisa/PDF e, "
+                 "se persistir, enviar o PDF após a correção. "
+                 "Cliente ganha 1 serviço IA grátis como complemento.")
+        _enviar_email(ADMIN_EMAIL, "Pedido de BÔNUS — pane no pagamento", corpo)
+        _enviar_email(req.email, "A1ELOS — Seu código bônus",
+                      f"Olá, {req.nome}!\nSeu código: {codigo}\n"
+                      "Use-o na próxima tentativa para garantir seu produto. "
+                      "Se o problema persistir, responderemos por este email "
+                      "assim que o sistema for corrigido.\n\nA1ELOS")
+        return {"ok": True, "codigo": codigo}
+    except Exception:
+        return {"ok": False}
