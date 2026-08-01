@@ -1,827 +1,805 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Mapa Numerológico | A1ELOS</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-<style>
-:root{--gold:#C9A94E;--dark:#0a0a0a;--card:#111;--gray:#a0a0a0}
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{font-family:'Inter',sans-serif;background:var(--dark);color:#fff;line-height:1.6}
-h1,h2,h3,h4{font-family:'Playfair Display',serif}
-a{color:var(--gold);text-decoration:none}
-.topbar{display:flex;justify-content:space-between;align-items:center;padding:14px 5%;background:rgba(10,10,10,.97);position:sticky;top:0;z-index:100;border-bottom:1px solid #1a1a1a;flex-wrap:wrap;gap:10px}
-.logo{font-family:'Playfair Display',serif;font-weight:700;color:var(--gold);font-size:1.25rem;letter-spacing:.06em}
-.langs{display:flex;gap:6px;flex-wrap:wrap}
-.lang-btn{background:none;border:1px solid #444;color:#ddd;border-radius:8px;padding:5px 8px;cursor:pointer;font-size:.72rem;font-family:'Inter',sans-serif;transition:.25s}
-.lang-btn:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-1px)}
-.lang-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(201,169,78,.12);box-shadow:0 0 10px rgba(201,169,78,.25)}
-.sections{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;padding:11px 5%;background:#0d0d0d;border-bottom:1px solid #1a1a1a}
-.sections a{color:#ccc;font-size:.8rem;padding:6px 12px;border-radius:20px;cursor:pointer;transition:.2s}
-.sections a:hover{color:var(--gold);background:rgba(201,169,78,.1)}
-.hero-logo{display:block;margin:0 auto 22px;max-width:240px;width:65%;height:auto;filter:drop-shadow(0 0 18px rgba(201,169,78,.25))}  
-.hero{text-align:center;padding:80px 5% 60px;background:radial-gradient(ellipse at top,rgba(201,169,78,.09),transparent 60%)}
-.hero h1{font-size:clamp(2rem,5vw,3.4rem);color:var(--gold);letter-spacing:.02em}
-.hero p{color:var(--gray);max-width:720px;margin:18px auto 30px;font-size:1.05rem}
-.badge{display:inline-block;background:rgba(201,169,78,.12);border:1px solid rgba(201,169,78,.4);color:var(--gold);padding:8px 18px;border-radius:50px;font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;margin-bottom:20px}
-.btn{display:inline-block;padding:14px 32px;background:linear-gradient(135deg,var(--gold),#b8942e);color:#0a0a0a;font-weight:700;border:none;border-radius:50px;cursor:pointer;font-size:.9rem;transition:.3s;text-align:center;text-transform:uppercase;letter-spacing:.03em}
-.btn:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(201,169,78,.35)}
-.btn-outline{background:transparent;border:1px solid var(--gold);color:var(--gold)}
-.btn-sm{padding:9px 18px;font-size:.75rem}
-.btn-full{width:100%;text-align:center;display:block}
-.section{padding:65px 5%}
-.section-title{text-align:center;font-size:clamp(1.6rem,3.5vw,2.3rem);color:var(--gold);margin-bottom:10px}
-.section-sub{text-align:center;color:var(--gray);margin-bottom:40px;font-size:.95rem}
-.form-container{max-width:640px;margin:0 auto;background:var(--card);border:1px solid #222;border-radius:24px;padding:38px}
-.form-group{margin-bottom:16px}
-.form-group label{display:block;color:#ccc;font-size:.84rem;margin-bottom:5px}
-.form-group input,.form-group select{width:100%;padding:12px 14px;background:#181818;border:1px solid #333;border-radius:12px;color:#fff;font-size:.95rem}
-.form-group input:focus,.form-group select:focus{outline:none;border-color:var(--gold)}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1200px;margin:0 auto}
-.cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1200px;margin:0 auto}
-.product-card{background:var(--card);border:1px solid #222;border-radius:20px;padding:26px;text-align:center;transition:.3s;display:flex;flex-direction:column}
-.product-card:hover{transform:translateY(-4px);border-color:rgba(201,169,78,.5)}
-.icon{font-size:2rem;margin-bottom:8px}
-.tag{display:inline-block;align-self:center;background:rgba(201,169,78,.15);color:var(--gold);padding:4px 14px;border-radius:50px;font-size:.66rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px}
-.product-card h3{color:var(--gold);margin-bottom:6px;font-size:1.15rem}
-.price{font-size:1.55rem;font-weight:700;color:#fff;margin-bottom:12px}
-.desc{color:var(--gray);font-size:.83rem;margin-bottom:14px;flex-grow:1}
-.product-card ul{color:#888;font-size:.78rem;text-align:left;list-style:none;padding:0;margin-bottom:16px}
-.product-card li{padding:3px 0}
-.energy-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;max-width:1000px;margin:0 auto}
-.energy-card{background:var(--card);border:1px solid #222;border-radius:16px;padding:20px;text-align:center}
-.energy-card h4{color:var(--gold);font-size:1.7rem}
-.energy-actions{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:12px}
-.section-hidden{display:none}
-.sec-h{color:var(--gold);margin:20px 0 10px;font-size:1rem}
-.hint{color:var(--gray);font-size:.8rem;margin-bottom:14px}
-.calc-result{margin-top:22px;padding:20px;background:#151515;border:1px solid #333;border-radius:14px}
-.calc-result div{color:#ccc;padding:4px 0;font-size:.93rem;border-bottom:1px solid #1e1e1e}
-.pay-options{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:35px}
-.pay-opt{background:var(--card);border:1px solid #333;color:#ccc;padding:10px 18px;border-radius:12px;font-size:.85rem;cursor:pointer}
-.pay-opt.active{border-color:var(--gold);color:var(--gold)}
-footer{text-align:center;padding:35px 5%;color:#444;font-size:.8rem;border-top:1px solid #1a1a1a}
-@media(max-width:980px){.cards-grid,.energy-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:640px){.cards-grid,.energy-grid{grid-template-columns:1fr}.sections{overflow-x:auto;justify-content:flex-start}.form-container{padding:24px}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa Numerológico | A1ELOS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #C9A94E;<br/>
+            --dark: #0a0a0a;<br/>
+            --card-bg: #111111;<br/>
+            --text-gray: #a0a0a0;<br/>
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;<br/>
+            background-color: var(--dark);<br/>
+            color: #ffffff;<br/>
+            overflow-x: hidden;<br/>
+            line-height: 1.6;
+        }
+
+        [dir="rtl"] { text-align: right; }
+
+        /* Language Selector */
+        .lang-wrapper {
+            position: fixed;<br/>
+            top: 0;<br/>
+            width: 100%;<br/>
+            z-index: 1000;<br/>
+            background: rgba(10, 10, 10, 0.8);<br/>
+            backdrop-filter: blur(10px);<br/>
+            border-bottom: 1px solid #222;<br/>
+            padding: 10px 0;
+        }
+
+        .lang-container {
+            max-width: 1200px;<br/>
+            margin: 0 auto;<br/>
+            display: flex;<br/>
+            justify-content: center;<br/>
+            align-items: center;<br/>
+            gap: 12px;<br/>
+            flex-wrap: wrap;<br/>
+            padding: 0 20px;
+        }
+
+        .lang-btn {
+            background: transparent;<br/>
+            border: 1px solid #333;<br/>
+            color: #fff;<br/>
+            padding: 6px 12px;<br/>
+            border-radius: 4px;<br/>
+            cursor: pointer;<br/>
+            font-size: 12px;<br/>
+            transition: var(--transition);<br/>
+            display: flex;<br/>
+            align-items: center;<br/>
+            gap: 6px;
+        }
+
+        .lang-btn:hover, .lang-btn.active {<br/>
+            border-color: var(--gold);<br/>
+            color: var(--gold);<br/>
+            background: rgba(201, 169, 78, 0.1);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;<br/>
+            display: flex;<br/>
+            flex-direction: column;<br/>
+            align-items: center;<br/>
+            justify-content: center;<br/>
+            text-align: center;<br/>
+            padding: 120px 20px 60px;<br/>
+            background: radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 100%);
+        }
+
+        .logo-img {
+            width: 160px;<br/>
+            height: 160px;<br/>
+            margin-bottom: 30px;<br/>
+            border-radius: 50%;<br/>
+            box-shadow: 0 0 30px rgba(201, 169, 78, 0.2);
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;<br/>
+            font-size: clamp(2.5rem, 8vw, 4.5rem);<br/>
+            color: var(--gold);<br/>
+            margin-bottom: 10px;<br/>
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: clamp(1.1rem, 2vw, 1.5rem);<br/>
+            color: var(--text-gray);<br/>
+            margin-bottom: 30px;<br/>
+            font-weight: 300;
+        }
+
+        .hero-desc {
+            max-width: 700px;<br/>
+            margin: 0 auto 40px;<br/>
+            color: #888;<br/>
+            font-size: 1.1rem;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;<br/>
+            padding: 18px 40px;<br/>
+            background: var(--gold);<br/>
+            color: #000;<br/>
+            text-decoration: none;<br/>
+            font-weight: 700;<br/>
+            border-radius: 50px;<br/>
+            letter-spacing: 1px;<br/>
+            transition: var(--transition);<br/>
+            border: 2px solid var(--gold);<br/>
+            cursor: pointer;
+        }
+
+        .btn:hover {<br/>
+            background: transparent;<br/>
+            color: var(--gold);<br/>
+            transform: translateY(-3px);
+        }
+
+        .btn-outline {
+            background: transparent;<br/>
+            color: var(--gold);<br/>
+            margin-left: 15px;
+        }
+
+        /* Sections */
+        section {
+            padding: 100px 20px;<br/>
+            max-width: 1200px;<br/>
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;<br/>
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-family: 'Playfair Display', serif;<br/>
+            font-size: 2.5rem;<br/>
+            color: var(--gold);<br/>
+            margin-bottom: 15px;
+        }
+
+        /* Cards */
+        .grid-cards {
+            display: grid;<br/>
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));<br/>
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--card-bg);<br/>
+            padding: 40px;<br/>
+            border-radius: 20px;<br/>
+            border: 1px solid #222;<br/>
+            transition: var(--transition);<br/>
+            text-align: center;
+        }
+
+        .card:hover {<br/>
+            border-color: var(--gold);<br/>
+            transform: translateY(-10px);
+        }
+
+        .card h3 {
+            color: var(--gold);<br/>
+            margin-bottom: 15px;<br/>
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Steps */
+        .steps-container {
+            display: flex;<br/>
+            flex-direction: column;<br/>
+            gap: 40px;<br/>
+            max-width: 800px;<br/>
+            margin: 0 auto;
+        }
+
+        .step {
+            display: flex;<br/>
+            align-items: center;<br/>
+            gap: 30px;<br/>
+            background: #111;<br/>
+            padding: 30px;<br/>
+            border-radius: 15px;
+        }
+
+        .step-num {
+            font-size: 3rem;<br/>
+            font-family: 'Playfair Display', serif;<br/>
+            color: var(--gold);<br/>
+            opacity: 0.5;
+        }
+
+        /* Numbers Circle */
+        .numbers-grid {
+            display: flex;<br/>
+            justify-content: center;<br/>
+            gap: 15px;<br/>
+            flex-wrap: wrap;<br/>
+            margin: 40px 0;
+        }
+
+        .num-circle {
+            width: 60px;<br/>
+            height: 60px;<br/>
+            border: 2px solid var(--gold);<br/>
+            border-radius: 50%;<br/>
+            display: flex;<br/>
+            align-items: center;<br/>
+            justify-content: center;<br/>
+            font-family: 'Playfair Display', serif;<br/>
+            font-size: 1.5rem;<br/>
+            color: var(--gold);
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px 20px;<br/>
+            text-align: center;<br/>
+            border-top: 1px solid #222;<br/>
+            color: #555;<br/>
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }<br/>
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {<br/>
+            .btn-outline { margin-left: 0; margin-top: 15px; }<br/>
+            .step { flex-direction: column; text-align: center; }
+        }
+    </style>
 </head>
 <body>
 
-<div class="topbar">
-<div class="logo">A1ELOS</div>
-<div class="langs">
-<button class="lang-btn" onclick="setLang('pt')">🇧🇷 PT</button>
-<button class="lang-btn" onclick="setLang('en')">🇺🇸 EN</button>
-<button class="lang-btn" onclick="setLang('es')">🇪🇸 ES</button>
-<button class="lang-btn" onclick="setLang('fr')">🇫🇷 FR</button>
-<button class="lang-btn" onclick="setLang('de')">🇩🇪 DE</button>
-<button class="lang-btn" onclick="setLang('it')">🇮🇹 IT</button>
-<button class="lang-btn" onclick="setLang('ja')">🇯🇵 JA</button>
-<button class="lang-btn" onclick="setLang('zh')">🇨🇳 ZH</button>
-<button class="lang-btn" onclick="setLang('ru')">🇷🇺 RU</button>
-<button class="lang-btn" onclick="setLang('hi')">🇮🇳 HI</button>
-<button class="lang-btn" onclick="setLang('he')">🇮🇱 HE</button>
-<button class="lang-btn" onclick="setLang('ar')">🇸🇦 AR</button>
-</div>
-</div>
+    <nav class="lang-wrapper">
+        <div class="lang-container" id="langSelector">
+            <!-- Buttons generated by JS -->
+        </div>
+    </nav>
 
-<nav class="sections">
-<a onclick="scrollToEl('inicio')" data-i18n="nav_home">Início</a>
-<a onclick="scrollToEl('mapa')" data-i18n="nav_map">Mapa</a>
-<a onclick="scrollToEl('produtos')" data-i18n="nav_prices">Preços</a>
-<a onclick="scrollToEl('urna')" data-i18n="nav_urna">Nome de Urna</a>
-<a onclick="scrollToEl('eleitoral')" data-i18n="nav_elec">Nº Eleitoral</a>
-<a onclick="scrollToEl('artistico')" data-i18n="nav_artistic">Nome Artístico</a>
-<a onclick="scrollToEl('bebe')" data-i18n="nav_baby">Nome Bebê</a>
-<a onclick="scrollToEl('negocio')" data-i18n="nav_business">Nome Negócio</a>
-<a onclick="scrollToEl('assinatura')" data-i18n="nav_signature">Assinaturas</a>
-<a onclick="scrollToEl('imovel')" data-i18n="nav_building">Nº Imóvel</a>
-<a onclick="scrollToEl('casal')" data-i18n="nav_couple">Mapa Casal</a>
-<a onclick="scrollToEl('familia')" data-i18n="nav_family">Mapa Família</a>
-<a onclick="scrollToEl('empresa-completa')" data-i18n="nav_businesspack">Pacote Empresa</a>
-<a onclick="scrollToEl('pesquisa-ia')" data-i18n="nav_ia">Pesquisa IA</a>
-<a onclick="scrollToEl('energias')" data-i18n="nav_energies">Energias</a>
-<a onclick="scrollToEl('sugestoes')" data-i18n="nav_sugestoes">Sugestões</a>
-<a onclick="scrollToEl('bonus')" data-i18n="nav_bonus">Bônus</a>  
-</nav>
+    <section class="hero">
+        <img src="https://generated-images.adapta.one/arvigne%40gmail.com/019f56cb-b9e4-7644-9dd8-5d14c5261d46/2026-07-14T13-27-24-531Z_Original_user_intent_A_premium_minimalist_logo_s.png" alt="Logo" class="logo-img">
+        <h1 data-i18n="hero_title">MAPA NUMEROLÓGICO</h1>
+        <p class="subtitle" data-i18n="hero_subtitle">Descubra o que os números revelam sobre você</p>
+        <p class="hero-desc" data-i18n="hero_desc">Uma jornada de autoconhecimento baseada na numerologia pitagórica. Seu mapa pessoal revela talentos, desafios e caminhos através dos números que regem sua vida.</p>
+        <button class="btn" data-i18n="hero_btn" onclick="alert('Redirecting to generator...')">✦ GERAR MEU MAPA</button>
+    </section>
 
-<section id="inicio" class="hero">
-<img src="Logo.png" alt="A1ELOS" class="hero-logo">
-<div class="badge" data-i18n="hero_badge">A plataforma de numerologia mais completa do mundo</div>
-<h1 data-i18n="hero_title">MAPA NUMEROLÓGICO</h1>
-<p data-i18n="hero_sub">A ciência dos números aplicada ao seu destino e carreira política</p>
-<a class="btn" onclick="scrollToEl('mapa')" data-i18n="hero_btn_map">Gerar Mapa Grátis</a>
-<a class="btn btn-outline" style="margin-left:10px" onclick="scrollToEl('produtos')" data-i18n="hero_btn_products">Ver Produtos</a>
-</section>
+    <section id="about">
+        <div class="section-header">
+            <h2 data-i18n="section_what_title">O que é o Mapa Numerológico?</h2>
+            <p data-i18n="section_what_subtitle">Uma ferramenta de autoconhecimento baseada na numerologia pitagórica</p>
+        </div>
+        <div class="grid-cards">
+            <div class="card">
+                <h3 data-i18n="card1_title">Números da Sua Vida</h3>
+                <p data-i18n="card1_desc">Calculamos o Caminho da Vida, Destino, Alma, Realização e outros números essenciais a partir da sua data de nascimento e nome completo.</p>
+            </div>
+            <div class="card">
+                <h3 data-i18n="card2_title">Seu Mapa Pessoal</h3>
+                <p data-i18n="card2_desc">Cada número revela uma dimensão única da sua personalidade, talentos inatos, desafios e oportunidades ao longo da vida.</p>
+            </div>
+            <div class="card">
+                <h3 data-i18n="card3_title">Relatório Completo</h3>
+                <p data-i18n="card3_desc">Você recebe um relatório detalhado em PDF com a interpretação profissional de cada número do seu mapa, pronto para download.</p>
+            </div>
+            <div class="card">
+                <h3 data-i18n="card4_title">Orientação Prática</h3>
+                <p data-i18n="card4_desc">Mais que uma leitura, um guia para tomar decisões alinhadas com seus ciclos numerológicos e seu propósito de vida.</p>
+            </div>
+        </div>
+    </section>
 
-<section id="mapa" class="section">
-<div class="form-container">
-<h2 class="section-title" data-i18n="calc_title">Calcule seu Mapa</h2>
-<p class="section-sub" data-i18n="calc_sub">Preencha seus dados para um cálculo preciso</p>
-<form onsubmit="event.preventDefault();calcMap()">
-<div class="form-group"><label data-i18n="calc_name">Nome Completo</label><input type="text" id="calcName" required></div>
-<div class="form-group"><label data-i18n="calc_date">Data de Nascimento</label><input type="date" id="calcDate" required></div>
-<div class="form-group"><label data-i18n="calc_email">Email (opcional)</label><input type="email" id="calcEmail"></div>
-<button type="submit" class="btn btn-full" data-i18n="calc_btn">✨ Calcular Meu Mapa Grátis</button>
-</form>
-<div id="calcResult" class="calc-result" style="display:none">
-<div id="rCv"></div>
-<div id="rEx"></div>
-<div id="rSa"></div>
-<div id="rPe"></div>
-<div id="rDest"></div>
-<button class="btn btn-outline btn-sm" style="width:100%;margin-top:14px" onclick="document.getElementById('calcResult').style.display='none'" data-i18n="calc_new">⟳ Novo Cálculo</button>
-</div>
-</div>
-</section>
+    <section id="how">
+        <div class="section-header">
+            <h2 data-i18n="section_how_title">Como Funciona</h2>
+            <p data-i18n="section_how_subtitle">Em poucos passos, seu mapa está pronto</p>
+        </div>
+        <div class="steps-container">
+            <div class="step">
+                <div class="step-num">01</div>
+                <div>
+                    <h4 data-i18n="step1_title">Insira seus dados</h4>
+                    <p data-i18n="step1_desc">Informe seu nome completo e data de nascimento — as duas chaves para o seu mapa numerológico.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">02</div>
+                <div>
+                    <h4 data-i18n="step2_title">Cálculo automatizado</h4>
+                    <p data-i18n="step2_desc">Nossa engine calcula todos os números fundamentais da numerologia pitagórica com precisão.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">03</div>
+                <div>
+                    <h4 data-i18n="step3_title">Relatório em PDF</h4>
+                    <p data-i18n="step3_desc">Receba um relatório profissional e elegante com a interpretação completa do seu mapa.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<section id="produtos" class="section">
-<h2 class="section-title" data-i18n="products_title">Produtos e Serviços</h2>
-<p class="section-sub" data-i18n="products_sub">Escolha o produto ideal para sua análise numerológica — todos os valores reduzem ao número 8</p>
-<div class="pay-options">
-<span class="pay-opt active" data-i18n="payment_card">💳 Cartão</span>
-<span class="pay-opt" data-i18n="payment_debit">Crédito/Débito</span>
-<span class="pay-opt" data-i18n="payment_boleto">📄 Boleto</span>
-<span class="pay-opt" data-i18n="payment_cash">À vista (3 dias)</span>
-</div>
+    <section id="numbers">
+        <div class="section-header">
+            <h2 data-i18n="section_numbers_title">Os Números no Centro</h2>
+            <p data-i18n="section_numbers_subtitle">Cada número de 1 a 9 carrega uma energia única</p>
+        </div>
+        <div class="numbers-grid">
+            <div class="num-circle">1</div><div class="num-circle">2</div><div class="num-circle">3</div>
+            <div class="num-circle">4</div><div class="num-circle">5</div><div class="num-circle">6</div>
+            <div class="num-circle">7</div><div class="num-circle">8</div><div class="num-circle">9</div>
+        </div>
+        <p style="text-align: center; color: var(--gold);" data-i18n="numbers_masters">✦ Números Mestres 11, 22 e 33 também são considerados ✦</p>
+    </section>
 
-<div class="cards-grid">
+    <section class="hero" style="min-height: auto; padding: 100px 20px;">
+        <h2 data-i18n="cta_title" style="font-family: 'Playfair Display'; color: var(--gold); font-size: 2.5rem; margin-bottom: 20px;">Pronto para descobrir seu caminho?</h2>
+        <p data-i18n="cta_desc" style="margin-bottom: 40px;">Seu mapa numerológico pessoal está a poucos cliques de distância.</p>
+        <div>
+            <button class="btn" data-i18n="cta_btn1" onclick="alert('Starting...')">✦ GERAR MAPA GRÁTIS</button>
+            <a href="https://a1elos.com.br" class="btn btn-outline" data-i18n="cta_btn2">CONHEÇA A A1ELOS</a>
+        </div>
+    </section>
 
-<!-- 1 - Mapa Express R$8 -->
-<div class="product-card">
-<div class="icon">🔮</div><span class="tag" data-i18n="tag_basic">Básico</span>
-<h3 data-i18n="prod_express_title">Mapa Express</h3>
-<div class="price" data-price="0">R$ 8</div>
-<p class="desc" data-i18n="prod_express_desc">1 página com os 5 números principais e seu significado resumido. Ideal para uma visão rápida.</p>
-<ul><li>✅ <span data-i18n="feat_express1">Caminho da Vida</span></li><li>✅ <span data-i18n="feat_express2">Expressão, Alma, Personalidade</span></li><li>✅ <span data-i18n="feat_express3">Destino</span></li><li>📧 <span data-i18n="feat_email">Envio por email</span></li></ul>
-<button class="btn btn-full" id="payExpressBtn" onclick="payExpress()" data-i18n="btn_express">Comprar R$ 8</button>
-</div>
+    <footer>
+        <p data-i18n="footer_text">© 2026 A1ELOS Assessoria e Consultoria. Todos os direitos reservados.</p>
+    </footer>
 
-<!-- 2 - Mapa Completo R$17 -->
-<div class="product-card">
-<div class="icon">📘</div><span class="tag" data-i18n="tag_recommended">Recomendado</span>
-<h3 data-i18n="prod_complete_title">Mapa Completo</h3>
-<div class="price" data-price="1">R$ 17</div>
-<p class="desc" data-i18n="prod_complete_desc">Análise completa com descrições positivas/negativas, ciclos de vida, desafios, grade de inclusão e nota final.</p>
-<ul><li>✅ <span data-i18n="feat_complete1">5 números detalhados</span></li><li>✅ <span data-i18n="feat_complete2">3 Ciclos de Vida</span></li><li>✅ <span data-i18n="feat_complete3">Desafios e Realizações</span></li><li>✅ <span data-i18n="feat_complete4">Grade de Inclusão</span></li><li>✅ <span data-i18n="feat_complete5">Vibração do Dia</span></li><li>📧 <span data-i18n="feat_email">Envio por email</span></li></ul>
-<button class="btn btn-full" id="payCompleteBtn" onclick="payComplete()" data-i18n="btn_complete">Comprar R$ 17</button>
-</div>
+    <script>
+        const translations = {
+            pt: {<br/>
+                hero_title: "MAPA NUMEROLÓGICO",<br/>
+                hero_subtitle: "Descubra o que os números revelam sobre você",<br/>
+                hero_desc: "Uma jornada de autoconhecimento baseada na numerologia pitagórica. Seu mapa pessoal revela talentos, desafios e caminhos através dos números que regem sua vida.",<br/>
+                hero_btn: "✦ GERAR MEU MAPA",<br/>
+                section_what_title: "O que é o Mapa Numerológico?",<br/>
+                section_what_subtitle: "Uma ferramenta de autoconhecimento baseada na numerologia pitagórica",<br/>
+                card1_title: "Números da Sua Vida",<br/>
+                card1_desc: "Calculamos o Caminho da Vida, Destino, Alma, Realização e outros números essenciais a partir da sua data de nascimento e nome completo.",<br/>
+                card2_title: "Seu Mapa Pessoal",<br/>
+                card2_desc: "Cada número revela uma dimensão única da sua personalidade, talentos inatos, desafios e oportunidades ao longo da vida.",<br/>
+                card3_title: "Relatório Completo",<br/>
+                card3_desc: "Você recebe um relatório detalhado em PDF com a interpretação profissional de cada número do seu mapa, pronto para download.",<br/>
+                card4_title: "Orientação Prática",<br/>
+                card4_desc: "Mais que uma leitura, um guia para tomar decisões alinhadas com seus ciclos numerológicos e seu propósito de vida.",<br/>
+                section_how_title: "Como Funciona",<br/>
+                section_how_subtitle: "Em poucos passos, seu mapa está pronto",<br/>
+                step1_title: "Insira seus dados",<br/>
+                step1_desc: "Informe seu nome completo e data de nascimento — as duas chaves para o seu mapa numerológico.",<br/>
+                step2_title: "Cálculo automatizado",<br/>
+                step2_desc: "Nossa engine calcula todos os números fundamentais da numerologia pitagórica com precisão.",<br/>
+                step3_title: "Relatório em PDF",<br/>
+                step3_desc: "Receba um relatório profissional e elegante com a interpretação completa do seu mapa.",<br/>
+                section_numbers_title: "Os Números no Centro",<br/>
+                section_numbers_subtitle: "Cada número de 1 a 9 carrega uma energia única",<br/>
+                numbers_masters: "✦ Números Mestres 11, 22 e 33 também são considerados ✦",<br/>
+                cta_title: "Pronto para descobrir seu caminho?",<br/>
+                cta_desc: "Seu mapa numerológico pessoal está a poucos cliques de distância.",<br/>
+                cta_btn1: "✦ GERAR MAPA GRÁTIS",<br/>
+                cta_btn2: "CONHEÇA A A1ELOS",<br/>
+                footer_text: "© 2026 A1ELOS Assessoria e Consultoria. Todos os direitos reservados."
+            },
+            en: {<br/>
+                hero_title: "NUMEROLOGICAL MAP",<br/>
+                hero_subtitle: "Discover what numbers reveal about you",<br/>
+                hero_desc: "A self-discovery journey based on Pythagorean numerology. Your personal map reveals talents, challenges, and paths through the numbers that rule your life.",<br/>
+                hero_btn: "✦ GENERATE MY MAP",<br/>
+                section_what_title: "What is the Numerological Map?",<br/>
+                section_what_subtitle: "A self-discovery tool based on Pythagorean numerology",<br/>
+                card1_title: "Numbers of Your Life",<br/>
+                card1_desc: "We calculate Life Path, Destiny, Soul, Realization and other essential numbers from your birth date and full name.",<br/>
+                card2_title: "Your Personal Map",<br/>
+                card2_desc: "Each number reveals a unique dimension of your personality, innate talents, challenges and opportunities throughout life.",<br/>
+                card3_title: "Complete Report",<br/>
+                card3_desc: "You receive a detailed PDF report with professional interpretation of each number in your map, ready for download.",<br/>
+                card4_title: "Practical Guidance",<br/>
+                card4_desc: "More than a reading, a guide to make decisions aligned with your numerological cycles and life purpose.",<br/>
+                section_how_title: "How It Works",<br/>
+                section_how_subtitle: "In a few steps, your map is ready",<br/>
+                step1_title: "Enter your data",<br/>
+                step1_desc: "Enter your full name and birth date — the two keys to your numerological map.",<br/>
+                step2_title: "Automated Calculation",<br/>
+                step2_desc: "Our engine calculates all fundamental Pythagorean numerology numbers with precision.",<br/>
+                step3_title: "PDF Report",<br/>
+                step3_desc: "Receive a professional and elegant report with the complete interpretation of your map.",<br/>
+                section_numbers_title: "The Numbers at the Core",<br/>
+                section_numbers_subtitle: "Each number from 1 to 9 carries a unique energy",<br/>
+                numbers_masters: "✦ Master Numbers 11, 22 and 33 are also considered ✦",<br/>
+                cta_title: "Ready to discover your path?",<br/>
+                cta_desc: "Your personal numerological map is just a few clicks away.",<br/>
+                cta_btn1: "✦ GENERATE FREE MAP",<br/>
+                cta_btn2: "DISCOVER A1ELOS",<br/>
+                footer_text: "© 2026 A1ELOS Assessoria e Consultoria. All rights reserved."
+            },
+            es: {<br/>
+                hero_title: "MAPA NUMEROLÓGICO",<br/>
+                hero_subtitle: "Descubre lo que los números revelan sobre ti",<br/>
+                hero_desc: "Un viaje de autoconocimiento basado en la numerología pitagórica. Tu mapa personal revela talentos, desafíos y caminos a través de los números que rigen tu vida.",<br/>
+                hero_btn: "✦ GENERAR MI MAPA",<br/>
+                section_what_title: "¿Qué es el Mapa Numerológico?",<br/>
+                section_what_subtitle: "Una herramienta de autoconocimiento basada en la numerología pitagórica",<br/>
+                card1_title: "Números de tu Vida",<br/>
+                card1_desc: "Calculamos el Camino de la Vida, Destino, Alma, Realización y otros números esenciales a partir de tu fecha de nacimiento.",<br/>
+                card2_title: "Tu Mapa Personal",<br/>
+                card2_desc: "Cada número revela una dimensión única de tu personalidad, talentos innatos y desafíos.",<br/>
+                card3_title: "Informe Completo",<br/>
+                card3_desc: "Recibes un informe detallado en PDF con la interpretación profesional de cada número.",<br/>
+                card4_title: "Guía Práctica",<br/>
+                card4_desc: "Más que una lectura, una guía para tomar decisiones alineadas con tu propósito.",<br/>
+                section_how_title: "Cómo Funciona",<br/>
+                section_how_subtitle: "En pocos pasos, tu mapa está listo",<br/>
+                step1_title: "Ingresa tus datos",<br/>
+                step1_desc: "Ingresa tu nombre completo e fecha de nacimiento.",<br/>
+                step2_title: "Cálculo automatizado",<br/>
+                step2_desc: "Nuestro motor calcula todos los números fundamentales con precisión.",<br/>
+                step3_title: "Informe en PDF",<br/>
+                step3_desc: "Recibe un informe profesional con la interpretación completa.",<br/>
+                section_numbers_title: "Los Números en el Centro",<br/>
+                section_numbers_subtitle: "Cada número del 1 al 9 lleva una energía única",<br/>
+                numbers_masters: "✦ Los Números Maestros 11, 22 y 33 también se consideran ✦",<br/>
+                cta_title: "¿Listo para descubrir tu camino?",<br/>
+                cta_desc: "Tu mapa numerológico personal está a solo unos clics de distancia.",<br/>
+                cta_btn1: "✦ GENERAR MAPA GRATIS",<br/>
+                cta_btn2: "CONOCE A1ELOS",<br/>
+                footer_text: "© 2026 A1ELOS Assessoria e Consultoria. Todos los derechos reservados."
+            },
+            it: {<br/>
+                hero_title: "MAPPA NUMEROLOGICA",<br/>
+                hero_subtitle: "Scopri cosa rivelano i numeri su di te",<br/>
+                hero_desc: "Un viaggio di conoscenza di sé basato sulla numerologia pitagorica. La tua mappa personale rivela talenti, sfide e percorsi attraverso i numeri che governano la tua vita.",<br/>
+                hero_btn: "✦ GENERA LA MIA MAPPA",<br/>
+                section_what_title: "Cos'è la Mappa Numerologica?",<br/>
+                section_what_subtitle: "Uno strumento di scoperta di sé basato sulla numerologia pitagorica",<br/>
+                card1_title: "Numeri della tua Vita",<br/>
+                card1_desc: "Calcoliamo il Sentiero della Vita, il Destino, l'Anima e altri numeri essenziali.",<br/>
+                card2_title: "La tua Mappa Personale",<br/>
+                card2_desc: "Ogni numero rivela una dimensione unica della tua personalità e dei tuoi talenti.",<br/>
+                card3_title: "Rapporto Completo",<br/>
+                card3_desc: "Ricevi un rapporto PDF dettagliato con l'interpretazione professionale.",<br/>
+                card4_title: "Guida Pratica",<br/>
+                card4_desc: "Una guida per prendere decisioni in linea con il tuo scopo di vita.",<br/>
+                section_how_title: "Come Funziona",<br/>
+                section_how_subtitle: "In pochi passi, la tua mappa è pronta",<br/>
+                step1_title: "Inserisci i tuoi dati",<br/>
+                step1_desc: "Inserisci il tuo nome completo e la data di nascita.",<br/>
+                step2_title: "Calcolo automatizzato",<br/>
+                step2_desc: "Il nostro motore calcola tutti i numeri con precisione.",<br/>
+                step3_title: "Rapporto PDF",<br/>
+                step3_desc: "Ricevi un rapporto professionale con l'interpretazione completa.",<br/>
+                section_numbers_title: "I Numeri al Centro",<br/>
+                section_numbers_subtitle: "Ogni numero da 1 a 9 porta un'energia unica",<br/>
+                numbers_masters: "✦ Anche i Numeri Maestri 11, 22 e 33 sono considerati ✦",<br/>
+                cta_title: "Pronto a scoprire il tuo percorso?",<br/>
+                cta_desc: "La tua mappa numerologica personale è a pochi clic di distanza.",<br/>
+                cta_btn1: "✦ GENERA MAPPA GRATUITA",<br/>
+                cta_btn2: "SCOPRI A1ELOS",<br/>
+                footer_text: "© 2026 A1ELOS Assessoria e Consultoria. Tutti i diritti riservati."
+            },
+            fr: {<br/>
+                hero_title: "CARTE NUMÉROLOGIQUE",<br/>
+                hero_subtitle: "Découvrez ce que les nombres révèlent sur vous",<br/>
+                hero_desc: "Un voyage de découverte de soi basé sur la numérologie pythagoricienne. Votre carte personnelle révèle talents, défis et chemins à travers les nombres qui régissent votre vie.",<br/>
+                hero_btn: "✦ GÉNÉRER MA CARTE",<br/>
+                section_what_title: "Qu'est-ce que la Carte Numérologique ?",<br/>
+                section_what_subtitle: "Un outil de découverte de soi basé sur la numérologie pythagoricienne",<br/>
+                card1_title: "Chiffres de votre Vie",<br/>
+                card1_desc: "Nous calculons le Chemin de Vie, le Destin, l'Âme et d'autres nombres essentiels.",<br/>
+                card2_title: "Votre Carte Personnelle",<br/>
+                card2_desc: "Chaque nombre révèle une dimension unique de votre personnalité.",<br/>
+                card3_title: "Rapport Complet",<br/>
+                card3_desc: "Recevez un rapport PDF détaillé avec une interprétation professionnelle.",<br/>
+                card4_title: "Conseils Pratiques",<br/>
+                card4_desc: "Un guide pour prendre des décisions alignées avec votre mission de vie.",<br/>
+                section_how_title: "Comment ça Marche",<br/>
+                section_how_subtitle: "En quelques étapes, votre carte est prête",<br/>
+                step1_title: "Entrez vos données",<br/>
+                step1_desc: "Entrez votre nom complet et votre date de naissance.",<br/>
+                step2_title: "Calcul automatisé",<br/>
+                step2_desc: "Notre moteur calcule tous les nombres avec précision.",<br/>
+                step3_title: "Rapport PDF",<br/>
+                step3_desc: "Recevez un rapport professionnel avec l'interprétation complète.",<br/>
+                section_numbers_title: "Les Nombres au Cœur",<br/>
+                section_numbers_subtitle: "Chaque nombre de 1 à 9 porte une énergie unique",<br/>
+                numbers_masters: "✦ Les Nombres Maîtres 11, 22 et 33 sont également considérés ✦",<br/>
+                cta_title: "Prêt à découvrir votre chemin ?",<br/>
+                cta_desc: "Votre carte numérologique personnelle est à portée de clic.",<br/>
+                cta_btn1: "✦ GÉNÉRER CARTE GRATUITE",<br/>
+                cta_btn2: "DÉCOUVRIR A1ELOS",<br/>
+                footer_text: "© 2026 A1ELOS Assessoria e Consultoria. Tous droits réservés."
+            },
+            hi: {<br/>
+                hero_title: "अंक ज्योतिष मानचित्र",<br/>
+                hero_subtitle: "जानें कि संख्याएं आपके बारे में क्या बताती हैं",<br/>
+                hero_desc: "पाइथागोरियन अंक ज्योतिष पर आधारित आत्म-खोज की यात्रा। आपका व्यक्तिगत मानचित्र उन संख्याओं के माध्यम से प्रतिभा, चुनौतियों और मार्गों को प्रकट करता है जो आपके जीवन को नियंत्रित करती हैं।",<br/>
+                hero_btn: "✦ मेरा मानचित्र बनाएं",<br/>
+                section_what_title: "अंक ज्योतिष मानचित्र क्या है?",<br/>
+                section_what_subtitle: "पाइथागोरियन अंक ज्योतिष पर आधारित एक आत्म-खोज उपकरण",<br/>
+                card1_title: "आपके जीवन की संख्याएँ",<br/>
+                card1_desc: "हम आपके जन्म की तारीख और पूरे नाम से जीवन पथ, भाग्य, आत्मा और अन्य आवश्यक संख्याओं की गणना करते हैं।",<br/>
+                card2_title: "आपका व्यक्तिगत मानचित्र",<br/>
+                card2_desc: "प्रत्येक संख्या आपके व्यक्तित्व, जन्मजात प्रतिभाओं और चुनौतियों के एक अद्वितीय आयाम को प्रकट करती है।",<br/>
+                card3_title: "पूर्ण रिपोर्ट",<br/>
+                card3_desc: "आपको अपने मानचित्र की पेशेवर व्याख्या के साथ एक विस्तृत पीडीएफ रिपोर्ट प्राप्त होती है।",<br/>
+                card4_title: "व्यावहारिक मार्गदर्शन",<br/>
+                card4_desc: "अपने जीवन के उद्देश्य के साथ संरेखित निर्णय लेने के लिए एक मार्गदर्शिका।",<br/>
+                section_how_title: "यह कैसे काम करता है",<br/>
+                section_how_subtitle: "कुछ ही चरणों में, आपका मानचित्र तैयार है",<br/>
+                step1_title: "अपना डेटा दर्ज करें",<br/>
+                step1_desc: "अपना पूरा नाम और जन्म तिथि दर्ज करें।",<br/>
+                step2_title: "स्वचालित गणना",<br/>
+                step2_desc: "हमारा इंजन सटीकता के साथ सभी संख्याओं की गणना करता है।",<br/>
+                step3_title: "पीडीएफ रिपोर्ट",<br/>
+                step3_desc: "अपने मानचित्र की पूरी व्याख्या के साथ एक पेशेवर रिपोर्ट प्राप्त करें।",<br/>
+                section_numbers_title: "केंद्र में संख्याएँ",<br/>
+                section_numbers_subtitle: "1 से 9 तक की प्रत्येक संख्या एक अद्वितीय ऊर्जा वहन करती है",<br/>
+                numbers_masters: "✦ मास्टर नंबर 11, 22 और 33 पर भी विचार किया जाता है ✦",<br/>
+                cta_title: "अपना रास्ता खोजने के लिए तैयार हैं?",<br/>
+                cta_desc: "आपका व्यक्तिगत अंक ज्योतिष मानचित्र बस कुछ ही क्लिक दूर है।",<br/>
+                cta_btn1: "✦ मुफ्त मानचित्र बनाएं",<br/>
+                cta_btn2: "A1ELOS जानें",<br/>
+                footer_text: "© 2026 A1ELOS Assessoria e Consultoria. सर्वाधिकार सुरक्षित।"
+            },
+            de: {<br/>
+                hero_title: "NUMEROLOGISCHE KARTE",<br/>
+                hero_subtitle: "Entdecken Sie, was Zahlen über Sie verraten",<br/>
+                hero_desc: "Eine Selbstfindungsreise basierend auf der pythagoreischen Numerologie. Ihre persönliche Karte offenbart Talente, Herausforderungen und Wege durch die Zahlen, die Ihr Leben bestimmen.",<br/>
+                hero_btn: "✦ MEINE KARTE ERSTELLEN",<br/>
+                section_what_title: "Was ist die numerologische Karte?",<br/>
+                section_what_subtitle: "Ein Werkzeug zur Selbsterkenntnis basierend auf Numerologie",<br/>
+                card1_title: "Zahlen Ihres Lebens",<br/>
+                card1_desc: "Wir berechnen Lebensweg, Schicksal, Seele und andere wesentliche Zahlen.",<br/>
+                card2_title: "Ihre persönliche Karte",<br/>
+                card2_desc: "Jede Zahl offenbart eine einzigartige Dimension Ihrer Persönlichkeit.",<br/>
+                card3_title: "Vollständiger Bericht",<br/>
+                card3_desc: "Sie erhalten einen detaillierten PDF-Bericht mit professioneller Interpretation.",<br/>
+                card4_title: "Praktische Anleitung",<br/>
+                card4_desc: "Ein Leitfaden für Entscheidungen, die auf Ihren Lebenszweck abgestimmt sind.",<br/>
+                section_how_title: "Wie es funktioniert",<br/>
+                section_how_subtitle: "In wenigen Schritten ist Ihre Karte fertig",<br/>
+                step1_title: "Daten eingeben",<br/>
+                step1_desc: "Geben Sie Ihren vollständigen Namen und Ihr Geburtsdatum ein.",<br/>
+                step2_title: "Automatisierte Berechnung",<br/>
+                step2_desc: "Unsere Engine berechnet alle Zahlen mit höchster Präzision.",<br/>
+                step3_title: "PDF-Bericht",<br/>
+                step3_desc: "Erhalten Sie einen professionellen Bericht mit der vollständigen Interpretation.",<br/>
+                section_numbers_title: "Die Zahlen im Zentrum",<br/>
+                section_numbers_subtitle: "Jede Zahl von 1 bis 9 trägt eine einzigartige Energie",<br/>
+                numbers_masters: "✦ Meisterzahlen 11, 22 und 33 werden ebenfalls berücksichtigt ✦",<br/>
+                cta_title: "Bereit, Ihren Weg zu entdecken?",<br/>
+                cta_desc: "Ihre persönliche numerologische Karte ist nur wenige Klicks entfernt.",<br/>
+                cta_btn1: "✦ GRATIS KARTE ERSTELLEN",<br/>
+                cta_btn2: "A1ELOS ENTDECKEN",<br/>
+                footer_text: "© 2026 A1ELOS Assessoria e Consultoria. Alle Rechte vorbehalten."
+            },
+            ja: {<br/>
+                hero_title: "数秘術マップ",<br/>
+                hero_subtitle: "数字があなたについて明らかにすることを発見しましょう",<br/>
+                hero_desc: "ピタゴラス数秘術に基づく自己発見の旅。あなたのパーソナルマップは、人生を支配する数字を通じて、才能、課題、道筋を明らかにします。",<br/>
+                hero_btn: "✦ マップを生成",<br/>
+                section_what_title: "数秘術マップとは？",<br/>
+                section_what_subtitle: "ピタゴラス数秘術に基づく自己発見ツール",<br/>
+                card1_title: "あなたの人生の数字",<br/>
+                card1_desc: "生年月日と氏名から、ライフパス、運命、魂などの重要な数字を計算します。",<br/>
+                card2_title: "パーソナルマップ",<br/>
+                card2_desc: "それぞれの数字が、あなたの個性や才能のユニークな側面を明らかにします。",<br/>
+                card3_title: "完全なレポート",<br/>
+                card3_desc: "各数字の専門的な解釈を含む詳細なPDFレポートをダウンロードできます。",<br/>
+                card4_title: "実践的なガイダンス",<br/>
+                card4_desc: "人生の目的に沿った決断を下すためのガイドブックです。",<br/>
+                section_how_title: "仕組み",<br/>
+                section_how_subtitle: "わずか数ステップでマップが完成します",<br/>
+                step1_title: "データを入力",<br/>
+                step1_desc: "氏名と生年月日を入力してください。",<br/>
+                step2_title: "自動計算",<br/>
+                step2_desc: "当社のエンジンがすべての数秘術の数字を正確に計算します。",<br/>
+                step3_title: "PDFレポート",<br/>
+                step3_desc: "完全な解釈が含まれたプロフェッショナルなレポートを受け取ります。",<br/>
+                section_numbers_title: "中心にある数字",<br/>
+                section_numbers_subtitle: "1から9までの各数字は独自のエネルギーを持っています",<br/>
+                numbers_masters: "✦ マスターナンバー11、22、33も考慮されます ✦",<br/>
+                cta_title: "あなたの道を見つける準備はできましたか？",<br/>
+                cta_desc: "数クリックであなただけの数秘術マップが手に入ります。",<br/>
+                cta_btn1: "✦ 無料マップを生成",<br/>
+                cta_btn2: "A1ELOSについて",<br/>
+                footer_text: "© 2026 A1ELOS Assessoria e Consultoria. 全著作権所有。"
+            },
+            ar: {<br/>
+                hero_title: "خريطة الأرقام",<br/>
+                hero_subtitle: "اكتشف ما تكشفه الأرقام عنك",<br/>
+                hero_desc: "رحلة اكتشاف الذات بناءً على علم الأعداد الفيثاغوري. خريطتك الشخصية تكشف المواهب والتحديات والمسارات من خلال الأرقام التي تحكم حياتك.",<br/>
+                hero_btn: "✦ إنشاء خريطتي",<br/>
+                section_what_title: "ما هي خريطة الأرقام؟",<br/>
+                section_what_subtitle: "أداة لاكتشاف الذات تعتمد على علم الأعداد الفيثاغوري",<br/>
+                card1_title: "أرقام حياتك",<br/>
+                card1_desc: "نحسب مسار الحياة، والقدر، والروح، والأرقام الأساسية الأخرى من تاريخ ميلادك.",<br/>
+                card2_title: "خريطتك الشخصية",<br/>
+                card2_desc: "يكشف كل رقم عن بُعد فريد لشخصيتك ومواهبك الفطرية.",<br/>
+                card3_title: "تقرير كامل",<br/>
+                card3_desc: "تتلقى تقريراً مفصلاً بصيغة PDF مع تفسير احترافي لكل رقم.",<br/>
+                card4_title: "توجيه عملي",<br/>
+                card4_desc: "دليل لاتخاذ قرارات تتماشى مع دوراتك العددية وهدف حياتك.",<br/>
+                section_how_title: "كيف يعمل",<br/>
+                section_how_subtitle: "في خطوات قليلة، خريطتك جاهزة",<br/>
+                step1_title: "أدخل بياناتك",<br/>
+                step1_desc: "أدخل اسمك الكامل وتاريخ ميلادك.",<br/>
+                step2_title: "حساب آلي",<br/>
+                step2_desc: "يقوم محركنا بحساب جميع الأرقام بدقة.",<br/>
+                step3_title: "تقرير PDF",<br/>
+                step3_desc: "احصل على تقرير احترافي مع التفسير الكامل لخريطتك.",<br/>
+                section_numbers_title: "الأرقام في المركز",<br/>
+                section_numbers_subtitle: "كل رقم من 1 إلى 9 يحمل طاقة فريدة",<br/>
+                numbers_masters: "✦ يتم أيضاً أخذ الأرقام الرئيسية 11 و 22 و 33 في الاعتبار ✦",<br/>
+                cta_title: "هل أنت مستعد لاكتشاف مسارك؟",<br/>
+                cta_desc: "خريطة الأرقام الشخصية الخاصة بك على بعد نقرات قليلة.",<br/>
+                cta_btn1: "✦ إنشاء خريطة مجانية",<br/>
+                cta_btn2: "تعرف على A1ELOS",<br/>
+                footer_text: "© 2026 A1ELOS Assessoria e Consultoria. جميع الحقوق محفوظة."
+            },
+            zh: {<br/>
+                hero_title: "数字命理图",<br/>
+                hero_subtitle: "发现数字揭示关于你的一切",<br/>
+                hero_desc: "一段基于毕达哥拉斯数字命理的自我发现之旅。你的个人命理图通过主宰你生命的数字揭示天赋、挑战和道路。",<br/>
+                hero_btn: "✦ 生成我的命理图",<br/>
+                section_what_title: "什么是数字命理图？",<br/>
+                section_what_subtitle: "基于毕达哥拉斯数字命理的自我发现工具",<br/>
+                card1_title: "你的生命数字",<br/>
+                card1_desc: "我们根据您的出生日期和全名计算生命路径、命运、灵魂等核心数字。",<br/>
+                card2_title: "个人命理图",<br/>
+                card2_desc: "每个数字都揭示了你性格、天赋和挑战的独特维度。",<br/>
+                card3_title: "完整报告",<br/>
+                card3_desc: "您将收到一份详细的PDF报告，包含对每个数字的专业解读。",<br/>
+                card4_title: "实践指导",<br/>
+                card4_desc: "一份指导手册，帮助您做出符合生命目标的决策。",<br/>
+                section_how_title: "运作方式",<br/>
+                section_how_subtitle: "只需几个步骤，您的图表即可完成",<br/>
+                step1_title: "输入数据",<br/>
+                step1_desc: "输入您的全名和出生日期。",<br/>
+                step2_title: "自动计算",<br/>
+                step2_desc: "我们的引擎精确计算所有基础数字。",<br/>
+                step3_title: "PDF报告",<br/>
+                step3_desc: "收到一份包含完整解读的专业报告。",<br/>
+                section_numbers_title: "核心数字",<br/>
+                section_numbers_subtitle: "1到9的每个数字都带有独特的能量",<br/>
+                numbers_masters: "✦ 卓越数 11、22 和 33 也在考虑范围内 ✦",<br/>
+                cta_title: "准备好发现你的道路了吗？",<br/>
+                cta_desc: "只需点击几下即可获得您的个人数字命理图。",<br/>
+                cta_btn1: "✦ 生成免费命理图",<br/>
+                cta_btn2: "了解 A1ELOS",<br/>
+                footer_text: "© 2026 A1ELOS Assessoria e Consultoria. 保留所有权利。"
+            },
+            ru: {<br/>
+                hero_title: "НУМЕРОЛОГИЧЕСКАЯ КАРТА",<br/>
+                hero_subtitle: "Узнайте, что числа говорят о вас",<br/>
+                hero_desc: "Путешествие самопознания, основанное на пифагорейской нумерологии. Ваша личная карта раскрывает таланты, вызовы и пути через числа, которые управляют вашей жизнью.",<br/>
+                hero_btn: "✦ СОЗДАТЬ МОЮ КАРТУ",<br/>
+                section_what_title: "Что такое нумерологическая карта?",<br/>
+                section_what_subtitle: "Инструмент самопознания на основе нумерологии",<br/>
+                card1_title: "Числа вашей жизни",<br/>
+                card1_desc: "Мы рассчитываем Путь Жизни, Судьбу, Душу и другие важные числа.",<br/>
+                card2_title: "Ваша личная карта",<br/>
+                card2_desc: "Каждое число раскрывает уникальное измерение вашей личности.",<br/>
+                card3_title: "Полный отчет",<br/>
+                card3_desc: "Вы получите подробный PDF-отчет с профессиональной интерпретацией.",<br/>
+                card4_title: "Практическое руководство",<br/>
+                card4_desc: "Руководство для принятия решений в соответствии с вашим предназначением.",<br/>
+                section_how_title: "Как это работает",<br/>
+                section_how_subtitle: "Ваша карта будет готова в несколько шагов",<br/>
+                step1_title: "Введите данные",<br/>
+                step1_desc: "Введите ваше полное имя и дату рождения.",<br/>
+                step2_title: "Автоматический расчет",<br/>
+                step2_desc: "Наш движок точно рассчитывает все нумерологические числа.",<br/>
+                step3_title: "PDF-отчет",<br/>
+                step3_desc: "Получите профессиональный отчет с полной интерпретацией.",<br/>
+                section_numbers_title: "Числа в центре",<br/>
+                section_numbers_subtitle: "Каждоное число от 1 до 9 несет уникальную энергию",<br/>
+                numbers_masters: "✦ Управляющие числа 11, 22 и 33 также учитываются ✦",<br/>
+                cta_title: "Готовы открыть свой путь?",<br/>
+                cta_desc: "Ваша личная нумерологическая карта всего в нескольких кликах.",<br/>
+                cta_btn1: "✦ СОЗДАТЬ БЕСПЛАТНУЮ КАРТУ",<br/>
+                cta_btn2: "УЗНАТЬ О A1ELOS",<br/>
+                footer_text: "© 2026 A1ELOS Assessoria e Consultoria. Все права защищены."
+            },
+            he: {<br/>
+                hero_title: "מפה נומרולוגית",<br/>
+                hero_subtitle: "גלו מה המספרים מגלים עליכם",<br/>
+                hero_desc: "מסע של גילוי עצמי המבוסס על נומרולוגיה פיתגורית. המפה האישית שלך חושפת כישרונות, אתגרים ונתיבים דרך המספרים השולטים בחייך.",<br/>
+                hero_btn: "✦ צור את המפה שלי",<br/>
+                section_what_title: "מהי מפה נומרולוגית?",<br/>
+                section_what_subtitle: "כלי לגילוי עצמי המבוסס על נומרולוגיה פיתגורית",<br/>
+                card1_title: "מספרי החיים שלך",<br/>
+                card1_desc: "אנו מחשבים את נתיב החיים, הייעוד, הנשמה ומספרים חיוניים אחרים.",<br/>
+                card2_title: "המפה האישית שלך",<br/>
+                card2_desc: "כל מספר חושף מימד ייחודי של האישיות והכישרונות שלך.",<br/>
+                card3_title: "דו\"ח מלא",<br/>
+                card3_desc: "תקבל דו\"ח PDF מפורט עם פרשנות מקצועית לכל מספר.",<br/>
+                card4_title: "הכוונה מעשית",<br/>
+                card4_desc: "מדריך לקבלת החלטות התואמות את ייעוד חייך.",<br/>
+                section_how_title: "איך זה עובד",<br/>
+                section_how_subtitle: "בכמה צעדים פשוטים, המפה שלך מוכנה",<br/>
+                step1_title: "הזן את הנתונים",<br/>
+                step1_desc: "הזן שם מלא ותאריך לידה.",<br/>
+                step2_title: "חישוב אוטומטי",<br/>
+                step2_desc: "המנוע שלנו מחשב את כל המספרים בדיוק מירבי.",<br/>
+                step3_title: "דו\"ח PDF",<br/>
+                step3_desc: "קבל דו\"ח מקצועי עם הפרשנות המלאה של המפה שלך.",<br/>
+                section_numbers_title: "המספרים במרכז",<br/>
+                section_numbers_subtitle: "כל מספר מ-1 עד 9 נושא אנרגיה ייחודית",<br/>
+                numbers_masters: "✦ מספרי מאסטר 11, 22 ו-33 נלקחים גם הם בחשבון ✦",<br/>
+                cta_title: "מוכן לגלות את הנתיב שלך?",<br/>
+                cta_desc: "המפה הנומרולוגית האישית שלך נמצאת במרחק כמה קליקים.",<br/>
+                cta_btn1: "✦ צור מפה בחינם",<br/>
+                cta_btn2: "גלה את A1ELOS",<br/>
+                footer_text: "© 2026 A1ELOS Assessoria e Consultoria. כל הזכויות שמורות."
+            }
+        };
 
-<!-- 3 - Pesquisa IA R$17 -->
-<div class="product-card">
-<div class="icon">🤖</div><span class="tag" data-i18n="tag_ia">IA</span>
-<h3 data-i18n="prod_ia_title">Pesquisa IA de Nomes</h3>
-<div class="price" data-price="2">R$ 17</div>
-<p class="desc" data-i18n="prod_ia_desc">Escolha a energia desejada (1 a 9) e o motivo. A IA sugere 5 nomes com aquela vibração energética. PDF com análise completa.</p>
-<ul><li>✅ <span data-i18n="feat_ia1">5 nomes sugeridos pela IA</span></li><li>✅ <span data-i18n="feat_ia2">Escolha da energia alvo (1 a 9)</span></li><li>✅ <span data-i18n="feat_ia3">10 motivos disponíveis</span></li><li>🔒 <span data-i18n="feat_pdf">PDF sigiloso por email</span></li></ul>
-<button class="btn btn-full" onclick="scrollToEl('pesquisa-ia')" data-i18n="btn_ia_start">Pesquisar Nomes</button>
-</div>
+        const languages = [
+            { code: 'pt', name: 'PT', flag: '🇧🇷' },<br/>
+            { code: 'en', name: 'EN', flag: '🇺🇸' },<br/>
+            { code: 'es', name: 'ES', flag: '🇪🇸' },<br/>
+            { code: 'it', name: 'IT', flag: '🇮🇹' },<br/>
+            { code: 'fr', name: 'FR', flag: '🇫🇷' },<br/>
+            { code: 'hi', name: 'HI', flag: '🇮🇳' },<br/>
+            { code: 'de', name: 'DE', flag: '🇩🇪' },<br/>
+            { code: 'ja', name: 'JA', flag: '🇯🇵' },<br/>
+            { code: 'ar', name: 'AR', flag: '🇸🇦' },<br/>
+            { code: 'zh', name: 'ZH', flag: '🇨🇳' },<br/>
+            { code: 'ru', name: 'RU', flag: '🇷🇺' },<br/>
+            { code: 'he', name: 'HE', flag: '🇮🇱' }
+        ];
 
-<!-- 4 - Validação Nome de Urna R$26 -->
-<div class="product-card">
-<div class="icon">🗳️</div><span class="tag" data-i18n="tag_recommended">Recomendado</span>
-<h3 data-i18n="prod_urna_title">Validação Nome de Urna</h3>
-<div class="price" data-price="3">R$ 26</div>
-<p class="desc" data-i18n="prod_urna_desc">5 tentativas + sugestões com cargo + PDF sigiloso por email. Análise completa de cada nome de candidatura.</p>
-<ul><li>✅ <span data-i18n="feat_urna1">5 nomes testados</span></li><li>✅ <span data-i18n="feat_urna2">Sugestões com energia 8</span></li><li>✅ <span data-i18n="feat_urna3">Cálculo letra a letra</span></li><li>🔒 <span data-i18n="feat_pdf">PDF sigiloso por email</span></li></ul>
-<button class="btn btn-full" onclick="scrollToEl('urna')" data-i18n="btn_urna_start">Iniciar Validação</button>
-</div>
+        function setLanguage(lang) {
+            localStorage.setItem('selectedLang', lang);
+            
+            // Update buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
 
-<!-- 5 - Número Eleitoral R$26 -->
-<div class="product-card">
-<div class="icon">🔢</div><span class="tag" data-i18n="tag_recommended">Recomendado</span>
-<h3 data-i18n="prod_elec_title">Número Eleitoral</h3>
-<div class="price" data-price="4">R$ 26</div>
-<p class="desc" data-i18n="prod_elec_desc">Sugestões de números com energia 8 para sua candidatura política. Análise com PDF sigiloso.</p>
-<ul><li>✅ <span data-i18n="feat_elec1">5 números sugeridos</span></li><li>✅ <span data-i18n="feat_elec2">Prioridade energia 8 (Poder)</span></li><li>✅ <span data-i18n="feat_elec3">Cálculo completo</span></li><li>🔒 <span data-i18n="feat_pdf">PDF sigiloso por email</span></li></ul>
-<button class="btn btn-full" onclick="scrollToEl('eleitoral')" data-i18n="btn_elec_start">Calcular Nº Eleitoral</button>
-</div>
+            // Update Direction for RTL
+            const isRTL = ['ar', 'he'].includes(lang);
+            document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
+            document.documentElement.lang = lang;
 
-<!-- 6 - Número do Imóvel R$26 -->
-<div class="product-card">
-<div class="icon">🏠</div><span class="tag" data-i18n="tag_building">Imóvel</span>
-<h3 data-i18n="prod_building_title">Número do Imóvel</h3>
-<div class="price" data-price="5">R$ 26</div>
-<p class="desc" data-i18n="prod_building_desc">3 espaços (Prédio, Apt/Loja, Sala) + letras e números + energia alvo (1 a 9) + PDF com análise. Descubra a energia do seu imóvel.</p>
-<ul><li>✅ <span data-i18n="feat_building1">3 espaços testados</span></li><li>✅ <span data-i18n="feat_building2">Letras e números aceitos</span></li><li>✅ <span data-i18n="feat_building3">Energia alvo (1 a 9)</span></li><li>🔒 <span data-i18n="feat_pdf">PDF sigiloso por email</span></li></ul>
-<button class="btn btn-full" onclick="scrollToEl('imovel')" data-i18n="btn_building_start">Calcular Nº do Imóvel</button>
-</div>
+            // Update Content
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    el.classList.remove('fade-in');
+                    void el.offsetWidth; // Trigger reflow
+                    el.innerText = translations[lang][key];
+                    el.classList.add('fade-in');
+                }
+            });
+        }
 
-<!-- 7 - Validação Nome Artístico R$35 -->
-<div class="product-card">
-<div class="icon">🎭</div><span class="tag" data-i18n="tag_permanent">Permanente</span>
-<h3 data-i18n="prod_artistic_title">Validação Nome Artístico</h3>
-<div class="price" data-price="6">R$ 35</div>
-<p class="desc" data-i18n="prod_artistic_desc">6 tentativas + cálculo letra a letra + PDF sigiloso por email. Produto permanente — válido para toda a vida.</p>
-<ul><li>✅ <span data-i18n="feat_artistic1">6 nomes testados</span></li><li>✅ <span data-i18n="feat_artistic2">Sugestões com energia 2</span></li><li>✅ <span data-i18n="feat_artistic3">Cálculo letra a letra</span></li><li>🔒 <span data-i18n="feat_pdf">PDF sigiloso por email</span></li></ul>
-<button class="btn btn-full" onclick="scrollToEl('artistico')" data-i18n="btn_artistic_start">Iniciar Validação</button>
-</div>
+        function init() {
+            const container = document.getElementById('langSelector');
+            languages.forEach(l => {
+                const btn = document.createElement('button');
+                btn.className = 'lang-btn';
+                btn.dataset.lang = l.code;
+                btn.innerHTML = `<span>${l.flag}</span> ${l.name}`;
+                btn.onclick = () => setLanguage(l.code);
+                container.appendChild(btn);
+            });
 
-<!-- 8 - Planejamento Nome de Bebê R$35 -->
-<div class="product-card">
-<div class="icon">👶</div><span class="tag" data-i18n="tag_baby">Planejamento</span>
-<h3 data-i18n="prod_baby_title">Planejamento Nome de Bebê</h3>
-<div class="price" data-price="7">R$ 35</div>
-<p class="desc" data-i18n="prod_baby_desc">6 nomes testados + número alvo (1 a 9) + descrição energética + PDF sigiloso por email. Sincronize o nome com a data de nascimento.</p>
-<ul><li>✅ <span data-i18n="feat_baby1">6 nomes testados</span></li><li>✅ <span data-i18n="feat_baby2">Escolha do número alvo (1 a 9)</span></li><li>✅ <span data-i18n="feat_baby3">Descrição energética por nome</span></li><li>🔒 <span data-i18n="feat_pdf">PDF sigiloso por email</span></li></ul>
-<button class="btn btn-full" onclick="scrollToEl('bebe')" data-i18n="btn_baby_start">Planejar Nome</button>
-</div>
+            const savedLang = localStorage.getItem('selectedLang');
+            const browserLang = navigator.language.split('-')[0];
+            const defaultLang = savedLang || (translations[browserLang] ? browserLang : 'pt');
+            
+            setLanguage(defaultLang);
+        }
 
-<!-- 9 - Validação de Assinaturas R$35 -->
-<div class="product-card">
-<div class="icon">✍️</div><span class="tag" data-i18n="tag_signature">Assinaturas</span>
-<h3 data-i18n="prod_signature_title">Validação de Assinaturas</h3>
-<div class="price" data-price="8">R$ 35</div>
-<p class="desc" data-i18n="prod_signature_desc">5 assinaturas testadas + escolha da energia alvo (1 a 9) + PDF com análise energética completa. Descubra a vibração da sua assinatura.</p>
-<ul><li>✅ <span data-i18n="feat_signature1">5 assinaturas testadas</span></li><li>✅ <span data-i18n="feat_signature2">Escolha da energia alvo (1 a 9)</span></li><li>✅ <span data-i18n="feat_signature3">PDF com análise energética</span></li><li>🔒 <span data-i18n="feat_pdf">PDF sigiloso por email</span></li></ul>
-<button class="btn btn-full" onclick="scrollToEl('assinatura')" data-i18n="btn_signature_start">Testar Assinaturas</button>
-</div>
-
-<!-- 10 - Nome para Negócio/Produto R$44 -->
-<div class="product-card">
-<div class="icon">🏪</div><span class="tag" data-i18n="tag_business">Negócios</span>
-<h3 data-i18n="prod_business_title">Nome para Negócio/Produto</h3>
-<div class="price" data-price="9">R$ 44</div>
-<p class="desc" data-i18n="prod_business_desc">8 nomes testados + energia 8 (dinheiro) + PDF com análise energética completa. Descubra a vibração ideal para sua empresa ou produto.</p>
-<ul><li>✅ <span data-i18n="feat_business1">8 nomes testados</span></li><li>✅ <span data-i18n="feat_business2">Energia 8 (Poder/Prosperidade)</span></li><li>✅ <span data-i18n="feat_business3">PDF com análise energética</span></li><li>🔒 <span data-i18n="feat_pdf">PDF sigiloso por email</span></li></ul>
-<button class="btn btn-full" onclick="scrollToEl('negocio')" data-i18n="btn_business_start">Testar Nomes</button>
-</div>
-
-<!-- 11 - Mapa do Casal R$44 -->
-<div class="product-card">
-<div class="icon">💞</div><span class="tag" data-i18n="tag_couple">Casal</span>
-<h3 data-i18n="prod_couple_title">Mapa do Casal</h3>
-<div class="price" data-price="10">R$ 44</div>
-<p class="desc" data-i18n="prod_couple_desc">2 mapas individuais completos + cálculo de compatibilidade pela tabela da página 159. Descubra se a relação é Dissonância, Média, Acordo ou Perfeita.</p>
-<ul><li>✅ <span data-i18n="feat_couple1">2 mapas individuais completos</span></li><li>✅ <span data-i18n="feat_couple2">Cálculo de compatibilidade (pág. 159)</span></li><li>✅ <span data-i18n="feat_couple3">PDF até 10 páginas</span></li><li>🔒 <span data-i18n="feat_pdf">PDF sigiloso por email</span></li></ul>
-<button class="btn btn-full" onclick="scrollToEl('casal')" data-i18n="btn_couple_start">Calcular Mapa do Casal</button>
-</div>
-
-<!-- 12 - Mapa Família Premium R$98 -->
-<div class="product-card">
-<div class="icon">🌟</div><span class="tag" data-i18n="tag_premium">Premium</span>
-<h3 data-i18n="prod_family_title">Mapa Família Premium</h3>
-<div class="price" data-price="11">R$ 98</div>
-<p class="desc" data-i18n="prod_family_desc">1 nome chave + 3 familiares com mapas completos + 4 cruzamentos de compatibilidade. Relação da pessoa chave com cada familiar.</p>
-<ul><li>✅ <span data-i18n="feat_family1">4 mapas individuais completos</span></li><li>✅ <span data-i18n="feat_family2">4 cruzamentos de compatibilidade</span></li><li>✅ <span data-i18n="feat_family3">PDF até 20 páginas</span></li><li>🔒 <span data-i18n="feat_pdf">PDF sigiloso por email</span></li></ul>
-<button class="btn btn-full" onclick="scrollToEl('familia')" data-i18n="btn_family_start">Calcular Mapa Família</button>
-</div>
-
-<!-- 13 - Pacote Empresa Completa R$152 -->
-<div class="product-card">
-<div class="icon">🏢</div><span class="tag" data-i18n="tag_business_pack">Pacote</span>
-<h3 data-i18n="prod_businesspack_title">Pacote Empresa Completa</h3>
-<div class="price" data-price="12">R$ 152</div>
-<p class="desc" data-i18n="prod_businesspack_desc">Mapa Completo do indivíduo + Assinatura (8 testes) + Número do Imóvel + Nome para Negócio/Produto (17 testes). PDF único com análise completa.</p>
-<ul><li>✅ <span data-i18n="feat_businesspack1">Mapa Completo individual</span></li><li>✅ <span data-i18n="feat_businesspack2">Assinatura: 8 testes</span></li><li>✅ <span data-i18n="feat_businesspack3">Número do Imóvel</span></li><li>✅ <span data-i18n="feat_businesspack4">Nome Negócio/Produto: 17 testes</span></li><li>🔒 <span data-i18n="feat_pdf">PDF sigiloso por email</span></li></ul>
-<button class="btn btn-full" onclick="scrollToEl('empresa-completa')" data-i18n="btn_businesspack_start">Contratar Pacote</button>
-</div>
-
-</div>
-</section>
-
-<!-- NOME DE URNA -->
-<section id="urna" class="section section-hidden">
-<div class="form-container">
-<h2 class="section-title" data-i18n="urna_title">Validação do Nome de Urna</h2>
-<p class="section-sub" data-i18n="urna_sub">5 tentativas + cálculo letra a letra + PDF sigiloso — R$ 26</p>
-<form id="urnaForm" onsubmit="event.preventDefault();payUrna()">
-<div class="form-group"><label data-i18n="urna_name">Nome Completo da Pessoa</label><input type="text" id="urnaFullName" required></div>
-<div class="form-group"><label data-i18n="urna_role">Cargo em Disputa</label><select id="urnaRole"><option value="Vereador" data-i18n="urna_role1">Vereador</option><option value="Dep. Estadual" data-i18n="urna_role2">Dep. Estadual</option><option value="Dep. Federal" data-i18n="urna_role3">Dep. Federal</option><option value="Senador" data-i18n="urna_role4">Senador</option></select></div>
-<div class="form-group"><label data-i18n="urna_email">Email (resultado sigiloso)</label><input type="email" id="urnaEmail" required></div>
-<p class="hint" data-i18n="urna_5names">Insira até 5 opções de nome de candidato:</p>
-<div class="form-group"><label>Nome 1</label><input type="text" id="urnaNome1" required></div>
-<div class="form-group"><label>Nome 2</label><input type="text" id="urnaNome2"></div>
-<div class="form-group"><label>Nome 3</label><input type="text" id="urnaNome3"></div>
-<div class="form-group"><label>Nome 4</label><input type="text" id="urnaNome4"></div>
-<div class="form-group"><label>Nome 5</label><input type="text" id="urnaNome5"></div>
-<button type="submit" class="btn btn-full" id="urnaBtn">🔒 Pagar R$ 26 — Resultado por Email</button>
-</form>
-</div>
-</section>
-
-<!-- NÚMERO ELEITORAL -->
-<section id="eleitoral" class="section section-hidden">
-<div class="form-container">
-<h2 class="section-title" data-i18n="elec_title">Cálculo do Número Eleitoral</h2>
-<p class="section-sub" data-i18n="elec_sub">Sugestões com energia 8 para sua candidatura</p>
-<p class="hint" style="text-align:center" data-i18n="elec_warn">Por lei eleitoral, números não podem ser divulgados publicamente. Consulte o PDF sigiloso.</p>
-<form id="elecForm" onsubmit="event.preventDefault();payEleitoral()">
-<div class="form-group"><label data-i18n="elec_role">Cargo em Disputa</label>
-<select id="elecRole" required>
-<option value="Vereador" data-i18n="elec_role1">Vereador (5 dígitos)</option>
-<option value="Dep. Estadual" data-i18n="elec_role2">Dep. Estadual (5 dígitos)</option>
-<option value="Dep. Federal" data-i18n="elec_role3">Dep. Federal (4 dígitos)</option>
-<option value="Senador" data-i18n="elec_role4">Senador (3 dígitos)</option>
-</select></div>
-<div class="form-group"><label data-i18n="elec_party">Número da Sigla partidária + Números de disputa (01 a 99)</label><input type="number" id="elecParty" min="1" max="99" required></div>
-<div class="form-group"><label data-i18n="elec_existing">Número já existente (opcional)</label><input type="text" id="elecExisting"></div>
-<p class="hint" data-i18n="elec_7names">Insira até 7 números de disputa desejados (os dois primeiros dígitos são a sigla partidária):</p>
-<div class="form-group"><label>Nº 1</label><input type="text" id="elecNome1" required></div>
-<div class="form-group"><label>Nº 2</label><input type="text" id="elecNome2"></div>
-<div class="form-group"><label>Nº 3</label><input type="text" id="elecNome3"></div>
-<div class="form-group"><label>Nº 4</label><input type="text" id="elecNome4"></div>
-<div class="form-group"><label>Nº 5</label><input type="text" id="elecNome5"></div>
-<div class="form-group"><label>Nº 6</label><input type="text" id="elecNome6"></div>
-<div class="form-group"><label>Nº 7</label><input type="text" id="elecNome7"></div>
-<button type="submit" class="btn btn-full" id="elecBtn">🔒 Pagar</button>
-</form>
-</div>
-</section>
-
-<!-- NOME ARTÍSTICO -->
-<section id="artistico" class="section section-hidden">
-<div class="form-container">
-<h2 class="section-title" data-i18n="artistic_title">Validação do Nome Artístico</h2>
-<p class="section-sub" data-i18n="artistic_sub">6 tentativas + cálculo letra a letra + PDF sigiloso — R$ 35 — Produto permanente</p>
-<form id="artisticForm" onsubmit="event.preventDefault();payArtistico()">
-<div class="form-group"><label data-i18n="artistic_name">Nome Completo da Pessoa</label><input type="text" id="artisticFullName" required></div>
-<div class="form-group"><label data-i18n="artistic_email_label">Email (resultado sigiloso)</label><input type="email" id="artisticEmail" required></div>
-<p class="hint" data-i18n="artistic_6names">Insira até 6 opções de nome artístico:</p>
-<div class="form-group"><label>Nome 1</label><input type="text" id="artisticNome1" required></div>
-<div class="form-group"><label>Nome 2</label><input type="text" id="artisticNome2"></div>
-<div class="form-group"><label>Nome 3</label><input type="text" id="artisticNome3"></div>
-<div class="form-group"><label>Nome 4</label><input type="text" id="artisticNome4"></div>
-<div class="form-group"><label>Nome 5</label><input type="text" id="artisticNome5"></div>
-<div class="form-group"><label>Nome 6</label><input type="text" id="artisticNome6"></div>
-<button type="submit" class="btn btn-full" id="artisticBtn">🔒 Pagar R$ 35 — Resultado por Email</button>
-</form>
-</div>
-</section>
-
-<!-- NOME DO BEBÊ -->
-<section id="bebe" class="section section-hidden">
-<div class="form-container">
-<h2 class="section-title" data-i18n="baby_title">Planejamento do Nome de Bebê</h2>
-<p class="section-sub" data-i18n="baby_sub">6 nomes testados + número alvo + descrição energética — R$ 35</p>
-<form id="babyForm" onsubmit="event.preventDefault();payBaby()">
-<div class="form-group"><label data-i18n="baby_name">Nome Completo da Pessoa (responsável)</label><input type="text" id="babyFullName" required></div>
-<div class="form-group"><label data-i18n="baby_email_label">Email (resultado sigiloso)</label><input type="email" id="babyEmail" required></div>
-<div class="form-group"><label data-i18n="baby_number_label">Número alvo (1 a 9):</label>
-<select id="babyNumber" required>
-<option value="1" data-i18n="baby_num1">1 — Liderança</option><option value="2" data-i18n="baby_num2">2 — Cooperação</option><option value="3" data-i18n="baby_num3">3 — Criatividade</option><option value="4" data-i18n="baby_num4">4 — Disciplina</option><option value="5" data-i18n="baby_num5">5 — Liberdade</option><option value="6" data-i18n="baby_num6">6 — Família</option><option value="7" data-i18n="baby_num7">7 — Sabedoria</option><option value="8" data-i18n="baby_num8">8 — Poder</option><option value="9" data-i18n="baby_num9">9 — Compaixão</option>
-</select></div>
-<p class="hint" data-i18n="baby_6names">Insira até 6 opções de nome completo para o bebê (independente do gênero):</p>
-<div class="form-group"><label>Nome 1</label><input type="text" id="babyNome1" required></div>
-<div class="form-group"><label>Nome 2</label><input type="text" id="babyNome2"></div>
-<div class="form-group"><label>Nome 3</label><input type="text" id="babyNome3"></div>
-<div class="form-group"><label>Nome 4</label><input type="text" id="babyNome4"></div>
-<div class="form-group"><label>Nome 5</label><input type="text" id="babyNome5"></div>
-<div class="form-group"><label>Nome 6</label><input type="text" id="babyNome6"></div>
-<button type="submit" class="btn btn-full" id="babyBtn">🔒 Pagar R$ 35 — Resultado por Email</button>
-</form>
-</div>
-</section>
-
-<!-- NOME PARA NEGÓCIO/PRODUTO -->
-<section id="negocio" class="section section-hidden">
-<div class="form-container">
-<h2 class="section-title" data-i18n="business_title">Validação de Nome para Negócio/Produto</h2>
-<p class="section-sub" data-i18n="business_sub">8 nomes testados + energia 8 (dinheiro) + PDF com análise energética completa — R$ 44</p>
-<form id="businessForm" onsubmit="event.preventDefault();payBusiness()">
-<div class="form-group"><label data-i18n="business_name">Nome Completo do Responsável</label><input type="text" id="businessFullName" required></div>
-<div class="form-group"><label data-i18n="business_email_label">Email (resultado sigiloso)</label><input type="email" id="businessEmail" required></div>
-<p class="hint" data-i18n="business_8names">Insira até 8 opções de nome para negócio ou produto:</p>
-<div class="form-group"><label>Nome 1</label><input type="text" id="businessNome1" required></div>
-<div class="form-group"><label>Nome 2</label><input type="text" id="businessNome2"></div>
-<div class="form-group"><label>Nome 3</label><input type="text" id="businessNome3"></div>
-<div class="form-group"><label>Nome 4</label><input type="text" id="businessNome4"></div>
-<div class="form-group"><label>Nome 5</label><input type="text" id="businessNome5"></div>
-<div class="form-group"><label>Nome 6</label><input type="text" id="businessNome6"></div>
-<div class="form-group"><label>Nome 7</label><input type="text" id="businessNome7"></div>
-<div class="form-group"><label>Nome 8</label><input type="text" id="businessNome8"></div>
-<button type="submit" class="btn btn-full" id="businessBtn">🔒 Pagar R$ 44 — Resultado por Email</button>
-</form>
-</div>
-</section>
-
-<!-- ASSINATURAS -->
-<section id="assinatura" class="section section-hidden">
-<div class="form-container">
-<h2 class="section-title" data-i18n="signature_title">Validação de Assinaturas</h2>
-<p class="section-sub" data-i18n="signature_sub">5 assinaturas testadas + escolha da energia alvo + PDF com análise — R$ 35</p>
-<form id="signatureForm" onsubmit="event.preventDefault();paySignature()">
-<div class="form-group"><label data-i18n="signature_name">Nome Completo</label><input type="text" id="signatureFullName" required></div>
-<div class="form-group"><label data-i18n="signature_email_label">Email (resultado sigiloso)</label><input type="email" id="signatureEmail" required></div>
-<div class="form-group"><label data-i18n="signature_number_label">Energia alvo da assinatura (1 a 9):</label>
-<select id="signatureNumber" required>
-<option value="1" data-i18n="baby_num1">1 — Liderança</option><option value="2" data-i18n="baby_num2">2 — Cooperação</option><option value="3" data-i18n="baby_num3">3 — Criatividade</option><option value="4" data-i18n="baby_num4">4 — Disciplina</option><option value="5" data-i18n="baby_num5">5 — Liberdade</option><option value="6" data-i18n="baby_num6">6 — Família</option><option value="7" data-i18n="baby_num7">7 — Sabedoria</option><option value="8" data-i18n="baby_num8">8 — Poder</option><option value="9" data-i18n="baby_num9">9 — Compaixão</option>
-</select></div>
-<p class="hint" data-i18n="signature_5names">Escreva abaixo as letras que deseja usar em cada assinatura (apenas as letras, sem espaços):</p>
-<div class="form-group"><label>Assinatura 1</label><input type="text" id="signatureLetras1" placeholder="Ex: A1ELOS" required></div>
-<div class="form-group"><label>Assinatura 2</label><input type="text" id="signatureLetras2" placeholder="Ex: A1ELOS"></div>
-<div class="form-group"><label>Assinatura 3</label><input type="text" id="signatureLetras3" placeholder="Ex: A1ELOS"></div>
-<div class="form-group"><label>Assinatura 4</label><input type="text" id="signatureLetras4" placeholder="Ex: A1ELOS"></div>
-<div class="form-group"><label>Assinatura 5</label><input type="text" id="signatureLetras5" placeholder="Ex: A1ELOS"></div>
-<button type="submit" class="btn btn-full" id="signatureBtn">🔒 Pagar R$ 35 — Resultado por Email</button>
-</form>
-</div>
-</section>
-
-<!-- NÚMERO DO IMÓVEL -->
-<section id="imovel" class="section section-hidden">
-<div class="form-container">
-<h2 class="section-title" data-i18n="building_title">Cálculo do Número do Imóvel</h2>
-<p class="section-sub" data-i18n="building_sub">3 espaços + letras/números + energia alvo — R$ 26</p>
-<form id="buildingForm" onsubmit="event.preventDefault();payBuilding()">
-<div class="form-group"><label data-i18n="building_name">Nome Completo</label><input type="text" id="buildingFullName" required></div>
-<div class="form-group"><label data-i18n="building_email_label">Email (resultado sigiloso)</label><input type="email" id="buildingEmail" required></div>
-<div class="form-group"><label data-i18n="building_number_label">Energia desejada para o imóvel (1 a 9):</label>
-<select id="buildingNumber" required>
-<option value="1" data-i18n="baby_num1">1 — Liderança</option><option value="2" data-i18n="baby_num2">2 — Cooperação</option><option value="3" data-i18n="baby_num3">3 — Criatividade</option><option value="4" data-i18n="baby_num4">4 — Disciplina</option><option value="5" data-i18n="baby_num5">5 — Liberdade</option><option value="6" data-i18n="baby_num6">6 — Família</option><option value="7" data-i18n="baby_num7">7 — Sabedoria</option><option value="8" data-i18n="baby_num8">8 — Poder</option><option value="9" data-i18n="baby_num9">9 — Compaixão</option>
-</select></div>
-<p class="hint" data-i18n="building_3spaces">Insira os números dos espaços (podem conter letras, ex: 345B):</p>
-<div class="grid3">
-<div class="form-group"><label data-i18n="building_space1">Prédio (ex: 345B)</label><input type="text" id="buildingSpace1" required></div>
-<div class="form-group"><label data-i18n="building_space2">Apt/Loja (ex: 261G)</label><input type="text" id="buildingSpace2"></div>
-<div class="form-group"><label data-i18n="building_space3">Sala (ex: 1C)</label><input type="text" id="buildingSpace3"></div>
-</div>
-<button type="submit" class="btn btn-full" id="buildingBtn">🔒 Pagar R$ 26 — Resultado por Email</button>
-</form>
-</div>
-</section>
-
-<!-- MAPA DO CASAL -->
-<section id="casal" class="section section-hidden">
-<div class="form-container">
-<h2 class="section-title" data-i18n="couple_title">Mapa do Casal</h2>
-<p class="section-sub" data-i18n="couple_sub">2 mapas individuais + compatibilidade pela tabela da pág. 159 — R$ 44</p>
-<form id="coupleForm" onsubmit="event.preventDefault();payCouple()">
-<h3 class="sec-h" data-i18n="couple_person1">Pessoa 1</h3>
-<div class="form-group"><label data-i18n="couple_name1">Nome Completo da Pessoa 1</label><input type="text" id="coupleName1" required></div>
-<div class="form-group"><label data-i18n="couple_date1">Data de Nascimento da Pessoa 1</label><input type="date" id="coupleDate1" required></div>
-<h3 class="sec-h" data-i18n="couple_person2">Pessoa 2</h3>
-<div class="form-group"><label data-i18n="couple_name2">Nome Completo da Pessoa 2</label><input type="text" id="coupleName2" required></div>
-<div class="form-group"><label data-i18n="couple_date2">Data de Nascimento da Pessoa 2</label><input type="date" id="coupleDate2" required></div>
-<div class="form-group"><label data-i18n="couple_email">Email (resultado sigiloso)</label><input type="email" id="coupleEmail" required></div>
-<button type="submit" class="btn btn-full" id="coupleBtn">🔒 Pagar R$ 44 — Resultado por Email</button>
-</form>
-</div>
-</section>
-
-<!-- MAPA FAMÍLIA PREMIUM -->
-<section id="familia" class="section section-hidden">
-<div class="form-container">
-<h2 class="section-title" data-i18n="family_title">Mapa Família Premium</h2>
-<p class="section-sub" data-i18n="family_sub">1 nome chave + 3 familiares + 4 cruzamentos de compatibilidade — R$ 98</p>
-<form id="familyForm" onsubmit="event.preventDefault();payFamily()">
-<h3 class="sec-h" data-i18n="family_key">Nome Chave (principal)</h3>
-<div class="form-group"><label data-i18n="family_key_name">Nome Completo da Pessoa Chave</label><input type="text" id="familyKeyName" required></div>
-<div class="form-group"><label data-i18n="family_key_date">Data de Nascimento</label><input type="date" id="familyKeyDate" required></div>
-<h3 class="sec-h" data-i18n="family_members">Familiares</h3>
-<p class="hint" data-i18n="family_3members">Insira os dados de até 3 familiares:</p>
-<div style="border:1px solid #222;border-radius:12px;padding:14px;margin-bottom:14px">
-<div class="form-group"><label data-i18n="family_member1_name">Nome Completo do Familiar 1</label><input type="text" id="familyMember1Name" required></div>
-<div class="form-group"><label data-i18n="family_member1_date">Data de Nascimento do Familiar 1</label><input type="date" id="familyMember1Date" required></div>
-</div>
-<div style="border:1px solid #222;border-radius:12px;padding:14px;margin-bottom:14px">
-<div class="form-group"><label data-i18n="family_member2_name">Nome Completo do Familiar 2</label><input type="text" id="familyMember2Name"></div>
-<div class="form-group"><label data-i18n="family_member2_date">Data de Nascimento do Familiar 2</label><input type="date" id="familyMember2Date"></div>
-</div>
-<div style="border:1px solid #222;border-radius:12px;padding:14px;margin-bottom:14px">
-<div class="form-group"><label data-i18n="family_member3_name">Nome Completo do Familiar 3</label><input type="text" id="familyMember3Name"></div>
-<div class="form-group"><label data-i18n="family_member3_date">Data de Nascimento do Familiar 3</label><input type="date" id="familyMember3Date"></div>
-</div>
-<div class="form-group"><label data-i18n="family_email">Email (resultado sigiloso)</label><input type="email" id="familyEmail" required></div>
-<button type="submit" class="btn btn-full" id="familyBtn">🔒 Pagar R$ 98 — Resultado por Email</button>
-</form>
-</div>
-</section>
-
-<!-- PACOTE EMPRESA COMPLETA -->
-<section id="empresa-completa" class="section section-hidden">
-<div class="form-container">
-<h2 class="section-title" data-i18n="businesspack_title">Pacote Empresa Completa</h2>
-<p class="section-sub" data-i18n="businesspack_sub">Mapa Completo + Assinatura (8 testes) + Nº do Imóvel + Nome Negócio/Produto (17 testes) — R$ 152</p>
-<form id="businesspackForm" onsubmit="event.preventDefault();payBusinessPack()">
-<h3 class="sec-h" data-i18n="businesspack_section1">1. Mapa Completo do Indivíduo</h3>
-<div class="form-group"><label data-i18n="businesspack_name">Nome Completo</label><input type="text" id="bpName" required></div>
-<div class="form-group"><label data-i18n="businesspack_date">Data de Nascimento</label><input type="date" id="bpDate" required></div>
-<h3 class="sec-h" data-i18n="businesspack_section2">2. Assinatura</h3>
-<p class="hint" data-i18n="businesspack_sign_sub">Teste até 8 opções de assinatura (apenas letras, sem espaços):</p>
-<div class="form-group"><label data-i18n="businesspack_sign_energy">Energia alvo da assinatura (1 a 9):</label>
-<select id="bpSignEnergy">
-<option value="1" data-i18n="baby_num1">1 — Liderança</option><option value="2" data-i18n="baby_num2">2 — Cooperação</option><option value="3" data-i18n="baby_num3">3 — Criatividade</option><option value="4" data-i18n="baby_num4">4 — Disciplina</option><option value="5" data-i18n="baby_num5">5 — Liberdade</option><option value="6" data-i18n="baby_num6">6 — Família</option><option value="7" data-i18n="baby_num7">7 — Sabedoria</option><option value="8" data-i18n="baby_num8">8 — Poder</option><option value="9" data-i18n="baby_num9">9 — Compaixão</option>
-</select></div>
-<div class="grid3">
-<div class="form-group"><label>Assinatura 1</label><input type="text" id="bpSign1" placeholder="Ex: A1ELOS"></div>
-<div class="form-group"><label>Assinatura 2</label><input type="text" id="bpSign2"></div>
-<div class="form-group"><label>Assinatura 3</label><input type="text" id="bpSign3"></div>
-<div class="form-group"><label>Assinatura 4</label><input type="text" id="bpSign4"></div>
-<div class="form-group"><label>Assinatura 5</label><input type="text" id="bpSign5"></div>
-<div class="form-group"><label>Assinatura 6</label><input type="text" id="bpSign6"></div>
-<div class="form-group"><label>Assinatura 7</label><input type="text" id="bpSign7"></div>
-<div class="form-group"><label>Assinatura 8</label><input type="text" id="bpSign8"></div>
-</div>
-<h3 class="sec-h" data-i18n="businesspack_section3">3. Número do Imóvel</h3>
-<p class="hint" data-i18n="businesspack_property_sub">Insira os números (podem conter letras, ex: 345B):</p>
-<div class="form-group"><label data-i18n="businesspack_property_energy">Energia alvo do imóvel (1 a 9):</label>
-<select id="bpPropertyEnergy">
-<option value="1" data-i18n="baby_num1">1 — Liderança</option><option value="2" data-i18n="baby_num2">2 — Cooperação</option><option value="3" data-i18n="baby_num3">3 — Criatividade</option><option value="4" data-i18n="baby_num4">4 — Disciplina</option><option value="5" data-i18n="baby_num5">5 — Liberdade</option><option value="6" data-i18n="baby_num6">6 — Família</option><option value="7" data-i18n="baby_num7">7 — Sabedoria</option><option value="8" data-i18n="baby_num8">8 — Poder</option><option value="9" data-i18n="baby_num9">9 — Compaixão</option>
-</select></div>
-<div class="grid3">
-<div class="form-group"><label data-i18n="businesspack_property_building">Prédio</label><input type="text" id="bpProperty1" placeholder="Ex: 345B"></div>
-<div class="form-group"><label data-i18n="businesspack_property_apt">Apt/Loja</label><input type="text" id="bpProperty2" placeholder="Ex: 261G"></div>
-<div class="form-group"><label data-i18n="businesspack_property_room">Sala</label><input type="text" id="bpProperty3" placeholder="Ex: 1C"></div>
-</div>
-<h3 class="sec-h" data-i18n="businesspack_section4">4. Nome para Negócio/Produto</h3>
-<p class="hint" data-i18n="businesspack_product_sub">Teste até 17 nomes para seu negócio ou produto (energia 8):</p>
-<div class="grid3">
-<div class="form-group"><label>Nome 1</label><input type="text" id="bpProd1"></div>
-<div class="form-group"><label>Nome 2</label><input type="text" id="bpProd2"></div>
-<div class="form-group"><label>Nome 3</label><input type="text" id="bpProd3"></div>
-<div class="form-group"><label>Nome 4</label><input type="text" id="bpProd4"></div>
-<div class="form-group"><label>Nome 5</label><input type="text" id="bpProd5"></div>
-<div class="form-group"><label>Nome 6</label><input type="text" id="bpProd6"></div>
-<div class="form-group"><label>Nome 7</label><input type="text" id="bpProd7"></div>
-<div class="form-group"><label>Nome 8</label><input type="text" id="bpProd8"></div>
-<div class="form-group"><label>Nome 9</label><input type="text" id="bpProd9"></div>
-<div class="form-group"><label>Nome 10</label><input type="text" id="bpProd10"></div>
-<div class="form-group"><label>Nome 11</label><input type="text" id="bpProd11"></div>
-<div class="form-group"><label>Nome 12</label><input type="text" id="bpProd12"></div>
-<div class="form-group"><label>Nome 13</label><input type="text" id="bpProd13"></div>
-<div class="form-group"><label>Nome 14</label><input type="text" id="bpProd14"></div>
-<div class="form-group"><label>Nome 15</label><input type="text" id="bpProd15"></div>
-<div class="form-group"><label>Nome 16</label><input type="text" id="bpProd16"></div>
-<div class="form-group"><label>Nome 17</label><input type="text" id="bpProd17"></div>
-</div>
-<div class="form-group"><label data-i18n="businesspack_email">Email (resultado sigiloso)</label><input type="email" id="bpEmail" required></div>
-<button type="submit" class="btn btn-full" id="businesspackBtn">🔒 Pagar R$ 152 — Resultado por Email</button>
-</form>
-</div>
-</section>
-
-<!-- PESQUISA IA -->
-<section id="pesquisa-ia" class="section section-hidden">
-<div class="form-container">
-<h2 class="section-title" data-i18n="ia_title">Pesquisa IA de Nomes</h2>
-<p class="section-sub" data-i18n="ia_sub">Escolha a energia e o motivo — a IA sugere 5 nomes com aquela vibração — R$ 17</p>
-<form id="iaForm" onsubmit="event.preventDefault();payIA()">
-<div class="form-group"><label data-i18n="ia_name">Nome Completo</label><input type="text" id="iaFullName" required></div>
-<div class="form-group"><label data-i18n="ia_email_label">Email (resultado sigiloso)</label><input type="email" id="iaEmail" required></div>
-<div class="grid3">
-<div class="form-group"><label data-i18n="ia_energy_label">Energia desejada (1 a 9):</label>
-<select id="iaEnergy" required>
-<option value="1" data-i18n="baby_num1">1 — Liderança</option><option value="2" data-i18n="baby_num2">2 — Cooperação</option><option value="3" data-i18n="baby_num3">3 — Criatividade</option><option value="4" data-i18n="baby_num4">4 — Disciplina</option><option value="5" data-i18n="baby_num5">5 — Liberdade</option><option value="6" data-i18n="baby_num6">6 — Família</option><option value="7" data-i18n="baby_num7">7 — Sabedoria</option><option value="8" data-i18n="baby_num8">8 — Poder</option><option value="9" data-i18n="baby_num9">9 — Compaixão</option>
-</select></div>
-<div class="form-group"><label data-i18n="ia_motive_label">Motivo:</label>
-<select id="iaMotive" required>
-<option value="time" data-i18n="ia_motive1">Nome de time/grupo</option>
-<option value="evento" data-i18n="ia_motive2">Nome de evento/festa</option>
-<option value="personagem" data-i18n="ia_motive3">Nome de personagem</option>
-<option value="app" data-i18n="ia_motive4">Nome de aplicativo/software</option>
-<option value="marca" data-i18n="ia_motive5">Nome de marca/equipe</option>
-<option value="loja" data-i18n="ia_motive6">Nome de loja/negócio local</option>
-<option value="conteudo" data-i18n="ia_motive7">Nome de canal/blog (conteúdo)</option>
-<option value="startup" data-i18n="ia_motive8">Nome de projeto/startup</option>
-<option value="ong" data-i18n="ia_motive9">Nome para ONG/projeto social</option>
-<option value="apelido" data-i18n="ia_motive10">Apelido/nome de guerra</option>
-</select>
-</div>
-<button type="submit" class="btn btn-full" id="iaBtn">🔒 Pagar R$ 17 — Resultado por Email</button>
-</form>
-</div>
-</section>
-
-<!-- ENERGIAS -->
-<section id="energias" class="section">
-<h2 class="section-title" data-i18n="energies_title">Significado das Energias</h2>
-<p class="section-sub" data-i18n="energies_sub">Cada número carrega uma vibração específica que influencia sua personalidade e seu destino.</p>
-<div id="energyGrid" class="energy-grid"></div>
-</section>
-
-<!-- CAIXA DE RECLAMAÇÕES E SUGESTÕES -->
-<section id="sugestoes" class="section">
-<div class="form-container">
-<h2 class="section-title" data-i18n="sug_title">Caixa de Reclamações e Sugestões</h2>
-<p class="section-sub" data-i18n="sug_sub">Sua mensagem educada e útil vale um brinde: 1 pesquisa grátis na função IA!</p>
-<textarea id="sugMsg" rows="4" style="width:100%;padding:12px;background:#181818;border:1px solid #333;border-radius:12px;color:#fff;font-family:inherit;margin-bottom:12px;resize:vertical" data-i18n-ph="sug_placeholder"></textarea>
-<button class="btn btn-full" onclick="sendSugestao()" data-i18n="sug_btn">Enviar</button>
-<p id="sugStatus" class="hint" style="text-align:center;margin-top:10px;color:var(--gold)"></p>
-<p class="hint" style="text-align:center" data-i18n="sug_privacy">Sua mensagem é confidencial e vai direto à nossa equipe.</p>
-</div>
-</section>
-
-<!-- ESPAÇO BÔNUS -->
-<section id="bonus" class="section">
-<div class="form-container">
-<h2 class="section-title" data-i18n="bn_title">Espaço Bônus</h2>
-<p class="section-sub" data-i18n="bn_sub">Pane no sistema de pagamento? Ative seu bônus e garanta seu produto.</p>
-<form onsubmit="event.preventDefault();sendBonus()">
-<div class="form-group"><label data-i18n="bn_nome">Nome Completo</label><input type="text" id="bnNome" required></div>
-<div class="form-group"><label data-i18n="bn_email">Email para contato</label><input type="email" id="bnEmail" required></div>
-<div class="form-group"><label data-i18n="bn_produto">Produto adquirido</label>
-<select id="bnProduto">
-<option value="express" data-i18n="prod_express_title">Mapa Express</option>
-<option value="completo" data-i18n="prod_complete_title">Mapa Completo</option>
-<option value="ia" data-i18n="prod_ia_title">Pesquisa IA de Nomes</option>
-<option value="urna" data-i18n="prod_urna_title">Validação Nome de Urna</option>
-<option value="eleitoral" data-i18n="prod_elec_title">Número Eleitoral</option>
-<option value="imovel" data-i18n="prod_building_title">Número do Imóvel</option>
-<option value="artistico" data-i18n="prod_artistic_title">Validação Nome Artístico</option>
-<option value="bebe" data-i18n="prod_baby_title">Planejamento Nome de Bebê</option>
-<option value="assinatura" data-i18n="prod_signature_title">Validação de Assinaturas</option>
-<option value="negocio" data-i18n="prod_business_title">Nome para Negócio/Produto</option>
-<option value="casal" data-i18n="prod_couple_title">Mapa do Casal</option>
-<option value="familia" data-i18n="prod_family_title">Mapa Família Premium</option>
-<option value="empresa-completa" data-i18n="prod_businesspack_title">Pacote Empresa Completa</option>
-</select></div>
-<div class="form-group"><label data-i18n="bn_msg">Descreva o problema (inclua o print da tela, se possível)</label><textarea id="bnMsg" rows="3" style="width:100%;padding:12px;background:#181818;border:1px solid #333;border-radius:12px;color:#fff;font-family:inherit;resize:vertical"></textarea></div>
-<button type="submit" class="btn btn-full" data-i18n="bn_btn">Solicitar Bônus</button>
-<p id="bnStatus" class="hint" style="text-align:center;margin-top:10px;color:var(--gold)"></p>
-</form>
-</div>
-</section>  
-
-<footer>
-<p data-i18n="footer_text">© A1ELOS — A ciência dos números aplicada ao seu sucesso</p>
-</footer>
-
-<script>
-var PRICES=[8,17,17,26,26,26,35,35,35,44,44,98,152];
-var CURR={pt:"R$",en:"US$",es:"€",fr:"€",de:"€",it:"€",ja:"¥",zh:"¥",ru:"₽",hi:"₹",he:"₪",ar:"US$"};
-var BTN_IDX={payExpressBtn:0,payCompleteBtn:1,iaBtn:2,urnaBtn:3,elecBtn:4,buildingBtn:5,artisticBtn:6,babyBtn:7,signatureBtn:8,businessBtn:9,coupleBtn:10,familyBtn:11,businesspackBtn:12};
-function fmtP(i){return (CURR[L]||"R$")+" "+PRICES[i]}
-var T={
-pt:{
-nav_home:"Início",nav_map:"Mapa",nav_prices:"Preços",nav_urna:"Nome de Urna",nav_elec:"Nº Eleitoral",nav_artistic:"Nome Artístico",nav_baby:"Nome Bebê",nav_business:"Nome Negócio",nav_signature:"Assinaturas",nav_building:"Nº Imóvel",nav_couple:"Mapa Casal",nav_family:"Mapa Família",nav_businesspack:"Pacote Empresa",nav_ia:"Pesquisa IA",nav_energies:"Energias",nav_sugestoes:"Sugestões",nav_bonus:"Bônus",
-hero_badge:"A plataforma de numerologia mais completa do mundo",hero_title:"MAPA NUMEROLÓGICO",hero_sub:"A ciência dos números aplicada ao seu destino e carreira política",hero_btn_map:"Gerar Mapa Grátis",hero_btn_products:"Ver Produtos",
-calc_title:"Calcule seu Mapa",calc_sub:"Preencha seus dados para um cálculo preciso",calc_name:"Nome Completo",calc_date:"Data de Nascimento",calc_email:"Email (opcional)",calc_btn:"✨ Calcular Meu Mapa Grátis",calc_new:"⟳ Novo Cálculo",calc_life_path:"Caminho de Vida",calc_expression:"Expressão",calc_soul_urge:"Motivação da Alma",calc_personality:"Personalidade",calc_destiny:"Destino",
-products_title:"Produtos e Serviços",products_sub:"Escolha o produto ideal para sua análise numerológica — todos os valores reduzem ao número 8",payment_card:"💳 Cartão",payment_debit:"Crédito/Débito",payment_boleto:"📄 Boleto",payment_cash:"À vista (3 dias)",
-tag_basic:"Básico",tag_recommended:"Recomendado",tag_permanent:"Permanente",tag_baby:"Planejamento",tag_business:"Negócios",tag_signature:"Assinaturas",tag_couple:"Casal",tag_premium:"Premium",tag_business_pack:"Pacote",tag_ia:"IA",tag_building:"Imóvel",
-prod_express_title:"Mapa Express",prod_express_desc:"1 página com os 5 números principais e seu significado resumido. Ideal para uma visão rápida.",feat_express1:"Caminho da Vida",feat_express2:"Expressão, Alma, Personalidade",feat_express3:"Destino",feat_email:"Envio por email",btn_express:"Comprar",
-prod_complete_title:"Mapa Completo",prod_complete_desc:"Análise completa com descrições positivas/negativas, ciclos de vida, desafios, grade de inclusão e nota final.",feat_complete1:"5 números detalhados",feat_complete2:"3 Ciclos de Vida",feat_complete3:"Desafios e Realizações",feat_complete4:"Grade de Inclusão",feat_complete5:"Vibração do Dia",btn_complete:"Comprar",
-prod_ia_title:"Pesquisa IA de Nomes",prod_ia_desc:"Escolha a energia desejada (1 a 9) e o motivo. A IA sugere 5 nomes com aquela vibração energética. PDF com análise completa.",feat_ia1:"5 nomes sugeridos pela IA",feat_ia2:"Escolha da energia alvo (1 a 9)",feat_ia3:"10 motivos disponíveis",btn_ia_start:"Pesquisar Nomes",
-prod_urna_title:"Validação Nome de Urna",prod_urna_desc:"5 tentativas + sugestões com cargo + PDF sigiloso. Análise completa de cada nome de candidatura.",feat_urna1:"5 nomes testados",feat_urna2:"Sugestões com energia 8",feat_urna3:"Cálculo letra a letra",feat_pdf:"PDF sigiloso",btn_urna_start:"Iniciar Validação",
-prod_elec_title:"Número Eleitoral",prod_elec_desc:"Sugestões de números com energia 8 para sua candidatura política. Análise com PDF sigiloso.",feat_elec1:"5 números sugeridos",feat_elec2:"Prioridade energia 8 (Poder)",feat_elec3:"Cálculo completo",btn_elec_start:"Calcular Nº Eleitoral",
-prod_building_title:"Número do Imóvel",prod_building_desc:"3 espaços (Prédio, Apt/Loja, Sala) + letras e números + energia alvo (1 a 9) + PDF com análise. Descubra a energia do seu imóvel.",feat_building1:"3 espaços testados",feat_building2:"Letras e números aceitos",feat_building3:"Energia alvo (1 a 9)",btn_building_start:"Calcular Nº do Imóvel",
-prod_artistic_title:"Validação Nome Artístico",prod_artistic_desc:"6 tentativas + cálculo letra a letra + PDF sigiloso. Produto permanente — válido para toda a vida.",feat_artistic1:"6 nomes testados",feat_artistic2:"Sugestões com energia 2",feat_artistic3:"Cálculo letra a letra",btn_artistic_start:"Iniciar Validação",
-prod_baby_title:"Planejamento Nome de Bebê",prod_baby_desc:"6 nomes testados + número alvo (1 a 9) + descrição energética + PDF sigiloso. Sincronize o nome com a data de nascimento.",feat_baby1:"6 nomes testados",feat_baby2:"Escolha do número alvo (1 a 9)",feat_baby3:"Descrição energética por nome",btn_baby_start:"Planejar Nome",
-prod_signature_title:"Validação de Assinaturas",prod_signature_desc:"5 assinaturas testadas + escolha da energia alvo (1 a 9) + PDF com análise energética completa. Descubra a vibração da sua assinatura.",feat_signature1:"5 assinaturas testadas",feat_signature2:"Escolha da energia alvo (1 a 9)",feat_signature3:"PDF com análise energética",btn_signature_start:"Testar Assinaturas",
-prod_business_title:"Nome para Negócio/Produto",prod_business_desc:"8 nomes testados + energia 8 (dinheiro) + PDF com análise energética completa. Descubra a vibração ideal para sua empresa ou produto.",feat_business1:"8 nomes testados",feat_business2:"Energia 8 (Poder/Prosperidade)",feat_business3:"PDF com análise energética",btn_business_start:"Testar Nomes",
-prod_couple_title:"Mapa do Casal",prod_couple_desc:"2 mapas individuais completos + análise de compatibilidade do casal. Descubra se a relação é Dissonância, Média, Acordo ou Perfeita.",feat_couple1:"2 mapas individuais completos",feat_couple2:"Análise de compatibilidade do casal",feat_couple3:"PDF até 10 páginas",btn_couple_start:"Calcular Mapa do Casal",
-prod_family_title:"Mapa Família Premium",prod_family_desc:"1 nome chave + 3 familiares com mapas completos + 4 cruzamentos de compatibilidade. Relação da pessoa chave com cada familiar.",feat_family1:"4 mapas individuais completos",feat_family2:"4 cruzamentos de compatibilidade",feat_family3:"PDF até 20 páginas",btn_family_start:"Calcular Mapa Família",
-prod_businesspack_title:"Pacote Empresa Completa",prod_businesspack_desc:"Mapa Completo do indivíduo + Assinatura (8 testes) + Número do Imóvel + Nome para Negócio/Produto (17 testes). PDF único com análise completa.",feat_businesspack1:"Mapa Completo individual",feat_businesspack2:"Assinatura: 8 testes",feat_businesspack3:"Número do Imóvel",feat_businesspack4:"Nome Negócio/Produto: 17 testes",btn_businesspack_start:"Contratar Pacote",
-urna_title:"Validação do Nome de Urna",urna_sub:"5 tentativas + cálculo letra a letra + PDF sigiloso",urna_name:"Nome Completo da Pessoa",urna_role:"Cargo em Disputa",urna_email:"Email (resultado sigiloso)",urna_5names:"Insira até 5 opções de nome de candidato:",urna_role1:"Vereador",urna_role2:"Dep. Estadual",urna_role3:"Dep. Federal",urna_role4:"Senador",
-elec_title:"Cálculo do Número Eleitoral",elec_sub:"Sugestões com energia 8 para sua candidatura",elec_warn:"Por lei eleitoral, números não podem ser divulgados publicamente. Consulte o PDF sigiloso.",elec_role:"Cargo em Disputa",elec_role1:"Vereador (5 dígitos)",elec_role2:"Dep. Estadual (5 dígitos)",elec_role3:"Dep. Federal (4 dígitos)",elec_role4:"Senador (3 dígitos)",elec_party:"Número da Sigla partidária + Números de disputa (01 a 99)",elec_existing:"Número já existente (opcional)",elec_7names:"Insira até 7 números de disputa desejados (os dois primeiros dígitos são a sigla partidária):",
-artistic_title:"Validação do Nome Artístico",artistic_sub:"6 tentativas + cálculo letra a letra + PDF sigiloso — Produto permanente",artistic_name:"Nome Completo da Pessoa",artistic_email_label:"Email (resultado sigiloso)",artistic_6names:"Insira até 6 opções de nome artístico:",
-baby_title:"Planejamento do Nome de Bebê",baby_sub:"6 nomes testados + número alvo + descrição energética",baby_name:"Nome Completo da Pessoa (responsável)",baby_email_label:"Email (resultado sigiloso)",baby_number_label:"Número alvo (1 a 9):",baby_6names:"Insira até 6 opções de nome completo para o bebê (independente do gênero):",baby_num1:"1 — Liderança",baby_num2:"2 — Cooperação",baby_num3:"3 — Criatividade",baby_num4:"4 — Disciplina",baby_num5:"5 — Liberdade",baby_num6:"6 — Família",baby_num7:"7 — Sabedoria",baby_num8:"8 — Poder",baby_num9:"9 — Compaixão",
-business_title:"Validação de Nome para Negócio/Produto",business_sub:"8 nomes testados + energia 8 (dinheiro) + PDF com análise energética completa",business_name:"Nome Completo do Responsável",business_email_label:"Email (resultado sigiloso)",business_8names:"Insira até 8 opções de nome para negócio ou produto:",
-signature_title:"Validação de Assinaturas",signature_sub:"5 assinaturas testadas + escolha da energia alvo + PDF com análise",signature_name:"Nome Completo",signature_email_label:"Email (resultado sigiloso)",signature_number_label:"Energia alvo da assinatura (1 a 9):",signature_5names:"Escreva abaixo as letras que deseja usar em cada assinatura (apenas as letras, sem espaços):",
-building_title:"Cálculo do Número do Imóvel",building_sub:"3 espaços + letras/números + energia alvo",building_name:"Nome Completo",building_email_label:"Email (resultado sigiloso)",building_number_label:"Energia desejada para o imóvel (1 a 9):",building_3spaces:"Insira os números dos espaços (podem conter letras, ex: 345B):",building_space1:"Prédio (ex: 345B)",building_space2:"Apt/Loja (ex: 261G)",building_space3:"Sala (ex: 1C)",
-couple_title:"Mapa do Casal",couple_sub:"2 mapas individuais + compatibilidade do casal",couple_person1:"Pessoa 1",couple_person2:"Pessoa 2",couple_name1:"Nome Completo da Pessoa 1",couple_date1:"Data de Nascimento da Pessoa 1",couple_name2:"Nome Completo da Pessoa 2",couple_date2:"Data de Nascimento da Pessoa 2",couple_email:"Email (resultado sigiloso)",
-family_title:"Mapa Família Premium",family_sub:"1 nome chave + 3 familiares + 4 cruzamentos de compatibilidade",family_key:"Nome Chave (principal)",family_key_name:"Nome Completo da Pessoa Chave",family_key_date:"Data de Nascimento",family_members:"Familiares",family_3members:"Insira os dados de até 3 familiares:",family_member1_name:"Nome Completo do Familiar 1",family_member1_date:"Data de Nascimento do Familiar 1",family_member2_name:"Nome Completo do Familiar 2",family_member2_date:"Data de Nascimento do Familiar 2",family_member3_name:"Nome Completo do Familiar 3",family_member3_date:"Data de Nascimento do Familiar 3",family_email:"Email (resultado sigiloso)",
-businesspack_title:"Pacote Empresa Completa",businesspack_sub:"Mapa Completo + Assinatura (8 testes) + Nº do Imóvel + Nome Negócio/Produto (17 testes)",businesspack_section1:"1. Mapa Completo do Indivíduo",businesspack_section2:"2. Assinatura",businesspack_section3:"3. Número do Imóvel",businesspack_section4:"4. Nome para Negócio/Produto",businesspack_name:"Nome Completo",businesspack_date:"Data de Nascimento",businesspack_sign_sub:"Teste até 8 opções de assinatura (apenas letras, sem espaços):",businesspack_sign_energy:"Energia alvo da assinatura (1 a 9):",businesspack_property_sub:"Insira os números (podem conter letras, ex: 345B):",businesspack_property_energy:"Energia alvo do imóvel (1 a 9):",businesspack_property_building:"Prédio",businesspack_property_apt:"Apt/Loja",businesspack_property_room:"Sala",businesspack_product_sub:"Teste até 17 nomes para seu negócio ou produto (energia 8):",businesspack_email:"Email (resultado sigiloso)",
-ia_title:"Pesquisa IA de Nomes",ia_sub:"Escolha a energia e o motivo — a IA sugere 5 nomes com aquela vibração",ia_name:"Nome Completo",ia_email_label:"Email (resultado sigiloso)",ia_energy_label:"Energia desejada (1 a 9):",ia_motive_label:"Motivo:",ia_motive1:"Nome de time/grupo",ia_motive2:"Nome de evento/festa",ia_motive3:"Nome de personagem",ia_motive4:"Nome de aplicativo/software",ia_motive5:"Nome de marca/equipe",ia_motive6:"Nome de loja/negócio local",ia_motive7:"Nome de canal/blog (conteúdo)",ia_motive8:"Nome de projeto/startup",ia_motive9:"Nome para ONG/projeto social",ia_motive10:"Apelido/nome de guerra",
-energies_title:"Significado das Energias",energies_sub:"Cada número carrega uma vibração específica que influencia sua personalidade e seu destino.",energy_1:"Liderança, independência, originalidade",energy_2:"Cooperação, diplomacia, sensibilidade",energy_3:"Criatividade, comunicação, alegria",energy_4:"Trabalho, disciplina, estabilidade",energy_5:"Amor romântico e sensual, liberdade, aventura, paixão",energy_6:"Amor fraterno e humanitário, família, harmonia, responsabilidade",energy_7:"Sabedoria, espiritualidade, análise",energy_8:"Poder, prosperidade, realização (IDEAL)",energy_9:"Humanitarismo, compaixão, generosidade",
-email_boleto:"Email (apenas para pagamento via boleto)",pdf_msg:"Baixe imediatamente seu PDF sigiloso — não fazemos arquivos!",spam_msg:"Lembre-se: verifique também as pastas de spam e lixeira do seu e-mail.",
-btn_pay:"🔒 Pagar",btn_buy:"Comprar",
-sug_title:"Caixa de Reclamações e Sugestões",sug_sub:"Sua mensagem educada e útil vale um brinde: 1 pesquisa grátis na função IA!",sug_placeholder:"Escreva aqui sua sugestão, elogio ou reclamação...",sug_btn:"Enviar",sug_ok:"Recebido! Se sua mensagem for educada e útil, você ganha 1 pesquisa IA grátis.",sug_err:"Não foi possível enviar agora. Tente novamente.",sug_empty:"Escreva sua mensagem antes de enviar.",sug_privacy:"Sua mensagem é confidencial e vai direto à nossa equipe.",
-bn_title:"Espaço Bônus",bn_sub:"Pane no sistema de pagamento? Ative seu bônus e garanta seu produto.",bn_nome:"Nome Completo",bn_email:"Email para contato",bn_produto:"Produto adquirido",bn_msg:"Descreva o problema (inclua o print da tela, se possível)",bn_btn:"Solicitar Bônus",bn_ok:"Bônus registrado! Enviamos seu código para o email informado.",bn_err:"Não foi possível registrar agora. Tente novamente.",bn_empty:"Preencha nome, email e a descrição do problema.",
-footer_text:"© A1ELOS — A ciência dos números aplicada ao seu sucesso"
-},
-en:{
-nav_home:"Home",nav_map:"Map",nav_prices:"Prices",nav_urna:"Ballot Name",nav_elec:"Electoral No.",nav_artistic:"Stage Name",nav_baby:"Baby Name",nav_business:"Business Name",nav_signature:"Signatures",nav_building:"Property No.",nav_couple:"Couple Map",nav_family:"Family Map",nav_businesspack:"Business Pack",nav_ia:"AI Search",nav_energies:"Energies",nav_sugestoes:"Feedback",nav_bonus:"Bonus",
-hero_badge:"The most complete numerology platform in the world",hero_title:"NUMEROLOGICAL MAP",hero_sub:"The science of numbers applied to your destiny and career",hero_btn_map:"Generate Free Map",hero_btn_products:"See Products",
-calc_title:"Calculate Your Map",calc_sub:"Fill in your details for an accurate reading",calc_name:"Full Name",calc_date:"Date of Birth",calc_email:"Email (optional)",calc_btn:"✨ Calculate My Free Map",calc_new:"⟳ New Calculation",calc_life_path:"Life Path",calc_expression:"Expression",calc_soul_urge:"Soul Urge",calc_personality:"Personality",calc_destiny:"Destiny",
-products_title:"Products and Services",products_sub:"Choose the ideal product for your numerological analysis — all values reduce to the number 8",payment_card:"💳 Card",payment_debit:"Credit/Debit",payment_boleto:"📄 Boleto",payment_cash:"Cash (3 days)",
-tag_basic:"Basic",tag_recommended:"Recommended",tag_permanent:"Permanent",tag_baby:"Planning",tag_business:"Business",tag_signature:"Signatures",tag_couple:"Couple",tag_premium:"Premium",tag_business_pack:"Pack",tag_ia:"AI",tag_building:"Property",
-prod_express_title:"Express Map",prod_express_desc:"1 page with the 5 main numbers and their summarized meaning. Ideal for a quick view.",feat_express1:"Life Path",feat_express2:"Expression, Soul, Personality",feat_express3:"Destiny",feat_email:"Sent by email",btn_express:"Buy",
-prod_complete_title:"Complete Map",prod_complete_desc:"Complete analysis with positive/negative descriptions, life cycles, challenges, inclusion grid and final score.",feat_complete1:"5 detailed numbers",feat_complete2:"3 Life Cycles",feat_complete3:"Challenges and Achievements",feat_complete4:"Inclusion Grid",feat_complete5:"Day Vibration",btn_complete:"Buy",
-prod_ia_title:"AI Name Search",prod_ia_desc:"Choose the desired energy (1 to 9) and the reason. The AI suggests 5 names with that energy vibration. PDF with complete analysis.",feat_ia1:"5 names suggested by AI",feat_ia2:"Target energy choice (1 to 9)",feat_ia3:"10 available reasons",btn_ia_start:"Search Names",
-prod_urna_title:"Ballot Name Validation",prod_urna_desc:"5 attempts + suggestions with position + confidential PDF. Complete analysis of each candidacy name.",feat_urna1:"5 names tested",feat_urna2:"Suggestions with energy 8",feat_urna3:"Letter-by-letter calculation",feat_pdf:"Confidential PDF",btn_urna_start:"Start Validation",
-prod_elec_title:"Electoral Number",prod_elec_desc:"Number suggestions with energy 8 for your political campaign. Analysis with confidential PDF.",feat_elec1:"5 suggested numbers",feat_elec2:"Priority energy 8 (Power)",feat_elec3:"Complete calculation",btn_elec_start:"Calculate Electoral No.",
-prod_building_title:"Property Number",prod_building_desc:"3 spaces (Building, Apt/Shop, Room) + letters and numbers + target energy (1 to 9) + PDF with analysis. Discover the energy of your property.",feat_building1:"3 spaces tested",feat_building2:"Letters and numbers accepted",feat_building3:"Target energy (1 to 9)",btn_building_start:"Calculate Property No.",
-prod_artistic_title:"Stage Name Validation",prod_artistic_desc:"6 attempts + letter-by-letter calculation + confidential PDF. Permanent product — valid for life.",feat_artistic1:"6 names tested",feat_artistic2:"Suggestions with energy 2",feat_artistic3:"Letter-by-letter calculation",btn_artistic_start:"Start Validation",
-prod_baby_title:"Baby Name Planning",prod_baby_desc:"6 names tested + target number (1 to 9) + energy description + confidential PDF. Sync the name with the birth date.",feat_baby1:"6 names tested",feat_baby2:"Target number choice (1 to 9)",feat_baby3:"Energy description per name",btn_baby_start:"Plan Name",
-prod_signature_title:"Signature Validation",prod_signature_desc:"5 signatures tested + target energy choice (1 to 9) + PDF with complete energy analysis. Discover the vibration of your signature.",feat_signature1:"5 signatures tested",feat_signature2:"Target energy choice (1 to 9)",feat_signature3:"PDF with energy analysis",btn_signature_start:"Test Signatures",
-prod_business_title:"Business/Product Name",prod_business_desc:"8 names tested + energy 8 (money) + PDF with complete energy analysis. Discover the ideal vibration for your company or product.",feat_business1:"8 names tested",feat_business2:"Energy 8 (Power/Prosperity)",feat_business3:"PDF with energy analysis",btn_business_start:"Test Names",
-prod_couple_title:"Couple Map",prod_couple_desc:"2 complete individual maps + couple compatibility analysis. Discover if the relationship is Dissonance, Average, Agreement or Perfect.",feat_couple1:"2 complete individual maps",feat_couple2:"Couple compatibility analysis",feat_couple3:"PDF up to 10 pages",btn_couple_start:"Calculate Couple Map",
-prod_family_title:"Premium Family Map",prod_family_desc:"1 key name + 3 family members with complete maps + 4 compatibility crossings. Relationship of the key person with each family member.",feat_family1:"4 complete individual maps",feat_family2:"4 compatibility crossings",feat_family3:"PDF up to 20 pages",btn_family_start:"Calculate Family Map",
-prod_businesspack_title:"Complete Business Pack",prod_businesspack_desc:"Complete Map of the individual + Signature (8 tests) + Property Number + Business/Product Name (17 tests). Single PDF with complete analysis.",feat_businesspack1:"Complete individual Map",feat_businesspack2:"Signature: 8 tests",feat_businesspack3:"Property Number",feat_businesspack4:"Business/Product Name: 17 tests",btn_businesspack_start:"Get Pack",
-urna_title:"Ballot Name Validation",urna_sub:"5 attempts + letter-by-letter calculation + confidential PDF",urna_name:"Person Full Name",urna_role:"Position in Dispute",urna_email:"Email (confidential result)",urna_5names:"Enter up to 5 candidate name options:",urna_role1:"Councilor",urna_role2:"State Deputy",urna_role3:"Federal Deputy",urna_role4:"Senator",
-elec_title:"Electoral Number Calculation",elec_sub:"Suggestions with energy 8 for your candidacy",elec_warn:"By electoral law, numbers cannot be publicly disclosed. Check the confidential PDF.",elec_role:"Position in Dispute",elec_role1:"Councilor (5 digits)",elec_role2:"State Deputy (5 digits)",elec_role3:"Federal Deputy (4 digits)",elec_role4:"Senator (3 digits)",elec_party:"Party Acronym Number + Dispute Numbers (01 to 99)",elec_existing:"Existing number (optional)",elec_7names:"Enter up to 7 desired dispute numbers (the first two digits are the party acronym):",
-artistic_title:"Stage Name Validation",artistic_sub:"6 attempts + letter-by-letter calculation + confidential PDF — Permanent product",artistic_name:"Person Full Name",artistic_email_label:"Email (confidential result)",artistic_6names:"Enter up to 6 stage name options:",
-baby_title:"Baby Name Planning",baby_sub:"6 names tested + target number + energy description",baby_name:"Full Name (responsible)",baby_email_label:"Email (confidential result)",baby_number_label:"Target number (1 to 9):",baby_6names:"Enter up to 6 full baby name options (any gender):",baby_num1:"1 — Leadership",baby_num2:"2 — Cooperation",baby_num3:"3 — Creativity",baby_num4:"4 — Discipline",baby_num5:"5 — Freedom",baby_num6:"6 — Family",baby_num7:"7 — Wisdom",baby_num8:"8 — Power",baby_num9:"9 — Compassion",
-business_title:"Business/Product Name Validation",business_sub:"8 names tested + energy 8 (money) + PDF with complete energy analysis",business_name:"Responsible Full Name",business_email_label:"Email (confidential result)",business_8names:"Enter up to 8 business or product name options:",
-signature_title:"Signature Validation",signature_sub:"5 signatures tested + target energy choice + PDF with analysis",signature_name:"Full Name",signature_email_label:"Email (confidential result)",signature_number_label:"Target signature energy (1 to 9):",signature_5names:"Write below the letters you want to use in each signature (letters only, no spaces):",
-building_title:"Property Number Calculation",building_sub:"3 spaces + letters/numbers + target energy",building_name:"Full Name",building_email_label:"Email (confidential result)",building_number_label:"Desired property energy (1 to 9):",building_3spaces:"Enter the space numbers (may contain letters, e.g. 345B):",building_space1:"Building (e.g. 345B)",building_space2:"Apt/Shop (e.g. 261G)",building_space3:"Room (e.g. 1C)",
-couple_title:"Couple Map",couple_sub:"2 individual maps + couple compatibility",couple_person1:"Person 1",couple_person2:"Person 2",couple_name1:"Person 1 Full Name",couple_date1:"Person 1 Birth Date",couple_name2:"Person 2 Full Name",couple_date2:"Person 2 Birth Date",couple_email:"Email (confidential result)",
-family_title:"Premium Family Map",family_sub:"1 key name + 3 family members + 4 compatibility crossings",family_key:"Key Name (main)",family_key_name:"Key Person Full Name",family_key_date:"Birth Date",family_members:"Family Members",family_3members:"Enter data for up to 3 family members:",family_member1_name:"Family Member 1 Full Name",family_member1_date:"Family Member 1 Birth Date",family_member2_name:"Family Member 2 Full Name",family_member2_date:"Family Member 2 Birth Date",family_member3_name:"Family Member 3 Full Name",family_member3_date:"Family Member 3 Birth Date",family_email:"Email (confidential result)",
-businesspack_title:"Complete Business Pack",businesspack_sub:"Complete Map + Signature (8 tests) + Property No. + Business/Product Name (17 tests)",businesspack_section1:"1. Complete Individual Map",businesspack_section2:"2. Signature",businesspack_section3:"3. Property Number",businesspack_section4:"4. Business/Product Name",businesspack_name:"Full Name",businesspack_date:"Birth Date",businesspack_sign_sub:"Test up to 8 signature options (letters only, no spaces):",businesspack_sign_energy:"Target signature energy (1 to 9):",businesspack_property_sub:"Enter the numbers (may contain letters, e.g. 345B):",businesspack_property_energy:"Target property energy (1 to 9):",businesspack_property_building:"Building",businesspack_property_apt:"Apt/Shop",businesspack_property_room:"Room",businesspack_product_sub:"Test up to 17 names for your business or product (energy 8):",businesspack_email:"Email (confidential result)",
-ia_title:"AI Name Search",ia_sub:"Choose the energy and the reason — the AI suggests 5 names with that vibration",ia_name:"Full Name",ia_email_label:"Email (confidential result)",ia_energy_label:"Desired energy (1 to 9):",ia_motive_label:"Reason:",ia_motive1:"Team/group name",ia_motive2:"Event/party name",ia_motive3:"Character name",ia_motive4:"App/software name",ia_motive5:"Brand/team name",ia_motive6:"Store/local business name",ia_motive7:"Channel/blog name (content)",ia_motive8:"Project/startup name",ia_motive9:"Name for NGO/social project",ia_motive10:"Nickname",
-energies_title:"Meaning of Energies",energies_sub:"Each number carries a specific vibration that influences your personality and your destiny.",energy_1:"Leadership, independence, originality",energy_2:"Cooperation, diplomacy, sensitivity",energy_3:"Creativity, communication, joy",energy_4:"Work, discipline, stability",energy_5:"Romantic and sensual love, freedom, adventure, passion",energy_6:"Fraternal and humanitarian love, family, harmony, responsibility",energy_7:"Wisdom, spirituality, analysis",energy_8:"Power, prosperity, achievement (IDEAL)",energy_9:"Humanitarianism, compassion, generosity",
-email_boleto:"Email (only for boleto payment)",pdf_msg:"Download your confidential PDF immediately — we do not keep files!",spam_msg:"Remember: also check your spam and trash folders.",
-btn_pay:"🔒 Pay",btn_buy:"Buy",
-sug_title:"Feedback Box",sug_sub:"A polite and useful message earns you a gift: 1 free AI search!",sug_placeholder:"Write your suggestion, compliment or complaint here...",sug_btn:"Send",sug_ok:"Received! If your message is polite and useful, you get 1 free AI search.",sug_err:"Could not send right now. Please try again.",sug_empty:"Write your message before sending.",sug_privacy:"Your message is confidential and goes straight to our team.",
-bn_title:"Bonus Space",bn_sub:"Payment system failure? Activate your bonus and secure your product.",bn_nome:"Full Name",bn_email:"Contact email",bn_produto:"Purchased product",bn_msg:"Describe the problem (include a screenshot if possible)",bn_btn:"Request Bonus",bn_ok:"Bonus registered! We sent your code to the provided email.",bn_err:"Could not register right now. Please try again.",bn_empty:"Fill in name, email and the problem description.",
-footer_text:"© A1ELOS — The science of numbers applied to your success"
-}
-};
-var L="pt";
-function t(k){if(T[L]&&T[L][k]!==undefined)return T[L][k];if(T.en&&T.en[k]!==undefined)return T.en[k];return k}
-function setLang(l){L=l;document.querySelectorAll("[data-i18n]").forEach(function(el){var k=el.getAttribute("data-i18n");if(k)el.textContent=t(k)});document.querySelectorAll("[data-i18n-ph]").forEach(function(el){el.setAttribute("placeholder",t(el.getAttribute("data-i18n-ph")))});updatePrices();document.querySelectorAll(".lang-btn").forEach(function(b){b.classList.toggle("active",b.getAttribute("onclick").indexOf("'"+l+"'")>-1)});localStorage.setItem("a1elos-lang",l)}
-function updatePrices(){var els=document.querySelectorAll(".price");for(var i=0;i<els.length;i++){els[i].textContent=fmtP(i)}for(var id in BTN_IDX){var b=document.getElementById(id);if(!b)continue;var lb=(id==="payExpressBtn"||id==="payCompleteBtn")?t("btn_buy"):t("btn_pay");b.textContent=lb+" "+fmtP(BTN_IDX[id])}}
-function scrollToEl(id){var el=document.getElementById(id);if(!el)return;if(el.classList.contains("section-hidden"))el.classList.remove("section-hidden");setTimeout(function(){el.scrollIntoView({behavior:"smooth"})},100)}
-function sumN(n){while(n>9&&n!==11&&n!==22){n=String(n).split("").reduce(function(a,b){return a+parseInt(b,10)},0)}return n}
-function letterVal(c){c=c.toUpperCase();var code=c.charCodeAt(0);if(code>=65&&code<=90)return code-64;return 0}
-function calcMap(){
-var name=document.getElementById("calcName").value.trim();
-var date=document.getElementById("calcDate").value;
-if(!name||!date){alert(t("calc_name")+" "+t("calc_date"));return}
-var parts=date.split("-");var d=parseInt(parts[2],10),m=parseInt(parts[1],10),y=parseInt(parts[0],10);
-var cv=sumN(d+m+y);
-var letters=name.replace(/[^A-Za-zÀ-ÿ]/g,"");
-var ex=sumN(letters.split("").reduce(function(a,b){return a+letterVal(b)},0));
-var vogais=name.replace(/[^AEIOUÁÉÍÓÚÀÂÊÔÃÕaeiouáéíóúàâêôãõ]/g,"");
-var sa=sumN(vogais.split("").reduce(function(a,b){return a+letterVal(b)},0));
-var conso=name.replace(/[AEIOUÁÉÍÓÚÀÂÊÔÃÕaeiouáéíóúàâêôãõ\s]/g,"");
-var pe=sumN(conso.split("").reduce(function(a,b){return a+letterVal(b)},0));
-var dest=sumN(cv+ex);
-document.getElementById("calcResult").style.display="block";
-document.getElementById("rCv").textContent=t("calc_life_path")+": "+cv;
-document.getElementById("rEx").textContent=t("calc_expression")+": "+ex;
-document.getElementById("rSa").textContent=t("calc_soul_urge")+": "+sa;
-document.getElementById("rPe").textContent=t("calc_personality")+": "+pe;
-document.getElementById("rDest").textContent=t("calc_destiny")+": "+dest;
-document.getElementById("calcResult").scrollIntoView({behavior:"smooth"})
-}
-function renderEnergyGrid(){
-var container=document.getElementById("energyGrid");if(!container)return;
-var desc=[t("energy_1"),t("energy_2"),t("energy_3"),t("energy_4"),t("energy_5"),t("energy_6"),t("energy_7"),t("energy_8"),t("energy_9")];
-container.innerHTML="";
-for(var i=1;i<=9;i++){
-var card=document.createElement("div");card.className="energy-card";
-var btns="<div class=\"energy-actions\"><button class=\"btn btn-sm\" onclick=\"scrollToEl('bebe')\">"+t("btn_baby_start")+"</button><button class=\"btn btn-sm btn-outline\" onclick=\"scrollToEl('assinatura')\">"+t("btn_signature_start")+"</button><button class=\"btn btn-sm btn-outline\" onclick=\"setIAEnergy("+i+");scrollToEl('pesquisa-ia')\">"+t("btn_ia_start")+"</button></div>";
-card.innerHTML="<h4>"+i+"</h4><p style=\"color:var(--gray);font-size:.85rem\">"+desc[i-1]+"</p>"+btns;
-container.appendChild(card)
-}
-}
-function setIAEnergy(n){var sel=document.getElementById("iaEnergy");if(sel){for(var i=0;i<sel.options.length;i++){if(parseInt(sel.options[i].value,10)===n)sel.selectedIndex=i}}}
-function checkout(produto,extra){
-var btn=event&&event.target||null;
-var lang=localStorage.getItem("a1elos-lang")||"pt";
-if(btn){btn.textContent="...";btn.disabled=true}
-fetch("/criar-checkout?lang="+lang+"&produto="+produto+(extra||""))
-.then(function(r){return r.json()})
-.then(function(data){if(data.url){window.location.href=data.url}else{if(btn){btn.disabled=false;btn.textContent=t("btn_pay")+" "+fmtP(0)}}})
-.catch(function(){if(btn){btn.disabled=false;btn.textContent=t("btn_pay")+" "+fmtP(0)}})
-}
-function payExpress(){checkout("express")}
-function payComplete(){checkout("completo")}
-function payIA(){var energia=document.getElementById("iaEnergy").value;var motivo=document.getElementById("iaMotive").value;checkout("ia","&energia="+encodeURIComponent(energia)+"&motivo="+encodeURIComponent(motivo))}
-function payUrna(){checkout("urna")}
-function payEleitoral(){
-var cargo=document.getElementById("elecRole")?document.getElementById("elecRole").value:"";
-var partido=document.getElementById("elecParty")?document.getElementById("elecParty").value:"";
-var extra="&cargo="+encodeURIComponent(cargo)+"&partido="+encodeURIComponent(partido);
-["elecNome1","elecNome2","elecNome3","elecNome4","elecNome5","elecNome6","elecNome7"].forEach(function(id,i){
-var el=document.getElementById(id);if(el&&el.value.trim())extra+="&n"+(i+1)+"="+encodeURIComponent(el.value.trim());
-});
-checkout("eleitoral",extra)
-}
-function payBuilding(){checkout("imovel")}
-function payArtistico(){checkout("artistico")}
-function payBaby(){checkout("bebe")}
-function paySignature(){checkout("assinatura")}
-function payBusiness(){checkout("negocio")}
-function payCouple(){checkout("casal")}
-function payFamily(){checkout("familia")}
-function payBusinessPack(){checkout("empresa-completa")}
-function applyFormsPatch(){
-document.querySelectorAll(".form-group").forEach(function(g){if(g.querySelector("input[type='email']"))g.style.display="none"});
-document.querySelectorAll("form button[type='submit']").forEach(function(btn){
-btn.textContent=btn.textContent.replace(/\s*[—-]\s*Resultado por Email.*$/,"").trim();
-var p=document.createElement("p");p.className="hint";p.style.textAlign="center";p.style.color="var(--gold)";p.style.fontWeight="600";p.style.marginBottom="6px";p.setAttribute("data-i18n","pdf_msg");p.textContent=t("pdf_msg");
-btn.parentNode.insertBefore(p,btn);
-var s=document.createElement("p");s.className="hint";s.style.textAlign="center";s.style.fontSize=".72rem";s.style.marginBottom="6px";s.setAttribute("data-i18n","spam_msg");s.textContent=t("spam_msg");
-btn.parentNode.insertBefore(s,btn);
-});
-}
-function sendSugestao(){
-var msg=document.getElementById("sugMsg").value.trim();var st=document.getElementById("sugStatus");
-if(!msg){st.textContent=t("sug_empty");return}
-fetch("/sugestao",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({mensagem:msg})})
-.then(function(r){return r.json()})
-.then(function(d){st.textContent=d.ok?t("sug_ok"):t("sug_err")})
-.catch(function(){st.textContent=t("sug_err")})
-}
-function sendBonus(){
-var nome=document.getElementById("bnNome").value.trim(),email=document.getElementById("bnEmail").value.trim(),prod=document.getElementById("bnProduto").value,msg=document.getElementById("bnMsg").value.trim();var st=document.getElementById("bnStatus");
-if(!nome||!email||!msg){st.textContent=t("bn_empty");return}
-fetch("/bonus",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({nome:nome,email:email,produto:prod,mensagem:msg})})
-.then(function(r){return r.json()})
-.then(function(d){st.textContent=d.ok?t("bn_ok"):t("bn_err")})
-.catch(function(){st.textContent=t("bn_err")})
-}
-document.addEventListener("DOMContentLoaded",function(){
-applyFormsPatch();
-var saved=localStorage.getItem("a1elos-lang");
-if(saved&&T[saved]){setLang(saved)}else{setLang("pt")}
-renderEnergyGrid();
-});
-</script>
+        window.onload = init;
+    </script>
 </body>
 </html>
