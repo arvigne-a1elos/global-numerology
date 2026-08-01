@@ -36,7 +36,7 @@ a{color:var(--gold);text-decoration:none}
 .form-group label{display:block;color:#ccc;font-size:.85rem;margin-bottom:6px}
 .form-group input,.form-group select{width:100%;padding:13px 15px;background:#181818;border:1px solid #333;border-radius:12px;color:#fff;font-size:.95rem}
 .form-group input:focus,.form-group select:focus{outline:none;border-color:var(--gold)}
-.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;max-width:1200px;margin:0 auto}
+repeat(3,1fr)
 .product-card{background:var(--card);border:1px solid #222;border-radius:20px;padding:28px;text-align:center;transition:.3s}
 .product-card:hover{transform:translateY(-4px);border-color:rgba(201,169,78,.5)}
 .product-card .icon{font-size:2.2rem;margin-bottom:10px}
@@ -132,24 +132,6 @@ footer{text-align:center;padding:35px 5%;color:#444;font-size:.8rem;border-top:1
 <span class="pay-opt" data-i18n="payment_debit">Crédito/Débito</span>
 <span class="pay-opt" data-i18n="payment_boleto">📄 Boleto</span>
 <span class="pay-opt" data-i18n="payment_cash">À vista (3 dias)</span>
-</div>
-
-<div class="cards-grid">
-
-<!-- 1 - Mapa Express -->
-<div class="product-card">
-<div class="icon">🔮</div>
-<span class="tag" data-i18n="tag_basic">Básico</span>
-<h3 data-i18n="prod_express_title">Mapa Express</h3>
-<div class="price" data-price="0">R$ 8</div>
-<p class="desc" data-i18n="prod_express_desc">1 página com os 5 números principais e seu significado resumido. Ideal para uma visão rápida.</p>
-<ul>
-<li>✅ <span data-i18n="feat_express1">Caminho da Vida</span></li>
-<li>✅ <span data-i18n="feat_express2">Expressão, Alma, Personalidade</span></li>
-<li>✅ <span data-i18n="feat_express3">Destino</span></li>
-<li>📧 <span data-i18n="feat_email">Envio por email</span></li>
-</ul>
-<button class="btn btn-full" id="payExpressBtn" onclick="payExpress()" data-i18n="btn_express">Comprar R$ 8</button>
 </div>
 
 <!-- 2 - Mapa Completo -->
