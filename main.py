@@ -424,3 +424,77 @@ async def solicitar_bonus(req: BonusReq):
         return {"ok": True, "codigo": codigo}
     except Exception:
         return {"ok": False}
+
+# ===== SISTEMA DE PUBLICIDADE GEOLOCALIZADA (A1ELOS) =====
+import json, os
+from pydantic import BaseModel
+
+ARQ_BANNERS = "banners.json"
+
+# Continentes por país (mapeamento simplificado)
+PAIS_CONTINENTE = {
+    "BR":"SA","AR":"SA","CL":"SA","CO":"SA","PE":"SA","UY":"SA","PY":"SA","BO":"SA","EC":"SA","VE":"SA",
+    "US":"NA","CA":"NA","MX":"NA",
+    "PT":"EU","ES":"EU","FR":"EU","DE":"EU","IT":"EU","GB":"EU","RU":"EU","NL":"EU","BE":"EU","CH":"EU","AT":"EU","IE":"EU",
+    "CN":"AS","JP":"AS","IN":"AS","KR":"AS","SA":"AS","AE":"AS","IL":"AS","TR":"AS","ID":"AS","PK":"AS","BD":"AS",
+    "EG":"AF","NG":"AF","ZA":"AF","KE":"AF","MA":"AF",
+    "AU":"OC","NZ":"OC"
+}
+
+def _carregar_banners():
+    try:
+        with open(ARQ_BANNERS, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return []
+
+def _salvar_banners(banners):
+    with open(ARQ_BANNERS, "w", encoding="utf-8") as f:
+        json.dump(banners, f, ensure_ascii=False, indent=2)
+
+# Modelo de banner contratado
+class BannerContrato(BaseModel):
+    id: str
+    marca: str
+    url_anunciante: str
+    imagem_url: str
+    escopo: str  # "pais", "continente", "mundo"
+    pais: str = ""       # ex: "BR" (se escopo=pais)
+    continente: str = "" # ex: "SA" (se escopo=continente)
+    posicao: str = "topo"  # topo, lateral, rodape, interno
+    tipo: str = "fixo"   # fixo ou temporario
+    data_inicio: str = ""
+    data_fim: str = ""   # preencher se temporario
+    ativo: bool = True
+
+# Endpoint: o frontend consulta qual banner mostrar (passa o IP/código do país)
+@app.get("/api/banner")
+async def get_banner(posicao: str = "topo", pais: str = "BR"):
+    banners = _carregar_banners()
+    if not banners:
+        return {"ok": False, "banner": None}
+    
+    # Descobre o continente do país
+    continente = PAIS_CONTINENTE.get(pais.upper(), "")
+    import datetime
+    hoje = datetime.date.today().isoformat()
+    
+    # Prioridade: país > continente > mundo
+    for b in banners:
+        if not b.get("ativo") or b.get("posicao") != posicao:
+            continue
+        # Verifica validade temporal
+        if b.get("tipo") == "temporario":
+            if b.get("data_fim") and hoje > b["data_fim"]:
+                continue
+            if b.get("data_inicio") and hoje < b["data_inicio"]:
+                continue
+        # Match por escopo
+        if b.get("escopo") == "pais" and b.get("pais") == pais.upper():
+            return {"ok": True, "banner": b}
+        if b.get("escopo") == "continente" and b.get("continente") == continente:
+            return {"ok": True, "banner": b}
+        if b.get("escopo") == "mundo":
+            return {"ok": True, "banner": b}
+    
+    return {"ok": False, "banner": None}
