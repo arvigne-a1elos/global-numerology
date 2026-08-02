@@ -1,8 +1,8 @@
 fastapi
 uvicorn[standard]
-pydantic
 stripe
+sqlalchemy
+sendgrid
 reportlab
 python-dateutil
-sendgrid
-python-multipart
+pydantic
