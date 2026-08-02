@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # main.py - A1ELOS Global Numerology API
-# VERSÃO UNIFICADA 02/08/2026
-# Fusão: main exitoso (4 produtos) + main 301 linhas (15 produtos, 12 idiomas, bônus, banners)
+# VERSÃO FINAL LIMPA E UNIFICADA - 02/08/2026
+# Fusão: main exitoso (4 produtos) + 15 produtos/12 idiomas/bônus/banners
 
 import os, json, uuid, logging, secrets, string, base64, traceback
 from datetime import date, datetime
@@ -41,8 +41,11 @@ ADMIN_EMAIL = "arvigne@gmail.com"
 if STRIPE_KEY:
     stripe.api_key = STRIPE_KEY
 
-# ===== BANCO DE DADOS (do main exitoso) =====
-engine = create_engine(DB_URL, connect_args={"check_same_thread": False})
+# ===== BANCO DE DADOS (funciona com SQLite E PostgreSQL) =====
+engine_kwargs = {}
+if DB_URL.startswith("sqlite"):
+    engine_kwargs["connect_args"] = {"check_same_thread": False}
+engine = create_engine(DB_URL, **engine_kwargs)
 Base = declarative_base()
 SessionLocal = sessionmaker(bind=engine)
 
@@ -71,7 +74,7 @@ class Order(Base):
 
 Base.metadata.create_all(bind=engine)
 
-# ===== APP (criado ANTES das rotas) =====
+# ===== APP (criado ANTES de qualquer rota) =====
 app = FastAPI(title="A1ELOS Global Numerology")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True,
                    allow_methods=["*"], allow_headers=["*"])
@@ -80,9 +83,8 @@ STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
 if os.path.isdir(STATIC_DIR):
     app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
-# ===== 12 IDIOMAS =====
+# ===== 12 IDIOMAS E MOEDAS =====
 IDIOMAS = ["pt", "en", "es", "it", "fr", "de", "ja", "zh", "ru", "hi", "he", "ar"]
-
 MOEDA = {
     "pt": "brl", "en": "usd", "es": "eur", "it": "eur", "fr": "eur", "de": "eur",
     "ja": "jpy", "zh": "cny", "ru": "rub", "hi": "inr", "he": "ils", "ar": "sar"
@@ -116,7 +118,7 @@ VALORES = {
 def preco_local(produto, lang):
     return VALORES[lang][PRODUTO_FAIXA[produto]]
 
-# ===== NOMES DOS PRODUTOS (15 x 12 idiomas) =====
+# ===== NOMES DOS 15 PRODUTOS EM 12 IDIOMAS =====
 PRODUTOS = {
     "pt": {"express": "Mapa Express", "vida": "Qual Vida/Ano", "completo": "Mapa Completo",
         "ia": "Pesquisa IA de Nomes", "urna": "Validação Nome de Urna", "eleitoral": "Número Eleitoral",
@@ -337,7 +339,7 @@ ENERGIAS = {
     7: "Sabedoria", 8: "Poder e Prosperidade (IDEAL)", 9: "Humanitarismo",
 }
 
-# ===== CÁLCULO NUMEROLÓGICO (do main exitoso) =====
+# ===== CÁLCULO NUMEROLÓGICO =====
 def r1(n):
     while n > 9 and n not in (11, 22, 33):
         n = sum(int(d) for d in str(n))
@@ -483,7 +485,7 @@ def pdf8(data, nome, bd):
     doc.build(e)
     return path
 
-# ===== PDF COMPLETO (R$ 17) — com ciclos, desafios, ano pessoal e grade =====
+# ===== PDF COMPLETO (R$ 17) =====
 def pdf17(data, nome, bd_str):
     path = f"/tmp/p17_{uuid.uuid4().hex[:8]}.pdf"
     doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
@@ -581,7 +583,7 @@ def pdf_eleitoral(ss, cl, sugestoes, ni=None):
     doc.build(e)
     return path
 
-# ===== PDF GENÉRICO (11 produtos novos — título localizado) =====
+# ===== PDF GENÉRICO (11 produtos novos) =====
 def pdf_produto(produto, nome, bd_str, lang="pt"):
     path = f"/tmp/p_{uuid.uuid4().hex[:8]}.pdf"
     doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
@@ -629,7 +631,7 @@ def enviar_email(para, assunto, corpo, anexo=None):
         logger.error(f"SendGrid: {e}")
         return False
 
-# ===== EMAIL SIMPLES (SMTP — sugestões e bônus) =====
+# ===== EMAIL SIMPLES (SMTP - sugestões e bônus) =====
 def _enviar_email_simples(destinatario, assunto, corpo):
     try:
         msg = MIMEMultipart()
@@ -662,7 +664,7 @@ def pagina_sucesso(pdf_path, nome, prod_nome):
             f'<p>Ola <b>{nome}</b>, seu {prod_nome} foi gerado.</p>{btn}'
             f'<a href="/" style="color:#C9A94E">Voltar</a></body></html>')
 
-# ===== CRIAÇÃO DE SESSÃO STRIPE (dinâmica: price_id real OU preço local) =====
+# ===== CRIAÇÃO DE SESSÃO STRIPE (dinâmica) =====
 def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=None):
     if lang not in PRICE_IDS or produto not in PRICE_IDS[lang]:
         raise HTTPException(status_code=400, detail="Idioma ou produto inválido")
@@ -697,7 +699,7 @@ def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=No
         logger.error(f"Stripe: {e}")
         raise HTTPException(500, "Erro ao criar pagamento")
 
-# ===== CHECKOUT GENÉRICO (POST — usado pelo frontend) =====
+# ===== CHECKOUT GENÉRICO (POST) =====
 @app.post("/api/pay/stripe")
 def pay_stripe(req: PayReq):
     if not STRIPE_KEY:
@@ -706,13 +708,13 @@ def pay_stripe(req: PayReq):
     lang = req.lang or "pt"
     return _criar_sessao(produto, lang, req.email, req.name, req.birth_date or "")
 
-# ===== CHECKOUT GENÉRICO (GET — compatível com o index.html atual) =====
+# ===== CHECKOUT GENÉRICO (GET - compatível com o index.html) =====
 @app.get("/criar-checkout")
 async def criar_checkout(lang: str = "pt", produto: str = "express"):
     res = _criar_sessao(produto, lang)
     return RedirectResponse(url=res["url"])
 
-# ===== SUCESSO PÓS-PAGAMENTO (gera o PDF do produto e envia por email) =====
+# ===== SUCESSO PÓS-PAGAMENTO =====
 @app.get("/api/pay/success")
 def pay_success(request: Request):
     sid = request.query_params.get("session_id", "")
@@ -731,7 +733,6 @@ def pay_success(request: Request):
         if not bd:
             bd = "2000-01-01"
         data = calc(nome, bd)
-        # Registra o pedido
         db = SessionLocal()
         try:
             db.add(Order(id=uuid.uuid4().hex[:12], email=email or "sem-email",
@@ -742,7 +743,6 @@ def pay_success(request: Request):
             pass
         finally:
             db.close()
-        # Gera o PDF conforme o produto
         pn = PRODUTOS.get(lang, PRODUTOS["pt"]).get(prod, prod)
         if prod == "completo":
             pf = pdf17(data, nome, bd)
@@ -874,7 +874,7 @@ def pay_eleitoral_success(request: Request):
 def pay_cancel():
     return HTMLResponse("<h1>Cancelado</h1><a href='/'>Voltar</a>")
 
-# ===== CÁLCULO GRÁTIS (salva no banco e envia PDF se houver email) =====
+# ===== CÁLCULO GRÁTIS =====
 @app.post("/calculate")
 def calculate(req: PayReq):
     db = SessionLocal()
