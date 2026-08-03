@@ -706,7 +706,6 @@ def pay_success(request: Request):
         if hasattr(meta, "to_dict"):
             meta = meta.to_dict()
         nome = meta.get("nome", "Cliente")
-        email = meta.get("email", "") or getattr(s, "customer_email", "") or ""
         bd = meta.get("birth", "")
         prod = meta.get("tipo", "express")
         lang = meta.get("lang", "pt")
@@ -723,7 +722,7 @@ def pay_success(request: Request):
             pass
         finally:
             db.close()
-        pn = PRODUTOS.get(lang, PRODUTOS["pt"]).get(prod, prod)
+           pn = PRODUTOS.get(lang, PRODUTOS["pt"]).get(prod, prod)
         if prod == "completo":
             pf = pdf17(data, nome, bd)
         elif prod == "urna":
