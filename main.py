@@ -754,12 +754,7 @@ def pay_success(request: Request):
             pf = pdf8(data, nome, bd)
         else:
             pf = pdf_produto(prod, nome, bd, lang)
-        if pf and email:
-            try:
-                enviar_email(email, f"Seu {pn}!", f"Olá {nome},\n\nPDF anexo.", pf)
-            except Exception:
-                pass
-        html = pagina_sucesso(pf, nome, pn)
+               html = pagina_sucesso(pf, nome, pn)
         if pf and os.path.exists(pf):
             os.remove(pf)
         return HTMLResponse(html)
@@ -804,12 +799,7 @@ def pay_urna_success(request: Request):
         res, _, sugs = validar_nomes_urna(nomes, cr)
         cl = CARGO_INFO.get(cr, {}).get("label", cr)
         pf = pdf_urna(nc, cl, res, sugs)
-        if pf and em:
-            try:
-                enviar_email(em, "Validacao Nome", "PDF anexo.", pf)
-            except Exception:
-                pass
-        html = pagina_sucesso(pf, nc, "Validacao de Nome de Urna")
+               html = pagina_sucesso(pf, nc, "Validacao de Nome de Urna")
         if pf and os.path.exists(pf):
             os.remove(pf)
         return HTMLResponse(html)
@@ -858,12 +848,7 @@ def pay_eleitoral_success(request: Request):
             except Exception:
                 pass
         pf = pdf_eleitoral(ss, cl2, sugs, ni)
-        if pf and em:
-            try:
-                enviar_email(em, "Numero Eleitoral", f"PDF para {cl2}.", pf)
-            except Exception:
-                pass
-        html = pagina_sucesso(pf, f"Candidato {cl2}", "Numero Eleitoral")
+                html = pagina_sucesso(pf, f"Candidato {cl2}", "Numero Eleitoral")
         if pf and os.path.exists(pf):
             os.remove(pf)
         return HTMLResponse(html)
@@ -887,16 +872,8 @@ def calculate(req: PayReq):
         cid = uuid.uuid4().hex[:8]
         db.add(Calc(id=cid, name=req.name, birth_date=req.birth_date, email=req.email or "", **res))
         db.commit()
-        if req.email and req.email.strip():
-            try:
-                pf = pdf8(res, req.name, req.birth_date)
-                if pf:
-                    enviar_email(req.email.strip(), "Seu Mapa Express Gratuito!",
-                                 f"Olá {req.name},\n\nSeu mapa gratuito está anexo.\n\nA1ELOS", pf)
-                    if os.path.exists(pf):
-                        os.remove(pf)
-            except Exception as e:
-                logger.error(f"Email grátis: {e}")
+                        # Entrega imediata na tela — sem email, sem armazenamento (sigilo do cliente)
+        res["download_pdf"] = False
         return {"id": cid, **res}
     except HTTPException:
         raise
