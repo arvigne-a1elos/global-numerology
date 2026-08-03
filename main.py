@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 # main.py - A1ELOS Global Numerology API
-# VERSÃO FINAL LIMPA E UNIFICADA - 02/08/2026
-# Fusão: main exitoso (4 produtos) + 15 produtos/12 idiomas/bônus/banners
-
+# VERSÃO FINAL CORRIGIDA - INDENTAÇÃO OK
 import os, json, uuid, logging, secrets, string, base64, traceback
 from datetime import date, datetime
 from typing import Optional
@@ -39,7 +37,7 @@ ADMIN_EMAIL = "arvigne@gmail.com"
 if STRIPE_KEY:
     stripe.api_key = STRIPE_KEY
 
-# ===== BANCO DE DADOS (funciona com SQLite E PostgreSQL) =====
+# ===== BANCO DE DADOS =====
 engine_kwargs = {}
 if DB_URL.startswith("sqlite"):
     engine_kwargs["connect_args"] = {"check_same_thread": False}
@@ -72,11 +70,10 @@ class Order(Base):
 
 Base.metadata.create_all(bind=engine)
 
-# ===== APP (criado ANTES de qualquer rota) =====
+# ===== APP =====
 app = FastAPI(title="A1ELOS Global Numerology")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True,
                    allow_methods=["*"], allow_headers=["*"])
-
 STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
 if os.path.isdir(STATIC_DIR):
     app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
@@ -92,7 +89,7 @@ SIMBOLO = {
     "ja": "¥", "zh": "¥", "ru": "₽", "hi": "₹", "he": "₪", "ar": "﷼"
 }
 
-# ===== FAIXAS DE PREÇO (promocionais de abertura) =====
+# ===== FAIXAS DE PREÇO =====
 PRODUTO_FAIXA = {
     "express": 0, "vida": 0, "completo": 1, "ia": 1,
     "urna": 2, "eleitoral": 2, "imovel": 2, "calendario": 2,
@@ -113,10 +110,11 @@ VALORES = {
     "he": [500, 1300, 1900, 2600, 3300, 7300],
     "ar": [600, 1300, 1900, 2600, 3300, 7300]
 }
+
 def preco_local(produto, lang):
     return VALORES[lang][PRODUTO_FAIXA[produto]]
 
-# ===== NOMES DOS 15 PRODUTOS EM 12 IDIOMAS =====
+# ===== NOMES DOS 15 PRODUTOS =====
 PRODUTOS = {
     "pt": {"express": "Mapa Express", "vida": "Qual Vida/Ano", "completo": "Mapa Completo",
         "ia": "Pesquisa IA de Nomes", "urna": "Validação Nome de Urna", "eleitoral": "Número Eleitoral",
@@ -192,7 +190,7 @@ PRODUTOS = {
         "casal": "خريطة الزوجين", "familia": "خريطة العائلة المميزة", "coletivo": "مكافأة الشركات"}
 }
 
-# ===== PRICE IDS STRIPE (4 reais x 12 idiomas + 11 placeholders) =====
+# ===== PRICE IDS STRIPE =====
 PRICE_IDS = {
     "pt": {"express": "price_1TxocVBMLa84bVJ0EL0kb9Dn", "completo": "price_1TxohlBMLa84bVJ0jVj9307b",
            "urna": "price_1TxollBMLa84bVJ0Wk5zIak6", "eleitoral": "price_1TxopFBMLa84bVJ0jvtJExVj",
@@ -455,7 +453,7 @@ def estilo(tam, negrito=False, cor=DARK, alinhamento=TA_LEFT, antes=0, depois=4)
                          alignment=alinhamento, spaceBefore=antes,
                          spaceAfter=depois)
 
-# ===== PDF EXPRESS (R$ 8) =====
+# ===== PDF EXPRESS =====
 def pdf8(data, nome, bd):
     path = f"/tmp/p8_{uuid.uuid4().hex[:8]}.pdf"
     doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
@@ -483,7 +481,7 @@ def pdf8(data, nome, bd):
     doc.build(e)
     return path
 
-# ===== PDF COMPLETO (R$ 17) =====
+# ===== PDF COMPLETO =====
 def pdf17(data, nome, bd_str):
     path = f"/tmp/p17_{uuid.uuid4().hex[:8]}.pdf"
     doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
@@ -529,7 +527,7 @@ def pdf17(data, nome, bd_str):
     doc.build(e)
     return path
 
-# ===== PDF NOME DE URNA (R$ 26) =====
+# ===== PDF NOME DE URNA =====
 def pdf_urna(nc, cl, resultados, sugestoes):
     path = f"/tmp/u_{uuid.uuid4().hex[:8]}.pdf"
     doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
@@ -555,7 +553,7 @@ def pdf_urna(nc, cl, resultados, sugestoes):
     doc.build(e)
     return path
 
-# ===== PDF NÚMERO ELEITORAL (R$ 26) =====
+# ===== PDF NÚMERO ELEITORAL =====
 def pdf_eleitoral(ss, cl, sugestoes, ni=None):
     path = f"/tmp/e_{uuid.uuid4().hex[:8]}.pdf"
     doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
@@ -644,7 +642,7 @@ def pagina_sucesso(pdf_path, nome, prod_nome):
             f'<p>Ola <b>{nome}</b>, seu {prod_nome} foi gerado.</p>{btn}'
             f'<a href="/" style="color:#C9A94E">Voltar</a></body></html>')
 
-# ===== CRIAÇÃO DE SESSÃO STRIPE (dinâmica) =====
+# ===== CRIAÇÃO DE SESSÃO STRIPE =====
 def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=None):
     if lang not in PRICE_IDS or produto not in PRICE_IDS[lang]:
         raise HTTPException(status_code=400, detail="Idioma ou produto inválido")
@@ -688,7 +686,7 @@ def pay_stripe(req: PayReq):
     lang = req.lang or "pt"
     return _criar_sessao(produto, lang, req.email, req.name, req.birth_date or "")
 
-# ===== CHECKOUT GENÉRICO (GET - compatível com o index.html) =====
+# ===== CHECKOUT GENÉRICO (GET) =====
 @app.get("/criar-checkout")
 async def criar_checkout(lang: str = "pt", produto: str = "express"):
     res = _criar_sessao(produto, lang)
@@ -706,6 +704,7 @@ def pay_success(request: Request):
         if hasattr(meta, "to_dict"):
             meta = meta.to_dict()
         nome = meta.get("nome", "Cliente")
+        email = meta.get("email", "") or getattr(s, "customer_email", "") or ""
         bd = meta.get("birth", "")
         prod = meta.get("tipo", "express")
         lang = meta.get("lang", "pt")
@@ -722,7 +721,7 @@ def pay_success(request: Request):
             pass
         finally:
             db.close()
-           pn = PRODUTOS.get(lang, PRODUTOS["pt"]).get(prod, prod)
+        pn = PRODUTOS.get(lang, PRODUTOS["pt"]).get(prod, prod)
         if prod == "completo":
             pf = pdf17(data, nome, bd)
         elif prod == "urna":
@@ -778,7 +777,7 @@ def pay_urna_success(request: Request):
         res, _, sugs = validar_nomes_urna(nomes, cr)
         cl = CARGO_INFO.get(cr, {}).get("label", cr)
         pf = pdf_urna(nc, cl, res, sugs)
-               html = pagina_sucesso(pf, nc, "Validacao de Nome de Urna")
+        html = pagina_sucesso(pf, nc, "Validacao de Nome de Urna")
         if pf and os.path.exists(pf):
             os.remove(pf)
         return HTMLResponse(html)
@@ -827,7 +826,7 @@ def pay_eleitoral_success(request: Request):
             except Exception:
                 pass
         pf = pdf_eleitoral(ss, cl2, sugs, ni)
-                html = pagina_sucesso(pf, f"Candidato {cl2}", "Numero Eleitoral")
+        html = pagina_sucesso(pf, f"Candidato {cl2}", "Numero Eleitoral")
         if pf and os.path.exists(pf):
             os.remove(pf)
         return HTMLResponse(html)
@@ -851,7 +850,6 @@ def calculate(req: PayReq):
         cid = uuid.uuid4().hex[:8]
         db.add(Calc(id=cid, name=req.name, birth_date=req.birth_date, email=req.email or "", **res))
         db.commit()
-                        # Entrega imediata na tela — sem email, sem armazenamento (sigilo do cliente)
         res["download_pdf"] = False
         return {"id": cid, **res}
     except HTTPException:
@@ -915,18 +913,15 @@ async def stripe_webhook(req: Request):
 
 # ===== SISTEMA DE BÔNUS =====
 ARQ_BONUS = "bonus_codes.json"
-
 def _carregar_codigos():
     try:
         with open(ARQ_BONUS, "r", encoding="utf-8") as f:
             return json.load(f)
     except FileNotFoundError:
         return {}
-
 def _salvar_codigos(dados):
     with open(ARQ_BONUS, "w", encoding="utf-8") as f:
         json.dump(dados, f, ensure_ascii=False, indent=2)
-
 def _gerar_codigo_bonus():
     chars = string.ascii_uppercase + string.digits
     p1 = "".join(secrets.choice(chars) for _ in range(4))
@@ -994,14 +989,12 @@ PAIS_CONTINENTE = {
     "EG":"AF","NG":"AF","ZA":"AF","KE":"AF","MA":"AF",
     "AU":"OC","NZ":"OC"
 }
-
 def _carregar_banners():
     try:
         with open(ARQ_BANNERS, "r", encoding="utf-8") as f:
             return json.load(f)
     except FileNotFoundError:
         return []
-
 def _salvar_banners(banners):
     with open(ARQ_BANNERS, "w", encoding="utf-8") as f:
         json.dump(banners, f, ensure_ascii=False, indent=2)
