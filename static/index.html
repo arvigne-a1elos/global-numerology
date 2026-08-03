@@ -769,44 +769,13 @@
     <div id="banner-lateral"></div>
 
     <!-- INVESTIDORES -->
-    <section id="investidores">
-        <h2 class="section-title" data-i18n="inv_title">Investidores e Parceiros</h2>
-        <p class="section-sub" data-i18n="inv_sub">Baixe a apresentação empresarial da A1ELOS no seu idioma, gratuitamente.</p>
-        <div class="cards-grid">
-            <div class="product-card">
-                <div class="icon">📄</div>
-                <h3>🇧🇷 Português</h3>
-                <p class="desc">Apresentação empresarial completa em português.</p>
-                <a href="investidores/A1ELOS_Investidores_PT.pdf" target="_blank" class="btn btn-full btn-outline" data-i18n="download">Baixar PDF</a>
-            </div>
-            <div class="product-card">
-                <div class="icon">📄</div>
-                <h3>🇺🇸 English</h3>
-                <p class="desc">Complete business presentation in English.</p>
-                <a href="investidores/A1ELOS_Investidores_EN.pdf" target="_blank" class="btn btn-full btn-outline" data-i18n="download">Download PDF</a>
-            </div>
-            <div class="product-card">
-                <div class="icon">📄</div>
-                <h3>🇪🇸 Español</h3>
-                <p class="desc">Presentación empresarial completa en español.</p>
-                <a href="investidores/A1ELOS_Investidores_ES.pdf" target="_blank" class="btn btn-full btn-outline" data-i18n="download">Descargar PDF</a>
-            </div>
-            <div class="product-card">
-                <div class="icon">📄</div>
-                <h3>🇮🇹 Italiano</h3>
-                <p class="desc">Presentazione aziendale completa in italiano.</p>
-                <a href="investidores/A1ELOS_Investidores_IT.pdf" target="_blank" class="btn btn-full btn-outline" data-i18n="download">Scarica PDF</a>
-            </div>
-        </div>
-        {
-  "pt": "Apresentação Empresarial para Investidores e Parceiros.pdf",
-  "en": "Apresentação Formal de Negócios - Business Presentation.pdf",
-  "es": "Presentación Empresarial para Inversores y Socios.pdf",
-  "it": "Presentazione Aziendale per Investidore e Partner.pdf",
-  "fr": "Présentation d'Entreprise — Investisseurs & Partenaires Stratégiques.pdf",
-  "de": "Unternehmenspräsentation für Investoren und Partner.pdf"
-}
-    </section>
+<section id="investidores">
+    <h2 class="section-title" data-i18n="inv_title">Investidores e Parceiros</h2>
+    <p class="section-sub" data-i18n="inv_sub">Baixe a apresentação empresarial da A1ELOS no seu idioma, gratuitamente.</p>
+    <div class="cards-grid" id="investidoresGrid">
+        <!-- Cards gerados via JS a partir do investidores_pdfs.json -->
+    </div>
+</section>
 
     <!-- NÚMEROS -->
     <section id="numbers">
@@ -1380,8 +1349,7 @@ function calcularGratis() {
     })
     .catch(() => { res.innerHTML = '<p style="color:#dc3545">Erro de conexão. Tente novamente.</p>'; });
 }
-
-            
+           
         // ===== FUNÇÃO DE TRADUÇÃO (CORRIGIDA: SÓ TRADUZ, SEM FUNÇÕES ANINHADAS) =====
         function setLanguage(lang) {
             localStorage.setItem('selectedLang', lang);
@@ -1586,6 +1554,39 @@ function calcularGratis() {
             });
         }
 
+// ===== INVESTIDORES: carrega os PDFs por idioma =====
+const INVESTIDORES_META = {
+    pt: { flag: '🇧🇷', nome: 'Português', desc: 'Apresentação empresarial completa em português.', btn: 'Baixar PDF' },
+    en: { flag: '🇺🇸', nome: 'English', desc: 'Complete business presentation in English.', btn: 'Download PDF' },
+    es: { flag: '🇪🇸', nome: 'Español', desc: 'Presentación empresarial completa en español.', btn: 'Descargar PDF' },
+    fr: { flag: '🇫🇷', nome: 'Français', desc: 'Présentation d\'entreprise complète en français.', btn: 'Télécharger PDF' },
+    it: { flag: '🇮🇹', nome: 'Italiano', desc: 'Presentazione aziendale completa in italiano.', btn: 'Scarica PDF' },
+    de: { flag: '🇩🇪', nome: 'Deutsch', desc: 'Vollständige Unternehmenspräsentation auf Deutsch.', btn: 'PDF herunterladen' }
+};
+
+function carregarInvestidores() {
+    const grid = document.getElementById('investidoresGrid');
+    if (!grid) return;
+    fetch('/static/investidores_pdfs.json')
+        .then(r => r.json())
+        .then(map => {
+            grid.innerHTML = '';
+            Object.keys(map).forEach(lang => {
+                const meta = INVESTIDORES_META[lang] || { flag: '', nome: lang, desc: '', btn: 'Baixar PDF' };
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = '<div class="icon">📄</div>' +
+                    '<h3>' + meta.flag + ' ' + meta.nome + '</h3>' +
+                    '<p class="desc">' + meta.desc + '</p>' +
+                    '<a href="/static/' + encodeURIComponent(map[lang]) + '" target="_blank" class="btn btn-full btn-outline">' + meta.btn + '</a>';
+                grid.appendChild(card);
+            });
+        })
+        .catch(() => {
+            grid.innerHTML = '<p style="color:#888;text-align:center">Apresentações indisponíveis no momento.</p>';
+        });
+}
+            
         // ===== INICIALIZAÇÃO =====
         function init() {
             const container = document.getElementById('langSelector');
