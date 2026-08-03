@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento Confirmado | A1ELOS</title>
+    <style>
+        body { background: #0a0a0a; color: #fff; font-family: 'Segoe UI', sans-serif; text-align: center; padding: 40px 20px; }
+        h1 { color: #C9A94E; font-size: 2.2rem; margin-bottom: 10px; }
+        p { color: #ccc; font-size: 1.1rem; }
+        .btn { display: inline-block; padding: 16px 45px; background: #C9A94E; color: #000; text-decoration: none; border-radius: 50px; font-weight: 700; margin: 25px 0; }
+        a.voltar { color: #C9A94E; }
+    </style>
+</head>
+<body>
+    <h1>✅ Pagamento Confirmado!</h1>
+    <p>Seu mapa numerológico está sendo gerado e enviado para seu email.</p>
+    <p>O PDF também aparecerá aqui em instantes.</p>
+    <a class="btn" href="/">← VOLTAR AO SITE</a>
+    <br>
+    <a class="voltar" href="/">Início</a>
+    <script>
+        // Busca o PDF gerado pelo backend na rota de sucesso
+        const params = new URLSearchParams(window.location.search);
+        const sid = params.get('session_id');
+        if (sid) {
+            window.location.href = '/api/pay/success?session_id=' + sid;
+        }
+    </script>
+</body>
+</html>
