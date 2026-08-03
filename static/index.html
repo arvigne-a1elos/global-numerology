@@ -98,6 +98,27 @@
             color: #888;
             font-size: 1.1rem;
         }
+        <!-- CALCULADORA GRÁTIS (primeira coisa do site) -->
+<section id="calculadora">
+    <div class="form-container" style="border:2px solid var(--gold);background:rgba(201,169,78,.05)">
+        <h2 class="section-title" data-i18n="calc_title">🔢 Calcule Seu Mapa Grátis</h2>
+        <p class="section-sub" data-i18n="calc_sub">Seus números essenciais, grátis. Para a interpretação completa, adquira o Mapa Express.</p>
+        <div class="form-group">
+            <label for="calcNome" data-i18n="f_nome">Nome Completo</label>
+            <input type="text" id="calcNome" placeholder="Seu nome completo">
+        </div>
+        <div class="form-group">
+            <label for="calcData" data-i18n="f_data">Data de Nascimento</label>
+            <input type="date" id="calcData">
+        </div>
+        <div class="form-group">
+            <label for="calcEmail" data-i18n="f_email">Email (opcional — receba o PDF grátis)</label>
+            <input type="email" id="calcEmail" placeholder="seu@email.com">
+        </div>
+        <button class="btn btn-full" onclick="calcularGratis()" data-i18n="calc_btn">✨ CALCULAR MEU MAPA GRÁTIS</button>
+        <div id="calcResultado" style="margin-top:20px;text-align:left"></div>
+    </div>
+</section>
         /* Buttons */
         .btn {
             display: inline-block;
@@ -655,6 +676,26 @@
             <button class="btn btn-full" onclick="pagarEleitoral()" data-i18n="pay_eleitoral">🔒 Pagar R$ 26 — Sugestões por Email</button>
         </div>
     </section>
+
+    <!-- SIGNIFICADO DAS ENERGIAS (com botões de serviço) -->
+<section id="energias">
+    <div class="section-header">
+        <h2 data-i18n="section_numbers_title">Significado das Energias</h2>
+        <p data-i18n="section_numbers_subtitle">Cada número carrega uma vibração específica. Clique para saber mais ou contratar o serviço.</p>
+    </div>
+    <div class="cards-grid" style="grid-template-columns:repeat(3,1fr)">
+        <div class="product-card"><div class="icon">1</div><h3>Liderança</h3><p class="desc">Independência, pioneirismo, força de vontade.</p><button class="btn btn-full" onclick="comprar('express')" data-i18n="buy_btn">Comprar</button></div>
+        <div class="product-card"><div class="icon">2</div><h3>Cooperação</h3><p class="desc">Sensibilidade, equilíbrio, diplomacia.</p><button class="btn btn-full" onclick="comprar('express')" data-i18n="buy_btn">Comprar</button></div>
+        <div class="product-card"><div class="icon">3</div><h3>Criatividade</h3><p class="desc">Comunicação, otimismo, expressão.</p><button class="btn btn-full" onclick="comprar('express')" data-i18n="buy_btn">Comprar</button></div>
+        <div class="product-card"><div class="icon">4</div><h3>Disciplina</h3><p class="desc">Trabalho, praticidade, estabilidade.</p><button class="btn btn-full" onclick="comprar('express')" data-i18n="buy_btn">Comprar</button></div>
+        <div class="product-card"><div class="icon">5</div><h3>Liberdade</h3><p class="desc">Versatilidade, aventura, adaptação.</p><button class="btn btn-full" onclick="comprar('express')" data-i18n="buy_btn">Comprar</button></div>
+        <div class="product-card"><div class="icon">6</div><h3>Harmonia</h3><p class="desc">Responsabilidade, amor, família.</p><button class="btn btn-full" onclick="comprar('express')" data-i18n="buy_btn">Comprar</button></div>
+        <div class="product-card"><div class="icon">7</div><h3>Sabedoria</h3><p class="desc">Análise, espiritualidade, introspecção.</p><button class="btn btn-full" onclick="comprar('express')" data-i18n="buy_btn">Comprar</button></div>
+        <div class="product-card"><div class="icon">8</div><h3>Poder</h3><p class="desc">Realização, ambição, prosperidade. Ideal para política e negócios.</p><button class="btn btn-full" onclick="comprar('urna')" data-i18n="buy_btn">Comprar</button></div>
+        <div class="product-card"><div class="icon">9</div><h3>Humanitarismo</h3><p class="desc">Compaixão, idealismo, generosidade.</p><button class="btn btn-full" onclick="comprar('express')" data-i18n="buy_btn">Comprar</button></div>
+    </div>
+    <p style="text-align:center;color:var(--gold);margin-top:20px" data-i18n="numbers_masters">✦ Números Mestres 11, 22 e 33 também são considerados ✦</p>
+</section>
 
     <!-- BÔNUS DE INSERÇÃO (CLIENTE FINAL) -->
     <section id="bonus-insercao">
@@ -1299,7 +1340,40 @@
             he: ["₪ 5","₪ 13","₪ 19","₪ 26","₪ 33","₪ 73"],
             ar: ["﷼ 6","﷼ 13","﷼ 19","﷼ 26","﷼ 33","﷼ 73"]
         };
+        // ===== CALCULADORA GRÁTIS =====
+function calcularGratis() {
+    const nome = document.getElementById('calcNome').value.trim();
+    const data = document.getElementById('calcData').value;
+    const email = document.getElementById('calcEmail').value.trim();
+    const res = document.getElementById('calcResultado');
+    if (!nome || !data) { alert('Informe nome e data de nascimento.'); return; }
+    res.innerHTML = '<p style="color:var(--gold)">Calculando...</p>';
+    fetch('/calculate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: nome, birth_date: data, email: email })
+    })
+    .then(r => r.json())
+    .then(d => {
+        if (d.life_path) {
+            const nums = [
+                ['Caminho de Vida', d.life_path],
+                ['Expressão', d.expression],
+                ['Motivação', d.soul_urge],
+                ['Personalidade', d.personality],
+                ['Destino', d.destiny]
+            ];
+            res.innerHTML = '<h3 style="color:var(--gold);margin-bottom:10px">Seus Números:</h3>' +
+                nums.map(n => '<div style="display:flex;justify-content:space-between;padding:8px 12px;background:#151515;border-radius:8px;margin-bottom:6px"><span>' + n[0] + '</span><strong style="color:var(--gold)">' + n[1] + '</strong></div>').join('') +
+                '<p style="margin-top:15px;color:#888">Quer a interpretação completa? <a href="#produtos" style="color:var(--gold)">Adquira o Mapa Express</a></p>';
+        } else {
+            res.innerHTML = '<p style="color:#dc3545">Erro ao calcular. Tente novamente.</p>';
+        }
+    })
+    .catch(() => { res.innerHTML = '<p style="color:#dc3545">Erro de conexão. Tente novamente.</p>'; });
+}
 
+            
         // ===== FUNÇÃO DE TRADUÇÃO (CORRIGIDA: SÓ TRADUZ, SEM FUNÇÕES ANINHADAS) =====
         function setLanguage(lang) {
             localStorage.setItem('selectedLang', lang);
