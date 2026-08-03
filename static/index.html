@@ -22,10 +22,10 @@ section{padding:50px 20px}
 .section-title{color:var(--gold);text-align:center;font-size:2rem;margin-bottom:10px}
 .section-sub{color:#aaa;text-align:center;margin-bottom:30px}
 .cards-grid{display:grid;gap:20px}
+.grid-3{grid-template-columns:repeat(3,1fr)}
+#produtosGrid{grid-template-columns:repeat(3,1fr)}
 #energiasGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;justify-items:stretch}
 #energiasGrid .card{max-width:100% !important;height:100%}
-#produtosGrid{grid-template-columns:repeat(3,1fr)}
-#energiasGrid{grid-template-columns:repeat(3,1fr)}
 #investidoresGrid{grid-template-columns:repeat(3,1fr)}
 @media(max-width:900px){.grid-3,#produtosGrid,#energiasGrid,#investidoresGrid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:700px){.grid-3,#produtosGrid,#energiasGrid,#investidoresGrid{grid-template-columns:1fr}}
@@ -722,6 +722,129 @@ function init(){
 }
 document.addEventListener("DOMContentLoaded", init);
 </script>
+
+<style>
+#bannerEsquerda{position:fixed;left:10px;top:50%;transform:translateY(-50%);z-index:90;width:160px}
+#bannerTopo{display:flex;justify-content:center;margin:14px auto 0;max-width:100%;padding:0 10px}
+#bannerBase{display:flex;justify-content:center;margin:30px auto;max-width:100%;padding:0 10px}
+.bn{position:relative;overflow:hidden;border-radius:10px;box-shadow:0 4px 14px rgba(0,0,0,.35);background:#111}
+.bn img{display:block;width:100%;height:auto}
+.b-item{position:absolute;inset:0;opacity:0;transition:opacity .8s ease}
+.b-item.active{opacity:1}
+.bn .b-item:first-child{position:relative}
+@media(max-width:768px){#bannerEsquerda{width:88px;left:4px;top:56%}}
+@media(max-width:480px){#bannerEsquerda{width:70px;left:2px}}
+</style>
+<div id="bannerEsquerda"></div>
+<script>
+(function(){
+  var BANNERS={
+    topo:["/static/banner/topo-azul.png","/static/banner/topo-amarelo.png","/static/banner/topo-bordo.png"],
+    esquerda:["/static/banner/esquerda-azul.png","/static/banner/esquerda-amarelo.png","/static/banner/esquerda-bordo.png"],
+    base:["/static/banner/base-azul.png","/static/banner/base-amarelo.png","/static/banner/base-bordo.png"]
+  };
+  var TEMPO=8000; /* rotação: 8s por anúncio (ciclo 3 cores = 24s) */
+  function montar(id,arr){
+    var h='<div class="bn" id="bn-'+id+'">';
+    arr.forEach(function(s,i){h+='<div class="b-item'+(i===0?' active':'')+'"><img src="'+s+'" alt="Seu espaço publicitário" loading="lazy"></div>';});
+    h+='</div>';
+    var box=document.getElementById(id); if(box) box.innerHTML=h;
+    var itens=document.querySelectorAll('#bn-'+id+' .b-item'),atual=0;
+    setInterval(function(){ if(!itens[atual])return; itens[atual].classList.remove('active'); atual=(atual+1)%arr.length; if(itens[atual])itens[atual].classList.add('active'); },TEMPO);
+  }
+  function posicionar(){
+    var t=document.getElementById('bannerTopo');
+    if(!t){ t=document.createElement('div'); t.id='bannerTopo'; var l=document.querySelector('.lang-bar'); if(l&&l.parentNode){l.parentNode.insertBefore(t,l.nextSibling);} else {document.body.insertBefore(t,document.body.firstChild);} }
+    var b=document.getElementById('bannerBase');
+    if(!b){ b=document.createElement('section'); b.id='bannerBase'; var bonus=document.getElementById('bonus'); if(bonus&&bonus.parentNode){bonus.parentNode.insertBefore(b,bonus);} else {document.body.appendChild(b);} }
+  }
+  function iniciar(){
+    posicionar();
+    fetch('/api/banner?posicao=topo&pais=BR').then(function(r){return r.json();}).then(function(res){
+      if(res&&res.ok&&res.banner) return; /* banner de cliente: já tratado pelo sistema existente */
+      montar('bannerTopo',BANNERS.topo);
+      montar('bannerEsquerda',BANNERS.esquerda);
+      montar('bannerBase',BANNERS.base);
+    }).catch(function(){
+      montar('bannerTopo',BANNERS.topo);
+      montar('bannerEsquerda',BANNERS.esquerda);
+      montar('bannerBase',BANNERS.base);
+    });
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',iniciar);} else {iniciar();}
+})();
+</script>
+
+<style>
+#bannerEsquerda{position:fixed;left:10px;top:50%;transform:translateY(-50%);z-index:90;width:160px}
+#bannerTopo{display:flex;justify-content:center;margin:14px auto 0;max-width:100%;padding:0 10px}
+#bannerBase{display:flex;justify-content:center;margin:30px auto;max-width:100%;padding:0 10px}
+.bn{position:relative;overflow:hidden;border-radius:10px;box-shadow:0 4px 14px rgba(0,0,0,.35);background:#111}
+.bn img{display:block;width:100%;height:auto}
+.b-item{position:absolute;inset:0;opacity:0;transition:opacity .8s ease}
+.b-item.active{opacity:1}
+.bn .b-item:first-child{position:relative}
+@media(max-width:768px){#bannerEsquerda{width:88px;left:4px;top:56%}}
+@media(max-width:480px){#bannerEsquerda{width:70px;left:2px}}
+</style>
+<div id="bannerEsquerda"></div>
+<script>
+(function(){
+  var BANNERS={
+    topo:["/static/banner/topo-azul.png","/static/banner/topo-amarelo.png","/static/banner/topo-bordo.png"],
+    esquerda:["/static/banner/esquerda-azul.png","/static/banner/esquerda-amarelo.png","/static/banner/esquerda-bordo.png"],
+    base:["/static/banner/base-azul.png","/static/banner/base-amarelo.png","/static/banner/base-bordo.png"]
+  };
+  var TEMPO=8000; /* rotação: 8 segundos por anúncio (ciclo das 3 cores = 24s) */
+  function htmlBox(id,arr){
+    var h='<div class="bn" id="bn-'+id+'">';
+    arr.forEach(function(s,i){h+='<div class="b-item'+(i===0?' active':'')+'"><img src="'+s+'" alt="Seu espaço publicitário" loading="lazy"></div>';});
+    h+='</div>';
+    return h;
+  }
+  function rotacionar(id,total){
+    var box=document.getElementById(id); if(!box) return;
+    var itens=box.querySelectorAll('.b-item'), atual=0;
+    setInterval(function(){
+      if(!itens[atual]) return;
+      itens[atual].classList.remove('active');
+      atual=(atual+1)%total;
+      if(itens[atual]) itens[atual].classList.add('active');
+    },TEMPO);
+  }
+  function inserir(id,pos,arr){
+    var html=htmlBox(id,arr);
+    if(pos==='topo'){
+      var d=document.getElementById('bannerTopo');
+      if(!d){ d=document.createElement('div'); d.id='bannerTopo'; var lang=document.querySelector('.lang-bar'); if(lang&&lang.parentNode){lang.parentNode.insertBefore(d,lang.nextSibling);} else {document.body.insertBefore(d,document.body.firstChild);} }
+      d.innerHTML=html;
+    } else if(pos==='base'){
+      var s=document.getElementById('bannerBase');
+      if(!s){ s=document.createElement('section'); s.id='bannerBase'; var bonus=document.getElementById('bonus'); if(bonus&&bonus.parentNode){bonus.parentNode.insertBefore(s,bonus);} else {document.body.appendChild(s);} }
+      s.innerHTML=html;
+    } else {
+      var e=document.getElementById('bannerEsquerda'); if(e) e.innerHTML=html;
+    }
+    rotacionar(id,arr.length);
+  }
+  function iniciar(){
+    var esq=document.getElementById('bannerEsquerda');
+    if(!esq){ esq=document.createElement('div'); esq.id='bannerEsquerda'; document.body.appendChild(esq); }
+    fetch('/api/banner?posicao=topo&pais=BR').then(function(r){return r.json();}).then(function(res){
+      if(res&&res.ok&&res.banner) return; /* banner de cliente: já exibido pelo sistema existente */
+      inserir('bannerTopo','topo',BANNERS.topo);
+      inserir('bannerEsquerda','esquerda',BANNERS.esquerda);
+      inserir('bannerBase','base',BANNERS.base);
+    }).catch(function(){
+      inserir('bannerTopo','topo',BANNERS.topo);
+      inserir('bannerEsquerda','esquerda',BANNERS.esquerda);
+      inserir('bannerBase','base',BANNERS.base);
+    });
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',iniciar);} else {iniciar();}
+})();
+</script>
+  
 </body>
 </html>
 
