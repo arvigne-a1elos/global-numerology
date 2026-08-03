@@ -1,0 +1,47 @@
+[
+  {
+    "id": "a1elos-institucional",
+    "marca": "A1ELOS",
+    "url_anunciante": "https://a1elos.com.br",
+    "imagem_url": "https://SEU-SITE/static/banner-topo-desktop.png",
+    "imagem_url_mobile": "https://SEU-SITE/static/banner-topo-mobile.png",
+    "escopo": "mundo",
+    "pais": "",
+    "continente": "",
+    "posicao": "topo",
+    "tipo": "fixo",
+    "data_inicio": "",
+    "data_fim": "",
+    "ativo": true
+  },
+  {
+    "id": "banner-lateral-1",
+    "marca": "A1ELOS",
+    "url_anunciante": "https://a1elos.com.br",
+    "imagem_url": "https://SEU-SITE/static/banner-lateral-desktop.png",
+    "imagem_url_mobile": "https://SEU-SITE/static/banner-lateral-mobile.png",
+    "escopo": "mundo",
+    "pais": "",
+    "continente": "",
+    "posicao": "lateral",
+    "tipo": "fixo",
+    "data_inicio": "",
+    "data_fim": "",
+    "ativo": true
+  },
+  {
+    "id": "banner-rodape-1",
+    "marca": "A1ELOS",
+    "url_anunciante": "https://a1elos.com.br",
+    "imagem_url": "https://SEU-SITE/static/banner-rodape-desktop.png",
+    "imagem_url_mobile": "https://SEU-SITE/static/banner-rodape-mobile.png",
+    "escopo": "mundo",
+    "pais": "",
+    "continente": "",
+    "posicao": "rodape",
+    "tipo": "fixo",
+    "data_inicio": "",
+    "data_fim": "",
+    "ativo": true
+  }
+]
