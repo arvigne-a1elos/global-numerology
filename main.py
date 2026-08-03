@@ -613,24 +613,6 @@ def pdf_produto(produto, nome, bd_str, lang="pt"):
     doc.build(e)
     return path
 
-# ===== ENVIO DE EMAIL (SendGrid com anexo) =====
-def enviar_email(para, assunto, corpo, anexo=None):
-    if not SENDGRID_KEY:
-        return False
-    try:
-        sg = SendGridAPIClient(SENDGRID_KEY)
-        mail = Mail(Email(FROM_EMAIL, FROM_NAME), para, assunto, Content("text/plain", corpo))
-        if anexo and os.path.exists(anexo):
-            with open(anexo, "rb") as f:
-                enc = base64.b64encode(f.read()).decode()
-            mail.attachment = Attachment(FileContent(enc), FileName("Documento.pdf"),
-                                         FileType("application/pdf"), Disposition("attachment"))
-        sg.send(mail)
-        return True
-    except Exception as e:
-        logger.error(f"SendGrid: {e}")
-        return False
-
 # ===== EMAIL SIMPLES (SMTP - sugestões e bônus) =====
 def _enviar_email_simples(destinatario, assunto, corpo):
     try:
