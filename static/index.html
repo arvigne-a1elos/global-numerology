@@ -61,7 +61,13 @@ footer{text-align:center;padding:30px;border-top:1px solid var(--border);color:#
 <body>
 
 <div class="lang-bar" id="langBar"></div>
-<div id="bannerTopo"></div>
+<div id="bannerTopo" class="banner-zona">
+  <div class="bn" id="bn-bannerTopo">
+    <div class="b-item active"><a href="#" target="_blank" rel="sponsored"><img src="/static/banner/topo-azul.png" alt="Seu espaço publicitário! Site 728x90 · Celular 320x100 · Rotação 8s" loading="lazy"></a></div>
+    <div class="b-item"><a href="#" target="_blank" rel="sponsored"><img src="/static/banner/topo-amarelo.png" alt="Seu espaço publicitário!" loading="lazy"></a></div>
+    <div class="b-item"><a href="#" target="_blank" rel="sponsored"><img src="/static/banner/topo-bordo.png" alt="Seu espaço publicitário!" loading="lazy"></a></div>
+  </div>
+</div>
 
 <section class="hero">
   <img src="/static/logo.png" alt="A1ELOS Logo" onerror="this.style.display='none'">
@@ -112,6 +118,14 @@ footer{text-align:center;padding:30px;border-top:1px solid var(--border);color:#
   <div class="cards-grid" id="produtosGrid"></div>
 </section>
 
+<div id="bannerCentral" class="banner-zona">
+  <div class="bn" id="bn-bannerCentral">
+    <div class="b-item active"><a href="#" target="_blank" rel="sponsored"><img src="/static/banner/central-azul.png" alt="Seu espaço publicitário! Site 728x90 · Celular 320x100 · Rotação 8s" loading="lazy"></a></div>
+    <div class="b-item"><a href="#" target="_blank" rel="sponsored"><img src="/static/banner/central-amarelo.png" alt="Seu espaço publicitário!" loading="lazy"></a></div>
+    <div class="b-item"><a href="#" target="_blank" rel="sponsored"><img src="/static/banner/central-bordo.png" alt="Seu espaço publicitário!" loading="lazy"></a></div>
+  </div>
+</div>  
+  
 <section id="energias">
   <h2 class="section-title" data-i18n="section_energias_title">Significado das Energias</h2>
   <p class="section-sub" data-i18n="section_energias_sub">Cada número carrega uma vibração específica. Escolha sua energia e clique no serviço desejado.</p>
@@ -162,6 +176,14 @@ footer{text-align:center;padding:30px;border-top:1px solid var(--border);color:#
   </div>
 </section>
 
+<div id="bannerBase" class="banner-zona">
+  <div class="bn" id="bn-bannerBase">
+    <div class="b-item active"><a href="#" target="_blank" rel="sponsored"><img src="/static/banner/base-azul.png" alt="Seu espaço publicitário! Site 728x90 · Celular 320x100 · Rotação 8s" loading="lazy"></a></div>
+    <div class="b-item"><a href="#" target="_blank" rel="sponsored"><img src="/static/banner/base-amarelo.png" alt="Seu espaço publicitário!" loading="lazy"></a></div>
+    <div class="b-item"><a href="#" target="_blank" rel="sponsored"><img src="/static/banner/base-bordo.png" alt="Seu espaço publicitário!" loading="lazy"></a></div>
+  </div>
+</div>
+  
 <section id="bonus">
   <div class="form-container">
     <h3 class="section-title" data-i18n="bi_title">🎁 Ativar Código Bônus</h3>
@@ -844,6 +866,38 @@ document.addEventListener("DOMContentLoaded", init);
   if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',iniciar);} else {iniciar();}
 })();
 </script>
+
+<style>
+.banner-zona{display:flex;justify-content:center;margin:16px auto 30px;max-width:100%;padding:0 10px}
+.bn{position:relative;overflow:hidden;border-radius:10px;box-shadow:0 4px 14px rgba(0,0,0,.35);background:#111;max-width:728px;width:100%}
+.bn img{display:block;width:100%;height:auto}
+.b-item{position:absolute;inset:0;opacity:0;transition:opacity .8s ease;pointer-events:none}
+.b-item.active{position:relative;opacity:1;pointer-events:auto}
+</style>
+<script>
+(function(){
+  var TEMPO = 8000;
+  function rotacionar(id){
+    var box = document.getElementById(id);
+    if(!box) return;
+    var itens = box.querySelectorAll('.b-item');
+    if(itens.length < 2) return;
+    var atual = 0;
+    setInterval(function(){
+      itens[atual].classList.remove('active');
+      atual = (atual + 1) % itens.length;
+      itens[atual].classList.add('active');
+    }, TEMPO);
+  }
+  function iniciar(){
+    rotacionar('bn-bannerTopo');
+    rotacionar('bn-bannerCentral');
+    rotacionar('bn-bannerBase');
+  }
+  if(document.readyState === 'loading'){ document.addEventListener('DOMContentLoaded', iniciar); }
+  else { iniciar(); }
+})();
+</script>  
   
 </body>
 </html>
