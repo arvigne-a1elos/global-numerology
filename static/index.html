@@ -553,6 +553,10 @@
                 <button class="btn btn-full" onclick="comprar('artistico')" data-i18n="buy_btn">Comprar</button>
             </div>
             <!-- 10. Planejamento Nome de Bebê -->
+            <div class="form-group">
+    <label data-i18n="energia_alvo">Energia desejada</label>
+    <select class="energia-select" data-prod="bebe"><!-- preenchido via JS --></select>
+</div>
             <div class="product-card" data-prod="bebe">
                 <div class="icon">👶</div>
                 <h3 class="prod-nome" data-i18n="p_bebe">Planejamento Nome de Bebê</h3>
@@ -567,6 +571,10 @@
                 <button class="btn btn-full" onclick="comprar('bebe')" data-i18n="buy_btn">Comprar</button>
             </div>
             <!-- 11. Validação de Assinaturas -->
+            <div class="form-group">
+    <label data-i18n="energia_alvo">Energia desejada</label>
+    <select class="energia-select" data-prod=""assinatura""><!-- preenchido via JS --></select>
+</div>
             <div class="product-card" data-prod="assinatura">
                 <div class="icon">✍️</div>
                 <h3 class="prod-nome" data-i18n="p_assinatura">Validação de Assinaturas</h3>
@@ -581,6 +589,10 @@
                 <button class="btn btn-full" onclick="comprar('assinatura')" data-i18n="buy_btn">Comprar</button>
             </div>
             <!-- 12. Nome para Negócio/Produto -->
+            <div class="form-group">
+    <label data-i18n="energia_alvo">Energia desejada</label>
+    <select class="energia-select" data-prod="negocio"><!-- preenchido via JS --></select>
+</div>
             <div class="product-card" data-prod="negocio">
                 <div class="icon">🏪</div>
                 <h3 class="prod-nome" data-i18n="p_negocio">Nome para Negócio/Produto</h3>
@@ -680,22 +692,13 @@
     </section>
 
     <!-- SIGNIFICADO DAS ENERGIAS (com botões de serviço) -->
+<!-- SIGNIFICADO DAS ENERGIAS (renderizado via JS — traduz com o idioma) -->
 <section id="energias">
     <div class="section-header">
         <h2 data-i18n="section_numbers_title">Significado das Energias</h2>
-        <p data-i18n="section_numbers_subtitle">Cada número carrega uma vibração específica. Clique para saber mais ou contratar o serviço.</p>
+        <p data-i18n="section_numbers_subtitle">Cada número carrega uma vibração específica. Escolha sua energia e clique no serviço desejado.</p>
     </div>
-    <div class="cards-grid" style="grid-template-columns:repeat(3,1fr)">
-        <div class="product-card"><div class="icon">1</div><h3>Liderança</h3><p class="desc">Independência, pioneirismo, força de vontade.</p><button class="btn btn-full" onclick="comprar('express')" data-i18n="buy_btn">Comprar</button></div>
-        <div class="product-card"><div class="icon">2</div><h3>Cooperação</h3><p class="desc">Sensibilidade, equilíbrio, diplomacia.</p><button class="btn btn-full" onclick="comprar('express')" data-i18n="buy_btn">Comprar</button></div>
-        <div class="product-card"><div class="icon">3</div><h3>Criatividade</h3><p class="desc">Comunicação, otimismo, expressão.</p><button class="btn btn-full" onclick="comprar('express')" data-i18n="buy_btn">Comprar</button></div>
-        <div class="product-card"><div class="icon">4</div><h3>Disciplina</h3><p class="desc">Trabalho, praticidade, estabilidade.</p><button class="btn btn-full" onclick="comprar('express')" data-i18n="buy_btn">Comprar</button></div>
-        <div class="product-card"><div class="icon">5</div><h3>Liberdade</h3><p class="desc">Versatilidade, aventura, adaptação.</p><button class="btn btn-full" onclick="comprar('express')" data-i18n="buy_btn">Comprar</button></div>
-        <div class="product-card"><div class="icon">6</div><h3>Harmonia</h3><p class="desc">Responsabilidade, amor, família.</p><button class="btn btn-full" onclick="comprar('express')" data-i18n="buy_btn">Comprar</button></div>
-        <div class="product-card"><div class="icon">7</div><h3>Sabedoria</h3><p class="desc">Análise, espiritualidade, introspecção.</p><button class="btn btn-full" onclick="comprar('express')" data-i18n="buy_btn">Comprar</button></div>
-        <div class="product-card"><div class="icon">8</div><h3>Poder</h3><p class="desc">Realização, ambição, prosperidade. Ideal para política e negócios.</p><button class="btn btn-full" onclick="comprar('urna')" data-i18n="buy_btn">Comprar</button></div>
-        <div class="product-card"><div class="icon">9</div><h3>Humanitarismo</h3><p class="desc">Compaixão, idealismo, generosidade.</p><button class="btn btn-full" onclick="comprar('express')" data-i18n="buy_btn">Comprar</button></div>
-    </div>
+    <div class="cards-grid" id="energiasGrid"><!-- gerado via JS --></div>
     <p style="text-align:center;color:var(--gold);margin-top:20px" data-i18n="numbers_masters">✦ Números Mestres 11, 22 e 33 também são considerados ✦</p>
 </section>
 
@@ -751,6 +754,21 @@
                 <thead>
                     <tr>
                         <th data-i18n="bc_tbl_service">Serviço</th>
+                        const SIMBOLO_MOEDA = { pt: "R$", en: "US$", es: "€", it: "€", fr: "€", de: "€", ja: "¥", zh: "¥", ru: "₽", hi: "₹", he: "₪", ar: "﷼" };
+const PRECO_NUM = {
+    pt: [8, 17, 26, 35, 44, 98],
+    en: [1.5, 3.5, 5, 7, 9, 20],
+    es: [1.5, 3.5, 5, 7, 9, 20],
+    it: [1.5, 3.5, 5, 7, 9, 20],
+    fr: [1.5, 3.5, 5, 7, 9, 20],
+    de: [1.5, 3.5, 5, 7, 9, 20],
+    ja: [250, 550, 800, 1100, 1400, 3200],
+    zh: [12, 25, 40, 55, 70, 160],
+    ru: [130, 280, 430, 580, 730, 1600],
+    hi: [120, 280, 430, 580, 730, 1600],
+    he: [5, 13, 19, 26, 33, 73],
+    ar: [6, 13, 19, 26, 33, 73]
+};
                         <th style="text-align:center" data-i18n="bc_tbl_price">Valor</th>
                         <th style="text-align:center" data-i18n="bc_tbl_qty">Quantidade</th>
                     </tr>
@@ -770,13 +788,26 @@
     <!-- BANNER LATERAL -->
     <div id="banner-lateral"></div>
 
+<!-- BÔNUS DE INSERÇÃO (CLIENTE FINAL) -->
+<section id="bonus-insercao">
+    <div class="form-container" style="border:2px solid var(--gold);background:rgba(201,169,78,.05)">
+        <h2 class="section-title" data-i18n="bi_title">🎁 Ativar Código Bônus</h2>
+        <p class="section-sub" data-i18n="bi_sub">Recebeu um código? Insira abaixo e ative para gerar seu presente — sem pagamento.</p>
+        <div class="form-group">
+            <label for="biCodigo" data-i18n="bi_label">Código Bônus</label>
+            <input type="text" id="biCodigo" placeholder="Ex: A1-XXXX-XXXX" style="text-align:center;letter-spacing:2px;font-weight:bold" autocomplete="off">
+        </div>
+        <button class="btn btn-full" onclick="ativarBonusInserido()" data-i18n="bi_btn">🎁 Ativar Código</button>
+        <p id="biStatus" class="hint" style="text-align:center;margin-top:12px;color:var(--gold)"></p>
+    </div>
+</section>
+    
     <!-- INVESTIDORES -->
 <section id="investidores">
     <h2 class="section-title" data-i18n="inv_title">Investidores e Parceiros</h2>
     <p class="section-sub" data-i18n="inv_sub">Baixe a apresentação empresarial da A1ELOS no seu idioma, gratuitamente.</p>
-    <div class="cards-grid" id="investidoresGrid">
-        <!-- Cards gerados via JS a partir do investidores_pdfs.json -->
-    </div>
+    <div class="cards-grid" id="investidoresGrid"><!-- gerado via JS --></div>
+</section>
 </section>
 
     <!-- NÚMEROS -->
@@ -1319,6 +1350,211 @@
             he: ["₪ 5","₪ 13","₪ 19","₪ 26","₪ 33","₪ 73"],
             ar: ["﷼ 6","﷼ 13","﷼ 19","﷼ 26","﷼ 33","﷼ 73"]
         };
+
+// ===== ENERGIAS: NOMES E DESCRIÇÕES EM 12 IDIOMAS =====
+const ENERGIAS_DATA = {
+    pt: [
+        { num: 1, nome: "Liderança", desc: "Independência, pioneirismo, força de vontade." },
+        { num: 2, nome: "Cooperação", desc: "Sensibilidade, equilíbrio, diplomacia." },
+        { num: 3, nome: "Criatividade", desc: "Comunicação, otimismo, expressão." },
+        { num: 4, nome: "Disciplina", desc: "Trabalho, praticidade, estabilidade." },
+        { num: 5, nome: "Liberdade", desc: "Versatilidade, aventura, amor romântico e sensual." },
+        { num: 6, nome: "Harmonia", desc: "Responsabilidade, amor humano e fraternal, família." },
+        { num: 7, nome: "Sabedoria", desc: "Análise, espiritualidade, introspecção." },
+        { num: 8, nome: "Poder", desc: "Realização, ambição, prosperidade. Ideal para política e negócios." },
+        { num: 9, nome: "Humanitarismo", desc: "Compaixão, idealismo, generosidade." }
+    ],
+    en: [
+        { num: 1, nome: "Leadership", desc: "Independence, pioneering, willpower." },
+        { num: 2, nome: "Cooperation", desc: "Sensitivity, balance, diplomacy." },
+        { num: 3, nome: "Creativity", desc: "Communication, optimism, expression." },
+        { num: 4, nome: "Discipline", desc: "Work, practicality, stability." },
+        { num: 5, nome: "Freedom", desc: "Versatility, adventure, romantic and sensual love." },
+        { num: 6, nome: "Harmony", desc: "Responsibility, human and fraternal love, family." },
+        { num: 7, nome: "Wisdom", desc: "Analysis, spirituality, introspection." },
+        { num: 8, nome: "Power", desc: "Achievement, ambition, prosperity. Ideal for politics and business." },
+        { num: 9, nome: "Humanitarianism", desc: "Compassion, idealism, generosity." }
+    ],
+    es: [
+        { num: 1, nome: "Liderazgo", desc: "Independencia, iniciativa, fuerza de voluntad." },
+        { num: 2, nome: "Cooperación", desc: "Sensibilidad, equilibrio, diplomacia." },
+        { num: 3, nome: "Creatividad", desc: "Comunicación, optimismo, expresión." },
+        { num: 4, nome: "Disciplina", desc: "Trabajo, practicidad, estabilidad." },
+        { num: 5, nome: "Libertad", desc: "Versatilidad, aventura, amor romántico y sensual." },
+        { num: 6, nome: "Armonía", desc: "Responsabilidad, amor humano y fraternal, familia." },
+        { num: 7, nome: "Sabiduría", desc: "Análisis, espiritualidad, introspección." },
+        { num: 8, nome: "Poder", desc: "Logro, ambición, prosperidad. Ideal para política y negocios." },
+        { num: 9, nome: "Humanitarismo", desc: "Compasión, idealismo, generosidad." }
+    ],
+    it: [
+        { num: 1, nome: "Leadership", desc: "Indipendenza, iniziativa, forza di volontà." },
+        { num: 2, nome: "Cooperazione", desc: "Sensibilità, equilibrio, diplomazia." },
+        { num: 3, nome: "Creatività", desc: "Comunicazione, ottimismo, espressione." },
+        { num: 4, nome: "Disciplina", desc: "Lavoro, praticità, stabilità." },
+        { num: 5, nome: "Libertà", desc: "Versatilità, avventura, amore romantico e sensuale." },
+        { num: 6, nome: "Armonia", desc: "Responsabilità, amore umano e fraterno, famiglia." },
+        { num: 7, nome: "Saggezza", desc: "Analisi, spiritualità, introspezione." },
+        { num: 8, nome: "Potere", desc: "Realizzazione, ambizione, prosperità. Ideale per politica e affari." },
+        { num: 9, nome: "Umanitarismo", desc: "Compassione, idealismo, generosità." }
+    ],
+    fr: [
+        { num: 1, nome: "Leadership", desc: "Indépendance, initiative, volonté." },
+        { num: 2, nome: "Coopération", desc: "Sensibilité, équilibre, diplomatie." },
+        { num: 3, nome: "Créativité", desc: "Communication, optimisme, expression." },
+        { num: 4, nome: "Discipline", desc: "Travail, praticité, stabilité." },
+        { num: 5, nome: "Liberté", desc: "Versatilité, aventure, amour romantique et sensuel." },
+        { num: 6, nome: "Harmonie", desc: "Responsabilité, amour humain et fraternel, famille." },
+        { num: 7, nome: "Sagesse", desc: "Analyse, spiritualité, introspection." },
+        { num: 8, nome: "Pouvoir", desc: "Réalisation, ambition, prospérité. Idéal pour la politique et les affaires." },
+        { num: 9, nome: "Humanitarisme", desc: "Compassion, idéalisme, générosité." }
+    ],
+    de: [
+        { num: 1, nome: "Führung", desc: "Unabhängigkeit, Initiative, Willenskraft." },
+        { num: 2, nome: "Kooperation", desc: "Sensibilität, Gleichgewicht, Diplomatie." },
+        { num: 3, nome: "Kreativität", desc: "Kommunikation, Optimismus, Ausdruck." },
+        { num: 4, nome: "Disziplin", desc: "Arbeit, Praktikabilität, Stabilität." },
+        { num: 5, nome: "Freiheit", desc: "Vielseitigkeit, Abenteuer, romantische und sinnliche Liebe." },
+        { num: 6, nome: "Harmonie", desc: "Verantwortung, menschliche und brüderliche Liebe, Familie." },
+        { num: 7, nome: "Weisheit", desc: "Analyse, Spiritualität, Introspektion." },
+        { num: 8, nome: "Macht", desc: "Erfolg, Ehrgeiz, Wohlstand. Ideal für Politik und Geschäft." },
+        { num: 9, nome: "Humanitarismus", desc: "Mitgefühl, Idealismus, Großzügigkeit." }
+    ],
+    ja: [
+        { num: 1, nome: "リーダーシップ", desc: "独立心、先駆性、意志力。" },
+        { num: 2, nome: "協力", desc: "感受性、バランス、外交。" },
+        { num: 3, nome: "創造性", desc: "コミュニケーション、楽観、表現。" },
+        { num: 4, nome: "規律", desc: "勤勉、実用性、安定。" },
+        { num: 5, nome: "自由", desc: "多才、冒険、ロマンチックで官能的な愛。" },
+        { num: 6, nome: "調和", desc: "責任、人間的で友愛的な愛、家族。" },
+        { num: 7, nome: "知恵", desc: "分析、精神性、内省。" },
+        { num: 8, nome: "力", desc: "達成、野心、繁栄。政治とビジネスに最適。" },
+        { num: 9, nome: "人道主義", desc: "思いやり、理想主義、寛大さ。" }
+    ],
+    zh: [
+        { num: 1, nome: "领导力", desc: "独立、开创、意志力。" },
+        { num: 2, nome: "合作", desc: "敏感、平衡、外交。" },
+        { num: 3, nome: "创造力", desc: "沟通、乐观、表达。" },
+        { num: 4, nome: "纪律", desc: "勤奋、务实、稳定。" },
+        { num: 5, nome: "自由", desc: "多才、冒险、浪漫而感性的爱。" },
+        { num: 6, nome: "和谐", desc: "责任、人类与兄弟之爱、家庭。" },
+        { num: 7, nome: "智慧", desc: "分析、灵性、内省。" },
+        { num: 8, nome: "力量", desc: "成就、雄心、繁荣。适合政治与商业。" },
+        { num: 9, nome: "人道主义", desc: "同情、理想主义、慷慨。" }
+    ],
+    ru: [
+        { num: 1, nome: "Лидерство", desc: "Независимость, инициатива, сила воли." },
+        { num: 2, nome: "Сотрудничество", desc: "Чувствительность, баланс, дипломатия." },
+        { num: 3, nome: "Творчество", desc: "Общение, оптимизм, самовыражение." },
+        { num: 4, nome: "Дисциплина", desc: "Труд, практичность, стабильность." },
+        { num: 5, nome: "Свобода", desc: "Универсальность, приключения, романтическая и чувственная любовь." },
+        { num: 6, nome: "Гармония", desc: "Ответственность, человеческая и братская любовь, семья." },
+        { num: 7, nome: "Мудрость", desc: "Анализ, духовность, интроспекция." },
+        { num: 8, nome: "Власть", desc: "Достижение, амбиции, процветание. Идеально для политики и бизнеса." },
+        { num: 9, nome: "Гуманизм", desc: "Сострадание, идеализм, щедрость." }
+    ],
+    hi: [
+        { num: 1, nome: "नेतृत्व", desc: "स्वतंत्रता, अग्रणी, इच्छाशक्ति।" },
+        { num: 2, nome: "सहयोग", desc: "संवेदनशीलता, संतुलन, कूटनीति।" },
+        { num: 3, nome: "रचनात्मकता", desc: "संचार, आशावाद, अभिव्यक्ति।" },
+        { num: 4, nome: "अनुशासन", desc: "काम, व्यावहारिकता, स्थिरता।" },
+        { num: 5, nome: "स्वतंत्रता", desc: "बहुमुखी, साहसिक, रोमांटिक और कामुक प्रेम।" },
+        { num: 6, nome: "सामंजस्य", desc: "जिम्मेदारी, मानवीय और भ्रातृ प्रेम, परिवार।" },
+        { num: 7, nome: "ज्ञान", desc: "विश्लेषण, आध्यात्मिकता, आत्मनिरीक्षण।" },
+        { num: 8, nome: "शक्ति", desc: "उपलब्धि, महत्वाकांक्षा, समृद्धि। राजनीति और व्यापार के लिए आदर्श।" },
+        { num: 9, nome: "मानवतावाद", desc: "करुणा, आदर्शवाद, उदारता।" }
+    ],
+    he: [
+        { num: 1, nome: "מנהיגות", desc: "עצמאות, יוזמה, כוח רצון." },
+        { num: 2, nome: "שיתוף פעולה", desc: "רגישות, איזון, דיפלומטיה." },
+        { num: 3, nome: "יצירתיות", desc: "תקשורת, אופטימיות, ביטוי." },
+        { num: 4, nome: "משמעת", desc: "עבודה, פרקטיות, יציבות." },
+        { num: 5, nome: "חופש", desc: "גמישות, הרפתקאות, אהבה רומנטית וחושנית." },
+        { num: 6, nome: "הרמוניה", desc: "אחריות, אהבה אנושית ואחווה, משפחה." },
+        { num: 7, nome: "חוכמה", desc: "ניתוח, רוחניות, התבוננות פנימית." },
+        { num: 8, nome: "כוח", desc: "הישג, שאפתנות, שגשוג. אידיאלי לפוליטיקה ועסקים." },
+        { num: 9, nome: "הומניטריות", desc: "חמלה, אידיאליזם, נדיבות." }
+    ],
+    ar: [
+        { num: 1, nome: "قيادة", desc: "استقلال، مبادرة، قوة إرادة." },
+        { num: 2, nome: "تعاون", desc: "حساسية، توازن، دبلوماسية." },
+        { num: 3, nome: "إبداع", desc: "تواصل، تفاؤل، تعبير." },
+        { num: 4, nome: "انضباط", desc: "عمل، عملية، استقرار." },
+        { num: 5, nome: "حرية", desc: "تنوع، مغامرة، حب رومانسي وحسي." },
+        { num: 6, nome: "انسجام", desc: "مسؤولية، حب إنساني وأخوي، عائلة." },
+        { num: 7, nome: "حكمة", desc: "تحليل، روحانية، استبطان." },
+        { num: 8, nome: "قوة", desc: "إنجاز، طموح، ازدهار. مثالي للسياسة والأعمال." },
+        { num: 9, nome: "إنسانية", desc: "تعاطف، مثالية، كرم." }
+    ]
+};
+
+// ===== BOTÕES DOS SERVIÇOS (12 idiomas) =====
+const ENERGIA_BTN = {
+    pt: { bebe: "Nome de Bebê", assinatura: "Assinaturas", negocio: "Negócio/Produto", urna: "Nome de Urna" },
+    en: { bebe: "Baby Name", assinatura: "Signatures", negocio: "Business Name", urna: "Ballot Name" },
+    es: { bebe: "Nombre de Bebé", assinatura: "Firmas", negocio: "Negocio/Producto", urna: "Nombre de Urna" },
+    it: { bebe: "Nome del Bambino", assinatura: "Firme", negocio: "Business/Prodotto", urna: "Nome della Scheda" },
+    fr: { bebe: "Prénom de Bébé", assinatura: "Signatures", negocio: "Entreprise/Produit", urna: "Nom du Bulletin" },
+    de: { bebe: "Babyname", assinatura: "Unterschriften", negocio: "Geschäft/Produkt", urna: "Stimmzettelname" },
+    ja: { bebe: "赤ちゃんの名前", assinatura: "署名", negocio: "ビジネス名", urna: "投票用紙名" },
+    zh: { bebe: "宝宝取名", assinatura: "签名", negocio: "企业名称", urna: "选票名称" },
+    ru: { bebe: "Имя ребёнка", assinatura: "Подписи", negocio: "Бизнес/Продукт", urna: "Название бюллетеня" },
+    hi: { bebe: "शिशु नाम", assinatura: "हस्ताक्षर", negocio: "व्यवसाय नाम", urna: "मतपत्र नाम" },
+    he: { bebe: "שם לתינוק", assinatura: "חתימות", negocio: "שם עסקי", urna: "שם פתק" },
+    ar: { bebe: "اسم الطفل", assinatura: "التوقيعات", negocio: "اسم العمل", urna: "اسم الاقتراع" }
+};
+
+// ===== RENDERIZA AS ENERGIAS (com botões de serviço) =====
+function montarEnergias() {
+    var grid = document.getElementById('energiasGrid');
+    if (!grid) return;
+    var lang = getLang();
+    var dados = ENERGIAS_DATA[lang] || ENERGIAS_DATA.pt;
+    var btns = ENERGIA_BTN[lang] || ENERGIA_BTN.pt;
+    grid.innerHTML = '';
+    dados.forEach(function(e) {
+        var card = document.createElement('div');
+        card.className = 'product-card';
+        var extraBtn = (e.num === 8) ? '<button class="btn btn-full" onclick="comprarComEnergia(\'urna\',8)">🗳️ ' + btns.urna + '</button>' : '';
+        card.innerHTML =
+            '<div class="icon" style="font-size:2rem;color:var(--gold);font-family:\'Playfair Display\',serif">' + e.num + '</div>' +
+            '<h3>' + e.nome + '</h3>' +
+            '<p class="desc">' + e.desc + '</p>' +
+            '<div style="display:flex;flex-direction:column;gap:8px">' +
+            '<button class="btn btn-full" onclick="comprarComEnergia(\'bebe\',' + e.num + ')">👶 ' + btns.bebe + '</button>' +
+            '<button class="btn btn-full" onclick="comprarComEnergia(\'assinatura\',' + e.num + ')">✍️ ' + btns.assinatura + '</button>' +
+            '<button class="btn btn-full" onclick="comprarComEnergia(\'negocio\',' + e.num + ')">🏪 ' + btns.negocio + '</button>' +
+            extraBtn +
+            '</div>';
+        grid.appendChild(card);
+    });
+}
+
+// ===== COMPRA DIRETA COM ENERGIA ALVO =====
+function comprar(produto) {
+    const lang = getLang();
+    let extra = '';
+    const sel = document.querySelector('.energia-select[data-prod="' + produto + '"]');
+    if (sel && sel.value) extra = '&energia=' + sel.value;
+    window.location.href = '/criar-checkout?lang=' + lang + '&produto=' + produto + extra;
+}
+
+// ===== PREENCHE OS SELETORES DE ENERGIA DOS CARDS =====
+function montarSeletoresEnergia() {
+    var lang = getLang();
+    var dados = ENERGIAS_DATA[lang] || ENERGIAS_DATA.pt;
+    document.querySelectorAll('.energia-select').forEach(function(sel) {
+        var atual = sel.value;
+        sel.innerHTML = '';
+        dados.forEach(function(e) {
+            var opt = document.createElement('option');
+            opt.value = e.num;
+            opt.textContent = e.num + ' - ' + e.nome;
+            sel.appendChild(opt);
+        });
+        sel.value = atual || '';
+    });
+}
+            
         // ===== CALCULADORA GRÁTIS =====
 function calcularGratis() {
     const nome = document.getElementById('calcNome').value.trim();
@@ -1467,33 +1703,44 @@ function calcularGratis() {
         ];
         var BC_QUANTIDADES = {};
         function montarTabelaBC() {
-            var corpo = document.getElementById("bcTabelaCorpo");
-            if (!corpo) return;
-            corpo.innerHTML = "";
-            BC_PRODUTOS.forEach(function(p) {
-                var tr = document.createElement("tr");
-                tr.innerHTML = '<td>' + p[3] + ' ' + p[1] + '</td>'
-                    + '<td style="text-align:center;color:var(--gold)">R$ ' + p[2] + '</td>'
-                    + '<td style="text-align:center"><input type="number" min="0" max="1000" value="0" data-prod="' + p[0] + '" oninput="atualizarResumoBC()"></td>';
-                corpo.appendChild(tr);
-            });
+    var lang = getLang();
+    var corpo = document.getElementById("bcTabelaCorpo");
+    if (!corpo) return;
+    corpo.innerHTML = "";
+    BC_PRODUTOS.forEach(function(p) {
+        var nome = (PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang][p[0]]) ? PRODUTOS_TRAD[lang][p[0]] : p[1];
+        var faixa = PRODUTO_FAIXA[p[0]];
+        var preco = PRECO_NUM[lang][faixa];
+        var tr = document.createElement("tr");
+        tr.innerHTML = '<td>' + p[3] + ' ' + nome + '</td>'
+            + '<td style="text-align:center;color:var(--gold)">' + SIMBOLO_MOEDA[lang] + ' ' + preco.toFixed(2).replace('.', ',') + '</td>'
+            + '<td style="text-align:center"><input type="number" min="0" max="1000" value="0" data-prod="' + p[0] + '" oninput="atualizarResumoBC()"></td>';
+        corpo.appendChild(tr);
+    });
+    atualizarResumoBC();
+}
+
+function atualizarResumoBC() {
+    var lang = getLang();
+    var bruto = 0, qtdTotal = 0;
+    document.querySelectorAll("#bcTabelaCorpo input[data-prod]").forEach(function(inp) {
+        var q = parseInt(inp.value) || 0;
+        BC_QUANTIDADES[inp.getAttribute("data-prod")] = q;
+        var prod = BC_PRODUTOS.find(function(p) { return p[0] === inp.getAttribute("data-prod"); });
+        if (prod) {
+            bruto += q * PRECO_NUM[lang][PRODUTO_FAIXA[prod[0]]];
+            qtdTotal += q;
         }
-        function atualizarResumoBC() {
-            var bruto = 0, qtdTotal = 0;
-            document.querySelectorAll("#bcTabelaCorpo input[data-prod]").forEach(function(inp) {
-                var q = parseInt(inp.value) || 0;
-                BC_QUANTIDADES[inp.getAttribute("data-prod")] = q;
-                var prod = BC_PRODUTOS.find(function(p) { return p[0] === inp.getAttribute("data-prod"); });
-                if (prod) { bruto += q * prod[2]; qtdTotal += q; }
-            });
-            var descontoPct = descontoBC(qtdTotal);
-            var desconto = Math.round(bruto * descontoPct / 100);
-            var final = bruto - desconto;
-            document.getElementById("bcTotalBruto").textContent = "R$ " + bruto.toLocaleString("pt-BR");
-            document.getElementById("bcDesconto").textContent = "R$ " + desconto.toLocaleString("pt-BR") + " (" + descontoPct + "%)";
-            document.getElementById("bcTotalFinal").textContent = "R$ " + final.toLocaleString("pt-BR");
-            document.getElementById("bcFaixaInfo").textContent = "Quantidade total: " + qtdTotal + " códigos";
-        }
+    });
+    var descontoPct = descontoBC(qtdTotal);
+    var desconto = Math.round(bruto * descontoPct) / 100;
+    var final = Math.round((bruto - desconto) * 100) / 100;
+    var fmt = function(v) { return SIMBOLO_MOEDA[lang] + ' ' + v.toFixed(2).replace('.', ','); };
+    document.getElementById("bcTotalBruto").textContent = fmt(bruto);
+    document.getElementById("bcDesconto").textContent = fmt(desconto) + " (" + descontoPct + "%)";
+    document.getElementById("bcTotalFinal").textContent = fmt(final);
+    document.getElementById("bcFaixaInfo").textContent = "Total: " + qtdTotal + " códigos";
+}
         function descontoBC(qtd) {
             if (qtd >= 1000) return 70;
             if (qtd >= 500) return 50;
@@ -1538,23 +1785,24 @@ function calcularGratis() {
                 .catch(function() { return "BR"; });
         }
         function carregarBanner(posicao) {
-            var container = document.getElementById("banner-" + posicao);
-            if (!container) return;
-            detectarPais().then(function(pais) {
-                fetch("/api/banner?posicao=" + posicao + "&pais=" + pais)
-                    .then(function(r) { return r.json(); })
-                    .then(function(data) {
-                        if (data.ok && data.banner) {
-                            var b = data.banner;
-                            container.innerHTML = '<a href="' + b.url_anunciante + '" target="_blank" rel="sponsored"><img src="' + b.imagem_url + '" alt="' + b.marca + '" style="max-width:100%;border-radius:12px"></a>';
-                            container.style.display = "block";
-                        } else {
-                            container.style.display = "none";
-                        }
-                    })
-                    .catch(function() { container.style.display = "none"; });
-            });
-        }
+    var container = document.getElementById("banner-" + posicao);
+    if (!container) return;
+    detectarPais().then(function(pais) {
+        fetch("/api/banner?posicao=" + posicao + "&pais=" + pais)
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (data.ok && data.banner) {
+                    var b = data.banner;
+                    var img = (window.innerWidth <= 768 && b.imagem_url_mobile) ? b.imagem_url_mobile : b.imagem_url;
+                    container.innerHTML = '<a href="' + b.url_anunciante + '" target="_blank" rel="sponsored"><img src="' + img + '" alt="' + b.marca + '" style="max-width:100%;border-radius:12px"></a>';
+                    container.style.display = "block";
+                } else {
+                    container.style.display = "none";
+                }
+            })
+            .catch(function() { container.style.display = "none"; });
+    });
+}
 
 // ===== INVESTIDORES: carrega os PDFs por idioma =====
 const INVESTIDORES_META = {
@@ -1570,6 +1818,14 @@ function carregarInvestidores() {
     const grid = document.getElementById('investidoresGrid');
     if (!grid) return;
     fetch('/static/investidores_pdfs.json')
+        {
+  "pt": "Apresentação Empresarial para Investidores e Parceiros.pdf",
+  "en": "Formal Business Presentation for Investors & Strategic Partners.pdf",
+  "es": "Presentación Empresarial para Inversores y Socios.pdf",
+  "fr": "Présentation d'Entreprise — Investisseurs & Partenaires Stratégique.pdf",
+  "it": "Presentazione Aziendale per Investidore e Partner.pdf",
+  "de": "Unternehmenspräsentation für Investoren und Partner.pdf"
+}
         .then(r => r.json())
         .then(map => {
             grid.innerHTML = '';
@@ -1584,11 +1840,9 @@ function carregarInvestidores() {
                 grid.appendChild(card);
             });
         })
-        .catch(() => {
-            grid.innerHTML = '<p style="color:#888;text-align:center">Apresentações indisponíveis no momento.</p>';
-        });
+        .catch(() => { grid.innerHTML = '<p style="color:#888;text-align:center">Apresentações indisponíveis no momento.</p>'; });
 }
-            
+
         // ===== INICIALIZAÇÃO =====
         function init() {
             const container = document.getElementById('langSelector');
@@ -1606,14 +1860,19 @@ function carregarInvestidores() {
             setLanguage(defaultLang);
         }
 
+    // Energias, seletores e tabela sob medida acompanham o idioma
+    montarEnergias();
+    montarSeletoresEnergia();
+    montarTabelaBC();
+            
         // Inicialização após DOM carregado (funções de bônus/banners FORA do setLanguage — bug corrigido)
         document.addEventListener("DOMContentLoaded", function() {
-            init();
-            montarTabelaBC();
-            carregarBanner("topo");
-            carregarBanner("lateral");
-            carregarBanner("rodape");
-        });
-    </script>
-</body>
-</html>
+    init();
+    montarTabelaBC();
+    montarEnergias();
+    montarSeletoresEnergia();
+    carregarInvestidores();
+    carregarBanner("topo");
+    carregarBanner("lateral");
+    carregarBanner("rodape");
+});
