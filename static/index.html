@@ -23,12 +23,11 @@ section{padding:50px 20px}
 .section-sub{color:#aaa;text-align:center;margin-bottom:30px}
 .cards-grid{display:grid;gap:20px}
 .grid-3{grid-template-columns:repeat(3,1fr)}
-#produtosGrid{grid-template-columns:repeat(5,1fr)}
+#produtosGrid{grid-template-columns:repeat(3,1fr)}
 #energiasGrid{grid-template-columns:repeat(3,1fr)}
-#investidoresGrid{grid-template-columns:repeat(2,1fr)}
-@media(max-width:1100px){#produtosGrid{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:900px){.grid-3,#energiasGrid{grid-template-columns:repeat(2,1fr)}#investidoresGrid{grid-template-columns:1fr}}
-@media(max-width:700px){.grid-3,#energiasGrid,#produtosGrid{grid-template-columns:1fr}}
+#investidoresGrid{grid-template-columns:repeat(3,1fr)}
+@media(max-width:900px){.grid-3,#produtosGrid,#energiasGrid,#investidoresGrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.grid-3,#produtosGrid,#energiasGrid,#investidoresGrid{grid-template-columns:1fr}}
 .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:25px;text-align:center}
 .card h3{color:var(--gold);margin-bottom:8px}
 .form-container{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:30px;max-width:600px;margin:0 auto}
