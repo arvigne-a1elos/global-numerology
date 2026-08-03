@@ -733,6 +733,7 @@
                 <thead>
                     <tr>
                         <th data-i18n="bc_tbl_service">Serviço</th>
+                        <script>
                         const SIMBOLO_MOEDA = { pt: "R$", en: "US$", es: "€", it: "€", fr: "€", de: "€", ja: "¥", zh: "¥", ru: "₽", hi: "₹", he: "₪", ar: "﷼" };
 const PRECO_NUM = {
     pt: [8, 17, 26, 35, 44, 98],
@@ -1836,7 +1837,7 @@ function carregarInvestidores() {
             const defaultLang = savedLang || (translations[browserLang] ? browserLang : 'pt');
             setLanguage(defaultLang);
         }
-
+</script>
     // Energias, seletores e tabela sob medida acompanham o idioma
     montarEnergias();
     montarSeletoresEnergia();
