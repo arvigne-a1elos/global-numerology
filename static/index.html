@@ -722,5 +722,84 @@ function init(){
 }
 document.addEventListener("DOMContentLoaded", init);
 </script>
+
+<!-- BANNERS A1ELOS -->
+<style>
+.a1-zona{display:flex;gap:14px;justify-content:center;align-items:center;margin:20px auto;max-width:100%;padding:0 10px;flex-wrap:nowrap}
+.a1-slot{position:relative;overflow:hidden;border-radius:10px;box-shadow:0 4px 14px rgba(0,0,0,.35);background:#111;width:50%;max-width:356px;height:110px;flex:1 1 0}
+.a1-slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block}
+.a1-item{position:absolute;inset:0;opacity:0;transition:opacity .8s ease;pointer-events:none}
+.a1-item.active{opacity:1;pointer-events:auto}
+@media(max-width:700px){.a1-slot{height:78px}}
+</style>
+
+<div class="a1-zona" id="zonaTopo">
+  <div class="a1-slot" id="bn-topoA"></div>
+  <div class="a1-slot" id="bn-topoB"></div>
+</div>
+
+<div class="a1-zona" id="zonaCentral">
+  <div class="a1-slot" id="bn-centralA"></div>
+  <div class="a1-slot" id="bn-centralB"></div>
+</div>
+
+<div class="a1-zona" id="zonaBase">
+  <div class="a1-slot" id="bn-baseA"></div>
+  <div class="a1-slot" id="bn-baseB"></div>
+</div>
+
+<script>
+(function(){
+  var IMGS = {
+    topo:    ["/static/topo-azul.png","/static/topo-amarelo.png","/static/topo-bordo.png"],
+    central: ["/static/central-azul.png","/static/central-amarelo.png","/static/central-bordo.png"],
+    base:    ["/static/base-azul.png","/static/base-amarelo.png","/static/base-bordo.png"]
+  };
+  var TEMPO = 8000; /* 8s por cor — ciclo das 3 cores = 24s */
+
+  function mover(id, alvo, depois){
+    var el = document.getElementById(id);
+    if(!el) return;
+    var ref = document.getElementById(alvo) || document.querySelector("." + alvo);
+    if(ref && ref.parentNode){
+      if(depois){ ref.parentNode.insertBefore(el, ref.nextSibling); }
+      else { ref.parentNode.insertBefore(el, ref); }
+    }
+  }
+
+  function preencher(id, arr, ini){
+    var slot = document.getElementById(id);
+    if(!slot) return;
+    var h = "";
+    for(var i = 0; i < arr.length; i++){
+      h += '<div class="a1-item' + (i === ini ? " active" : "") + '"><a href="#" target="_blank" rel="sponsored"><img src="' + arr[i] + '" alt="Seu espaço publicitário!" loading="lazy"></a></div>';
+    }
+    slot.innerHTML = h;
+    var itens = slot.querySelectorAll(".a1-item");
+    if(itens.length < 2) return;
+    var atual = ini;
+    setInterval(function(){
+      if(!itens[atual]) return;
+      itens[atual].classList.remove("active");
+      atual = (atual + 1) % itens.length;
+      if(itens[atual]) itens[atual].classList.add("active");
+    }, TEMPO);
+  }
+
+  mover("zonaTopo", "langBar", true);
+  mover("zonaTopo", "lang-bar", true);
+  mover("zonaCentral", "produtos", true);
+  mover("zonaCentral", "produtosGrid", true);
+  mover("zonaBase", "bonus", false);
+
+  preencher("bn-topoA", IMGS.topo, 0);
+  preencher("bn-topoB", IMGS.topo, 1);
+  preencher("bn-centralA", IMGS.central, 1);
+  preencher("bn-centralB", IMGS.central, 0);
+  preencher("bn-baseA", IMGS.base, 0);
+  preencher("bn-baseB", IMGS.base, 1);
+})();
+</script>  
+  
 </body>
 </html>
