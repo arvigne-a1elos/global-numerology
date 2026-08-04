@@ -557,7 +557,6 @@ let dataArmazenada = localStorage.getItem("calcData") || "";
 
 function traduzir(){
   const t = TRADUCOES[langAtual] || TRADUCOES.pt;
-  const nome = NOMES[langAtual][p.id];
   document.querySelectorAll("[data-i18n]").forEach(function(el){
     const k = el.getAttribute("data-i18n");
     if(t[k]) el.textContent = t[k];
@@ -602,8 +601,6 @@ function renderProdutos(){
     if(p.badge==="PREMIUM") badge = '<span class="badge premium">PREMIUM</span>';
     let preco = (p.precoTier>=0 && precos[p.precoTier]) ? moeda+" "+precos[p.precoTier] : (t.sob_consulta||"Sob consulta");
     let feats = (p.features||p.feats||[]).map(function(f){ return "<li>✅ "+f+"</li>"; }).join("");
-    let nomeProd = NOMES[lang][p.id] || NOMES.pt[p.id] || p.nome || p.id;
-    let btnAcao = "onclick=\"comprar('"+p.id+"')\"";
     let btnLabel = t.comprar || "Comprar";
     if(p.especial==="urna"){ btnAcao="onclick=\"toggleForm('urna')\""; btnLabel=t.start_urna||"Iniciar Validação"; }
     if(p.especial==="eleitoral"){ btnAcao="onclick=\"toggleForm('eleitoral')\""; btnLabel=t.start_eleitoral||"Calcular Nº Eleitoral"; }
