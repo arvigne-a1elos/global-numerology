@@ -675,15 +675,10 @@ function confirmarBC(){
   }
 }
 
-// ===== RENDERIZAR INVESTIDORES =====
-function renderInvestidores(){
-  const grid = document.getElementById("investidoresGrid"); if(!grid) return;
-  grid.innerHTML = "";
-  const t = TRADUCOES[langAtual] || TRADUCOES.pt;
-  INVESTIDORES.forEach(function(i){
-    grid.innerHTML += '<div class="card"><div style="font-size:2.5rem">'+i.flag+'</div><h3>'+i.nome+'</h3><p style="font-size:.85rem;color:#bbb">'+i.desc+'</p><button class="btn btn-outline" onclick="alert(\'PDF em breve\')">'+(t.download||"Baixar PDF")+'</button></div>';
-  });
-}
+
+
+
+  
 
 // ===== BANNERS GEOLOCALIZADOS (GET /api/banner) =====
 function carregarBanner(){
