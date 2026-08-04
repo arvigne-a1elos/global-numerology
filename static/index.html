@@ -63,10 +63,7 @@ footer{text-align:center;padding:30px;border-top:1px solid var(--border);color:#
 <div class="lang-bar" id="langBar"></div>
 <div id="bannerTopo" class="banner-zona">
   <div class="bn" id="bn-bannerTopo">
-    <div class="b-item active"><a href="#" target="_blank" rel="sponsored"><img src="/static/banner/topo-azul.png" alt="Seu espaço publicitário! Site 728x90 · Celular 320x100 · Rotação 8s" loading="lazy"></a></div>
-    <div class="b-item"><a href="#" target="_blank" rel="sponsored"><img src="/static/banner/topo-amarelo.png" alt="Seu espaço publicitário!" loading="lazy"></a></div>
-    <div class="b-item"><a href="#" target="_blank" rel="sponsored"><img src="/static/banner/topo-bordo.png" alt="Seu espaço publicitário!" loading="lazy"></a></div>
-  </div>
+    </div>
 </div>
 
 <section class="hero">
@@ -120,10 +117,7 @@ footer{text-align:center;padding:30px;border-top:1px solid var(--border);color:#
 
 <div id="bannerCentral" class="banner-zona">
   <div class="bn" id="bn-bannerCentral">
-    <div class="b-item active"><a href="#" target="_blank" rel="sponsored"><img src="/static/banner/central-azul.png" alt="Seu espaço publicitário! Site 728x90 · Celular 320x100 · Rotação 8s" loading="lazy"></a></div>
-    <div class="b-item"><a href="#" target="_blank" rel="sponsored"><img src="/static/banner/central-amarelo.png" alt="Seu espaço publicitário!" loading="lazy"></a></div>
-    <div class="b-item"><a href="#" target="_blank" rel="sponsored"><img src="/static/banner/central-bordo.png" alt="Seu espaço publicitário!" loading="lazy"></a></div>
-  </div>
+    </div>
 </div>  
   
 <section id="energias">
@@ -176,14 +170,6 @@ footer{text-align:center;padding:30px;border-top:1px solid var(--border);color:#
   </div>
 </section>
 
-<div id="bannerBase" class="banner-zona">
-  <div class="bn" id="bn-bannerBase">
-    <div class="b-item active"><a href="#" target="_blank" rel="sponsored"><img src="/static/banner/base-azul.png" alt="Seu espaço publicitário! Site 728x90 · Celular 320x100 · Rotação 8s" loading="lazy"></a></div>
-    <div class="b-item"><a href="#" target="_blank" rel="sponsored"><img src="/static/banner/base-amarelo.png" alt="Seu espaço publicitário!" loading="lazy"></a></div>
-    <div class="b-item"><a href="#" target="_blank" rel="sponsored"><img src="/static/banner/base-bordo.png" alt="Seu espaço publicitário!" loading="lazy"></a></div>
-  </div>
-</div>
-  
 <section id="bonus">
   <div class="form-container">
     <h3 class="section-title" data-i18n="bi_title">🎁 Ativar Código Bônus</h3>
@@ -745,128 +731,7 @@ function init(){
 document.addEventListener("DOMContentLoaded", init);
 </script>
 
-<style>
-#bannerEsquerda{position:fixed;left:10px;top:50%;transform:translateY(-50%);z-index:90;width:160px}
-#bannerTopo{display:flex;justify-content:center;margin:14px auto 0;max-width:100%;padding:0 10px}
-#bannerBase{display:flex;justify-content:center;margin:30px auto;max-width:100%;padding:0 10px}
-.bn{position:relative;overflow:hidden;border-radius:10px;box-shadow:0 4px 14px rgba(0,0,0,.35);background:#111}
-.bn img{display:block;width:100%;height:auto}
-.b-item{position:absolute;inset:0;opacity:0;transition:opacity .8s ease}
-.b-item.active{opacity:1}
-.bn .b-item:first-child{position:relative}
-@media(max-width:768px){#bannerEsquerda{width:88px;left:4px;top:56%}}
-@media(max-width:480px){#bannerEsquerda{width:70px;left:2px}}
-</style>
-<div id="bannerEsquerda"></div>
-<script>
-(function(){
-  var BANNERS={
-    topo:["/static/banner/topo-azul.png","/static/banner/topo-amarelo.png","/static/banner/topo-bordo.png"],
-    esquerda:["/static/banner/esquerda-azul.png","/static/banner/esquerda-amarelo.png","/static/banner/esquerda-bordo.png"],
-    base:["/static/banner/base-azul.png","/static/banner/base-amarelo.png","/static/banner/base-bordo.png"]
-  };
-  var TEMPO=8000; /* rotação: 8s por anúncio (ciclo 3 cores = 24s) */
-  function montar(id,arr){
-    var h='<div class="bn" id="bn-'+id+'">';
-    arr.forEach(function(s,i){h+='<div class="b-item'+(i===0?' active':'')+'"><img src="'+s+'" alt="Seu espaço publicitário" loading="lazy"></div>';});
-    h+='</div>';
-    var box=document.getElementById(id); if(box) box.innerHTML=h;
-    var itens=document.querySelectorAll('#bn-'+id+' .b-item'),atual=0;
-    setInterval(function(){ if(!itens[atual])return; itens[atual].classList.remove('active'); atual=(atual+1)%arr.length; if(itens[atual])itens[atual].classList.add('active'); },TEMPO);
-  }
-  function posicionar(){
-    var t=document.getElementById('bannerTopo');
-    if(!t){ t=document.createElement('div'); t.id='bannerTopo'; var l=document.querySelector('.lang-bar'); if(l&&l.parentNode){l.parentNode.insertBefore(t,l.nextSibling);} else {document.body.insertBefore(t,document.body.firstChild);} }
-    var b=document.getElementById('bannerBase');
-    if(!b){ b=document.createElement('section'); b.id='bannerBase'; var bonus=document.getElementById('bonus'); if(bonus&&bonus.parentNode){bonus.parentNode.insertBefore(b,bonus);} else {document.body.appendChild(b);} }
-  }
-  function iniciar(){
-    posicionar();
-    fetch('/api/banner?posicao=topo&pais=BR').then(function(r){return r.json();}).then(function(res){
-      if(res&&res.ok&&res.banner) return; /* banner de cliente: já tratado pelo sistema existente */
-      montar('bannerTopo',BANNERS.topo);
-      montar('bannerEsquerda',BANNERS.esquerda);
-      montar('bannerBase',BANNERS.base);
-    }).catch(function(){
-      montar('bannerTopo',BANNERS.topo);
-      montar('bannerEsquerda',BANNERS.esquerda);
-      montar('bannerBase',BANNERS.base);
-    });
-  }
-  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',iniciar);} else {iniciar();}
-})();
-</script>
-
-<style>
-#bannerEsquerda{position:fixed;left:10px;top:50%;transform:translateY(-50%);z-index:90;width:160px}
-#bannerTopo{display:flex;justify-content:center;margin:14px auto 0;max-width:100%;padding:0 10px}
-#bannerBase{display:flex;justify-content:center;margin:30px auto;max-width:100%;padding:0 10px}
-.bn{position:relative;overflow:hidden;border-radius:10px;box-shadow:0 4px 14px rgba(0,0,0,.35);background:#111}
-.bn img{display:block;width:100%;height:auto}
-.b-item{position:absolute;inset:0;opacity:0;transition:opacity .8s ease}
-.b-item.active{opacity:1}
-.bn .b-item:first-child{position:relative}
-@media(max-width:768px){#bannerEsquerda{width:88px;left:4px;top:56%}}
-@media(max-width:480px){#bannerEsquerda{width:70px;left:2px}}
-</style>
-<div id="bannerEsquerda"></div>
-<script>
-(function(){
-  var BANNERS={
-    topo:["/static/banner/topo-azul.png","/static/banner/topo-amarelo.png","/static/banner/topo-bordo.png"],
-    esquerda:["/static/banner/esquerda-azul.png","/static/banner/esquerda-amarelo.png","/static/banner/esquerda-bordo.png"],
-    base:["/static/banner/base-azul.png","/static/banner/base-amarelo.png","/static/banner/base-bordo.png"]
-  };
-  var TEMPO=8000; /* rotação: 8 segundos por anúncio (ciclo das 3 cores = 24s) */
-  function htmlBox(id,arr){
-    var h='<div class="bn" id="bn-'+id+'">';
-    arr.forEach(function(s,i){h+='<div class="b-item'+(i===0?' active':'')+'"><img src="'+s+'" alt="Seu espaço publicitário" loading="lazy"></div>';});
-    h+='</div>';
-    return h;
-  }
-  function rotacionar(id,total){
-    var box=document.getElementById(id); if(!box) return;
-    var itens=box.querySelectorAll('.b-item'), atual=0;
-    setInterval(function(){
-      if(!itens[atual]) return;
-      itens[atual].classList.remove('active');
-      atual=(atual+1)%total;
-      if(itens[atual]) itens[atual].classList.add('active');
-    },TEMPO);
-  }
-  function inserir(id,pos,arr){
-    var html=htmlBox(id,arr);
-    if(pos==='topo'){
-      var d=document.getElementById('bannerTopo');
-      if(!d){ d=document.createElement('div'); d.id='bannerTopo'; var lang=document.querySelector('.lang-bar'); if(lang&&lang.parentNode){lang.parentNode.insertBefore(d,lang.nextSibling);} else {document.body.insertBefore(d,document.body.firstChild);} }
-      d.innerHTML=html;
-    } else if(pos==='base'){
-      var s=document.getElementById('bannerBase');
-      if(!s){ s=document.createElement('section'); s.id='bannerBase'; var bonus=document.getElementById('bonus'); if(bonus&&bonus.parentNode){bonus.parentNode.insertBefore(s,bonus);} else {document.body.appendChild(s);} }
-      s.innerHTML=html;
-    } else {
-      var e=document.getElementById('bannerEsquerda'); if(e) e.innerHTML=html;
-    }
-    rotacionar(id,arr.length);
-  }
-  function iniciar(){
-    var esq=document.getElementById('bannerEsquerda');
-    if(!esq){ esq=document.createElement('div'); esq.id='bannerEsquerda'; document.body.appendChild(esq); }
-    fetch('/api/banner?posicao=topo&pais=BR').then(function(r){return r.json();}).then(function(res){
-      if(res&&res.ok&&res.banner) return; /* banner de cliente: já exibido pelo sistema existente */
-      inserir('bannerTopo','topo',BANNERS.topo);
-      inserir('bannerEsquerda','esquerda',BANNERS.esquerda);
-      inserir('bannerBase','base',BANNERS.base);
-    }).catch(function(){
-      inserir('bannerTopo','topo',BANNERS.topo);
-      inserir('bannerEsquerda','esquerda',BANNERS.esquerda);
-      inserir('bannerBase','base',BANNERS.base);
-    });
-  }
-  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',iniciar);} else {iniciar();}
-})();
-</script>
-
+<!-- BANNERS A1ELOS (NOVO) -->
 <style>
 .banner-zona{display:flex;justify-content:center;margin:16px auto 30px;max-width:100%;padding:0 10px}
 .bn{position:relative;overflow:hidden;border-radius:10px;box-shadow:0 4px 14px rgba(0,0,0,.35);background:#111;max-width:728px;width:100%}
@@ -874,6 +739,51 @@ document.addEventListener("DOMContentLoaded", init);
 .b-item{position:absolute;inset:0;opacity:0;transition:opacity .8s ease;pointer-events:none}
 .b-item.active{position:relative;opacity:1;pointer-events:auto}
 </style>
+
+<div id="bannerTopo" class="banner-zona">
+  <div class="bn" id="bn-bannerTopo">
+    <div class="b-item active"><img src="/static/topo-azul.png" alt="Seu espaço publicitário!" loading="lazy"></div>
+    <div class="b-item"><img src="/static/topo-amarelo.png" alt="Seu espaço publicitário!" loading="lazy"></div>
+    <div class="b-item"><img src="/static/topo-bordo.png" alt="Seu espaço publicitário!" loading="lazy"></div>
+  </div>
+</div>
+
+<div id="bannerCentral" class="banner-zona">
+  <div class="bn" id="bn-bannerCentral">
+    <div class="b-item active"><img src="/static/central-azul.png" alt="Seu espaço publicitário!" loading="lazy"></div>
+    <div class="b-item"><img src="/static/central-amarelo.png" alt="Seu espaço publicitário!" loading="lazy"></div>
+    <div class="b-item"><img src="/static/central-bordo.png" alt="Seu espaço publicitário!" loading="lazy"></div>
+  </div>
+</div>
+
+<div id="bannerBase" class="banner-zona">
+  <div class="bn" id="bn-bannerBase">
+    <div class="b-item active"><img src="/static/base-azul.png" alt="Seu espaço publicitário!" loading="lazy"></div>
+    <div class="b-item"><img src="/static/base-amarelo.png" alt="Seu espaço publicitário!" loading="lazy"></div>
+    <div class="b-item"><img src="/static/base-bordo.png" alt="Seu espaço publicitário!" loading="lazy"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var TEMPO = 8000;
+  function rotacionar(id){
+    var box = document.getElementById(id);
+    if(!box) return;
+    var itens = box.querySelectorAll('.b-item');
+    if(itens.length < 2) return;
+    var atual = 0;
+    setInterval(function(){
+      itens[atual].classList.remove('active');
+      atual = (atual + 1) % itens.length;
+      itens[atual].classList.add('active');
+    }, TEMPO);
+  }
+  rotacionar('bn-bannerTopo');
+  rotacionar('bn-bannerCentral');
+  rotacionar('bn-bannerBase');
+})();
+</script>
 <script>
 (function(){
   var TEMPO = 8000;
