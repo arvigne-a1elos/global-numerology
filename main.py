@@ -8,7 +8,6 @@ import stripe
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse
 
-@app.get("/static/index.html")
 async def index_html():
     return FileResponse(
         os.path.join(STATIC_DIR, "index.html"),
@@ -84,6 +83,26 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True,
 STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
 if os.path.isdir(STATIC_DIR):
     app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+
+# 
+# 4. CRIAÇÃO DO APP (ORDEM CRÍTICA)
+# 
+app = FastAPI(title="Global Numerology")
+
+# Montagem de arquivos estáticos
+STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
+if os.path.isdir(STATIC_DIR):
+    app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+
+# ===== ENDPOINT PARA SERVIR O INDEX SEM CACHE (ADICIONAR AQUI, DEPOIS DO app) =====
+from fastapi.responses import FileResponse
+
+@app.get("/static/index.html")
+async def index_html():
+    return FileResponse(
+        os.path.join(STATIC_DIR, "index.html"),
+        headers={"Cache-Control": "no-cache, no-store, must-revalidate"}
+    )
 
 # ===== 12 IDIOMAS E MOEDAS =====
 IDIOMAS = ["pt", "en", "es", "it", "fr", "de", "ja", "zh", "ru", "hi", "he", "ar"]
