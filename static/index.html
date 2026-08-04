@@ -588,24 +588,23 @@ function renderIdiomas(){
     bar.innerHTML += '<button data-lang="'+l.code+'" onclick="setLanguage(\''+l.code+'\')">'+l.flag+' '+l.name+'</button>';
   });
 }
+  
 function renderProdutos(){
-  const lang = langAtual || "pt";
-  const grid = document.getElementById("produtosGrid"); if(!grid) return;
+  var grid = document.getElementById("produtosGrid");
+  if(!grid) return;
   grid.innerHTML = "";
-  const moeda = SIMBOLO_MOEDA[lang] || "R$";
-  const precos = PRECO_NUM[lang] || PRECO_NUM.pt;
-  const t = TRADUCOES[lang] || TRADUCOES.pt;
-  PRODUTOS_META.forEach(function(p, i){
-    let badge = "";
-    if(p.badge==="RECOMENDADO") badge = '<span class="badge">RECOMENDADO</span>';
-    if(p.badge==="PREMIUM") badge = '<span class="badge premium">PREMIUM</span>';
-    let preco = (p.precoTier>=0 && precos[p.precoTier]) ? moeda+" "+precos[p.precoTier] : (t.sob_consulta||"Sob consulta");
-    let feats = (p.features||p.feats||[]).map(function(f){ return "<li>✅ "+f+"</li>"; }).join("");
-    let btnLabel = t.comprar || "Comprar";
-    if(p.especial==="urna"){ btnAcao="onclick=\"toggleForm('urna')\""; btnLabel=t.start_urna||"Iniciar Validação"; }
-    if(p.especial==="eleitoral"){ btnAcao="onclick=\"toggleForm('eleitoral')\""; btnLabel=t.start_eleitoral||"Calcular Nº Eleitoral"; }
-    if(p.especial==="coletivo"){ btnAcao="onclick=\"document.getElementById('corporativo').scrollIntoView()\""; btnLabel=t.know_more||"Saiba Mais"; }
-    grid.innerHTML += '<div class="product-card">'+badge+'<div style="font-size:2.5rem">'+p.icone+'</div><h3>'+nomeProd+'</h3><div class="price">'+preco+'</div><p class="desc">'+p.desc+'</p><ul>'+feats+'</ul><button class="btn" '+btnAcao+'>'+btnLabel+'</button></div>';
+  PRODUTOS_META.forEach(function(p){
+    var nomeProd = (NOMES[langAtual] && NOMES[langAtual][p.id]) ? NOMES[langAtual][p.id] : p.id;
+    var feats = p.features || p.feats || [];
+    var card = document.createElement("div");
+    card.className = "product-card";
+    var featsHtml = feats.map(function(f){ return "<li>✅ " + f + "</li>"; }).join("");
+    card.innerHTML = '<div class="prod-icon">' + p.icon + '</div>' +
+      '<h3>' + nomeProd + '</h3>' +
+      '<p class="prod-desc">' + (p.desc || "") + '</p>' +
+      '<ul>' + featsHtml + '</ul>' +
+      '<button onclick="comprar(\'' + p.id + '\')">Comprar</button>';
+    grid.appendChild(card);
   });
 }
   
