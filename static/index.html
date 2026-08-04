@@ -569,10 +569,18 @@ function traduzir(){
 }
 function setLanguage(code){
   langAtual = code;
-  localStorage.setItem("selectedLang", code);
-  traduzir();
-  renderProdutos();
-  renderEnergias();
+  localStorage.setItem("lang", code);
+
+  // Re-renderiza TUDO na hora (sem precisar recarregar)
+  traduzir();            // textos com data-i18n
+  renderIdiomas();       // destaca o idioma ativo (se você tiver essa função)
+  renderProdutos();      // produtos no idioma/moeda novos
+  renderEnergias();      // energias no idioma novo
+  renderInvestidores();  // seção investidores (se existir)
+  montarTabelaBC();      // tabela do bônus coletivo (se existir)
+
+  // RTL para hebraico e árabe
+  document.documentElement.dir = (code==="he" || code==="ar") ? "rtl" : "ltr";
 }
 function renderIdiomas(){
   const bar = document.getElementById("langBar"); if(!bar) return;
