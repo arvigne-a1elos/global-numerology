@@ -635,7 +635,6 @@ function calcularGratis(){
   nomeArmazenado = nome; dataArmazenada = data;
   localStorage.setItem("calcNome", nome); localStorage.setItem("calcData", data);
   const t = TRADUCOES[langAtual] || TRADUCOES.pt;
-  const nome = NOMES[langAtual][p.id];
   fetch("/calculate", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({name:nome, birth_date:data, email:"", lang:langAtual})})
     .then(function(r){ return r.json(); })
     .then(function(res){
