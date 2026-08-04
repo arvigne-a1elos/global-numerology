@@ -479,24 +479,7 @@ const BC_PRODUTOS = [
 ["casal","Mapa do Casal",44,"💞"],["familia","Mapa Família",98,"🌟"]
 ];
 
-// ===== INVESTIDORES =====
-const INVESTIDORES = [
-{flag:"🇧🇷",nome:"Português",desc:"Apresentação empresarial em português.",link:"https://global-numerology.onrender.com/static/Apresenta%C3%A7%C3%A3o%20Empresarial%20para%20Investidores%20e%20Parceiros.pdf",botao:"Baixar PDF"},
-{flag:"🇺🇸",nome:"English",desc:"Company presentation in English.",link:"https://global-numerology.onrender.com/static/Formal%20Business%20Presentation%20for%20Investors%20%26%20Strategic%20Partners.pdf",botao:"Download PDF"},
-{flag:"🇪🇸",nome:"Español",desc:"Presentación empresarial en español.",link:"https://global-numerology.onrender.com/static/Presentaci%C3%B3n%20Empresarial%20para%20Inversores%20y%20Socios.pdf",botao:"Descargar PDF"},
-{flag:"🇮🇹",nome:"Italiano",desc:"Presentazione aziendale in italiano.",link:"https://global-numerology.onrender.com/static/Presentazione%20Aziendale%20per%20Investidore%20e%20Partner.pdf",botao:"Scarica PDF"},
-{flag:"🇫🇷",nome:"Français",desc:"Présentation d'entreprise en français.",link:"https://global-numerology.onrender.com/static/Pr%C3%A9sentation%20d%27Entreprise%20%E2%80%94%20Investisseurs%20%26%20Partenaires%20Strat%C3%A9gique.pdf",botao:"Télécharger le PDF"},
-{flag:"🇩🇪",nome:"Deutsch",desc:"Unternehmenspräsentation auf Deutsch.",link:"https://global-numerology.onrender.com/static/Unternehmenspr%C3%A4sentation%20f%C3%BCr%20Investoren%20und%20Partner.pdf",botao:"PDF herunterladen"}
-];
 
-// ===== RENDERIZAR INVESTIDORES =====
-function renderInvestidores(){
-  const grid = document.getElementById("investidoresGrid"); if(!grid) return;
-  grid.innerHTML = "";
-  INVESTIDORES.forEach(function(i){
-    grid.innerHTML += '<div class="card"><div style="font-size:2.5rem">'+i.flag+'</div><h3>'+i.nome+'</h3><p style="font-size:.85rem;color:#bbb">'+i.desc+'</p><a class="btn btn-outline" href="'+i.link+'" target="_blank" rel="noopener">'+i.botao+'</a></div>';
-  });
-}
 
 let langAtual = localStorage.getItem("selectedLang") || "pt";
 if(!LANGUAGES.some(function(l){return l.code===langAtual;})) langAtual="pt";
