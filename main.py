@@ -7,7 +7,6 @@ from typing import Optional
 import stripe
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse, HTMLResponse
-from fastapi.responses import HTMLResponse
 
 async def index_html():
     return FileResponse(
