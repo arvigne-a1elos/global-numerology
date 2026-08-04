@@ -458,6 +458,57 @@ const PRODUTOS_META = [
 {id:"coletivo",icone:"🏢",precoTier:-1,desc:"Contrate brindes numerológicos para clientes ou funcionários.",feats:["Planos prontos","Sob medida","Descontos progressivos","Códigos de presente"],especial:"coletivo"}
 ];
 
+ // ===== PRODUTOS E SERVIÇOS (15) — CONTEÚDO DE ENTREGA =====
+// tier 0=R$8 · 1=R$17 · 2=R$26 · 3=R$35 · 4=R$44 · 5=R$98 (valores convertidos por idioma conforme tabela de moedas)
+// special: "urna"/"eleitoral" abrem formulário próprio · "coletivo" abre a seção corporativa
+const PRODUTOS = [
+  {id:"express", icon:"🔮", tier:0,
+   desc:"Seu ponto de partida: os 5 números principais do seu nome e nascimento, com o significado resumido de cada um, em 1 página direta ao ponto.",
+   features:["Caminho da Vida","Expressão, Alma e Personalidade","Destino","Entrega em PDF simples e objetivo"]},
+  {id:"vida", icon:"📅", tier:0,
+   desc:"Descubra em qual fase de vida você está e a energia do seu ano pessoal — ideal para planejar o ano com consciência.",
+   features:["Fase de Vida atual","Ano Pessoal calculado","Tendências do ciclo em andamento"]},
+  {id:"completo", icon:"📘", tier:1, badge:"RECOMENDADO",
+   desc:"A análise completa dos seus números: os 5 principais detalhados, seus ciclos de vida, desafios e realizações — o mapa de autoconhecimento definitivo.",
+   features:["5 números detalhados","3 Ciclos de Vida","Desafios e Realizações","Grade de Inclusão","Descrições positivas e de atenção"]},
+  {id:"ia", icon:"🤖", tier:1,
+   desc:"Usamos IA para pesquisar e comparar opções de nomes pela energia numerológica — a escolha certa com apoio inteligente.",
+   features:["Sugestões geradas com IA","Análise energética dos nomes","Comparativo entre opções"]},
+  {id:"urna", icon:"🗳️", tier:2, special:"urna",
+   desc:"Testamos até 5 nomes de urna para o seu cargo em disputa e entregamos o resultado em PDF sigiloso — a validação que a sua campanha pede.",
+   features:["Até 5 nomes testados","Cálculo letra a letra","Sugestões com energia 8","Resultado sigiloso por e-mail"]},
+  {id:"eleitoral", icon:"🏛️", tier:2, special:"eleitoral",
+   desc:"Sugestões de números eleitorais com prioridade na energia 8 (poder e realização), calculadas para a sua candidatura.",
+   features:["Até 5 números sugeridos","Prioridade energia 8","Cálculo com a sigla partidária","Resultado sigiloso por e-mail"]},
+  {id:"imovel", icon:"🏠", tier:2,
+   desc:"A vibração do número da sua casa ou imóvel — entenda a energia do ambiente e como harmonizá-la.",
+   features:["Número do imóvel analisado","Energia do ambiente","Sugestões de harmonização"]},
+  {id:"calendario", icon:"📆", tier:2,
+   desc:"A previsão energética dia a dia do seu mês — saiba os dias favoráveis para decisões, descanso e ações importantes.",
+   features:["Vibração de cada dia","Dias favoráveis destacados","Orientação geral do mês"]},
+  {id:"artistico", icon:"🎭", tier:3,
+   desc:"Escolha o nome artístico certo para a sua carreira — testamos opções e mostramos a energia que cada uma projeta.",
+   features:["Nomes artísticos testados","Sugestões para o palco","Energia do nome na carreira"]},
+  {id:"bebe", icon:"👶", tier:3,
+   desc:"Encontre o nome ideal para o seu bebê — com análise energética e compatibilidade com o sobrenome da família.",
+   features:["Sugestões de nomes","Análise energética de cada opção","Compatibilidade com o sobrenome"]},
+  {id:"assinatura", icon:"✍️", tier:3,
+   desc:"Analisamos sua assinatura atual e suas variações — a energia que você projeta em cada traço.",
+   features:["Assinatura atual analisada","Variações sugeridas","Energia da assinatura"]},
+  {id:"negocio", icon:"🏪", tier:4,
+   desc:"O nome certo para a sua empresa, produto ou marca — testamos opções e mostramos a energia de cada uma no mercado.",
+   features:["Nomes testados","Sugestões empresariais","Energia do nome no negócio"]},
+  {id:"casal", icon:"💞", tier:4,
+   desc:"A compatibilidade energética entre duas pessoas — o que une, o que desafia e como fortalecer a relação.",
+   features:["Compatibilidade do casal","Pontos fortes da relação","Desafios e caminhos de harmonia"]},
+  {id:"familia", icon:"🌟", tier:5, badge:"PREMIUM",
+   desc:"O mapa completo da família: análise individual de cada membro + a sinergia do grupo — o presente premium que une todos.",
+   features:["Mapa de cada membro","Sinergia familiar","Orientação individual por membro"]},
+  {id:"coletivo", icon:"🎁", special:"coletivo", sobConsulta:true,
+   desc:"Brindes numerológicos para seus clientes ou funcionários — planos prontos ou sob medida, com descontos progressivos.",
+   features:["Planos prontos (50/100/200 códigos)","Montagem sob medida","Descontos de 10% a 70%","Códigos de presente"]}
+]; 
+  
 // ===== ENERGIAS 1-9 (12 IDIOMAS) =====
 const ENERGIAS = {
 1:{pt:["Liderança","Pioneirismo, independência, iniciativa."],en:["Leadership","Pioneering, independence, initiative."],es:["Liderazgo","Pionerismo, independencia, iniciativa."],it:["Leadership","Pionierismo, indipendenza, iniziativa."],fr:["Leadership","Pionnier, indépendance, initiative."],de:["Führung","Pioniergeist, Unabhängigkeit, Initiative."],ja:["リーダーシップ","先駆性、自立、率先。"],zh:["领导力","开拓、独立、主动。"],ru:["Лидерство","Пионерство, независимость, инициатива."],hi:["नेतृत्व","अग्रणी, स्वतंत्र, पहल।"],he:["מנהיגות","חלוציות, עצמאות, יוזמה."],ar:["القيادة","الريادة والاستقلال والمبادرة."]},
@@ -471,6 +522,23 @@ const ENERGIAS = {
 9:{pt:["Humanitarismo","Compaixão, idealismo, generosidade."],en:["Humanitarianism","Compassion, idealism, generosity."],es:["Humanitarismo","Compasión, idealismo, generosidad."],it:["Umanitarismo","Compassione, idealismo, generosità."],fr:["Humanitarisme","Compassion, idéalisme, générosité."],de:["Humanitarismus","Mitgefühl, Idealismus, Großzügigkeit."],ja:["人道主義","思いやり、理想主義、寛容さ。"],zh:["人道主义","同情、理想主义、慷慨。"],ru:["Гуманизм","Сострадание, идеализм, щедрость."],hi:["मानवतावाद","करुणा, आदर्शवाद, उदारता।"],he:["הומניטריות","חמלה, אידיאליזם, נדיבות."],ar:["الإنسانية","التعاطف والمثالية والكرم."]}
 };
 
+// ===== NOMES DOS 15 PRODUTOS EM 12 IDIOMAS =====
+// pt, en, es, it, fr, de, ja, zh, ru, hi, he, ar
+const NOMES = {
+  pt: {express:"Mapa Express", vida:"Qual Vida/Ano", completo:"Mapa Completo", ia:"Pesquisa IA de Nomes", urna:"Validação Nome de Urna", eleitoral:"Número Eleitoral", imovel:"Número do Imóvel", calendario:"Calendário Mensal Energético", artistico:"Validação Nome Artístico", bebe:"Planejamento Nome de Bebê", assinatura:"Validação de Assinaturas", negocio:"Nome para Negócio/Produto", casal:"Mapa do Casal", familia:"Mapa Família Premium", coletivo:"Bônus Coletivo/Empresarial"},
+  en: {express:"Express Map", vida:"Life/Year Reading", completo:"Complete Map", ia:"AI Name Research", urna:"Ballot Name Validation", eleitoral:"Electoral Number", imovel:"Property Number", calendario:"Monthly Energy Calendar", artistico:"Artistic Name Validation", bebe:"Baby Name Planning", assinatura:"Signature Validation", negocio:"Business/Product Naming", casal:"Couple Map", familia:"Premium Family Map", coletivo:"Collective/Corporate Bonus"},
+  es: {express:"Mapa Exprés", vida:"Lectura de Vida/Año", completo:"Mapa Completo", ia:"Investigación IA de Nombres", urna:"Validación del Nombre de Urna", eleitoral:"Número Electoral", imovel:"Número de la Propiedad", calendario:"Calendario Mensual Energético", artistico:"Validación del Nombre Artístico", bebe:"Planificación del Nombre del Bebé", assinatura:"Validación de Firmas", negocio:"Nombre para Negocio/Producto", casal:"Mapa de la Pareja", familia:"Mapa Familiar Premium", coletivo:"Bono Colectivo/Empresarial"},
+  it: {express:"Mappa Espressa", vida:"Lettura Vita/Anno", completo:"Mappa Completa", ia:"Ricerca IA dei Nomi", urna:"Validazione del Nome della Scheda", eleitoral:"Numero Elettorale", imovel:"Numero dell'Immobile", calendario:"Calendario Mensile Energetico", artistico:"Validazione del Nome d'Arte", bebe:"Pianificazione del Nome del Bambino", assinatura:"Validazione delle Firme", negocio:"Nome per Business/Prodotto", casal:"Mappa della Coppia", familia:"Mappa Famiglia Premium", coletivo:"Bonus Collettivo/Aziendale"},
+  fr: {express:"Carte Express", vida:"Lecture Vie/Année", completo:"Carte Complète", ia:"Recherche IA de Prénoms", urna:"Validation du Nom du Bulletin", eleitoral:"Numéro Électoral", imovel:"Numéro du Bien", calendario:"Calendrier Mensuel Énergétique", artistico:"Validation du Nom d'Artiste", bebe:"Planification du Prénom du Bébé", assinatura:"Validation des Signatures", negocio:"Nom pour Entreprise/Produit", casal:"Carte du Couple", familia:"Carte Famille Premium", coletivo:"Bonus Collectif/Entreprise"},
+  de: {express:"Express-Karte", vida:"Lebens-/Jahreslesung", completo:"Vollständige Karte", ia:"KI-Namensforschung", urna:"Validierung des Stimmzettelnamens", eleitoral:"Wahlnummer", imovel:"Immobiliennummer", calendario:"Monatlicher Energiekalender", artistico:"Validierung des Künstlernamens", bebe:"Planung des Babynamens", assinatura:"Unterschriftsvalidierung", negocio:"Name für Unternehmen/Produkt", casal:"Paarkarte", familia:"Premium-Familienkarte", coletivo:"Kollektiv-/Firmenbonus"},
+  ja: {express:"エクスプレスマップ", vida:"人生・年リーディング", completo:"完全マップ", ia:"AI名前調査", urna:"投票用紙名の検証", eleitoral:"選挙番号", imovel:"物件番号", calendario:"月間エネルギーカレンダー", artistico:"芸名検証", bebe:"赤ちゃんの名前計画", assinatura:"署名検証", negocio:"ビジネス/商品ネーミング", casal:"カップルマップ", familia:"プレミアム家族マップ", coletivo:"団体/法人ボーナス"},
+  zh: {express:"快速地图", vida:"人生/年度解读", completo:"完整地图", ia:"AI名字研究", urna:"选票名称验证", eleitoral:"选举号码", imovel:"房产号码", calendario:"月度能量日历", artistico:"艺名验证", bebe:"宝宝取名规划", assinatura:"签名验证", negocio:"企业/产品命名", casal:"情侣地图", familia:"高级家庭地图", coletivo:"集体/企业奖励"},
+  ru: {express:"Экспресс-карта", vida:"Чтение жизни/года", completo:"Полная карта", ia:"ИИ-исследование имён", urna:"Проверка названия бюллетеня", eleitoral:"Избирательный номер", imovel:"Номер недвижимости", calendario:"Энергетический календарь месяца", artistico:"Проверка творческого имени", bebe:"Планирование имени ребёнка", assinatura:"Проверка подписей", negocio:"Название для бизнеса/продукта", casal:"Карта пары", familia:"Премиум-карта семьи", coletivo:"Коллективный/корпоративный бонус"},
+  hi: {express:"त्वरित मान चित्र", vida:"जीवन/वर्ष रीडिंग", completo:"पूर्ण मान चित्र", ia:"AI नाम अनुसंधान", urna:"मतपत्र नाम सत्यापन", eleitoral:"निर्वाचन संख्या", imovel:"संपत्ति संख्या", calendario:"मासिक ऊर्जा कैलेंडर", artistico:"कलात्मक नाम सत्यापन", bebe:"शिशु नाम योजना", assinatura:"हस्ताक्षर सत्यापन", negocio:"व्यवसाय/उत्पाद नाम", casal:"युगल मान चित्र", familia:"प्रीमियम परिवार मान चित्र", coletivo:"सामूहिक/कॉर्पोरेट बोनस"},
+  he: {express:"מפת אקספרס", vida:"קריאת חיים/שנה", completo:"מפה מלאה", ia:"מחקר שמות AI", urna:"אימות שם הפתק", eleitoral:"מספר בחירות", imovel:"מספר נכס", calendario:"לוח אנרגיה חודשי", artistico:"אימות שם במה", bebe:"תכנון שם לתינוק", assinatura:"אימות חתימות", negocio:"שם לעסק/מוצר", casal:"מפת זוג", familia:"מפת משפחה פרימיום", coletivo:"בונוס קבוצתי/ארגוני"},
+  ar: {express:"خريطة سريعة", vida:"قراءة الحياة/السنة", completo:"خريطة كاملة", ia:"بحث الأسماء بالذكاء الاصطناعي", urna:"التحقق من اسم الاقتراع", eleitoral:"رقم الانتخابات", imovel:"رقم العقار", calendario:"تقويم الطاقة الشهري", artistico:"التحقق من الاسم الفني", bebe:"تخطيط اسم المولود", assinatura:"التحقق من التوقيعات", negocio:"اسم للنشاط/المنتج", casal:"خريطة الزوجين", familia:"خريطة العائلة بريميوم", coletivo:"مكافأة جماعية/مؤسسية"}
+};  
+  
 // ===== BÔNUS COLETIVO (PRODUTOS DA TABELA) =====
 const BC_PRODUTOS = [
 ["express","Mapa Express",8,"🔮"],["vida","Qual Vida/Ano",8,"📅"],["completo","Mapa Completo",17,"📘"],["ia","Pesquisa IA",17,"🤖"],
@@ -529,7 +597,7 @@ function renderProdutos(){
     if(p.especial==="urna"){ btnAcao="onclick=\"toggleForm('urna')\""; btnLabel=t.start_urna||"Iniciar Validação"; }
     if(p.especial==="eleitoral"){ btnAcao="onclick=\"toggleForm('eleitoral')\""; btnLabel=t.start_eleitoral||"Calcular Nº Eleitoral"; }
     if(p.especial==="coletivo"){ btnAcao="onclick=\"document.getElementById('corporativo').scrollIntoView()\""; btnLabel=t.know_more||"Saiba Mais"; }
-    grid.innerHTML += '<div class="product-card">'+badge+'<div style="font-size:2.5rem">'+p.icone+'</div><h3>'+nomes[i]+'</h3><div class="price">'+preco+'</div><p class="desc">'+p.desc+'</p><ul>'+feats+'</ul><button class="btn" '+btnAcao+'>'+btnLabel+'</button></div>';
+    grid.innerHTML += '<div class="product-card">'+badge+'<div style="font-size:2.5rem">'+p.icone+'</div><h3>'+NOMES[lang][p.id] || NOMES.pt[p.id]+'</h3><div class="price">'+preco+'</div><p class="desc">'+p.desc+'</p><ul>'+feats+'</ul><button class="btn" '+btnAcao+'>'+btnLabel+'</button></div>';
   });
 }
 function renderEnergias(){
