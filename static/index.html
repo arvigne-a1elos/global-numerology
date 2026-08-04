@@ -603,11 +603,11 @@ function renderProdutos(){
     grid.innerHTML += '<div class="product-card">'+badge+'<div style="font-size:2.5rem">'+p.icone+'</div><h3>'+nomeProd+'</h3><div class="price">'+preco+'</div><p class="desc">'+p.desc+'</p><ul>'+feats+'</ul><button class="btn" '+btnAcao+'>'+btnLabel+'</button></div>';
   });
 }
+  
 function renderEnergias(){
   const grid = document.getElementById("energiasGrid"); if(!grid) return;
   grid.innerHTML = "";
   const t = TRADUCOES[langAtual] || TRADUCOES.pt;
-  const nome = NOMES[langAtual][p.id];
   for(let n=1; n<=9; n++){
     const e = ENERGIAS[n][langAtual] || ENERGIAS[n].pt;
     grid.innerHTML += '<div class="card" style="max-width:180px"><div style="font-size:2rem;color:var(--gold);font-weight:700">'+n+'</div><h3>'+e[0]+'</h3><p style="font-size:.8rem;color:#bbb">'+e[1]+'</p><button class="btn btn-outline" style="font-size:.8rem;padding:8px 16px;margin-top:8px" onclick="comprar(\'express\')">'+(t.ver_significado||"🔓 VER SIGNIFICADO COMPLETO")+'</button></div>';
