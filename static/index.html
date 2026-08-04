@@ -55,16 +55,8 @@ footer{text-align:center;padding:30px;border-top:1px solid var(--border);color:#
 #resultado{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:25px;margin-top:20px;text-align:center;display:none}
 #resultado h3{color:var(--gold)}
 #resultado .num{font-size:2rem;color:var(--gold);font-weight:700}
-#bannerTopo{max-width:1100px;margin:20px auto 0;text-align:center;display:none}
-</style>
-</head>
-<body>
 
 <div class="lang-bar" id="langBar"></div>
-<div id="bannerTopo" class="banner-zona">
-  <div class="bn" id="bn-bannerTopo">
-    </div>
-</div>
 
 <section class="hero">
   <img src="/static/logo.png" alt="A1ELOS Logo" onerror="this.style.display='none'">
@@ -115,11 +107,6 @@ footer{text-align:center;padding:30px;border-top:1px solid var(--border);color:#
   <div class="cards-grid" id="produtosGrid"></div>
 </section>
 
-<div id="bannerCentral" class="banner-zona">
-  <div class="bn" id="bn-bannerCentral">
-    </div>
-</div>  
-  
 <section id="energias">
   <h2 class="section-title" data-i18n="section_energias_title">Significado das Energias</h2>
   <p class="section-sub" data-i18n="section_energias_sub">Cada número carrega uma vibração específica. Escolha sua energia e clique no serviço desejado.</p>
@@ -701,22 +688,6 @@ function renderInvestidores(){
   });
 }
 
-// ===== BANNERS GEOLOCALIZADOS (GET /api/banner) =====
-function carregarBanner(){
-  fetch("/api/banner?posicao=topo&pais=BR")
-    .then(function(r){ return r.json(); })
-    .then(function(res){
-      const c = document.getElementById("bannerTopo"); if(!c) return;
-      if(res.ok && res.banner){
-        const b = res.banner;
-        const img = (window.innerWidth<=768 && b.imagem_url_mobile) ? b.imagem_url_mobile : b.imagem_url;
-        c.innerHTML = '<a href="'+b.url_anunciante+'" target="_blank" rel="sponsored"><img src="'+img+'" alt="'+b.marca+'" style="max-width:100%;border-radius:12px"></a>';
-        c.style.display = "block";
-      }
-    })
-    .catch(function(){});
-}
-
 // ===== INICIALIZAÇÃO =====
 function init(){
   renderIdiomas();
@@ -731,83 +702,73 @@ function init(){
 document.addEventListener("DOMContentLoaded", init);
 </script>
 
-<!-- BANNERS A1ELOS (NOVO) -->
 <style>
-.banner-zona{display:flex;justify-content:center;margin:16px auto 30px;max-width:100%;padding:0 10px}
-.bn{position:relative;overflow:hidden;border-radius:10px;box-shadow:0 4px 14px rgba(0,0,0,.35);background:#111;max-width:728px;width:100%}
-.bn img{display:block;width:100%;height:auto}
+.banner-dupla{display:flex;gap:14px;justify-content:center;margin:20px auto;max-width:100%;padding:0 10px}
+.banner-dupla .slot{position:relative;overflow:hidden;border-radius:10px;box-shadow:0 4px 14px rgba(0,0,0,.35);background:#111;width:50%;max-width:356px;height:110px}
+.banner-dupla .slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block}
 .b-item{position:absolute;inset:0;opacity:0;transition:opacity .8s ease;pointer-events:none}
-.b-item.active{position:relative;opacity:1;pointer-events:auto}
+.b-item.active{opacity:1;pointer-events:auto}
+@media(max-width:700px){.banner-dupla .slot{height:78px}}
 </style>
 
-<div id="bannerTopo" class="banner-zona">
-  <div class="bn" id="bn-bannerTopo">
-    <div class="b-item active"><img src="/static/topo-azul.png" alt="Seu espaço publicitário!" loading="lazy"></div>
-    <div class="b-item"><img src="/static/topo-amarelo.png" alt="Seu espaço publicitário!" loading="lazy"></div>
-    <div class="b-item"><img src="/static/topo-bordo.png" alt="Seu espaço publicitário!" loading="lazy"></div>
-  </div>
+<div class="banner-dupla" id="zonaTopo">
+  <div class="slot" id="bn-topoA"></div>
+  <div class="slot" id="bn-topoB"></div>
 </div>
-
-<div id="bannerCentral" class="banner-zona">
-  <div class="bn" id="bn-bannerCentral">
-    <div class="b-item active"><img src="/static/central-azul.png" alt="Seu espaço publicitário!" loading="lazy"></div>
-    <div class="b-item"><img src="/static/central-amarelo.png" alt="Seu espaço publicitário!" loading="lazy"></div>
-    <div class="b-item"><img src="/static/central-bordo.png" alt="Seu espaço publicitário!" loading="lazy"></div>
-  </div>
+<div class="banner-dupla" id="zonaCentral">
+  <div class="slot" id="bn-centralA"></div>
+  <div class="slot" id="bn-centralB"></div>
 </div>
-
-<div id="bannerBase" class="banner-zona">
-  <div class="bn" id="bn-bannerBase">
-    <div class="b-item active"><img src="/static/base-azul.png" alt="Seu espaço publicitário!" loading="lazy"></div>
-    <div class="b-item"><img src="/static/base-amarelo.png" alt="Seu espaço publicitário!" loading="lazy"></div>
-    <div class="b-item"><img src="/static/base-bordo.png" alt="Seu espaço publicitário!" loading="lazy"></div>
-  </div>
+<div class="banner-dupla" id="zonaBase">
+  <div class="slot" id="bn-baseA"></div>
+  <div class="slot" id="bn-baseB"></div>
 </div>
 
 <script>
 (function(){
-  var TEMPO = 8000;
-  function rotacionar(id){
-    var box = document.getElementById(id);
-    if(!box) return;
-    var itens = box.querySelectorAll('.b-item');
-    if(itens.length < 2) return;
-    var atual = 0;
-    setInterval(function(){
-      itens[atual].classList.remove('active');
-      atual = (atual + 1) % itens.length;
-      itens[atual].classList.add('active');
-    }, TEMPO);
+  var IMGS={
+    topo:["/static/topo-azul.png","/static/topo-amarelo.png","/static/topo-bordo.png"],
+    central:["/static/central-azul.png","/static/central-amarelo.png","/static/central-bordo.png"],
+    base:["/static/base-azul.png","/static/base-amarelo.png","/static/base-bordo.png"]
+  };
+  var TEMPO=8000; /* 8s por cor — os 2 banners de cada zona giram juntos, com cores alternadas */
+  function preencher(id,arr,ini){
+    var s=document.getElementById(id); if(!s) return;
+    var h="";
+    for(var i=0;i<arr.length;i++){ h+='<div class="b-item'+(i===ini?' active':'')+'"><img src="'+arr[i]+'" alt="Seu espaço publicitário!" loading="lazy"></div>'; }
+    s.innerHTML=h;
+    var it=s.querySelectorAll('.b-item'), at=ini;
+    if(it.length<2) return;
+    setInterval(function(){ it[at].classList.remove('active'); at=(at+1)%it.length; it[at].classList.add('active'); },TEMPO);
   }
-  rotacionar('bn-bannerTopo');
-  rotacionar('bn-bannerCentral');
-  rotacionar('bn-bannerBase');
+  function depois(el, ref){ if(ref&&ref.parentNode){ ref.parentNode.insertBefore(el, ref.nextSibling); return true; } return false; }
+  function antes(el, ref){ if(ref&&ref.parentNode){ ref.parentNode.insertBefore(el, ref); return true; } return false; }
+  function posicionar(){
+    var zt=document.getElementById('zonaTopo');
+    var lang=document.querySelector('.lang-bar')||document.getElementById('langBar');
+    if(!depois(zt, lang)){
+      var hero=document.querySelector('.hero')||document.querySelector('section');
+      antes(zt, hero||document.body.firstChild);
+    }
+    var zc=document.getElementById('zonaCentral');
+    var prods=document.getElementById('produtos')||document.getElementById('produtosGrid');
+    if(!depois(zc, prods)){
+      var en=document.getElementById('energias');
+      antes(zc, en);
+    }
+    var zb=document.getElementById('zonaBase');
+    var bonus=document.getElementById('bonus');
+    if(!antes(zb, bonus)){ document.body.appendChild(zb); }
+  }
+  posicionar();
+  preencher('bn-topoA',IMGS.topo,0);
+  preencher('bn-topoB',IMGS.topo,1);
+  preencher('bn-centralA',IMGS.central,1);
+  preencher('bn-centralB',IMGS.central,0);
+  preencher('bn-baseA',IMGS.base,0);
+  preencher('bn-baseB',IMGS.base,1);
 })();
 </script>
-<script>
-(function(){
-  var TEMPO = 8000;
-  function rotacionar(id){
-    var box = document.getElementById(id);
-    if(!box) return;
-    var itens = box.querySelectorAll('.b-item');
-    if(itens.length < 2) return;
-    var atual = 0;
-    setInterval(function(){
-      itens[atual].classList.remove('active');
-      atual = (atual + 1) % itens.length;
-      itens[atual].classList.add('active');
-    }, TEMPO);
-  }
-  function iniciar(){
-    rotacionar('bn-bannerTopo');
-    rotacionar('bn-bannerCentral');
-    rotacionar('bn-bannerBase');
-  }
-  if(document.readyState === 'loading'){ document.addEventListener('DOMContentLoaded', iniciar); }
-  else { iniciar(); }
-})();
-</script>  
   
 </body>
 </html>
