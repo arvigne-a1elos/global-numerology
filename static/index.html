@@ -550,6 +550,7 @@ const BC_PRODUTOS = [
 
 
 let langAtual = localStorage.getItem("selectedLang") || "pt";
+var lang = langAtual || "pt";  
 if(!LANGUAGES.some(function(l){return l.code===langAtual;})) langAtual="pt";
 let nomeArmazenado = localStorage.getItem("calcNome") || "";
 let dataArmazenada = localStorage.getItem("calcData") || "";
@@ -584,23 +585,22 @@ function renderProdutos(){
   const lang = langAtual || "pt";
   const grid = document.getElementById("produtosGrid"); if(!grid) return;
   grid.innerHTML = "";
-  const nomes = PRODUTOS_TRAD[langAtual] || PRODUTOS_TRAD.pt;
-  const moeda = SIMBOLO_MOEDA[langAtual] || "R$";
-  const precos = PRECO_NUM[langAtual] || PRECO_NUM.pt;
-  const t = TRADUCOES[langAtual] || TRADUCOES.pt;
-  const nome = NOMES[langAtual][p.id];
+  const moeda = SIMBOLO_MOEDA[lang] || "R$";
+  const precos = PRECO_NUM[lang] || PRECO_NUM.pt;
+  const t = TRADUCOES[lang] || TRADUCOES.pt;
   PRODUTOS_META.forEach(function(p, i){
     let badge = "";
     if(p.badge==="RECOMENDADO") badge = '<span class="badge">RECOMENDADO</span>';
     if(p.badge==="PREMIUM") badge = '<span class="badge premium">PREMIUM</span>';
-    let preco = p.precoTier>=0 ? moeda+" "+precos[p.precoTier] : (t.sob_consulta||"Sob consulta");
-    let feats = p.feats.map(function(f){ return "<li>✅ "+f+"</li>"; }).join("");
+    let preco = (p.precoTier>=0 && precos[p.precoTier]) ? moeda+" "+precos[p.precoTier] : (t.sob_consulta||"Sob consulta");
+    let feats = (p.features||p.feats||[]).map(function(f){ return "<li>✅ "+f+"</li>"; }).join("");
+    let nomeProd = NOMES[lang][p.id] || NOMES.pt[p.id] || p.nome || p.id;
     let btnAcao = "onclick=\"comprar('"+p.id+"')\"";
     let btnLabel = t.comprar || "Comprar";
     if(p.especial==="urna"){ btnAcao="onclick=\"toggleForm('urna')\""; btnLabel=t.start_urna||"Iniciar Validação"; }
     if(p.especial==="eleitoral"){ btnAcao="onclick=\"toggleForm('eleitoral')\""; btnLabel=t.start_eleitoral||"Calcular Nº Eleitoral"; }
     if(p.especial==="coletivo"){ btnAcao="onclick=\"document.getElementById('corporativo').scrollIntoView()\""; btnLabel=t.know_more||"Saiba Mais"; }
-    grid.innerHTML += '<div class="product-card">'+badge+'<div style="font-size:2.5rem">'+p.icone+'</div><h3>'+NOMES[lang][p.id] || NOMES.pt[p.id]+'</h3><div class="price">'+preco+'</div><p class="desc">'+p.desc+'</p><ul>'+feats+'</ul><button class="btn" '+btnAcao+'>'+btnLabel+'</button></div>';
+    grid.innerHTML += '<div class="product-card">'+badge+'<div style="font-size:2.5rem">'+p.icone+'</div><h3>'+nomeProd+'</h3><div class="price">'+preco+'</div><p class="desc">'+p.desc+'</p><ul>'+feats+'</ul><button class="btn" '+btnAcao+'>'+btnLabel+'</button></div>';
   });
 }
 function renderEnergias(){
