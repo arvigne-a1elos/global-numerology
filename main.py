@@ -76,27 +76,23 @@ class Order(Base):
 
 Base.metadata.create_all(bind=engine)
 
-# ===== APP =====
-app = FastAPI(title="A1ELOS Global Numerology")
-app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True,
-                   allow_methods=["*"], allow_headers=["*"])
-STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
-if os.path.isdir(STATIC_DIR):
-    app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
-
-# 
-# 4. CRIAÇÃO DO APP (ORDEM CRÍTICA)
-# 
+# ===== APP (UMA ÚNICA CRIAÇÃO — ORDEM CRÍTICA) =====
 app = FastAPI(title="Global Numerology")
+
+# CORS (configurado DEPOIS da criação única do app)
+from fastapi.middleware.cors import CORSMiddleware
+app.add_middleware(CORSMiddleware,
+                   allow_origins=["*"],
+                   allow_credentials=True,
+                   allow_methods=["*"],
+                   allow_headers=["*"])
 
 # Montagem de arquivos estáticos
 STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
 if os.path.isdir(STATIC_DIR):
     app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
-# ===== ENDPOINT PARA SERVIR O INDEX SEM CACHE (ADICIONAR AQUI, DEPOIS DO app) =====
-from fastapi.responses import FileResponse
-
+# ===== ENDPOINT PARA SERVIR O INDEX SEM CACHE (DEPOIS DO app) =====
 @app.get("/static/index.html")
 async def index_html():
     return FileResponse(
