@@ -616,7 +616,54 @@ function renderIdiomas(){
   });
 }
   
+function renderProdutos(){
+  var grid = document.getElementById("produtosGrid");
+  if(!grid) return;
+  grid.innerHTML = "";
+  var lang = (typeof langAtual !== "undefined") ? langAtual : "pt";
 
+  // Catálogo: aceita PRODUTOS_META ou PRODUTOS (o nome real do seu arquivo)
+  var catalogo = (typeof PRODUTOS_META !== "undefined") ? PRODUTOS_META :
+                 (typeof PRODUTOS !== "undefined") ? PRODUTOS : [];
+  if(!catalogo || !catalogo.forEach) return;
+
+  // Moeda e preços com verificação segura
+  var moeda = (typeof SIMBOLO_MOEDA !== "undefined" && SIMBOLO_MOEDA[lang]) ? SIMBOLO_MOEDA[lang] : "R$";
+  var precos = (typeof PRECO_NUM !== "undefined") ? (PRECO_NUM[lang] || PRECO_NUM.pt) : null;
+  var sobConsulta = (typeof TRADUCOES !== "undefined" && TRADUCOES[lang] && TRADUCOES[lang].sob_consulta) ? TRADUCOES[lang].sob_consulta : "Sob consulta";
+
+  catalogo.forEach(function(p){
+    var nomeProd = (NOMES[lang] && NOMES[lang][p.id]) ? NOMES[lang][p.id] : (NOMES.pt && NOMES.pt[p.id]) || p.id;
+    var desc = (PRODUTOS_DESC[lang] && PRODUTOS_DESC[lang][p.id]) ? PRODUTOS_DESC[lang][p.id] : (p.desc || "");
+    var feats = (PRODUTOS_FEATS[lang] && PRODUTOS_FEATS[lang][p.id]) ? PRODUTOS_FEATS[lang][p.id] : (p.features || p.feats || []);
+    var icone = (p.icon || p.icone || "");
+    var tier = (p.tier !== undefined) ? p.tier : p.precoTier;
+    var preco = sobConsulta;
+    if(tier !== undefined && precos && precos[tier] !== undefined){
+      preco = moeda + " " + precos[tier];
+    } else if(p.preco !== undefined){
+      preco = p.preco;
+    }
+    var badge = "";
+    if(p.badge === "RECOMENDADO") badge = '<span class="badge">RECOMENDADO</span>';
+    if(p.badge === "PREMIUM") badge = '<span class="badge premium">PREMIUM</span>';
+    var featsHtml = "";
+    feats.forEach(function(f){ featsHtml += "<li>✅ " + f + "</li>"; });
+    var esp = (p.special !== undefined) ? p.special : p.especial;
+    var btnAcao = "onclick=\"comprar('" + p.id + "')\"";
+    var btnLabel = "Comprar";
+    if(esp === "urna"){ btnAcao = "onclick=\"toggleForm('urna')\""; btnLabel = "Iniciar Validação"; }
+    if(esp === "eleitoral"){ btnAcao = "onclick=\"toggleForm('eleitoral')\""; btnLabel = "Calcular Nº Eleitoral"; }
+    if(esp === "coletivo"){ btnAcao = "onclick=\"document.getElementById('corporativo').scrollIntoView()\""; btnLabel = "Saiba Mais"; }
+    grid.innerHTML += '<div class="product-card">' + badge +
+      '<div style="font-size:2.5rem">' + icone + '</div>' +
+      '<h3>' + nomeProd + '</h3>' +
+      '<div class="price">' + preco + '</div>' +
+      '<p class="desc">' + desc + '</p>' +
+      '<ul>' + featsHtml + '</ul>' +
+      '<button class="btn" ' + btnAcao + '>' + btnLabel + '</button></div>';
+  });
+}
   
 // ===== COMPRAR (casado com POST /api/pay/stripe do main.py) =====
 function comprar(produto){
