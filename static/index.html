@@ -578,11 +578,6 @@ const BC_PRODUTOS = [
 ["casal","Mapa do Casal",44,"💞"],["familia","Mapa Família",98,"🌟"]
 ];
 
-let desc = (PRODUTOS_DESC[lang] && PRODUTOS_DESC[lang][p.id]) || p.desc;
-let feats = (PRODUTOS_FEATS[lang] && PRODUTOS_FEATS[lang][p.id]) || p.features;
-
-let langAtual = localStorage.getItem("selectedLang") || "pt";
-var lang = langAtual || "pt";  
 if(!LANGUAGES.some(function(l){return l.code===langAtual;})) langAtual="pt";
 let nomeArmazenado = localStorage.getItem("calcNome") || "";
 let dataArmazenada = localStorage.getItem("calcData") || "";
@@ -776,12 +771,30 @@ function ativarBonusInserido(){
     .catch(function(){ alert("Erro ao ativar código."); });
 }
 
+// ===== NOMES DOS PRODUTOS DO BÔNUS COLETIVO (12 IDIOMAS) =====
+const BC_NOMES = {
+  "pt": {express:"Mapa Express", vida:"Qual Vida/Ano", completo:"Mapa Completo", ia:"Pesquisa IA de Nomes", urna:"Validação Nome de Urna", eleitoral:"Número Eleitoral", imovel:"Número do Imóvel", calendario:"Calendário Mensal Energético", artistico:"Validação Nome Artístico", bebe:"Planejamento Nome de Bebê", assinatura:"Validação de Assinaturas", negocio:"Nome para Negócio/Produto", casal:"Mapa do Casal", familia:"Mapa Família Premium", coletivo:"Bônus Coletivo/Empresarial"},
+  "en": {express:"Express Map", vida:"Life/Year Reading", completo:"Complete Map", ia:"AI Name Research", urna:"Ballot Name Validation", eleitoral:"Electoral Number", imovel:"Property Number", calendario:"Monthly Energy Calendar", artistico:"Artistic Name Validation", bebe:"Baby Name Planning", assinatura:"Signature Validation", negocio:"Business/Product Naming", casal:"Couple Map", familia:"Premium Family Map", coletivo:"Collective/Corporate Bonus"},
+  "es": {express:"Mapa Exprés", vida:"Lectura de Vida/Año", completo:"Mapa Completo", ia:"Investigación IA de Nombres", urna:"Validación del Nombre de Urna", eleitoral:"Número Electoral", imovel:"Número de la Propiedad", calendario:"Calendario Mensual Energético", artistico:"Validación del Nombre Artístico", bebe:"Planificación del Nombre del Bebé", assinatura:"Validación de Firmas", negocio:"Nombre para Negocio/Producto", casal:"Mapa de la Pareja", familia:"Mapa Familiar Premium", coletivo:"Bono Colectivo/Empresarial"},
+  "it": {express:"Mappa Espressa", vida:"Lettura Vita/Anno", completo:"Mappa Completa", ia:"Ricerca IA dei Nomi", urna:"Validazione del Nome della Scheda", eleitoral:"Numero Elettorale", imovel:"Numero dell'Immobile", calendario:"Calendario Mensile Energetico", artistico:"Validazione del Nome d'Arte", bebe:"Pianificazione del Nome del Bambino", assinatura:"Validazione delle Firme", negocio:"Nome per Business/Prodotto", casal:"Mappa della Coppia", familia:"Mappa Famiglia Premium", coletivo:"Bonus Collettivo/Aziendale"},
+  "fr": {express:"Carte Express", vida:"Lecture Vie/Année", completo:"Carte Complète", ia:"Recherche IA de Prénoms", urna:"Validation du Nom du Bulletin", eleitoral:"Numéro Électoral", imovel:"Numéro du Bien", calendario:"Calendrier Mensuel Énergétique", artistico:"Validation du Nom d'Artiste", bebe:"Planification du Prénom du Bébé", assinatura:"Validation des Signatures", negocio:"Nom pour Entreprise/Produit", casal:"Carte du Couple", familia:"Carte Famille Premium", coletivo:"Bonus Collectif/Entreprise"},
+  "de": {express:"Express-Karte", vida:"Lebens-/Jahreslesung", completo:"Vollständige Karte", ia:"KI-Namensforschung", urna:"Validierung des Stimmzettelnamens", eleitoral:"Wahlnummer", imovel:"Immobiliennummer", calendario:"Monatlicher Energiekalender", artistico:"Validierung des Künstlernamens", bebe:"Planung des Babynamens", assinatura:"Unterschriftsvalidierung", negocio:"Name für Unternehmen/Produkt", casal:"Paarkarte", familia:"Premium-Familienkarte", coletivo:"Kollektiv-/Firmenbonus"},
+  "ja": {express:"エクスプレスマップ", vida:"人生・年リーディング", completo:"完全マップ", ia:"AI名前調査", urna:"投票用紙名の検証", eleitoral:"選挙番号", imovel:"物件番号", calendario:"月間エネルギーカレンダー", artistico:"芸名検証", bebe:"赤ちゃんの名前計画", assinatura:"署名検証", negocio:"ビジネス/商品ネーミング", casal:"カップルマップ", familia:"プレミアム家族マップ", coletivo:"団体/法人ボーナス"},
+  "zh": {express:"快速地图", vida:"人生/年度解读", completo:"完整地图", ia:"AI名字研究", urna:"选票名称验证", eleitoral:"选举号码", imovel:"房产号码", calendario:"月度能量日历", artistico:"艺名验证", bebe:"宝宝取名规划", assinatura:"签名验证", negocio:"企业/产品命名", casal:"情侣地图", familia:"高级家庭地图", coletivo:"集体/企业奖励"},
+  "ru": {express:"Экспресс-карта", vida:"Чтение жизни/года", completo:"Полная карта", ia:"ИИ-исследование имён", urna:"Проверка названия бюллетеня", eleitoral:"Избирательный номер", imovel:"Номер недвижимости", calendario:"Энергетический календарь месяца", artistico:"Проверка творческого имени", bebe:"Планирование имени ребёнка", assinatura:"Проверка подписей", negocio:"Название для бизнеса/продукта", casal:"Карта пары", familia:"Премиум-карта семьи", coletivo:"Коллективный/корпоративный бонус"},
+  "hi": {express:"त्वरित मान चित्र", vida:"जीवन/वर्ष रीडिंग", completo:"पूर्ण मान चित्र", ia:"AI नाम अनुसंधान", urna:"मतपत्र नाम सत्यापन", eleitoral:"निर्वाचन संख्या", imovel:"संपत्ति संख्या", calendario:"मासिक ऊर्जा कैलेंडर", artistico:"कलात्मक नाम सत्यापन", bebe:"शिशु नाम योजना", assinatura:"हस्ताक्षर सत्यापन", negocio:"व्यवसाय/उत्पाद नाम", casal:"युगल मान चित्र", familia:"प्रीमियम परिवार मान चित्र", coletivo:"सामूहिक/कॉर्पोरेट बोनस"},
+  "he": {express:"מפת אקספרס", vida:"קריאת חיים/שנה", completo:"מפה מלאה", ia:"מחקר שמות AI", urna:"אימות שם הפתק", eleitoral:"מספר בחירות", imovel:"מספר נכס", calendario:"לוח אנרגיה חודשי", artistico:"אימות שם במה", bebe:"תכנון שם לתינוק", assinatura:"אימות חתימות", negocio:"שם לעסק/מוצר", casal:"מפת זוג", familia:"מפת משפחה פרימיום", coletivo:"בונוס קבוצתי/ארגוני"},
+  "ar": {express:"خريطة سريعة", vida:"قراءة الحياة/السنة", completo:"خريطة كاملة", ia:"بحث الأسماء بالذكاء الاصطناعي", urna:"التحقق من اسم الاقتراع", eleitoral:"رقم الانتخابات", imovel:"رقم العقار", calendario:"تقويم الطاقة الشهري", artistico:"التحقق من الاسم الفني", bebe:"تخطيط اسم المولود", assinatura:"التحقق من التوقيعات", negocio:"اسم للنشاط/المنتج", casal:"خريطة الزوجين", familia:"خريطة العائلة بريميوم", coletivo:"مكافأة جماعية/مؤسسية"}
+};
+  
 // ===== BÔNUS COLETIVO / EMPRESARIAL =====
 function montarTabelaBC(){
   const tbody = document.getElementById("bc-tbody"); if(!tbody) return;
   tbody.innerHTML = "";
   BC_PRODUTOS.forEach(function(p){
     tbody.innerHTML += "<tr><td>"+p[3]+" "+p[1]+"</td><td>R$ "+p[2]+"</td><td><input type='number' min='0' value='0' data-prod='"+p[0]+"' data-preco='"+p[2]+"' onchange='atualizarResumoBC()'></td></tr>";
+  // Dentro de montarTabelaBC(), onde monta cada linha:
+var nomeBC = (typeof BC_NOMES !== "undefined" && BC_NOMES[lang] && BC_NOMES[lang][p[0]]) ? BC_NOMES[lang][p[0]] : p[1];
   });
 }
 function descontoBC(q){
