@@ -768,6 +768,9 @@ function init(){
   renderInvestidores();
   montarTabelaBC();
   traduzir();
+
+</body>
+</html>
   carregarBanner();
 }
 document.addEventListener("DOMContentLoaded", init);
