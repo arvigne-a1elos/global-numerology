@@ -99,6 +99,9 @@ def corrigir(caminho):
     
     print("\nPRONTO! Alinhamento corrigido. Faca commit e deploy no Render.")
 
+</body>
+</html>
+
 if __name__ == "__main__":
     caminho = sys.argv[1] if len(sys.argv) > 1 else "index.html"
     print(f"Corrigindo alinhamento em: {caminho}\n")
