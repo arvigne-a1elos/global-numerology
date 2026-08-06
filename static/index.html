@@ -625,34 +625,53 @@ function renderProdutos(){
   var grid = document.getElementById("produtosGrid");
   if(!grid) return;
   grid.innerHTML = "";
-  peof langAtual !== "undefined") ? langAtual : "pt";
+  var lang = (typeof langAtual !== "undefined") ? langAtual : "pt";
+
+  // Preço e moeda com verificação segura (não quebra se a variável não existir)
+  var moeda = (typeof SIMBOLO_MOEDA !== "undefined" && SIMBOLO_MOEDA[lang]) ? SIMBOLO_MOEDA[lang] : "R$";
+  var precos = (typeof PRECO_NUM !== "undefined") ? (PRECO_NUM[lang] || PRECO_NUM.pt) : null;
+  var sobConsulta = (typeof TRADUCOES !== "undefined" && TRADUCOES[lang] && TRADUCOES[lang].sob_consulta) ? TRADUCOES[lang].sob_consulta : "Sob consulta";
+
   PRODUTOS_META.forEach(function(p){
-    // Nome do produto (traduzido via NOMES, com fallback)
+    // Nome (título traduzido via NOMES, com fallback)
     var nomeProd = (NOMES[lang] && NOMES[lang][p.id]) ? NOMES[lang][p.id] : (NOMES.pt && NOMES.pt[p.id]) || p.id;
     // Descrição (traduzida via PRODUTOS_DESC, com fallback para o PRODUTOS_META)
     var desc = (PRODUTOS_DESC[lang] && PRODUTOS_DESC[lang][p.id]) ? PRODUTOS_DESC[lang][p.id] : (p.desc || "");
     // Features (traduzidas via PRODUTOS_FEATS, com fallback para o PRODUTOS_META)
     var feats = (PRODUTOS_FEATS[lang] && PRODUTOS_FEATS[lang][p.id]) ? PRODUTOS_FEATS[lang][p.id] : (p.feats || []);
-    // Ícone (usa p.icone, com fallback vazio para nunca mostrar "undefined")
+    // Ícone (campo correto: p.icone — mata o "undefined")
     var icone = (p.icone || "");
+
+    // Preço
+    var preco = sobConsulta;
+    if(p.precoTier !== undefined && precos && precos[p.precoTier] !== undefined){
+      preco = moeda + " " + precos[p.precoTier];
+    } else if(p.preco !== undefined){
+      preco = p.preco;
+    }
+
     // Badge
     var badge = "";
     if(p.badge === "RECOMENDADO") badge = '<span class="badge">RECOMENDADO</span>';
     if(p.badge === "PREMIUM") badge = '<span class="badge premium">PREMIUM</span>';
+
     // Features HTML
     var featsHtml = "";
-    feats.forEach(function(f){ featsHtml += '<li>✅ ' + f + '</li>'; });
-    // Botão (comportamento especial para urna/eleitoral/coletivo)
+    feats.forEach(function(f){ featsHtml += "<li>✅ " + f + "</li>"; });
+
+    // Botão (comportamento especial)
     var btnAcao = "onclick=\"comprar('" + p.id + "')\"";
     var btnLabel = "Comprar";
     if(p.especial === "urna"){ btnAcao = "onclick=\"toggleForm('urna')\""; btnLabel = "Iniciar Validação"; }
     if(p.especial === "eleitoral"){ btnAcao = "onclick=\"toggleForm('eleitoral')\""; btnLabel = "Calcular Nº Eleitoral"; }
     if(p.especial === "coletivo"){ btnAcao = "onclick=\"document.getElementById('corporativo').scrollIntoView()\""; btnLabel = "Saiba Mais"; }
+
     // Monta o card
     grid.innerHTML += '<div class="product-card">' + badge +
       '<div style="font-size:2.5rem">' + icone + '</div>' +
       '<h3>' + nomeProd + '</h3>' +
-      '<p class="prod-desc">' + desc + '</p>' +
+      '<div class="price">' + preco + '</div>' +
+      '<p class="desc">' + desc + '</p>' +
       '<ul>' + featsHtml + '</ul>' +
       '<button class="btn" ' + btnAcao + '>' + btnLabel + '</button></div>';
   });
