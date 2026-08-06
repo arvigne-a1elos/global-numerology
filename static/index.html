@@ -622,32 +622,42 @@ function renderIdiomas(){
 }
   
 function renderProdutos(){
-  const lang = langAtual || "pt";
-  const grid = document.getElementById("produtosGrid"); if(!grid) return;
+  var grid = document.getElementById("produtosGrid");
+  if(!grid) return;
   grid.innerHTML = "";
-  const moeda = SIMBOLO_MOEDA[lang] || "R$";
-  const precos = PRECO_NUM[lang] || PRECO_NUM.pt;
-  const t = TRADUCOES[lang] || TRADUCOES.pt;
-  PRODUTOS_META.forEach(function(p, i){
-    let badge = "";
-    if(p.badge==="RECOMENDADO") badge = '<span class="badge">RECOMENDADO</span>';
-    if(p.badge==="PREMIUM") badge = '<span class="badge premium">PREMIUM</span>';
-    let preco = (p.precoTier>=0 && precos[p.precoTier]) ? moeda+" "+precos[p.precoTier] : (t.sob_consulta||"Sob consulta");
-    // ✅ usa os dicionários de tradução (com fallback para o PRODUTOS_META)
-    let desc = (PRODUTOS_DESC[lang] && PRODUTOS_DESC[lang][p.id]) || p.desc || "";
-    let feats = (PRODUTOS_FEATS[lang] && PRODUTOS_FEATS[lang][p.id]) || p.feats || [];
-    let featsHtml = feats.map(function(f){ return "<li>✅ "+f+"</li>"; }).join("");
-    let nomeProd = NOMES[lang][p.id] || NOMES.pt[p.id] || p.nome || p.id;
-    let btnAcao = "onclick=\"comprar('"+p.id+"')\"";
-    let btnLabel = t.comprar || "Comprar";
-    if(p.especial==="urna"){ btnAcao="onclick=\"toggleForm('urna')\""; btnLabel=t.start_urna||"Iniciar Validação"; }
-    if(p.especial==="eleitoral"){ btnAcao="onclick=\"toggleForm('eleitoral')\""; btnLabel=t.start_eleitoral||"Calcular Nº Eleitoral"; }
-    if(p.especial==="coletivo"){ btnAcao="onclick=\"document.getElementById('corporativo').scrollIntoView()\""; btnLabel=t.know_more||"Saiba Mais"; }
-    // ✅ usa p.icon (corrige o "undefined")
-    grid.innerHTML += '<div class="product-card">'+badge+'<div style="font-size:2.5rem">'+(p.icon||"")+'</div><h3>'+nomeProd+'</h3><div class="price">'+preco+'</div><p class="desc">'+desc+'</p><ul>'+featsHtml+'</ul><button class="btn" '+btnAcao+'>'+btnLabel+'</button></div>';
+  var lang = (tyvar lang = (typeof lang !== "undefined") ? lang : "pt";
+  peof langAtual !== "undefined") ? langAtual : "pt";
+  PRODUTOS_META.forEach(function(p){
+    // Nome do produto (traduzido via NOMES, com fallback)
+    var nomeProd = (NOMES[lang] && NOMES[lang][p.id]) ? NOMES[lang][p.id] : (NOMES.pt && NOMES.pt[p.id]) || p.id;
+    // Descrição (traduzida via PRODUTOS_DESC, com fallback para o PRODUTOS_META)
+    var desc = (PRODUTOS_DESC[lang] && PRODUTOS_DESC[lang][p.id]) ? PRODUTOS_DESC[lang][p.id] : (p.desc || "");
+    // Features (traduzidas via PRODUTOS_FEATS, com fallback para o PRODUTOS_META)
+    var feats = (PRODUTOS_FEATS[lang] && PRODUTOS_FEATS[lang][p.id]) ? PRODUTOS_FEATS[lang][p.id] : (p.feats || []);
+    // Ícone (usa p.icone, com fallback vazio para nunca mostrar "undefined")
+    var icone = (p.icone || "");
+    // Badge
+    var badge = "";
+    if(p.badge === "RECOMENDADO") badge = '<span class="badge">RECOMENDADO</span>';
+    if(p.badge === "PREMIUM") badge = '<span class="badge premium">PREMIUM</span>';
+    // Features HTML
+    var featsHtml = "";
+    feats.forEach(function(f){ featsHtml += '<li>✅ ' + f + '</li>'; });
+    // Botão (comportamento especial para urna/eleitoral/coletivo)
+    var btnAcao = "onclick=\"comprar('" + p.id + "')\"";
+    var btnLabel = "Comprar";
+    if(p.especial === "urna"){ btnAcao = "onclick=\"toggleForm('urna')\""; btnLabel = "Iniciar Validação"; }
+    if(p.especial === "eleitoral"){ btnAcao = "onclick=\"toggleForm('eleitoral')\""; btnLabel = "Calcular Nº Eleitoral"; }
+    if(p.especial === "coletivo"){ btnAcao = "onclick=\"document.getElementById('corporativo').scrollIntoView()\""; btnLabel = "Saiba Mais"; }
+    // Monta o card
+    grid.innerHTML += '<div class="product-card">' + badge +
+      '<div style="font-size:2.5rem">' + icone + '</div>' +
+      '<h3>' + nomeProd + '</h3>' +
+      '<p class="prod-desc">' + desc + '</p>' +
+      '<ul>' + featsHtml + '</ul>' +
+      '<button class="btn" ' + btnAcao + '>' + btnLabel + '</button></div>';
   });
 }
-
 function renderEnergias(){
   const grid = document.getElementById("energiasGrid"); if(!grid) return;
   grid.innerHTML = "";
