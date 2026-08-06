@@ -695,7 +695,7 @@ function carregarBanner(){
       const c = document.getElementById("bannerTopo"); if(!c) return;
       if(res.ok && res.banner){
         const b = res.banner;
-        const img = (window.innerWidth<=768 && b.imagem_url_mobile) ? b.imagem_url_mobile : b.imagem_url;
+        const img = '/static/banners/' + ((window.innerWidth<=768 && b.imagem_url_mobile) ? b.imagem_url_mobile : b.imagem_url) + '.png';
         c.innerHTML = '<a href="'+b.url_anunciante+'" target="_blank" rel="sponsored"><img src="'+img+'" alt="'+b.marca+'" style="max-width:100%;border-radius:12px"></a>';
         c.style.display = "block";
       }
@@ -1421,7 +1421,7 @@ function carregarBanner(){
     .then(function(r){ return r.json(); })
     .then(function(d){
       var zona = document.getElementById("zonaBase");
-      if(zona && d && d.imagem_url) zona.innerHTML = '<a href="' + (d.url_anunciante || "#") + '"><img src="' + d.imagem_url + '" alt="banner"></a>';
+      if(zona && d && d.imagem_url) zona.innerHTML = '<a href="' + (d.url_anunciante || "#") + '"><img src="/static/banners/' + d.imagem_url + '.png" alt="banner"></a>';
     })
     .catch(function(){ /* sem banner */ });
 }
