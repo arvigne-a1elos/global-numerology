@@ -625,8 +625,7 @@ function renderProdutos(){
   var grid = document.getElementById("produtosGrid");
   if(!grid) return;
   grid.innerHTML = "";
-  var lang = (typeof langAtual !== "undefined") ? langAtual : "pt";
-
+  
   // Catálogo: aceita PRODUTOS_META ou PRODUTOS (o nome real do seu array)
   var catalogo = (typeof PRODUTOS_META !== "undefined") ? PRODUTOS_META :
                  (typeof PRODUTOS !== "undefined") ? PRODUTOS : [];
