@@ -209,40 +209,6 @@ comprar:"اشترِ",ver_significado:"🔓 عرض المعنى الكامل",sob
 };
 
 // ===== NOMES DOS 15 PRODUTOS (12 IDIOMAS) =====
-const PRODUTOS_TRAD = {
-pt:["Mapa Express","Qual Vida/Ano","Mapa Completo","Pesquisa IA de Nomes","Validação Nome de Urna","Número Eleitoral","Número do Imóvel","Calendário Mensal Energético","Validação Nome Artístico","Planejamento Nome de Bebê","Validação de Assinaturas","Nome para Negócio/Produto","Mapa do Casal","Mapa Família Premium","Bônus Coletivo/Empresarial"],
-en:["Express Map","Life Phase & Year","Complete Map","AI Name Search","Ballot Name Validation","Electoral Number","Property Number","Monthly Energy Calendar","Artistic Name Validation","Baby Name Planning","Signature Validation","Business & Product Name","Couple Map","Premium Family Map","Corporate Bonus"],
-es:["Mapa Exprés","Ciclo de Vida y Año","Mapa Completo","Búsqueda IA de Nombres","Validación Nombre de Urna","Número Electoral","Número de la Propiedad","Calendario Mensual Energético","Validación Nombre Artístico","Planificación Nombre de Bebé","Validación de Firmas","Nombre para Negocio/Producto","Mapa de Pareja","Mapa Familiar Premium","Bono Corporativo"],
-it:["Mappa Espressa","Fase di Vita e Anno","Mappa Completa","Ricerca IA Nomi","Validazione Nome della Scheda","Numero Elettorale","Numero dell'Immobile","Calendario Mensile Energetico","Validazione Nome d'Arte","Pianificazione Nome del Bambino","Validazione delle Firme","Nome per Business/Prodotto","Mappa di Coppia","Mappa Famiglia Premium","Bonus Aziendale"],
-fr:["Carte Express","Phase de Vie et Année","Carte Complète","Recherche IA de Noms","Validation Nom du Bulletin","Numéro Électoral","Numéro du Bien","Calendrier Mensuel Énergétique","Validation Nom de Scène","Planification Prénom de Bébé","Validation des Signatures","Nom pour Entreprise/Produit","Carte du Couple","Carte Famille Premium","Bonus d'Entreprise"],
-de:["Express-Karte","Lebensphase & Jahr","Vollständige Karte","KI-Namenssuche","Stimmzettelname-Validierung","Wahlnummer","Immobiliennummer","Monatlicher Energiekalender","Künstlername-Validierung","Babynamen-Planung","Unterschrifts-Validierung","Name für Unternehmen/Produkt","Paar-Karte","Premium-Familien-Karte","Unternehmensbonus"],
-ja:["エクスプレスマップ","ライフステージと年","完全マップ","AI名前検索","投票用紙名の検証","選挙番号","不動産番号","月間エネルギーカレンダー","芸名の検証","赤ちゃんの名前計画","署名の検証","ビジネス・商品名","カップルマップ","プレミアム家族マップ","法人ボーナス"],
-zh:["快速地图","生命阶段与年份","完整地图","AI名字搜索","选票名称验证","选举号码","房产号码","每月能量日历","艺名验证","宝宝取名规划","签名验证","企业/产品名称","情侣地图","高级家庭地图","企业奖励"],
-ru:["Экспресс-карта","Жизненный этап и год","Полная карта","ИИ-поиск имён","Проверка названия бюллетеня","Избирательный номер","Номер недвижимости","Ежемесячный энергетический календарь","Проверка сценического имени","Планирование имени ребёнка","Проверка подписей","Название для бизнеса/продукта","Карта пары","Премиальная семейная карта","Корпоративный бонус"],
-hi:["त्वरित मानचित्र","जीवन चरण और वर्ष","पूर्ण मानचित्र","AI नाम खोज","मतपत्र नाम सत्यापन","निर्वाचन संख्या","संपत्ति संख्या","मासिक ऊर्जा कैलेंडर","कलात्मक नाम सत्यापन","शिशु नाम योजना","हस्ताक्षर सत्यापन","व्यवसाय/उत्पाद नाम","युगल मानचित्र","प्रीमियम परिवार मानचित्र","कॉर्पोरेट बोनस"],
-he:["מפה מהירה","שלב חיים ושנה","מפה מלאה","חיפוש שמות AI","אימות שם פתק","מספר בחירות","מספר נכס","לוח אנרגיה חודשי","אימות שם במה","תכנון שם לתינוק","אימות חתימות","שם לעסק/מוצר","מפת זוג","מפת משפחה פרימיום","בונוס ארגוני"],
-ar:["خريطة سريعة","مرحلة الحياة والسنة","خريطة كاملة","بحث الأسماء بالذكاء الاصطناعي","التحقق من اسم الاقتراع","الرقم الانتخابي","رقم العقار","تقويم الطاقة الشهري","التحقق من الاسم الفني","تخطيط اسم الطفل","التحقق من التوقيعات","اسم للأعمال/المنتج","خريطة الزوجين","خريطة العائلة المميزة","مكافأة الشركات"]
-};
-
-// ===== METADADOS DOS 15 PRODUTOS =====
-const PRODUTOS_META = [
-{id:"express",icon:"🔮",precoTier:0,desc:"1 página com os 5 números principais e significado resumido.",feats:["Caminho da Vida","Expressão, Alma, Personalidade","Destino","PDF para download"]},
-{id:"vida",icon:"📅",precoTier:0,desc:"Análise da fase de vida e do ano pessoal.",feats:["Fase de Vida atual","Ano Pessoal","Tendências do ciclo","PDF para download"]},
-{id:"completo",icon:"📘",precoTier:1,desc:"Análise completa com descrições positivas/negativas.",feats:["5 números detalhados","3 Ciclos de Vida","Desafios e Realizações","Grade de Inclusão"],badge:"RECOMENDADO"},
-{id:"ia",icon:"🤖",precoTier:1,desc:"Pesquisa inteligente com IA para encontrar o nome ideal.",feats:["Sugestões com IA","Análise energética","Comparativo de opções","PDF para download"]},
-{id:"urna",icon:"🗳️",precoTier:2,desc:"5 tentativas + sugestões com cargo + PDF sigiloso.",feats:["5 nomes testados","Sugestões com energia 8","Cálculo letra a letra","PDF sigiloso"],especial:"urna"},
-{id:"eleitoral",icon:"🏛️",precoTier:2,desc:"Sugestões de números com energia 8 para sua candidatura.",feats:["5 números sugeridos","Prioridade energia 8","Cálculo completo","PDF sigiloso"],especial:"eleitoral"},
-{id:"imovel",icon:"🏠",precoTier:2,desc:"Análise da vibração do número da sua casa.",feats:["Número analisado","Energia do ambiente","Sugestões de harmonização","PDF para download"]},
-{id:"calendario",icon:"📆",precoTier:2,desc:"Previsão energética dia a dia para o mês.",feats:["Vibração diária","Dias favoráveis","Orientação mensal","PDF para download"]},
-{id:"artistico",icon:"🎭",precoTier:3,desc:"Escolha o nome artístico ideal para sua carreira.",feats:["Nomes testados","Sugestões de palco","Energia do nome","PDF para download"]},
-{id:"bebe",icon:"👶",precoTier:3,desc:"Encontre o nome perfeito para seu bebê.",feats:["Sugestões de nomes","Análise energética","Compatibilidade com sobrenome","PDF para download"]},
-{id:"assinatura",icon:"✍️",precoTier:3,desc:"Análise da sua assinatura e variações.",feats:["Assinatura analisada","Variações sugeridas","Energia da assinatura","PDF para download"]},
-{id:"negocio",icon:"🏪",precoTier:4,desc:"Escolha o nome ideal para sua empresa ou produto.",feats:["Nomes testados","Sugestões empresariais","Energia do nome","PDF para download"]},
-{id:"casal",icon:"💞",precoTier:4,desc:"Análise da compatibilidade energética entre duas pessoas.",feats:["Compatibilidade","Pontos fortes","Desafios da relação","PDF para download"]},
-{id:"familia",icon:"🌟",precoTier:5,desc:"Mapa completo de toda a família.",feats:["Todos os membros","Sinergia familiar","Orientação por membro","PDF para download"],badge:"PREMIUM"},
-{id:"coletivo",icon:"🏢",precoTier:-1,desc:"Contrate brindes numerológicos para clientes ou funcionários.",feats:["Planos prontos","Sob medida","Descontos progressivos","Códigos de presente"],especial:"coletivo"}
-];
-
 // ===== TRADUÇÕES DE DESCRIÇÕES E FEATURES DOS 15 PRODUTOS (12 IDIOMAS) =====
 const PRODUTOS_DESC = {
   "pt": {express:"1 página com os 5 números principais e significado resumido.",vida:"Análise da fase de vida e do ano pessoal.",completo:"Análise completa com descrições positivas/negativas.",ia:"Pesquisa inteligente com IA para encontrar o nome ideal.",urna:"5 tentativas + sugestões com cargo + PDF sigiloso.",eleitoral:"Sugestões de números com energia 8 para sua candidatura.",imovel:"Análise da vibração do número da sua casa.",calendario:"Previsão energética dia a dia para o mês.",artistico:"Escolha o nome artístico ideal para sua carreira.",bebe:"Encontre o nome perfeito para seu bebê.",assinatura:"Análise da sua assinatura e variações.",negocio:"Escolha o nome ideal para sua empresa ou produto.",casal:"Análise da compatibilidade energética entre duas pessoas.",familia:"Mapa completo de toda a família.",coletivo:"Contrate brindes numerológicos para clientes ou funcionários."},
