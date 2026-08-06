@@ -665,283 +665,314 @@ function renderProdutos(){
   });
 }
   
-// ===== COMPRAR (casado com POST /api/pay/stripe do main.py) =====
-function comprar(produto){
-  const body = {name:nomeArmazenado||"Cliente", birth_date:dataArmazenada||"2000-01-01", email:"", product:produto, lang:langAtual, price:0};
-  fetch("/api/pay/stripe", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(body)})
-    .then(function(r){ return r.json(); })
-    .then(function(res){
-      if(res.url){ window.location.href = res.url; }
-      else { window.location.href = "/criar-checkout?lang="+langAtual+"&produto="+produto; }
-    })
-    .catch(function(){ window.location.href = "/criar-checkout?lang="+langAtual+"&produto="+produto; });
+// ===== UTILITÁRIO DE IDIOMA (resolve lang com segurança) =====
+function langAtualSegura(){
+  return (typeof langAtual !== "undefined" && langAtual) ? langAtual : "pt";
 }
 
-// ===== CALCULADORA GRÁTIS (casada com POST /calculate) =====
-function calcularGratis(){
-  const nome = document.getElementById("calcNome").value.trim();
-  const data = document.getElementById("calcData").value;
-  if(nome.length < 2){ alert("Digite seu nome completo."); return; }
-  if(!data){ alert("Digite sua data de nascimento."); return; }
-  nomeArmazenado = nome; dataArmazenada = data;
-  localStorage.setItem("calcNome", nome); localStorage.setItem("calcData", data);
-  const t = TRADUCOES[langAtual] || TRADUCOES.pt;
-  fetch("/calculate", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({name:nome, birth_date:data, email:"", lang:langAtual})})
-    .then(function(r){ return r.json(); })
-    .then(function(res){
-      const div = document.getElementById("resultado");
-      div.style.display = "block";
-      div.innerHTML = "<h3>Seus Números Essenciais</h3>"+
-        "<p>"+nome+"</p>"+
-        "<p>Caminho de Vida: <span class='num'>"+res.life_path+"</span></p>"+
-        "<p>Expressão: <span class='num'>"+res.expression+"</span></p>"+
-        "<p>Motivação: <span class='num'>"+res.soul_urge+"</span></p>"+
-        "<p>Personalidade: <span class='num'>"+res.personality+"</span></p>"+
-        "<p>Destino: <span class='num'>"+res.destiny+"</span></p>"+
-        "<p style='margin-top:15px;color:#aaa'>"+(t.calc_sub||"")+"</p>"+
-        "<button class='btn' onclick=\"comprar('express')\">"+(t.ver_significado||"🔓 VER SIGNIFICADO COMPLETO")+"</button>";
-    })
-    .catch(function(){ alert("Erro ao calcular. Tente novamente."); });
-}
+// ===== RENDERIZAR PRODUTOS (blindado: aceita PRODUTOS/PRODUTOS_META, icon/icone, features/feats, tier/precoTier, special/especial) =====
+function renderProdutos(){
+  var grid = document.getElementById("produtosGrid");
+  if(!grid) return;
+  grid.innerHTML = "";
+  var lang = langAtualSegura();
 
-// ===== FORMULÁRIOS URNA / ELEITORAL =====
-function toggleForm(tipo){
-  document.getElementById("form-urna").classList.toggle("hidden-form", tipo!=="urna");
-  document.getElementById("form-eleitoral").classList.toggle("hidden-form", tipo!=="eleitoral");
-  if(tipo==="urna") document.getElementById("form-urna").scrollIntoView();
-  if(tipo==="eleitoral") document.getElementById("form-eleitoral").scrollIntoView();
-}
+  var catalogo = (typeof PRODUTOS_META !== "undefined") ? PRODUTOS_META :
+                 (typeof PRODUTOS !== "undefined") ? PRODUTOS : [];
+  if(!catalogo || !catalogo.forEach) return;
 
-// ===== PAGAR NOME DE URNA (POST /api/pay/urna-session) =====
-function pagarUrna(){
-  const nome = document.getElementById("urnaNome").value.trim();
-  const cargo = document.getElementById("urnaCargo").value.trim() || "vereador";
-  const email = document.getElementById("urnaEmail").value.trim();
-  const nomes = [1,2,3,4,5].map(function(i){ return document.getElementById("urnaNome"+i).value.trim(); }).filter(function(n){ return n; });
-  if(!nome || !email || nomes.length===0){ alert("Preencha nome, email e pelo menos 1 nome."); return; }
-  const body = {nome_completo:nome, cargo:cargo, nome1:nomes[0]||"", nome2:nomes[1]||"", nome3:nomes[2]||"", nome4:nomes[3]||"", nome5:nomes[4]||"", email:email, lang:langAtual};
-  fetch("/api/pay/urna-session", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(body)})
-    .then(function(r){ return r.json(); })
-    .then(function(res){ if(res.url){ window.location.href = res.url; } else { alert("Erro ao criar pagamento."); } })
-    .catch(function(){ alert("Erro ao criar pagamento."); });
-}
+  var moeda = (typeof SIMBOLO_MOEDA !== "undefined" && SIMBOLO_MOEDA[lang]) ? SIMBOLO_MOEDA[lang] : "R$";
+  var precos = (typeof PRECO_NUM !== "undefined") ? (PRECO_NUM[lang] || PRECO_NUM.pt) : null;
+  var sobConsulta = (typeof TRADUCOES !== "undefined" && TRADUCOES[lang] && TRADUCOES[lang].sob_consulta) ? TRADUCOES[lang].sob_consulta : "Sob consulta";
 
-// ===== PAGAR NÚMERO ELEITORAL (POST /api/pay/eleitoral-session) =====
-function pagarEleitoral(){
-  const nome = document.getElementById("eleiNome").value.trim();
-  const cargo = document.getElementById("eleiCargo").value;
-  const sigla = parseInt(document.getElementById("eleiSigla").value, 10);
-  const existente = document.getElementById("eleiExistente").value.trim();
-  const email = document.getElementById("eleiEmail").value.trim();
-  if(!nome || !email || !sigla){ alert("Preencha nome, sigla e email."); return; }
-  const body = {sigla:sigla, cargo:cargo, numero_existente:existente, email:email, lang:langAtual};
-  fetch("/api/pay/eleitoral-session", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(body)})
-    .then(function(r){ return r.json(); })
-    .then(function(res){ if(res.url){ window.location.href = res.url; } else { alert("Erro ao criar pagamento."); } })
-    .catch(function(){ alert("Erro ao criar pagamento."); });
-}
-
-// ===== ATIVAR CÓDIGO BÔNUS (POST /ativar-bonus) =====
-function ativarBonusInserido(){
-  const codigo = document.getElementById("biCodigo").value.trim();
-  if(!codigo){ alert("Digite o código bônus."); return; }
-  fetch("/ativar-bonus", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({codigo:codigo})})
-    .then(function(r){ return r.json(); })
-    .then(function(res){
-      if(res.ok){ alert("Código ativado com sucesso! Presente liberado."); }
-      else { alert(res.msg || "Código inválido."); }
-    })
-    .catch(function(){ alert("Erro ao ativar código."); });
-}
-
-// ===== NOMES DOS PRODUTOS DO BÔNUS COLETIVO (12 IDIOMAS) =====
-const BC_NOMES = {
-  "pt": {express:"Mapa Express", vida:"Qual Vida/Ano", completo:"Mapa Completo", ia:"Pesquisa IA de Nomes", urna:"Validação Nome de Urna", eleitoral:"Número Eleitoral", imovel:"Número do Imóvel", calendario:"Calendário Mensal Energético", artistico:"Validação Nome Artístico", bebe:"Planejamento Nome de Bebê", assinatura:"Validação de Assinaturas", negocio:"Nome para Negócio/Produto", casal:"Mapa do Casal", familia:"Mapa Família Premium", coletivo:"Bônus Coletivo/Empresarial"},
-  "en": {express:"Express Map", vida:"Life/Year Reading", completo:"Complete Map", ia:"AI Name Research", urna:"Ballot Name Validation", eleitoral:"Electoral Number", imovel:"Property Number", calendario:"Monthly Energy Calendar", artistico:"Artistic Name Validation", bebe:"Baby Name Planning", assinatura:"Signature Validation", negocio:"Business/Product Naming", casal:"Couple Map", familia:"Premium Family Map", coletivo:"Collective/Corporate Bonus"},
-  "es": {express:"Mapa Exprés", vida:"Lectura de Vida/Año", completo:"Mapa Completo", ia:"Investigación IA de Nombres", urna:"Validación del Nombre de Urna", eleitoral:"Número Electoral", imovel:"Número de la Propiedad", calendario:"Calendario Mensual Energético", artistico:"Validación del Nombre Artístico", bebe:"Planificación del Nombre del Bebé", assinatura:"Validación de Firmas", negocio:"Nombre para Negocio/Producto", casal:"Mapa de la Pareja", familia:"Mapa Familiar Premium", coletivo:"Bono Colectivo/Empresarial"},
-  "it": {express:"Mappa Espressa", vida:"Lettura Vita/Anno", completo:"Mappa Completa", ia:"Ricerca IA dei Nomi", urna:"Validazione del Nome della Scheda", eleitoral:"Numero Elettorale", imovel:"Numero dell'Immobile", calendario:"Calendario Mensile Energetico", artistico:"Validazione del Nome d'Arte", bebe:"Pianificazione del Nome del Bambino", assinatura:"Validazione delle Firme", negocio:"Nome per Business/Prodotto", casal:"Mappa della Coppia", familia:"Mappa Famiglia Premium", coletivo:"Bonus Collettivo/Aziendale"},
-  "fr": {express:"Carte Express", vida:"Lecture Vie/Année", completo:"Carte Complète", ia:"Recherche IA de Prénoms", urna:"Validation du Nom du Bulletin", eleitoral:"Numéro Électoral", imovel:"Numéro du Bien", calendario:"Calendrier Mensuel Énergétique", artistico:"Validation du Nom d'Artiste", bebe:"Planification du Prénom du Bébé", assinatura:"Validation des Signatures", negocio:"Nom pour Entreprise/Produit", casal:"Carte du Couple", familia:"Carte Famille Premium", coletivo:"Bonus Collectif/Entreprise"},
-  "de": {express:"Express-Karte", vida:"Lebens-/Jahreslesung", completo:"Vollständige Karte", ia:"KI-Namensforschung", urna:"Validierung des Stimmzettelnamens", eleitoral:"Wahlnummer", imovel:"Immobiliennummer", calendario:"Monatlicher Energiekalender", artistico:"Validierung des Künstlernamens", bebe:"Planung des Babynamens", assinatura:"Unterschriftsvalidierung", negocio:"Name für Unternehmen/Produkt", casal:"Paarkarte", familia:"Premium-Familienkarte", coletivo:"Kollektiv-/Firmenbonus"},
-  "ja": {express:"エクスプレスマップ", vida:"人生・年リーディング", completo:"完全マップ", ia:"AI名前調査", urna:"投票用紙名の検証", eleitoral:"選挙番号", imovel:"物件番号", calendario:"月間エネルギーカレンダー", artistico:"芸名検証", bebe:"赤ちゃんの名前計画", assinatura:"署名検証", negocio:"ビジネス/商品ネーミング", casal:"カップルマップ", familia:"プレミアム家族マップ", coletivo:"団体/法人ボーナス"},
-  "zh": {express:"快速地图", vida:"人生/年度解读", completo:"完整地图", ia:"AI名字研究", urna:"选票名称验证", eleitoral:"选举号码", imovel:"房产号码", calendario:"月度能量日历", artistico:"艺名验证", bebe:"宝宝取名规划", assinatura:"签名验证", negocio:"企业/产品命名", casal:"情侣地图", familia:"高级家庭地图", coletivo:"集体/企业奖励"},
-  "ru": {express:"Экспресс-карта", vida:"Чтение жизни/года", completo:"Полная карта", ia:"ИИ-исследование имён", urna:"Проверка названия бюллетеня", eleitoral:"Избирательный номер", imovel:"Номер недвижимости", calendario:"Энергетический календарь месяца", artistico:"Проверка творческого имени", bebe:"Планирование имени ребёнка", assinatura:"Проверка подписей", negocio:"Название для бизнеса/продукта", casal:"Карта пары", familia:"Премиум-карта семьи", coletivo:"Коллективный/корпоративный бонус"},
-  "hi": {express:"त्वरित मान चित्र", vida:"जीवन/वर्ष रीडिंग", completo:"पूर्ण मान चित्र", ia:"AI नाम अनुसंधान", urna:"मतपत्र नाम सत्यापन", eleitoral:"निर्वाचन संख्या", imovel:"संपत्ति संख्या", calendario:"मासिक ऊर्जा कैलेंडर", artistico:"कलात्मक नाम सत्यापन", bebe:"शिशु नाम योजना", assinatura:"हस्ताक्षर सत्यापन", negocio:"व्यवसाय/उत्पाद नाम", casal:"युगल मान चित्र", familia:"प्रीमियम परिवार मान चित्र", coletivo:"सामूहिक/कॉर्पोरेट बोनस"},
-  "he": {express:"מפת אקספרס", vida:"קריאת חיים/שנה", completo:"מפה מלאה", ia:"מחקר שמות AI", urna:"אימות שם הפתק", eleitoral:"מספר בחירות", imovel:"מספר נכס", calendario:"לוח אנרגיה חודשי", artistico:"אימות שם במה", bebe:"תכנון שם לתינוק", assinatura:"אימות חתימות", negocio:"שם לעסק/מוצר", casal:"מפת זוג", familia:"מפת משפחה פרימיום", coletivo:"בונוס קבוצתי/ארגוני"},
-  "ar": {express:"خريطة سريعة", vida:"قراءة الحياة/السنة", completo:"خريطة كاملة", ia:"بحث الأسماء بالذكاء الاصطناعي", urna:"التحقق من اسم الاقتراع", eleitoral:"رقم الانتخابات", imovel:"رقم العقار", calendario:"تقويم الطاقة الشهري", artistico:"التحقق من الاسم الفني", bebe:"تخطيط اسم المولود", assinatura:"التحقق من التوقيعات", negocio:"اسم للنشاط/المنتج", casal:"خريطة الزوجين", familia:"خريطة العائلة بريميوم", coletivo:"مكافأة جماعية/مؤسسية"}
-};
-  
-// ===== BÔNUS COLETIVO / EMPRESARIAL =====
-function montarTabelaBC(){
-  const tbody = document.getElementById("bc-tbody"); if(!tbody) return;
-  tbody.innerHTML = "";
-  BC_PRODUTOS.forEach(function(p){
-    tbody.innerHTML += "<tr><td>"+p[3]+" "+p[1]+"</td><td>R$ "+p[2]+"</td><td><input type='number' min='0' value='0' data-prod='"+p[0]+"' data-preco='"+p[2]+"' onchange='atualizarResumoBC()'></td></tr>";
-  // Dentro de montarTabelaBC(), onde monta cada linha:
-var nomeBC = (typeof BC_NOMES !== "undefined" && BC_NOMES[lang] && BC_NOMES[lang][p[0]]) ? BC_NOMES[lang][p[0]] : p[1];
+  catalogo.forEach(function(p){
+    var nomeProd = (typeof NOMES !== "undefined" && NOMES[lang] && NOMES[lang][p.id]) ? NOMES[lang][p.id] : (typeof NOMES !== "undefined" && NOMES.pt && NOMES.pt[p.id]) || p.id;
+    var desc = (typeof PRODUTOS_DESC !== "undefined" && PRODUTOS_DESC[lang] && PRODUTOS_DESC[lang][p.id]) ? PRODUTOS_DESC[lang][p.id] : (p.desc || "");
+    var feats = (typeof PRODUTOS_FEATS !== "undefined" && PRODUTOS_FEATS[lang] && PRODUTOS_FEATS[lang][p.id]) ? PRODUTOS_FEATS[lang][p.id] : (p.features || p.feats || []);
+    var icone = (p.icon || p.icone || "");
+    var tier = (p.tier !== undefined) ? p.tier : p.precoTier;
+    var preco = sobConsulta;
+    if(tier !== undefined && precos && precos[tier] !== undefined){
+      preco = moeda + " " + precos[tier];
+    } else if(p.preco !== undefined){
+      preco = p.preco;
+    }
+    var badge = "";
+    if(p.badge === "RECOMENDADO") badge = '<span class="badge">RECOMENDADO</span>';
+    if(p.badge === "PREMIUM") badge = '<span class="badge premium">PREMIUM</span>';
+    var featsHtml = "";
+    feats.forEach(function(f){ featsHtml += "<li>✅ " + f + "</li>"; });
+    var esp = (p.special !== undefined) ? p.special : p.especial;
+    var btnAcao = "onclick=\"comprar('" + p.id + "')\"";
+    var btnLabel = "Comprar";
+    if(esp === "urna"){ btnAcao = "onclick=\"toggleForm('urna')\""; btnLabel = "Iniciar Validação"; }
+    if(esp === "eleitoral"){ btnAcao = "onclick=\"toggleForm('eleitoral')\""; btnLabel = "Calcular Nº Eleitoral"; }
+    if(esp === "coletivo"){ btnAcao = "onclick=\"document.getElementById('corporativo').scrollIntoView()\""; btnLabel = "Saiba Mais"; }
+    grid.innerHTML += '<div class="product-card">' + badge +
+      '<div style="font-size:2.5rem">' + icone + '</div>' +
+      '<h3>' + nomeProd + '</h3>' +
+      '<div class="price">' + preco + '</div>' +
+      '<p class="desc">' + desc + '</p>' +
+      '<ul>' + featsHtml + '</ul>' +
+      '<button class="btn" ' + btnAcao + '>' + btnLabel + '</button></div>';
   });
 }
-function descontoBC(q){
-  if(q>=1000) return 0.70;
-  if(q>=500) return 0.50;
-  if(q>=200) return 0.40;
-  if(q>=100) return 0.30;
-  if(q>=50) return 0.20;
-  if(q>=10) return 0.10;
-  return 0;
-}
-function atualizarResumoBC(){
-  let bruto = 0, qtd = 0;
-  document.querySelectorAll("#bc-tbody input").forEach(function(inp){
-    const q = parseInt(inp.value, 10) || 0;
-    const pr = parseFloat(inp.getAttribute("data-preco"));
-    bruto += q * pr; qtd += q;
-  });
-  const d = descontoBC(qtd);
-  const fin = bruto * (1 - d);
-  document.getElementById("bcTotalBruto").textContent = "R$ " + bruto.toFixed(2);
-  document.getElementById("bcDesconto").textContent = "R$ " + (bruto - fin).toFixed(2) + " (" + Math.round(d*100) + "%)";
-  document.getElementById("bcTotalFinal").textContent = "R$ " + fin.toFixed(2);
-}
-function usarPlanoPronto(ex, vi, co, ia){
-  document.querySelectorAll("#bc-tbody input").forEach(function(inp){
-    const pr = inp.getAttribute("data-prod");
-    inp.value = pr==="express" ? ex : pr==="vida" ? vi : pr==="completo" ? co : pr==="ia" ? ia : 0;
-  });
-  atualizarResumoBC();
-}
-function confirmarBC(){
-  const total = document.getElementById("bcTotalFinal").textContent;
-  if(confirm("Confirmar resumo?\nTotal final: " + total)){
-    alert("Pedido coletivo registrado. Total: " + total + ". Entre em contato pelo site para finalizar o pagamento e receber os códigos.");
+
+// ===== RENDERIZAR ENERGIAS (1-9, 12 idiomas) =====
+function renderEnergias(){
+  var grid = document.getElementById("energiasGrid");
+  if(!grid) return;
+  grid.innerHTML = "";
+  var lang = langAtualSegura();
+  if(typeof ENERGIAS === "undefined") return;
+  for(var n = 1; n <= 9; n++){
+    var e = ENERGIAS[n];
+    if(!e) continue;
+    var titulo = (e[lang]) ? e[lang][0] : (e.pt ? e.pt[0] : "");
+    var desc = (e[lang]) ? e[lang][1] : (e.pt ? e.pt[1] : "");
+    grid.innerHTML += '<div class="energy-card"><div class="energy-num">' + n + '</div>' +
+      '<h3>' + titulo + '</h3><p>' + desc + '</p></div>';
   }
 }
 
-// ===== INVESTIDORES =====
-const INVESTIDORES = [
-{flag:"🇧🇷",nome:"Português",desc:"Apresentação empresarial em português.",link:"https://global-numerology.onrender.com/static/Apresenta%C3%A7%C3%A3o%20Empresarial%20para%20Investidores%20e%20Parceiros.pdf",botao:"Baixar PDF"},
-{flag:"🇺🇸",nome:"English",desc:"Company presentation in English.",link:"https://global-numerology.onrender.com/static/Formal%20Business%20Presentation%20for%20Investors%20%26%20Strategic%20Partners.pdf",botao:"Download PDF"},
-{flag:"🇪🇸",nome:"Español",desc:"Presentación empresarial en español.",link:"https://global-numerology.onrender.com/static/Presentaci%C3%B3n%20Empresarial%20para%20Inversores%20y%20Socios.pdf",botao:"Descargar PDF"},
-{flag:"🇮🇹",nome:"Italiano",desc:"Presentazione aziendale in italiano.",link:"https://global-numerology.onrender.com/static/Presentazione%20Aziendale%20per%20Investidore%20e%20Partner.pdf",botao:"Scarica PDF"},
-{flag:"🇫🇷",nome:"Français",desc:"Présentation d'entreprise en français.",link:"https://global-numerology.onrender.com/static/Pr%C3%A9sentation%20d%27Entreprise%20%E2%80%94%20Investisseurs%20%26%20Partenaires%20Strat%C3%A9gique.pdf",botao:"Télécharger le PDF"},
-{flag:"🇩🇪",nome:"Deutsch",desc:"Unternehmenspräsentation auf Deutsch.",link:"https://global-numerology.onrender.com/static/Unternehmenspr%C3%A4sentation%20f%C3%BCr%20Investoren%20und%20Partner.pdf",botao:"PDF herunterladen"}
-];
-
-// ===== RENDERIZAR INVESTIDORES =====
-function renderInvestidores(){
-  const grid = document.getElementById("investidoresGrid"); if(!grid) return;
-  grid.innerHTML = "";
-  INVESTIDORES.forEach(function(i){
-    grid.innerHTML += '<div class="card"><div style="font-size:2.5rem">' + (p.icon || "") + '</div>'+i.flag+'</div><h3>'+i.nome+'</h3><p style="font-size:.85rem;color:#bbb">'+i.desc+'</p><a class="btn btn-outline" href="'+i.link+'" target="_blank" rel="noopener">'+i.botao+'</a></div>';
+// ===== RENDERIZAR IDIOMAS (barra de idiomas) =====
+function renderIdiomas(){
+  var bar = document.getElementById("langBar");
+  if(!bar) return;
+  bar.innerHTML = "";
+  if(typeof LANGUAGES === "undefined") return;
+  LANGUAGES.forEach(function(l){
+    bar.innerHTML += '<button data-lang="' + l.code + '" onclick="setLanguage(\'' + l.code + '\')">' + l.flag + ' ' + l.name + '</button>';
   });
 }
 
-// ===== BANNERS GEOLOCALIZADOS (GET /api/banner) =====
-function carregarBanner(){
-  fetch("/api/banner?posicao=topo&pais=BR")
-    .then(function(r){ return r.json(); })
-    .then(function(res){
-      const c = document.getElementById("bannerTopo"); if(!c) return;
-      if(res.ok && res.banner){
-        const b = res.banner;
-        const img = (window.innerWidth<=768 && b.imagem_url_mobile) ? b.imagem_url_mobile : b.imagem_url;
-        c.innerHTML = '<a href="'+b.url_anunciante+'" target="_blank" rel="sponsored"><img src="'+img+'" alt="'+b.marca+'" style="max-width:100%;border-radius:12px"></a>';
-        c.style.display = "block";
-      }
-    })
-    .catch(function(){});
-}
-
-// ===== INICIALIZAÇÃO =====
-function init(){
+// ===== TROCAR IDIOMA =====
+function setLanguage(code){
+  langAtual = code;
+  localStorage.setItem("lang", code);
+  localStorage.setItem("selectedLang", code);
+  traduzir();
   renderIdiomas();
   renderProdutos();
   renderEnergias();
   renderInvestidores();
   montarTabelaBC();
+  document.documentElement.dir = (code === "he" || code === "ar") ? "rtl" : "ltr";
+}
+
+// ===== TRADUZIR TEXTOS data-i18n =====
+function traduzir(){
+  var lang = langAtualSegura();
+  if(typeof TRADUCOES === "undefined") return;
+  var t = TRADUCOES[lang] || TRADUCOES.pt;
+  if(!t) return;
+  document.querySelectorAll("[data-i18n]").forEach(function(el){
+    var key = el.getAttribute("data-i18n");
+    if(t[key]) el.innerHTML = t[key];
+  });
+}
+
+// ===== RENDERIZAR INVESTIDORES =====
+function renderInvestidores(){
+  var grid = document.getElementById("investidoresGrid");
+  if(!grid) return;
+  grid.innerHTML = "";
+  if(typeof INVESTIDORES === "undefined") return;
+  INVESTIDORES.forEach(function(inv){
+    grid.innerHTML += '<div class="invest-card">' +
+      '<div style="font-size:2rem">' + (inv.flag || "") + '</div>' +
+      '<h3>' + (inv.nome || "") + '</h3>' +
+      '<p>' + (inv.desc || "") + '</p>' +
+      (inv.link ? '<a class="btn" href="' + inv.link + '" target="_blank">' + (inv.botao || "Baixar PDF") + '</a>' : '') +
+      '</div>';
+  });
+}
+
+// ===== MONTAR TABELA BÔNUS COLETIVO =====
+function montarTabelaBC(){
+  var tbody = document.getElementById("bc-tbody");
+  if(!tbody) return;
+  tbody.innerHTML = "";
+  if(typeof BC_PRODUTOS === "undefined") return;
+  var lang = langAtualSegura();
+  BC_PRODUTOS.forEach(function(p){
+    var nome = (typeof BC_NOMES !== "undefined" && BC_NOMES[lang] && BC_NOMES[lang][p[0]]) ? BC_NOMES[lang][p[0]] : p[1];
+    tbody.innerHTML += '<tr>' +
+      '<td>' + (p[3] || "") + ' ' + nome + '</td>' +
+      '<td>' + p[2] + '</td>' +
+      '<td><input type="number" min="0" value="0" data-bc-id="' + p[0] + '" onchange="atualizarResumoBC()"></td>' +
+      '</tr>';
+  });
   atualizarResumoBC();
+}
+
+// ===== DESCONTO PROGRESSIVO =====
+function descontoBC(total){
+  if(total >= 1000) return 0.70;
+  if(total >= 500) return 0.50;
+  if(total >= 200) return 0.40;
+  if(total >= 100) return 0.30;
+  if(total >= 50) return 0.20;
+  if(total >= 10) return 0.10;
+  return 0;
+}
+
+// ===== ATUALIZAR RESUMO =====
+function atualizarResumoBC(){
+  var total = 0;
+  document.querySelectorAll("[data-bc-id]").forEach(function(inp){
+    var qtd = parseInt(inp.value) || 0;
+    var id = inp.getAttribute("data-bc-id");
+    var prod = (typeof BC_PRODUTOS !== "undefined") ? BC_PRODUTOS.find(function(p){ return p[0] === id; }) : null;
+    if(prod) total += qtd * prod[2];
+  });
+  var desc = descontoBC(total);
+  var final = total * (1 - desc);
+  var elBruto = document.getElementById("bcTotalBruto");
+  var elDesc = document.getElementById("bcDesconto");
+  var elFinal = document.getElementById("bcTotalFinal");
+  if(elBruto) elBruto.textContent = "R$ " + total.toFixed(2);
+  if(elDesc) elDesc.textContent = "R$ " + (total * desc).toFixed(2) + " (" + Math.round(desc * 100) + "%)";
+  if(elFinal) elFinal.textContent = "R$ " + final.toFixed(2);
+}
+
+// ===== USAR PLANO PRONTO =====
+function usarPlanoPronto(plano){
+  var planos = {
+    basico: {express: 50},
+    intermediario: {express: 50, ia: 50},
+    premium: {express: 100, completo: 100}
+  };
+  var sel = planos[plano];
+  if(!sel) return;
+  document.querySelectorAll("[data-bc-id]").forEach(function(inp){
+    var id = inp.getAttribute("data-bc-id");
+    inp.value = (sel[id] !== undefined) ? sel[id] : 0;
+  });
+  atualizarResumoBC();
+}
+
+// ===== CONFIRMAR BÔNUS COLETIVO =====
+function confirmarBC(){
+  var items = [];
+  document.querySelectorAll("[data-bc-id]").forEach(function(inp){
+    var qtd = parseInt(inp.value) || 0;
+    if(qtd > 0) items.push({id: inp.getAttribute("data-bc-id"), qtd: qtd});
+  });
+  if(items.length === 0){ alert("Selecione ao menos um produto e quantidade."); return; }
+  var lang = langAtualSegura();
+  window.location.href = "/criar-checkout-coletivo?lang=" + lang + "&items=" + JSON.stringify(items);
+}
+
+// ===== COMPRAR PRODUTO (casado com POST /api/pay/stripe) =====
+function comprar(produto){
+  var lang = langAtualSegura();
+  var nome = document.getElementById("nomeCompleto");
+  var data = document.getElementById("dataNascimento");
+  var nomeArmazenado = (nome && nome.value) ? nome.value : "";
+  var dataArmazenada = (data && data.value) ? data.value : "";
+  var body = {name: nomeArmazenado || "Cliente", birth_date: dataArmazenada || "2000-01-01", email: "", product: produto, lang: lang, price: 0};
+  fetch("/api/pay/stripe", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body)})
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if(d && d.url){ window.location.href = d.url; }
+      else { window.location.href = "/criar-checkout?lang=" + lang + "&produto=" + produto; }
+    })
+    .catch(function(){ window.location.href = "/criar-checkout?lang=" + lang + "&produto=" + produto; });
+}
+
+// ===== CALCULADORA GRÁTIS (casada com POST /calculate) =====
+function calcularGratis(){
+  var nome = document.getElementById("nomeCompleto");
+  var data = document.getElementById("dataNascimento");
+  if(!nome || !data || !nome.value || !data.value){ alert("Preencha nome e data de nascimento."); return; }
+  var lang = langAtualSegura();
+  fetch("/calculate", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({name: nome.value, birth_date: data.value, email: "", lang: lang})})
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      var out = document.getElementById("resultadoGratis");
+      if(out) out.innerHTML = JSON.stringify(d);
+    })
+    .catch(function(){ alert("Erro ao calcular. Tente novamente."); });
+}
+
+// ===== ALTERNAR FORMULÁRIOS URNA / ELEITORAL =====
+function toggleForm(tipo){
+  var fUrna = document.getElementById("form-urna");
+  var fEle = document.getElementById("form-eleitoral");
+  if(fUrna) fUrna.classList.toggle("hidden-form", tipo !== "urna");
+  if(fEle) fEle.classList.toggle("hidden-form", tipo !== "eleitoral");
+  if(tipo === "urna" && fUrna) fUrna.scrollIntoView();
+  if(tipo === "eleitoral" && fEle) fEle.scrollIntoView();
+}
+
+// ===== PAGAR NOME DE URNA (POST /api/pay/urna-session) =====
+function pagarUrna(){
+  var nome = document.getElementById("urnaNome");
+  var cargo = document.getElementById("urnaCargo");
+  var email = document.getElementById("urnaEmail");
+  var lang = langAtualSegura();
+  var body = {nome_completo: (nome && nome.value) || "", nome_urna: (cargo && cargo.value) || "", email: (email && email.value) || "", lang: lang};
+  fetch("/api/pay/urna-session", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body)})
+    .then(function(r){ return r.json(); })
+    .then(function(d){ if(d && d.url) window.location.href = d.url; })
+    .catch(function(){ alert("Erro ao processar. Tente novamente."); });
+}
+
+// ===== PAGAR NÚMERO ELEITORAL (POST /api/pay/eleitoral-session) =====
+function pagarEleitoral(){
+  var nome = document.getElementById("eleNome");
+  var sigla = document.getElementById("eleSigla");
+  var email = document.getElementById("eleEmail");
+  var lang = langAtualSegura();
+  var body = {nome_completo: (nome && nome.value) || "", numero: (sigla && sigla.value) || "", email: (email && email.value) || "", lang: lang};
+  fetch("/api/pay/eleitoral-session", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body)})
+    .then(function(r){ return r.json(); })
+    .then(function(d){ if(d && d.url) window.location.href = d.url; })
+    .catch(function(){ alert("Erro ao processar. Tente novamente."); });
+}
+
+// ===== ATIVAR CÓDIGO BÔNUS (POST /ativar-bonus) =====
+function ativarBonusInserido(){
+  var inp = document.getElementById("codigoBonus");
+  if(!inp || !inp.value){ alert("Insira o código."); return; }
+  fetch("/ativar-bonus", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({codigo: inp.value})})
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      var out = document.getElementById("resultadoBonus");
+      if(out) out.textContent = (d && d.ok) ? "Código ativado com sucesso!" : "Código inválido ou já usado.";
+    })
+    .catch(function(){ alert("Erro ao ativar. Tente novamente."); });
+}
+
+// ===== BANNERS GEOLOCALIZADOS (GET /api/banner) =====
+function carregarBanner(){
+  fetch("/api/banner")
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      var zona = document.getElementById("zonaBase");
+      if(zona && d && d.imagem_url) zona.innerHTML = '<a href="' + (d.url_anunciante || "#") + '"><img src="' + d.imagem_url + '" alt="banner"></a>';
+    })
+    .catch(function(){ /* sem banner */ });
+}
+
+// ===== MOVER ELEMENTO (banners A1ELOS) =====
+function mover(origem, destino, duplicar){
+  var o = document.getElementById(origem);
+  var d = document.getElementById(destino);
+  if(!o || !d) return;
+  if(duplicar){ d.appendChild(o.cloneNode(true)); } else { d.appendChild(o); }
+}
+
+// ===== INICIALIZAÇÃO =====
+function init(){
+  if(typeof langAtual === "undefined"){ langAtual = localStorage.getItem("selectedLang") || "pt"; }
+  renderIdiomas();
+  renderProdutos();
+  renderEnergias();
+  renderInvestidores();
+  montarTabelaBC();
   traduzir();
   carregarBanner();
 }
 document.addEventListener("DOMContentLoaded", init);
-</script>
-
-<!-- BANNERS A1ELOS -->
-<style>
-.a1-zona{display:flex;gap:14px;justify-content:center;align-items:center;margin:20px auto;max-width:100%;padding:0 10px;flex-wrap:nowrap}
-.a1-slot{position:relative;overflow:hidden;border-radius:10px;box-shadow:0 4px 14px rgba(0,0,0,.35);background:#111;width:50%;max-width:356px;height:110px;flex:1 1 0}
-.a1-slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block}
-.a1-item{position:absolute;inset:0;opacity:0;transition:opacity .8s ease;pointer-events:none}
-.a1-item.active{opacity:1;pointer-events:auto}
-@media(max-width:700px){.a1-slot{height:78px}}
-</style>
-
-<div class="a1-zona" id="zonaTopo">
-  <div class="a1-slot" id="bn-topoA"></div>
-  <div class="a1-slot" id="bn-topoB"></div>
-</div>
-
-<div class="a1-zona" id="zonaCentral">
-  <div class="a1-slot" id="bn-centralA"></div>
-  <div class="a1-slot" id="bn-centralB"></div>
-</div>
-
-<div class="a1-zona" id="zonaBase">
-  <div class="a1-slot" id="bn-baseA"></div>
-  <div class="a1-slot" id="bn-baseB"></div>
-</div>
-
-<script>
-(function(){
-  var IMGS = {
-    topo:    ["/static/topo-azul.png","/static/topo-amarelo.png","/static/topo-bordo.png"],
-    central: ["/static/central-azul.png","/static/central-amarelo.png","/static/central-bordo.png"],
-    base:    ["/static/base-azul.png","/static/base-amarelo.png","/static/base-bordo.png"]
-  };
-  var TEMPO = 8000; /* 8s por cor — ciclo das 3 cores = 24s */
-
-  function mover(id, alvo, depois){
-    var el = document.getElementById(id);
-    if(!el) return;
-    var ref = document.getElementById(alvo) || document.querySelector("." + alvo);
-    if(ref && ref.parentNode){
-      if(depois){ ref.parentNode.insertBefore(el, ref.nextSibling); }
-      else { ref.parentNode.insertBefore(el, ref); }
-    }
-  }
-
-  function preencher(id, arr, ini){
-    var slot = document.getElementById(id);
-    if(!slot) return;
-    var h = "";
-    for(var i = 0; i < arr.length; i++){
-      h += '<div class="a1-item' + (i === ini ? " active" : "") + '"><a href="#" target="_blank" rel="sponsored"><img src="' + arr[i] + '" alt="Seu espaço publicitário!" loading="lazy"></a></div>';
-    }
-    slot.innerHTML = h;
-    var itens = slot.querySelectorAll(".a1-item");
-    if(itens.length < 2) return;
-    var atual = ini;
-    setInterval(function(){
-      if(!itens[atual]) return;
-      itens[atual].classList.remove("active");
-      atual = (atual + 1) % itens.length;
-      if(itens[atual]) itens[atual].classList.add("active");
-    }, TEMPO);
-  }
-
-  mover("zonaTopo", "langBar", true);
-  mover("zonaTopo", "lang-bar", true);
-  mover("zonaCentral", "produtos", true);
-  mover("zonaCentral", "produtosGrid", true);
-  mover("zonaBase", "bonus", false);
-
-  preencher("bn-topoA", IMGS.topo, 0);
-  preencher("bn-topoB", IMGS.topo, 1);
-  preencher("bn-centralA", IMGS.central, 1);
-  preencher("bn-centralB", IMGS.central, 0);
-  preencher("bn-baseA", IMGS.base, 0);
-  preencher("bn-baseB", IMGS.base, 1);
-})();
-</script>  
-  
-</body>
-</html>
