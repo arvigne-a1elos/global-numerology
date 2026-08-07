@@ -57,7 +57,7 @@ footer{text-align:center;padding:30px;border-top:1px solid var(--border);color:#
 <div id="bannerTopo"></div>
 
 <section class="hero">
-  <img src="logo.png" alt="A1ELOS Logo" onerror="this.style.display='none'">
+  <img <img src="/static/logo.png" alt="A1ELOS logo" onerror="this.style.display='none'">
   <h1 data-i18n="hero_title">MAPA NUMEROLÓGICO</h1>
   <p data-i18n="hero_subtitle">Descubra o que os números revelam sobre você</p>
   <p data-i18n="hero_desc">Uma jornada de autoconhecimento baseada na numerologia pitagórica. Seu mapa pessoal revela talentos, desafios e caminhos através dos números que regem sua vida.</p>
@@ -68,13 +68,13 @@ footer{text-align:center;padding:30px;border-top:1px solid var(--border);color:#
 <section id="calculadora">
   <h2 class="section-title" data-i18n="calc_title">🔢 Calcule Seu Mapa Grátis</h2>
   <p class="section-sub" data-i18n="calc_sub">Seus números essenciais, grátis. A explicação completa de cada número está no Mapa Express (R$ 8).</p>
-  <div class="form-container">
-    <label data-i18n="f_nome">Nome Completo</label>
-    <input type="text" id="calcNome" placeholder="Seu nome completo">
-    <label data-i18n="f_data">Data de Nascimento</label>
-    <input type="date" id="calcData">
-    <button class="btn" onclick="calcularGratis()" data-i18n="calc_btn">✨ CALCULAR MEU MAPA GRÁTIS</button>
-  </div>
+  <div class="form-box">
+  <label for="calcNome" data-i18n="f_nome">Nome Completo</label>
+  <input id="calcNome" name="calcNome" type="text" placeholder="Seu nome completo">
+  <label for="calcData" data-i18n="f_data">Data de Nascimento</label>
+  <input id="calcData" name="calcData" type="date">
+  <button class="btn" onclick="calcularGratis()" data-i18n="calc_btn">✨ CALCULAR MEU MAPA GRÁTIS</button>
+</div>
   <div id="resultado"></div>
 </section>
 
@@ -116,11 +116,11 @@ footer{text-align:center;padding:30px;border-top:1px solid var(--border);color:#
   <div class="form-container">
     <h3 class="section-title" data-i18n="urna_title">Validação do Nome de Urna</h3>
     <p class="section-sub" data-i18n="urna_sub">5 tentativas + cálculo letra a letra + PDF sigiloso — R$ 26</p>
-    <label data-i18n="f_nome">Nome Completo da Pessoa</label>
+    <label data-i18n="f_nome for">Nome Completo da Pessoa</label>
     <input type="text" id="urnaNome" placeholder="Nome completo">
-    <label data-i18n="f_cargo">Cargo em Disputa</label>
+    <label data-i18n="f_cargo for">Cargo em Disputa</label>
     <input type="text" id="urnaCargo" placeholder="Ex: Vereador">
-    <label data-i18n="f_email">Email (resultado sigiloso)</label>
+    <label data-i18n="f_email for">Email (resultado sigiloso)</label>
     <input type="email" id="urnaEmail" placeholder="seu@email.com">
     <label data-i18n="urna_options">Insira até 5 opções de nome de candidato:</label>
     <input type="text" id="urnaNome1" placeholder="Nome 1">
@@ -212,7 +212,7 @@ footer{text-align:center;padding:30px;border-top:1px solid var(--border);color:#
     <button class="btn" onclick="confirmarBC()" data-i18n="bc_confirm">📋 Confirmar Resumo e Ir para Pagamento</button>
   </div>
 </section>
-
+</script>
 <section id="investidores">
   <h2 class="section-title" data-i18n="inv_title">Investidores e Parceiros</h2>
   <p class="section-sub" data-i18n="inv_sub">Baixe a apresentação empresarial da A1ELOS no seu idioma, gratuitamente.</p>
