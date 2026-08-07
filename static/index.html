@@ -49,12 +49,21 @@ footer{text-align:center;padding:30px;border-top:1px solid var(--border);color:#
 #resultado h3{color:var(--gold)}
 #resultado .num{font-size:2rem;color:var(--gold);font-weight:700}
 #bannerTopo{max-width:1100px;margin:20px auto 0;text-align:center;display:none}
+.a1-zona{display:flex;gap:14px;justify-content:center;align-items:center;margin:20px auto;max-width:100%;padding:0 10px;flex-wrap:nowrap}
+.a1-slot{position:relative;overflow:hidden;border-radius:10px;box-shadow:0 4px 14px rgba(0,0,0,.35);background:#111;width:50%;max-width:356px;height:110px;flex:1 1 0}
+.a1-slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block}
+.a1-item{position:absolute;inset:0;opacity:0;transition:opacity .8s ease;pointer-events:none}
+.a1-item.active{opacity:1;pointer-events:auto}
+@media(max-width:700px){.a1-slot{height:78px}}  
 </style>
 </head>
 <body>
 
 <div class="lang-bar" id="langBar"></div>
-<div id="bannerTopo"></div>
+<div class="a1-zona" id="zonaTopo">
+  <div class="a1-slot" id="bn-topoA"></div>
+  <div class="a1-slot" id="bn-topoB"></div>
+</div>  
 
 <section class="hero">
   <img src="/static/logo.png" alt="A1ELOS logo" class="logo" onerror="this.style.display='none'">
@@ -105,6 +114,11 @@ footer{text-align:center;padding:30px;border-top:1px solid var(--border);color:#
   <div class="cards-grid" id="produtosGrid"></div>
 </section>
 
+<div class="a1-zona" id="zonaCentral">
+  <div class="a1-slot" id="bn-centralA"></div>
+  <div class="a1-slot" id="bn-centralB"></div>
+</div>
+  
 <section id="energias">
   <h2 class="section-title" data-i18n="section_energias_title">Significado das Energias</h2>
   <p class="section-sub" data-i18n="section_energias_sub">Cada número carrega uma vibração específica. Escolha sua energia e clique no serviço desejado.</p>
@@ -165,6 +179,11 @@ footer{text-align:center;padding:30px;border-top:1px solid var(--border);color:#
   </div>
 </section>
 
+  <div class="a1-zona" id="zonaBase">
+  <div class="a1-slot" id="bn-baseA"></div>
+  <div class="a1-slot" id="bn-baseB"></div>
+</div>
+  
 <section id="corporativo">
   <h2 class="section-title" data-i18n="bc_title">🏢 Bônus Coletivo / Empresarial</h2>
   <p class="section-sub" data-i18n="bc_sub">Contrate brindes numerológicos para seus clientes ou funcionários. Descontos de 10% a 70%.</p>
@@ -713,6 +732,40 @@ function init(){
   traduzir();
   carregarBanner();
 }
+
+// ===== SISTEMA DE BANNERS A1ELOS (rotação 8s) =====
+document.addEventListener("DOMContentLoaded", function(){
+  var IMGS = {
+    topo:    ["/static/topo-azul.png","/static/topo-amarelo.png","/static/topo-bordo.png"],
+    central: ["/static/topo-azul.png","/static/topo-amarelo.png","/static/topo-bordo.png"],
+    base:    ["/static/topo-azul.png","/static/topo-amarelo.png","/static/topo-bordo.png"]
+  };
+  var TEMPO = 8000;
+  function preencher(id, arr, ini){
+    var slot = document.getElementById(id);
+    if(!slot) return;
+    var h = "";
+    for(var i = 0; i < arr.length; i++){
+      h += '<div class="a1-item' + (i === ini ? " active" : "") + '"><a href="#" target="_blank" rel="sponsored"><img src="' + arr[i] + '" alt="Seu espaço publicitário!" loading="lazy"></a></div>';
+    }
+    slot.innerHTML = h;
+    var itens = slot.querySelectorAll(".a1-item");
+    if(itens.length < 2) return;
+    var atual = ini;
+    setInterval(function(){
+      itens[atual].classList.remove("active");
+      atual = (atual + 1) % itens.length;
+      itens[atual].classList.add("active");
+    }, TEMPO);
+  }
+  preencher("bn-topoA", IMGS.topo, 0);
+  preencher("bn-topoB", IMGS.topo, 1);
+  preencher("bn-centralA", IMGS.central, 1);
+  preencher("bn-centralB", IMGS.central, 0);
+  preencher("bn-baseA", IMGS.base, 0);
+  preencher("bn-baseB", IMGS.base, 1);
+});  
+  
 document.addEventListener("DOMContentLoaded", init);
   
 <section id="investidores">
@@ -1409,13 +1462,18 @@ function ativarBonusInserido(){
     .catch(function(){ alert("Erro ao ativar. Tente novamente."); });
 }
 
-// ===== BANNERS GEOLOCALIZADOS (GET /api/banner) =====
+// ===== BANNER DO TOPO (GET /api/banner) =====
 function carregarBanner(){
-  fetch("/api/banner")
+  fetch("/api/banner?posicao=topo&pais=BR")
     .then(function(r){ return r.json(); })
-    .then(function(d){
-      var zona = document.getElementById("zonaBase");
-      if(zona && d && d.imagem_url) zona.innerHTML = '<a href="' + (d.url_anunciante || "#") + '"><img src="/static/banners/' + d.imagem_url + '.png" alt="banner"></a>';
+    .then(function(res){
+      var c = document.getElementById("bannerTopo");
+      if(c && res && res.ok && res.banner){
+        var b = res.banner;
+        var img = (window.innerWidth <= 768 && b.imagem_url_mobile) ? b.imagem_url_mobile : b.imagem_url;
+        c.innerHTML = '<a href="' + b.url_anunciante + '" target="_blank" rel="sponsored"><img src="' + img + '" alt="' + b.marca + '" style="max-width:100%;border-radius:12px"></a>';
+        c.style.display = "block";
+      }
     })
     .catch(function(){ /* sem banner */ });
 }
