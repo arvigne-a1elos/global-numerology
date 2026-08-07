@@ -57,7 +57,7 @@ footer{text-align:center;padding:30px;border-top:1px solid var(--border);color:#
 <div id="bannerTopo"></div>
 
 <section class="hero">
-  <img <img src="/static/logo.png" alt="A1ELOS logo" onerror="this.style.display='none'">
+  <img src="/static/logo.png" alt="A1ELOS logo" class="logo" onerror="this.style.display='none'">
   <h1 data-i18n="hero_title">MAPA NUMEROLÓGICO</h1>
   <p data-i18n="hero_subtitle">Descubra o que os números revelam sobre você</p>
   <p data-i18n="hero_desc">Uma jornada de autoconhecimento baseada na numerologia pitagórica. Seu mapa pessoal revela talentos, desafios e caminhos através dos números que regem sua vida.</p>
@@ -136,20 +136,20 @@ footer{text-align:center;padding:30px;border-top:1px solid var(--border);color:#
   <div class="form-container">
     <h3 class="section-title" data-i18n="eleitoral_title">Cálculo do Número Eleitoral</h3>
     <p class="section-sub" data-i18n="eleitoral_sub">Sugestões com energia 8 para sua candidatura — R$ 26</p>
-    <label data-i18n="f_nome">Nome Completo da Pessoa</label>
+    <label data-i18n="f_nome for">Nome Completo da Pessoa</label>
     <input type="text" id="eleiNome" placeholder="Nome completo">
-    <label data-i18n="f_cargo2">Cargo</label>
+    <label data-i18n="f_cargo2 for">Cargo</label>
     <select id="eleiCargo">
       <option value="vereador" data-i18n="c_vereador">Vereador</option>
       <option value="dep_estadual" data-i18n="c_estadual">Dep. Estadual</option>
       <option value="dep_federal" data-i18n="c_federal">Dep. Federal</option>
       <option value="senador" data-i18n="c_senador">Senador</option>
     </select>
-    <label data-i18n="f_sigla">Número da Sigla Partidária (2 dígitos)</label>
+    <label data-i18n="f_sigla for">Número da Sigla Partidária (2 dígitos)</label>
     <input type="text" id="eleiSigla" maxlength="2" placeholder="Ex: 45">
-    <label data-i18n="f_existente">Número já existente (opcional)</label>
+    <label data-i18n="f_existente for">Número já existente (opcional)</label>
     <input type="text" id="eleiExistente" placeholder="Ex: 45123">
-    <label data-i18n="f_email">Email (resultado sigiloso)</label>
+    <label data-i18n="f_email for">Email (resultado sigiloso)</label>
     <input type="email" id="eleiEmail" placeholder="seu@email.com">
     <button class="btn" onclick="pagarEleitoral()" data-i18n="pay_eleitoral">🔒 Pagar R$ 26 — Sugestões por Email</button>
   </div>
@@ -159,7 +159,7 @@ footer{text-align:center;padding:30px;border-top:1px solid var(--border);color:#
   <div class="form-container">
     <h3 class="section-title" data-i18n="bi_title">🎁 Ativar Código Bônus</h3>
     <p class="section-sub" data-i18n="bi_sub">Recebeu um código? Insira abaixo e ative para gerar seu presente — sem pagamento.</p>
-    <label data-i18n="bi_label">Código Bônus</label>
+    <label data-i18n="bi_label for">Código Bônus</label>
     <input type="text" id="biCodigo" placeholder="Ex: A1-XXXX-XXXX">
     <button class="btn" onclick="ativarBonusInserido()" data-i18n="bi_btn">🎁 Ativar Código</button>
   </div>
@@ -212,7 +212,7 @@ footer{text-align:center;padding:30px;border-top:1px solid var(--border);color:#
     <button class="btn" onclick="confirmarBC()" data-i18n="bc_confirm">📋 Confirmar Resumo e Ir para Pagamento</button>
   </div>
 </section>
-</script>
+<script>
 <section id="investidores">
   <h2 class="section-title" data-i18n="inv_title">Investidores e Parceiros</h2>
   <p class="section-sub" data-i18n="inv_sub">Baixe a apresentação empresarial da A1ELOS no seu idioma, gratuitamente.</p>
@@ -530,7 +530,7 @@ function renderProdutos(){
     if(p.especial==="urna"){ btnAcao="onclick=\"toggleForm('urna')\""; btnLabel=t.start_urna||"Iniciar Validação"; }
     if(p.especial==="eleitoral"){ btnAcao="onclick=\"toggleForm('eleitoral')\""; btnLabel=t.start_eleitoral||"Calcular Nº Eleitoral"; }
     if(p.especial==="coletivo"){ btnAcao="onclick=\"document.getElementById('corporativo').scrollIntoView()\""; btnLabel=t.know_more||"Saiba Mais"; }
-    grid.innerHTML += '<div class="product-card">'+badge+'<div style="font-size:2.5rem">'+p.icone+'</div><h3>'+nomes[i]+'</h3><div class="price">'+preco+'</div><p class="desc">'+p.desc+'</p><ul>'+feats+'</ul><button class="btn" '+btnAcao+'>'+btnLabel+'</button></div>';
+    grid.innerHTML += '<div class="product-card">'+badge+'<div style="font-size:2.5rem">'+i.flag+'</div><h3>'+nomes[i]+'</h3><div class="price">'+preco+'</div><p class="desc">'+p.desc+'</p><ul>'+feats+'</ul><button class="btn" '+btnAcao+'>'+btnLabel+'</button></div>';
   });
 }
 function renderEnergias(){
@@ -691,15 +691,15 @@ function carregarBanner(){
   fetch("/api/banner?posicao=topo&pais=BR")
     .then(function(r){ return r.json(); })
     .then(function(res){
-      const c = document.getElementById("bannerTopo"); if(!c) return;
-      if(res.ok && res.banner){
-        const b = res.banner;
-        const img = '/static/banners/' + ((window.innerWidth<=768 && b.imagem_url_mobile) ? b.imagem_url_mobile : b.imagem_url) + '.png';
-        c.innerHTML = '<a href="'+b.url_anunciante+'" target="_blank" rel="sponsored"><img src="'+img+'" alt="'+b.marca+'" style="max-width:100%;border-radius:12px"></a>';
+      var c = document.getElementById("bannerTopo");
+      if(c && res && res.ok && res.banner){
+        var b = res.banner;
+        var img = (window.innerWidth <= 768 && b.imagem_url_mobile) ? b.imagem_url_mobile : b.imagem_url;
+        c.innerHTML = '<a href="' + b.url_anunciante + '" target="_blank" rel="sponsored"><img src="' + img + '" alt="' + b.marca + '" style="max-width:100%;border-radius:12px"></a>';
         c.style.display = "block";
       }
     })
-    .catch(function(){});
+    .catch(function(){ /* sem banner */ });
 }
 
 // ===== INICIALIZAÇÃO =====
@@ -1101,7 +1101,7 @@ function renderProdutos(){
     var nomeProd = (NOMES[lang] && NOMES[lang][p.id]) ? NOMES[lang][p.id] : (NOMES.pt && NOMES.pt[p.id]) || p.id;
     var desc = (PRODUTOS_DESC[lang] && PRODUTOS_DESC[lang][p.id]) ? PRODUTOS_DESC[lang][p.id] : (p.desc || "");
     var feats = (PRODUTOS_FEATS[lang] && PRODUTOS_FEATS[lang][p.id]) ? PRODUTOS_FEATS[lang][p.id] : (p.features || p.feats || []);
-    var icone = (p.icon || p.icone || "");
+    var icone = (i.flag || i.flag || "");
     var tier = (p.tier !== undefined) ? p.tier : p.precoTier;
     var preco = sobConsulta;
     if(tier !== undefined && precos && precos[tier] !== undefined){
@@ -1154,7 +1154,7 @@ function renderProdutos(){
     var nomeProd = (typeof NOMES !== "undefined" && NOMES[lang] && NOMES[lang][p.id]) ? NOMES[lang][p.id] : (typeof NOMES !== "undefined" && NOMES.pt && NOMES.pt[p.id]) || p.id;
     var desc = (typeof PRODUTOS_DESC !== "undefined" && PRODUTOS_DESC[lang] && PRODUTOS_DESC[lang][p.id]) ? PRODUTOS_DESC[lang][p.id] : (p.desc || "");
     var feats = (typeof PRODUTOS_FEATS !== "undefined" && PRODUTOS_FEATS[lang] && PRODUTOS_FEATS[lang][p.id]) ? PRODUTOS_FEATS[lang][p.id] : (p.features || p.feats || []);
-    var icone = (p.icon || p.icone || "");
+    var icone = (i.flag || i.flag || "");
     var tier = (p.tier !== undefined) ? p.tier : p.precoTier;
     var preco = sobConsulta;
     if(tier !== undefined && precos && precos[tier] !== undefined){
@@ -1237,18 +1237,17 @@ function traduzir(){
   });
 }
 
-// ===== RENDERIZAR INVESTIDORES =====
+// ===== RENDERIZAR INVESTIDORES (links de PDF para download) =====
 function renderInvestidores(){
   var grid = document.getElementById("investidoresGrid");
   if(!grid) return;
   grid.innerHTML = "";
-  if(typeof INVESTIDORES === "undefined") return;
-  INVESTIDORES.forEach(function(inv){
-    grid.innerHTML += '<div class="invest-card">' +
-      '<div style="font-size:2rem">' + (inv.flag || "") + '</div>' +
-      '<h3>' + (inv.nome || "") + '</h3>' +
-      '<p>' + (inv.desc || "") + '</p>' +
-      (inv.link ? '<a class="btn" href="' + inv.link + '" target="_blank">' + (inv.botao || "Baixar PDF") + '</a>' : '') +
+  INVESTIDORES.forEach(function(i){
+    grid.innerHTML += '<div class="card">' +
+      '<div style="font-size:2.5rem">' + i.flag + '</div>' +
+      '<h3>' + i.nome + '</h3>' +
+      '<p style="font-size:.85rem;color:#bbb">' + i.desc + '</p>' +
+      '<a class="btn btn-outline" href="' + i.link + '" target="_blank" rel="noopener">' + i.botao + '</a>' +
       '</div>';
   });
 }
