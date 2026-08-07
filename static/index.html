@@ -130,13 +130,12 @@ footer{text-align:center;padding:30px;border-top:1px solid var(--border);color:#
   <div class="form-container">
     <h3 class="section-title" data-i18n="urna_title">Validação do Nome de Urna</h3>
     <p class="section-sub" data-i18n="urna_sub">5 tentativas + cálculo letra a letra + PDF sigiloso — R$ 26</p>
-    <label data-i18n="f_nome for">Nome Completo da Pessoa</label>
-    <input type="text" id="urnaNome" placeholder="Nome completo">
-    <label data-i18n="f_cargo for">Cargo em Disputa</label>
-    <input type="text" id="urnaCargo" placeholder="Ex: Vereador">
-    <label data-i18n="f_email for">Email (resultado sigiloso)</label>
-    <input type="email" id="urnaEmail" placeholder="seu@email.com">
-    <label data-i18n="urna_options">Insira até 5 opções de nome de candidato:</label>
+    <label for="urnaNome" data-i18n="urna_nome">Nome Completo da Pessoa</label>
+    <input type="text" id="urnaNome" name="urnaNome" placeholder="Nome completo" data-i18n-ph="urna_nome_ph">
+    <label for="urnaCargo" data-i18n="urna_cargo">Cargo em Disputa</label>
+    <input type="text" id="urnaCargo" name="urnaCargo" placeholder="Ex: Vereador" data-i18n-ph="urna_cargo_ph">
+    <label for="urnaEmail" data-i18n="f_email">Email (resultado sigiloso)</label>
+    <input type="email" id="urnaEmail" name="urnaEmail" placeholder="seu@email.com" data-i18n-ph="urna_email_ph">
     <input type="text" id="urnaNome1" placeholder="Nome 1">
     <input type="text" id="urnaNome2" placeholder="Nome 2">
     <input type="text" id="urnaNome3" placeholder="Nome 3">
@@ -150,21 +149,21 @@ footer{text-align:center;padding:30px;border-top:1px solid var(--border);color:#
   <div class="form-container">
     <h3 class="section-title" data-i18n="eleitoral_title">Cálculo do Número Eleitoral</h3>
     <p class="section-sub" data-i18n="eleitoral_sub">Sugestões com energia 8 para sua candidatura — R$ 26</p>
-    <label data-i18n="f_nome for">Nome Completo da Pessoa</label>
-    <input type="text" id="eleiNome" placeholder="Nome completo">
-    <label data-i18n="f_cargo2 for">Cargo</label>
-    <select id="eleiCargo">
-      <option value="vereador" data-i18n="c_vereador">Vereador</option>
-      <option value="dep_estadual" data-i18n="c_estadual">Dep. Estadual</option>
-      <option value="dep_federal" data-i18n="c_federal">Dep. Federal</option>
-      <option value="senador" data-i18n="c_senador">Senador</option>
-    </select>
-    <label data-i18n="f_sigla for">Número da Sigla Partidária (2 dígitos)</label>
-    <input type="text" id="eleiSigla" maxlength="2" placeholder="Ex: 45">
-    <label data-i18n="f_existente for">Número já existente (opcional)</label>
-    <input type="text" id="eleiExistente" placeholder="Ex: 45123">
-    <label data-i18n="f_email for">Email (resultado sigiloso)</label>
-    <input type="email" id="eleiEmail" placeholder="seu@email.com">
+    <label for="eleiNome" data-i18n="urna_nome">Nome Completo da Pessoa</label>
+    <input type="text" id="eleiNome" name="eleiNome" placeholder="Nome completo">
+    <label for="eleiCargo" data-i18n="f_cargo2">Cargo</label>
+    <select id="eleiCargo" name="eleiCargo">
+    <option value="vereador" data-i18n="c_vereador">Vereador</option>
+    <option value="dep_estadual" data-i18n="c_estadual">Dep. Estadual</option>
+    <option value="dep_federal" data-i18n="c_federal">Dep. Federal</option>
+    <option value="senador" data-i18n="c_senador">Senador</option>
+</select>
+    <label for="eleiSigla" data-i18n="f_sigla">Número da Sigla Partidária (2 dígitos)</label>
+    <input type="text" id="eleiSigla" name="eleiSigla" maxlength="2" placeholder="Ex: 45">
+    <label for="eleiExistente" data-i18n="f_existente">Número já existente (opcional)</label>
+    <input type="text" id="eleiExistente" name="eleiExistente" placeholder="Ex: 45123">
+    <label for="eleiEmail" data-i18n="f_email">Email (resultado sigiloso)</label>
+    <input type="email" id="eleiEmail" name="eleiEmail" placeholder="seu@email.com">
     <button class="btn" onclick="pagarEleitoral()" data-i18n="pay_eleitoral">🔒 Pagar R$ 26 — Sugestões por Email</button>
   </div>
 </section>
@@ -173,8 +172,8 @@ footer{text-align:center;padding:30px;border-top:1px solid var(--border);color:#
   <div class="form-container">
     <h3 class="section-title" data-i18n="bi_title">🎁 Ativar Código Bônus</h3>
     <p class="section-sub" data-i18n="bi_sub">Recebeu um código? Insira abaixo e ative para gerar seu presente — sem pagamento.</p>
-    <label data-i18n="bi_label for">Código Bônus</label>
-    <input type="text" id="biCodigo" placeholder="Ex: A1-XXXX-XXXX">
+    <label for="biCodigo" data-i18n="bi_label">Código Bônus</label>
+    <input type="text" id="biCodigo" name="biCodigo" placeholder="Ex: A1-XXXX-XXXX" data-i18n-ph="bi_codigo_ph">
     <button class="btn" onclick="ativarBonusInserido()" data-i18n="bi_btn">🎁 Ativar Código</button>
   </div>
 </section>
@@ -491,6 +490,22 @@ const BC_PRODUTOS = [
 ["casal","Mapa do Casal",44,"💞"],["familia","Mapa Família",98,"🌟"]
 ];
 
+// ===== NOMES DOS PRODUTOS DO BÔNUS COLETIVO (12 IDIOMAS) =====
+const BC_NOMES = {
+  "pt": {express:"Mapa Express", vida:"Qual Vida/Ano", completo:"Mapa Completo", ia:"Pesquisa IA de Nomes", urna:"Validação Nome de Urna", eleitoral:"Número Eleitoral", imovel:"Número do Imóvel", calendario:"Calendário Mensal Energético", artistico:"Validação Nome Artístico", bebe:"Planejamento Nome de Bebê", assinatura:"Validação de Assinaturas", negocio:"Nome para Negócio/Produto", casal:"Mapa do Casal", familia:"Mapa Família Premium", coletivo:"Bônus Coletivo/Empresarial"},
+  "en": {express:"Express Map", vida:"Life/Year Reading", completo:"Complete Map", ia:"AI Name Research", urna:"Ballot Name Validation", eleitoral:"Electoral Number", imovel:"Property Number", calendario:"Monthly Energy Calendar", artistico:"Artistic Name Validation", bebe:"Baby Name Planning", assinatura:"Signature Validation", negocio:"Business/Product Naming", casal:"Couple Map", familia:"Premium Family Map", coletivo:"Collective/Corporate Bonus"},
+  "es": {express:"Mapa Exprés", vida:"Lectura de Vida/Año", completo:"Mapa Completo", ia:"Investigación IA de Nombres", urna:"Validación del Nombre de Urna", eleitoral:"Número Electoral", imovel:"Número de la Propiedad", calendario:"Calendario Mensual Energético", artistico:"Validación del Nombre Artístico", bebe:"Planificación del Nombre del Bebé", assinatura:"Validación de Firmas", negocio:"Nombre para Negocio/Producto", casal:"Mapa de la Pareja", familia:"Mapa Familiar Premium", coletivo:"Bono Colectivo/Empresarial"},
+  "it": {express:"Mappa Espressa", vida:"Lettura Vita/Anno", completo:"Mappa Completa", ia:"Ricerca IA dei Nomi", urna:"Validazione del Nome della Scheda", eleitoral:"Numero Elettorale", imovel:"Numero dell'Immobile", calendario:"Calendario Mensile Energetico", artistico:"Validazione del Nome d'Arte", bebe:"Pianificazione del Nome del Bambino", assinatura:"Validazione delle Firme", negocio:"Nome per Business/Prodotto", casal:"Mappa della Coppia", familia:"Mappa Famiglia Premium", coletivo:"Bonus Collettivo/Aziendale"},
+  "fr": {express:"Carte Express", vida:"Lecture Vie/Année", completo:"Carte Complète", ia:"Recherche IA de Prénoms", urna:"Validation du Nom du Bulletin", eleitoral:"Numéro Électoral", imovel:"Numéro du Bien", calendario:"Calendrier Mensuel Énergétique", artistico:"Validation du Nom d'Artiste", bebe:"Planification du Prénom du Bébé", assinatura:"Validation des Signatures", negocio:"Nom pour Entreprise/Produit", casal:"Carte du Couple", familia:"Carte Famille Premium", coletivo:"Bonus Collectif/Entreprise"},
+  "de": {express:"Express-Karte", vida:"Lebens-/Jahreslesung", completo:"Vollständige Karte", ia:"KI-Namensforschung", urna:"Validierung des Stimmzettelnamens", eleitoral:"Wahlnummer", imovel:"Immobiliennummer", calendario:"Monatlicher Energiekalender", artistico:"Validierung des Künstlernamens", bebe:"Planung des Babynamens", assinatura:"Unterschriftsvalidierung", negocio:"Name für Unternehmen/Produkt", casal:"Paarkarte", familia:"Premium-Familienkarte", coletivo:"Kollektiv-/Firmenbonus"},
+  "ja": {express:"エクスプレスマップ", vida:"人生・年リーディング", completo:"完全マップ", ia:"AI名前調査", urna:"投票用紙名の検証", eleitoral:"選挙番号", imovel:"物件番号", calendario:"月間エネルギーカレンダー", artistico:"芸名検証", bebe:"赤ちゃんの名前計画", assinatura:"署名検証", negocio:"ビジネス/商品ネーミング", casal:"カップルマップ", familia:"プレミアム家族マップ", coletivo:"団体/法人ボーナス"},
+  "zh": {express:"快速地图", vida:"人生/年度解读", completo:"完整地图", ia:"AI名字研究", urna:"选票名称验证", eleitoral:"选举号码", imovel:"房产号码", calendario:"月度能量日历", artistico:"艺名验证", bebe:"宝宝取名规划", assinatura:"签名验证", negocio:"企业/产品命名", casal:"情侣地图", familia:"高级家庭地图", coletivo:"集体/企业奖励"},
+  "ru": {express:"Экспресс-карта", vida:"Чтение жизни/года", completo:"Полная карта", ia:"ИИ-исследование имён", urna:"Проверка названия бюллетеня", eleitoral:"Избирательный номер", imovel:"Номер недвижимости", calendario:"Энергетический календарь месяца", artistico:"Проверка творческого имени", bebe:"Планирование имени ребёнка", assinatura:"Проверка подписей", negocio:"Название для бизнеса/продукта", casal:"Карта пары", familia:"Премиум-карта семьи", coletivo:"Коллективный/корпоративный бонус"},
+  "hi": {express:"त्वरित मान चित्र", vida:"जीवन/वर्ष रीडिंग", completo:"पूर्ण मान चित्र", ia:"AI नाम अनुसंधान", urna:"मतपत्र नाम सत्यापन", eleitoral:"निर्वाचन संख्या", imovel:"संपत्ति संख्या", calendario:"मासिक ऊर्जा कैलेंडर", artistico:"कलात्मक नाम सत्यापन", bebe:"शिशु नाम योजना", assinatura:"हस्ताक्षर सत्यापन", negocio:"व्यवसाय/उत्पाद नाम", casal:"युगल मान चित्र", familia:"प्रीमियम परिवार मान चित्र", coletivo:"सामूहिक/कॉर्पोरेट बोनस"},
+  "he": {express:"מפת אקספרס", vida:"קריאת חיים/שנה", completo:"מפה מלאה", ia:"מחקר שמות AI", urna:"אימות שם הפתק", eleitoral:"מספר בחירות", imovel:"מספר נכס", calendario:"לוח אנרגיה חודשי", artistico:"אימות שם במה", bebe:"תכנון שם לתינוק", assinatura:"אימות חתימות", negocio:"שם לעסק/מוצר", casal:"מפת זוג", familia:"מפת משפחה פרימיום", coletivo:"בונוס קבוצתי/ארגוני"},
+  "ar": {express:"خريطة سريعة", vida:"قراءة الحياة/السنة", completo:"خريطة كاملة", ia:"بحث الأسماء بالذكاء الاصطناعي", urna:"التحقق من اسم الاقتراع", eleitoral:"رقم الانتخابات", imovel:"رقم العقار", calendario:"تقويم الطاقة الشهري", artistico:"التحقق من الاسم الفني", bebe:"تخطيط اسم المولود", assinatura:"التحقق من التوقيعات", negocio:"اسم للنشاط/المنتج", casal:"خريطة الزوجين", familia:"خريطة العائلة بريميوم", coletivo:"مكافأة جماعية/مؤسسية"}
+};
+  
 // ===== INVESTIDORES =====
 const INVESTIDORES = [
 {flag:"🇧🇷",nome:"Português",desc:"Apresentação empresarial em português."},
@@ -651,45 +666,61 @@ function ativarBonusInserido(){
     .catch(function(){ alert("Erro ao ativar código."); });
 }
 
-// ===== BÔNUS COLETIVO / EMPRESARIAL =====
+// ===== MONTAR TABELA BÔNUS COLETIVO (com BC_NOMES e preço) =====
 function montarTabelaBC(){
-  const tbody = document.getElementById("bc-tbody"); if(!tbody) return;
+  var tbody = document.getElementById("bc-tbody");
+  if(!tbody) return;
   tbody.innerHTML = "";
+  var lang = getLang();
   BC_PRODUTOS.forEach(function(p){
-    tbody.innerHTML += "<tr><td>"+p[3]+" "+p[1]+"</td><td>R$ "+p[2]+"</td><td><input type='number' min='0' value='0' data-prod='"+p[0]+"' data-preco='"+p[2]+"' onchange='atualizarResumoBC()'></td></tr>";
+    var nome = (typeof BC_NOMES !== "undefined" && BC_NOMES[lang] && BC_NOMES[lang][p[0]]) ? BC_NOMES[lang][p[0]] : p[1];
+    tbody.innerHTML += '<tr>' +
+      '<td>' + (p[3] || "") + ' ' + nome + '</td>' +
+      '<td>R$ ' + p[2] + '</td>' +
+      '<td><input type="number" min="0" value="0" data-bc-id="' + p[0] + '" data-bc-preco="' + p[2] + '" onchange="atualizarResumoBC()"></td>' +
+      '</tr>';
   });
 }
+
+// ===== DESCONTO PROGRESSIVO =====
 function descontoBC(q){
-  if(q>=1000) return 0.70;
-  if(q>=500) return 0.50;
-  if(q>=200) return 0.40;
-  if(q>=100) return 0.30;
-  if(q>=50) return 0.20;
-  if(q>=10) return 0.10;
+  if(q >= 1000) return 0.70;
+  if(q >= 500) return 0.50;
+  if(q >= 200) return 0.40;
+  if(q >= 100) return 0.30;
+  if(q >= 50) return 0.20;
+  if(q >= 10) return 0.10;
   return 0;
 }
+
+// ===== ATUALIZAR RESUMO =====
 function atualizarResumoBC(){
-  let bruto = 0, qtd = 0;
+  var bruto = 0, qtd = 0;
   document.querySelectorAll("#bc-tbody input").forEach(function(inp){
-    const q = parseInt(inp.value, 10) || 0;
-    const pr = parseFloat(inp.getAttribute("data-preco"));
-    bruto += q * pr; qtd += q;
+    var q = parseInt(inp.value, 10) || 0;
+    var pr = parseFloat(inp.getAttribute("data-bc-preco")) || 0;
+    bruto += q * pr;
+    qtd += q;
   });
-  const d = descontoBC(qtd);
-  const fin = bruto * (1 - d);
+  var d = descontoBC(qtd);
+  var fin = bruto * (1 - d);
   document.getElementById("bcTotalBruto").textContent = "R$ " + bruto.toFixed(2);
-  document.getElementById("bcDesconto").textContent = "R$ " + (bruto - fin).toFixed(2) + " (" + Math.round(d*100) + "%)";
+  document.getElementById("bcDesconto").textContent = "R$ " + (bruto - fin).toFixed(2) + " (" + Math.round(d * 100) + "%)";
   document.getElementById("bcTotalFinal").textContent = "R$ " + fin.toFixed(2);
 }
+
+// ===== USAR PLANO PRONTO =====
 function usarPlanoPronto(ex, vi, co, ia){
   document.querySelectorAll("#bc-tbody input").forEach(function(inp){
-    const pr = inp.getAttribute("data-prod");
-    inp.value = pr==="express" ? ex : pr==="vida" ? vi : pr==="completo" ? co : pr==="ia" ? ia : 0;
+    var id = inp.getAttribute("data-bc-id");
+    inp.value = id === "express" ? ex : id === "vida" ? vi : id === "completo" ? co : id === "ia" ? ia : 0;
   });
   atualizarResumoBC();
 }
+
+// ===== CONFIRMAR BÔNUS COLETIVO =====
 function confirmarBC(){
-  const total = document.getElementById("bcTotalFinal").textContent;
+  var total = document.getElementById("bcTotalFinal").textContent;
   if(confirm("Confirmar resumo?\nTotal final: " + total)){
     alert("Pedido coletivo registrado. Total: " + total + ". Entre em contato pelo site para finalizar o pagamento e receber os códigos.");
   }
@@ -813,7 +844,14 @@ const PRODUTO_FAIXA = {express:0,vida:0,completo:1,ia:1,urna:2,eleitoral:2,imove
 
 const TRADUCOES = {
 pt:{hero_title:"MAPA NUMEROLÓGICO",hero_subtitle:"Descubra o que os números revelam sobre você",hero_desc:"Uma jornada de autoconhecimento baseada na numerologia pitagórica.",hero_btn:"✦ GERAR MEU MAPA",hero_btn2:"VER PRODUTOS",
-calc_title:"🔢 Calcule Seu Mapa Grátis",calc_sub:"Seus números essenciais, grátis. A explicação completa está no Mapa Express (R$ 8).",calc_btn:"✨ CALCULAR MEU MAPA GRÁTIS",f_nome:"Nome Completo",f_data:"Data de Nascimento",f_email:"Email (resultado sigiloso)",f_cargo:"Cargo em Disputa",f_cargo2:"Cargo",
+calc_title:"🔢 Calcule Seu Mapa Grátis",calc_sub:"Seus números essenciais, grátis. A explicação completa está no Mapa Express (R$ 8).",calc_btn:"✨ CALCULAR MEU MAPA GRÁTIS",f_nome:"Nome Completo",f_data:"Data de Nascimento",f_email:"Email (resultado sigiloso)",f_cargo:"Cargo em Disputa",f_cargo2:"Cargo", f_nome_ph: "Seu nome completo",
+urna_nome_ph: "Nome completo",
+urna_cargo_ph: "Ex: Vereador",
+urna_email_ph: "seu@email.com",
+elei_sigla_ph: "Ex: 45",
+elei_existente_ph: "Ex: 45123",
+elei_email_ph: "seu@email.com",
+bi_codigo_ph: "Ex: A1-XXXX-XXXX",
 section_what_title:"O que é o Mapa Numerológico?",section_what_subtitle:"Uma ferramenta de autoconhecimento baseada na numerologia pitagórica",card1_title:"Números da Sua Vida",card1_desc:"Calculamos o Caminho da Vida, Destino, Alma e outros números essenciais.",card2_title:"Seu Mapa Pessoal",card2_desc:"Cada número revela uma dimensão única da sua personalidade.",card3_title:"Relatório Completo",card3_desc:"Você recebe um relatório detalhado em PDF com interpretação profissional.",card4_title:"Orientação Prática",card4_desc:"Mais que uma leitura, um guia para tomar decisões alinhadas ao seu propósito.",
 section_how_title:"Como Funciona",section_how_subtitle:"Em poucos passos, seu mapa está pronto",step1_title:"Insira seus dados",step1_desc:"Digite seu nome completo e data de nascimento.",step2_title:"Cálculo automático",step2_desc:"Nosso motor calcula todos os números com precisão.",step3_title:"Relatório em PDF",step3_desc:"Receba um relatório profissional com a interpretação completa.",
 section_products_title:"Produtos e Serviços",section_products_subtitle:"Escolha o produto ideal para sua análise numerológica",section_energias_title:"Significado das Energias",section_energias_sub:"Cada número carrega uma vibração específica.",numbers_masters:"✦ Números Mestres 11, 22 e 33 também são considerados ✦",
@@ -1101,15 +1139,16 @@ let nomeArmazenado = localStorage.getItem("calcNome") || "";
 let dataArmazenada = localStorage.getItem("calcData") || "";
 
 function traduzir(){
-  const t = TRADUCOES[langAtual] || TRADUCOES.pt;
+  if(!TRADUCOES || !TRADUCOES[getLang()]) return;
+  var t = TRADUCOES[getLang()];
   document.querySelectorAll("[data-i18n]").forEach(function(el){
-    const k = el.getAttribute("data-i18n");
+    var k = el.getAttribute("data-i18n");
     if(t[k]) el.textContent = t[k];
   });
-  document.querySelectorAll(".lang-bar button").forEach(function(b){
-    b.classList.toggle("active", b.getAttribute("data-lang")===langAtual);
+  document.querySelectorAll("[data-i18n-ph]").forEach(function(el){
+    var k = el.getAttribute("data-i18n-ph");
+    if(t[k]) el.setAttribute("placeholder", t[k]);
   });
-  document.documentElement.dir = (langAtual==="he"||langAtual==="ar") ? "rtl" : "ltr";
 }
 function setLanguage(code){
   langAtual = code;
