@@ -48,26 +48,64 @@ footer{text-align:center;padding:30px;border-top:1px solid var(--border);color:#
 #resultado{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:25px;margin-top:20px;text-align:center;display:none}
 #resultado h3{color:var(--gold)}
 #resultado .num{font-size:2rem;color:var(--gold);font-weight:700}
-<!-- TOPO -->
-<div id="bannerTopo" class="bn-duplo">
-  <div id="bn-topoA"></div>
-  <div id="bn-topoB"></div>
-</div>
+/* ===== SISTEMA DE BANNERS A1ELOS (2 lado a lado · rotação 8s) ===== */
 .a1-zona{display:flex;gap:14px;justify-content:center;align-items:center;margin:20px auto;max-width:100%;padding:0 10px;flex-wrap:nowrap}
 .a1-slot{position:relative;overflow:hidden;border-radius:10px;box-shadow:0 4px 14px rgba(0,0,0,.35);background:#111;width:50%;max-width:356px;height:110px;flex:1 1 0}
 .a1-slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block}
 .a1-item{position:absolute;inset:0;opacity:0;transition:opacity .8s ease;pointer-events:none}
 .a1-item.active{opacity:1;pointer-events:auto}
-@media(max-width:700px){.a1-slot{height:78px}}  
+@media(max-width:700px){.a1-slot{height:78px}}
 </style>
 </head>
 <body>
+
+<!-- BARRA DE IDIOMAS -->
+<div class="lang-bar" id="langBar"></div>
+
+<!-- BANNER TOPO (2 lado a lado) -->
+<div class="a1-zona" id="zonaTopo">
+  <div class="a1-slot" id="bn-topoA"></div>
+  <div class="a1-slot" id="bn-topoB"></div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <img src="/static/logo.png" alt="A1ELOS">
+  <h1 data-i18n="site_title">MAPA NUMEROLÓGICO</h1>
+  <p data-i18n="site_sub">Descubra os números que guiam sua vida</p>
+  <button class="btn" onclick="document.getElementById('calcGratis').scrollIntoView()" data-i18n="btn_comecar">Começar Grátis</button>
+</section>
+
+<!-- ...resto do conteúdo (produtos, energias, etc.)... -->
+
+<!-- BANNER CENTRAL (2 lado a lado) -->
+<div class="a1-zona" id="zonaCentral">
+  <div class="a1-slot" id="bn-centralA"></div>
+  <div class="a1-slot" id="bn-centralB"></div>
+</div>
+
+<!-- ...mais conteúdo... -->
+
+<!-- BANNER BASE (2 lado a lado) -->
+<div class="a1-zona" id="zonaBase">
+  <div class="a1-slot" id="bn-baseA"></div>
+  <div class="a1-slot" id="bn-baseB"></div>
+</div>
+
+<script>
+/* ===== INICIALIZAÇÃO DE ESTADO (UMA VEZ, segura) ===== */
+var langAtual = localStorage.getItem("lang") || localStorage.getItem("selectedLang") || "pt";
+if(typeof LANGUAGES !== "undefined" && LANGUAGES.length && !LANGUAGES.some(function(l){ return l.code === langAtual; })){
+  langAtual = "pt";
+}
+var nomeArmazenado = localStorage.getItem("calcNome") || "";
+var dataArmazenada = localStorage.getItem("calcData") || "";
 
 <div class="lang-bar" id="langBar"></div>
 <div class="a1-zona" id="zonaTopo">
   <div class="a1-slot" id="bn-topoA"></div>
   <div class="a1-slot" id="bn-topoB"></div>
-</div>  
+</div>
 
 <script>
 
@@ -87,20 +125,6 @@ function traduzir(){
   });
   document.documentElement.dir = (langAtual==="he"||langAtual==="ar") ? "rtl" : "ltr";
 }
-function setLanguage(code){
-  langAtual = code;
-  localStorage.setItem("selectedLang", code);
-  traduzir();
-  renderProdutos();
-  renderEnergias();
-}
-function renderIdiomas(){
-  const bar = document.getElementById("langBar"); if(!bar) return;
-  bar.innerHTML = "";
-  LANGUAGES.forEach(function(l){
-    bar.innerHTML += '<button data-lang="'+l.code+'" onclick="setLanguage(\''+l.code+'\')">'+l.flag+' '+l.name+'</button>';
-  });
-}
 
 // ===== FORMULÁRIOS URNA / ELEITORAL =====
 function toggleForm(tipo){
@@ -108,35 +132,6 @@ function toggleForm(tipo){
   document.getElementById("form-eleitoral").classList.toggle("hidden-form", tipo!=="eleitoral");
   if(tipo==="urna") document.getElementById("form-urna").scrollIntoView();
   if(tipo==="eleitoral") document.getElementById("form-eleitoral").scrollIntoView();
-}
-
-// ===== PAGAR NOME DE URNA (POST /api/pay/urna-session) =====
-function pagarUrna(){
-  const nome = document.getElementById("urnaNome").value.trim();
-  const cargo = document.getElementById("urnaCargo").value.trim() || "vereador";
-  const email = document.getElementById("urnaEmail").value.trim();
-  const nomes = [1,2,3,4,5].map(function(i){ return document.getElementById("urnaNome"+i).value.trim(); }).filter(function(n){ return n; });
-  if(!nome || !email || nomes.length===0){ alert("Preencha nome, email e pelo menos 1 nome."); return; }
-  const body = {nome_completo:nome, cargo:cargo, nome1:nomes[0]||"", nome2:nomes[1]||"", nome3:nomes[2]||"", nome4:nomes[3]||"", nome5:nomes[4]||"", email:email, lang:langAtual};
-  fetch("/api/pay/urna-session", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(body)})
-    .then(function(r){ return r.json(); })
-    .then(function(res){ if(res.url){ window.location.href = res.url; } else { alert("Erro ao criar pagamento."); } })
-    .catch(function(){ alert("Erro ao criar pagamento."); });
-}
-
-// ===== PAGAR NÚMERO ELEITORAL (POST /api/pay/eleitoral-session) =====
-function pagarEleitoral(){
-  const nome = document.getElementById("eleiNome").value.trim();
-  const cargo = document.getElementById("eleiCargo").value;
-  const sigla = parseInt(document.getElementById("eleiSigla").value, 10);
-  const existente = document.getElementById("eleiExistente").value.trim();
-  const email = document.getElementById("eleiEmail").value.trim();
-  if(!nome || !email || !sigla){ alert("Preencha nome, sigla e email."); return; }
-  const body = {sigla:sigla, cargo:cargo, numero_existente:existente, email:email, lang:langAtual};
-  fetch("/api/pay/eleitoral-session", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(body)})
-    .then(function(r){ return r.json(); })
-    .then(function(res){ if(res.url){ window.location.href = res.url; } else { alert("Erro ao criar pagamento."); } })
-    .catch(function(){ alert("Erro ao criar pagamento."); });
 }
 
 // ===== ATIVAR CÓDIGO BÔNUS (POST /ativar-bonus) =====
@@ -152,67 +147,6 @@ function ativarBonusInserido(){
     .catch(function(){ alert("Erro ao ativar código."); });
 }
 
-
-
-// ===== DESCONTO PROGRESSIVO =====
-function descontoBC(q){
-  if(q >= 1000) return 0.70;
-  if(q >= 500) return 0.50;
-  if(q >= 200) return 0.40;
-  if(q >= 100) return 0.30;
-  if(q >= 50) return 0.20;
-  if(q >= 10) return 0.10;
-  return 0;
-}
-
-// ===== ATUALIZAR RESUMO =====
-function atualizarResumoBC(){
-  var bruto = 0, qtd = 0;
-  document.querySelectorAll("#bc-tbody input").forEach(function(inp){
-    var q = parseInt(inp.value, 10) || 0;
-    var pr = parseFloat(inp.getAttribute("data-bc-preco")) || 0;
-    bruto += q * pr;
-    qtd += q;
-  });
-  var d = descontoBC(qtd);
-  var fin = bruto * (1 - d);
-  document.getElementById("bcTotalBruto").textContent = "R$ " + bruto.toFixed(2);
-  document.getElementById("bcDesconto").textContent = "R$ " + (bruto - fin).toFixed(2) + " (" + Math.round(d * 100) + "%)";
-  document.getElementById("bcTotalFinal").textContent = "R$ " + fin.toFixed(2);
-}
-
-// ===== USAR PLANO PRONTO =====
-function usarPlanoPronto(ex, vi, co, ia){
-  document.querySelectorAll("#bc-tbody input").forEach(function(inp){
-    var id = inp.getAttribute("data-bc-id");
-    inp.value = id === "express" ? ex : id === "vida" ? vi : id === "completo" ? co : id === "ia" ? ia : 0;
-  });
-  atualizarResumoBC();
-}
-
-// ===== CONFIRMAR BÔNUS COLETIVO =====
-function confirmarBC(){
-  var total = document.getElementById("bcTotalFinal").textContent;
-  if(confirm("Confirmar resumo?\nTotal final: " + total)){
-    alert("Pedido coletivo registrado. Total: " + total + ". Entre em contato pelo site para finalizar o pagamento e receber os códigos.");
-  }
-}
-
-// ===== INICIALIZAÇÃO =====
-function init(){
-  renderIdiomas();
-  renderProdutos();
-  renderEnergias();
-  renderInvestidores();
-  montarTabelaBC();
-  atualizarResumoBC();
-  traduzir();
-  carregarBanner();
-}
-
-
-
-  
 // ===== SISTEMA DE BANNERS A1ELOS (2 lado a lado · rotação 8s · site + app) =====
 // ===== CONFIGURAÇÃO CENTRAL — edite AQUI para trocar banners =====
 document.addEventListener("DOMContentLoaded", function(){
@@ -359,11 +293,6 @@ document.addEventListener("DOMContentLoaded", function(){
   width: 100%;
 }
 
-
-  
-  
-  
- 
 <section id="investidores">
   <h2 class="section-title" data-i18n="inv_title">Investidores e Parceiros</h2>
   <p class="section-sub" data-i18n="inv_sub">Baixe a apresentação empresarial da A1ELOS no seu idioma, gratuitamente.</p>
@@ -1087,6 +1016,11 @@ const PRODUTOS_FEATS = {
     coletivo:["خطط جاهزة (50/100/200 رمز)","تجميع مخصص","خصومات من 10% إلى 50%","رموز هدايا"]
   }
 };
+
+<div class="a1-zona" id="zonaCentral">
+  <div class="a1-slot" id="bn-centralA"></div>  <!-- era bn-centralA -->
+  <div class="a1-slot" id="bn-centralB"></div>
+</div>
   
 // ===== ENERGIAS 1-9 (12 IDIOMAS) =====
 const ENERGIAS = {
@@ -1142,6 +1076,80 @@ const INVESTIDORES = [
    link:"/static/Apresentacao-Empresarial-A1ELOS-DE.pdf", botao:"PDF herunterladen"}
 ];
 
+// ===== PLANO B: QR CODE DE RECUPERAÇÃO (12 idiomas) =====
+// pt
+pb_title: "📲 Guarde seu QR Code",
+pb_desc: "Seu pagamento foi confirmado, mas houve um problema ao gerar o PDF agora. Não se preocupe: copie e guarde o QR Code abaixo. Você pode baixar seu mapa quantas vezes quiser, sem custo, em qualquer momento e dispositivo.",
+pb_inst: "📱 Abra a câmera do celular e aponte para o QR Code, ou copie o link abaixo:",
+pb_copy: "📋 Copiar Link",
+
+// en
+pb_title: "📲 Save Your QR Code",
+pb_desc: "Your payment was confirmed, but there was a problem generating the PDF right now. Don't worry: copy and save the QR Code below. You can download your map as many times as you want, free of charge, at any time and on any device.",
+pb_inst: "📱 Open your phone camera and point it at the QR Code, or copy the link below:",
+pb_copy: "📋 Copy Link",
+
+// es
+pb_title: "📲 Guarda tu Código QR",
+pb_desc: "Tu pago fue confirmado, pero hubo un problema al generar el PDF ahora. No te preocupes: copia y guarda el Código QR de abajo. Puedes descargar tu mapa cuantas veces quieras, sin costo, en cualquier momento y dispositivo.",
+pb_inst: "📱 Abre la cámara del celular y apunta al Código QR, o copia el enlace de abajo:",
+pb_copy: "📋 Copiar Enlace",
+
+// it
+pb_title: "📲 Conserva il tuo Codice QR",
+pb_desc: "Il tuo pagamento è stato confermato, ma c'è stato un problema nella generazione del PDF ora. Non preoccuparti: copia e conserva il Codice QR qui sotto. Puoi scaricare la tua mappa quante volte vuoi, senza costi, in qualsiasi momento e dispositivo.",
+pb_inst: "📱 Apri la fotocamera del telefono e inquadra il Codice QR, oppure copia il link qui sotto:",
+pb_copy: "📋 Copia Link",
+
+// fr
+pb_title: "📲 Gardez votre Code QR",
+pb_desc: "Votre paiement a été confirmé, mais un problème est survenu lors de la génération du PDF. Pas d'inquiétude : copiez et conservez le Code QR ci-dessous. Vous pouvez télécharger votre carte autant de fois que vous voulez, gratuitement, à tout moment et sur n'importe quel appareil.",
+pb_inst: "📱 Ouvrez la caméra de votre téléphone et pointez-la vers le Code QR, ou copiez le lien ci-dessous :",
+pb_copy: "📋 Copier le Lien",
+
+// de
+pb_title: "📲 Speichern Sie Ihren QR-Code",
+pb_desc: "Ihre Zahlung wurde bestätigt, aber es gab gerade ein Problem beim Erstellen der PDF. Keine Sorge: Kopieren und speichern Sie den QR-Code unten. Sie können Ihre Karte beliebig oft und kostenlos herunterladen, jederzeit und auf jedem Gerät.",
+pb_inst: "📱 Öffnen Sie die Handykamera und richten Sie sie auf den QR-Code, oder kopieren Sie den Link unten:",
+pb_copy: "📋 Link Kopieren",
+
+// ja
+pb_title: "📲 QRコードを保存してください",
+pb_desc: "お支払いは確認されましたが、PDFの生成で問題が発生しました。ご安心ください：下のQRコードをコピーして保存してください。マップは何度でも無料で、いつでもどのデバイスからでもダウンロードできます。",
+pb_inst: "📱 スマホのカメラを開いてQRコードに向けるか、下のリンクをコピーしてください：",
+pb_copy: "📋 リンクをコピー",
+
+// zh
+pb_title: "📲 保存您的二维码",
+pb_desc: "您的付款已确认，但生成PDF时出现了问题。别担心：请复制并保存下方的二维码。您可以随时在任何设备上免费下载您的命理地图，次数不限。",
+pb_inst: "📱 打开手机相机对准二维码，或复制下方链接：",
+pb_copy: "📋 复制链接",
+
+// ru
+pb_title: "📲 Сохраните свой QR-код",
+pb_desc: "Ваш платёж подтверждён, но при создании PDF возникла проблема. Не волнуйтесь: скопируйте и сохраните QR-код ниже. Вы можете скачивать свою карту сколько угодно раз, бесплатно, в любое время и на любом устройстве.",
+pb_inst: "📱 Откройте камеру телефона и наведите на QR-код, или скопируйте ссылку ниже:",
+pb_copy: "📋 Скопировать ссылку",
+
+// hi
+pb_title: "📲 अपना QR कोड सहेजें",
+pb_desc: "आपका भुगतान पुष्ट हो गया है, लेकिन अभी PDF बनाने में समस्या आई। चिंता न करें: नीचे दिए गए QR कोड को कॉपी करके सहेज लें। आप अपना मानचित्र कितनी भी बार, बिना किसी शुल्क के, किसी भी समय और किसी भी डिवाइस पर डाउनलोड कर सकते हैं।",
+pb_inst: "📱 फ़ोन का कैमरा खोलें और QR कोड पर लक्ष्य करें, या नीचे दिया गया लिंक कॉपी करें:",
+pb_copy: "📋 लिंक कॉपी करें",
+
+// he
+pb_title: "📲 שמור את קוד ה-QR שלך",
+pb_desc: "התשלום שלך אושר, אך הייתה בעיה ביצירת ה-PDF כרגע. אל דאגה: העתק ושמור את קוד ה-QR למטה. תוכל להוריד את המפה שלך כמה פעמים שתרצה, ללא עלות, בכל זמן ובכל מכשיר.",
+pb_inst: "📱 פתח את מצלמת הטלפון וכיוון אל קוד ה-QR, או העתק את הקישור למטה:",
+pb_copy: "📋 העתק קישור",
+
+// ar
+pb_title: "📲 احفظ رمز QR الخاص بك",
+pb_desc: "تم تأكيد دفعتك، ولكن حدثت مشكلة في إنشاء ملف PDF الآن. لا تقلق: انسخ واحفظ رمز QR أدناه. يمكنك تنزيل خريطتك عدة مرات كما تريد، دون أي تكلفة، في أي وقت وعلى أي جهاز.",
+pb_inst: "📱 افتح كاميرا الهاتف ووجّهها نحو رمز QR، أو انسخ الرابط أدناه:",
+pb_copy: "📋 نسخ الرابط"
+
+  
   
   // Catálogo: aceita PRODUTOS_META ou PRODUTOS (o nome real do seu arquivo)
   var catalogo = (typeof PRODUTOS_META !== "undefined") ? PRODUTOS_META :
@@ -1187,7 +1195,7 @@ const INVESTIDORES = [
 }
   
 // ===== UTILITÁRIO DE IDIOMA (resolve lang com segurança) =====
-function langAtualSegura(){
+function getLang(){
   return (typeof langAtual !== "undefined" && langAtual) ? langAtual : "pt";
 }
 
@@ -1197,6 +1205,72 @@ function renderProdutos(){
   if(!grid) return;
   grid.innerHTML = "";
 
+// ===== SÍMBOLO DA MOEDA POR IDIOMA =====
+var SIMBOLO_MOEDA = {
+  pt: "R$",
+  en: "US$",
+  es: "€",
+  it: "€",
+  fr: "€",
+  de: "€",
+  ja: "¥",
+  zh: "¥",
+  ru: "₽",
+  hi: "₹",
+  he: "₪",
+  ar: "﷼"
+};
+
+// ===== VALOR NUMÉRICO POR TIER (base em R$, convertido por idioma) =====
+// Tier 0 = R$8 · Tier 1 = R$17 · Tier 2 = R$26 · Tier 3 = R$35 · Tier 4 = R$44 · Tier 5 = R$98
+var PRECO_NUM = {
+  pt: [8, 17, 26, 35, 44, 98],
+  en: [1.50, 3.50, 5.00, 7.00, 9.00, 19.00],
+  es: [1.50, 3.50, 5.00, 7.00, 9.00, 19.00],
+  it: [1.50, 3.50, 5.00, 7.00, 9.00, 19.00],
+  fr: [1.50, 3.50, 5.00, 7.00, 9.00, 19.00],
+  de: [1.50, 3.50, 5.00, 7.00, 9.00, 19.00],
+  ja: [250, 550, 850, 1200, 1500, 3300],
+  zh: [12, 25, 40, 55, 70, 150],
+  ru: [130, 280, 430, 580, 730, 1600],
+  hi: [120, 280, 430, 580, 730, 1600],
+  he: [5, 13, 19, 26, 33, 70],
+  ar: [6, 13, 19, 26, 33, 70]
+};
+
+// ===== TIER DE CADA PRODUTO (para formatarPreco nos botões) =====
+var TIER_PRODUTO = {
+  express:0, vida:0, completo:1, ia:1,
+  urna:2, eleitoral:2, imovel:2, calendario:2,
+  artistico:3, bebe:3, assinatura:3,
+  negocio:4, casal:4,
+  familia:5,
+  coletivo:-1
+};
+
+// ===== FORMATAR PREÇO (moeda correta por idioma) =====
+function formatarPreco(tier, lang){
+  // Símbolo da moeda (SIMBOLO_MOEDA[lang] → fallback pt → R$)
+  var simb = (typeof SIMBOLO_MOEDA !== "undefined" && SIMBOLO_MOEDA[lang]) ? SIMBOLO_MOEDA[lang]
+           : (typeof SIMBOLO_MOEDA !== "undefined" && SIMBOLO_MOEDA.pt) ? SIMBOLO_MOEDA.pt
+           : "R$";
+
+  // Valor numérico por tier (PRECO_NUM[lang][tier] → fallback pt → padrão)
+  var num = 0;
+  if(typeof PRECO_NUM !== "undefined"){
+    var arr = PRECO_NUM[lang] || PRECO_NUM.pt;
+    if(arr && arr[tier] !== undefined) num = arr[tier];
+  }
+  if(num === 0){ num = [8, 17, 26, 35, 44, 98][tier] || 0; }
+
+  // Formata: vírgula nos idiomas que usam (pt/es/it/fr/de), ponto nos demais
+  var numStr = (lang === "pt" || lang === "es" || lang === "it" || lang === "fr" || lang === "de")
+    ? num.toFixed(2).replace(".", ",")
+    : num.toFixed(2);
+
+  return simb + " " + numStr;
+}
+  
   // Idioma seguro (getLang → langAtual → pt)
   var lang = (typeof getLang === "function") ? getLang()
            : (typeof langAtual !== "undefined" && typeof TRADUCOES !== "undefined" && TRADUCOES[langAtual]) ? langAtual
@@ -1317,7 +1391,6 @@ function renderEnergias(){
   if(!grid) return;
   grid.innerHTML = "";
   if(typeof ENERGIAS === "undefined") return;
-
   var lang = (typeof langAtual !== "undefined" && typeof TRADUCOES !== "undefined" && TRADUCOES[langAtual]) ? langAtual : "pt";
   var t = (typeof TRADUCOES !== "undefined" && TRADUCOES[lang]) ? TRADUCOES[lang] : {};
   var btnComprar = t.comprar || "Comprar";
@@ -1325,28 +1398,24 @@ function renderEnergias(){
   var btnEleitoral = t.start_eleitoral || "Calcular Nº Eleitoral";
   var btnColetivo = t.know_more || "Saiba Mais";
   var sobConsulta = t.sob_consulta || "Sob Consulta";
-
   for(var n = 1; n <= 9; n++){
     var e = ENERGIAS[n];
     if(!e) continue;
     var titulo = (e[lang]) ? e[lang][0] : (e.pt ? e.pt[0] : "");
     var desc = (e[lang]) ? e[lang][1] : (e.pt ? e.pt[1] : "");
-
     var servicos = (typeof ENERGIA_SERVICOS !== "undefined" && ENERGIA_SERVICOS[n]) ? ENERGIA_SERVICOS[n] : [];
     var botoesHtml = "";
     servicos.forEach(function(pid){
       var nomeServ = (typeof NOMES !== "undefined" && NOMES[lang] && NOMES[lang][pid]) ? NOMES[lang][pid]
                    : (typeof NOMES !== "undefined" && NOMES.pt && NOMES.pt[pid]) ? NOMES.pt[pid]
                    : pid;
-
       // Ação e rótulo (especiais urna/eleitoral/coletivo)
       var acao = "onclick=\"comprar('" + pid + "')\"";
       var label = btnComprar;
       if(pid === "urna"){ acao = "onclick=\"toggleForm('urna')\""; label = btnUrna; }
       if(pid === "eleitoral"){ acao = "onclick=\"toggleForm('eleitoral')\""; label = btnEleitoral; }
       if(pid === "coletivo"){ acao = "onclick=\"document.getElementById('corporativo').scrollIntoView()\""; label = btnColetivo; }
-
-      // Preço na moeda do idioma (só para produtos com tier válido; coletivo mostra "Sob Consulta")
+      // Preço na moeda do idioma (coletivo mostra "Sob Consulta")
       var precoStr = "";
       var tier = (typeof TIER_PRODUTO !== "undefined") ? TIER_PRODUTO[pid] : undefined;
       if(pid === "coletivo"){
@@ -1354,10 +1423,8 @@ function renderEnergias(){
       } else if(tier !== undefined && tier >= 0 && typeof formatarPreco === "function"){
         precoStr = " · " + formatarPreco(tier, lang);
       }
-
       botoesHtml += '<button class="btn btn-outline" style="font-size:.72rem;padding:6px 10px;margin:3px" ' + acao + '>' + nomeServ + precoStr + '</button>';
     });
-
     grid.innerHTML += '<div class="card" style="max-width:220px">' +
       '<div style="font-size:2rem;color:var(--gold);font-weight:700;text-align:center">' + n + '</div>' +
       '<h3 style="text-align:center">' + titulo + '</h3>' +
@@ -1367,80 +1434,24 @@ function renderEnergias(){
   }
 }
 
-  // Idioma seguro
-  var lang = (typeof langAtual !== "undefined" && typeof TRADUCOES !== "undefined" && TRADUCOES[langAtual]) ? langAtual : "pt";
-
-  // Traduções de UI
-  var t = (typeof TRADUCOES !== "undefined" && TRADUCOES[lang]) ? TRADUCOES[lang] : {};
-  var btnComprar = t.comprar || "Comprar";
-  var btnUrna = t.start_urna || "Iniciar Validação";
-  var btnEleitoral = t.start_eleitoral || "Calcular Nº Eleitoral";
-  var btnColetivo = t.know_more || "Saiba Mais";
-
-  for(var n = 1; n <= 9; n++){
-    var e = ENERGIAS[n];
-    if(!e) continue;
-    var titulo = (e[lang]) ? e[lang][0] : (e.pt ? e.pt[0] : "");
-    var desc = (e[lang]) ? e[lang][1] : (e.pt ? e.pt[1] : "");
-
-    // Monta os 3 botões de serviço desta energia
-    var servicos = (typeof ENERGIA_SERVICOS !== "undefined" && ENERGIA_SERVICOS[n]) ? ENERGIA_SERVICOS[n] : [];
-    var botoesHtml = "";
-    servicos.forEach(function(pid){
-      // Nome traduzido do produto
-      var nomeServ = (typeof NOMES !== "undefined" && NOMES[lang] && NOMES[lang][pid]) ? NOMES[lang][pid]
-                   : (typeof NOMES !== "undefined" && NOMES.pt && NOMES.pt[pid]) ? NOMES.pt[pid]
-                   : pid;
-
-      // Ação correta (especiais urna/eleitoral/coletivo)
-      var acao = "onclick=\"comprar('" + pid + "')\"";
-      var label = btnComprar;
-      if(pid === "urna"){ acao = "onclick=\"toggleForm('urna')\""; label = btnUrna; }
-      if(pid === "eleitoral"){ acao = "onclick=\"toggleForm('eleitoral')\""; label = btnEleitoral; }
-      if(pid === "coletivo"){ acao = "onclick=\"document.getElementById('corporativo').scrollIntoView()\""; label = btnColetivo; }
-
-      botoesHtml += '<button class="btn btn-outline" style="font-size:.72rem;padding:6px 10px;margin:3px" ' + acao + '>' + nomeServ + '</button>';
-    });
-
-    grid.innerHTML += '<div class="card" style="max-width:220px">' +
-      '<div style="font-size:2rem;color:var(--gold);font-weight:700;text-align:center">' + n + '</div>' +
-      '<h3 style="text-align:center">' + titulo + '</h3>' +
-      '<p style="font-size:.8rem;color:#bbb;text-align:center">' + desc + '</p>' +
-      '<div style="display:flex;flex-wrap:wrap;justify-content:center;margin-top:10px">' + botoesHtml + '</div>' +
-      '</div>';
-  }
-}
-  
-// ===== INICIALIZAÇÃO DE ESTADO (segura) =====
-var langAtual = localStorage.getItem("lang") || localStorage.getItem("selectedLang") || "pt";
-// Valida: se o idioma salvo não existe em LANGUAGES, volta para pt
-if(typeof LANGUAGES !== "undefined" && LANGUAGES.length && !LANGUAGES.some(function(l){ return l.code === langAtual; })){
-  langAtual = "pt";
-}
-var nomeArmazenado = localStorage.getItem("calcNome") || "";
-var dataArmazenada = localStorage.getItem("calcData") || "";
-
-// ===== RESOLVER IDIOMA (helper único, usado por todas) =====
+// ===== GETLANG (helper seguro de idioma) =====
 function getLang(){
-  var t = (typeof TRADUCOES !== "undefined") ? TRADUCOES : null;
-  return (t && t[langAtual]) ? langAtual : "pt";
+  if(typeof langAtual !== "undefined" && langAtual) return langAtual;
+  try{
+    var salvo = localStorage.getItem("lang") || localStorage.getItem("selectedLang");
+    if(salvo) return salvo;
+  }catch(e){}
+  return "pt";
 }
 
-// ===== TRADUZIR TEXTOS data-i18n E placeholders =====
+// ===== TRADUZIR (aplica textos data-i18n do idioma atual) =====
 function traduzir(){
   if(typeof TRADUCOES === "undefined") return;
   var lang = getLang();
-  var t = TRADUCOES[lang] || TRADUCOES.pt;
-  if(!t) return;
-  // Textos
+  var t = TRADUCOES[lang] || TRADUCOES["pt"] || {};
   document.querySelectorAll("[data-i18n]").forEach(function(el){
-    var k = el.getAttribute("data-i18n");
-    if(t[k]) el.textContent = t[k];
-  });
-  // Placeholders
-  document.querySelectorAll("[data-i18n-ph]").forEach(function(el){
-    var k = el.getAttribute("data-i18n-ph");
-    if(t[k]) el.setAttribute("placeholder", t[k]);
+    var chave = el.getAttribute("data-i18n");
+    if(t[chave] !== undefined) el.innerHTML = t[chave];
   });
 }
 
@@ -1450,13 +1461,14 @@ function renderIdiomas(){
   if(!bar) return;
   bar.innerHTML = "";
   if(typeof LANGUAGES === "undefined") return;
+  var atual = getLang();
   LANGUAGES.forEach(function(l){
-    var ativo = (l.code === langAtual) ? " active" : "";
+    var ativo = (l.code === atual) ? " active" : "";
     bar.innerHTML += '<button class="lang-btn' + ativo + '" data-lang="' + l.code + '" onclick="setLanguage(\'' + l.code + '\')">' + l.flag + ' ' + l.name + '</button>';
   });
 }
 
-// ===== TROCAR IDIOMA (persiste, re-renderiza tudo, RTL) =====
+// ===== TROCAR IDIOMA (persiste, re-renderiza tudo, RTL + banners) =====
 function setLanguage(code){
   langAtual = code;
   localStorage.setItem("lang", code);
@@ -1467,10 +1479,15 @@ function setLanguage(code){
   renderEnergias();
   renderInvestidores();
   montarTabelaBC();
+  atualizarResumoBC();
   document.documentElement.lang = (code === "pt") ? "pt-BR" : code;
   document.documentElement.dir = (code === "he" || code === "ar") ? "rtl" : "ltr";
+  if(typeof carregarBanners === "function"){
+    carregarBanners("topo");
+    carregarBanners("central");
+    carregarBanners("base");
+  }
 }
-
 // ===== RENDERIZAR INVESTIDORES (links de PDF para download) =====
 // ===== RENDERIZAR INVESTIDORES (V3 — link real + rótulo traduzido) =====
 function renderInvestidores(){
@@ -1500,20 +1517,18 @@ function renderInvestidores(){
 
 // ===== DESCONTO PROGRESSIVO (10% a 70% — 60/70% no fluxo empresarial) =====
 function descontoBC(q, empresarial){
-  // Fluxo empresarial (montagem na tabela corporativa) pode chegar a 60% e 70%
   if(empresarial){
     if(q >= 3000) return 0.70;   // 70% empresarial
     if(q >= 2000) return 0.60;   // 60% empresarial
   }
-  // Escala geral
-  if(q >= 2000) return 0.50;   // 50%
-  if(q >= 1000) return 0.45;   // 45%
-  if(q >= 500)  return 0.40;   // 40%
-  if(q >= 200)  return 0.30;   // 30%
-  if(q >= 100)  return 0.25;   // 25%
-  if(q >= 50)   return 0.20;   // 20%
-  if(q >= 10)   return 0.10;   // 10%
-  return 0;                    // abaixo de 10, sem desconto
+  if(q >= 2000) return 0.50;
+  if(q >= 1000) return 0.45;
+  if(q >= 500)  return 0.40;
+  if(q >= 200)  return 0.30;
+  if(q >= 100)  return 0.25;
+  if(q >= 50)   return 0.20;
+  if(q >= 10)   return 0.10;
+  return 0;
 }
 
 // ===== MONTAR TABELA BÔNUS COLETIVO (fluxo empresarial) =====
@@ -1522,11 +1537,9 @@ function montarTabelaBC(){
   if(!tbody) return;
   tbody.innerHTML = "";
   if(typeof BC_PRODUTOS === "undefined" || !BC_PRODUTOS.forEach) return;
-
   var lang = (typeof getLang === "function") ? getLang()
            : (typeof langAtual !== "undefined") ? langAtual
            : "pt";
-
   BC_PRODUTOS.forEach(function(p){
     var nome = (typeof BC_NOMES !== "undefined" && BC_NOMES[lang] && BC_NOMES[lang][p[0]]) ? BC_NOMES[lang][p[0]]
              : (typeof BC_NOMES !== "undefined" && BC_NOMES.pt && BC_NOMES.pt[p[0]]) ? BC_NOMES.pt[p[0]]
@@ -1541,7 +1554,7 @@ function montarTabelaBC(){
   atualizarResumoBC();
 }
 
-// ===== ATUALIZAR RESUMO (com a nova escala) =====
+// ===== ATUALIZAR RESUMO (CORRETA — usa qtd + empresarial) =====
 function atualizarResumoBC(){
   var bruto = 0, qtd = 0;
   document.querySelectorAll("#bc-tbody input").forEach(function(inp){
@@ -1550,13 +1563,14 @@ function atualizarResumoBC(){
     bruto += q * pr;
     qtd += q;
   });
-  var empresarial = true;   // a tabela corporativa É o canal empresarial
+  var empresarial = true;
   var d = descontoBC(qtd, empresarial);
   var fin = bruto * (1 - d);
   document.getElementById("bcTotalBruto").textContent = "R$ " + bruto.toFixed(2);
   document.getElementById("bcDesconto").textContent = "R$ " + (bruto - fin).toFixed(2) + " (" + Math.round(d * 100) + "%)";
   document.getElementById("bcTotalFinal").textContent = "R$ " + fin.toFixed(2);
 }
+
 // ===== DESCONTO PROGRESSIVO (10% a 70% — 60/70% só empresarial) =====
 function descontoBC(q, empresarial){
   if(empresarial){
@@ -1571,27 +1585,6 @@ function descontoBC(q, empresarial){
   if(q >= 50)   return 0.20;
   if(q >= 10)   return 0.10;
   return 0;
-}
-
-
-  
-// ===== ATUALIZAR RESUMO =====
-function atualizarResumoBC(){
-  var total = 0;
-  document.querySelectorAll("[data-bc-id]").forEach(function(inp){
-    var qtd = parseInt(inp.value) || 0;
-    var id = inp.getAttribute("data-bc-id");
-    var prod = (typeof BC_PRODUTOS !== "undefined") ? BC_PRODUTOS.find(function(p){ return p[0] === id; }) : null;
-    if(prod) total += qtd * prod[2];
-  });
-  var desc = descontoBC(total);
-  var final = total * (1 - desc);
-  var elBruto = document.getElementById("bcTotalBruto");
-  var elDesc = document.getElementById("bcDesconto");
-  var elFinal = document.getElementById("bcTotalFinal");
-  if(elBruto) elBruto.textContent = "R$ " + total.toFixed(2);
-  if(elDesc) elDesc.textContent = "R$ " + (total * desc).toFixed(2) + " (" + Math.round(desc * 100) + "%)";
-  if(elFinal) elFinal.textContent = "R$ " + final.toFixed(2);
 }
 
 // ===== USAR PLANO PRONTO =====
@@ -1618,54 +1611,58 @@ function confirmarBC(){
     if(qtd > 0) items.push({id: inp.getAttribute("data-bc-id"), qtd: qtd});
   });
   if(items.length === 0){ alert("Selecione ao menos um produto e quantidade."); return; }
-  var lang = langAtualSegura();
+  var lang = (typeof getLang === "function") ? getLang()
+           : (typeof langAtual !== "undefined") ? langAtual
+           : "pt";
   window.location.href = "/criar-checkout-coletivo?lang=" + lang + "&items=" + JSON.stringify(items);
 }
 
-// ===== COMPRAR PRODUTO (V3 — unificada: formulário + localStorage + idioma seguro) =====
+// ===== COMPRAR PRODUTO (V4 — UMA ÚNICA versão: formulário + localStorage + idioma + endpoints main.py) =====
 function comprar(produto){
-  // Idioma seguro (usa getLang se existir, senão langAtual, senão pt)
+  // Idioma seguro (getLang → langAtual → pt)
   var lang = (typeof getLang === "function") ? getLang()
            : (typeof langAtual !== "undefined") ? langAtual
            : "pt";
 
   // 1) Tenta ler do formulário (valores frescos)
-  var nome = document.getElementById("nomeCompleto");
-  var data = document.getElementById("dataNascimento");
-  var nomeForm = (nome && nome.value) ? nome.value : "";
-  var dataForm = (data && data.value) ? data.value : "";
+  var nomeEl = document.getElementById("calcNome");
+  var dataEl = document.getElementById("calcData");
+  var emailEl = document.getElementById("calcEmail");
+  var nomeForm = (nomeEl && nomeEl.value) ? nomeEl.value : "";
+  var dataForm = (dataEl && dataEl.value) ? dataEl.value : "";
+  var emailForm = (emailEl && emailEl.value) ? emailEl.value : "";
 
   // 2) Fallback para o localStorage (nomeArmazenado/dataArmazenada)
   var nomeFinal = nomeForm || (typeof nomeArmazenado !== "undefined" ? nomeArmazenado : "") || "Cliente";
   var dataFinal = dataForm || (typeof dataArmazenada !== "undefined" ? dataArmazenada : "") || "2000-01-01";
 
-  var body = {
-    name: nomeFinal,
-    birth_date: dataFinal,
-    email: "",
-    product: produto,
-    lang: lang,
-    price: 0
-  };
+  // 3) Mapeia produto → endpoint do main.py (confirmado)
+  var endpoint = "/pay/" + produto;
 
-  fetch("/api/pay/stripe", {
+  # ===== ROTA GENÉRICA /pay/{produto} (15 produtos — ADITIVA, mantém as rotas antigas) =====
+# Alias de compatibilidade: "complete" (rota antiga) → "completo" (id do produto)
+_ALIAS_PRODUTO = {"complete": "completo"}
+
+  // 4) Envia para o backend
+  fetch(endpoint, {
     method: "POST",
     headers: {"Content-Type": "application/json"},
-    body: JSON.stringify(body)
+    body: JSON.stringify({
+      nome: nomeFinal,
+      nascimento: dataFinal,
+      email: emailForm,
+      lang: lang
+    })
   })
     .then(function(r){ return r.json(); })
-    .then(function(d){
-      if(d && d.url){
-        window.location.href = d.url;
-      } else {
-        window.location.href = "/criar-checkout?lang=" + lang + "&produto=" + produto;
-      }
+    .then(function(res){
+      if(res && res.id){ window.location.href = "https://checkout.stripe.com/c/pay/" + res.id; }
+      else if(res && res.url){ window.location.href = res.url; }
+      else { alert("Erro ao iniciar pagamento."); }
     })
-    .catch(function(){
-      window.location.href = "/criar-checkout?lang=" + lang + "&produto=" + produto;
-    });
+    .catch(function(){ alert("Erro de conexão. Tente novamente."); });
 }
-
+  
 // ===== CALCULADORA GRÁTIS (V3 — eficiente, só os números, 2 CTAs) =====
 function calcularGratis(){
   // 1) Lê os campos (aceita calcNome/calcData OU nomeCompleto/dataNascimento)
@@ -1732,32 +1729,45 @@ function toggleForm(tipo){
   if(tipo === "eleitoral" && fEle) fEle.scrollIntoView();
 }
 
-// ===== PAGAR NOME DE URNA (POST /api/pay/urna-session) =====
+// ===== PAGAR NOME DE URNA (POST /pay/urna) — SEM E-MAIL (Plano B) =====
 function pagarUrna(){
-  var nome = document.getElementById("urnaNome");
-  var cargo = document.getElementById("urnaCargo");
-  var email = document.getElementById("urnaEmail");
-  var lang = langAtualSegura();
-  var body = {nome_completo: (nome && nome.value) || "", nome_urna: (cargo && cargo.value) || "", email: (email && email.value) || "", lang: lang};
-  fetch("/api/pay/urna-session", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body)})
+  var nome = document.getElementById("urnaNome").value.trim();
+  var cargo = document.getElementById("urnaCargo").value.trim() || "vereador";
+  var nomes = [1,2,3,4,5].map(function(i){ return document.getElementById("urnaNome"+i).value.trim(); }).filter(function(n){ return n; });
+  if(!nome || nomes.length===0){ alert("Preencha nome e pelo menos 1 nome."); return; }
+  var lang = getLang();
+  var body = {
+    nome_completo: nome,
+    cargo: cargo,
+    nome1: nomes[0]||"", nome2: nomes[1]||"",
+    nome3: nomes[2]||"", nome4: nomes[3]||"", nome5: nomes[4]||"",
+    lang: lang
+  };
+  fetch("/pay/urna", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(body)})
     .then(function(r){ return r.json(); })
-    .then(function(d){ if(d && d.url) window.location.href = d.url; })
-    .catch(function(){ alert("Erro ao processar. Tente novamente."); });
+    .then(function(res){ if(res && res.url){ window.location.href = res.url; } else { alert("Erro ao criar pagamento."); } })
+    .catch(function(){ alert("Erro ao criar pagamento."); });
 }
 
-// ===== PAGAR NÚMERO ELEITORAL (POST /api/pay/eleitoral-session) =====
 function pagarEleitoral(){
   var nome = document.getElementById("eleNome");
   var sigla = document.getElementById("eleSigla");
-  var email = document.getElementById("eleEmail");
-  var lang = langAtualSegura();
-  var body = {nome_completo: (nome && nome.value) || "", numero: (sigla && sigla.value) || "", email: (email && email.value) || "", lang: lang};
-  fetch("/api/pay/eleitoral-session", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body)})
+  var n = (nome && nome.value) ? nome.value.trim() : "";
+  var s = (sigla && sigla.value) ? sigla.value.trim() : "";
+  if(!n || !s){ alert("Preencha nome e sigla."); return; }
+  var lang = getLang();
+  var body = {nome_completo: n, numero: s, lang: lang};
+  fetch("/pay/eleitoral", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(body)})
     .then(function(r){ return r.json(); })
-    .then(function(d){ if(d && d.url) window.location.href = d.url; })
+    .then(function(d){ if(d && d.url){ window.location.href = d.url; } else { alert("Erro ao criar pagamento."); } })
     .catch(function(){ alert("Erro ao processar. Tente novamente."); });
 }
-
+  
+<div class="a1-zona" id="zonaBase">
+  <div class="a1-slot" id="bn-baseA"></div>
+  <div class="a1-slot" id="bn-baseB"></div>
+</div>
+  
 // ===== ATIVAR CÓDIGO BÔNUS (POST /ativar-bonus) =====
 function ativarBonusInserido(){
   var inp = document.getElementById("codigoBonus");
@@ -1771,294 +1781,42 @@ function ativarBonusInserido(){
     .catch(function(){ alert("Erro ao ativar. Tente novamente."); });
 }
 
-// ===== INICIALIZAÇÃO =====
+// ===== INICIALIZAÇÃO DE ESTADO (UMA VEZ, segura) =====
+var langAtual = localStorage.getItem("lang") || localStorage.getItem("selectedLang") || "pt";
+// Valida: se o idioma salvo não existe em LANGUAGES, volta para pt
+if(typeof LANGUAGES !== "undefined" && LANGUAGES.length && !LANGUAGES.some(function(l){ return l.code === langAtual; })){
+  langAtual = "pt";
+}
+var nomeArmazenado = localStorage.getItem("calcNome") || "";
+var dataArmazenada = localStorage.getItem("calcData") || "";
+
+// ===== HELPER DE IDIOMA (consistente em todas as funções) =====
+function getLang(){
+  return (typeof langAtual !== "undefined") ? langAtual : "pt";
+}
+
+// ===== INICIALIZAÇÃO (UMA ÚNICA init — sem duplicação) =====
 function init(){
+  // Idioma garantido
   if(typeof langAtual === "undefined"){ langAtual = localStorage.getItem("selectedLang") || "pt"; }
+
+  // 1) Traduções + barra de idiomas
+  traduzir();
   renderIdiomas();
+
+  // 2) Conteúdo dinâmico (produtos, energias, investidores)
   renderProdutos();
   renderEnergias();
   renderInvestidores();
+
+  // 3) Bônus Coletivo (tabela + resumo)
   montarTabelaBC();
-  traduzir();
+  atualizarResumoBC();
 
-carregarBanner();
-}
+  // Dispara UMA VEZ ao carregar
 document.addEventListener("DOMContentLoaded", init);
-</script>  
-
-<div class="lang-bar" id="langBar"></div>
-
-<div id="bannerTopo" style="display:none;margin:10px auto;max-width:1100px;padding:0 20px"></div>
-
-<div class="a1-zona" id="zonaBase">
-  <div class="a1-slot" id="bn-baseA"></div>
-  <div class="a1-slot" id="bn-baseB"></div>
-</div>
-
-<section class="hero">
-  <img src="/static/logo.png" alt="A1ELOS logo" class="logo" onerror="this.style.display='none'">
-  <h1 data-i18n="hero_title">MAPA NUMEROLÓGICO</h1>
-  <p data-i18n="hero_subtitle">Descubra o que os números revelam sobre você</p>
-  <p data-i18n="hero_desc">Uma jornada de autoconhecimento baseada na numerologia pitagórica. Seu mapa pessoal revela talentos, desafios e caminhos através dos números que regem sua vida.</p>
-  <a href="#calculadora" class="btn" data-i18n="hero_btn">✦ GERAR MEU MAPA</a>
-  <a href="#produtos" class="btn btn-outline" data-i18n="hero_btn2">VER PRODUTOS</a>
-</section>
-
-<section id="calculadora">
-  <h2 class="section-title" data-i18n="calc_title">🔢 Calcule Seu Mapa Grátis</h2>
-  <p class="section-sub" data-i18n="calc_sub">Seus números essenciais, grátis. A explicação completa de cada número está no Mapa Express (R$ 8).</p>
-  <div class="form-box">
-  <label for="calcNome" data-i18n="f_nome">Nome Completo</label>
-  <input id="calcNome" name="calcNome" type="text" placeholder="Seu nome completo">
-  <label for="calcData" data-i18n="f_data">Data de Nascimento</label>
-  <input id="calcData" name="calcData" type="date">
-  <button class="btn" onclick="calcularGratis()" data-i18n="calc_btn">✨ CALCULAR MEU MAPA GRÁTIS</button>
-</div>
-  <div id="resultado"></div>
-</section>
-
-<section id="sobre">
-  <h2 class="section-title" data-i18n="section_what_title">O que é o Mapa Numerológico?</h2>
-  <p class="section-sub" data-i18n="section_what_subtitle">Uma ferramenta de autoconhecimento baseada na numerologia pitagórica</p>
-  <div class="cards-grid">
-    <div class="card"><h3 data-i18n="card1_title">Números da Sua Vida</h3><p data-i18n="card1_desc">Calculamos o Caminho da Vida, Destino, Alma e outros números essenciais.</p></div>
-    <div class="card"><h3 data-i18n="card2_title">Seu Mapa Pessoal</h3><p data-i18n="card2_desc">Cada número revela uma dimensão única da sua personalidade.</p></div>
-    <div class="card"><h3 data-i18n="card3_title">Relatório Completo</h3><p data-i18n="card3_desc">Você recebe um relatório detalhado em PDF com interpretação profissional.</p></div>
-    <div class="card"><h3 data-i18n="card4_title">Orientação Prática</h3><p data-i18n="card4_desc">Mais que uma leitura, um guia para tomar decisões alinhadas ao seu propósito.</p></div>
-  </div>
-</section>
-
-<section id="como-funciona">
-  <h2 class="section-title" data-i18n="section_how_title">Como Funciona</h2>
-  <p class="section-sub" data-i18n="section_how_subtitle">Em poucos passos, seu mapa está pronto</p>
-  <div class="cards-grid">
-    <div class="card"><h3>01</h3><h3 data-i18n="step1_title">Insira seus dados</h3><p data-i18n="step1_desc">Digite seu nome completo e data de nascimento.</p></div>
-    <div class="card"><h3>02</h3><h3 data-i18n="step2_title">Cálculo automático</h3><p data-i18n="step2_desc">Nosso motor calcula todos os números com precisão.</p></div>
-    <div class="card"><h3>03</h3><h3 data-i18n="step3_title">Relatório em PDF</h3><p data-i18n="step3_desc">Receba um relatório profissional com a interpretação completa.</p></div>
-  </div>
-</section>
-
-<section id="produtos">
-  <h2 class="section-title" data-i18n="section_products_title">Produtos e Serviços</h2>
-  <p class="section-sub" data-i18n="section_products_subtitle">Escolha o produto ideal para sua análise numerológica</p>
-  <div class="cards-grid" id="produtosGrid"></div>
-</section>
-
-<!-- CENTRAL -->
-<div id="bannerCentral" class="bn-duplo">
-  <div id="bn-centralA"></div>
-  <div id="bn-centralB"></div>
-</div>
-<div class="a1-zona" id="zonaCentral">
-  <div class="a1-slot" id="bn-centalA"></div>
-  <div class="a1-slot" id="bn-centralB"></div>
-</div>
   
-<section id="energias">
-  <h2 class="section-title" data-i18n="section_energias_title">Significado das Energias</h2>
-  <p class="section-sub" data-i18n="section_energias_sub">Cada número carrega uma vibração específica. Escolha sua energia e clique no serviço desejado.</p>
-  <div class="numeros-grid" id="energiasGrid"></div>
-  <p style="text-align:center;color:var(--gold);margin-top:15px" data-i18n="numbers_masters">✦ Números Mestres 11, 22 e 33 também são considerados ✦</p>
-</section>
-
-<section id="form-urna" class="hidden-form">
-  <div class="form-container">
-    <h3 class="section-title" data-i18n="urna_title">Validação do Nome de Urna</h3>
-    <p class="section-sub" data-i18n="urna_sub">5 tentativas + cálculo letra a letra + PDF sigiloso — R$ 26</p>
-    <label for="urnaNome" data-i18n="urna_nome">Nome Completo da Pessoa</label>
-    <input type="text" id="urnaNome" name="urnaNome" placeholder="Nome completo" data-i18n-ph="urna_nome_ph">
-    <label for="urnaCargo" data-i18n="urna_cargo">Cargo em Disputa</label>
-    <input type="text" id="urnaCargo" name="urnaCargo" placeholder="Ex: Vereador" data-i18n-ph="urna_cargo_ph">
-    <label for="urnaEmail" data-i18n="f_email">Email (resultado sigiloso)</label>
-    <input type="email" id="urnaEmail" name="urnaEmail" placeholder="seu@email.com" data-i18n-ph="urna_email_ph">
-    <input type="text" id="urnaNome1" placeholder="Nome 1">
-    <input type="text" id="urnaNome2" placeholder="Nome 2">
-    <input type="text" id="urnaNome3" placeholder="Nome 3">
-    <input type="text" id="urnaNome4" placeholder="Nome 4">
-    <input type="text" id="urnaNome5" placeholder="Nome 5">
-    <button class="btn" onclick="pagarUrna()" data-i18n="pay_urna">🔒 Pagar R$ 26 — Resultado por Email</button>
-  </div>
-</section>
-
-<section id="form-eleitoral" class="hidden-form">
-  <div class="form-container">
-    <h3 class="section-title" data-i18n="eleitoral_title">Cálculo do Número Eleitoral</h3>
-    <p class="section-sub" data-i18n="eleitoral_sub">Sugestões com energia 8 para sua candidatura — R$ 26</p>
-    <label for="eleiNome" data-i18n="urna_nome">Nome Completo da Pessoa</label>
-    <input type="text" id="eleiNome" name="eleiNome" placeholder="Nome completo">
-    <label for="eleiCargo" data-i18n="f_cargo2">Cargo</label>
-    <select id="eleiCargo" name="eleiCargo">
-    <option value="vereador" data-i18n="c_vereador">Vereador</option>
-    <option value="dep_estadual" data-i18n="c_estadual">Dep. Estadual</option>
-    <option value="dep_federal" data-i18n="c_federal">Dep. Federal</option>
-    <option value="senador" data-i18n="c_senador">Senador</option>
-</select>
-    <label for="eleiSigla" data-i18n="f_sigla">Número da Sigla Partidária (2 dígitos)</label>
-    <input type="text" id="eleiSigla" name="eleiSigla" maxlength="2" placeholder="Ex: 45">
-    <label for="eleiExistente" data-i18n="f_existente">Número já existente (opcional)</label>
-    <input type="text" id="eleiExistente" name="eleiExistente" placeholder="Ex: 45123">
-    <label for="eleiEmail" data-i18n="f_email">Email (resultado sigiloso)</label>
-    <input type="email" id="eleiEmail" name="eleiEmail" placeholder="seu@email.com">
-    <button class="btn" onclick="pagarEleitoral()" data-i18n="pay_eleitoral">🔒 Pagar R$ 26 — Sugestões por Email</button>
-  </div>
-</section>
-
-<section id="bonus">
-  <div class="form-container">
-    <h3 class="section-title" data-i18n="bi_title">🎁 Ativar Código Bônus</h3>
-    <p class="section-sub" data-i18n="bi_sub">Recebeu um código? Insira abaixo e ative para gerar seu presente — sem pagamento.</p>
-    <label for="biCodigo" data-i18n="bi_label">Código Bônus</label>
-    <input type="text" id="biCodigo" name="biCodigo" placeholder="Ex: A1-XXXX-XXXX" data-i18n-ph="bi_codigo_ph">
-    <button class="btn" onclick="ativarBonusInserido()" data-i18n="bi_btn">🎁 Ativar Código</button>
-  </div>
-</section>
-
- <!-- BASE -->
-<div id="bannerBase" class="bn-duplo">
-  <div id="bn-baseA"></div>
-  <div id="bn-baseB"></div>
-</div>
-  
-<section id="corporativo">
-  <h2 class="section-title" data-i18n="bc_title">🏢 Bônus Coletivo / Empresarial</h2>
-  <p class="section-sub" data-i18n="bc_sub">Contrate brindes numerológicos para seus clientes ou funcionários. Descontos de 10% a 70%.</p>
-  <div style="max-width:1100px;margin:0 auto 40px">
-    <h3 style="color:var(--gold);text-align:center;margin-bottom:20px" data-i18n="bc_plans_title">Planos Prontos</h3>
-    <div class="cards-grid" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">
-      <div class="product-card">
-        <h3 data-i18n="bc_plan1_name">Plano Básico</h3>
-        <div class="price" data-i18n="bc_plan1_price">50 códigos</div>
-        <p class="desc" data-i18n="bc_plan1_desc">50x Mapa Express (R$ 8) — ideal para presentear clientes</p>
-        <button class="btn btn-outline" onclick="usarPlanoPronto(50,0,0,0)" data-i18n="select">Selecionar</button>
-      </div>
-      <div class="product-card">
-        <h3 data-i18n="bc_plan2_name">Plano Intermediário</h3>
-        <div class="price" data-i18n="bc_plan2_price">100 códigos</div>
-        <p class="desc" data-i18n="bc_plan2_desc">50x Mapa Express + 50x Pesquisa IA (R$ 17) — para equipes</p>
-        <button class="btn btn-outline" onclick="usarPlanoPronto(50,0,50,0)" data-i18n="select">Selecionar</button>
-      </div>
-      <div class="product-card">
-        <h3 data-i18n="bc_plan3_name">Plano Premium</h3>
-        <div class="price" data-i18n="bc_plan3_price">200 códigos</div>
-        <p class="desc" data-i18n="bc_plan3_desc">100x Mapa Express + 100x Mapa Completo (R$ 17) — programas completos</p>
-        <button class="btn btn-outline" onclick="usarPlanoPronto(100,0,100,0)" data-i18n="select">Selecionar</button>
-      </div>
-    </div>
-  </div>
-  <div class="form-container" style="max-width:900px">
-    <h3 style="color:var(--gold);text-align:center;margin-bottom:10px" data-i18n="bc_custom_title">Montar Sob Medida</h3>
-    <p class="section-sub" data-i18n="bc_custom_sub">Marque a quantidade desejada de cada serviço. O desconto é aplicado automaticamente.</p>
-    <table class="bc-tabela">
-      <thead>
-        <tr>
-          <th data-i18n="bc_tbl_service">Serviço</th>
-          <th data-i18n="bc_tbl_price">Valor</th>
-          <th data-i18n="bc_tbl_qty">Quantidade</th>
-        </tr>
-      </thead>
-      <tbody id="bc-tbody"></tbody>
-    </table>
-    <div class="resumo">
-      <p data-i18n="bc_total">Total bruto: <span id="bcTotalBruto">R$ 0</span></p>
-      <p data-i18n="bc_discount">Desconto aplicado: <span id="bcDesconto">R$ 0</span></p>
-      <p class="total-final" data-i18n="bc_final">Total final: <span id="bcTotalFinal">R$ 0</span></p>
-    </div>
-    <button class="btn" onclick="confirmarBC()" data-i18n="bc_confirm">📋 Confirmar Resumo e Ir para Pagamento</button>
-  </div>
-</section>
-<script>
-<section id="investidores">
-  <h2 class="section-title" data-i18n="inv_title">Investidores e Parceiros</h2>
-  <p class="section-sub" data-i18n="inv_sub">Baixe a apresentação empresarial da A1ELOS no seu idioma, gratuitamente.</p>
-  <div class="cards-grid" id="investidoresGrid"></div>
-</section>
-
-<section id="numeros">
-  <h2 class="section-title" data-i18n="section_numbers_title">Os Números no Centro</h2>
-  <p class="section-sub" data-i18n="section_numbers_subtitle">Cada número de 1 a 9 carrega uma energia única</p>
-  <div class="numeros-grid">
-    <div class="numero-circle">1</div><div class="numero-circle">2</div><div class="numero-circle">3</div>
-    <div class="numero-circle">4</div><div class="numero-circle">5</div><div class="numero-circle">6</div>
-    <div class="numero-circle">7</div><div class="numero-circle">8</div><div class="numero-circle">9</div>
-  </div>
-  <p style="text-align:center;color:var(--gold)" data-i18n="numbers_masters">✦ Números Mestres 11, 22 e 33 também são considerados ✦</p>
-</section>
-<section id="cta">
-  <h2 class="section-title" data-i18n="cta_title">Pronto para descobrir seu caminho?</h2>
-  <p class="section-sub" data-i18n="cta_desc">Seu mapa numerológico pessoal está a poucos cliques de distância.</p>
-  <div style="text-align:center">
-    <a href="#calculadora" class="btn" data-i18n="cta_btn1">✦ GERAR MAPA GRÁTIS</a>
-    <a href="https://a1elos.com.br" class="btn btn-outline" data-i18n="cta_btn2">CONHEÇA A A1ELOS</a>
-  </div>
-</section>
-
-<footer>
-  <p data-i18n="footer_text">© 2026 A1ELOS Assessoria e Consultoria. Todos os direitos reservados.</p>
-</footer>
-  
-<section class="section" id="numeros">
-  <h2 class="section-title" data-i18n="section_numbers_title">Os Números no Centro</h2>
-  <p class="section-sub" data-i18n="section_numbers_subtitle">Cada número de 1 a 9 carrega uma energia única</p>
-  <div class="numeros-grid">
-    <div class="numero-circle">1</div><div class="numero-circle">2</div><div class="numero-circle">3</div>
-    <div class="numero-circle">4</div><div class="numero-circle">5</div><div class="numero-circle">6</div>
-    <div class="numero-circle">7</div><div class="numero-circle">8</div><div class="numero-circle">9</div>
-  </div>
-</section>
-
-<section class="section" id="cta">
-  <h2 class="section-title" data-i18n="cta_title">Pronto para descobrir seu caminho?</h2>
-  <p class="section-sub" data-i18n="cta_desc">Seu mapa numerológico pessoal está a poucos cliques de distância.</p>
-  <div style="text-align:center">
-    <a href="#calculadora" class="btn" data-i18n="cta_btn1">✦ GERAR MAPA GRÁTIS</a>
-    <a href="https://a1elos.com.br" class="btn btn-outline" data-i18n="cta_btn2">CONHEÇA A A1ELOS</a>
-  </div>
-</section>
-
-<footer>
-  <p data-i18n="footer_text">© 2026 A1ELOS Assessoria e Consultoria. Todos os direitos reservados.</p>
-</footer>
-  <style>
-.a1-zona{display:flex;gap:14px;justify-content:center;align-items:center;margin:20px auto;max-width:100%;padding:0 10px;flex-wrap:nowrap}
-.a1-slot{position:relative;overflow:hidden;border-radius:10px;box-shadow:0 4px 14px rgba(0,0,0,.35);background:#111;width:50%;max-width:356px;height:110px;flex:1 1 0}
-.a1-slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block}
-.a1-item{position:absolute;inset:0;opacity:0;transition:opacity .8s ease;pointer-events:none}
-.a1-item.active{opacity:1;pointer-events:auto}
-@media(max-width:700px){.a1-slot{height:78px}}
-</style>
-<script>
-(function(){
-  var IMGS = {
-    topo:    ["/static/topo-azul.png","/static/topo-amarelo.png","/static/topo-bordo.png"],
-    central: ["/static/topo-azul.png","/static/topo-amarelo.png","/static/topo-bordo.png"],
-    base:    ["/static/topo-azul.png","/static/topo-amarelo.png","/static/topo-bordo.png"]
-  };
-  var TEMPO = 8000;
-  function preencher(id, arr, ini){
-    var slot = document.getElementById(id);
-    if(!slot) return;
-    var h = "";
-    for(var i = 0; i < arr.length; i++){
-      h += '<div class="a1-item' + (i === ini ? " active" : "") + '"><a href="#" target="_blank" rel="sponsored"><img src="' + arr[i] + '" alt="Seu espaço publicitário!" loading="lazy"></a></div>';
-    }
-    slot.innerHTML = h;
-    var itens = slot.querySelectorAll(".a1-item");
-    if(itens.length < 2) return;
-    var atual = ini;
-    setInterval(function(){
-      if(!itens[atual]) return;
-      itens[atual].classList.remove("active");
-      atual = (atual + 1) % itens.length;
-      if(itens[atual]) itens[atual].classList.add("active");
-    }, TEMPO);
-  }
-  preencher("bn-topoA", IMGS.topo, 0);
-  preencher("bn-topoB", IMGS.topo, 1);
-  preencher("bn-centralA", IMGS.central, 1);
-  preencher("bn-centralB", IMGS.central, 0);
-  preencher("bn-baseA", IMGS.base, 0);
-  preencher("bn-baseB", IMGS.base, 1);
-})();
+<footer data-i18n="footer">© 2026 A1ELOS Consultoria. Todos os direitos reservados.</footer>
 </script>
 </body>
 </html>
