@@ -30,7 +30,7 @@ STRIPE_PUB = os.getenv("STRIPE_PUBLISHABLE_KEY", "")
 SENDGRID_KEY = os.getenv("SENDGRID_API_KEY", "")
 FROM_EMAIL = os.getenv("FROM_EMAIL", "noreply@a1elos.com.br")
 FROM_NAME = "A1ELOS Numerologia Global"
-BASE_URL = os.getenv("BASE_URL", os.getenv("SITE_URL", "https://global-numerology.onrender.com"))<br/>
+BASE_URL = os.getenv("BASE_URL", os.getenv("SITE_URL", "https://global-numerology.onrender.com"))
 DB_URL = os.getenv("DATABASE_URL", "sqlite:///./numerologia.db")
 ADMIN_EMAIL = "arvigne@gmail.com"
 if STRIPE_KEY:
