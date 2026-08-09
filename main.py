@@ -298,12 +298,15 @@ PRODUTO_TARGET = {
 # ===== MODELOS PYDANTIC =====
 class PayReq(BaseModel):
     name: str = ""
+    birth_date: str = ""
     email: str = ""
     product: Optional[str] = "express"
     price: Optional[float] = 0
     calculation_id: Optional[str] = None
-    birth_date: Optional[str] = ""
     lang: Optional[str] = "pt"
+    # Alinhamento com comprar() do index: aceita nome/nascimento
+    nome: str = ""
+    nascimento: str = ""
 
 class UrnaPayReq(BaseModel):
     nome_completo: str
@@ -317,9 +320,9 @@ class UrnaPayReq(BaseModel):
     lang: Optional[str] = "pt"
 
 class EleitoralPayReq(BaseModel):
-    sigla: int
+    nome_completo: str = ""
+    numero: str = ""
     cargo: str = "vereador"
-    numero_existente: Optional[str] = ""
     email: str = ""
     lang: Optional[str] = "pt"
 
@@ -700,13 +703,14 @@ def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=No
         raise HTTPException(500, "Erro ao criar pagamento")
 
 # ===== CHECKOUT GENÉRICO (POST) =====
-@app.post("/api/pay/stripe")
-def pay_stripe(req: PayReq):
+@app.post("/pay/{produto}")
+def pay_produto(produto: str, req: PayReq):
     if not STRIPE_KEY:
         raise HTTPException(503, "Stripe não configurado")
-    produto = req.product or "express"
+    nome = req.nome or req.name
+    nasc = req.nascimento or req.birth_date
     lang = req.lang or "pt"
-    return _criar_sessao(produto, lang, req.email, req.name, req.birth_date or "")
+    return _criar_sessao(produto, lang, req.email, nome, nasc)
 
 # ===== CHECKOUT GENÉRICO (GET) =====
 @app.get("/criar-checkout")
@@ -763,12 +767,10 @@ def pay_success(request: Request):
         return HTMLResponse("ERRO")
 
 # ===== CHECKOUT NOME DE URNA =====
-@app.post("/api/pay/urna-session")
-def pay_urna_session(req: UrnaPayReq):
+@app.post("/pay/urna")
+def pay_urna(req: UrnaPayReq):
     if not STRIPE_KEY:
         raise HTTPException(503, "Stripe não configurado")
-    if not req.email:
-        raise HTTPException(400, "Email obrigatorio")
     if len(req.nome_completo.strip()) < 3:
         raise HTTPException(400, "Nome obrigatorio")
     nomes = [n.strip() for n in [req.nome1, req.nome2, req.nome3, req.nome4, req.nome5] if n.strip()]
@@ -807,19 +809,16 @@ def pay_urna_success(request: Request):
         return HTMLResponse("ERRO")
 
 # ===== CHECKOUT NÚMERO ELEITORAL =====
-@app.post("/api/pay/eleitoral-session")
-def pay_eleitoral_session(req: EleitoralPayReq):
+@app.post("/pay/eleitoral")
+def pay_eleitoral(req: EleitoralPayReq):
     if not STRIPE_KEY:
         raise HTTPException(503, "Stripe não configurado")
-    if not req.email:
-        raise HTTPException(400, "Email obrigatorio")
-    if req.sigla < 10 or req.sigla > 99:
-        raise HTTPException(400, "Sigla 2 digitos")
-    if req.cargo not in ["vereador", "dep_estadual", "dep_federal", "senador"]:
-        raise HTTPException(400, "Cargo invalido")
-    meta = {"tipo": "eleitoral", "lang": req.lang or "pt", "sigla": str(req.sigla),
-            "cargo": req.cargo, "email": req.email, "numero_existente": req.numero_existente or ""}
-    return _criar_sessao("eleitoral", req.lang or "pt", req.email, "", "", meta)
+    if not req.numero or len(req.numero) < 2:
+        raise HTTPException(400, "Numero obrigatorio")
+    meta = {"tipo": "eleitoral", "lang": req.lang or "pt", "sigla": req.numero,
+            "cargo": req.cargo, "email": req.email, "numero_existente": "",
+            "nome_completo": req.nome_completo}
+    return _criar_sessao("eleitoral", req.lang or "pt", req.email, req.nome_completo, "", meta)
 
 @app.get("/api/pay/eleitoral-success")
 def pay_eleitoral_success(request: Request):
