@@ -89,32 +89,32 @@ if os.path.isdir(STATIC_DIR):
 # ===== 12 IDIOMAS E MOEDAS =====
 IDIOMAS = ["pt", "en", "es", "it", "fr", "de", "ja", "zh", "ru", "hi", "he", "ar"]
 MOEDA = {
-    "pt": "brl", "en": "usd", "es": "eur", "it": "eur", "fr": "eur", "de": "eur",<br/>
+    "pt": "brl", "en": "usd", "es": "eur", "it": "eur", "fr": "eur", "de": "eur",
     "ja": "jpy", "zh": "cny", "ru": "rub", "hi": "inr", "he": "ils", "ar": "sar"
 }
 SIMBOLO = {
-    "pt": "R$", "en": "US$", "es": "€", "it": "€", "fr": "€", "de": "€",<br/>
+    "pt": "R$", "en": "US$", "es": "€", "it": "€", "fr": "€", "de": "€",
     "ja": "¥", "zh": "¥", "ru": "₽", "hi": "₹", "he": "₪", "ar": "﷼"
 }
 # ===== FAIXAS DE PREÇO =====
 PRODUTO_FAIXA = {
-    "express": 0, "vida": 0, "completo": 1, "ia": 1,<br/>
-    "urna": 2, "eleitoral": 2, "imovel": 2, "calendario": 2,<br/>
-    "artistico": 3, "bebe": 3, "assinatura": 3,<br/>
+    "express": 0, "vida": 0, "completo": 1, "ia": 1,
+    "urna": 2, "eleitoral": 2, "imovel": 2, "calendario": 2,
+    "artistico": 3, "bebe": 3, "assinatura": 3,
     "negocio": 4, "casal": 4, "familia": 5
 }
 VALORES = {
-    "pt": [800, 1700, 2600, 3500, 4400, 9800],<br/>
-    "en": [150, 350, 500, 700, 900, 2000],<br/>
-    "es": [150, 350, 500, 700, 900, 2000],<br/>
-    "it": [150, 350, 500, 700, 900, 2000],<br/>
-    "fr": [150, 350, 500, 700, 900, 2000],<br/>
-    "de": [150, 350, 500, 700, 900, 2000],<br/>
-    "ja": [250, 550, 800, 1100, 1400, 3200],<br/>
-    "zh": [1200, 2500, 4000, 5500, 7000, 16000],<br/>
-    "ru": [13000, 28000, 43000, 58000, 73000, 160000],<br/>
-    "hi": [12000, 28000, 43000, 58000, 73000, 160000],<br/>
-    "he": [500, 1300, 1900, 2600, 3300, 7300],<br/>
+    "pt": [800, 1700, 2600, 3500, 4400, 9800],
+    "en": [150, 350, 500, 700, 900, 2000],
+    "es": [150, 350, 500, 700, 900, 2000],
+    "it": [150, 350, 500, 700, 900, 2000],
+    "fr": [150, 350, 500, 700, 900, 2000],
+    "de": [150, 350, 500, 700, 900, 2000],
+    "ja": [250, 550, 800, 1100, 1400, 3200],
+    "zh": [1200, 2500, 4000, 5500, 7000, 16000],
+    "ru": [13000, 28000, 43000, 58000, 73000, 160000],
+    "hi": [12000, 28000, 43000, 58000, 73000, 160000],
+    "he": [500, 1300, 1900, 2600, 3300, 7300],
     "ar": [600, 1300, 1900, 2600, 3300, 7300]
 }
 def preco_local(produto, lang):
@@ -122,198 +122,198 @@ def preco_local(produto, lang):
 
 # ===== NOMES DOS 15 PRODUTOS =====
 PRODUTOS = {
-    "pt": {"express": "Mapa Express", "vida": "Qual Vida/Ano", "completo": "Mapa Completo",<br/>
-        "ia": "Pesquisa IA de Nomes", "urna": "Validação Nome de Urna", "eleitoral": "Número Eleitoral",<br/>
-        "imovel": "Número do Imóvel", "calendario": "Calendário Mensal Energético",<br/>
-        "artistico": "Validação Nome Artístico", "bebe": "Planejamento Nome de Bebê",<br/>
-        "assinatura": "Validação de Assinaturas", "negocio": "Nome para Negócio/Produto",<br/>
-        "casal": "Mapa do Casal", "familia": "Mapa Família Premium", "coletivo": "Bônus Coletivo/Empresarial"},<br/>
-    "en": {"express": "Express Map", "vida": "Life Phase & Year", "completo": "Complete Map",<br/>
-        "ia": "AI Name Search", "urna": "Ballot Name Validation", "eleitoral": "Electoral Number",<br/>
-        "imovel": "Property Number", "calendario": "Monthly Energy Calendar",<br/>
-        "artistico": "Artistic Name Validation", "bebe": "Baby Name Planning",<br/>
-        "assinatura": "Signature Validation", "negocio": "Business & Product Name",<br/>
-        "casal": "Couple Map", "familia": "Premium Family Map", "coletivo": "Corporate Bonus"},<br/>
-    "es": {"express": "Mapa Exprés", "vida": "Ciclo de Vida y Año", "completo": "Mapa Completo",<br/>
-        "ia": "Búsqueda IA de Nombres", "urna": "Validación Nombre de Urna", "eleitoral": "Número Electoral",<br/>
-        "imovel": "Número de la Propiedad", "calendario": "Calendario Mensual Energético",<br/>
-        "artistico": "Validación Nombre Artístico", "bebe": "Planificación Nombre de Bebé",<br/>
-        "assinatura": "Validación de Firmas", "negocio": "Nombre para Negocio/Producto",<br/>
-        "casal": "Mapa de Pareja", "familia": "Mapa Familiar Premium", "coletivo": "Bono Corporativo"},<br/>
-    "it": {"express": "Mappa Espressa", "vida": "Fase di Vita e Anno", "completo": "Mappa Completa",<br/>
-        "ia": "Ricerca IA Nomi", "urna": "Validazione Nome della Scheda", "eleitoral": "Numero Elettorale",<br/>
-        "imovel": "Numero dell'Immobile", "calendario": "Calendario Mensile Energetico",<br/>
-        "artistico": "Validazione Nome d'Arte", "bebe": "Pianificazione Nome del Bambino",<br/>
-        "assinatura": "Validazione delle Firme", "negocio": "Nome per Business/Prodotto",<br/>
-        "casal": "Mappa di Coppia", "familia": "Mappa Famiglia Premium", "coletivo": "Bonus Aziendale"},<br/>
-    "fr": {"express": "Carte Express", "vida": "Phase de Vie et Année", "completo": "Carte Complète",<br/>
-        "ia": "Recherche IA de Noms", "urna": "Validation Nom du Bulletin", "eleitoral": "Numéro Électoral",<br/>
-        "imovel": "Numéro du Bien", "calendario": "Calendrier Mensuel Énergétique",<br/>
-        "artistico": "Validation Nom de Scène", "bebe": "Planification Prénom de Bébé",<br/>
-        "assinatura": "Validation des Signatures", "negocio": "Nom pour Entreprise/Produit",<br/>
-        "casal": "Carte du Couple", "familia": "Carte Famille Premium", "coletivo": "Bonus d'Entreprise"},<br/>
-    "de": {"express": "Express-Karte", "vida": "Lebensphase & Jahr", "completo": "Vollständige Karte",<br/>
-        "ia": "KI-Namenssuche", "urna": "Stimmzettelname-Validierung", "eleitoral": "Wahlnummer",<br/>
-        "imovel": "Immobiliennummer", "calendario": "Monatlicher Energiekalender",<br/>
-        "artistico": "Künstlername-Validierung", "bebe": "Babynamen-Planung",<br/>
-        "assinatura": "Unterschrifts-Validierung", "negocio": "Name für Unternehmen/Produkt",<br/>
-        "casal": "Paar-Karte", "familia": "Premium-Familien-Karte", "coletivo": "Unternehmensbonus"},<br/>
-    "ja": {"express": "エクスプレスマップ", "vida": "ライフステージと年", "completo": "完全マップ",<br/>
-        "ia": "AI名前検索", "urna": "投票用紙名の検証", "eleitoral": "選挙番号",<br/>
-        "imovel": "不動産番号", "calendario": "月間エネルギーカレンダー",<br/>
-        "artistico": "芸名の検証", "bebe": "赤ちゃんの名前計画",<br/>
-        "assinatura": "署名の検証", "negocio": "ビジネス・商品名",<br/>
-        "casal": "カップルマップ", "familia": "プレミアム家族マップ", "coletivo": "法人ボーナス"},<br/>
-    "zh": {"express": "快速地图", "vida": "生命阶段与年份", "completo": "完整地图",<br/>
-        "ia": "AI名字搜索", "urna": "选票名称验证", "eleitoral": "选举号码",<br/>
-        "imovel": "房产号码", "calendario": "每月能量日历",<br/>
-        "artistico": "艺名验证", "bebe": "宝宝取名规划",<br/>
-        "assinatura": "签名验证", "negocio": "企业/产品名称",<br/>
-        "casal": "情侣地图", "familia": "高级家庭地图", "coletivo": "企业奖励"},<br/>
-    "ru": {"express": "Экспресс-карта", "vida": "Жизненный этап и год", "completo": "Полная карта",<br/>
-        "ia": "ИИ-поиск имён", "urna": "Проверка названия бюллетеня", "eleitoral": "Избирательный номер",<br/>
-        "imovel": "Номер недвижимости", "calendario": "Ежемесячный энергетический календарь",<br/>
-        "artistico": "Проверка сценического имени", "bebe": "Планирование имени ребёнка",<br/>
-        "assinatura": "Проверка подписей", "negocio": "Название для бизнеса/продукта",<br/>
-        "casal": "Карта пары", "familia": "Премиальная семейная карта", "coletivo": "Корпоративный бонус"},<br/>
-    "hi": {"express": "त्वरित मानचित्र", "vida": "जीवन चरण और वर्ष", "completo": "पूर्ण मानचित्र",<br/>
-        "ia": "AI नाम खोज", "urna": "मतपत्र नाम सत्यापन", "eleitoral": "निर्वाचन संख्या",<br/>
-        "imovel": "संपत्ति संख्या", "calendario": "मासिक ऊर्जा कैलेंडर",<br/>
-        "artistico": "कलात्मक नाम सत्यापन", "bebe": "शिशु नाम योजना",<br/>
-        "assinatura": "हस्ताक्षर सत्यापन", "negocio": "व्यवसाय/उत्पाद नाम",<br/>
-        "casal": "युगल मानचित्र", "familia": "प्रीमियम परिवार मानचित्र", "coletivo": "कॉर्पोरेट बोनस"},<br/>
-    "he": {"express": "מפה מהירה", "vida": "שלב חיים ושנה", "completo": "מפה מלאה",<br/>
-        "ia": "חיפוש שמות AI", "urna": "אימות שם פתק", "eleitoral": "מספר בחירות",<br/>
-        "imovel": "מספר נכס", "calendario": "לוח אנרגיה חודשי",<br/>
-        "artistico": "אימות שם במה", "bebe": "תכנון שם לתינוק",<br/>
-        "assinatura": "אימות חתימות", "negocio": "שם לעסק/מוצר",<br/>
-        "casal": "מפת זוג", "familia": "מפת משפחה פרימיום", "coletivo": "בונוס ארגוני"},<br/>
-    "ar": {"express": "خريطة سريعة", "vida": "مرحلة الحياة والسنة", "completo": "خريطة كاملة",<br/>
-        "ia": "بحث الأسماء بالذكاء الاصطناعي", "urna": "التحقق من اسم الاقتراع", "eleitoral": "الرقم الانتخابي",<br/>
-        "imovel": "رقم العقار", "calendario": "تقويم الطاقة الشهري",<br/>
-        "artistico": "التحقق من الاسم الفني", "bebe": "تخطيط اسم الطفل",<br/>
-        "assinatura": "التحقق من التوقيعات", "negocio": "اسم للأعمال/المنتج",<br/>
+    "pt": {"express": "Mapa Express", "vida": "Qual Vida/Ano", "completo": "Mapa Completo",
+        "ia": "Pesquisa IA de Nomes", "urna": "Validação Nome de Urna", "eleitoral": "Número Eleitoral",
+        "imovel": "Número do Imóvel", "calendario": "Calendário Mensal Energético",
+        "artistico": "Validação Nome Artístico", "bebe": "Planejamento Nome de Bebê",
+        "assinatura": "Validação de Assinaturas", "negocio": "Nome para Negócio/Produto",
+        "casal": "Mapa do Casal", "familia": "Mapa Família Premium", "coletivo": "Bônus Coletivo/Empresarial"},
+    "en": {"express": "Express Map", "vida": "Life Phase & Year", "completo": "Complete Map",
+        "ia": "AI Name Search", "urna": "Ballot Name Validation", "eleitoral": "Electoral Number",
+        "imovel": "Property Number", "calendario": "Monthly Energy Calendar",
+        "artistico": "Artistic Name Validation", "bebe": "Baby Name Planning",
+        "assinatura": "Signature Validation", "negocio": "Business & Product Name",
+        "casal": "Couple Map", "familia": "Premium Family Map", "coletivo": "Corporate Bonus"},
+    "es": {"express": "Mapa Exprés", "vida": "Ciclo de Vida y Año", "completo": "Mapa Completo",
+        "ia": "Búsqueda IA de Nombres", "urna": "Validación Nombre de Urna", "eleitoral": "Número Electoral",
+        "imovel": "Número de la Propiedad", "calendario": "Calendario Mensual Energético",
+        "artistico": "Validación Nombre Artístico", "bebe": "Planificación Nombre de Bebé",
+        "assinatura": "Validación de Firmas", "negocio": "Nombre para Negocio/Producto",
+        "casal": "Mapa de Pareja", "familia": "Mapa Familiar Premium", "coletivo": "Bono Corporativo"},
+    "it": {"express": "Mappa Espressa", "vida": "Fase di Vita e Anno", "completo": "Mappa Completa",
+        "ia": "Ricerca IA Nomi", "urna": "Validazione Nome della Scheda", "eleitoral": "Numero Elettorale",
+        "imovel": "Numero dell'Immobile", "calendario": "Calendario Mensile Energetico",
+        "artistico": "Validazione Nome d'Arte", "bebe": "Pianificazione Nome del Bambino",
+        "assinatura": "Validazione delle Firme", "negocio": "Nome per Business/Prodotto",
+        "casal": "Mappa di Coppia", "familia": "Mappa Famiglia Premium", "coletivo": "Bonus Aziendale"},
+    "fr": {"express": "Carte Express", "vida": "Phase de Vie et Année", "completo": "Carte Complète",
+        "ia": "Recherche IA de Noms", "urna": "Validation Nom du Bulletin", "eleitoral": "Numéro Électoral",
+        "imovel": "Numéro du Bien", "calendario": "Calendrier Mensuel Énergétique",
+        "artistico": "Validation Nom de Scène", "bebe": "Planification Prénom de Bébé",
+        "assinatura": "Validation des Signatures", "negocio": "Nom pour Entreprise/Produit",
+        "casal": "Carte du Couple", "familia": "Carte Famille Premium", "coletivo": "Bonus d'Entreprise"},
+    "de": {"express": "Express-Karte", "vida": "Lebensphase & Jahr", "completo": "Vollständige Karte",
+        "ia": "KI-Namenssuche", "urna": "Stimmzettelname-Validierung", "eleitoral": "Wahlnummer",
+        "imovel": "Immobiliennummer", "calendario": "Monatlicher Energiekalender",
+        "artistico": "Künstlername-Validierung", "bebe": "Babynamen-Planung",
+        "assinatura": "Unterschrifts-Validierung", "negocio": "Name für Unternehmen/Produkt",
+        "casal": "Paar-Karte", "familia": "Premium-Familien-Karte", "coletivo": "Unternehmensbonus"},
+    "ja": {"express": "エクスプレスマップ", "vida": "ライフステージと年", "completo": "完全マップ",
+        "ia": "AI名前検索", "urna": "投票用紙名の検証", "eleitoral": "選挙番号",
+        "imovel": "不動産番号", "calendario": "月間エネルギーカレンダー",
+        "artistico": "芸名の検証", "bebe": "赤ちゃんの名前計画",
+        "assinatura": "署名の検証", "negocio": "ビジネス・商品名",
+        "casal": "カップルマップ", "familia": "プレミアム家族マップ", "coletivo": "法人ボーナス"},
+    "zh": {"express": "快速地图", "vida": "生命阶段与年份", "completo": "完整地图",
+        "ia": "AI名字搜索", "urna": "选票名称验证", "eleitoral": "选举号码",
+        "imovel": "房产号码", "calendario": "每月能量日历",
+        "artistico": "艺名验证", "bebe": "宝宝取名规划",
+        "assinatura": "签名验证", "negocio": "企业/产品名称",
+        "casal": "情侣地图", "familia": "高级家庭地图", "coletivo": "企业奖励"},
+    "ru": {"express": "Экспресс-карта", "vida": "Жизненный этап и год", "completo": "Полная карта",
+        "ia": "ИИ-поиск имён", "urna": "Проверка названия бюллетеня", "eleitoral": "Избирательный номер",
+        "imovel": "Номер недвижимости", "calendario": "Ежемесячный энергетический календарь",
+        "artistico": "Проверка сценического имени", "bebe": "Планирование имени ребёнка",
+        "assinatura": "Проверка подписей", "negocio": "Название для бизнеса/продукта",
+        "casal": "Карта пары", "familia": "Премиальная семейная карта", "coletivo": "Корпоративный бонус"},
+    "hi": {"express": "त्वरित मानचित्र", "vida": "जीवन चरण और वर्ष", "completo": "पूर्ण मानचित्र",
+        "ia": "AI नाम खोज", "urna": "मतपत्र नाम सत्यापन", "eleitoral": "निर्वाचन संख्या",
+        "imovel": "संपत्ति संख्या", "calendario": "मासिक ऊर्जा कैलेंडर",
+        "artistico": "कलात्मक नाम सत्यापन", "bebe": "शिशु नाम योजना",
+        "assinatura": "हस्ताक्षर सत्यापन", "negocio": "व्यवसाय/उत्पाद नाम",
+        "casal": "युगल मानचित्र", "familia": "प्रीमियम परिवार मानचित्र", "coletivo": "कॉर्पोरेट बोनस"},
+    "he": {"express": "מפה מהירה", "vida": "שלב חיים ושנה", "completo": "מפה מלאה",
+        "ia": "חיפוש שמות AI", "urna": "אימות שם פתק", "eleitoral": "מספר בחירות",
+        "imovel": "מספר נכס", "calendario": "לוח אנרגיה חודשי",
+        "artistico": "אימות שם במה", "bebe": "תכנון שם לתינוק",
+        "assinatura": "אימות חתימות", "negocio": "שם לעסק/מוצר",
+        "casal": "מפת זוג", "familia": "מפת משפחה פרימיום", "coletivo": "בונוס ארגוני"},
+    "ar": {"express": "خريطة سريعة", "vida": "مرحلة الحياة والسنة", "completo": "خريطة كاملة",
+        "ia": "بحث الأسماء بالذكاء الاصطناعي", "urna": "التحقق من اسم الاقتراع", "eleitoral": "الرقم الانتخابي",
+        "imovel": "رقم العقار", "calendario": "تقويم الطاقة الشهري",
+        "artistico": "التحقق من الاسم الفني", "bebe": "تخطيط اسم الطفل",
+        "assinatura": "التحقق من التوقيعات", "negocio": "اسم للأعمال/المنتج",
         "casal": "خريطة الزوجين", "familia": "خريطة العائلة المميزة", "coletivo": "مكافأة الشركات"}
 }
 # ===== PRICE IDS STRIPE =====
 PRICE_IDS = {
-    "pt": {"express": "price_1TxocVBMLa84bVJ0EL0kb9Dn", "completo": "price_1TxohlBMLa84bVJ0jVj9307b",<br/>
-           "urna": "price_1TxollBMLa84bVJ0Wk5zIak6", "eleitoral": "price_1TxopFBMLa84bVJ0jvtJExVj",<br/>
-           "vida": "PRICE_ID_PT_VIDA", "ia": "PRICE_ID_PT_IA", "imovel": "PRICE_ID_PT_IMOVEL",<br/>
-           "calendario": "PRICE_ID_PT_CALENDARIO", "artistico": "PRICE_ID_PT_ARTISTICO",<br/>
-           "bebe": "PRICE_ID_PT_BEBE", "assinatura": "PRICE_ID_PT_ASSINATURA",<br/>
-           "negocio": "PRICE_ID_PT_NEGOCIO", "casal": "PRICE_ID_PT_CASAL", "familia": "PRICE_ID_PT_FAMILIA"},<br/>
-    "en": {"express": "price_1TxotnBMLa84bVJ00SGo4kjO", "completo": "price_1TxoxfBMLa84bVJ0VgQVddZX",<br/>
-           "urna": "price_1Txp1jBMLa84bVJ06W4559rN", "eleitoral": "price_1Txp5aBMLa84bVJ0GqrvBrIk",<br/>
-           "vida": "PRICE_ID_EN_VIDA", "ia": "PRICE_ID_EN_IA", "imovel": "PRICE_ID_EN_IMOVEL",<br/>
-           "calendario": "PRICE_ID_EN_CALENDARIO", "artistico": "PRICE_ID_EN_ARTISTICO",<br/>
-           "bebe": "PRICE_ID_EN_BEBE", "assinatura": "PRICE_ID_EN_ASSINATURA",<br/>
-           "negocio": "PRICE_ID_EN_NEGOCIO", "casal": "PRICE_ID_EN_CASAL", "familia": "PRICE_ID_EN_FAMILIA"},<br/>
-    "es": {"express": "price_1TyD2oBMLa84bVJ0HvSTMozS", "completo": "price_1TyD6NBMLa84bVJ0s5y2OtSr",<br/>
-           "urna": "price_1TyDB0BMLa84bVJ0baUEGa2P", "eleitoral": "price_1TyDCsBMLa84bVJ0NRp5uOKU",<br/>
-           "vida": "PRICE_ID_ES_VIDA", "ia": "PRICE_ID_ES_IA", "imovel": "PRICE_ID_ES_IMOVEL",<br/>
-           "calendario": "PRICE_ID_ES_CALENDARIO", "artistico": "PRICE_ID_ES_ARTISTICO",<br/>
-           "bebe": "PRICE_ID_ES_BEBE", "assinatura": "PRICE_ID_ES_ASSINATURA",<br/>
-           "negocio": "PRICE_ID_ES_NEGOCIO", "casal": "PRICE_ID_ES_CASAL", "familia": "PRICE_ID_ES_FAMILIA"},<br/>
-    "it": {"express": "price_1TyEtPBMLa84bVJ02T3hWgMD", "completo": "price_1TyEwfBMLa84bVJ0Fh9etZKk",<br/>
-           "urna": "price_1TyEz0BMLa84bVJ0Qkjg7Y0X", "eleitoral": "price_1TyF2PBMLa84bVJ0lropcWH8",<br/>
-           "vida": "PRICE_ID_IT_VIDA", "ia": "PRICE_ID_IT_IA", "imovel": "PRICE_ID_IT_IMOVEL",<br/>
-           "calendario": "PRICE_ID_IT_CALENDARIO", "artistico": "PRICE_ID_IT_ARTISTICO",<br/>
-           "bebe": "PRICE_ID_IT_BEBE", "assinatura": "PRICE_ID_IT_ASSINATURA",<br/>
-           "negocio": "PRICE_ID_IT_NEGOCIO", "casal": "PRICE_ID_IT_CASAL", "familia": "PRICE_ID_IT_FAMILIA"},<br/>
-    "fr": {"express": "price_1TyDnQBMLa84bVJ0K9DBz2mk", "completo": "price_1TyDrjBMLa84bVJ0cstgcPbY",<br/>
-           "urna": "price_1TyDw1BMLa84bVJ0EV0OnINW", "eleitoral": "price_1TyDxsBMLa84bVJ0n2t4jOfZ",<br/>
-           "vida": "PRICE_ID_FR_VIDA", "ia": "PRICE_ID_FR_IA", "imovel": "PRICE_ID_FR_IMOVEL",<br/>
-           "calendario": "PRICE_ID_FR_CALENDARIO", "artistico": "PRICE_ID_FR_ARTISTICO",<br/>
-           "bebe": "PRICE_ID_FR_BEBE", "assinatura": "PRICE_ID_FR_ASSINATURA",<br/>
-           "negocio": "PRICE_ID_FR_NEGOCIO", "casal": "PRICE_ID_FR_CASAL", "familia": "PRICE_ID_FR_FAMILIA"},<br/>
-    "de": {"express": "price_1TyFJaBMLa84bVJ0BDPNQUjz", "completo": "price_1TyFLKBMLa84bVJ0RT0bkKpW",<br/>
-           "urna": "price_1TyFO2BMLa84bVJ0FIoh7co1", "eleitoral": "price_1TyFTxBMLa84bVJ0qw6LQvVI",<br/>
-           "vida": "PRICE_ID_DE_VIDA", "ia": "PRICE_ID_DE_IA", "imovel": "PRICE_ID_DE_IMOVEL",<br/>
-           "calendario": "PRICE_ID_DE_CALENDARIO", "artistico": "PRICE_ID_DE_ARTISTICO",<br/>
-           "bebe": "PRICE_ID_DE_BEBE", "assinatura": "PRICE_ID_DE_ASSINATURA",<br/>
-           "negocio": "PRICE_ID_DE_NEGOCIO", "casal": "PRICE_ID_DE_CASAL", "familia": "PRICE_ID_DE_FAMILIA"},<br/>
-    "ja": {"express": "price_1TyJ5HBMLa84bVJ00nZLnuV1", "completo": "price_1TyJJgBMLa84bVJ0fkO5nSFT",<br/>
-           "urna": "price_1TyJOzBMLa84bVJ0BAPegYVD", "eleitoral": "price_1TyJRwBMLa84bVJ0PLA1CIuH",<br/>
-           "vida": "PRICE_ID_JA_VIDA", "ia": "PRICE_ID_JA_IA", "imovel": "PRICE_ID_JA_IMOVEL",<br/>
-           "calendario": "PRICE_ID_JA_CALENDARIO", "artistico": "PRICE_ID_JA_ARTISTICO",<br/>
-           "bebe": "PRICE_ID_JA_BEBE", "assinatura": "PRICE_ID_JA_ASSINATURA",<br/>
-           "negocio": "PRICE_ID_JA_NEGOCIO", "casal": "PRICE_ID_JA_CASAL", "familia": "PRICE_ID_JA_FAMILIA"},<br/>
-    "zh": {"express": "price_1TyKXeBMLa84bVJ07Q6w0j6G", "completo": "price_1TyKZfBMLa84bVJ0bgYSm8e2",<br/>
-           "urna": "price_1TyKdWBMLa84bVJ0TIP0Knbi", "eleitoral": "price_1TyKitBMLa84bVJ0lFgyKya0",<br/>
-           "vida": "PRICE_ID_ZH_VIDA", "ia": "PRICE_ID_ZH_IA", "imovel": "PRICE_ID_ZH_IMOVEL",<br/>
-           "calendario": "PRICE_ID_ZH_CALENDARIO", "artistico": "PRICE_ID_ZH_ARTISTICO",<br/>
-           "bebe": "PRICE_ID_ZH_BEBE", "assinatura": "PRICE_ID_ZH_ASSINATURA",<br/>
-           "negocio": "PRICE_ID_ZH_NEGOCIO", "casal": "PRICE_ID_ZH_CASAL", "familia": "PRICE_ID_ZH_FAMILIA"},<br/>
-    "ru": {"express": "price_1TyJxhBMLa84bVJ0aQxWf1Tp", "completo": "price_1TyK1CBMLa84bVJ0SsvJjSqb",<br/>
-           "urna": "price_1TyK3NBMLa84bVJ0GCSVqMe0", "eleitoral": "price_1TyK7hBMLa84bVJ004FNS2fZ",<br/>
-           "vida": "PRICE_ID_RU_VIDA", "ia": "PRICE_ID_RU_IA", "imovel": "PRICE_ID_RU_IMOVEL",<br/>
-           "calendario": "PRICE_ID_RU_CALENDARIO", "artistico": "PRICE_ID_RU_ARTISTICO",<br/>
-           "bebe": "PRICE_ID_RU_BEBE", "assinatura": "PRICE_ID_RU_ASSINATURA",<br/>
-           "negocio": "PRICE_ID_RU_NEGOCIO", "casal": "PRICE_ID_RU_CASAL", "familia": "PRICE_ID_RU_FAMILIA"},<br/>
-    "hi": {"express": "price_1TyG1uBMLa84bVJ0NY4TpZnO", "completo": "price_1TyG84BMLa84bVJ05zeaelyO",<br/>
-           "urna": "price_1TyGD5BMLa84bVJ0hEnIEwaS", "eleitoral": "price_1TyGFYBMLa84bVJ0zZTHtAuT",<br/>
-           "vida": "PRICE_ID_HI_VIDA", "ia": "PRICE_ID_HI_IA", "imovel": "PRICE_ID_HI_IMOVEL",<br/>
-           "calendario": "PRICE_ID_HI_CALENDARIO", "artistico": "PRICE_ID_HI_ARTISTICO",<br/>
-           "bebe": "PRICE_ID_HI_BEBE", "assinatura": "PRICE_ID_HI_ASSINATURA",<br/>
-           "negocio": "PRICE_ID_HI_NEGOCIO", "casal": "PRICE_ID_HI_CASAL", "familia": "PRICE_ID_HI_FAMILIA"},<br/>
-    "he": {"express": "price_1TyIKeBMLa84bVJ0W02dbXOt", "completo": "price_1TyIO0BMLa84bVJ08P0j9THk",<br/>
-           "urna": "price_1TyIPbBMLa84bVJ08GnGksRk", "eleitoral": "price_1TyISQBMLa84bVJ0sb7xjIyV",<br/>
-           "vida": "PRICE_ID_HE_VIDA", "ia": "PRICE_ID_HE_IA", "imovel": "PRICE_ID_HE_IMOVEL",<br/>
-           "calendario": "PRICE_ID_HE_CALENDARIO", "artistico": "PRICE_ID_HE_ARTISTICO",<br/>
-           "bebe": "PRICE_ID_HE_BEBE", "assinatura": "PRICE_ID_HE_ASSINATURA",<br/>
-           "negocio": "PRICE_ID_HE_NEGOCIO", "casal": "PRICE_ID_HE_CASAL", "familia": "PRICE_ID_HE_FAMILIA"},<br/>
-    "ar": {"express": "price_1TyHXkBMLa84bVJ0DDl7y8rT", "completo": "price_1TyHerBMLa84bVJ0UIFTeKLW",<br/>
-           "urna": "price_1TyHpxBMLa84bVJ0Z9Ck3rk3", "eleitoral": "price_1TyHrvBMLa84bVJ0RWjoe4Gz",<br/>
-           "vida": "PRICE_ID_AR_VIDA", "ia": "PRICE_ID_AR_IA", "imovel": "PRICE_ID_AR_IMOVEL",<br/>
-           "calendario": "PRICE_ID_AR_CALENDARIO", "artistico": "PRICE_ID_AR_ARTISTICO",<br/>
-           "bebe": "PRICE_ID_AR_BEBE", "assinatura": "PRICE_ID_AR_ASSINATURA",<br/>
+    "pt": {"express": "price_1TxocVBMLa84bVJ0EL0kb9Dn", "completo": "price_1TxohlBMLa84bVJ0jVj9307b",
+           "urna": "price_1TxollBMLa84bVJ0Wk5zIak6", "eleitoral": "price_1TxopFBMLa84bVJ0jvtJExVj",
+           "vida": "PRICE_ID_PT_VIDA", "ia": "PRICE_ID_PT_IA", "imovel": "PRICE_ID_PT_IMOVEL",
+           "calendario": "PRICE_ID_PT_CALENDARIO", "artistico": "PRICE_ID_PT_ARTISTICO",
+           "bebe": "PRICE_ID_PT_BEBE", "assinatura": "PRICE_ID_PT_ASSINATURA",
+           "negocio": "PRICE_ID_PT_NEGOCIO", "casal": "PRICE_ID_PT_CASAL", "familia": "PRICE_ID_PT_FAMILIA"},
+    "en": {"express": "price_1TxotnBMLa84bVJ00SGo4kjO", "completo": "price_1TxoxfBMLa84bVJ0VgQVddZX",
+           "urna": "price_1Txp1jBMLa84bVJ06W4559rN", "eleitoral": "price_1Txp5aBMLa84bVJ0GqrvBrIk",
+           "vida": "PRICE_ID_EN_VIDA", "ia": "PRICE_ID_EN_IA", "imovel": "PRICE_ID_EN_IMOVEL",
+           "calendario": "PRICE_ID_EN_CALENDARIO", "artistico": "PRICE_ID_EN_ARTISTICO",
+           "bebe": "PRICE_ID_EN_BEBE", "assinatura": "PRICE_ID_EN_ASSINATURA",
+           "negocio": "PRICE_ID_EN_NEGOCIO", "casal": "PRICE_ID_EN_CASAL", "familia": "PRICE_ID_EN_FAMILIA"},
+    "es": {"express": "price_1TyD2oBMLa84bVJ0HvSTMozS", "completo": "price_1TyD6NBMLa84bVJ0s5y2OtSr",
+           "urna": "price_1TyDB0BMLa84bVJ0baUEGa2P", "eleitoral": "price_1TyDCsBMLa84bVJ0NRp5uOKU",
+           "vida": "PRICE_ID_ES_VIDA", "ia": "PRICE_ID_ES_IA", "imovel": "PRICE_ID_ES_IMOVEL",
+           "calendario": "PRICE_ID_ES_CALENDARIO", "artistico": "PRICE_ID_ES_ARTISTICO",
+           "bebe": "PRICE_ID_ES_BEBE", "assinatura": "PRICE_ID_ES_ASSINATURA",
+           "negocio": "PRICE_ID_ES_NEGOCIO", "casal": "PRICE_ID_ES_CASAL", "familia": "PRICE_ID_ES_FAMILIA"},
+    "it": {"express": "price_1TyEtPBMLa84bVJ02T3hWgMD", "completo": "price_1TyEwfBMLa84bVJ0Fh9etZKk",
+           "urna": "price_1TyEz0BMLa84bVJ0Qkjg7Y0X", "eleitoral": "price_1TyF2PBMLa84bVJ0lropcWH8",
+           "vida": "PRICE_ID_IT_VIDA", "ia": "PRICE_ID_IT_IA", "imovel": "PRICE_ID_IT_IMOVEL",
+           "calendario": "PRICE_ID_IT_CALENDARIO", "artistico": "PRICE_ID_IT_ARTISTICO",
+           "bebe": "PRICE_ID_IT_BEBE", "assinatura": "PRICE_ID_IT_ASSINATURA",
+           "negocio": "PRICE_ID_IT_NEGOCIO", "casal": "PRICE_ID_IT_CASAL", "familia": "PRICE_ID_IT_FAMILIA"},
+    "fr": {"express": "price_1TyDnQBMLa84bVJ0K9DBz2mk", "completo": "price_1TyDrjBMLa84bVJ0cstgcPbY",
+           "urna": "price_1TyDw1BMLa84bVJ0EV0OnINW", "eleitoral": "price_1TyDxsBMLa84bVJ0n2t4jOfZ",
+           "vida": "PRICE_ID_FR_VIDA", "ia": "PRICE_ID_FR_IA", "imovel": "PRICE_ID_FR_IMOVEL",
+           "calendario": "PRICE_ID_FR_CALENDARIO", "artistico": "PRICE_ID_FR_ARTISTICO",
+           "bebe": "PRICE_ID_FR_BEBE", "assinatura": "PRICE_ID_FR_ASSINATURA",
+           "negocio": "PRICE_ID_FR_NEGOCIO", "casal": "PRICE_ID_FR_CASAL", "familia": "PRICE_ID_FR_FAMILIA"},
+    "de": {"express": "price_1TyFJaBMLa84bVJ0BDPNQUjz", "completo": "price_1TyFLKBMLa84bVJ0RT0bkKpW",
+           "urna": "price_1TyFO2BMLa84bVJ0FIoh7co1", "eleitoral": "price_1TyFTxBMLa84bVJ0qw6LQvVI",
+           "vida": "PRICE_ID_DE_VIDA", "ia": "PRICE_ID_DE_IA", "imovel": "PRICE_ID_DE_IMOVEL",
+           "calendario": "PRICE_ID_DE_CALENDARIO", "artistico": "PRICE_ID_DE_ARTISTICO",
+           "bebe": "PRICE_ID_DE_BEBE", "assinatura": "PRICE_ID_DE_ASSINATURA",
+           "negocio": "PRICE_ID_DE_NEGOCIO", "casal": "PRICE_ID_DE_CASAL", "familia": "PRICE_ID_DE_FAMILIA"},
+    "ja": {"express": "price_1TyJ5HBMLa84bVJ00nZLnuV1", "completo": "price_1TyJJgBMLa84bVJ0fkO5nSFT",
+           "urna": "price_1TyJOzBMLa84bVJ0BAPegYVD", "eleitoral": "price_1TyJRwBMLa84bVJ0PLA1CIuH",
+           "vida": "PRICE_ID_JA_VIDA", "ia": "PRICE_ID_JA_IA", "imovel": "PRICE_ID_JA_IMOVEL",
+           "calendario": "PRICE_ID_JA_CALENDARIO", "artistico": "PRICE_ID_JA_ARTISTICO",
+           "bebe": "PRICE_ID_JA_BEBE", "assinatura": "PRICE_ID_JA_ASSINATURA",
+           "negocio": "PRICE_ID_JA_NEGOCIO", "casal": "PRICE_ID_JA_CASAL", "familia": "PRICE_ID_JA_FAMILIA"},
+    "zh": {"express": "price_1TyKXeBMLa84bVJ07Q6w0j6G", "completo": "price_1TyKZfBMLa84bVJ0bgYSm8e2",
+           "urna": "price_1TyKdWBMLa84bVJ0TIP0Knbi", "eleitoral": "price_1TyKitBMLa84bVJ0lFgyKya0",
+           "vida": "PRICE_ID_ZH_VIDA", "ia": "PRICE_ID_ZH_IA", "imovel": "PRICE_ID_ZH_IMOVEL",
+           "calendario": "PRICE_ID_ZH_CALENDARIO", "artistico": "PRICE_ID_ZH_ARTISTICO",
+           "bebe": "PRICE_ID_ZH_BEBE", "assinatura": "PRICE_ID_ZH_ASSINATURA",
+           "negocio": "PRICE_ID_ZH_NEGOCIO", "casal": "PRICE_ID_ZH_CASAL", "familia": "PRICE_ID_ZH_FAMILIA"},
+    "ru": {"express": "price_1TyJxhBMLa84bVJ0aQxWf1Tp", "completo": "price_1TyK1CBMLa84bVJ0SsvJjSqb",
+           "urna": "price_1TyK3NBMLa84bVJ0GCSVqMe0", "eleitoral": "price_1TyK7hBMLa84bVJ004FNS2fZ",
+           "vida": "PRICE_ID_RU_VIDA", "ia": "PRICE_ID_RU_IA", "imovel": "PRICE_ID_RU_IMOVEL",
+           "calendario": "PRICE_ID_RU_CALENDARIO", "artistico": "PRICE_ID_RU_ARTISTICO",
+           "bebe": "PRICE_ID_RU_BEBE", "assinatura": "PRICE_ID_RU_ASSINATURA",
+           "negocio": "PRICE_ID_RU_NEGOCIO", "casal": "PRICE_ID_RU_CASAL", "familia": "PRICE_ID_RU_FAMILIA"},
+    "hi": {"express": "price_1TyG1uBMLa84bVJ0NY4TpZnO", "completo": "price_1TyG84BMLa84bVJ05zeaelyO",
+           "urna": "price_1TyGD5BMLa84bVJ0hEnIEwaS", "eleitoral": "price_1TyGFYBMLa84bVJ0zZTHtAuT",
+           "vida": "PRICE_ID_HI_VIDA", "ia": "PRICE_ID_HI_IA", "imovel": "PRICE_ID_HI_IMOVEL",
+           "calendario": "PRICE_ID_HI_CALENDARIO", "artistico": "PRICE_ID_HI_ARTISTICO",
+           "bebe": "PRICE_ID_HI_BEBE", "assinatura": "PRICE_ID_HI_ASSINATURA",
+           "negocio": "PRICE_ID_HI_NEGOCIO", "casal": "PRICE_ID_HI_CASAL", "familia": "PRICE_ID_HI_FAMILIA"},
+    "he": {"express": "price_1TyIKeBMLa84bVJ0W02dbXOt", "completo": "price_1TyIO0BMLa84bVJ08P0j9THk",
+           "urna": "price_1TyIPbBMLa84bVJ08GnGksRk", "eleitoral": "price_1TyISQBMLa84bVJ0sb7xjIyV",
+           "vida": "PRICE_ID_HE_VIDA", "ia": "PRICE_ID_HE_IA", "imovel": "PRICE_ID_HE_IMOVEL",
+           "calendario": "PRICE_ID_HE_CALENDARIO", "artistico": "PRICE_ID_HE_ARTISTICO",
+           "bebe": "PRICE_ID_HE_BEBE", "assinatura": "PRICE_ID_HE_ASSINATURA",
+           "negocio": "PRICE_ID_HE_NEGOCIO", "casal": "PRICE_ID_HE_CASAL", "familia": "PRICE_ID_HE_FAMILIA"},
+    "ar": {"express": "price_1TyHXkBMLa84bVJ0DDl7y8rT", "completo": "price_1TyHerBMLa84bVJ0UIFTeKLW",
+           "urna": "price_1TyHpxBMLa84bVJ0Z9Ck3rk3", "eleitoral": "price_1TyHrvBMLa84bVJ0RWjoe4Gz",
+           "vida": "PRICE_ID_AR_VIDA", "ia": "PRICE_ID_AR_IA", "imovel": "PRICE_ID_AR_IMOVEL",
+           "calendario": "PRICE_ID_AR_CALENDARIO", "artistico": "PRICE_ID_AR_ARTISTICO",
+           "bebe": "PRICE_ID_AR_BEBE", "assinatura": "PRICE_ID_AR_ASSINATURA",
            "negocio": "PRICE_ID_AR_NEGOCIO", "casal": "PRICE_ID_AR_CASAL", "familia": "PRICE_ID_AR_FAMILIA"}
 }
 PRODUTO_TARGET = {
-    "express": "mapa", "vida": "vida", "completo": "mapa", "ia": "pesquisa-ia",<br/>
-    "urna": "urna", "eleitoral": "eleitoral", "imovel": "imovel", "calendario": "calendario",<br/>
-    "artistico": "artistico", "bebe": "bebe", "assinatura": "assinatura",<br/>
+    "express": "mapa", "vida": "vida", "completo": "mapa", "ia": "pesquisa-ia",
+    "urna": "urna", "eleitoral": "eleitoral", "imovel": "imovel", "calendario": "calendario",
+    "artistico": "artistico", "bebe": "bebe", "assinatura": "assinatura",
     "negocio": "negocio", "casal": "casal", "familia": "familia", "coletivo": "corporativo"
 }
 # ===== MODELOS PYDANTIC =====
-class PayReq(BaseModel):<br/>
-    name: str = ""<br/>
-    birth_date: str = ""<br/>
-    email: str = ""<br/>
-    product: Optional[str] = "express"<br/>
-    price: Optional[float] = 0<br/>
-    calculation_id: Optional[str] = None<br/>
+class PayReq(BaseModel):
+    name: str = ""
+    birth_date: str = ""
+    email: str = ""
+    product: Optional[str] = "express"
+    price: Optional[float] = 0
+    calculation_id: Optional[str] = None
     lang: Optional[str] = "pt"
     # Alinhamento com comprar() do index (envia nome/nascimento)
-    nome: str = ""<br/>
-    nascimento: str = ""<br/>
-class UrnaPayReq(BaseModel):<br/>
-    nome_completo: str<br/>
-    cargo: str = "vereador"<br/>
-    nome1: str = ""<br/>
-    nome2: str = ""<br/>
-    nome3: str = ""<br/>
-    nome4: str = ""<br/>
-    nome5: str = ""<br/>
-    email: str = ""<br/>
-    lang: Optional[str] = "pt"<br/>
-class EleitoralPayReq(BaseModel):<br/>
-    nome_completo: str = ""<br/>
-    numero: str = ""<br/>
-    cargo: str = "vereador"<br/>
-    email: str = ""<br/>
-    lang: Optional[str] = "pt"<br/>
-class SugestaoReq(BaseModel):<br/>
-    nome: str = ""<br/>
-    email: str = ""<br/>
-    mensagem: str<br/>
-class BonusReq(BaseModel):<br/>
-    nome: str<br/>
-    email: str<br/>
-    produto: str = ""<br/>
-    mensagem: str = ""<br/>
-class AtivarBonusReq(BaseModel):<br/>
+    nome: str = ""
+    nascimento: str = ""
+class UrnaPayReq(BaseModel):
+    nome_completo: str
+    cargo: str = "vereador"
+    nome1: str = ""
+    nome2: str = ""
+    nome3: str = ""
+    nome4: str = ""
+    nome5: str = ""
+    email: str = ""
+    lang: Optional[str] = "pt"
+class EleitoralPayReq(BaseModel):
+    nome_completo: str = ""
+    numero: str = ""
+    cargo: str = "vereador"
+    email: str = ""
+    lang: Optional[str] = "pt"
+class SugestaoReq(BaseModel):
+    nome: str = ""
+    email: str = ""
+    mensagem: str
+class BonusReq(BaseModel):
+    nome: str
+    email: str
+    produto: str = ""
+    mensagem: str = ""
+class AtivarBonusReq(BaseModel):
     codigo: str
 # ===== CONSTANTES DE ESTILO (PDFs) =====
 GOLD = colors.HexColor("#B8860B")
@@ -323,22 +323,22 @@ GRAY = colors.HexColor("#888")
 FONTE = "Helvetica"
 FN = "Helvetica-Bold"
 CARGO_INFO = {
-    "vereador": {"label": "Vereador"},<br/>
-    "dep_estadual": {"label": "Deputado Estadual"},<br/>
-    "dep_federal": {"label": "Deputado Federal"},<br/>
+    "vereador": {"label": "Vereador"},
+    "dep_estadual": {"label": "Deputado Estadual"},
+    "dep_federal": {"label": "Deputado Federal"},
     "senador": {"label": "Senador"},
 }
 ENERGIAS = {
-    1: "Lideranca", 2: "Cooperacao", 3: "Criatividade",<br/>
-    4: "Trabalho", 5: "Liberdade", 6: "Familia",<br/>
+    1: "Lideranca", 2: "Cooperacao", 3: "Criatividade",
+    4: "Trabalho", 5: "Liberdade", 6: "Familia",
     7: "Sabedoria", 8: "Poder e Prosperidade (IDEAL)", 9: "Humanitarismo",
 }
 # ===== CÁLCULO NUMEROLÓGICO =====
-def r1(n):<br/>
+def r1(n):
     while n > 9 and n not in (11, 22, 33):
         n = sum(int(d) for d in str(n))
     return n
-def calc_nome(nome):<br/>
+def calc_nome(nome):
     t = {c: (i % 9 or 9) for i, c in enumerate("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 1)}
     limpo = nome.upper().replace(" ", "").replace(".", "").replace("-", "").replace(",", "")
     total = sum(t.get(c, 0) for c in limpo if c in t)
@@ -356,11 +356,11 @@ def calc(nome, data_str):
             tv += val
         else:
             tp += val
-    return {"life_path": lp, "expression": r1(te), "soul_urge": r1(tv),<br/>
-            "personality": r1(tp), "destiny": r1(r1(te) + lp)}<br/>
-def calc_grid(nome):<br/>
-    t = {c: (i % 9 or 9) for i, c in enumerate("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 1)}<br/>
-    g = {i: 0 for i in range(1, 10)}<br/>
+    return {"life_path": lp, "expression": r1(te), "soul_urge": r1(tv),
+            "personality": r1(tp), "destiny": r1(r1(te) + lp)}
+def calc_grid(nome):
+    t = {c: (i % 9 or 9) for i, c in enumerate("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 1)}
+    g = {i: 0 for i in range(1, 10)}
     for ch in nome.upper().replace(" ", ""):
         v = t.get(ch, 0)
         if v in range(1, 10):
@@ -368,8 +368,8 @@ def calc_grid(nome):<br/>
     return g
 def validar_nomes_urna(nomes, cargo_key):
     results = []
-    lv = {c: (i % 9 or 9) for i, c in enumerate("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 1)}<br/>
-    for nome in nomes:<br/>
+    lv = {c: (i % 9 or 9) for i, c in enumerate("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 1)}
+    for nome in nomes:
         if not nome.strip():
             continue
         limpo = nome.upper().replace(" ", "").replace(".", "").replace("-", "").replace(",", "")
@@ -384,13 +384,13 @@ def validar_nomes_urna(nomes, cargo_key):
             expl = f"Nome {nome.strip().title()} tem ENERGIA 8! Ideal para candidatura."
         else:
             expl = f"Nome {nome.strip().title()} tem energia {en}. {ENERGIAS.get(en, '')}."
-        results.append({"nome": nome.strip().title(), "energia": en,<br/>
-                        "soma": st, "eh_ideal": en == 8,<br/>
+        results.append({"nome": nome.strip().title(), "energia": en,
+                        "soma": st, "eh_ideal": en == 8,
                         "explicacao": expl, "letras": letras})
     ideal = any(r["eh_ideal"] for r in results)
     sugs = []
-    if not ideal:<br/>
-        for nome in nomes:<br/>
+    if not ideal:
+        for nome in nomes:
             if not nome.strip():
                 continue
             lbl = CARGO_INFO.get(cargo_key, {}).get("label", "")
@@ -398,13 +398,13 @@ def validar_nomes_urna(nomes, cargo_key):
                 continue
             for nt in [f"{lbl[:3]} {nome.strip()}", f"{nome.strip()} - {lbl.lower()[:3]}"]:
                 en, _ = calc_nome(nt)
-                sugs.append({"nome": nt.title(), "energia": en, "eh_ideal": en == 8})<br/>
+                sugs.append({"nome": nt.title(), "energia": en, "eh_ideal": en == 8})
                 if len(sugs) >= 3:
                     break
             if len(sugs) >= 3:
                 break
-    return results, ideal, sugs[:3]<br/>
-def gerar_numeros(sigla, cargo, qtd=5):<br/>
+    return results, ideal, sugs[:3]
+def gerar_numeros(sigla, cargo, qtd=5):
     dc = {"vereador": 5, "dep_estadual": 5, "dep_federal": 4, "senador": 3}
     td = dc.get(cargo, 5)
     ss = str(sigla).zfill(2)[:2]
@@ -414,38 +414,38 @@ def gerar_numeros(sigla, cargo, qtd=5):<br/>
     tent = set()
     def busca(alvo):
         enc = []
-        for x in range(10 ** lv):<br/>
+        for x in range(10 ** lv):
             if len(enc) + len(res) >= qtd:
                 break
             dl = str(x).zfill(lv)
             en = r1(sm + sum(int(d) for d in dl))
             if en == alvo:
                 n = ss + dl
-                if n not in tent:<br/>
+                if n not in tent:
                     if x in range(1, 10) and alvo != r1(sm):
                         continue
                     tent.add(n)
                     st = sm + sum(int(d) for d in dl)
-                    enc.append({"numero": n, "energia": alvo, "ideal": alvo == 8,<br/>
-                                "sigla": ss, "digitos_livres": dl,<br/>
+                    enc.append({"numero": n, "energia": alvo, "ideal": alvo == 8,
+                                "sigla": ss, "digitos_livres": dl,
                                 "soma_sigla": sm, "soma_total": st})
         return enc
     res.extend(busca(8))
     if len(res) < qtd:
         res.extend(busca(3))
-    if len(res) < qtd:<br/>
-        for e in [7, 1, 9, 5, 6, 4, 2]:<br/>
+    if len(res) < qtd:
+        for e in [7, 1, 9, 5, 6, 4, 2]:
             if len(res) >= qtd:
                 break
             res.extend(busca(e))
-    return res[:qtd]<br/>
+    return res[:qtd]
 def estilo(tam, negrito=False, cor=DARK, alinhamento=TA_LEFT, antes=0, depois=4):
     return ParagraphStyle("S", fontName=FN if negrito else FONTE,
                          fontSize=tam, textColor=cor,
                          alignment=alinhamento, spaceBefore=antes,
                          spaceAfter=depois)
 # ===== PDF EXPRESS =====
-def pdf8(data, nome, bd):<br/>
+def pdf8(data, nome, bd):
     path = f"/tmp/p8_{uuid.uuid4().hex[:8]}.pdf"
     doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
                             topMargin=40, bottomMargin=30)
@@ -472,7 +472,7 @@ def pdf8(data, nome, bd):<br/>
     doc.build(e)
     return path
 # ===== PDF COMPLETO =====
-def pdf17(data, nome, bd_str):<br/>
+def pdf17(data, nome, bd_str):
     path = f"/tmp/p17_{uuid.uuid4().hex[:8]}.pdf"
     doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
                             topMargin=35, bottomMargin=25)
@@ -517,7 +517,7 @@ def pdf17(data, nome, bd_str):<br/>
     doc.build(e)
     return path
 # ===== PDF NOME DE URNA =====
-def pdf_urna(nc, cl, resultados, sugestoes):<br/>
+def pdf_urna(nc, cl, resultados, sugestoes):
     path = f"/tmp/u_{uuid.uuid4().hex[:8]}.pdf"
     doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
                             topMargin=40, bottomMargin=30)
@@ -525,7 +525,7 @@ def pdf_urna(nc, cl, resultados, sugestoes):<br/>
     e.append(Spacer(1, 15))
     e.append(Paragraph("VALIDACAO DE NOME DE URNA", estilo(20, True, GOLD, TA_CENTER)))
     e.append(Paragraph(nc.title(), estilo(12, True, DARK, TA_CENTER)))
-    e.append(Paragraph(f"Cargo: {cl}", estilo(9, False, GRAY, TA_CENTER)))<br/>
+    e.append(Paragraph(f"Cargo: {cl}", estilo(9, False, GRAY, TA_CENTER)))
     for r in resultados:
         ic = "OK" if r["eh_ideal"] else "X"
         e.append(Paragraph(f'{ic} {r["nome"]} - Energia {r["energia"]}', estilo(11, True, DARK)))
@@ -535,14 +535,14 @@ def pdf_urna(nc, cl, resultados, sugestoes):<br/>
         e.append(Paragraph(r["explicacao"], estilo(10, False, DARK)))
     if sugestoes:
         e.append(Spacer(1, 10))
-        e.append(Paragraph("Sugestoes:", estilo(16, True, GOLD)))<br/>
+        e.append(Paragraph("Sugestoes:", estilo(16, True, GOLD)))
         for s in sugestoes[:3]:
             e.append(Paragraph(f'{s["nome"]} - Energia {s["energia"]}', estilo(11, False, DARK)))
     e.append(Paragraph("(c) A1ELOS", estilo(7, False, GRAY, TA_CENTER)))
     doc.build(e)
     return path
 # ===== PDF NÚMERO ELEITORAL =====
-def pdf_eleitoral(ss, cl, sugestoes, ni=None):<br/>
+def pdf_eleitoral(ss, cl, sugestoes, ni=None):
     path = f"/tmp/e_{uuid.uuid4().hex[:8]}.pdf"
     doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
                             topMargin=40, bottomMargin=30)
@@ -553,21 +553,21 @@ def pdf_eleitoral(ss, cl, sugestoes, ni=None):<br/>
     e.append(Spacer(1, 10))
     ids = [s for s in sugestoes if s.get("ideal")]
     fbs = [s for s in sugestoes if not s.get("ideal")]
-    if ids:<br/>
-        e.append(Paragraph("Opcoes com Energia 8 - IDEAL:", estilo(11, True, DARK)))<br/>
+    if ids:
+        e.append(Paragraph("Opcoes com Energia 8 - IDEAL:", estilo(11, True, DARK)))
         for s in ids:
             e.append(Paragraph(f'{s["numero"]} - Energia 8!', estilo(11, False, colors.HexColor("#4CAF50"))))
-    if fbs:<br/>
-        e.append(Paragraph("Opcoes Alternativas:", estilo(11, True, DARK)))<br/>
+    if fbs:
+        e.append(Paragraph("Opcoes Alternativas:", estilo(11, True, DARK)))
         for s in fbs:
             e.append(Paragraph(f'{s["numero"]} - Energia {s["energia"]}', estilo(11, False, DARK)))
-    if ni:<br/>
+    if ni:
         e.append(Paragraph(f'Numero: {ni["numero"]} - Energia: {ni["energia"]}', estilo(11, False, DARK)))
     e.append(Paragraph("(c) A1ELOS", estilo(7, False, GRAY, TA_CENTER)))
     doc.build(e)
     return path
 # ===== PDF GENÉRICO (11 produtos novos) =====
-def pdf_produto(produto, nome, bd_str, lang="pt"):<br/>
+def pdf_produto(produto, nome, bd_str, lang="pt"):
     path = f"/tmp/p_{uuid.uuid4().hex[:8]}.pdf"
     doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
                             topMargin=40, bottomMargin=30)
@@ -596,7 +596,7 @@ def pdf_produto(produto, nome, bd_str, lang="pt"):<br/>
     doc.build(e)
     return path
 # ===== EMAIL SIMPLES (SMTP - sugestões e bônus) =====
-def _enviar_email_simples(destinatario, assunto, corpo):<br/>
+def _enviar_email_simples(destinatario, assunto, corpo):
     try:
         msg = MIMEMultipart()
         msg["From"] = FROM_EMAIL
@@ -608,56 +608,56 @@ def _enviar_email_simples(destinatario, assunto, corpo):<br/>
             s.login(os.getenv("SMTP_USER"), os.getenv("SMTP_PASS"))
             s.send_message(msg)
         return True
-    except Exception as e:<br/>
+    except Exception as e:
         logger.error(f"SMTP: {e}")
         return False
 # ===== PÁGINA DE SUCESSO COM DOWNLOAD DO PDF =====
 def pagina_sucesso(pdf_path, nome, prod_nome):
     b64 = ""
-    if pdf_path and os.path.exists(pdf_path):<br/>
+    if pdf_path and os.path.exists(pdf_path):
         with open(pdf_path, "rb") as f:
             b64 = base64.b64encode(f.read()).decode()
     btn = ""
-    if b64:<br/>
-        btn = (f'<a href="data:application/pdf;base64,{b64}" download="Documento.pdf" '<br/>
-               f'style="display:inline-block;padding:18px 50px;background:#C9A94E;color:#000;'<br/>
-               f'text-decoration:none;border-radius:50px;font-weight:700;font-size:1.2rem;margin:25px 0">📥 BAIXAR PDF</a>')<br/>
-    return (f'<html><body style="background:#0a0a0a;color:#fff;text-align:center;padding:40px;'<br/>
+    if b64:
+        btn = (f'<a href="data:application/pdf;base64,{b64}" download="Documento.pdf" 
+               f'style="display:inline-block;padding:18px 50px;background:#C9A94E;color:#000;
+               f'text-decoration:none;border-radius:50px;font-weight:700;font-size:1.2rem;margin:25px 0">📥 BAIXAR PDF</a>')
+    return (f'<html><body style="background:#0a0a0a;color:#fff;text-align:center;padding:40px;
             f'font-family:sans-serif"><h1 style="color:#C9A94E">✅ Confirmado!</h1>'
-            f'<p>Ola <b>{nome}</b>, seu {prod_nome} foi gerado.</p>{btn}'
+            f'<p>Ola <b>{nome}</b>, seu {prod_nome} foi gerado.</p>{btn}
             f'<a href="/" style="color:#C9A94E">Voltar</a></body></html>')
 # ===== DESCONTO PROGRESSIVO (server-side, bate com o resumo do index) =====
-def desconto_bc(qtd_total, empresarial=False):<br/>
-    if empresarial:<br/>
-        if qtd_total >= 3000: return 0.70<br/>
-        if qtd_total >= 2000: return 0.60<br/>
-    if qtd_total >= 2000: return 0.50<br/>
-    if qtd_total >= 1000: return 0.45<br/>
-    if qtd_total >= 500: return 0.40<br/>
-    if qtd_total >= 200: return 0.30<br/>
-    if qtd_total >= 100: return 0.25<br/>
-    if qtd_total >= 50: return 0.20<br/>
+def desconto_bc(qtd_total, empresarial=False):
+    if empresarial:
+        if qtd_total >= 3000: return 0.70
+        if qtd_total >= 2000: return 0.60
+    if qtd_total >= 2000: return 0.50
+    if qtd_total >= 1000: return 0.45
+    if qtd_total >= 500: return 0.40
+    if qtd_total >= 200: return 0.30
+    if qtd_total >= 100: return 0.25
+    if qtd_total >= 50: return 0.20
     if qtd_total >= 10: return 0.10
     return 0.0
 # ===== CRIAÇÃO DE SESSÃO STRIPE =====
-def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=None):<br/>
+def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=None):
     if lang not in PRICE_IDS or produto not in PRICE_IDS[lang]:
         raise HTTPException(status_code=400, detail="Idioma ou produto inválido")
     price_id = PRICE_IDS[lang].get(produto, "")
     nome_prod = PRODUTOS.get(lang, PRODUTOS["pt"]).get(produto, produto)
-    meta = {"tipo": produto, "lang": lang, "nome": nome, "birth": birth, "email": email}<br/>
+    meta = {"tipo": produto, "lang": lang, "nome": nome, "birth": birth, "email": email}
     if meta_extra:
         meta.update(meta_extra)
     pay_types = ["card", "boleto"] if MOEDA.get(lang, "brl") == "brl" else ["card"]
     locale = lang if lang in ["pt", "en", "es", "fr", "de", "it", "ja", "zh"] else "auto"
-    # Sucess por tipo: urna/eleitoral têm endpoints próprios de PDF<br/>
+    # Sucess por tipo: urna/eleitoral têm endpoints próprios de PDF
     if produto == "urna":
         success_url = f"{BASE_URL}/api/pay/urna-success?session_id={{CHECKOUT_SESSION_ID}}"
     elif produto == "eleitoral":
         success_url = f"{BASE_URL}/api/pay/eleitoral-success?session_id={{CHECKOUT_SESSION_ID}}"
     else:
         success_url = f"{BASE_URL}/api/pay/success?session_id={{CHECKOUT_SESSION_ID}}"
-    try:<br/>
+    try:
         if price_id and price_id.startswith("price_"):
             session = stripe.checkout.Session.create(
                 mode="payment", payment_method_types=pay_types,
@@ -669,21 +669,21 @@ def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=No
         else:
             session = stripe.checkout.Session.create(
                 mode="payment", payment_method_types=pay_types,
-                line_items=[{"price_data": {"currency": MOEDA.get(lang, "brl"),<br/>
-                    "product_data": {"name": nome_prod},<br/>
+                line_items=[{"price_data": {"currency": MOEDA.get(lang, "brl"),
+                    "product_data": {"name": nome_prod},
                     "unit_amount": preco_local(produto, lang)}, "quantity": 1}],
                 customer_email=email or None,
                 locale=locale, metadata=meta,
                 success_url=success_url,
                 cancel_url=f"{BASE_URL}/api/pay/cancel")
-        return {"id": session.id, "url": session.url}<br/>
-    except Exception as e:<br/>
+        return {"id": session.id, "url": session.url}
+    except Exception as e:
         logger.error(f"Stripe: {e}")
         raise HTTPException(500, "Erro ao criar pagamento")
 # ===== ROTA GENÉRICA /pay/{produto} (15 produtos — alinhada ao index) =====
 _ALIAS_PRODUTO = {"complete": "completo"}
 @app.post("/pay/{produto}")
-def pay_produto(produto: str, req: PayReq):<br/>
+def pay_produto(produto: str, req: PayReq):
     if not STRIPE_KEY:
         raise HTTPException(503, "Stripe não configurado")
     produto = _ALIAS_PRODUTO.get(produto, produto)
@@ -693,7 +693,7 @@ def pay_produto(produto: str, req: PayReq):<br/>
     return _criar_sessao(produto, lang, req.email, nome, nasc)
 # ===== CHECKOUT NOME DE URNA (POST /pay/urna — sem email obrigatório, Plano B) =====
 @app.post("/pay/urna")
-def pay_urna(req: UrnaPayReq):<br/>
+def pay_urna(req: UrnaPayReq):
     if not STRIPE_KEY:
         raise HTTPException(503, "Stripe não configurado")
     if len(req.nome_completo.strip()) < 3:
@@ -701,25 +701,25 @@ def pay_urna(req: UrnaPayReq):<br/>
     nomes = [n.strip() for n in [req.nome1, req.nome2, req.nome3, req.nome4, req.nome5] if n.strip()]
     if not nomes:
         raise HTTPException(400, "Pelo menos 1 nome")
-    meta = {"tipo": "urna", "lang": req.lang or "pt", "nome_completo": req.nome_completo,<br/>
-            "cargo": req.cargo, "email": req.email, "nome": req.nome_completo}<br/>
+    meta = {"tipo": "urna", "lang": req.lang or "pt", "nome_completo": req.nome_completo,
+            "cargo": req.cargo, "email": req.email, "nome": req.nome_completo}
     for i, n in enumerate(nomes, 1):
         meta[f"nome{i}"] = n
     return _criar_sessao("urna", req.lang or "pt", req.email, req.nome_completo, "", meta)
 # ===== CHECKOUT NÚMERO ELEITORAL (POST /pay/eleitoral — sem email obrigatório, Plano B) =====
 @app.post("/pay/eleitoral")
-def pay_eleitoral(req: EleitoralPayReq):<br/>
+def pay_eleitoral(req: EleitoralPayReq):
     if not STRIPE_KEY:
         raise HTTPException(503, "Stripe não configurado")
     if not req.numero or len(req.numero) < 2:
         raise HTTPException(400, "Numero obrigatorio")
-    meta = {"tipo": "eleitoral", "lang": req.lang or "pt", "sigla": req.numero,<br/>
-            "cargo": req.cargo, "email": req.email, "numero_existente": "",<br/>
+    meta = {"tipo": "eleitoral", "lang": req.lang or "pt", "sigla": req.numero,
+            "cargo": req.cargo, "email": req.email, "numero_existente": "",
             "nome_completo": req.nome_completo}
     return _criar_sessao("eleitoral", req.lang or "pt", req.email, req.nome_completo, "", meta)
 # ===== CHECKOUT COLETIVO (GET /criar-checkout-coletivo — com desconto progressivo) =====
 @app.get("/criar-checkout-coletivo")
-async def criar_checkout_coletivo(lang: str = "pt", items: str = "[]"):<br/>
+async def criar_checkout_coletivo(lang: str = "pt", items: str = "[]"):
     if not STRIPE_KEY:
         raise HTTPException(503, "Stripe não configurado")
     try:
@@ -737,15 +737,15 @@ async def criar_checkout_coletivo(lang: str = "pt", items: str = "[]"):<br/>
         if not pid or qtd <= 0 or pid == "coletivo":
             continue
         price_id = PRICE_IDS.get(lang, PRICE_IDS["pt"]).get(pid, "")
-        if price_id and price_id.startswith("price_"):<br/>
-            line_items.append({"price": price_id, "quantity": qtd})<br/>
+        if price_id and price_id.startswith("price_"):
+            line_items.append({"price": price_id, "quantity": qtd})
         else:
             unit = preco_local(pid, lang)
             if desc > 0:
                 unit = int(round(unit * (1 - desc)))
-            line_items.append({"price_data": {"currency": MOEDA.get(lang, "brl"),<br/>
-                "product_data": {"name": PRODUTOS.get(lang, PRODUTOS["pt"]).get(pid, pid)},<br/>
-                "unit_amount": unit}, "quantity": qtd})<br/>
+            line_items.append({"price_data": {"currency": MOEDA.get(lang, "brl"),
+                "product_data": {"name": PRODUTOS.get(lang, PRODUTOS["pt"]).get(pid, pid)},
+                "unit_amount": unit}, "quantity": qtd})
     if not line_items:
         raise HTTPException(400, "Itens inválidos")
     pay_types = ["card", "boleto"] if MOEDA.get(lang, "brl") == "brl" else ["card"]
@@ -778,7 +778,7 @@ def pay_success(request: Request):
             bd = "2000-01-01"
         data = calc(nome, bd)
         db = SessionLocal()
-        try:<br/>
+        try:
             db.add(Order(id=uuid.uuid4().hex[:12], email=email or "sem-email",
                          product=prod, price=float(getattr(s, "amount_total", 0) or 0) / 100,
                          status="paid", payment_id=sid))
@@ -802,7 +802,7 @@ def pay_success(request: Request):
         if pf and os.path.exists(pf):
             os.remove(pf)
         return HTMLResponse(html)
-    except Exception as e:<br/>
+    except Exception as e:
         logger.error(f"Success: {e}")
         return HTMLResponse("ERRO")
 @app.get("/api/pay/urna-success")
@@ -847,9 +847,9 @@ def pay_eleitoral_success(request: Request):
         cl2 = cl_map.get(cr, cr)
         sugs = gerar_numeros(sg, cr)
         ni = None
-        if ne_str and len(ne_str) >= 3:<br/>
-            try:<br/>
-                ni = {"numero": ne_str, "energia": r1(sum(int(d) for d in ne_str))}<br/>
+        if ne_str and len(ne_str) >= 3:
+            try:
+                ni = {"numero": ne_str, "energia": r1(sum(int(d) for d in ne_str))}
             except Exception:
                 pass
         pf = pdf_eleitoral(ss, cl2, sugs, ni)
@@ -866,7 +866,7 @@ def pay_cancel():
 @app.post("/calculate")
 def calculate(req: PayReq):
     db = SessionLocal()
-    try:<br/>
+    try:
         if len(req.name.strip()) < 2:
             raise HTTPException(400, "Nome curto")
         if not req.birth_date:
@@ -876,10 +876,10 @@ def calculate(req: PayReq):
         db.add(Calc(id=cid, name=req.name, birth_date=req.birth_date, email=req.email or "", **res))
         db.commit()
         res["download_pdf"] = False
-        return {"id": cid, **res}<br/>
+        return {"id": cid, **res}
     except HTTPException:
         raise
-    except Exception as e:<br/>
+    except Exception as e:
         logger.error(f"Calc: {e}")
         raise HTTPException(500, "Erro")
     finally:
@@ -896,21 +896,21 @@ def calc_eleitoral(req: EleitoralPayReq):
     return {"sugestoes": sugs}
 # ===== ROTAS BASE =====
 @app.get("/")
-def root():<br/>
+def root():
     try:
         return HTMLResponse(open(os.path.join(os.path.dirname(__file__), "static", "index.html"),
                                  "r", encoding="utf-8").read())
-    except Exception:<br/>
+    except Exception:
         try:
             return HTMLResponse(open(os.path.join(os.path.dirname(__file__), "index.html"),
                                      "r", encoding="utf-8").read())
         except Exception:
             return HTMLResponse("<h1>API ativa</h1>")
 @app.get("/config")
-def config():<br/>
+def config():
     return {"stripe_pk": STRIPE_PUB}
 @app.get("/api/health")
-def health():<br/>
+def health():
     return {"status": "ok", "stripe": bool(STRIPE_KEY), "sendgrid": bool(SENDGRID_KEY)}
 # ===== WEBHOOK STRIPE =====
 @app.post("/stripe-webhook")
@@ -918,27 +918,27 @@ async def stripe_webhook(req: Request):
     payload = await req.body()
     sig = req.headers.get("stripe-signature", "")
     whsec = os.getenv("STRIPE_WEBHOOK_SECRET", "")
-    if whsec:<br/>
+    if whsec:
         try:
             event = stripe.Webhook.construct_event(payload, sig, whsec)
         except Exception:
             raise HTTPException(400, "Assinatura inválida")
     else:
         data = json.loads(payload)
-        event = {"type": data.get("type", ""), "data": data.get("data", {})}<br/>
+        event = {"type": data.get("type", ""), "data": data.get("data", {})}
     if event["type"] == "checkout.session.completed":
         sess = event["data"]["object"]
-        logger.info(f"Pagamento confirmado: {sess.get('id')}")<br/>
+        logger.info(f"Pagamento confirmado: {sess.get('id')}")
     return {"ok": True}
 # ===== SISTEMA DE BÔNUS =====
 ARQ_BONUS = "bonus_codes.json"
-def _carregar_codigos():<br/>
-    try:<br/>
+def _carregar_codigos():
+    try:
         with open(ARQ_BONUS, "r", encoding="utf-8") as f:
             return json.load(f)
     except FileNotFoundError:
         return {}
-def _salvar_codigos(dados):<br/>
+def _salvar_codigos(dados):
     with open(ARQ_BONUS, "w", encoding="utf-8") as f:
         json.dump(dados, f, ensure_ascii=False, indent=2)
 def _gerar_codigo_bonus():
@@ -950,9 +950,9 @@ def _gerar_codigo_bonus():
 async def ativar_bonus(req: AtivarBonusReq):
     codigos = _carregar_codigos()
     info = codigos.get(req.codigo)
-    if not info:<br/>
-        return {"ok": False, "msg": "Código não encontrado"}<br/>
-    if info.get("usado"):<br/>
+    if not info:
+        return {"ok": False, "msg": "Código não encontrado"}
+    if info.get("usado"):
         return {"ok": False, "msg": "Código já utilizado"}
     info["usado"] = True
     info["data_uso"] = datetime.now().isoformat()
@@ -965,33 +965,33 @@ async def gerar_codigos_coletivo(req: Request):
     itens = corpo.get("itens", [])
     codigos = _carregar_codigos()
     gerados = []
-    for item in itens:<br/>
+    for item in itens:
         for _ in range(item["qtd"]):
             cod = _gerar_codigo_bonus()
-            codigos[cod] = {"produto": item["produto"], "usado": False}<br/>
+            codigos[cod] = {"produto": item["produto"], "usado": False}
             gerados.append({"codigo": cod, "produto": item["produto"]})
     _salvar_codigos(codigos)
     return {"ok": True, "total": len(gerados), "codigos": gerados}
 # ===== CAIXA DE SUGESTÕES + BÔNUS =====
 @app.post("/sugestao")
-async def receber_sugestao(req: SugestaoReq):<br/>
+async def receber_sugestao(req: SugestaoReq):
     try:
         _enviar_email_simples(ADMIN_EMAIL, "Nova sugestão/reclamação — A1ELOS",
                               f"Sugestão de {req.nome} ({req.email}):
 
 {req.mensagem}")
-        return {"ok": True}<br/>
-    except Exception:<br/>
+        return {"ok": True}
+    except Exception:
         return {"ok": False}
 @app.post("/bonus")
 async def solicitar_bonus(req: BonusReq):
     codigo = "BONUS-" + secrets.token_hex(3).upper()
-    try:<br/>
-        corpo = (f"Cliente: {req.nome}<br/>
-Email: {req.email}<br/>
+    try:
+        corpo = (f"Cliente: {req.nome}
+Email: {req.email}
 Produto: {req.produto}
 "
-                 f"Código gerado: {codigo}<br/>
+                 f"Código gerado: {codigo}
 Relato:
 {req.mensagem}")
         _enviar_email_simples(ADMIN_EMAIL, "Pedido de BÔNUS — pane no pagamento", corpo)
@@ -1000,49 +1000,49 @@ Relato:
 Seu código: {codigo}
 
 A1ELOS")
-        return {"ok": True, "codigo": codigo}<br/>
-    except Exception:<br/>
+        return {"ok": True, "codigo": codigo}
+    except Exception:
         return {"ok": False}
 # ===== SISTEMA DE PUBLICIDADE GEOLOCALIZADA =====
 ARQ_BANNERS = "banners.json"
 PAIS_CONTINENTE = {
-    "BR":"SA","AR":"SA","CL":"SA","CO":"SA","PE":"SA","UY":"SA","PY":"SA","BO":"SA","EC":"SA","VE":"SA",<br/>
-    "US":"NA","CA":"NA","MX":"NA",<br/>
-    "PT":"EU","ES":"EU","FR":"EU","DE":"EU","IT":"EU","GB":"EU","RU":"EU","NL":"EU","BE":"EU","CH":"EU","AT":"EU","IE":"EU",<br/>
-    "CN":"AS","JP":"AS","IN":"AS","KR":"AS","SA":"AS","AE":"AS","IL":"AS","TR":"AS","ID":"AS","PK":"AS","BD":"AS",<br/>
-    "EG":"AF","NG":"AF","ZA":"AF","KE":"AF","MA":"AF",<br/>
+    "BR":"SA","AR":"SA","CL":"SA","CO":"SA","PE":"SA","UY":"SA","PY":"SA","BO":"SA","EC":"SA","VE":"SA",
+    "US":"NA","CA":"NA","MX":"NA",
+    "PT":"EU","ES":"EU","FR":"EU","DE":"EU","IT":"EU","GB":"EU","RU":"EU","NL":"EU","BE":"EU","CH":"EU","AT":"EU","IE":"EU",
+    "CN":"AS","JP":"AS","IN":"AS","KR":"AS","SA":"AS","AE":"AS","IL":"AS","TR":"AS","ID":"AS","PK":"AS","BD":"AS",
+    "EG":"AF","NG":"AF","ZA":"AF","KE":"AF","MA":"AF",
     "AU":"OC","NZ":"OC"
 }
-def _carregar_banners():<br/>
-    try:<br/>
+def _carregar_banners():
+    try:
         with open(ARQ_BANNERS, "r", encoding="utf-8") as f:
             return json.load(f)
     except FileNotFoundError:
         return []
-def _salvar_banners(banners):<br/>
+def _salvar_banners(banners):
     with open(ARQ_BANNERS, "w", encoding="utf-8") as f:
         json.dump(banners, f, ensure_ascii=False, indent=2)
 @app.get("/api/banner")
 async def get_banner(posicao: str = "topo", pais: str = "BR"):
     banners = _carregar_banners()
-    if not banners:<br/>
+    if not banners:
         return {"ok": False, "banner": None}
     continente = PAIS_CONTINENTE.get(pais.upper(), "")
     hoje = date.today().isoformat()
-    for b in banners:<br/>
+    for b in banners:
         if not b.get("ativo") or b.get("posicao") != posicao:
             continue
-        if b.get("tipo") == "temporario":<br/>
+        if b.get("tipo") == "temporario":
             if b.get("data_fim") and hoje > b["data_fim"]:
                 continue
             if b.get("data_inicio") and hoje < b["data_inicio"]:
                 continue
-        if b.get("escopo") == "pais" and b.get("pais") == pais.upper():<br/>
-            return {"ok": True, "banner": b}<br/>
-        if b.get("escopo") == "continente" and b.get("continente") == continente:<br/>
-            return {"ok": True, "banner": b}<br/>
-        if b.get("escopo") == "mundo":<br/>
-            return {"ok": True, "banner": b}<br/>
+        if b.get("escopo") == "pais" and b.get("pais") == pais.upper():
+            return {"ok": True, "banner": b}
+        if b.get("escopo") == "continente" and b.get("continente") == continente:
+            return {"ok": True, "banner": b}
+        if b.get("escopo") == "mundo":
+            return {"ok": True, "banner": b}
     return {"ok": False, "banner": None}
 # ===== INICIALIZAÇÃO =====
 if __name__ == "__main__":
