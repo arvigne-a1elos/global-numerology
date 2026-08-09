@@ -205,8 +205,7 @@ document.addEventListener("DOMContentLoaded", function(){
   preencher("bn-baseB",    BANNERS.base,    1);
 });
 <style>
-  
-  .bn-duplo {
+   .bn-duplo {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
@@ -223,8 +222,6 @@ document.addEventListener("DOMContentLoaded", function(){
     overflow: hidden;
     border-radius: 12px;
   }
-</style>
-  
 /* Cada slot (A ou B) ocupa metade da largura */
 .bn-duplo > div {
   flex: 1 1 48%;
@@ -234,7 +231,6 @@ document.addEventListener("DOMContentLoaded", function(){
   overflow: hidden;
   border-radius: 12px;
 }
-
 /* Responsivo: no mobile (app), os 2 banners empilham */
 @media (max-width: 768px) {
   .bn-duplo > div {
@@ -242,7 +238,6 @@ document.addEventListener("DOMContentLoaded", function(){
     min-width: 0;
   }
 }
-
 /* Item individual do banner (usado na rotação) */
 .a1-item {
   position: absolute;
@@ -254,21 +249,18 @@ document.addEventListener("DOMContentLoaded", function(){
   visibility: hidden;
   transition: opacity 0.8s ease, visibility 0.8s ease;
 }
-
 /* Banner ativo na rotação (visível) */
 .a1-item.active {
   opacity: 1;
   visibility: visible;
   position: relative; /* volta ao fluxo quando ativo */
 }
-
 /* Link e imagem dentro do banner */
 .a1-item a {
   display: block;
   width: 100%;
   height: 100%;
 }
-
 .a1-item img {
   width: 100%;
   height: auto;
@@ -276,14 +268,12 @@ document.addEventListener("DOMContentLoaded", function(){
   display: block;
   object-fit: cover;
 }
-
 /* Altura fixa para os banners horizontais (728x90 / 320x100) */
 .bn-duplo .a1-item img {
   max-height: 120px;
   width: 100%;
   object-fit: cover;
 }
-
 /* ===== POSIÇÕES (topo, central, base) ===== */
 #bannerTopo,
 #bannerCentral,
@@ -291,7 +281,7 @@ document.addEventListener("DOMContentLoaded", function(){
   display: none; /* só aparece quando tem banner */
   width: 100%;
 }
-
+</style>
 <section id="investidores">
   <h2 class="section-title" data-i18n="inv_title">Investidores e Parceiros</h2>
   <p class="section-sub" data-i18n="inv_sub">Baixe a apresentação empresarial da A1ELOS no seu idioma, gratuitamente.</p>
