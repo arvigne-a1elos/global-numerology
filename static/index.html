@@ -211,7 +211,7 @@ footer{text-align:center;padding:30px;border-top:1px solid var(--border);color:#
 </footer>
 <script>
 
-  /* ===== INICIALIZAÇÃO DE ESTADO (UMA VEZ, segura) ===== */
+// ===== INICIALIZAÇÃO DE ESTADO (UMA VEZ, segura) =====
 var langAtual = localStorage.getItem("lang") || localStorage.getItem("selectedLang") || "pt";
 if(typeof LANGUAGES !== "undefined" && LANGUAGES.length && !LANGUAGES.some(function(l){ return l.code === langAtual; })){
   langAtual = "pt";
@@ -219,6 +219,18 @@ if(typeof LANGUAGES !== "undefined" && LANGUAGES.length && !LANGUAGES.some(funct
 var nomeArmazenado = localStorage.getItem("calcNome") || "";
 var dataArmazenada = localStorage.getItem("calcData") || "";
 
+// ===== RENDERIZAR IDIOMAS =====
+function renderIdiomas(){
+  var bar = document.getElementById("langBar");
+  if(!bar) return;
+  bar.innerHTML = "";
+  if(typeof LANGUAGES === "undefined") return;
+  var atual = getLang();
+  LANGUAGES.forEach(function(l){
+    var ativo = (l.code === atual) ? " active" : "";
+    bar.innerHTML += '<button class="lang-btn' + ativo + '" data-lang="' + l.code + '" onclick="setLanguage(\'' + l.code + '\')">' + l.flag + ' ' + l.name + '</button>';
+  });
+}
 function traduzir(){
   const t = TRADUCOES[langAtual] || TRADUCOES.pt;
   document.querySelectorAll("[data-i18n]").forEach(function(el){
@@ -1189,18 +1201,7 @@ function traduzir(){
     if(t[chave] !== undefined) el.innerHTML = t[chave];
   });
 }
-// ===== RENDERIZAR IDIOMAS =====
-function renderIdiomas(){
-  var bar = document.getElementById("langBar");
-  if(!bar) return;
-  bar.innerHTML = "";
-  if(typeof LANGUAGES === "undefined") return;
-  var atual = getLang();
-  LANGUAGES.forEach(function(l){
-    var ativo = (l.code === atual) ? " active" : "";
-    bar.innerHTML += '<button class="lang-btn' + ativo + '" data-lang="' + l.code + '" onclick="setLanguage(\'' + l.code + '\')">' + l.flag + ' ' + l.name + '</button>';
-  });
-}
+
 // ===== TROCAR IDIOMA =====
 function setLanguage(code){
   langAtual = code;
