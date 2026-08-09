@@ -330,7 +330,42 @@ const LANGUAGES = [
   {code:"he",name:"HE",flag:"🇮🇱"},{code:"ar",name:"AR",flag:"🇸🇦"}
 ];
 const SIMBOLO_MOEDA = {pt:"R$",en:"US$",es:"€",it:"€",fr:"€",de:"€",ja:"¥",zh:"¥",ru:"₽",hi:"₹",he:"₪",ar:"﷼"};
-const PRECO_NUM = {pt:[8,17,26,35,44,98],en:[1.5,3.5,5,7,9,20],es:[1.5,3.5,5,7,9,20],it:[1.5,3.5,5,7,9,20],fr:[1.5,3.5,5,7,9,20],de:[1.5,3.5,5,7,9,20],ja:[250,550,800,1100,1400,3200],zh:[12,25,40,55,70,160],ru:[130,280,430,580,730,1600],hi:[120,280,430,580,730,1600],he:[5,13,19,26,33,73],ar:[6,13,19,26,33,73]};
+// ===== VALOR NUMÉRICO POR TIER =====
+var PRECO_NUM = {
+  pt: [8, 17, 26, 35, 44, 98],
+  en: [1.50, 3.50, 5.00, 7.00, 9.00, 19.00],
+  es: [1.50, 3.50, 5.00, 7.00, 9.00, 19.00],
+  it: [1.50, 3.50, 5.00, 7.00, 9.00, 19.00],
+  fr: [1.50, 3.50, 5.00, 7.00, 9.00, 19.00],
+  de: [1.50, 3.50, 5.00, 7.00, 9.00, 19.00],
+  ja: [250, 550, 850, 1200, 1500, 3300],
+  zh: [12, 25, 40, 55, 70, 150],
+  ru: [130, 280, 430, 580, 730, 1600],
+  hi: [120, 280, 430, 580, 730, 1600],
+  he: [5, 13, 19, 26, 33, 70],
+  ar: [6, 13, 19, 26, 33, 70]
+};
+// ===== TIER DE CADA PRODUTO =====
+var TIER_PRODUTO = {
+  express:0, vida:0, completo:1, ia:1,
+  urna:2, eleitoral:2, imovel:2, calendario:2,
+  artistico:3, bebe:3, assinatura:3,
+  negocio:4, casal:4, familia:5, coletivo:-1
+};
+// ===== FORMATAR PREÇO =====
+function formatarPreco(tier, lang){
+  var simb = (typeof SIMBOLO_MOEDA !== "undefined" && SIMBOLO_MOEDA[lang]) ? SIMBOLO_MOEDA[lang]
+           : (typeof SIMBOLO_MOEDA !== "undefined" && SIMBOLO_MOEDA.pt) ? SIMBOLO_MOEDA.pt : "R$";
+  var num = 0;
+  if(typeof PRECO_NUM !== "undefined"){
+    var arr = PRECO_NUM[lang] || PRECO_NUM.pt;
+    if(arr && arr[tier] !== undefined) num = arr[tier];
+  }
+  if(num === 0){ num = [8, 17, 26, 35, 44, 98][tier] || 0; }
+  var numStr = (lang === "pt" || lang === "es" || lang === "it" || lang === "fr" || lang === "de")
+    ? num.toFixed(2).replace(".", ",") : num.toFixed(2);
+  return simb + " " + numStr;
+}  
 const PRODUTO_FAIXA = {express:0,vida:0,completo:1,ia:1,urna:2,eleitoral:2,imovel:2,calendario:2,artistico:3,bebe:3,assinatura:3,negocio:4,casal:4,familia:5};
 
 const TRADUCOES = {
@@ -1023,42 +1058,6 @@ const INVESTIDORES = [
    link:"/static/Apresentacao-Empresarial-A1ELOS-DE.pdf", botao:"PDF herunterladen"}
 ];
 
-// ===== VALOR NUMÉRICO POR TIER =====
-var PRECO_NUM = {
-  pt: [8, 17, 26, 35, 44, 98],
-  en: [1.50, 3.50, 5.00, 7.00, 9.00, 19.00],
-  es: [1.50, 3.50, 5.00, 7.00, 9.00, 19.00],
-  it: [1.50, 3.50, 5.00, 7.00, 9.00, 19.00],
-  fr: [1.50, 3.50, 5.00, 7.00, 9.00, 19.00],
-  de: [1.50, 3.50, 5.00, 7.00, 9.00, 19.00],
-  ja: [250, 550, 850, 1200, 1500, 3300],
-  zh: [12, 25, 40, 55, 70, 150],
-  ru: [130, 280, 430, 580, 730, 1600],
-  hi: [120, 280, 430, 580, 730, 1600],
-  he: [5, 13, 19, 26, 33, 70],
-  ar: [6, 13, 19, 26, 33, 70]
-};
-// ===== TIER DE CADA PRODUTO =====
-var TIER_PRODUTO = {
-  express:0, vida:0, completo:1, ia:1,
-  urna:2, eleitoral:2, imovel:2, calendario:2,
-  artistico:3, bebe:3, assinatura:3,
-  negocio:4, casal:4, familia:5, coletivo:-1
-};
-// ===== FORMATAR PREÇO =====
-function formatarPreco(tier, lang){
-  var simb = (typeof SIMBOLO_MOEDA !== "undefined" && SIMBOLO_MOEDA[lang]) ? SIMBOLO_MOEDA[lang]
-           : (typeof SIMBOLO_MOEDA !== "undefined" && SIMBOLO_MOEDA.pt) ? SIMBOLO_MOEDA.pt : "R$";
-  var num = 0;
-  if(typeof PRECO_NUM !== "undefined"){
-    var arr = PRECO_NUM[lang] || PRECO_NUM.pt;
-    if(arr && arr[tier] !== undefined) num = arr[tier];
-  }
-  if(num === 0){ num = [8, 17, 26, 35, 44, 98][tier] || 0; }
-  var numStr = (lang === "pt" || lang === "es" || lang === "it" || lang === "fr" || lang === "de")
-    ? num.toFixed(2).replace(".", ",") : num.toFixed(2);
-  return simb + " " + numStr;
-}
 // ===== RENDERIZAR PRODUTOS (V4) =====
 function renderProdutos(){
   var grid = document.getElementById("produtosGrid");
