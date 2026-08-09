@@ -1024,154 +1024,12 @@ const INVESTIDORES = [
    link:"/static/Apresentacao-Empresarial-A1ELOS-DE.pdf", botao:"PDF herunterladen"}
 ];
 
-// ===== PLANO B: QR CODE DE RECUPERAÇÃO (12 idiomas) =====
-const PLANO_B = {
-  pt: {
-    pb_title: "📲 Guarde seu QR Code",
-    pb_desc: "Seu pagamento foi confirmado, mas houve um problema ao gerar o PDF agora. Não se preocupe: copie e guarde o QR Code abaixo. Você pode baixar seu mapa quantas vezes quiser, sem custo, em qualquer momento e dispositivo.",
-    pb_inst: "📱 Abra a câmera do celular e aponte para o QR Code, ou copie o link abaixo:",
-    pb_copy: "📋 Copiar Link"
-  },
-  en: {
-    pb_title: "📲 Save Your QR Code",
-    pb_desc: "Your payment was confirmed, but there was a problem generating the PDF right now. Don't worry: copy and save the QR Code below. You can download your map as many times as you want, free of charge, at any time and on any device.",
-    pb_inst: "📱 Open your phone camera and point it at the QR Code, or copy the link below:",
-    pb_copy: "📋 Copy Link"
-  },
-  es: {
-    pb_title: "📲 Guarda tu Código QR",
-    pb_desc: "Tu pago fue confirmado, pero hubo un problema al generar el PDF ahora. No te preocupes: copia y guarda el Código QR de abajo. Puedes descargar tu mapa cuantas veces quieras, sin costo, en cualquier momento y dispositivo.",
-    pb_inst: "📱 Abre la cámara del celular y apunta al Código QR, o copia el enlace de abajo:",
-    pb_copy: "📋 Copiar Enlace"
-  },
-  it: {
-    pb_title: "📲 Conserva il tuo Codice QR",
-    pb_desc: "Il tuo pagamento è stato confermato, ma c'è stato un problema nella generazione del PDF ora. Non preoccuparti: copia e conserva il Codice QR qui sotto. Puoi scaricare la tua mappa quante volte vuoi, senza costi, in qualsiasi momento e dispositivo.",
-    pb_inst: "📱 Apri la fotocamera del telefono e inquadra il Codice QR, oppure copia il link qui sotto:",
-    pb_copy: "📋 Copia Link"
-  },
-  fr: {
-    pb_title: "📲 Gardez votre Code QR",
-    pb_desc: "Votre paiement a été confirmé, mais un problème est survenu lors de la génération du PDF. Pas d'inquiétude : copiez et conservez le Code QR ci-dessous. Vous pouvez télécharger votre carte autant de fois que vous voulez, gratuitement, à tout moment et sur n'importe quel appareil.",
-    pb_inst: "📱 Ouvrez la caméra de votre téléphone et pointez-la vers le Code QR, ou copiez le lien ci-dessous :",
-    pb_copy: "📋 Copier le Lien"
-  },
-  de: {
-    pb_title: "📲 Speichern Sie Ihren QR-Code",
-    pb_desc: "Ihre Zahlung wurde bestätigt, aber es gab gerade ein Problem beim Erstellen der PDF. Keine Sorge: Kopieren und speichern Sie den QR-Code unten. Sie können Ihre Karte beliebig oft und kostenlos herunterladen, jederzeit und auf jedem Gerät.",
-    pb_inst: "📱 Öffnen Sie die Handykamera und richten Sie sie auf den QR-Code, oder kopieren Sie den Link unten:",
-    pb_copy: "📋 Link Kopieren"
-  },
-  ja: {
-    pb_title: "📲 QRコードを保存してください",
-    pb_desc: "お支払いは確認されましたが、PDFの生成で問題が発生しました。ご安心ください：下のQRコードをコピーして保存してください。マップは何度でも無料で、いつでもどのデバイスからでもダウンロードできます。",
-    pb_inst: "📱 スマホのカメラを開いてQRコードに向けるか、下のリンクをコピーしてください：",
-    pb_copy: "📋 リンクをコピー"
-  },
-  zh: {
-    pb_title: "📲 保存您的二维码",
-    pb_desc: "您的付款已确认，但生成PDF时出现了问题。别担心：请复制并保存下方的二维码。您可以随时在任何设备上免费下载您的命理地图，次数不限。",
-    pb_inst: "📱 打开手机相机对准二维码，或复制下方链接：",
-    pb_copy: "📋 复制链接"
-  },
-  ru: {
-    pb_title: "📲 Сохраните свой QR-код",
-    pb_desc: "Ваш платёж подтверждён, но при создании PDF возникла проблема. Не волнуйтесь: скопируйте и сохраните QR-код ниже. Вы можете скачивать свою карту сколько угодно раз, бесплатно, в любое время и на любом устройстве.",
-    pb_inst: "📱 Откройте камеру телефона и наведите на QR-код, или скопируйте ссылку ниже:",
-    pb_copy: "📋 Скопировать ссылку"
-  },
-  hi: {
-    pb_title: "📲 अपना QR कोड सहेजें",
-    pb_desc: "आपका भुगतान पुष्ट हो गया है, लेकिन अभी PDF बनाने में समस्या आई। चिंता न करें: नीचे दिए गए QR कोड को कॉपी करके सहेज लें। आप अपना मानचित्र कितनी भी बार, बिना किसी शुल्क के, किसी भी समय और किसी भी डिवाइस पर डाउनलोड कर सकते हैं।",
-    pb_inst: "📱 फ़ोन का कैमरा खोलें और QR कोड पर लक्ष्य करें, या नीचे दिया गया लिंक कॉपी करें:",
-    pb_copy: "📋 लिंक कॉपी करें"
-  },
-  he: {
-    pb_title: "📲 שמור את קוד ה-QR שלך",
-    pb_desc: "התשלום שלך אושר, אך הייתה בעיה ביצירת ה-PDF כרגע. אל דאגה: העתק ושמור את קוד ה-QR למטה. תוכל להוריד את המפה שלך כמה פעמים שתרצה, ללא עלות, בכל זמן ובכל מכשיר.",
-    pb_inst: "📱 פתח את מצלמת הטלפון וכיוון אל קוד ה-QR, או העתק את הקישור למטה:",
-    pb_copy: "📋 העתק קישור"
-  },
-  ar: {
-    pb_title: "📲 احفظ رمز QR الخاص بك",
-    pb_desc: "تم تأكيد دفعتك، ولكن حدثت مشكلة في إنشاء ملف PDF الآن. لا تقلق: انسخ واحفظ رمز QR أدناه. يمكنك تنزيل خريطتك عدة مرات كما تريد، دون أي تكلفة، في أي وقت وعلى أي جهاز.",
-    pb_inst: "📱 افتح كاميرا الهاتف ووجّهها نحو رمز QR، أو انسخ الرابط أدناه:",
-    pb_copy: "📋 نسخ الرابط"
-  }
-};
-  
-  // Catálogo: aceita PRODUTOS_META ou PRODUTOS (o nome real do seu arquivo)
-  var catalogo = (typeof PRODUTOS_META !== "undefined") ? PRODUTOS_META :
-                 (typeof PRODUTOS !== "undefined") ? PRODUTOS : [];
-  if(!catalogo || !catalogo.forEach) return;
-
-  // Moeda e preços com verificação segura
-  var moeda = (typeof SIMBOLO_MOEDA !== "undefined" && SIMBOLO_MOEDA[lang]) ? SIMBOLO_MOEDA[lang] : "R$";
-  var precos = (typeof PRECO_NUM !== "undefined") ? (PRECO_NUM[lang] || PRECO_NUM.pt) : null;
-  var sobConsulta = (typeof TRADUCOES !== "undefined" && TRADUCOES[lang] && TRADUCOES[lang].sob_consulta) ? TRADUCOES[lang].sob_consulta : "Sob consulta";
-
-  catalogo.forEach(function(p){
-    var nomeProd = (NOMES[lang] && NOMES[lang][p.id]) ? NOMES[lang][p.id] : (NOMES.pt && NOMES.pt[p.id]) || p.id;
-    var desc = (PRODUTOS_DESC[lang] && PRODUTOS_DESC[lang][p.id]) ? PRODUTOS_DESC[lang][p.id] : (p.desc || "");
-    var feats = (PRODUTOS_FEATS[lang] && PRODUTOS_FEATS[lang][p.id]) ? PRODUTOS_FEATS[lang][p.id] : (p.features || p.feats || []);
-    var icone = (i.flag || i.flag || "");
-    var tier = (p.tier !== undefined) ? p.tier : p.precoTier;
-    var preco = sobConsulta;
-    if(tier !== undefined && precos && precos[tier] !== undefined){
-      preco = moeda + " " + precos[tier];
-    } else if(p.preco !== undefined){
-      preco = p.preco;
-    }
-    var badge = "";
-    if(p.badge === "RECOMENDADO") badge = '<span class="badge">RECOMENDADO</span>';
-    if(p.badge === "PREMIUM") badge = '<span class="badge premium">PREMIUM</span>';
-    var featsHtml = "";
-    feats.forEach(function(f){ featsHtml += "<li>✅ " + f + "</li>"; });
-    var esp = (p.special !== undefined) ? p.special : p.especial;
-    var btnAcao = "onclick=\"comprar('" + p.id + "')\"";
-    var btnLabel = "Comprar";
-    if(esp === "urna"){ btnAcao = "onclick=\"toggleForm('urna')\""; btnLabel = "Iniciar Validação"; }
-    if(esp === "eleitoral"){ btnAcao = "onclick=\"toggleForm('eleitoral')\""; btnLabel = "Calcular Nº Eleitoral"; }
-    if(esp === "coletivo"){ btnAcao = "onclick=\"document.getElementById('corporativo').scrollIntoView()\""; btnLabel = "Saiba Mais"; }
-    grid.innerHTML += '<div class="product-card">' + badge +
-      '<div style="font-size:2.5rem">' + icone + '</div>' +
-      '<h3>' + nomeProd + '</h3>' +
-      '<div class="price">' + preco + '</div>' +
-      '<p class="desc">' + desc + '</p>' +
-      '<ul>' + featsHtml + '</ul>' +
-      '<button class="btn" ' + btnAcao + '>' + btnLabel + '</button></div>';
-  });
-}
-  
-// ===== UTILITÁRIO DE IDIOMA (resolve lang com segurança) =====
-function getLang(){
-  return (typeof langAtual !== "undefined" && langAtual) ? langAtual : "pt";
-}
-
-// ===== RENDERIZAR PRODUTOS (V4 — unificada: robustez + moeda por idioma + badges traduzidos) =====
-function renderProdutos(){
-  var grid = document.getElementById("produtosGrid");
-  if(!grid) return;
-  grid.innerHTML = "";
-
 // ===== SÍMBOLO DA MOEDA POR IDIOMA =====
 var SIMBOLO_MOEDA = {
-  pt: "R$",
-  en: "US$",
-  es: "€",
-  it: "€",
-  fr: "€",
-  de: "€",
-  ja: "¥",
-  zh: "¥",
-  ru: "₽",
-  hi: "₹",
-  he: "₪",
-  ar: "﷼"
+  pt: "R$", en: "US$", es: "€", it: "€", fr: "€", de: "€",
+  ja: "¥", zh: "¥", ru: "₽", hi: "₹", he: "₪", ar: "﷼"
 };
-
-// ===== VALOR NUMÉRICO POR TIER (base em R$, convertido por idioma) =====
-// Tier 0 = R$8 · Tier 1 = R$17 · Tier 2 = R$26 · Tier 3 = R$35 · Tier 4 = R$44 · Tier 5 = R$98
+// ===== VALOR NUMÉRICO POR TIER =====
 var PRECO_NUM = {
   pt: [8, 17, 26, 35, 44, 98],
   en: [1.50, 3.50, 5.00, 7.00, 9.00, 19.00],
@@ -1186,56 +1044,39 @@ var PRECO_NUM = {
   he: [5, 13, 19, 26, 33, 70],
   ar: [6, 13, 19, 26, 33, 70]
 };
-
-// ===== TIER DE CADA PRODUTO (para formatarPreco nos botões) =====
+// ===== TIER DE CADA PRODUTO =====
 var TIER_PRODUTO = {
   express:0, vida:0, completo:1, ia:1,
   urna:2, eleitoral:2, imovel:2, calendario:2,
   artistico:3, bebe:3, assinatura:3,
-  negocio:4, casal:4,
-  familia:5,
-  coletivo:-1
+  negocio:4, casal:4, familia:5, coletivo:-1
 };
-
-// ===== FORMATAR PREÇO (moeda correta por idioma) =====
+// ===== FORMATAR PREÇO =====
 function formatarPreco(tier, lang){
-  // Símbolo da moeda (SIMBOLO_MOEDA[lang] → fallback pt → R$)
   var simb = (typeof SIMBOLO_MOEDA !== "undefined" && SIMBOLO_MOEDA[lang]) ? SIMBOLO_MOEDA[lang]
-           : (typeof SIMBOLO_MOEDA !== "undefined" && SIMBOLO_MOEDA.pt) ? SIMBOLO_MOEDA.pt
-           : "R$";
-
-  // Valor numérico por tier (PRECO_NUM[lang][tier] → fallback pt → padrão)
+           : (typeof SIMBOLO_MOEDA !== "undefined" && SIMBOLO_MOEDA.pt) ? SIMBOLO_MOEDA.pt : "R$";
   var num = 0;
   if(typeof PRECO_NUM !== "undefined"){
     var arr = PRECO_NUM[lang] || PRECO_NUM.pt;
     if(arr && arr[tier] !== undefined) num = arr[tier];
   }
   if(num === 0){ num = [8, 17, 26, 35, 44, 98][tier] || 0; }
-
-  // Formata: vírgula nos idiomas que usam (pt/es/it/fr/de), ponto nos demais
   var numStr = (lang === "pt" || lang === "es" || lang === "it" || lang === "fr" || lang === "de")
-    ? num.toFixed(2).replace(".", ",")
-    : num.toFixed(2);
-
+    ? num.toFixed(2).replace(".", ",") : num.toFixed(2);
   return simb + " " + numStr;
 }
-  
-  // Idioma seguro (getLang → langAtual → pt)
+// ===== RENDERIZAR PRODUTOS (V4) =====
+function renderProdutos(){
+  var grid = document.getElementById("produtosGrid");
+  if(!grid) return;
+  grid.innerHTML = "";
   var lang = (typeof getLang === "function") ? getLang()
-           : (typeof langAtual !== "undefined" && typeof TRADUCOES !== "undefined" && TRADUCOES[langAtual]) ? langAtual
-           : "pt";
-
-  // Catálogo com fallback (PRODUTOS_META ou PRODUTOS)
+           : (typeof langAtual !== "undefined" && typeof TRADUCOES !== "undefined" && TRADUCOES[langAtual]) ? langAtual : "pt";
   var catalogo = (typeof PRODUTOS_META !== "undefined") ? PRODUTOS_META
-               : (typeof PRODUTOS !== "undefined") ? PRODUTOS
-               : [];
+               : (typeof PRODUTOS !== "undefined") ? PRODUTOS : [];
   if(!catalogo || !catalogo.forEach) return;
-
-  // Moeda e preços (fallback caso formatarPreco não exista)
   var moeda = (typeof SIMBOLO_MOEDA !== "undefined" && SIMBOLO_MOEDA[lang]) ? SIMBOLO_MOEDA[lang] : "R$";
   var precos = (typeof PRECO_NUM !== "undefined") ? (PRECO_NUM[lang] || PRECO_NUM.pt) : null;
-
-  // Traduções de UI
   var t = (typeof TRADUCOES !== "undefined" && TRADUCOES[lang]) ? TRADUCOES[lang]
         : (typeof TRADUCOES !== "undefined" ? TRADUCOES.pt : {});
   var sobConsulta = t.sob_consulta || "Sob Consulta";
@@ -1243,64 +1084,37 @@ function formatarPreco(tier, lang){
   var btnUrna = t.start_urna || "Iniciar Validação";
   var btnEleitoral = t.start_eleitoral || "Calcular Nº Eleitoral";
   var btnColetivo = t.know_more || "Saiba Mais";
-
   catalogo.forEach(function(p){
-    // Nome traduzido (NOMES[lang][id]) com fallback
     var nome = (typeof NOMES !== "undefined" && NOMES[lang] && NOMES[lang][p.id]) ? NOMES[lang][p.id]
-             : (typeof NOMES !== "undefined" && NOMES.pt && NOMES.pt[p.id]) ? NOMES.pt[p.id]
-             : p.id;
-
-    // Descrição traduzida com fallback
+             : (typeof NOMES !== "undefined" && NOMES.pt && NOMES.pt[p.id]) ? NOMES.pt[p.id] : p.id;
     var desc = (typeof PRODUTOS_DESC !== "undefined" && PRODUTOS_DESC[lang] && PRODUTOS_DESC[lang][p.id]) ? PRODUTOS_DESC[lang][p.id]
              : (typeof PRODUTOS_DESC !== "undefined" && PRODUTOS_DESC.pt && PRODUTOS_DESC.pt[p.id]) ? PRODUTOS_DESC.pt[p.id]
              : (p.desc || "");
-
-    // Features traduzidas (aceita features ou feats)
     var feats = (typeof PRODUTOS_FEATS !== "undefined" && PRODUTOS_FEATS[lang] && PRODUTOS_FEATS[lang][p.id]) ? PRODUTOS_FEATS[lang][p.id]
               : (typeof PRODUTOS_FEATS !== "undefined" && PRODUTOS_FEATS.pt && PRODUTOS_FEATS.pt[p.id]) ? PRODUTOS_FEATS.pt[p.id]
               : (p.features || p.feats || []);
-
-    // Ícone com fallback
     var icone = p.icon || p.icone || "🔮";
-
-    // Tier com fallback
     var tier = (p.tier !== undefined) ? p.tier : p.precoTier;
-
-    // Preço na moeda do idioma (coletivo = Sob Consulta)
     var preco = sobConsulta;
-    if(p.special === "coletivo" || p.especial === "coletivo" || tier < 0){
-      preco = sobConsulta;
-    } else if(typeof formatarPreco === "function" && tier !== undefined && tier >= 0){
-      preco = formatarPreco(tier, lang);
-    } else if(precos && tier !== undefined && precos[tier] !== undefined){
-      preco = moeda + " " + precos[tier];
-    } else if(p.preco !== undefined){
-      preco = p.preco;
-    }
-
-    // Badge traduzido (com classe premium para destaque)
+    if(p.special === "coletivo" || p.especial === "coletivo" || tier < 0){ preco = sobConsulta; }
+    else if(typeof formatarPreco === "function" && tier !== undefined && tier >= 0){ preco = formatarPreco(tier, lang); }
+    else if(precos && tier !== undefined && precos[tier] !== undefined){ preco = moeda + " " + precos[tier]; }
+    else if(p.preco !== undefined){ preco = p.preco; }
     var badge = "";
     if(p.badge){
       var badgeTxt = (p.badge === "RECOMENDADO") ? (t.badge_recomendado || "RECOMENDADO")
-                   : (p.badge === "PREMIUM") ? (t.badge_premium || "PREMIUM")
-                   : p.badge;
+                   : (p.badge === "PREMIUM") ? (t.badge_premium || "PREMIUM") : p.badge;
       var badgeCls = (p.badge === "PREMIUM") ? ' class="badge premium"' : ' class="badge"';
       badge = '<span' + badgeCls + '>' + badgeTxt + '</span>';
     }
-
-    // Features HTML (mantém o marcador ✅ do site)
     var featsHtml = "";
     (feats || []).forEach(function(f){ featsHtml += "<li>✅ " + f + "</li>"; });
-
-    // Ação especial (aceita special ou especial)
     var esp = (p.special !== undefined) ? p.special : p.especial;
     var btnAcao = "onclick=\"comprar('" + p.id + "')\"";
     var btnLabel = btnComprar;
     if(esp === "urna"){ btnAcao = "onclick=\"toggleForm('urna')\""; btnLabel = btnUrna; }
     if(esp === "eleitoral"){ btnAcao = "onclick=\"toggleForm('eleitoral')\""; btnLabel = btnEleitoral; }
     if(esp === "coletivo"){ btnAcao = "onclick=\"document.getElementById('corporativo').scrollIntoView()\""; btnLabel = btnColetivo; }
-
-    // Monta o card (mantém as classes CSS originais do site)
     grid.innerHTML += '<div class="product-card">' + badge +
       '<div style="font-size:2.5rem">' + icone + '</div>' +
       '<h3>' + nome + '</h3>' +
@@ -1310,31 +1124,19 @@ function formatarPreco(tier, lang){
       '<button class="btn" ' + btnAcao + '>' + btnLabel + '</button></div>';
   });
 }
-  
-// ===== ENERGIAS → SERVIÇOS (3 botões por energia, 12 idiomas) =====
+// ===== ENERGIAS → SERVIÇOS =====
 const ENERGIA_SERVICOS = {
-  1: ["negocio", "completo", "casal"],      // Liderança
-  2: ["casal", "familia", "completo"],      // Cooperação
-  3: ["artistico", "bebe", "negocio"],      // Criatividade
-  4: ["negocio", "imovel", "completo"],     // Trabalho
-  5: ["artistico", "bebe", "assinatura"],   // Liberdade
-  6: ["familia", "bebe", "casal"],          // Família
-  7: ["completo", "ia", "assinatura"],      // Sabedoria
-  8: ["urna", "eleitoral", "negocio"],      // Poder e Prosperidade
-  9: ["coletivo", "familia", "completo"]    // Humanitarismo
+  1: ["negocio", "completo", "casal"],
+  2: ["casal", "familia", "completo"],
+  3: ["artistico", "bebe", "negocio"],
+  4: ["negocio", "imovel", "completo"],
+  5: ["artistico", "bebe", "assinatura"],
+  6: ["familia", "bebe", "casal"],
+  7: ["completo", "ia", "assinatura"],
+  8: ["urna", "eleitoral", "negocio"],
+  9: ["coletivo", "familia", "completo"]
 };
-
-/ ===== TIER DE CADA PRODUTO (para formatarPreco nos botões das energias) =====
-const TIER_PRODUTO = {
-  express:0, vida:0, completo:1, ia:1,
-  urna:2, eleitoral:2, imovel:2, calendario:2,
-  artistico:3, bebe:3, assinatura:3,
-  negocio:4, casal:4,
-  familia:5,
-  coletivo:-1
-};
-
-// ===== RENDERIZAR ENERGIAS (1-9, 12 idiomas, 3 botões com preço por moeda) =====
+// ===== RENDERIZAR ENERGIAS =====
 function renderEnergias(){
   var grid = document.getElementById("energiasGrid");
   if(!grid) return;
@@ -1356,34 +1158,26 @@ function renderEnergias(){
     var botoesHtml = "";
     servicos.forEach(function(pid){
       var nomeServ = (typeof NOMES !== "undefined" && NOMES[lang] && NOMES[lang][pid]) ? NOMES[lang][pid]
-                   : (typeof NOMES !== "undefined" && NOMES.pt && NOMES.pt[pid]) ? NOMES.pt[pid]
-                   : pid;
-      // Ação e rótulo (especiais urna/eleitoral/coletivo)
+                   : (typeof NOMES !== "undefined" && NOMES.pt && NOMES.pt[pid]) ? NOMES.pt[pid] : pid;
       var acao = "onclick=\"comprar('" + pid + "')\"";
       var label = btnComprar;
       if(pid === "urna"){ acao = "onclick=\"toggleForm('urna')\""; label = btnUrna; }
       if(pid === "eleitoral"){ acao = "onclick=\"toggleForm('eleitoral')\""; label = btnEleitoral; }
       if(pid === "coletivo"){ acao = "onclick=\"document.getElementById('corporativo').scrollIntoView()\""; label = btnColetivo; }
-      // Preço na moeda do idioma (coletivo mostra "Sob Consulta")
       var precoStr = "";
       var tier = (typeof TIER_PRODUTO !== "undefined") ? TIER_PRODUTO[pid] : undefined;
-      if(pid === "coletivo"){
-        precoStr = " · " + sobConsulta;
-      } else if(tier !== undefined && tier >= 0 && typeof formatarPreco === "function"){
-        precoStr = " · " + formatarPreco(tier, lang);
-      }
+      if(pid === "coletivo"){ precoStr = " · " + sobConsulta; }
+      else if(tier !== undefined && tier >= 0 && typeof formatarPreco === "function"){ precoStr = " · " + formatarPreco(tier, lang); }
       botoesHtml += '<button class="btn btn-outline" style="font-size:.72rem;padding:6px 10px;margin:3px" ' + acao + '>' + nomeServ + precoStr + '</button>';
     });
     grid.innerHTML += '<div class="card" style="max-width:220px">' +
       '<div style="font-size:2rem;color:var(--gold);font-weight:700;text-align:center">' + n + '</div>' +
       '<h3 style="text-align:center">' + titulo + '</h3>' +
       '<p style="font-size:.8rem;color:#bbb;text-align:center">' + desc + '</p>' +
-      '<div style="display:flex;flex-wrap:wrap;justify-content:center;margin-top:10px">' + botoesHtml + '</div>' +
-      '</div>';
+      '<div style="display:flex;flex-wrap:wrap;justify-content:center;margin-top:10px">' + botoesHtml + '</div></div>';
   }
 }
-
-// ===== GETLANG (helper seguro de idioma) =====
+// ===== GETLANG =====
 function getLang(){
   if(typeof langAtual !== "undefined" && langAtual) return langAtual;
   try{
@@ -1392,8 +1186,7 @@ function getLang(){
   }catch(e){}
   return "pt";
 }
-
-// ===== TRADUZIR (aplica textos data-i18n do idioma atual) =====
+// ===== TRADUZIR =====
 function traduzir(){
   if(typeof TRADUCOES === "undefined") return;
   var lang = getLang();
@@ -1403,8 +1196,7 @@ function traduzir(){
     if(t[chave] !== undefined) el.innerHTML = t[chave];
   });
 }
-
-// ===== RENDERIZAR IDIOMAS (barra, com destaque do ativo) =====
+// ===== RENDERIZAR IDIOMAS =====
 function renderIdiomas(){
   var bar = document.getElementById("langBar");
   if(!bar) return;
@@ -1416,8 +1208,7 @@ function renderIdiomas(){
     bar.innerHTML += '<button class="lang-btn' + ativo + '" data-lang="' + l.code + '" onclick="setLanguage(\'' + l.code + '\')">' + l.flag + ' ' + l.name + '</button>';
   });
 }
-
-// ===== TROCAR IDIOMA (persiste, re-renderiza tudo, RTL + banners) =====
+// ===== TROCAR IDIOMA =====
 function setLanguage(code){
   langAtual = code;
   localStorage.setItem("lang", code);
@@ -1432,43 +1223,33 @@ function setLanguage(code){
   document.documentElement.lang = (code === "pt") ? "pt-BR" : code;
   document.documentElement.dir = (code === "he" || code === "ar") ? "rtl" : "ltr";
   if(typeof carregarBanners === "function"){
-    carregarBanners("topo");
-    carregarBanners("central");
-    carregarBanners("base");
+    carregarBanners("topo"); carregarBanners("central"); carregarBanners("base");
   }
 }
-// ===== RENDERIZAR INVESTIDORES (links de PDF para download) =====
-// ===== RENDERIZAR INVESTIDORES (V3 — link real + rótulo traduzido) =====
+// ===== RENDERIZAR INVESTIDORES (V3) =====
 function renderInvestidores(){
   var grid = document.getElementById("investidoresGrid");
   if(!grid) return;
   grid.innerHTML = "";
   if(typeof INVESTIDORES === "undefined" || !INVESTIDORES.forEach) return;
-
-  // Idioma seguro
   var lang = (typeof langAtual !== "undefined" && typeof TRADUCOES !== "undefined" && TRADUCOES[langAtual]) ? langAtual : "pt";
   var t = (typeof TRADUCOES !== "undefined" && TRADUCOES[lang]) ? TRADUCOES[lang] : {};
   var btnDownload = t.download || "Baixar PDF";
-
   INVESTIDORES.forEach(function(i){
-    // Link real do PDF (com fallback seguro)
     var href = (i.link && i.link !== "") ? i.link : "#";
     var alvo = (href === "#") ? '' : ' target="_blank" rel="noopener"';
-
     grid.innerHTML += '<div class="card">' +
       '<div style="font-size:2.5rem">' + i.flag + '</div>' +
       '<h3>' + i.nome + '</h3>' +
       '<p style="font-size:.85rem;color:#bbb">' + i.desc + '</p>' +
-      '<a class="btn btn-outline" href="' + href + '"' + alvo + '>' + btnDownload + '</a>' +
-      '</div>';
+      '<a class="btn btn-outline" href="' + href + '"' + alvo + '>' + btnDownload + '</a></div>';
   });
 }
-
-// ===== DESCONTO PROGRESSIVO (10% a 70% — 60/70% no fluxo empresarial) =====
+// ===== DESCONTO PROGRESSIVO =====
 function descontoBC(q, empresarial){
   if(empresarial){
-    if(q >= 3000) return 0.70;   // 70% empresarial
-    if(q >= 2000) return 0.60;   // 60% empresarial
+    if(q >= 3000) return 0.70;
+    if(q >= 2000) return 0.60;
   }
   if(q >= 2000) return 0.50;
   if(q >= 1000) return 0.45;
@@ -1479,31 +1260,26 @@ function descontoBC(q, empresarial){
   if(q >= 10)   return 0.10;
   return 0;
 }
-
-// ===== MONTAR TABELA BÔNUS COLETIVO (fluxo empresarial) =====
+// ===== MONTAR TABELA BÔNUS COLETIVO =====
 function montarTabelaBC(){
   var tbody = document.getElementById("bc-tbody");
   if(!tbody) return;
   tbody.innerHTML = "";
   if(typeof BC_PRODUTOS === "undefined" || !BC_PRODUTOS.forEach) return;
   var lang = (typeof getLang === "function") ? getLang()
-           : (typeof langAtual !== "undefined") ? langAtual
-           : "pt";
+           : (typeof langAtual !== "undefined") ? langAtual : "pt";
   BC_PRODUTOS.forEach(function(p){
     var nome = (typeof BC_NOMES !== "undefined" && BC_NOMES[lang] && BC_NOMES[lang][p[0]]) ? BC_NOMES[lang][p[0]]
-             : (typeof BC_NOMES !== "undefined" && BC_NOMES.pt && BC_NOMES.pt[p[0]]) ? BC_NOMES.pt[p[0]]
-             : p[1];
+             : (typeof BC_NOMES !== "undefined" && BC_NOMES.pt && BC_NOMES.pt[p[0]]) ? BC_NOMES.pt[p[0]] : p[1];
     var preco = p[2];
     tbody.innerHTML += '<tr>' +
       '<td>' + (p[3] || "") + ' ' + nome + '</td>' +
       '<td>R$ ' + preco + '</td>' +
-      '<td><input type="number" min="0" value="0" data-bc-id="' + p[0] + '" data-bc-preco="' + preco + '" onchange="atualizarResumoBC()"></td>' +
-      '</tr>';
+      '<td><input type="number" min="0" value="0" data-bc-id="' + p[0] + '" data-bc-preco="' + preco + '" onchange="atualizarResumoBC()"></td></tr>';
   });
   atualizarResumoBC();
 }
-
-// ===== ATUALIZAR RESUMO (CORRETA — usa qtd + empresarial) =====
+// ===== ATUALIZAR RESUMO =====
 function atualizarResumoBC(){
   var bruto = 0, qtd = 0;
   document.querySelectorAll("#bc-tbody input").forEach(function(inp){
@@ -1519,7 +1295,6 @@ function atualizarResumoBC(){
   document.getElementById("bcDesconto").textContent = "R$ " + (bruto - fin).toFixed(2) + " (" + Math.round(d * 100) + "%)";
   document.getElementById("bcTotalFinal").textContent = "R$ " + fin.toFixed(2);
 }
-
 // ===== USAR PLANO PRONTO =====
 function usarPlanoPronto(plano){
   var planos = {
@@ -1535,7 +1310,6 @@ function usarPlanoPronto(plano){
   });
   atualizarResumoBC();
 }
-
 // ===== CONFIRMAR BÔNUS COLETIVO =====
 function confirmarBC(){
   var items = [];
@@ -1545,40 +1319,24 @@ function confirmarBC(){
   });
   if(items.length === 0){ alert("Selecione ao menos um produto e quantidade."); return; }
   var lang = (typeof getLang === "function") ? getLang()
-           : (typeof langAtual !== "undefined") ? langAtual
-           : "pt";
+           : (typeof langAtual !== "undefined") ? langAtual : "pt";
   window.location.href = "/criar-checkout-coletivo?lang=" + lang + "&items=" + JSON.stringify(items);
 }
-
-// ===== COMPRAR PRODUTO (V4 — UMA ÚNICA versão: formulário + localStorage + idioma + endpoints main.py) =====
+// ===== COMPRAR PRODUTO =====
 function comprar(produto){
-  // Idioma seguro (getLang → langAtual → pt)
   var lang = (typeof getLang === "function") ? getLang()
-           : (typeof langAtual !== "undefined") ? langAtual
-           : "pt";
-
-  // 1) Tenta ler do formulário (valores frescos)
+           : (typeof langAtual !== "undefined") ? langAtual : "pt";
   var nomeEl = document.getElementById("calcNome");
   var dataEl = document.getElementById("calcData");
   var nomeForm = (nomeEl && nomeEl.value) ? nomeEl.value : "";
   var dataForm = (dataEl && dataEl.value) ? dataEl.value : "";
-  
-  // 2) Fallback para o localStorage (nomeArmazenado/dataArmazenada)
   var nomeFinal = nomeForm || (typeof nomeArmazenado !== "undefined" ? nomeArmazenado : "") || "Cliente";
   var dataFinal = dataForm || (typeof dataArmazenada !== "undefined" ? dataArmazenada : "") || "2000-01-01";
-
-  // 3) Mapeia produto → endpoint do main.py (confirmado)
   var endpoint = "/pay/" + produto;
-
-  // 4) Envia para o backend
   fetch(endpoint, {
     method: "POST",
     headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({
-      nome: nomeFinal,
-      nascimento: dataFinal,
-      lang: lang
-    })
+    body: JSON.stringify({nome: nomeFinal, nascimento: dataFinal, lang: lang})
   })
     .then(function(r){ return r.json(); })
     .then(function(res){
@@ -1588,32 +1346,20 @@ function comprar(produto){
     })
     .catch(function(){ alert("Erro de conexão. Tente novamente."); });
 }
-  
-// ===== CALCULADORA GRÁTIS (V3 — eficiente, só os números, 2 CTAs) =====
+// ===== CALCULADORA GRÁTIS =====
 function calcularGratis(){
-  // 1) Lê os campos (aceita calcNome/calcData OU nomeCompleto/dataNascimento)
   var nomeEl = document.getElementById("calcNome") || document.getElementById("nomeCompleto");
   var dataEl = document.getElementById("calcData") || document.getElementById("dataNascimento");
   if(!nomeEl || !dataEl){ alert("Formulário não encontrado."); return; }
-
   var nome = (nomeEl.value || "").trim();
   var data = (dataEl.value || "").trim();
-
-  // 2) Validação rápida
   if(nome.length < 2){ alert("Digite seu nome completo."); return; }
   if(!data){ alert("Digite sua data de nascimento."); return; }
-
-  // 3) Guarda para usar no checkout (nunca perde o cliente)
   nomeArmazenado = nome; dataArmazenada = data;
   localStorage.setItem("calcNome", nome); localStorage.setItem("calcData", data);
-
-  // 4) Idioma seguro (usa getLang se existir)
   var lang = (typeof getLang === "function") ? getLang()
-           : (typeof langAtual !== "undefined") ? langAtual
-           : "pt";
+           : (typeof langAtual !== "undefined") ? langAtual : "pt";
   var t = (typeof TRADUCOES !== "undefined" && TRADUCOES[lang]) ? TRADUCOES[lang] : {};
-
-  // 5) Chama a API
   fetch("/calculate", {
     method: "POST",
     headers: {"Content-Type": "application/json"},
@@ -1624,8 +1370,6 @@ function calcularGratis(){
       var div = document.getElementById("resultado") || document.getElementById("resultadoGratis");
       if(!div) return;
       div.style.display = "block";
-
-      // Só os números essenciais (chamariz limpo e direto)
       div.innerHTML =
         "<h3>" + (t.calc_result_title || "Seus Números Essenciais") + "</h3>" +
         "<p>" + nome + "</p>" +
@@ -1634,8 +1378,6 @@ function calcularGratis(){
         "<p>" + (t.motivacao || "Motivação") + ": <span class='num'>" + (res.soul_urge ?? "—") + "</span></p>" +
         "<p>" + (t.personalidade || "Personalidade") + ": <span class='num'>" + (res.personality ?? "—") + "</span></p>" +
         "<p>" + (t.destino || "Destino") + ": <span class='num'>" + (res.destiny ?? "—") + "</span></p>" +
-
-        // Chamariz: conduz aos 2 primeiros produtos (R$ 8 e R$ 17)
         "<div style='margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center'>" +
           "<button class='btn' onclick=\"comprar('express')\">" + (t.ver_significado || "🔓 VER SIGNIFICADO COMPLETO") + "</button>" +
           "<button class='btn btn-outline' onclick=\"comprar('completo')\">" + (t.ver_completo || "📘 MAPA COMPLETO") + "</button>" +
@@ -1644,8 +1386,7 @@ function calcularGratis(){
     })
     .catch(function(){ alert("Erro ao calcular. Tente novamente."); });
 }
-
-  // ===== ALTERNAR FORMULÁRIOS URNA / ELEITORAL =====
+// ===== ALTERNAR FORMULÁRIOS =====
 function toggleForm(tipo){
   var fUrna = document.getElementById("form-urna");
   var fEle = document.getElementById("form-eleitoral");
@@ -1654,8 +1395,7 @@ function toggleForm(tipo){
   if(tipo === "urna" && fUrna) fUrna.scrollIntoView();
   if(tipo === "eleitoral" && fEle) fEle.scrollIntoView();
 }
-
-// ===== PAGAR NOME DE URNA (POST /pay/urna) — SEM E-MAIL (Plano B) =====
+// ===== PAGAR NOME DE URNA =====
 function pagarUrna(){
   var nome = document.getElementById("urnaNome").value.trim();
   var cargo = document.getElementById("urnaCargo").value.trim() || "vereador";
@@ -1663,8 +1403,7 @@ function pagarUrna(){
   if(!nome || nomes.length===0){ alert("Preencha nome e pelo menos 1 nome."); return; }
   var lang = getLang();
   var body = {
-    nome_completo: nome,
-    cargo: cargo,
+    nome_completo: nome, cargo: cargo,
     nome1: nomes[0]||"", nome2: nomes[1]||"",
     nome3: nomes[2]||"", nome4: nomes[3]||"", nome5: nomes[4]||"",
     lang: lang
@@ -1674,7 +1413,6 @@ function pagarUrna(){
     .then(function(res){ if(res && res.url){ window.location.href = res.url; } else { alert("Erro ao criar pagamento."); } })
     .catch(function(){ alert("Erro ao criar pagamento."); });
 }
-
 function pagarEleitoral(){
   var nome = document.getElementById("eleNome");
   var sigla = document.getElementById("eleSigla");
@@ -1688,8 +1426,7 @@ function pagarEleitoral(){
     .then(function(d){ if(d && d.url){ window.location.href = d.url; } else { alert("Erro ao criar pagamento."); } })
     .catch(function(){ alert("Erro ao processar. Tente novamente."); });
 }
-  
-// ===== ATIVAR CÓDIGO BÔNUS (POST /ativar-bonus) =====
+// ===== ATIVAR CÓDIGO BÔNUS =====
 function ativarBonusInserido(){
   var inp = document.getElementById("codigoBonus");
   if(!inp || !inp.value){ alert("Insira o código."); return; }
@@ -1701,43 +1438,26 @@ function ativarBonusInserido(){
     })
     .catch(function(){ alert("Erro ao ativar. Tente novamente."); });
 }
-
-// ===== INICIALIZAÇÃO DE ESTADO (UMA VEZ, segura) =====
+// ===== INICIALIZAÇÃO DE ESTADO =====
 var langAtual = localStorage.getItem("lang") || localStorage.getItem("selectedLang") || "pt";
-// Valida: se o idioma salvo não existe em LANGUAGES, volta para pt
 if(typeof LANGUAGES !== "undefined" && LANGUAGES.length && !LANGUAGES.some(function(l){ return l.code === langAtual; })){
   langAtual = "pt";
 }
 var nomeArmazenado = localStorage.getItem("calcNome") || "";
 var dataArmazenada = localStorage.getItem("calcData") || "";
-
-// ===== HELPER DE IDIOMA (consistente em todas as funções) =====
-function getLang(){
-  return (typeof langAtual !== "undefined") ? langAtual : "pt";
-}
-
-// ===== INICIALIZAÇÃO (UMA ÚNICA init — sem duplicação) =====
+// ===== INICIALIZAÇÃO =====
 function init(){
-  // Idioma garantido
   if(typeof langAtual === "undefined"){ langAtual = localStorage.getItem("selectedLang") || "pt"; }
-
-  // 1) Traduções + barra de idiomas
   traduzir();
   renderIdiomas();
-
-  // 2) Conteúdo dinâmico (produtos, energias, investidores)
   renderProdutos();
   renderEnergias();
   renderInvestidores();
-
-  // 3) Bônus Coletivo (tabela + resumo)
   montarTabelaBC();
   atualizarResumoBC();
-
-  // Dispara UMA VEZ ao carregar
+}
 document.addEventListener("DOMContentLoaded", init);
   
-<footer data-i18n="footer">© 2026 A1ELOS Consultoria. Todos os direitos reservados.</footer>
 </script>
 </body>
 </html>
