@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # main.py - A1ELOS Global Numerology API
-# VERSÃO FINAL ALINHADA AO INDEX - 09/08/2026
+# VERSÃO FINAL LIMPA E CORRIGIDA - 09/08/2026
 import os, json, uuid, logging, secrets, string, base64, traceback
 from datetime import date, datetime
 from typing import Optional
@@ -44,12 +44,6 @@ engine = create_engine(DB_URL, **engine_kwargs)
 Base = declarative_base()
 SessionLocal = sessionmaker(bind=engine)
 
-# Cria as tabelas SEM travar a subida do app (evita timeout de porta no Render)
-try:
-    Base.metadata.create_all(bind=engine)
-except Exception as e:
-    logger.error(f"DB init adiado (banco indisponível): {e}")
-
 class Calc(Base):
     __tablename__ = "calculations"
     id = Column(String, primary_key=True)
@@ -73,9 +67,13 @@ class Order(Base):
     payment_id = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
-Base.metadata.create_all(bind=engine)
+# Cria as tabelas SEM travar a subida do app (evita timeout de porta no Render)
+try:
+    Base.metadata.create_all(bind=engine)
+except Exception as e:
+    logger.error(f"DB init adiado (banco indisponivel): {e}")
 
-# ===== APP (UMA ÚNICA CRIAÇÃO — ORDEM CRÍTICA) =====
+# ===== APP =====
 app = FastAPI(title="Global Numerology")
 app.add_middleware(CORSMiddleware,
                    allow_origins=["*"],
@@ -123,11 +121,11 @@ def preco_local(produto, lang):
 # ===== NOMES DOS 15 PRODUTOS =====
 PRODUTOS = {
     "pt": {"express": "Mapa Express", "vida": "Qual Vida/Ano", "completo": "Mapa Completo",
-        "ia": "Pesquisa IA de Nomes", "urna": "Validação Nome de Urna", "eleitoral": "Número Eleitoral",
-        "imovel": "Número do Imóvel", "calendario": "Calendário Mensal Energético",
-        "artistico": "Validação Nome Artístico", "bebe": "Planejamento Nome de Bebê",
-        "assinatura": "Validação de Assinaturas", "negocio": "Nome para Negócio/Produto",
-        "casal": "Mapa do Casal", "familia": "Mapa Família Premium", "coletivo": "Bônus Coletivo/Empresarial"},
+        "ia": "Pesquisa IA de Nomes", "urna": "Validacao Nome de Urna", "eleitoral": "Numero Eleitoral",
+        "imovel": "Numero do Imovel", "calendario": "Calendario Mensal Energetico",
+        "artistico": "Validacao Nome Artistico", "bebe": "Planejamento Nome de Bebe",
+        "assinatura": "Validacao de Assinaturas", "negocio": "Nome para Negocio/Produto",
+        "casal": "Mapa do Casal", "familia": "Mapa Familia Premium", "coletivo": "Bonus Coletivo/Empresarial"},
     "en": {"express": "Express Map", "vida": "Life Phase & Year", "completo": "Complete Map",
         "ia": "AI Name Search", "urna": "Ballot Name Validation", "eleitoral": "Electoral Number",
         "imovel": "Property Number", "calendario": "Monthly Energy Calendar",
@@ -285,7 +283,6 @@ class PayReq(BaseModel):
     price: Optional[float] = 0
     calculation_id: Optional[str] = None
     lang: Optional[str] = "pt"
-    # Alinhamento com comprar() do index (envia nome/nascimento)
     nome: str = ""
     nascimento: str = ""
 class UrnaPayReq(BaseModel):
@@ -333,7 +330,7 @@ ENERGIAS = {
     4: "Trabalho", 5: "Liberdade", 6: "Familia",
     7: "Sabedoria", 8: "Poder e Prosperidade (IDEAL)", 9: "Humanitarismo",
 }
-# ===== CÁLCULO NUMEROLÓGICO =====
+# ===== CALCULO NUMEROLOGICO =====
 def r1(n):
     while n > 9 and n not in (11, 22, 33):
         n = sum(int(d) for d in str(n))
@@ -541,7 +538,7 @@ def pdf_urna(nc, cl, resultados, sugestoes):
     e.append(Paragraph("(c) A1ELOS", estilo(7, False, GRAY, TA_CENTER)))
     doc.build(e)
     return path
-# ===== PDF NÚMERO ELEITORAL =====
+# ===== PDF NUMERO ELEITORAL =====
 def pdf_eleitoral(ss, cl, sugestoes, ni=None):
     path = f"/tmp/e_{uuid.uuid4().hex[:8]}.pdf"
     doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
@@ -566,7 +563,7 @@ def pdf_eleitoral(ss, cl, sugestoes, ni=None):
     e.append(Paragraph("(c) A1ELOS", estilo(7, False, GRAY, TA_CENTER)))
     doc.build(e)
     return path
-# ===== PDF GENÉRICO (11 produtos novos) =====
+# ===== PDF GENERICO (11 produtos novos) =====
 def pdf_produto(produto, nome, bd_str, lang="pt"):
     path = f"/tmp/p_{uuid.uuid4().hex[:8]}.pdf"
     doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
@@ -595,7 +592,7 @@ def pdf_produto(produto, nome, bd_str, lang="pt"):
     e.append(Paragraph("(c) A1ELOS", estilo(7, False, GRAY, TA_CENTER)))
     doc.build(e)
     return path
-# ===== EMAIL SIMPLES (SMTP - sugestões e bônus) =====
+# ===== EMAIL SIMPLES (SMTP) =====
 def _enviar_email_simples(destinatario, assunto, corpo):
     try:
         msg = MIMEMultipart()
@@ -611,7 +608,7 @@ def _enviar_email_simples(destinatario, assunto, corpo):
     except Exception as e:
         logger.error(f"SMTP: {e}")
         return False
-# ===== PÁGINA DE SUCESSO COM DOWNLOAD DO PDF =====
+# ===== PAGINA DE SUCESSO COM DOWNLOAD DO PDF =====
 def pagina_sucesso(pdf_path, nome, prod_nome):
     b64 = ""
     if pdf_path and os.path.exists(pdf_path):
@@ -619,14 +616,14 @@ def pagina_sucesso(pdf_path, nome, prod_nome):
             b64 = base64.b64encode(f.read()).decode()
     btn = ""
     if b64:
-        btn = (f'<a href="data:application/pdf;base64,{b64}" download="Documento.pdf" 
-               f'style="display:inline-block;padding:18px 50px;background:#C9A94E;color:#000;
-               f'text-decoration:none;border-radius:50px;font-weight:700;font-size:1.2rem;margin:25px 0">📥 BAIXAR PDF</a>')
-    return (f'<html><body style="background:#0a0a0a;color:#fff;text-align:center;padding:40px;
-            f'font-family:sans-serif"><h1 style="color:#C9A94E">✅ Confirmado!</h1>'
-            f'<p>Ola <b>{nome}</b>, seu {prod_nome} foi gerado.</p>{btn}
+        btn = (f'<a href="data:application/pdf;base64,{b64}" download="Documento.pdf" '
+               f'style="display:inline-block;padding:18px 50px;background:#C9A94E;color:#000;'
+               f'text-decoration:none;border-radius:50px;font-weight:700;font-size:1.2rem;margin:25px 0">BAIXAR PDF</a>')
+    return (f'<html><body style="background:#0a0a0a;color:#fff;text-align:center;padding:40px;'
+            f'font-family:sans-serif"><h1 style="color:#C9A94E">Confirmado!</h1>'
+            f'<p>Ola <b>{nome}</b>, seu {prod_nome} foi gerado.</p>{btn}'
             f'<a href="/" style="color:#C9A94E">Voltar</a></body></html>')
-# ===== DESCONTO PROGRESSIVO (server-side, bate com o resumo do index) =====
+# ===== DESCONTO PROGRESSIVO (server-side) =====
 def desconto_bc(qtd_total, empresarial=False):
     if empresarial:
         if qtd_total >= 3000: return 0.70
@@ -639,10 +636,10 @@ def desconto_bc(qtd_total, empresarial=False):
     if qtd_total >= 50: return 0.20
     if qtd_total >= 10: return 0.10
     return 0.0
-# ===== CRIAÇÃO DE SESSÃO STRIPE =====
+# ===== CRIACAO DE SESSAO STRIPE =====
 def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=None):
     if lang not in PRICE_IDS or produto not in PRICE_IDS[lang]:
-        raise HTTPException(status_code=400, detail="Idioma ou produto inválido")
+        raise HTTPException(status_code=400, detail="Idioma ou produto invalido")
     price_id = PRICE_IDS[lang].get(produto, "")
     nome_prod = PRODUTOS.get(lang, PRODUTOS["pt"]).get(produto, produto)
     meta = {"tipo": produto, "lang": lang, "nome": nome, "birth": birth, "email": email}
@@ -650,7 +647,6 @@ def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=No
         meta.update(meta_extra)
     pay_types = ["card", "boleto"] if MOEDA.get(lang, "brl") == "brl" else ["card"]
     locale = lang if lang in ["pt", "en", "es", "fr", "de", "it", "ja", "zh"] else "auto"
-    # Sucess por tipo: urna/eleitoral têm endpoints próprios de PDF
     if produto == "urna":
         success_url = f"{BASE_URL}/api/pay/urna-success?session_id={{CHECKOUT_SESSION_ID}}"
     elif produto == "eleitoral":
@@ -680,22 +676,22 @@ def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=No
     except Exception as e:
         logger.error(f"Stripe: {e}")
         raise HTTPException(500, "Erro ao criar pagamento")
-# ===== ROTA GENÉRICA /pay/{produto} (15 produtos — alinhada ao index) =====
+# ===== ROTA GENERICA /pay/{produto} =====
 _ALIAS_PRODUTO = {"complete": "completo"}
 @app.post("/pay/{produto}")
 def pay_produto(produto: str, req: PayReq):
     if not STRIPE_KEY:
-        raise HTTPException(503, "Stripe não configurado")
+        raise HTTPException(503, "Stripe nao configurado")
     produto = _ALIAS_PRODUTO.get(produto, produto)
     nome = req.nome or req.name
     nasc = req.nascimento or req.birth_date
     lang = req.lang or "pt"
     return _criar_sessao(produto, lang, req.email, nome, nasc)
-# ===== CHECKOUT NOME DE URNA (POST /pay/urna — sem email obrigatório, Plano B) =====
+# ===== CHECKOUT NOME DE URNA =====
 @app.post("/pay/urna")
 def pay_urna(req: UrnaPayReq):
     if not STRIPE_KEY:
-        raise HTTPException(503, "Stripe não configurado")
+        raise HTTPException(503, "Stripe nao configurado")
     if len(req.nome_completo.strip()) < 3:
         raise HTTPException(400, "Nome obrigatorio")
     nomes = [n.strip() for n in [req.nome1, req.nome2, req.nome3, req.nome4, req.nome5] if n.strip()]
@@ -706,26 +702,26 @@ def pay_urna(req: UrnaPayReq):
     for i, n in enumerate(nomes, 1):
         meta[f"nome{i}"] = n
     return _criar_sessao("urna", req.lang or "pt", req.email, req.nome_completo, "", meta)
-# ===== CHECKOUT NÚMERO ELEITORAL (POST /pay/eleitoral — sem email obrigatório, Plano B) =====
+# ===== CHECKOUT NUMERO ELEITORAL =====
 @app.post("/pay/eleitoral")
 def pay_eleitoral(req: EleitoralPayReq):
     if not STRIPE_KEY:
-        raise HTTPException(503, "Stripe não configurado")
+        raise HTTPException(503, "Stripe nao configurado")
     if not req.numero or len(req.numero) < 2:
         raise HTTPException(400, "Numero obrigatorio")
     meta = {"tipo": "eleitoral", "lang": req.lang or "pt", "sigla": req.numero,
             "cargo": req.cargo, "email": req.email, "numero_existente": "",
             "nome_completo": req.nome_completo}
     return _criar_sessao("eleitoral", req.lang or "pt", req.email, req.nome_completo, "", meta)
-# ===== CHECKOUT COLETIVO (GET /criar-checkout-coletivo — com desconto progressivo) =====
+# ===== CHECKOUT COLETIVO (com desconto progressivo) =====
 @app.get("/criar-checkout-coletivo")
 async def criar_checkout_coletivo(lang: str = "pt", items: str = "[]"):
     if not STRIPE_KEY:
-        raise HTTPException(503, "Stripe não configurado")
+        raise HTTPException(503, "Stripe nao configurado")
     try:
         itens = json.loads(items)
     except Exception:
-        raise HTTPException(400, "items inválidos")
+        raise HTTPException(400, "items invalidos")
     if not itens:
         raise HTTPException(400, "Nenhum item")
     qtd_total = sum(int(it.get("qtd", 0)) for it in itens if it.get("qtd"))
@@ -747,7 +743,7 @@ async def criar_checkout_coletivo(lang: str = "pt", items: str = "[]"):
                 "product_data": {"name": PRODUTOS.get(lang, PRODUTOS["pt"]).get(pid, pid)},
                 "unit_amount": unit}, "quantity": qtd})
     if not line_items:
-        raise HTTPException(400, "Itens inválidos")
+        raise HTTPException(400, "Itens invalidos")
     pay_types = ["card", "boleto"] if MOEDA.get(lang, "brl") == "brl" else ["card"]
     locale = lang if lang in ["pt", "en", "es", "fr", "de", "it", "ja", "zh"] else "auto"
     session = stripe.checkout.Session.create(
@@ -758,7 +754,7 @@ async def criar_checkout_coletivo(lang: str = "pt", items: str = "[]"):
         success_url=f"{BASE_URL}/api/pay/success?session_id={{CHECKOUT_SESSION_ID}}",
         cancel_url=f"{BASE_URL}/api/pay/cancel")
     return RedirectResponse(url=session.url)
-# ===== SUCESSO PÓS-PAGAMENTO =====
+# ===== SUCESSO POS-PAGAMENTO =====
 @app.get("/api/pay/success")
 def pay_success(request: Request):
     sid = request.query_params.get("session_id", "")
@@ -862,7 +858,25 @@ def pay_eleitoral_success(request: Request):
 @app.get("/api/pay/cancel")
 def pay_cancel():
     return HTMLResponse("<h1>Cancelado</h1><a href='/'>Voltar</a>")
-# ===== CÁLCULO GRÁTIS =====
+# ===== ROTAS LEGADO (reserva para futuro alinhamento com o Stripe) =====
+@app.post("/api/pay/stripe")
+def pay_stripe_legado(req: PayReq):
+    return _criar_sessao(req.product or "express", req.lang or "pt", req.email, req.nome or req.name, req.nascimento or req.birth_date)
+@app.post("/api/pay/urna-session")
+def pay_urna_session_legado(req: UrnaPayReq):
+    nomes = [n.strip() for n in [req.nome1, req.nome2, req.nome3, req.nome4, req.nome5] if n.strip()]
+    meta = {"tipo": "urna", "lang": req.lang or "pt", "nome_completo": req.nome_completo,
+            "cargo": req.cargo, "email": req.email, "nome": req.nome_completo}
+    for i, n in enumerate(nomes, 1):
+        meta[f"nome{i}"] = n
+    return _criar_sessao("urna", req.lang or "pt", req.email, req.nome_completo, "", meta)
+@app.post("/api/pay/eleitoral-session")
+def pay_eleitoral_session_legado(req: EleitoralPayReq):
+    meta = {"tipo": "eleitoral", "lang": req.lang or "pt", "sigla": req.numero,
+            "cargo": req.cargo, "email": req.email, "numero_existente": "",
+            "nome_completo": req.nome_completo}
+    return _criar_sessao("eleitoral", req.lang or "pt", req.email, req.nome_completo, "", meta)
+# ===== CALCULO GRATIS =====
 @app.post("/calculate")
 def calculate(req: PayReq):
     db = SessionLocal()
@@ -922,7 +936,7 @@ async def stripe_webhook(req: Request):
         try:
             event = stripe.Webhook.construct_event(payload, sig, whsec)
         except Exception:
-            raise HTTPException(400, "Assinatura inválida")
+            raise HTTPException(400, "Assinatura invalida")
     else:
         data = json.loads(payload)
         event = {"type": data.get("type", ""), "data": data.get("data", {})}
@@ -930,7 +944,7 @@ async def stripe_webhook(req: Request):
         sess = event["data"]["object"]
         logger.info(f"Pagamento confirmado: {sess.get('id')}")
     return {"ok": True}
-# ===== SISTEMA DE BÔNUS =====
+# ===== SISTEMA DE BONUS =====
 ARQ_BONUS = "bonus_codes.json"
 def _carregar_codigos():
     try:
@@ -951,9 +965,9 @@ async def ativar_bonus(req: AtivarBonusReq):
     codigos = _carregar_codigos()
     info = codigos.get(req.codigo)
     if not info:
-        return {"ok": False, "msg": "Código não encontrado"}
+        return {"ok": False, "msg": "Codigo nao encontrado"}
     if info.get("usado"):
-        return {"ok": False, "msg": "Código já utilizado"}
+        return {"ok": False, "msg": "Codigo ja utilizado"}
     info["usado"] = True
     info["data_uso"] = datetime.now().isoformat()
     _salvar_codigos(codigos)
@@ -972,14 +986,12 @@ async def gerar_codigos_coletivo(req: Request):
             gerados.append({"codigo": cod, "produto": item["produto"]})
     _salvar_codigos(codigos)
     return {"ok": True, "total": len(gerados), "codigos": gerados}
-# ===== CAIXA DE SUGESTÕES + BÔNUS =====
+# ===== CAIXA DE SUGESTOES + BONUS =====
 @app.post("/sugestao")
 async def receber_sugestao(req: SugestaoReq):
     try:
-        _enviar_email_simples(ADMIN_EMAIL, "Nova sugestão/reclamação — A1ELOS",
-                              f"Sugestão de {req.nome} ({req.email}):
-
-{req.mensagem}")
+        _enviar_email_simples(ADMIN_EMAIL, "Nova sugestao/reclamacao - A1ELOS",
+                              f"Sugestao de {req.nome} ({req.email}):\n\n{req.mensagem}")
         return {"ok": True}
     except Exception:
         return {"ok": False}
@@ -987,19 +999,11 @@ async def receber_sugestao(req: SugestaoReq):
 async def solicitar_bonus(req: BonusReq):
     codigo = "BONUS-" + secrets.token_hex(3).upper()
     try:
-        corpo = (f"Cliente: {req.nome}
-Email: {req.email}
-Produto: {req.produto}
-"
-                 f"Código gerado: {codigo}
-Relato:
-{req.mensagem}")
-        _enviar_email_simples(ADMIN_EMAIL, "Pedido de BÔNUS — pane no pagamento", corpo)
-        _enviar_email_simples(req.email, "A1ELOS — Seu código bônus",
-                              f"Olá, {req.nome}!
-Seu código: {codigo}
-
-A1ELOS")
+        corpo = (f"Cliente: {req.nome}\nEmail: {req.email}\nProduto: {req.produto}\n"
+                 f"Codigo gerado: {codigo}\nRelato:\n{req.mensagem}")
+        _enviar_email_simples(ADMIN_EMAIL, "Pedido de BONUS - pane no pagamento", corpo)
+        _enviar_email_simples(req.email, "A1ELOS - Seu codigo bonus",
+                              f"Ola, {req.nome}!\nSeu codigo: {codigo}\n\nA1ELOS")
         return {"ok": True, "codigo": codigo}
     except Exception:
         return {"ok": False}
@@ -1044,7 +1048,7 @@ async def get_banner(posicao: str = "topo", pais: str = "BR"):
         if b.get("escopo") == "mundo":
             return {"ok": True, "banner": b}
     return {"ok": False, "banner": None}
-# ===== INICIALIZAÇÃO =====
+# ===== INICIALIZACAO =====
 if __name__ == "__main__":
     import uvicorn
     port = int(os.getenv("PORT", "10000"))
