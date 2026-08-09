@@ -107,8 +107,6 @@ var dataArmazenada = localStorage.getItem("calcData") || "";
   <div class="a1-slot" id="bn-topoB"></div>
 </div>
 
-<script>
-
 let langAtual = localStorage.getItem("selectedLang") || "pt";
 if(!LANGUAGES.some(function(l){return l.code===langAtual;})) langAtual="pt";
 let nomeArmazenado = localStorage.getItem("calcNome") || "";
