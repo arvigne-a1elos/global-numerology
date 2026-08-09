@@ -147,6 +147,11 @@ footer{text-align:center;padding:30px;border-top:1px solid var(--border);color:#
   <div class="a1-slot" id="bn-topoB"></div>
 </div>
 
+<div class="a1-zona" id="zonaBase">
+  <div class="a1-slot" id="bn-baseA"></div>
+  <div class="a1-slot" id="bn-baseB"></div>
+</div>
+  
 <!-- HERO -->
 <section class="hero">
   <img src="/static/logo.png" alt="A1ELOS">
@@ -171,7 +176,12 @@ footer{text-align:center;padding:30px;border-top:1px solid var(--border);color:#
   <div class="a1-slot" id="bn-baseB"></div>
 </div>
   
+<div class="a1-zona" id="zonaCentral">
+  <div class="a1-slot" id="bn-centralA"></div>  <!-- era bn-centralA -->
+  <div class="a1-slot" id="bn-centralB"></div>
+</div>  
 <body>
+  
 <section id="investidores">
   <h2 class="section-title" data-i18n="inv_title">Investidores e Parceiros</h2>
   <p class="section-sub" data-i18n="inv_sub">Baixe a apresentação empresarial da A1ELOS no seu idioma, gratuitamente.</p>
@@ -960,11 +970,6 @@ const PRODUTOS_FEATS = {
   }
 };
 
-<div class="a1-zona" id="zonaCentral">
-  <div class="a1-slot" id="bn-centralA"></div>  <!-- era bn-centralA -->
-  <div class="a1-slot" id="bn-centralB"></div>
-</div>
-  
 // ===== ENERGIAS 1-9 (12 IDIOMAS) =====
 const ENERGIAS = {
 1:{pt:["Liderança","Pioneirismo, independência, iniciativa."],en:["Leadership","Pioneering, independence, initiative."],es:["Liderazgo","Pionerismo, independencia, iniciativa."],it:["Leadership","Pionierismo, indipendenza, iniziativa."],fr:["Leadership","Pionnier, indépendance, initiative."],de:["Führung","Pioniergeist, Unabhängigkeit, Initiative."],ja:["リーダーシップ","先駆性、自立、率先。"],zh:["领导力","开拓、独立、主动。"],ru:["Лидерство","Пионерство, независимость, инициатива."],hi:["नेतृत्व","अग्रणी, स्वतंत्र, पहल।"],he:["מנהיגות","חלוציות, עצמאות, יוזמה."],ar:["القيادة","الريادة والاستقلال والمبادرة."]},
@@ -1682,11 +1687,6 @@ function pagarEleitoral(){
     .then(function(d){ if(d && d.url){ window.location.href = d.url; } else { alert("Erro ao criar pagamento."); } })
     .catch(function(){ alert("Erro ao processar. Tente novamente."); });
 }
-  
-<div class="a1-zona" id="zonaBase">
-  <div class="a1-slot" id="bn-baseA"></div>
-  <div class="a1-slot" id="bn-baseB"></div>
-</div>
   
 // ===== ATIVAR CÓDIGO BÔNUS (POST /ativar-bonus) =====
 function ativarBonusInserido(){
