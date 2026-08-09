@@ -1619,10 +1619,6 @@ function comprar(produto){
   // 3) Mapeia produto → endpoint do main.py (confirmado)
   var endpoint = "/pay/" + produto;
 
-  # ===== ROTA GENÉRICA /pay/{produto} (15 produtos — ADITIVA, mantém as rotas antigas) =====
-# Alias de compatibilidade: "complete" (rota antiga) → "completo" (id do produto)
-_ALIAS_PRODUTO = {"complete": "completo"}
-
   // 4) Envia para o backend
   fetch(endpoint, {
     method: "POST",
