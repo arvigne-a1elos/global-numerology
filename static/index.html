@@ -206,11 +206,12 @@ footer{text-align:center;padding:30px;border-top:1px solid var(--border);color:#
     <a href="https://a1elos.com.br" class="btn btn-outline" data-i18n="cta_btn2">CONHEÇA A A1ELOS</a>
   </div>
 </section>
-  <footer>
+
+<footer>
   <p data-i18n="footer_text">© 2026 A1ELOS Assessoria e Consultoria. Todos os direitos reservados.</p>
 </footer>
-<script>
-
+<script>  
+  
 // ===== INICIALIZAÇÃO DE ESTADO (UMA VEZ, segura) =====
 var langAtual = localStorage.getItem("lang") || localStorage.getItem("selectedLang") || "pt";
 if(typeof LANGUAGES !== "undefined" && LANGUAGES.length && !LANGUAGES.some(function(l){ return l.code === langAtual; })){
@@ -321,7 +322,7 @@ document.addEventListener("DOMContentLoaded", function(){
       itens[atual].classList.add("active");
     }, TEMPO);
   }
-
+   
   // 2 banners lado a lado em cada posição (A e B) — site e app
   preencher("bn-topoA",    BANNERS.topo,    0);
   preencher("bn-topoB",    BANNERS.topo,    1);
