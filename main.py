@@ -38,11 +38,17 @@ if STRIPE_KEY:
 
 # ===== BANCO DE DADOS =====
 engine_kwargs = {}
-if DB_URL.startswith("sqlite"):<br/>
+if DB_URL.startswith("sqlite"):
     engine_kwargs["connect_args"] = {"check_same_thread": False}
 engine = create_engine(DB_URL, **engine_kwargs)
 Base = declarative_base()
 SessionLocal = sessionmaker(bind=engine)
+
+# Cria as tabelas SEM travar a subida do app (evita timeout de porta no Render)
+try:
+    Base.metadata.create_all(bind=engine)
+except Exception as e:
+    logger.error(f"DB init adiado (banco indisponível): {e}")
 
 class Calc(Base):
     __tablename__ = "calculations"
