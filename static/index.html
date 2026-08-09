@@ -204,19 +204,27 @@ document.addEventListener("DOMContentLoaded", function(){
   preencher("bn-baseA",    BANNERS.base,    0);
   preencher("bn-baseB",    BANNERS.base,    1);
 });
-/* ===== SISTEMA DE BANNERS A1ELOS (2 lado a lado · rotação 8s) ===== */
 
-/* Container de cada posição: 2 banners lado a lado */
-.bn-duplo {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: stretch;
-  width: 100%;
-  margin: 12px 0;
-}
-
+<style>
+  .bn-duplo {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+    width: 100%;
+    margin: 12px 0;
+  }
+  .bn-duplo > div {
+    flex: 1 1 48%;
+    min-width: 280px;
+    max-width: 100%;
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+  }
+</style>
+  
 /* Cada slot (A ou B) ocupa metade da largura */
 .bn-duplo > div {
   flex: 1 1 48%;
