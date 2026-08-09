@@ -57,8 +57,11 @@ footer{text-align:center;padding:30px;border-top:1px solid var(--border);color:#
 @media(max-width:700px){.a1-slot{height:78px}}
 </style>
 </head>
-<body>
-
+<div class="lang-bar" id="langBar"></div>
+<div class="a1-zona" id="zonaTopo">
+  <div class="a1-slot" id="bn-topoA"></div>
+  <div class="a1-slot" id="bn-topoB"></div>
+</div>  
 <!-- BARRA DE IDIOMAS -->
 <div class="lang-bar" id="langBar"></div>
 
@@ -91,7 +94,8 @@ footer{text-align:center;padding:30px;border-top:1px solid var(--border);color:#
   <div class="a1-slot" id="bn-baseA"></div>
   <div class="a1-slot" id="bn-baseB"></div>
 </div>
-
+  
+<body>
 <script>
 /* ===== INICIALIZAÇÃO DE ESTADO (UMA VEZ, segura) ===== */
 var langAtual = localStorage.getItem("lang") || localStorage.getItem("selectedLang") || "pt";
@@ -1786,9 +1790,4 @@ document.addEventListener("DOMContentLoaded", init);
 <footer data-i18n="footer">© 2026 A1ELOS Consultoria. Todos os direitos reservados.</footer>
 </script>
 </body>
-<div class="lang-bar" id="langBar"></div>
-<div class="a1-zona" id="zonaTopo">
-  <div class="a1-slot" id="bn-topoA"></div>
-  <div class="a1-slot" id="bn-topoB"></div>
-</div>  
 </html>
