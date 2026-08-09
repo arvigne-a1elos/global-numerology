@@ -101,12 +101,6 @@ if(typeof LANGUAGES !== "undefined" && LANGUAGES.length && !LANGUAGES.some(funct
 var nomeArmazenado = localStorage.getItem("calcNome") || "";
 var dataArmazenada = localStorage.getItem("calcData") || "";
 
-<div class="lang-bar" id="langBar"></div>
-<div class="a1-zona" id="zonaTopo">
-  <div class="a1-slot" id="bn-topoA"></div>
-  <div class="a1-slot" id="bn-topoB"></div>
-</div>
-
 let langAtual = localStorage.getItem("selectedLang") || "pt";
 if(!LANGUAGES.some(function(l){return l.code===langAtual;})) langAtual="pt";
 let nomeArmazenado = localStorage.getItem("calcNome") || "";
@@ -1792,4 +1786,9 @@ document.addEventListener("DOMContentLoaded", init);
 <footer data-i18n="footer">© 2026 A1ELOS Consultoria. Todos os direitos reservados.</footer>
 </script>
 </body>
+<div class="lang-bar" id="langBar"></div>
+<div class="a1-zona" id="zonaTopo">
+  <div class="a1-slot" id="bn-topoA"></div>
+  <div class="a1-slot" id="bn-topoB"></div>
+</div>  
 </html>
