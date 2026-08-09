@@ -6,7 +6,7 @@ from datetime import date, datetime
 from typing import Optional
 import stripe
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
 
 async def index_html():
     return FileResponse(
@@ -304,7 +304,7 @@ class PayReq(BaseModel):
     price: Optional[float] = 0
     calculation_id: Optional[str] = None
     lang: Optional[str] = "pt"
-    # Alinhamento com comprar() do index: aceita nome/nascimento
+    # Alinhamento com comprar() do index (envia nome/nascimento)
     nome: str = ""
     nascimento: str = ""
 
@@ -321,7 +321,8 @@ class UrnaPayReq(BaseModel):
 
 class EleitoralPayReq(BaseModel):
     nome_completo: str = ""
-    numero: str = ""
+    numero: str = ""          # sigla de 2 dígitos enviada pelo index
+    sigla: Optional[int] = None  # mantido p/ compatibilidade (/calculate/eleitoral)
     cargo: str = "vereador"
     email: str = ""
     lang: Optional[str] = "pt"
@@ -703,10 +704,13 @@ def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=No
         raise HTTPException(500, "Erro ao criar pagamento")
 
 # ===== CHECKOUT GENÉRICO (POST) =====
+_ALIAS_PRODUTO = {"complete": "completo"}
+
 @app.post("/pay/{produto}")
 def pay_produto(produto: str, req: PayReq):
     if not STRIPE_KEY:
         raise HTTPException(503, "Stripe não configurado")
+    produto = _ALIAS_PRODUTO.get(produto, produto)
     nome = req.nome or req.name
     nasc = req.nascimento or req.birth_date
     lang = req.lang or "pt"
@@ -730,7 +734,7 @@ def pay_success(request: Request):
         if hasattr(meta, "to_dict"):
             meta = meta.to_dict()
         nome = meta.get("nome", "Cliente")
-        email = meta.get("email", "") or getattr(s, "customer_email", "") or ""
+        em = meta.get("email", "") or getattr(s, "customer_email", "")
         bd = meta.get("birth", "")
         prod = meta.get("tipo", "express")
         lang = meta.get("lang", "pt")
@@ -914,23 +918,41 @@ def health():
     return {"status": "ok", "stripe": bool(STRIPE_KEY), "sendgrid": bool(SENDGRID_KEY)}
 
 # ===== WEBHOOK STRIPE =====
-@app.post("/stripe-webhook")
-async def stripe_webhook(req: Request):
-    payload = await req.body()
-    sig = req.headers.get("stripe-signature", "")
-    whsec = os.getenv("STRIPE_WEBHOOK_SECRET", "")
-    if whsec:
-        try:
-            event = stripe.Webhook.construct_event(payload, sig, whsec)
-        except Exception:
-            raise HTTPException(400, "Assinatura inválida")
-    else:
-        data = json.loads(payload)
-        event = {"type": data.get("type", ""), "data": data.get("data", {})}
-    if event["type"] == "checkout.session.completed":
-        sess = event["data"]["object"]
-        logger.info(f"Pagamento confirmado: {sess.get('id')}")
-    return {"ok": True}
+@app.get("/criar-checkout-coletivo")
+async def criar_checkout_coletivo(lang: str = "pt", items: str = "[]"):
+    if not STRIPE_KEY:
+        raise HTTPException(503, "Stripe não configurado")
+    try:
+        itens = json.loads(items)
+    except Exception:
+        raise HTTPException(400, "items inválidos")
+    if not itens:
+        raise HTTPException(400, "Nenhum item")
+    line_items = []
+    for it in itens:
+        pid = it.get("id")
+        qtd = int(it.get("qtd", 0))
+        if not pid or qtd <= 0 or pid == "coletivo":
+            continue
+        price_id = PRICE_IDS.get(lang, PRICE_IDS["pt"]).get(pid, "")
+        if price_id and price_id.startswith("price_"):
+            line_items.append({"price": price_id, "quantity": qtd})
+        else:
+            line_items.append({"price_data": {"currency": MOEDA.get(lang, "brl"),
+                "product_data": {"name": PRODUTOS.get(lang, PRODUTOS["pt"]).get(pid, pid)},
+                "unit_amount": preco_local(pid, lang)}, "quantity": qtd})
+    if not line_items:
+        raise HTTPException(400, "Itens inválidos")
+    pay_types = ["card", "boleto"] if MOEDA.get(lang, "brl") == "brl" else ["card"]
+    locale = lang if lang in ["pt", "en", "es", "fr", "de", "it", "ja", "zh"] else "auto"
+    session = stripe.checkout.Session.create(
+        mode="payment", payment_method_types=pay_types,
+        line_items=line_items,
+        locale=locale,
+        metadata={"tipo": "coletivo", "lang": lang},
+        success_url=f"{BASE_URL}/api/pay/success?session_id={{CHECKOUT_SESSION_ID}}",
+        cancel_url=f"{BASE_URL}/api/pay/cancel")
+    return RedirectResponse(url=session.url)
 
 # ===== SISTEMA DE BÔNUS =====
 ARQ_BONUS = "bonus_codes.json"
