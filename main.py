@@ -754,6 +754,18 @@ async def criar_checkout_coletivo(lang: str = "pt", items: str = "[]"):
         success_url=f"{BASE_URL}/api/pay/success?session_id={{CHECKOUT_SESSION_ID}}",
         cancel_url=f"{BASE_URL}/api/pay/cancel")
     return RedirectResponse(url=session.url)
+    # ===== ROTA /criar-checkout (usada pelo site: comprar, pagarUrna, pagarEleitoral, confirmarBC) =====
+@app.get("/criar-checkout")
+async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
+                                qtd: int = 0, total: float = 0, itens: str = ""):
+    if not STRIPE_KEY:
+        raise HTTPException(503, "Stripe nao configurado")
+    if produto == "coletivo":
+        return await criar_checkout_coletivo(lang=lang, items=itens or "[]")
+    if produto not in PRODUTO_FAIXA:
+        raise HTTPException(400, "Produto invalido")
+    s = _criar_sessao(produto, lang)
+    return RedirectResponse(url=s["url"])
 # ===== SUCESSO POS-PAGAMENTO =====
 @app.get("/api/pay/success")
 def pay_success(request: Request):
