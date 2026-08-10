@@ -790,708 +790,166 @@
 </div>
 <script>    
     
-        // ===== TRADUÇÕES (12 IDIOMAS) =====
-        const translations = {
-            pt: {
-                hero_title: "MAPA NUMEROLÓGICO", hero_subtitle: "Descubra o que os números revelam sobre você",
-                hero_desc: "Uma jornada de autoconhecimento baseada na numerologia pitagórica. Seu mapa pessoal revela talentos, desafios e caminhos através dos números que regem sua vida.",
-                hero_btn: "✦ GERAR MEU MAPA", hero_btn2: "VER PRODUTOS",
-                section_what_title: "O que é o Mapa Numerológico?", section_what_subtitle: "Uma ferramenta de autoconhecimento baseada na numerologia pitagórica",
-                card1_title: "Números da Sua Vida", card1_desc: "Calculamos o Caminho da Vida, Destino, Alma, Realização e outros números essenciais a partir da sua data de nascimento e nome completo.",
-                card2_title: "Seu Mapa Pessoal", card2_desc: "Cada número revela uma dimensão única da sua personalidade, talentos inatos, desafios e oportunidades ao longo da vida.",
-                card3_title: "Relatório Completo", card3_desc: "Você recebe um relatório detalhado em PDF com a interpretação profissional de cada número do seu mapa, pronto para download.",
-                card4_title: "Orientação Prática", card4_desc: "Mais que uma leitura, um guia para tomar decisões alinhadas com seus ciclos numerológicos e seu propósito de vida.",
-                section_how_title: "Como Funciona", section_how_subtitle: "Em poucos passos, seu mapa está pronto",
-                step1_title: "Insira seus dados", step1_desc: "Informe seu nome completo e data de nascimento — as duas chaves para o seu mapa numerológico.",
-                step2_title: "Cálculo automatizado", step2_desc: "Nossa engine calcula todos os números fundamentais da numerologia pitagórica com precisão.",
-                step3_title: "Relatório em PDF", step3_desc: "Receba um relatório profissional e elegante com a interpretação completa do seu mapa.",
-                section_products_title: "Produtos e Serviços", section_products_subtitle: "Escolha o produto ideal para sua análise numerológica",
-                buy_btn: "Comprar", recommended: "RECOMENDADO", premium: "PREMIUM", sob_consulta: "Sob consulta", know_more: "Saiba Mais",
-                start_urna: "Iniciar Validação", start_eleitoral: "Calcular Nº Eleitoral",
-                urna_title: "Validação do Nome de Urna", urna_sub: "5 tentativas + cálculo letra a letra + PDF sigiloso — R$ 26",
-                f_nome: "Nome Completo da Pessoa", f_cargo: "Cargo em Disputa", f_email: "Email (resultado sigiloso)",
-                urna_options: "Insira até 5 opções de nome de candidato:", pay_urna: "🔒 Pagar R$ 26 — Resultado por Email",
-                eleitoral_title: "Cálculo do Número Eleitoral", eleitoral_sub: "Sugestões com energia 8 para sua candidatura — R$ 26",
-                f_cargo2: "Cargo", c_vereador: "Vereador", c_estadual: "Dep. Estadual", c_federal: "Dep. Federal", c_senador: "Senador",
-                f_sigla: "Número da Sigla Partidária (2 dígitos)", f_existente: "Número já existente (opcional)",
-                pay_eleitoral: "🔒 Pagar R$ 26 — Sugestões por Email",
-                bi_title: "🎁 Ativar Código Bônus", bi_sub: "Recebeu um código? Insira abaixo e ative para gerar seu presente — sem pagamento.",
-                bi_label: "Código Bônus", bi_btn: "🎁 Ativar Código",
-                bc_title: "🏢 Bônus Coletivo / Empresarial", bc_sub: "Contrate brindes numerológicos para seus clientes ou funcionários. Escolha um plano pronto ou monte sob medida. Descontos de 10% a 70%.",
-                bc_plans_title: "Planos Prontos", bc_plan1_name: "Plano Básico", bc_plan1_price: "50 códigos", bc_plan1_desc: "50x Mapa Express (R$ 8) — ideal para presentear clientes",
-                bc_plan2_name: "Plano Intermediário", bc_plan2_price: "100 códigos", bc_plan2_desc: "50x Mapa Express + 50x Pesquisa IA (R$ 17) — para equipes",
-                bc_plan3_name: "Plano Premium", bc_plan3_price: "200 códigos", bc_plan3_desc: "100x Mapa Express + 100x Mapa Completo (R$ 17) — programas completos",
-                select: "Selecionar", bc_custom_title: "Montar Sob Medida", bc_custom_sub: "Marque a quantidade desejada de cada serviço. O desconto é aplicado automaticamente.",
-                bc_tbl_service: "Serviço", bc_tbl_price: "Valor", bc_tbl_qty: "Quantidade",
-                bc_total: "Total bruto:", bc_discount: "Desconto aplicado:", bc_final: "Total final:", bc_confirm: "📋 Confirmar Resumo e Ir para Pagamento",
-                inv_title: "Investidores e Parceiros", inv_sub: "Baixe a apresentação empresarial da A1ELOS no seu idioma, gratuitamente.", download: "Baixar PDF",
-                section_numbers_title: "Os Números no Centro", section_numbers_subtitle: "Cada número de 1 a 9 carrega uma energia única",
-                numbers_masters: "✦ Números Mestres 11, 22 e 33 também são considerados ✦",
-                cta_title: "Pronto para descobrir seu caminho?", cta_desc: "Seu mapa numerológico pessoal está a poucos cliques de distância.",
-                cta_btn1: "✦ GERAR MAPA GRÁTIS", cta_btn2: "CONHEÇA A A1ELOS", footer_text: "© 2026 A1ELOS Assessoria e Consultoria. Todos os direitos reservados."
-            },
-            en: {
-                hero_title: "NUMEROLOGICAL MAP", hero_subtitle: "Discover what numbers reveal about you",
-                hero_desc: "A self-discovery journey based on Pythagorean numerology. Your personal map reveals talents, challenges, and paths through the numbers that rule your life.",
-                hero_btn: "✦ GENERATE MY MAP", hero_btn2: "VIEW PRODUCTS",
-                section_what_title: "What is the Numerological Map?", section_what_subtitle: "A self-discovery tool based on Pythagorean numerology",
-                card1_title: "Numbers of Your Life", card1_desc: "We calculate Life Path, Destiny, Soul, Realization and other essential numbers from your birth date and full name.",
-                card2_title: "Your Personal Map", card2_desc: "Each number reveals a unique dimension of your personality, innate talents, challenges and opportunities throughout life.",
-                card3_title: "Complete Report", card3_desc: "You receive a detailed PDF report with professional interpretation of each number in your map, ready for download.",
-                card4_title: "Practical Guidance", card4_desc: "More than a reading, a guide to make decisions aligned with your numerological cycles and life purpose.",
-                section_how_title: "How It Works", section_how_subtitle: "In a few steps, your map is ready",
-                step1_title: "Enter your data", step1_desc: "Enter your full name and birth date — the two keys to your numerological map.",
-                step2_title: "Automated Calculation", step2_desc: "Our engine calculates all fundamental Pythagorean numerology numbers with precision.",
-                step3_title: "PDF Report", step3_desc: "Receive a professional and elegant report with the complete interpretation of your map.",
-                section_products_title: "Products & Services", section_products_subtitle: "Choose the ideal product for your numerology analysis",
-                buy_btn: "Buy", recommended: "RECOMMENDED", premium: "PREMIUM", sob_consulta: "On request", know_more: "Learn More",
-                start_urna: "Start Validation", start_eleitoral: "Calculate Electoral Nº",
-                urna_title: "Ballot Name Validation", urna_sub: "5 attempts + letter-by-letter calculation + confidential PDF — US$ 5",
-                f_nome: "Full Name", f_cargo: "Position in Dispute", f_email: "Email (confidential result)",
-                urna_options: "Enter up to 5 candidate name options:", pay_urna: "🔒 Pay US$ 5 — Result by Email",
-                eleitoral_title: "Electoral Number Calculation", eleitoral_sub: "Suggestions with energy 8 for your candidacy — US$ 5",
-                f_cargo2: "Position", c_vereador: "City Councilor", c_estadual: "State Deputy", c_federal: "Federal Deputy", c_senador: "Senator",
-                f_sigla: "Party Acronym Number (2 digits)", f_existente: "Existing number (optional)",
-                pay_eleitoral: "🔒 Pay US$ 5 — Suggestions by Email",
-                bi_title: "🎁 Activate Bonus Code", bi_sub: "Got a code? Enter it below and activate to generate your gift — no payment.",
-                bi_label: "Bonus Code", bi_btn: "🎁 Activate Code",
-                bc_title: "🏢 Corporate / Group Bonus", bc_sub: "Hire numerology gifts for your clients or employees. Choose a ready plan or build custom. Discounts from 10% to 70%.",
-                bc_plans_title: "Ready Plans", bc_plan1_name: "Basic Plan", bc_plan1_price: "50 codes", bc_plan1_desc: "50x Express Map (US$ 1.50) — ideal for gifting clients",
-                bc_plan2_name: "Intermediate Plan", bc_plan2_price: "100 codes", bc_plan2_desc: "50x Express Map + 50x AI Search (US$ 3.50) — for teams",
-                bc_plan3_name: "Premium Plan", bc_plan3_price: "200 codes", bc_plan3_desc: "100x Express Map + 100x Complete Map (US$ 3.50) — full programs",
-                select: "Select", bc_custom_title: "Build Custom", bc_custom_sub: "Set the desired quantity of each service. The discount is applied automatically.",
-                bc_tbl_service: "Service", bc_tbl_price: "Price", bc_tbl_qty: "Quantity",
-                bc_total: "Gross total:", bc_discount: "Discount applied:", bc_final: "Final total:", bc_confirm: "📋 Confirm Summary and Pay",
-                inv_title: "Investors & Partners", inv_sub: "Download the A1ELOS business presentation in your language, free.", download: "Download PDF",
-                section_numbers_title: "The Numbers at the Core", section_numbers_subtitle: "Each number from 1 to 9 carries a unique energy",
-                numbers_masters: "✦ Master Numbers 11, 22 and 33 are also considered ✦",
-                cta_title: "Ready to discover your path?", cta_desc: "Your personal numerological map is just a few clicks away.",
-                cta_btn1: "✦ GENERATE FREE MAP", cta_btn2: "DISCOVER A1ELOS", footer_text: "© 2026 A1ELOS Assessoria e Consultoria. All rights reserved."
-            },
-            es: {
-                hero_title: "MAPA NUMEROLÓGICO", hero_subtitle: "Descubre lo que los números revelan sobre ti",
-                hero_desc: "Un viaje de autoconocimiento basado en la numerología pitagórica. Tu mapa personal revela talentos, desafíos y caminos a través de los números que rigen tu vida.",
-                hero_btn: "✦ GENERAR MI MAPA", hero_btn2: "VER PRODUCTOS",
-                section_what_title: "¿Qué es el Mapa Numerológico?", section_what_subtitle: "Una herramienta de autoconocimiento basada en la numerología pitagórica",
-                card1_title: "Números de tu Vida", card1_desc: "Calculamos el Camino de la Vida, Destino, Alma, Realización y otros números esenciales a partir de tu fecha de nacimiento.",
-                card2_title: "Tu Mapa Personal", card2_desc: "Cada número revela una dimensión única de tu personalidad, talentos innatos y desafíos.",
-                card3_title: "Informe Completo", card3_desc: "Recibes un informe detallado en PDF con la interpretación profesional de cada número.",
-                card4_title: "Guía Práctica", card4_desc: "Más que una lectura, una guía para tomar decisiones alineadas con tu propósito.",
-                section_how_title: "Cómo Funciona", section_how_subtitle: "En pocos pasos, tu mapa está listo",
-                step1_title: "Ingresa tus datos", step1_desc: "Ingresa tu nombre completo y fecha de nacimiento.",
-                step2_title: "Cálculo automatizado", step2_desc: "Nuestro motor calcula todos los números fundamentales con precisión.",
-                step3_title: "Informe en PDF", step3_desc: "Recibe un informe profesional con la interpretación completa.",
-                section_products_title: "Productos y Servicios", section_products_subtitle: "Elige el producto ideal para tu análisis numerológico",
-                buy_btn: "Comprar", recommended: "RECOMENDADO", premium: "PREMIUM", sob_consulta: "Bajo consulta", know_more: "Saber Más",
-                start_urna: "Iniciar Validación", start_eleitoral: "Calcular Nº Electoral",
-                urna_title: "Validación Nombre de Urna", urna_sub: "5 intentos + cálculo letra a letra + PDF confidencial — € 5",
-                f_nome: "Nombre Completo", f_cargo: "Cargo en Disputa", f_email: "Email (resultado confidencial)",
-                urna_options: "Introduce hasta 5 opciones de nombre de candidato:", pay_urna: "🔒 Pagar € 5 — Resultado por Email",
-                eleitoral_title: "Cálculo del Número Electoral", eleitoral_sub: "Sugerencias con energía 8 para tu candidatura — € 5",
-                f_cargo2: "Cargo", c_vereador: "Concejal", c_estadual: "Dip. Provincial", c_federal: "Dip. Nacional", c_senador: "Senador",
-                f_sigla: "Número de la Sigla Partidaria (2 dígitos)", f_existente: "Número existente (opcional)",
-                pay_eleitoral: "🔒 Pagar € 5 — Sugerencias por Email",
-                bi_title: "🎁 Activar Código Bono", bi_sub: "¿Recibiste un código? Introdúcelo y actívalo para generar tu regalo — sin pago.",
-                bi_label: "Código Bono", bi_btn: "🎁 Activar Código",
-                bc_title: "🏢 Bono Colectivo / Empresarial", bc_sub: "Contrata regalos numerológicos para tus clientes o empleados. Descuentos del 10% al 70%.",
-                bc_plans_title: "Planes Listos", bc_plan1_name: "Plan Básico", bc_plan1_price: "50 códigos", bc_plan1_desc: "50x Mapa Exprés (€ 1.50) — ideal para regalar a clientes",
-                bc_plan2_name: "Plan Intermedio", bc_plan2_price: "100 códigos", bc_plan2_desc: "50x Mapa Exprés + 50x Búsqueda IA (€ 3.50) — para equipos",
-                bc_plan3_name: "Plan Premium", bc_plan3_price: "200 códigos", bc_plan3_desc: "100x Mapa Exprés + 100x Mapa Completo (€ 3.50) — programas completos",
-                select: "Seleccionar", bc_custom_title: "Montar a Medida", bc_custom_sub: "Marca la cantidad deseada de cada servicio. El descuento se aplica automáticamente.",
-                bc_tbl_service: "Servicio", bc_tbl_price: "Valor", bc_tbl_qty: "Cantidad",
-                bc_total: "Total bruto:", bc_discount: "Descuento aplicado:", bc_final: "Total final:", bc_confirm: "📋 Confirmar Resumen y Pagar",
-                inv_title: "Inversores y Socios", inv_sub: "Descarga la presentación empresarial de A1ELOS en tu idioma, gratis.", download: "Descargar PDF",
-                section_numbers_title: "Los Números en el Centro", section_numbers_subtitle: "Cada número del 1 al 9 lleva una energía única",
-                numbers_masters: "✦ Los Números Maestros 11, 22 y 33 también se consideran ✦",
-                cta_title: "¿Listo para descubrir tu camino?", cta_desc: "Tu mapa numerológico personal está a solo unos clics de distancia.",
-                cta_btn1: "✦ GENERAR MAPA GRATIS", cta_btn2: "CONOCE A1ELOS", footer_text: "© 2026 A1ELOS Assessoria e Consultoria. Todos los derechos reservados."
-            },
-            it: {
-                hero_title: "MAPPA NUMEROLOGICA", hero_subtitle: "Scopri cosa rivelano i numeri su di te",
-                hero_desc: "Un viaggio di conoscenza di sé basato sulla numerologia pitagorica. La tua mappa personale rivela talenti, sfide e percorsi attraverso i numeri che governano la tua vita.",
-                hero_btn: "✦ GENERA LA MIA MAPPA", hero_btn2: "VEDI PRODOTTI",
-                section_what_title: "Cos'è la Mappa Numerologica?", section_what_subtitle: "Uno strumento di scoperta di sé basato sulla numerologia pitagorica",
-                card1_title: "Numeri della tua Vita", card1_desc: "Calcoliamo il Sentiero della Vita, il Destino, l'Anima e altri numeri essenziali.",
-                card2_title: "La tua Mappa Personale", card2_desc: "Ogni numero rivela una dimensione unica della tua personalità e dei tuoi talenti.",
-                card3_title: "Rapporto Completo", card3_desc: "Ricevi un rapporto PDF dettagliato con l'interpretazione professionale.",
-                card4_title: "Guida Pratica", card4_desc: "Una guida per prendere decisioni in linea con il tuo scopo di vita.",
-                section_how_title: "Come Funziona", section_how_subtitle: "In pochi passi, la tua mappa è pronta",
-                step1_title: "Inserisci i tuoi dati", step1_desc: "Inserisci il tuo nome completo e la data di nascita.",
-                step2_title: "Calcolo automatizzato", step2_desc: "Il nostro motore calcola tutti i numeri con precisione.",
-                step3_title: "Rapporto PDF", step3_desc: "Ricevi un rapporto professionale con l'interpretazione completa.",
-                section_products_title: "Prodotti e Servizi", section_products_subtitle: "Scegli il prodotto ideale per la tua analisi numerologica",
-                buy_btn: "Acquista", recommended: "RACCOMANDATO", premium: "PREMIUM", sob_consulta: "Su richiesta", know_more: "Scopri di Più",
-                start_urna: "Avvia Validazione", start_eleitoral: "Calcola Nº Elettorale",
-                urna_title: "Validazione Nome della Scheda", urna_sub: "5 tentativi + calcolo lettera per lettera + PDF riservato — € 5",
-                f_nome: "Nome Completo", f_cargo: "Carica in Disputa", f_email: "Email (risultato riservato)",
-                urna_options: "Inserisci fino a 5 opzioni di nome del candidato:", pay_urna: "🔒 Paga € 5 — Risultato via Email",
-                eleitoral_title: "Calcolo del Numero Elettorale", eleitoral_sub: "Suggerimenti con energia 8 per la tua candidatura — € 5",
-                f_cargo2: "Carica", c_vereador: "Consigliere", c_estadual: "Dep. Regionale", c_federal: "Dep. Nazionale", c_senador: "Senatore",
-                f_sigla: "Numero della Sigla di Partito (2 cifre)", f_existente: "Numero esistente (opzionale)",
-                pay_eleitoral: "🔒 Paga € 5 — Suggerimenti via Email",
-                bi_title: "🎁 Attiva Codice Bonus", bi_sub: "Hai ricevuto un codice? Inseriscilo e attivalo per generare il tuo regalo — senza pagamento.",
-                bi_label: "Codice Bonus", bi_btn: "🎁 Attiva Codice",
-                bc_title: "🏢 Bonus Collettivo / Aziendale", bc_sub: "Assumi regali numerologici per i tuoi clienti o dipendenti. Sconti dal 10% al 70%.",
-                bc_plans_title: "Piani Pronti", bc_plan1_name: "Piano Base", bc_plan1_price: "50 codici", bc_plan1_desc: "50x Mappa Espressa (€ 1.50) — ideale per regalare ai clienti",
-                bc_plan2_name: "Piano Intermedio", bc_plan2_price: "100 codici", bc_plan2_desc: "50x Mappa Espressa + 50x Ricerca IA (€ 3.50) — per team",
-                bc_plan3_name: "Piano Premium", bc_plan3_price: "200 codici", bc_plan3_desc: "100x Mappa Espressa + 100x Mappa Completa (€ 3.50) — programmi completi",
-                select: "Seleziona", bc_custom_title: "Costruisci su Misura", bc_custom_sub: "Imposta la quantità desiderata di ogni servizio. Lo sconto viene applicato automaticamente.",
-                bc_tbl_service: "Servizio", bc_tbl_price: "Valore", bc_tbl_qty: "Quantità",
-                bc_total: "Totale lordo:", bc_discount: "Sconto applicato:", bc_final: "Totale finale:", bc_confirm: "📋 Conferma Riepilogo e Paga",
-                inv_title: "Investitori e Partner", inv_sub: "Scarica la presentazione aziendale A1ELOS nella tua lingua, gratis.", download: "Scarica PDF",
-                section_numbers_title: "I Numeri al Centro", section_numbers_subtitle: "Ogni numero da 1 a 9 porta un'energia unica",
-                numbers_masters: "✦ Anche i Numeri Maestri 11, 22 e 33 sono considerati ✦",
-                cta_title: "Pronto a scoprire il tuo percorso?", cta_desc: "La tua mappa numerologica personale è a pochi clic di distanza.",
-                cta_btn1: "✦ GENERA MAPPA GRATUITA", cta_btn2: "SCOPRI A1ELOS", footer_text: "© 2026 A1ELOS Assessoria e Consultoria. Tutti i diritti riservati."
-            },
-            fr: {
-                hero_title: "CARTE NUMÉROLOGIQUE", hero_subtitle: "Découvrez ce que les nombres révèlent sur vous",
-                hero_desc: "Un voyage de découverte de soi basé sur la numérologie pythagoricienne. Votre carte personnelle révèle talents, défis et chemins à travers les nombres qui régissent votre vie.",
-                hero_btn: "✦ GÉNÉRER MA CARTE", hero_btn2: "VOIR LES PRODUITS",
-                section_what_title: "Qu'est-ce que la Carte Numérologique ?", section_what_subtitle: "Un outil de découverte de soi basé sur la numérologie pythagoricienne",
-                card1_title: "Chiffres de votre Vie", card1_desc: "Nous calculons le Chemin de Vie, le Destin, l'Âme et d'autres nombres essentiels.",
-                card2_title: "Votre Carte Personnelle", card2_desc: "Chaque nombre révèle une dimension unique de votre personnalité.",
-                card3_title: "Rapport Complet", card3_desc: "Recevez un rapport PDF détaillé avec une interprétation professionnelle.",
-                card4_title: "Conseils Pratiques", card4_desc: "Un guide pour prendre des décisions alignées avec votre mission de vie.",
-                section_how_title: "Comment ça Marche", section_how_subtitle: "En quelques étapes, votre carte est prête",
-                step1_title: "Entrez vos données", step1_desc: "Entrez votre nom complet et votre date de naissance.",
-                step2_title: "Calcul automatisé", step2_desc: "Notre moteur calcule tous les nombres avec précision.",
-                step3_title: "Rapport PDF", step3_desc: "Recevez un rapport professionnel avec l'interprétation complète.",
-                section_products_title: "Produits et Services", section_products_subtitle: "Choisissez le produit idéal pour votre analyse numérologique",
-                buy_btn: "Acheter", recommended: "RECOMMANDÉ", premium: "PREMIUM", sob_consulta: "Sur demande", know_more: "En Savoir Plus",
-                start_urna: "Démarrer la Validation", start_eleitoral: "Calculer Nº Électoral",
-                urna_title: "Validation Nom du Bulletin", urna_sub: "5 tentatives + calcul lettre par lettre + PDF confidentiel — € 5",
-                f_nome: "Nom Complet", f_cargo: "Poste en Dispute", f_email: "Email (résultat confidentiel)",
-                urna_options: "Saisissez jusqu'à 5 options de nom de candidat :", pay_urna: "🔒 Payer € 5 — Résultat par Email",
-                eleitoral_title: "Calcul du Numéro Électoral", eleitoral_sub: "Suggestions avec énergie 8 pour votre candidature — € 5",
-                f_cargo2: "Poste", c_vereador: "Conseiller", c_estadual: "Député Régional", c_federal: "Député National", c_senador: "Sénateur",
-                f_sigla: "Numéro de la Sigle du Parti (2 chiffres)", f_existente: "Numéro existant (optionnel)",
-                pay_eleitoral: "🔒 Payer € 5 — Suggestions par Email",
-                bi_title: "🎁 Activer le Code Bonus", bi_sub: "Vous avez reçu un code ? Saisissez-le et activez-le pour générer votre cadeau — sans paiement.",
-                bi_label: "Code Bonus", bi_btn: "🎁 Activer le Code",
-                bc_title: "🏢 Bonus Collectif / Entreprise", bc_sub: "Offrez des cadeaux numérologiques à vos clients ou employés. Réductions de 10% à 70%.",
-                bc_plans_title: "Plans Prêts", bc_plan1_name: "Plan de Base", bc_plan1_price: "50 codes", bc_plan1_desc: "50x Carte Express (€ 1.50) — idéal pour offrir aux clients",
-                bc_plan2_name: "Plan Intermédiaire", bc_plan2_price: "100 codes", bc_plan2_desc: "50x Carte Express + 50x Recherche IA (€ 3.50) — pour les équipes",
-                bc_plan3_name: "Plan Premium", bc_plan3_price: "200 codes", bc_plan3_desc: "100x Carte Express + 100x Carte Complète (€ 3.50) — programmes complets",
-                select: "Sélectionner", bc_custom_title: "Construire sur Mesure", bc_custom_sub: "Définissez la quantité souhaitée de chaque service. La remise est appliquée automatiquement.",
-                bc_tbl_service: "Service", bc_tbl_price: "Valeur", bc_tbl_qty: "Quantité",
-                bc_total: "Total brut :", bc_discount: "Remise appliquée :", bc_final: "Total final :", bc_confirm: "📋 Confirmer le Récapitulatif et Payer",
-                inv_title: "Investisseurs et Partenaires", inv_sub: "Téléchargez la présentation d'entreprise A1ELOS dans votre langue, gratuitement.", download: "Télécharger PDF",
-                section_numbers_title: "Les Nombres au Cœur", section_numbers_subtitle: "Chaque nombre de 1 à 9 porte une énergie unique",
-                numbers_masters: "✦ Les Nombres Maîtres 11, 22 et 33 sont également considérés ✦",
-                cta_title: "Prêt à découvrir votre chemin ?", cta_desc: "Votre carte numérologique personnelle est à portée de clic.",
-                cta_btn1: "✦ GÉNÉRER CARTE GRATUITE", cta_btn2: "DÉCOUVRIR A1ELOS", footer_text: "© 2026 A1ELOS Assessoria e Consultoria. Tous droits réservés."
-            },
-            de: {
-                hero_title: "NUMEROLOGISCHE KARTE", hero_subtitle: "Entdecken Sie, was Zahlen über Sie verraten",
-                hero_desc: "Eine Selbstfindungsreise basierend auf der pythagoreischen Numerologie. Ihre persönliche Karte offenbart Talente, Herausforderungen und Wege durch die Zahlen, die Ihr Leben bestimmen.",
-                hero_btn: "✦ MEINE KARTE ERSTELLEN", hero_btn2: "PRODUKTE ANSEHEN",
-                section_what_title: "Was ist die numerologische Karte?", section_what_subtitle: "Ein Werkzeug zur Selbsterkenntnis basierend auf Numerologie",
-                card1_title: "Zahlen Ihres Lebens", card1_desc: "Wir berechnen Lebensweg, Schicksal, Seele und andere wesentliche Zahlen.",
-                card2_title: "Ihre persönliche Karte", card2_desc: "Jede Zahl offenbart eine einzigartige Dimension Ihrer Persönlichkeit.",
-                card3_title: "Vollständiger Bericht", card3_desc: "Sie erhalten einen detaillierten PDF-Bericht mit professioneller Interpretation.",
-                card4_title: "Praktische Anleitung", card4_desc: "Ein Leitfaden für Entscheidungen, die auf Ihren Lebenszweck abgestimmt sind.",
-                section_how_title: "Wie es funktioniert", section_how_subtitle: "In wenigen Schritten ist Ihre Karte fertig",
-                step1_title: "Daten eingeben", step1_desc: "Geben Sie Ihren vollständigen Namen und Ihr Geburtsdatum ein.",
-                step2_title: "Automatisierte Berechnung", step2_desc: "Unsere Engine berechnet alle Zahlen mit höchster Präzision.",
-                step3_title: "PDF-Bericht", step3_desc: "Erhalten Sie einen professionellen Bericht mit der vollständigen Interpretation.",
-                section_products_title: "Produkte & Dienstleistungen", section_products_subtitle: "Wählen Sie das ideale Produkt für Ihre numerologische Analyse",
-                buy_btn: "Kaufen", recommended: "EMPFEHLUNG", premium: "PREMIUM", sob_consulta: "Auf Anfrage", know_more: "Mehr Erfahren",
-                start_urna: "Validierung Starten", start_eleitoral: "Wahlnummer Berechnen",
-                urna_title: "Stimmzettelname-Validierung", urna_sub: "5 Versuche + Buchstabenberechnung + vertrauliches PDF — € 5",
-                f_nome: "Vollständiger Name", f_cargo: "Position", f_email: "Email (vertrauliches Ergebnis)",
-                urna_options: "Geben Sie bis zu 5 Kandidatennamen-Optionen ein:", pay_urna: "🔒 € 5 Zahlen — Ergebnis per Email",
-                eleitoral_title: "Berechnung der Wahlnummer", eleitoral_sub: "Vorschläge mit Energie 8 für Ihre Kandidatur — € 5",
-                f_cargo2: "Position", c_vereador: "Stadtrat", c_estadual: "Landesabgeordneter", c_federal: "Bundestagsabgeordneter", c_senador: "Senator",
-                f_sigla: "Parteikürzel-Nummer (2 Ziffern)", f_existente: "Bestehende Nummer (optional)",
-                pay_eleitoral: "🔒 € 5 Zahlen — Vorschläge per Email",
-                bi_title: "🎁 Bonus-Code Aktivieren", bi_sub: "Haben Sie einen Code erhalten? Geben Sie ihn ein und aktivieren Sie ihn — ohne Zahlung.",
-                bi_label: "Bonus-Code", bi_btn: "🎁 Code Aktivieren",
-                bc_title: "🏢 Kollektiv-/Unternehmensbonus", bc_sub: "Numerologie-Geschenke für Ihre Kunden oder Mitarbeiter. Rabatte von 10% bis 70%.",
-                bc_plans_title: "Fertige Pläne", bc_plan1_name: "Basisplan", bc_plan1_price: "50 Codes", bc_plan1_desc: "50x Express-Karte (€ 1.50) — ideal zum Verschenken",
-                bc_plan2_name: "Mittelplan", bc_plan2_price: "100 Codes", bc_plan2_desc: "50x Express-Karte + 50x KI-Suche (€ 3.50) — für Teams",
-                bc_plan3_name: "Premium-Plan", bc_plan3_price: "200 Codes", bc_plan3_desc: "100x Express-Karte + 100x Vollständige Karte (€ 3.50) — komplette Programme",
-                select: "Auswählen", bc_custom_title: "Individuell Gestalten", bc_custom_sub: "Legen Sie die gewünschte Menge jedes Dienstes fest. Der Rabatt wird automatisch angewendet.",
-                bc_tbl_service: "Dienst", bc_tbl_price: "Wert", bc_tbl_qty: "Menge",
-                bc_total: "Brutto gesamt:", bc_discount: "Rabatt angewendet:", bc_final: "Endgesamt:", bc_confirm: "📋 Zusammenfassung Bestätigen und Zahlen",
-                inv_title: "Investoren & Partner", inv_sub: "Laden Sie die A1ELOS-Unternehmenspräsentation in Ihrer Sprache kostenlos herunter.", download: "PDF Herunterladen",
-                section_numbers_title: "Die Zahlen im Zentrum", section_numbers_subtitle: "Jede Zahl von 1 bis 9 trägt eine einzigartige Energie",
-                numbers_masters: "✦ Meisterzahlen 11, 22 und 33 werden ebenfalls berücksichtigt ✦",
-                cta_title: "Bereit, Ihren Weg zu entdecken?", cta_desc: "Ihre persönliche numerologische Karte ist nur wenige Klicks entfernt.",
-                cta_btn1: "✦ GRATIS KARTE ERSTELLEN", cta_btn2: "A1ELOS ENTDECKEN", footer_text: "© 2026 A1ELOS Assessoria e Consultoria. Alle Rechte vorbehalten."
-            },
-            ja: {
-                hero_title: "数秘術マップ", hero_subtitle: "数字があなたについて明らかにすることを発見しましょう",
-                hero_desc: "ピタゴラス数秘術に基づく自己発見の旅。あなたのパーソナルマップは、人生を支配する数字を通じて、才能、課題、道筋を明らかにします。",
-                hero_btn: "✦ マップを生成", hero_btn2: "製品を見る",
-                section_what_title: "数秘術マップとは？", section_what_subtitle: "ピタゴラス数秘術に基づく自己発見ツール",
-                card1_title: "あなたの人生の数字", card1_desc: "生年月日と氏名から、ライフパス、運命、魂などの重要な数字を計算します。",
-                card2_title: "パーソナルマップ", card2_desc: "それぞれの数字が、あなたの個性や才能のユニークな側面を明らかにします。",
-                card3_title: "完全なレポート", card3_desc: "各数字の専門的な解釈を含む詳細なPDFレポートをダウンロードできます。",
-                card4_title: "実践的なガイダンス", card4_desc: "人生の目的に沿った決断を下すためのガイドブックです。",
-                section_how_title: "仕組み", section_how_subtitle: "わずか数ステップでマップが完成します",
-                step1_title: "データを入力", step1_desc: "氏名と生年月日を入力してください。",
-                step2_title: "自動計算", step2_desc: "当社のエンジンがすべての数秘術の数字を正確に計算します。",
-                step3_title: "PDFレポート", step3_desc: "完全な解釈が含まれたプロフェッショナルなレポートを受け取ります。",
-                section_products_title: "製品とサービス", section_products_subtitle: "あなたの数秘術分析に最適な製品をお選びください",
-                buy_btn: "購入", recommended: "おすすめ", premium: "プレミアム", sob_consulta: "お問い合わせ", know_more: "詳細",
-                start_urna: "検証を開始", start_eleitoral: "選挙番号を計算",
-                urna_title: "投票用紙名の検証", urna_sub: "5回の試行 + 文字計算 + 機密PDF — ¥ 800",
-                f_nome: "フルネーム", f_cargo: "立候補職", f_email: "メール（機密結果）",
-                urna_options: "候補者名のオプションを最大5つ入力：", pay_urna: "🔒 ¥ 800 支払い — 結果をメールで",
-                eleitoral_title: "選挙番号の計算", eleitoral_sub: "あなたの立候補のためのエネルギー8の提案 — ¥ 800",
-                f_cargo2: "職", c_vereador: "市議会議員", c_estadual: "州議会議員", c_federal: "連邦議会議員", c_senador: "上院議員",
-                f_sigla: "政党略称番号（2桁）", f_existente: "既存の番号（任意）",
-                pay_eleitoral: "🔒 ¥ 800 支払い — 提案をメールで",
-                bi_title: "🎁 ボーナスコードを有効化", bi_sub: "コードをお持ちですか？入力して有効化し、ギフトを生成しましょう — 支払い不要。",
-                bi_label: "ボーナスコード", bi_btn: "🎁 コードを有効化",
-                bc_title: "🏢 団体/法人ボーナス", bc_sub: "顧客や従業員に数秘術ギフトを。10%から70%の割引。",
-                bc_plans_title: "既製プラン", bc_plan1_name: "ベーシック", bc_plan1_price: "50コード", bc_plan1_desc: "50x エクスプレスマップ（¥ 250）— 顧客への贈り物に最適",
-                bc_plan2_name: "ミドル", bc_plan2_price: "100コード", bc_plan2_desc: "50x エクスプレスマップ + 50x AI検索（¥ 550）— チーム向け",
-                bc_plan3_name: "プレミアム", bc_plan3_price: "200コード", bc_plan3_desc: "100x エクスプレスマップ + 100x 完全マップ（¥ 550）— 完全なプログラム",
-                select: "選択", bc_custom_title: "カスタム作成", bc_custom_sub: "各サービスの希望数量を設定してください。割引が自動的に適用されます。",
-                bc_tbl_service: "サービス", bc_tbl_price: "価格", bc_tbl_qty: "数量",
-                bc_total: "総額：", bc_discount: "適用割引：", bc_final: "最終合計：", bc_confirm: "📋 要約を確認して支払う",
-                inv_title: "投資家とパートナー", inv_sub: "A1ELOSの企業プレゼンテーションをあなたの言語で無料ダウンロード。", download: "PDFをダウンロード",
-                section_numbers_title: "中心にある数字", section_numbers_subtitle: "1から9までの各数字は独自のエネルギーを持っています",
-                numbers_masters: "✦ マスターナンバー11、22、33も考慮されます ✦",
-                cta_title: "あなたの道を見つける準備はできましたか？", cta_desc: "数クリックであなただけの数秘術マップが手に入ります。",
-                cta_btn1: "✦ 無料マップを生成", cta_btn2: "A1ELOSについて", footer_text: "© 2026 A1ELOS Assessoria e Consultoria. 全著作権所有。"
-            },
-            zh: {
-                hero_title: "数字命理图", hero_subtitle: "发现数字揭示关于你的一切",
-                hero_desc: "一段基于毕达哥拉斯数字命理的自我发现之旅。你的个人命理图通过主宰你生命的数字揭示天赋、挑战和道路。",
-                hero_btn: "✦ 生成我的命理图", hero_btn2: "查看产品",
-                section_what_title: "什么是数字命理图？", section_what_subtitle: "基于毕达哥拉斯数字命理的自我发现工具",
-                card1_title: "你的生命数字", card1_desc: "我们根据您的出生日期和全名计算生命路径、命运、灵魂等核心数字。",
-                card2_title: "个人命理图", card2_desc: "每个数字都揭示了你性格、天赋和挑战的独特维度。",
-                card3_title: "完整报告", card3_desc: "您将收到一份详细的PDF报告，包含对每个数字的专业解读。",
-                card4_title: "实践指导", card4_desc: "一份指导手册，帮助您做出符合生命目标的决策。",
-                section_how_title: "运作方式", section_how_subtitle: "只需几个步骤，您的图表即可完成",
-                step1_title: "输入数据", step1_desc: "输入您的全名和出生日期。",
-                step2_title: "自动计算", step2_desc: "我们的引擎精确计算所有基础数字。",
-                step3_title: "PDF报告", step3_desc: "收到一份包含完整解读的专业报告。",
-                section_products_title: "产品与服务", section_products_subtitle: "为您的数字命理分析选择理想产品",
-                buy_btn: "购买", recommended: "推荐", premium: "高级", sob_consulta: "咨询", know_more: "了解更多",
-                start_urna: "开始验证", start_eleitoral: "计算选举号码",
-                urna_title: "选票名称验证", urna_sub: "5次尝试 + 逐字计算 + 保密PDF — ¥ 40",
-                f_nome: "全名", f_cargo: "竞选职位", f_email: "邮箱（保密结果）",
-                urna_options: "输入最多5个候选人名称选项：", pay_urna: "🔒 支付 ¥ 40 — 结果通过邮箱发送",
-                eleitoral_title: "选举号码计算", eleitoral_sub: "为您竞选提供能量8的建议 — ¥ 40",
-                f_cargo2: "职位", c_vereador: "市议员", c_estadual: "州议员", c_federal: "联邦议员", c_senador: "参议员",
-                f_sigla: "政党缩写号码（2位数）", f_existente: "现有号码（可选）",
-                pay_eleitoral: "🔒 支付 ¥ 40 — 建议通过邮箱发送",
-                bi_title: "🎁 激活奖励代码", bi_sub: "有代码吗？输入并激活即可生成您的礼物 — 无需付款。",
-                bi_label: "奖励代码", bi_btn: "🎁 激活代码",
-                bc_title: "🏢 集体/企业奖励", bc_sub: "为您的客户或员工提供数字命理礼物。折扣10%至70%。",
-                bc_plans_title: "现成方案", bc_plan1_name: "基础方案", bc_plan1_price: "50个代码", bc_plan1_desc: "50x 快速地图（¥ 12）— 适合赠送客户",
-                bc_plan2_name: "中级方案", bc_plan2_price: "100个代码", bc_plan2_desc: "50x 快速地图 + 50x AI搜索（¥ 25）— 适合团队",
-                bc_plan3_name: "高级方案", bc_plan3_price: "200个代码", bc_plan3_desc: "100x 快速地图 + 100x 完整地图（¥ 25）— 完整计划",
-                select: "选择", bc_custom_title: "自定义构建", bc_custom_sub: "设置每种服务的所需数量。折扣自动应用。",
-                bc_tbl_service: "服务", bc_tbl_price: "价格", bc_tbl_qty: "数量",
-                bc_total: "总金额：", bc_discount: "应用折扣：", bc_final: "最终总额：", bc_confirm: "📋 确认摘要并支付",
-                inv_title: "投资者与合作伙伴", inv_sub: "免费下载A1ELOS企业介绍（您的语言版本）。", download: "下载PDF",
-                section_numbers_title: "核心数字", section_numbers_subtitle: "1到9的每个数字都带有独特的能量",
-                numbers_masters: "✦ 卓越数 11、22 和 33 也在考虑范围内 ✦",
-                cta_title: "准备好发现你的道路了吗？", cta_desc: "只需点击几下即可获得您的个人数字命理图。",
-                cta_btn1: "✦ 生成免费命理图", cta_btn2: "了解 A1ELOS", footer_text: "© 2026 A1ELOS Assessoria e Consultoria. 保留所有权利。"
-            },
-            ru: {
-                hero_title: "НУМЕРОЛОГИЧЕСКАЯ КАРТА", hero_subtitle: "Узнайте, что числа говорят о вас",
-                hero_desc: "Путешествие самопознания, основанное на пифагорейской нумерологии. Ваша личная карта раскрывает таланты, вызовы и пути через числа, которые управляют вашей жизнью.",
-                hero_btn: "✦ СОЗДАТЬ МОЮ КАРТУ", hero_btn2: "СМОТРЕТЬ ПРОДУКТЫ",
-                section_what_title: "Что такое нумерологическая карта?", section_what_subtitle: "Инструмент самопознания на основе нумерологии",
-                card1_title: "Числа вашей жизни", card1_desc: "Мы рассчитываем Путь Жизни, Судьбу, Душу и другие важные числа.",
-                card2_title: "Ваша личная карта", card2_desc: "Каждое число раскрывает уникальное измерение вашей личности.",
-                card3_title: "Полный отчет", card3_desc: "Вы получите подробный PDF-отчет с профессиональной интерпретацией.",
-                card4_title: "Практическое руководство", card4_desc: "Руководство для принятия решений в соответствии с вашим предназначением.",
-                section_how_title: "Как это работает", section_how_subtitle: "Ваша карта будет готова в несколько шагов",
-                step1_title: "Введите данные", step1_desc: "Введите ваше полное имя и дату рождения.",
-                step2_title: "Автоматический расчет", step2_desc: "Наш движок точно рассчитывает все нумерологические числа.",
-                step3_title: "PDF-отчет", step3_desc: "Получите профессиональный отчет с полной интерпретацией.",
-                section_products_title: "Продукты и Услуги", section_products_subtitle: "Выберите идеальный продукт для вашего нумерологического анализа",
-                buy_btn: "Купить", recommended: "РЕКОМЕНДУЕМ", premium: "ПРЕМИУМ", sob_consulta: "По запросу", know_more: "Узнать Больше",
-                start_urna: "Начать Проверку", start_eleitoral: "Рассчитать Изб. Номер",
-                urna_title: "Проверка названия бюллетеня", urna_sub: "5 попыток + побуквенный расчет + конфиденциальный PDF — ₽ 430",
-                f_nome: "Полное имя", f_cargo: "Должность", f_email: "Email (конфиденциальный результат)",
-                urna_options: "Введите до 5 вариантов имени кандидата:", pay_urna: "🔒 Оплатить ₽ 430 — Результат на Email",
-                eleitoral_title: "Расчет избирательного номера", eleitoral_sub: "Предложения с энергией 8 для вашей кандидатуры — ₽ 430",
-                f_cargo2: "Должность", c_vereador: "Советник", c_estadual: "Депутат штата", c_federal: "Федеральный депутат", c_senador: "Сенатор",
-                f_sigla: "Номер партийной аббревиатуры (2 цифры)", f_existente: "Существующий номер (необязательно)",
-                pay_eleitoral: "🔒 Оплатить ₽ 430 — Предложения на Email",
-                bi_title: "🎁 Активировать бонусный код", bi_sub: "Получили код? Введите и активируйте, чтобы получить подарок — без оплаты.",
-                bi_label: "Бонусный код", bi_btn: "🎁 Активировать",
-                bc_title: "🏢 Коллективный/Корпоративный бонус", bc_sub: "Закажите нумерологические подарки для клиентов или сотрудников. Скидки от 10% до 70%.",
-                bc_plans_title: "Готовые планы", bc_plan1_name: "Базовый", bc_plan1_price: "50 кодов", bc_plan1_desc: "50x Экспресс-карта (₽ 130) — идеально для подарков клиентам",
-                bc_plan2_name: "Средний", bc_plan2_price: "100 кодов", bc_plan2_desc: "50x Экспресс-карта + 50x ИИ-поиск (₽ 280) — для команд",
-                bc_plan3_name: "Премиум", bc_plan3_price: "200 кодов", bc_plan3_desc: "100x Экспресс-карта + 100x Полная карта (₽ 280) — полные программы",
-                select: "Выбрать", bc_custom_title: "Создать по мерке", bc_custom_sub: "Установите желаемое количество каждой услуги. Скидка применяется автоматически.",
-                bc_tbl_service: "Услуга", bc_tbl_price: "Цена", bc_tbl_qty: "Количество",
-                bc_total: "Общий итог:", bc_discount: "Примененная скидка:", bc_final: "Итоговая сумма:", bc_confirm: "📋 Подтвердить и Оплатить",
-                inv_title: "Инвесторы и Партнеры", inv_sub: "Скачайте презентацию A1ELOS на вашем языке бесплатно.", download: "Скачать PDF",
-                section_numbers_title: "Числа в центре", section_numbers_subtitle: "Каждое число от 1 до 9 несет уникальную энергию",
-                numbers_masters: "✦ Управляющие числа 11, 22 и 33 также учитываются ✦",
-                cta_title: "Готовы открыть свой путь?", cta_desc: "Ваша личная нумерологическая карта всего в нескольких кликах.",
-                cta_btn1: "✦ СОЗДАТЬ БЕСПЛАТНУЮ КАРТУ", cta_btn2: "УЗНАТЬ О A1ELOS", footer_text: "© 2026 A1ELOS Assessoria e Consultoria. Все права защищены."
-            },
-            hi: {
-                hero_title: "अंक ज्योतिष मानचित्र", hero_subtitle: "जानें कि संख्याएं आपके बारे में क्या बताती हैं",
-                hero_desc: "पाइथागोरियन अंक ज्योतिष पर आधारित आत्म-खोज की यात्रा। आपका व्यक्तिगत मानचित्र उन संख्याओं के माध्यम से प्रतिभा, चुनौतियों और मार्गों को प्रकट करता है।",
-                hero_btn: "✦ मेरा मानचित्र बनाएं", hero_btn2: "उत्पाद देखें",
-                section_what_title: "अंक ज्योतिष मानचित्र क्या है?", section_what_subtitle: "पाइथागोरियन अंक ज्योतिष पर आधारित एक आत्म-खोज उपकरण",
-                card1_title: "आपके जीवन की संख्याएँ", card1_desc: "हम आपके जन्म की तारीख और पूरे नाम से जीवन पथ, भाग्य, आत्मा और अन्य आवश्यक संख्याओं की गणना करते हैं।",
-                card2_title: "आपका व्यक्तिगत मानचित्र", card2_desc: "प्रत्येक संख्या आपके व्यक्तित्व, जन्मजात प्रतिभाओं और चुनौतियों के एक अद्वितीय आयाम को प्रकट करती है।",
-                card3_title: "पूर्ण रिपोर्ट", card3_desc: "आपको अपने मानचित्र की पेशेवर व्याख्या के साथ एक विस्तृत पीडीएफ रिपोर्ट प्राप्त होती है।",
-                card4_title: "व्यावहारिक मार्गदर्शन", card4_desc: "अपने जीवन के उद्देश्य के साथ संरेखित निर्णय लेने के लिए एक मार्गदर्शिका।",
-                section_how_title: "यह कैसे काम करता है", section_how_subtitle: "कुछ ही चरणों में, आपका मानचित्र तैयार है",
-                step1_title: "अपना डेटा दर्ज करें", step1_desc: "अपना पूरा नाम और जन्म तिथि दर्ज करें।",
-                step2_title: "स्वचालित गणना", step2_desc: "हमारा इंजन सटीकता के साथ सभी संख्याओं की गणना करता है।",
-                step3_title: "पीडीएफ रिपोर्ट", step3_desc: "अपने मानचित्र की पूरी व्याख्या के साथ एक पेशेवर रिपोर्ट प्राप्त करें।",
-                section_products_title: "उत्पाद और सेवाएँ", section_products_subtitle: "अपने अंक ज्योतिष विश्लेषण के लिए आदर्श उत्पाद चुनें",
-                buy_btn: "खरीदें", recommended: "अनुशंसित", premium: "प्रीमियम", sob_consulta: "पूछताछ", know_more: "और जानें",
-                start_urna: "सत्यापन शुरू करें", start_eleitoral: "निर्वाचन संख्या",
-                urna_title: "मतपत्र नाम सत्यापन", urna_sub: "5 प्रयास + अक्षर-दर-अक्षर गणना + गोपनीय पीडीएफ — ₹ 430",
-                f_nome: "पूरा नाम", f_cargo: "पद", f_email: "ईमेल (गोपनीय परिणाम)",
-                urna_options: "उम्मीदवार नाम के 5 विकल्प दर्ज करें:", pay_urna: "🔒 ₹ 430 भुगतान करें — परिणाम ईमेल द्वारा",
-                eleitoral_title: "निर्वाचन संख्या गणना", eleitoral_sub: "आपकी उम्मीदवारी के लिए ऊर्जा 8 सुझाव — ₹ 430",
-                f_cargo2: "पद", c_vereador: "पार्षद", c_estadual: "राज्य विधायक", c_federal: "संसद सदस्य", c_senador: "सीनेटर",
-                f_sigla: "पार्टी संक्षिप्त संख्या (2 अंक)", f_existente: "मौजूदा संख्या (वैकल्पिक)",
-                pay_eleitoral: "🔒 ₹ 430 भुगतान करें — सुझाव ईमेल द्वारा",
-                bi_title: "🎁 बोनस कोड सक्रिय करें", bi_sub: "कोड मिला? दर्ज करें और सक्रिय करें — बिना भुगतान।",
-                bi_label: "बोनस कोड", bi_btn: "🎁 कोड सक्रिय करें",
-                bc_title: "🏢 सामूहिक/कॉर्पोरेट बोनस", bc_sub: "अपने ग्राहकों या कर्मचारियों के लिए अंक ज्योतिष उपहार। 10% से 70% तक छूट।",
-                bc_plans_title: "तैयार योजनाएँ", bc_plan1_name: "बेसिक", bc_plan1_price: "50 कोड", bc_plan1_desc: "50x त्वरित मानचित्र (₹ 120) — ग्राहकों को उपहार देने के लिए आदर्श",
-                bc_plan2_name: "मध्यम", bc_plan2_price: "100 कोड", bc_plan2_desc: "50x त्वरित मानचित्र + 50x AI खोज (₹ 280) — टीमों के लिए",
-                bc_plan3_name: "प्रीमियम", bc_plan3_price: "200 कोड", bc_plan3_desc: "100x त्वरित मानचित्र + 100x पूर्ण मानचित्र (₹ 280) — पूर्ण कार्यक्रम",
-                select: "चुनें", bc_custom_title: "कस्टम बनाएं", bc_custom_sub: "प्रत्येक सेवा की वांछित मात्रा निर्धारित करें। छूट स्वचालित रूप से लागू होती है।",
-                bc_tbl_service: "सेवा", bc_tbl_price: "मूल्य", bc_tbl_qty: "मात्रा",
-                bc_total: "कुल:", bc_discount: "लागू छूट:", bc_final: "अंतिम कुल:", bc_confirm: "📋 सारांश की पुष्टि करें और भुगतान करें",
-                inv_title: "निवेशक और साझेदार", inv_sub: "A1ELOS व्यावसायिक प्रस्तुति अपनी भाषा में मुफ्त डाउनलोड करें।", download: "पीडीएफ डाउनलोड करें",
-                section_numbers_title: "केंद्र में संख्याएँ", section_numbers_subtitle: "1 से 9 तक की प्रत्येक संख्या एक अद्वितीय ऊर्जा वहन करती है",
-                numbers_masters: "✦ मास्टर नंबर 11, 22 और 33 पर भी विचार किया जाता है ✦",
-                cta_title: "अपना रास्ता खोजने के लिए तैयार हैं?", cta_desc: "आपका व्यक्तिगत अंक ज्योतिष मानचित्र बस कुछ ही क्लिक दूर है।",
-                cta_btn1: "✦ मुफ्त मानचित्र बनाएं", cta_btn2: "A1ELOS जानें", footer_text: "© 2026 A1ELOS Assessoria e Consultoria. सर्वाधिकार सुरक्षित।"
-            },
-            he: {
-                hero_title: "מפה נומרולוגית", hero_subtitle: "גלו מה המספרים מגלים עליכם",
-                hero_desc: "מסע של גילוי עצמי המבוסס על נומרולוגיה פיתגורית. המפה האישית שלך חושפת כישרונות, אתגרים ונתיבים דרך המספרים השולטים בחייך.",
-                hero_btn: "✦ צור את המפה שלי", hero_btn2: "צפה במוצרים",
-                section_what_title: "מהי מפה נומרולוגית?", section_what_subtitle: "כלי לגילוי עצמי המבוסס על נומרולוגיה פיתגורית",
-                card1_title: "מספרי החיים שלך", card1_desc: "אנו מחשבים את נתיב החיים, הייעוד, הנשמה ומספרים חיוניים אחרים.",
-                card2_title: "המפה האישית שלך", card2_desc: "כל מספר חושף מימד ייחודי של האישיות והכישרונות שלך.",
-                card3_title: "דו\"ח מלא", card3_desc: "תקבל דו\"ח PDF מפורט עם פרשנות מקצועית לכל מספר.",
-                card4_title: "הכוונה מעשית", card4_desc: "מדריך לקבלת החלטות התואמות את ייעוד חייך.",
-                section_how_title: "איך זה עובד", section_how_subtitle: "בכמה צעדים פשוטים, המפה שלך מוכנה",
-                step1_title: "הזן את הנתונים", step1_desc: "הזן שם מלא ותאריך לידה.",
-                step2_title: "חישוב אוטומטי", step2_desc: "המנוע שלנו מחשב את כל המספרים בדיוק מירבי.",
-                step3_title: "דו\"ח PDF", step3_desc: "קבל דו\"ח מקצועי עם הפרשנות המלאה של המפה שלך.",
-                section_products_title: "מוצרים ושירותים", section_products_subtitle: "בחר את המוצר האידיאלי לניתוח הנומרולוגי שלך",
-                buy_btn: "קנה", recommended: "מומלץ", premium: "פרימיום", sob_consulta: "בהתייעצות", know_more: "מידע נוסף",
-                start_urna: "התחל אימות", start_eleitoral: "חשב מספר בחירות",
-                urna_title: "אימות שם פתק", urna_sub: "5 ניסיונות + חישוב אות אחר אות + PDF חסוי — ₪ 19",
-                f_nome: "שם מלא", f_cargo: "תפקיד", f_email: "אימייל (תוצאה חסויה)",
-                urna_options: "הזן עד 5 אפשרויות שם מועמד:", pay_urna: "🔒 שלם ₪ 19 — תוצאה באימייל",
-                eleitoral_title: "חישוב מספר בחירות", eleitoral_sub: "הצעות עם אנרגיה 8 למועמדותך — ₪ 19",
-                f_cargo2: "תפקיד", c_vereador: "חבר מועצה", c_estadual: "חבר פרלמנט מחוזי", c_federal: "חבר פרלמנט", c_senador: "סנאטור",
-                f_sigla: "מספר אותיות מפלגה (2 ספרות)", f_existente: "מספר קיים (אופציונלי)",
-                pay_eleitoral: "🔒 שלם ₪ 19 — הצעות באימייל",
-                bi_title: "🎁 הפעל קוד בונוס", bi_sub: "קיבלת קוד? הזן והפעל כדי ליצור את המתנה שלך — ללא תשלום.",
-                bi_label: "קוד בונוס", bi_btn: "🎁 הפעל קוד",
-                bc_title: "🏢 בונוס קבוצתי/ארגוני", bc_sub: "הזמן מתנות נומרולוגיות ללקוחות או לעובדים. הנחות של 10% עד 70%.",
-                bc_plans_title: "תוכניות מוכנות", bc_plan1_name: "בסיסי", bc_plan1_price: "50 קודים", bc_plan1_desc: "50x מפה מהירה (₪ 5) — אידיאלי למתן ללקוחות",
-                bc_plan2_name: "בינוני", bc_plan2_price: "100 קודים", bc_plan2_desc: "50x מפה מהירה + 50x חיפוש AI (₪ 13) — לצוותים",
-                bc_plan3_name: "פרימיום", bc_plan3_price: "200 קודים", bc_plan3_desc: "100x מפה מהירה + 100x מפה מלאה (₪ 13) — תוכניות מלאות",
-                select: "בחר", bc_custom_title: "בנה בהתאמה אישית", bc_custom_sub: "הגדר את הכמות הרצויה של כל שירות. ההנחה מוחלת אוטומטית.",
-                bc_tbl_service: "שירות", bc_tbl_price: "מחיר", bc_tbl_qty: "כמות",
-                bc_total: "סה\"כ ברוטו:", bc_discount: "הנחה מיושמת:", bc_final: "סה\"כ סופי:", bc_confirm: "📋 אשר סיכום ושלם",
-                inv_title: "משקיעים ושותפים", inv_sub: "הורד את מצגת החברה של A1ELOS בשפתך, בחינם.", download: "הורד PDF",
-                section_numbers_title: "המספרים במרכז", section_numbers_subtitle: "כל מספר מ-1 עד 9 נושא אנרגיה ייחודית",
-                numbers_masters: "✦ מספרי מאסטר 11, 22 ו-33 נלקחים גם הם בחשבון ✦",
-                cta_title: "מוכן לגלות את הנתיב שלך?", cta_desc: "המפה הנומרולוגית האישית שלך נמצאת במרחק כמה קליקים.",
-                cta_btn1: "✦ צור מפה בחינם", cta_btn2: "גלה את A1ELOS", footer_text: "© 2026 A1ELOS Assessoria e Consultoria. כל הזכויות שמורות."
-            },
-            ar: {
-                hero_title: "خريطة الأرقام", hero_subtitle: "اكتشف ما تكشفه الأرقام عنك",
-                hero_desc: "رحلة اكتشاف الذات بناءً على علم الأعداد الفيثاغوري. خريطتك الشخصية تكشف المواهب والتحديات والمسارات من خلال الأرقام التي تحكم حياتك.",
-                hero_btn: "✦ إنشاء خريطتي", hero_btn2: "عرض المنتجات",
-                section_what_title: "ما هي خريطة الأرقام؟", section_what_subtitle: "أداة لاكتشاف الذات تعتمد على علم الأعداد الفيثاغوري",
-                card1_title: "أرقام حياتك", card1_desc: "نحسب مسار الحياة، والقدر، والروح، والأرقام الأساسية الأخرى من تاريخ ميلادك.",
-                card2_title: "خريطتك الشخصية", card2_desc: "يكشف كل رقم عن بُعد فريد لشخصيتك ومواهبك الفطرية.",
-                card3_title: "تقرير كامل", card3_desc: "تتلقى تقريراً مفصلاً بصيغة PDF مع تفسير احترافي لكل رقم.",
-                card4_title: "توجيه عملي", card4_desc: "دليل لاتخاذ قرارات تتماشى مع دوراتك العددية وهدف حياتك.",
-                section_how_title: "كيف يعمل", section_how_subtitle: "في خطوات قليلة، خريطتك جاهزة",
-                step1_title: "أدخل بياناتك", step1_desc: "أدخل اسمك الكامل وتاريخ ميلادك.",
-                step2_title: "حساب آلي", step2_desc: "يقوم محركنا بحساب جميع الأرقام بدقة.",
-                step3_title: "تقرير PDF", step3_desc: "احصل على تقرير احترافي مع التفسير الكامل لخريطتك.",
-                section_products_title: "المنتجات والخدمات", section_products_subtitle: "اختر المنتج المثالي لتحليل الأعداد الخاص بك",
-                buy_btn: "اشترِ", recommended: "موصى به", premium: "بريميوم", sob_consulta: "عند الطلب", know_more: "اعرف المزيد",
-                start_urna: "ابدأ التحقق", start_eleitoral: "احسب الرقم الانتخابي",
-                urna_title: "التحقق من اسم الاقتراع", urna_sub: "5 محاولات + حساب حرف بحرف + PDF سري — ﷼ 19",
-                f_nome: "الاسم الكامل", f_cargo: "المنصب", f_email: "البريد الإلكتروني (نتيجة سرية)",
-                urna_options: "أدخل ما يصل إلى 5 خيارات لاسم المرشح:", pay_urna: "🔒 ادفع ﷼ 19 — النتيجة عبر البريد",
-                eleitoral_title: "حساب الرقم الانتخابي", eleitoral_sub: "اقتراحات بالطاقة 8 لترشحك — ﷼ 19",
-                f_cargo2: "المنصب", c_vereador: "عضو مجلس", c_estadual: "نائب إقليمي", c_federal: "نائب اتحادي", c_senador: "سناتور",
-                f_sigla: "رقم اختصار الحزب (رقمان)", f_existente: "رقم موجود (اختياري)",
-                pay_eleitoral: "🔒 ادفع ﷼ 19 — اقتراحات عبر البريد",
-                bi_title: "🎁 تفعيل رمز المكافأة", bi_sub: "لديك رمز؟ أدخله وفعّله لإنشاء هديتك — بدون دفع.",
-                bi_label: "رمز المكافأة", bi_btn: "🎁 تفعيل الرمز",
-                bc_title: "🏢 مكافأة جماعية/للشركات", bc_sub: "اطلب هدايا الأعداد لعملائك أو موظفيك. خصومات من 10% إلى 70%.",
-                bc_plans_title: "خطط جاهزة", bc_plan1_name: "أساسي", bc_plan1_price: "50 رمزاً", bc_plan1_desc: "50x خريطة سريعة (﷼ 6) — مثالي لإهداء العملاء",
-                bc_plan2_name: "متوسط", bc_plan2_price: "100 رمز", bc_plan2_desc: "50x خريطة سريعة + 50x بحث AI (﷼ 13) — للفرق",
-                bc_plan3_name: "بريميوم", bc_plan3_price: "200 رمز", bc_plan3_desc: "100x خريطة سريعة + 100x خريطة كاملة (﷼ 13) — برامج كاملة",
-                select: "اختر", bc_custom_title: "إنشاء مخصص", bc_custom_sub: "حدد الكمية المطلوبة من كل خدمة. يتم تطبيق الخصم تلقائياً.",
-                bc_tbl_service: "الخدمة", bc_tbl_price: "السعر", bc_tbl_qty: "الكمية",
-                bc_total: "الإجمالي:", bc_discount: "الخصم المطبق:", bc_final: "الإجمالي النهائي:", bc_confirm: "📋 تأكيد الملخص والدفع",
-                inv_title: "المستثمرون والشركاء", inv_sub: "حمّل عرض A1ELOS التجاري بلغتك مجاناً.", download: "تحميل PDF",
-                section_numbers_title: "الأرقام في المركز", section_numbers_subtitle: "كل رقم من 1 إلى 9 يحمل طاقة فريدة",
-                numbers_masters: "✦ يتم أيضاً أخذ الأرقام الرئيسية 11 و 22 و 33 في الاعتبار ✦",
-                cta_title: "هل أنت مستعد لاكتشاف مسارك؟", cta_desc: "خريطة الأرقام الشخصية الخاصة بك على بعد نقرات قليلة.",
-                cta_btn1: "✦ إنشاء خريطة مجانية", cta_btn2: "تعرف على A1ELOS", footer_text: "© 2026 A1ELOS Assessoria e Consultoria. جميع الحقوق محفوظة."
-            }
-        };
+            <!-- 1. TRADUÇÕES (PRIMEIRO — define languages, translations e funções) -->
+<script src="/static/translations.js"></script>
 
-        // ===== IDIOMAS DISPONÍVEIS =====
-        const languages = [
-            { code: 'pt', name: 'PT', flag: '🇧🇷' },
-            { code: 'en', name: 'EN', flag: '🇺🇸' },
-            { code: 'es', name: 'ES', flag: '🇪🇸' },
-            { code: 'it', name: 'IT', flag: '🇮🇹' },
-            { code: 'fr', name: 'FR', flag: '🇫🇷' },
-            { code: 'de', name: 'DE', flag: '🇩🇪' },
-            { code: 'ja', name: 'JA', flag: '🇯🇵' },
-            { code: 'zh', name: 'ZH', flag: '🇨🇳' },
-            { code: 'ru', name: 'RU', flag: '🇷🇺' },
-            { code: 'hi', name: 'HI', flag: '🇮🇳' },
-            { code: 'he', name: 'HE', flag: '🇮🇱' },
-            { code: 'ar', name: 'AR', flag: '🇸🇦' }
-        ];
+<!-- 2. BANNERS -->
+<script src="/static/banners.js"></script>
 
-        // ===== NOMES DOS 15 PRODUTOS (12 IDIOMAS) =====
-        const PRODUTOS_TRAD = {
-            pt: { express:"Mapa Express", vida:"Qual Vida/Ano", completo:"Mapa Completo", ia:"Pesquisa IA de Nomes", urna:"Validação Nome de Urna", eleitoral:"Número Eleitoral", imovel:"Número do Imóvel", calendario:"Calendário Mensal Energético", artistico:"Validação Nome Artístico", bebe:"Planejamento Nome de Bebê", assinatura:"Validação de Assinaturas", negocio:"Nome para Negócio/Produto", casal:"Mapa do Casal", familia:"Mapa Família Premium", coletivo:"Bônus Coletivo/Empresarial" },
-            en: { express:"Express Map", vida:"Life Phase & Year", completo:"Complete Map", ia:"AI Name Search", urna:"Ballot Name Validation", eleitoral:"Electoral Number", imovel:"Property Number", calendario:"Monthly Energy Calendar", artistico:"Artistic Name Validation", bebe:"Baby Name Planning", assinatura:"Signature Validation", negocio:"Business & Product Name", casal:"Couple Map", familia:"Premium Family Map", coletivo:"Corporate Bonus" },
-            es: { express:"Mapa Exprés", vida:"Ciclo de Vida y Año", completo:"Mapa Completo", ia:"Búsqueda IA de Nombres", urna:"Validación Nombre de Urna", eleitoral:"Número Electoral", imovel:"Número de la Propiedad", calendario:"Calendario Mensual Energético", artistico:"Validación Nombre Artístico", bebe:"Planificación Nombre de Bebé", assinatura:"Validación de Firmas", negocio:"Nombre para Negocio/Producto", casal:"Mapa de Pareja", familia:"Mapa Familiar Premium", coletivo:"Bono Corporativo" },
-            it: { express:"Mappa Espressa", vida:"Fase di Vita e Anno", completo:"Mappa Completa", ia:"Ricerca IA Nomi", urna:"Validazione Nome della Scheda", eleitoral:"Numero Elettorale", imovel:"Numero dell'Immobile", calendario:"Calendario Mensile Energetico", artistico:"Validazione Nome d'Arte", bebe:"Pianificazione Nome del Bambino", assinatura:"Validazione delle Firme", negocio:"Nome per Business/Prodotto", casal:"Mappa di Coppia", familia:"Mappa Famiglia Premium", coletivo:"Bonus Aziendale" },
-            fr: { express:"Carte Express", vida:"Phase de Vie et Année", completo:"Carte Complète", ia:"Recherche IA de Noms", urna:"Validation Nom du Bulletin", eleitoral:"Numéro Électoral", imovel:"Numéro du Bien", calendario:"Calendrier Mensuel Énergétique", artistico:"Validation Nom de Scène", bebe:"Planification Prénom de Bébé", assinatura:"Validation des Signatures", negocio:"Nom pour Entreprise/Produit", casal:"Carte du Couple", familia:"Carte Famille Premium", coletivo:"Bonus d'Entreprise" },
-            de: { express:"Express-Karte", vida:"Lebensphase & Jahr", completo:"Vollständige Karte", ia:"KI-Namenssuche", urna:"Stimmzettelname-Validierung", eleitoral:"Wahlnummer", imovel:"Immobiliennummer", calendario:"Monatlicher Energiekalender", artistico:"Künstlername-Validierung", bebe:"Babynamen-Planung", assinatura:"Unterschrifts-Validierung", negocio:"Name für Unternehmen/Produkt", casal:"Paar-Karte", familia:"Premium-Familien-Karte", coletivo:"Unternehmensbonus" },
-            ja: { express:"エクスプレスマップ", vida:"ライフステージと年", completo:"完全マップ", ia:"AI名前検索", urna:"投票用紙名の検証", eleitoral:"選挙番号", imovel:"不動産番号", calendario:"月間エネルギーカレンダー", artistico:"芸名の検証", bebe:"赤ちゃんの名前計画", assinatura:"署名の検証", negocio:"ビジネス・商品名", casal:"カップルマップ", familia:"プレミアム家族マップ", coletivo:"法人ボーナス" },
-            zh: { express:"快速地图", vida:"生命阶段与年份", completo:"完整地图", ia:"AI名字搜索", urna:"选票名称验证", eleitoral:"选举号码", imovel:"房产号码", calendario:"每月能量日历", artistico:"艺名验证", bebe:"宝宝取名规划", assinatura:"签名验证", negocio:"企业/产品名称", casal:"情侣地图", familia:"高级家庭地图", coletivo:"企业奖励" },
-            ru: { express:"Экспресс-карта", vida:"Жизненный этап и год", completo:"Полная карта", ia:"ИИ-поиск имён", urna:"Проверка названия бюллетеня", eleitoral:"Избирательный номер", imovel:"Номер недвижимости", calendario:"Ежемесячный энергетический календарь", artistico:"Проверка сценического имени", bebe:"Планирование имени ребёнка", assinatura:"Проверка подписей", negocio:"Название для бизнеса/продукта", casal:"Карта пары", familia:"Премиальная семейная карта", coletivo:"Корпоративный бонус" },
-            hi: { express:"त्वरित मानचित्र", vida:"जीवन चरण और वर्ष", completo:"पूर्ण मानचित्र", ia:"AI नाम खोज", urna:"मतपत्र नाम सत्यापन", eleitoral:"निर्वाचन संख्या", imovel:"संपत्ति संख्या", calendario:"मासिक ऊर्जा कैलेंडर", artistico:"कलात्मक नाम सत्यापन", bebe:"शिशु नाम योजना", assinatura:"हस्ताक्षर सत्यापन", negocio:"व्यवसाय/उत्पाद नाम", casal:"युगल मानचित्र", familia:"प्रीमियम परिवार मानचित्र", coletivo:"कॉर्पोरेट बोनस" },
-            he: { express:"מפה מהירה", vida:"שלב חיים ושנה", completo:"מפה מלאה", ia:"חיפוש שמות AI", urna:"אימות שם פתק", eleitoral:"מספר בחירות", imovel:"מספר נכס", calendario:"לוח אנרגיה חודשי", artistico:"אימות שם במה", bebe:"תכנון שם לתינוק", assinatura:"אימות חתימות", negocio:"שם לעסק/מוצר", casal:"מפת זוג", familia:"מפת משפחה פרימיום", coletivo:"בונוס ארגוני" },
-            ar: { express:"خريطة سريعة", vida:"مرحلة الحياة والسنة", completo:"خريطة كاملة", ia:"بحث الأسماء بالذكاء الاصطناعي", urna:"التحقق من اسم الاقتراع", eleitoral:"الرقم الانتخابي", imovel:"رقم العقار", calendario:"تقويم الطاقة الشهري", artistico:"التحقق من الاسم الفني", bebe:"تخطيط اسم الطفل", assinatura:"التحقق من التوقيعات", negocio:"اسم للأعمال/المنتج", casal:"خريطة الزوجين", familia:"خريطة العائلة المميزة", coletivo:"مكافأة الشركات" }
-        };
+<!-- 3. SCRIPT PRINCIPAL (usa as traduções) -->
+<script>
+function comprar(produto) {
+    const lang = getLang();
+    window.location.href = '/criar-checkout?lang=' + lang + '&produto=' + produto;
+}
 
-        // ===== PREÇOS POR IDIOMA (faixas: 0=R$8, 1=R$17, 2=R$26, 3=R$35, 4=R$44, 5=R$98) =====
-        const PRODUTO_FAIXA = { express:0, vida:0, completo:1, ia:1, urna:2, eleitoral:2, imovel:2, calendario:2, artistico:3, bebe:3, assinatura:3, negocio:4, casal:4, familia:5 };
-        const PRECO_DISPLAY = {
-            pt: ["R$ 8","R$ 17","R$ 26","R$ 35","R$ 44","R$ 98"],
-            en: ["US$ 1,50","US$ 3,50","US$ 5","US$ 7","US$ 9","US$ 20"],
-            es: ["€ 1,50","€ 3,50","€ 5","€ 7","€ 9","€ 20"],
-            it: ["€ 1,50","€ 3,50","€ 5","€ 7","€ 9","€ 20"],
-            fr: ["€ 1,50","€ 3,50","€ 5","€ 7","€ 9","€ 20"],
-            de: ["€ 1,50","€ 3,50","€ 5","€ 7","€ 9","€ 20"],
-            ja: ["¥ 250","¥ 550","¥ 800","¥ 1.100","¥ 1.400","¥ 3.200"],
-            zh: ["¥ 12","¥ 25","¥ 40","¥ 55","¥ 70","¥ 160"],
-            ru: ["₽ 130","₽ 280","₽ 430","₽ 580","₽ 730","₽ 1.600"],
-            hi: ["₹ 120","₹ 280","₹ 430","₹ 580","₹ 730","₹ 1.600"],
-            he: ["₪ 5","₪ 13","₪ 19","₪ 26","₪ 33","₪ 73"],
-            ar: ["﷼ 6","﷼ 13","﷼ 19","﷼ 26","﷼ 33","﷼ 73"]
-        };
+// ===== FORMULÁRIOS URNA / ELEITORAL =====
+function toggleForm(tipo) {
+    const fUrna = document.getElementById('form-urna');
+    const fEle = document.getElementById('form-eleitoral');
+    if (tipo === 'urna') {
+        fEle.classList.add('hidden-form');
+        fUrna.classList.toggle('hidden-form');
+        fUrna.scrollIntoView({ behavior: 'smooth' });
+    } else {
+        fUrna.classList.add('hidden-form');
+        fEle.classList.toggle('hidden-form');
+        fEle.scrollIntoView({ behavior: 'smooth' });
+    }
+}
 
-        // ===== FUNÇÃO DE TRADUÇÃO (CORRIGIDA: SÓ TRADUZ, SEM FUNÇÕES ANINHADAS) =====
-        function setLanguage(lang) {
-            localStorage.setItem('selectedLang', lang);
-            // Atualiza botões
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.lang === lang);
-            });
-            // RTL
-            const isRTL = ['ar', 'he'].includes(lang);
-            document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
-            document.documentElement.lang = lang;
-            // Conteúdo data-i18n
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (translations[lang] && translations[lang][key]) {
-                    el.innerText = translations[lang][key];
-                }
-            });
-            // Nomes dos produtos
-            document.querySelectorAll('.product-card[data-prod]').forEach(card => {
-                const prod = card.getAttribute('data-prod');
-                const nomeEl = card.querySelector('.prod-nome');
-                if (nomeEl && PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang][prod]) {
-                    nomeEl.innerText = PRODUTOS_TRAD[lang][prod];
-                }
-                const precoEl = card.querySelector('.prod-preco');
-                if (precoEl && PRODUTO_FAIXA[prod] !== undefined) {
-                    precoEl.innerText = PRECO_DISPLAY[lang][PRODUTO_FAIXA[prod]];
-                }
-            });
-        }
+function pagarUrna() {
+    const nome = document.getElementById('urnaNome').value.trim();
+    if (!nome) { alert('Informe o nome completo.'); return; }
+    const lang = getLang();
+    window.location.href = '/criar-checkout?lang=' + lang + '&produto=urna';
+}
 
-        // ===== CHECKOUT (15 PRODUTOS) =====
-        function getLang() {
-            return localStorage.getItem('selectedLang') || 'pt';
-        }
-        function comprar(produto) {
-            const lang = getLang();
-            window.location.href = '/criar-checkout?lang=' + lang + '&produto=' + produto;
-        }
+function pagarEleitoral() {
+    const nome = document.getElementById('eleiNome').value.trim();
+    if (!nome) { alert('Informe o nome completo.'); return; }
+    const lang = getLang();
+    window.location.href = '/criar-checkout?lang=' + lang + '&produto=eleitoral';
+}
 
-        // ===== FORMULÁRIOS URNA / ELEITORAL =====
-        function toggleForm(tipo) {
-            const fUrna = document.getElementById('form-urna');
-            const fEle = document.getElementById('form-eleitoral');
-            if (tipo === 'urna') {
-                fEle.classList.add('hidden-form');
-                fUrna.classList.toggle('hidden-form');
-                fUrna.scrollIntoView({ behavior: 'smooth' });
-            } else {
-                fUrna.classList.add('hidden-form');
-                fEle.classList.toggle('hidden-form');
-                fEle.scrollIntoView({ behavior: 'smooth' });
-            }
+// ===== BÔNUS DE INSERÇÃO (CLIENTE FINAL) =====
+function ativarBonusInserido() {
+    var codigo = document.getElementById("biCodigo").value.trim();
+    var st = document.getElementById("biStatus");
+    if (!codigo) { st.style.color = "#dc3545"; st.textContent = "Digite seu código bônus."; return; }
+    st.style.color = "var(--gold)"; st.textContent = "Validando código...";
+    fetch("/ativar-bonus", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ codigo: codigo })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+        if (data.ok) {
+            st.style.color = "#28a745";
+            st.textContent = "Código ativado! Gerando seu PDF...";
+            setTimeout(function() { window.location.href = "/#" + data.target; }, 800);
+        } else {
+            st.style.color = "#dc3545";
+            st.textContent = "Código inválido ou já utilizado.";
         }
-        function pagarUrna() {
-            const nome = document.getElementById('urnaNome').value.trim();
-            if (!nome) { alert('Informe o nome completo.'); return; }
-            const lang = getLang();
-            window.location.href = '/criar-checkout?lang=' + lang + '&produto=urna';
-        }
-        function pagarEleitoral() {
-            const nome = document.getElementById('eleiNome').value.trim();
-            if (!nome) { alert('Informe o nome completo.'); return; }
-            const lang = getLang();
-            window.location.href = '/criar-checkout?lang=' + lang + '&produto=eleitoral';
-        }
-
-        // ===== BÔNUS DE INSERÇÃO (CLIENTE FINAL) =====
-        function ativarBonusInserido() {
-            var codigo = document.getElementById("biCodigo").value.trim();
-            var st = document.getElementById("biStatus");
-            if (!codigo) { st.style.color = "#dc3545"; st.textContent = "Digite seu código bônus."; return; }
-            st.style.color = "var(--gold)"; st.textContent = "Validando código...";
-            fetch("/ativar-bonus", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ codigo: codigo })
-            })
-            .then(function(r) { return r.json(); })
-            .then(function(data) {
-                if (data.ok) {
-                    st.style.color = "#28a745";
-                    st.textContent = "Código ativado! Gerando seu PDF...";
-                    setTimeout(function() { window.location.href = "/#" + data.target; }, 800);
-                } else {
-                    st.style.color = "#dc3545";
-                    st.textContent = "Código inválido ou já utilizado.";
-                }
-            })
-            .catch(function() {
-                st.style.color = "#dc3545";
-                st.textContent = "Erro na ativação. Tente novamente.";
-            });
-        }
-
-        // ===== BÔNUS COLETIVO / EMPRESARIAL =====
-        var BC_PRODUTOS = [
-            ["express","Mapa Express",8,"🔮"],
-            ["vida","Qual Vida/Ano",8,"🔢"],
-            ["completo","Mapa Completo",17,"📘"],
-            ["ia","Pesquisa IA de Nomes",17,"🤖"],
-            ["urna","Validação Nome de Urna",26,"🗳️"],
-            ["eleitoral","Número Eleitoral",26,"🔢"],
-            ["imovel","Número do Imóvel",26,"🏠"],
-            ["calendario","Calendário Mensal",26,"📅"],
-            ["artistico","Nome Artístico",35,"🎭"],
-            ["bebe","Nome de Bebê",35,"👶"],
-            ["assinatura","Assinaturas",35,"✍️"],
-            ["negocio","Nome para Negócio",44,"🏪"],
-            ["casal","Mapa do Casal",44,"💞"],
-            ["familia","Mapa Família Premium",98,"🌟"]
-        ];
-        var BC_QUANTIDADES = {};
-        function montarTabelaBC() {
-            var corpo = document.getElementById("bcTabelaCorpo");
-            if (!corpo) return;
-            corpo.innerHTML = "";
-            BC_PRODUTOS.forEach(function(p) {
-                var tr = document.createElement("tr");
-                tr.innerHTML = '<td>' + p[3] + ' ' + p[1] + '</td>'
-                    + '<td style="text-align:center;color:var(--gold)">R$ ' + p[2] + '</td>'
-                    + '<td style="text-align:center"><input type="number" min="0" max="1000" value="0" data-prod="' + p[0] + '" oninput="atualizarResumoBC()"></td>';
-                corpo.appendChild(tr);
-            });
-        }
-        function atualizarResumoBC() {
-            var bruto = 0, qtdTotal = 0;
-            document.querySelectorAll("#bcTabelaCorpo input[data-prod]").forEach(function(inp) {
-                var q = parseInt(inp.value) || 0;
-                BC_QUANTIDADES[inp.getAttribute("data-prod")] = q;
-                var prod = BC_PRODUTOS.find(function(p) { return p[0] === inp.getAttribute("data-prod"); });
-                if (prod) { bruto += q * prod[2]; qtdTotal += q; }
-            });
-            var descontoPct = descontoBC(qtdTotal);
-            var desconto = Math.round(bruto * descontoPct / 100);
-            var final = bruto - desconto;
-            document.getElementById("bcTotalBruto").textContent = "R$ " + bruto.toLocaleString("pt-BR");
-            document.getElementById("bcDesconto").textContent = "R$ " + desconto.toLocaleString("pt-BR") + " (" + descontoPct + "%)";
-            document.getElementById("bcTotalFinal").textContent = "R$ " + final.toLocaleString("pt-BR");
-            document.getElementById("bcFaixaInfo").textContent = "Quantidade total: " + qtdTotal + " códigos";
-        }
-        function descontoBC(qtd) {
-            if (qtd >= 1000) return 70;
-            if (qtd >= 500) return 50;
-            if (qtd >= 200) return 40;
-            if (qtd >= 100) return 30;
-            if (qtd >= 50) return 20;
-            if (qtd >= 10) return 10;
-            return 0;
-        }
-        function usarPlanoPronto(qExpress, qVida, qIa, qCompleto) {
-            var mapa = { express: qExpress, vida: qVida, ia: qIa, completo: qCompleto };
-            document.querySelectorAll("#bcTabelaCorpo input[data-prod]").forEach(function(inp) {
-                var prod = inp.getAttribute("data-prod");
-                inp.value = mapa[prod] || 0;
-            });
-            atualizarResumoBC();
-        }
-                 // ===== CONFIRMAR PEDIDO COLETIVO =====
-        function confirmarBC() {
-            var itens = [];
-            for (var id in BC_QUANTIDADES) {
-                if (BC_QUANTIDADES[id] > 0) {
-                    var prod = BC_PRODUTOS.find(function(p) { return p[0] === id; });
-                    if (prod) itens.push({ produto: id, nome: prod[1], preco: prod[2], qtd: BC_QUANTIDADES[id] });
-                }
-            }
-            if (itens.length === 0) { alert("Selecione pelo menos 1 serviço."); return; }
-            var bruto = itens.reduce(function(a, i) { return a + i.preco * i.qtd; }, 0);
-            var qtdTotal = itens.reduce(function(a, i) { return a + i.qtd; }, 0);
-            var pct = descontoBC(qtdTotal);
-            var final = bruto - Math.round(bruto * pct / 100);
-            var linhas = itens.map(function(i) { return i.nome + ": " + i.qtd + "x R$ " + i.preco + " = R$ " + (i.qtd * i.preco); }).join("\n");
-            var msg = "RESUMO DO PEDIDO\n\n" + linhas + "\n\nTotal bruto: R$ " + bruto + "\nDesconto (" + pct + "%): R$ " + Math.round(bruto * pct / 100) + "\nTOTAL FINAL: R$ " + final + "\n\nConfirmar e ir para pagamento?";
-            if (!confirm(msg)) return;
-            window.location.href = '/criar-checkout?lang=' + getLang() + '&produto=coletivo&qtd=' + qtdTotal + '&total=' + final + '&itens=' + encodeURIComponent(JSON.stringify(itens));
-        }
-
-        // ===== FUNÇÃO DE TRADUÇÃO =====
-function traduzir() {
-    var lang = getLang();
-    document.querySelectorAll('[data-i18n]').forEach(function(el) {
-        var chave = el.getAttribute('data-i18n');
-        if (translations[lang] && translations[lang][chave]) {
-            el.textContent = translations[lang][chave];
-        }
+    })
+    .catch(function() {
+        st.style.color = "#dc3545";
+        st.textContent = "Erro na ativação. Tente novamente.";
     });
 }
 
-// ===== INICIALIZAÇÃO (À PROVA DE ERROS) =====
+// ===== BÔNUS COLETIVO / EMPRESARIAL =====
+var BC_PRODUTOS = [
+    ["express","Mapa Express",8,"🔮"],
+    ["vida","Qual Vida/Ano",8,"🔢"],
+    ["completo","Mapa Completo",17,"📘"],
+    ["ia","Pesquisa IA de Nomes",17,"🤖"],
+    ["urna","Validação Nome de Urna",26,"🗳️"],
+    ["eleitoral","Número Eleitoral",26,"🔢"],
+    ["imovel","Número do Imóvel",26,"🏠"],
+    ["calendario","Calendário Mensal",26,"📅"],
+    ["artistico","Nome Artístico",35,"🎭"],
+    ["bebe","Nome de Bebê",35,"👶"],
+    ["assinatura","Assinaturas",35,"✍️"],
+    ["negocio","Nome para Negócio",44,"🏪"],
+    ["casal","Mapa do Casal",44,"💞"],
+    ["familia","Mapa Família Premium",98,"🌟"]
+];
+var BC_QUANTIDADES = {};
+
+function montarTabelaBC() {
+    var corpo = document.getElementById("bcTabelaCorpo");
+    if (!corpo) return;
+    corpo.innerHTML = "";
+    BC_PRODUTOS.forEach(function(p) {
+        var tr = document.createElement("tr");
+        tr.innerHTML = '<td>' + p[3] + ' ' + p[1] + '</td>'
+            + '<td style="text-align:center;color:var(--gold)">R$ ' + p[2] + '</td>'
+            + '<td style="text-align:center"><input type="number" min="0" max="1000" value="0" data-prod="' + p[0] + '" oninput="atualizarResumoBC()"></td>';
+        corpo.appendChild(tr);
+    });
+}
+
+function atualizarResumoBC() {
+    var bruto = 0, qtdTotal = 0;
+    document.querySelectorAll("#bcTabelaCorpo input[data-prod]").forEach(function(inp) {
+        var q = parseInt(inp.value) || 0;
+        BC_QUANTIDADES[inp.getAttribute("data-prod")] = q;
+        var prod = BC_PRODUTOS.find(function(p) { return p[0] === inp.getAttribute("data-prod"); });
+        if (prod) { bruto += q * prod[2]; qtdTotal += q; }
+    });
+    var descontoPct = descontoBC(qtdTotal);
+    var desconto = Math.round(bruto * descontoPct / 100);
+    var final = bruto - desconto;
+    document.getElementById("bcTotalBruto").textContent = "R$ " + bruto.toLocaleString("pt-BR");
+    document.getElementById("bcDesconto").textContent = "R$ " + desconto.toLocaleString("pt-BR") + " (" + descontoPct + "%)";
+    document.getElementById("bcTotalFinal").textContent = "R$ " + final.toLocaleString("pt-BR");
+    document.getElementById("bcFaixaInfo").textContent = "Quantidade total: " + qtdTotal + " códigos";
+}
+
+function descontoBC(qtd) {
+    if (qtd >= 1000) return 70;
+    if (qtd >= 500) return 50;
+    if (qtd >= 200) return 40;
+    if (qtd >= 100) return 30;
+    if (qtd >= 50) return 20;
+    if (qtd >= 10) return 10;
+    return 0;
+}
+
+function usarPlanoPronto(qExpress, qVida, qIa, qCompleto) {
+    var mapa = { express: qExpress, vida: qVida, ia: qIa, completo: qCompleto };
+    document.querySelectorAll("#bcTabelaCorpo input[data-prod]").forEach(function(inp) {
+        var prod = inp.getAttribute("data-prod");
+        inp.value = mapa[prod] || 0;
+    });
+    atualizarResumoBC();
+}
+
+// ===== CONFIRMAR PEDIDO COLETIVO =====
+function confirmarBC() {
+    var itens = [];
+    for (var id in BC_QUANTIDADES) {
+        if (BC_QUANTIDADES[id] > 0) {
+            var prod = BC_PRODUTOS.find(function(p) { return p[0] === id; });
+            if (prod) itens.push({ produto: id, nome: prod[1], preco: prod[2], qtd: BC_QUANTIDADES[id] });
+        }
+    }
+    if (itens.length === 0) { alert("Selecione pelo menos 1 serviço."); return; }
+    var bruto = itens.reduce(function(a, i) { return a + i.preco * i.qtd; }, 0);
+    var qtdTotal = itens.reduce(function(a, i) { return a + i.qtd; }, 0);
+    var pct = descontoBC(qtdTotal);
+    var final = bruto - Math.round(bruto * pct / 100);
+    var linhas = itens.map(function(i) { return i.nome + ": " + i.qtd + "x R$ " + i.preco + " = R$ " + (i.qtd * i.preco); }).join("\n");
+    var msg = "RESUMO DO PEDIDO\n\n" + linhas + "\n\nTotal bruto: R$ " + bruto + "\nDesconto (" + pct + "%): R$ " + Math.round(bruto * pct / 100) + "\nTOTAL FINAL: R$ " + final + "\n\nConfirmar e ir para pagamento?";
+    if (!confirm(msg)) return;
+    window.location.href = '/criar-checkout?lang=' + getLang() + '&produto=coletivo&qtd=' + qtdTotal + '&total=' + final + '&itens=' + encodeURIComponent(JSON.stringify(itens));
+}
+
+// ===== INICIALIZAÇÃO (à prova de erros) =====
 function init() {
-    // 1. Seletor de idiomas — SÓ monta se o elemento existir
     var container = document.getElementById('langSelector');
     if (container) {
         languages.forEach(function(l) {
@@ -1503,19 +961,11 @@ function init() {
             container.appendChild(btn);
         });
     }
-
-    // 2. Idioma salvo / navegador / padrão
     var savedLang = localStorage.getItem('selectedLang');
     var browserLang = navigator.language.split('-')[0];
     var defaultLang = savedLang || (translations[browserLang] ? browserLang : 'pt');
     setLanguage(defaultLang);
     traduzir();
-
-    // 3. Renderizações
-    renderIdiomas();
-    renderProdutos();
-    renderEnergias();
-    renderInvestidores();
     montarTabelaBC();
     atualizarResumoBC();
 }
@@ -1523,7 +973,6 @@ function init() {
 // ===== GATILHO (só roda quando a página carregou) =====
 document.addEventListener('DOMContentLoaded', init);
 </script>
-    <script src="/static/banners.js"></script>
     <footer>
         <p data-i18n="footer_text">© 2026 A1ELOS Assessoria e Consultoria. Todos os direitos reservados.</p>
     </footer>
