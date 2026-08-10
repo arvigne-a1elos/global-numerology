@@ -790,20 +790,14 @@
 </div>
 <script>    
     
-            <!-- 1. TRADUÇÕES (PRIMEIRO — define languages, translations e funções) -->
-<script src="/static/translations.js"></script>
-
-<!-- 2. BANNERS -->
+            <script src="/static/translations.js"></script>
 <script src="/static/banners.js"></script>
-
-<!-- 3. SCRIPT PRINCIPAL (usa as traduções) -->
 <script>
 function comprar(produto) {
     const lang = getLang();
     window.location.href = '/criar-checkout?lang=' + lang + '&produto=' + produto;
 }
 
-// ===== FORMULÁRIOS URNA / ELEITORAL =====
 function toggleForm(tipo) {
     const fUrna = document.getElementById('form-urna');
     const fEle = document.getElementById('form-eleitoral');
@@ -832,7 +826,6 @@ function pagarEleitoral() {
     window.location.href = '/criar-checkout?lang=' + lang + '&produto=eleitoral';
 }
 
-// ===== BÔNUS DE INSERÇÃO (CLIENTE FINAL) =====
 function ativarBonusInserido() {
     var codigo = document.getElementById("biCodigo").value.trim();
     var st = document.getElementById("biStatus");
@@ -860,7 +853,6 @@ function ativarBonusInserido() {
     });
 }
 
-// ===== BÔNUS COLETIVO / EMPRESARIAL =====
 var BC_PRODUTOS = [
     ["express","Mapa Express",8,"🔮"],
     ["vida","Qual Vida/Ano",8,"🔢"],
@@ -928,7 +920,6 @@ function usarPlanoPronto(qExpress, qVida, qIa, qCompleto) {
     atualizarResumoBC();
 }
 
-// ===== CONFIRMAR PEDIDO COLETIVO =====
 function confirmarBC() {
     var itens = [];
     for (var id in BC_QUANTIDADES) {
@@ -948,7 +939,6 @@ function confirmarBC() {
     window.location.href = '/criar-checkout?lang=' + getLang() + '&produto=coletivo&qtd=' + qtdTotal + '&total=' + final + '&itens=' + encodeURIComponent(JSON.stringify(itens));
 }
 
-// ===== INICIALIZAÇÃO (à prova de erros) =====
 function init() {
     var container = document.getElementById('langSelector');
     if (container) {
@@ -970,7 +960,6 @@ function init() {
     atualizarResumoBC();
 }
 
-// ===== GATILHO (só roda quando a página carregou) =====
 document.addEventListener('DOMContentLoaded', init);
 </script>
     <footer>
