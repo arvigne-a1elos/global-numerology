@@ -1,6 +1,3 @@
-<script src="/static/translations.js"></script>
-<script src="/static/banners.js"></script>
-<script> ... seu script principal ... </script>
 /* ============================================================
    translations.js — A1ELOS Global Numerology
    Módulo de tradução (12 idiomas, 15 produtos)
