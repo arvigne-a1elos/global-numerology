@@ -294,45 +294,6 @@
 .a1-banner{flex:1 1 340px;max-width:560px;min-height:90px;border-radius:10px;overflow:hidden;background:#111;display:flex;align-items:center;justify-content:center}
 .a1-banner img{width:100%;height:auto;display:block;border-radius:10px}
 
-        <script>
-        // ===== BANNERS (isolado, FORA de qualquer função) =====
-  var BANNER_IMGS = {
-    topo:    ["/static/topo-azul.png","/static/topo-amarelo.png","/static/topo-bordo.png"],
-    central: ["/static/central-azul.png","/static/central-amarelo.png","/static/central-bordo.png"],
-    base:    ["/static/base-azul.png","/static/base-amarelo.png","/static/base-bordo.png"]
-  };
-  function carregarBanners(posicao){
-    var imgs = BANNER_IMGS[posicao] || [];
-    var ids = ["A","B"];
-    ids.forEach(function(sufixo, i){
-      var el = document.getElementById("banner" + posicao.charAt(0).toUpperCase() + posicao.slice(1) + sufixo);
-      if(!el) return;
-      if(imgs.length === 0){ el.innerHTML = ""; return; }
-      var idx = i % imgs.length;
-      el.innerHTML = '<a href="#" target="_blank" rel="noopener"><img src="' + imgs[idx] + '" alt="Banner"></a>';
-    });
-  }
-  function iniciarRotacao(){
-    ["topo","central","base"].forEach(function(p){ carregarBanners(p); });
-    setInterval(function(){
-      ["topo","central","base"].forEach(function(p){
-        var imgs = BANNER_IMGS[p] || [];
-        var ids = ["A","B"];
-        ids.forEach(function(sufixo, i){
-          var el = document.getElementById("banner" + p.charAt(0).toUpperCase() + p.slice(1) + sufixo);
-          if(!el || imgs.length === 0) return;
-          var atual = el.querySelector("img");
-          if(!atual) return;
-          var src = atual.getAttribute("src");
-          var idx = imgs.indexOf(src);
-          var prox = (idx + 1) % imgs.length;
-          atual.setAttribute("src", imgs[prox]);
-        });
-      });
-    }, 8000);
-  }
-</script>    
-        
         /* Footer */
         footer {
             padding: 60px 20px;
@@ -1541,5 +1502,43 @@
   }
                 
 </script>
+<script>
+        // ===== BANNERS (isolado, FORA de qualquer função) =====
+  var BANNER_IMGS = {
+    topo:    ["/static/topo-azul.png","/static/topo-amarelo.png","/static/topo-bordo.png"],
+    central: ["/static/central-azul.png","/static/central-amarelo.png","/static/central-bordo.png"],
+    base:    ["/static/base-azul.png","/static/base-amarelo.png","/static/base-bordo.png"]
+  };
+  function carregarBanners(posicao){
+    var imgs = BANNER_IMGS[posicao] || [];
+    var ids = ["A","B"];
+    ids.forEach(function(sufixo, i){
+      var el = document.getElementById("banner" + posicao.charAt(0).toUpperCase() + posicao.slice(1) + sufixo);
+      if(!el) return;
+      if(imgs.length === 0){ el.innerHTML = ""; return; }
+      var idx = i % imgs.length;
+      el.innerHTML = '<a href="#" target="_blank" rel="noopener"><img src="' + imgs[idx] + '" alt="Banner"></a>';
+    });
+  }
+  function iniciarRotacao(){
+    ["topo","central","base"].forEach(function(p){ carregarBanners(p); });
+    setInterval(function(){
+      ["topo","central","base"].forEach(function(p){
+        var imgs = BANNER_IMGS[p] || [];
+        var ids = ["A","B"];
+        ids.forEach(function(sufixo, i){
+          var el = document.getElementById("banner" + p.charAt(0).toUpperCase() + p.slice(1) + sufixo);
+          if(!el || imgs.length === 0) return;
+          var atual = el.querySelector("img");
+          if(!atual) return;
+          var src = atual.getAttribute("src");
+          var idx = imgs.indexOf(src);
+          var prox = (idx + 1) % imgs.length;
+          atual.setAttribute("src", imgs[prox]);
+        });
+      });
+    }, 8000);
+  }
+</script>        
 </body>
 </html> 
