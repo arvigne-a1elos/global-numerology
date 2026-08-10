@@ -1458,47 +1458,48 @@
             });
             atualizarResumoBC();
         }
+                // ===== CONFIRMAR PEDIDO COLETIVO =====
         function confirmarBC() {
             var itens = [];
             for (var id in BC_QUANTIDADES) {
                 if (BC_QUANTIDADES[id] > 0) {
                     var prod = BC_PRODUTOS.find(function(p) { return p[0] === id; });
                     if (prod) itens.push({ produto: id, nome: prod[1], preco: prod[2], qtd: BC_QUANTIDADES[id] });
-                    if (itens.length === 0) { alert("Selecione pelo menos 1 serviço."); return; }
+                }
+            }
+            if (itens.length === 0) { alert("Selecione pelo menos 1 serviço."); return; }
             var bruto = itens.reduce(function(a, i) { return a + i.preco * i.qtd; }, 0);
             var qtdTotal = itens.reduce(function(a, i) { return a + i.qtd; }, 0);
             var pct = descontoBC(qtdTotal);
             var final = bruto - Math.round(bruto * pct / 100);
             var linhas = itens.map(function(i) { return i.nome + ": " + i.qtd + "x R$ " + i.preco + " = R$ " + (i.qtd * i.preco); }).join("\n");
             var msg = "RESUMO DO PEDIDO\n\n" + linhas + "\n\nTotal bruto: R$ " + bruto + "\nDesconto (" + pct + "%): R$ " + Math.round(bruto * pct / 100) + "\nTOTAL FINAL: R$ " + final + "\n\nConfirmar e ir para pagamento?";
-                    if (!confirm(msg)) return;
+            if (!confirm(msg)) return;
             window.location.href = '/criar-checkout?lang=' + getLang() + '&produto=coletivo&qtd=' + qtdTotal + '&total=' + final + '&itens=' + encodeURIComponent(JSON.stringify(itens));
-            }
-            function init() {
+        }
+
+        // ===== INICIALIZAÇÃO (ÚNICA, SEM DUPLICATAS) =====
+        function init() {
             const container = document.getElementById('langSelector');
             languages.forEach(l => {
-        
+                const btn = document.createElement('button');
+                btn.className = 'lang-btn';
+                btn.dataset.lang = l.code;
+                btn.innerHTML = '<span>' + l.flag + '</span> ' + l.name;
+                btn.onclick = () => setLanguage(l.code);
+                container.appendChild(btn);
             });
             const savedLang = localStorage.getItem('selectedLang');
+            const browserLang = navigator.language.split('-')[0];
+            const defaultLang = savedLang || (translations[browserLang] ? browserLang : 'pt');
             setLanguage(defaultLang);
             traduzir();
-            }
-
- // ===== OUTRAS FUNÇÕES DO SEU SITE (init, renderProdutos, etc.) =====
-  function init() {
-    // ...
-    renderIdiomas();
-    renderProdutos();
-    renderEnergias();
-    renderInvestidores();
-    montarTabelaBC();
-    atualizarResumoBC();
- }
-}
+            renderIdiomas();
+            renderProdutos();
+            renderEnergias();
+            renderInvestidores();
+            montarTabelaBC();
+            atualizarResumoBC();
+        }
+        document.addEventListener('DOMContentLoaded', init);
 </script>
-    <script src="/static/banners.js"></script>
-    <footer>
-        <p data-i18n="footer_text">© 2026 A1ELOS Assessoria e Consultoria. Todos os direitos reservados.</p>
-    </footer>
-</body>
-</html> 
