@@ -1482,45 +1482,38 @@
             window.location.href = '/criar-checkout?lang=' + getLang() + '&produto=coletivo&qtd=' + qtdTotal + '&total=' + final + '&itens=' + encodeURIComponent(JSON.stringify(itens));
         }
 
-        // ===== INICIALIZAÇÃO =====
         function init() {
-            const container = document.getElementById('langSelector');
-            languages.forEach(l => {
-                const btn = document.createElement('button');
-                btn.className = 'lang-btn';
-                btn.dataset.lang = l.code;
-                btn.innerHTML = '<span>' + l.flag + '</span> ' + l.name;
-                btn.onclick = () => setLanguage(l.code);
-                container.appendChild(btn);
-            });
-            const savedLang = localStorage.getItem('selectedLang');
-            const browserLang = navigator.language.split('-')[0];
-            const defaultLang = savedLang || (translations[browserLang] ? browserLang : 'pt');
-            setLanguage(defaultLang);
-            traduzir();
-            renderIdiomas();
-            renderProdutos();
-            renderEnergias();
-            renderInvestidores();
-            montarTabelaBC();
-            atualizarResumoBC();
-            iniciarRotacao();   // <-- ADICIONE ESTA LINHA
+    const container = document.getElementById('langSelector');
+    languages.forEach(l => {
+        ...
+    });
+    const savedLang = localStorage.getItem('selectedLang');
+    ...
+    setLanguage(defaultLang);
+    traduzir();
+    renderIdiomas();
+    renderProdutos();
+    renderEnergias();
+    renderInvestidores();
+    montarTabelaBC();
+    atualizarResumoBC();
+    iniciarRotacao();   // <-- ADICIONE ESTA LINHA
 }
         // ===== BANNERS (topo/central/base, rotação 8s) =====
 var BANNER_IMGS = {
-  topo:   ["/static/topo-azul.png","/static/topo-amarelo.png","/static/topo-bordo.png"],
-  central:["/static/central-azul.png","/static/central-amarelo.png","/static/central-bordo.png"],
-  base:   ["/static/base-azul.png","/static/base-amarelo.png","/static/base-bordo.png"]
+  topo:    ["/static/topo-azul.png","/static/topo-amarelo.png","/static/topo-bordo.png"],
+  central: ["/static/central-azul.png","/static/central-amarelo.png","/static/central-bordo.png"],
+  base:    ["/static/base-azul.png","/static/base-amarelo.png","/static/base-bordo.png"]
 };
 function carregarBanners(posicao){
   var imgs = BANNER_IMGS[posicao] || [];
   var ids = ["A","B"];
   ids.forEach(function(sufixo, i){
-    var el = document.getElementById("banner"+posicao.charAt(0).toUpperCase()+posicao.slice(1)+sufixo);
+    var el = document.getElementById("banner" + posicao.charAt(0).toUpperCase() + posicao.slice(1) + sufixo);
     if(!el) return;
     if(imgs.length === 0){ el.innerHTML = ""; return; }
     var idx = i % imgs.length;
-    el.innerHTML = '<a href="#" target="_blank" rel="noopener"><img src="'+imgs[idx]+'" alt="Banner"></a>';
+    el.innerHTML = '<a href="#" target="_blank" rel="noopener"><img src="' + imgs[idx] + '" alt="Banner"></a>';
   });
 }
 function iniciarRotacao(){
@@ -1530,7 +1523,7 @@ function iniciarRotacao(){
       var imgs = BANNER_IMGS[p] || [];
       var ids = ["A","B"];
       ids.forEach(function(sufixo, i){
-        var el = document.getElementById("banner"+p.charAt(0).toUpperCase()+p.slice(1)+sufixo);
+        var el = document.getElementById("banner" + p.charAt(0).toUpperCase() + p.slice(1) + sufixo);
         if(!el || imgs.length === 0) return;
         var atual = el.querySelector("img");
         if(!atual) return;
@@ -1542,7 +1535,6 @@ function iniciarRotacao(){
     });
   }, 8000);
 }
-        });
-    </script>
+</script>
 </body>
 </html> 
