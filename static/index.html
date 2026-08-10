@@ -293,48 +293,8 @@
 .a1-zona{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;max-width:1200px;margin:18px auto;padding:0 16px}
 .a1-banner{flex:1 1 340px;max-width:560px;min-height:90px;border-radius:10px;overflow:hidden;background:#111;display:flex;align-items:center;justify-content:center}
 .a1-banner img{width:100%;height:auto;display:block;border-radius:10px}
-        /* Footer */
-        footer {
-            padding: 60px 20px;
-            text-align: center;
-            border-top: 1px solid #222;
-            color: #555;
-            font-size: 0.9rem;
-        }
-        /* Animations */
-        .fade-in { animation: fadeIn 0.8s ease-out forwards; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .hidden-form { display: none; }
-        @media (max-width: 768px) {
-            .btn-outline { margin-left: 0; margin-top: 15px; }
-            .step { flex-direction: column; text-align: center; }
-        }
-    </style>
-</head>
-<body>
-    <!-- BANNER TOPO (2 lado a lado) -->
-<div class="a1-zona" id="zonaTopo">
-  <div class="a1-banner" id="bannerTopoA"></div>
-  <div class="a1-banner" id="bannerTopoB"></div>
-</div>
-
-<script>
-  // ===== OUTRAS FUNÇÕES DO SEU SITE (init, renderProdutos, etc.) =====
-  function init() {
-    // ...
-    renderIdiomas();
-    renderProdutos();
-    renderEnergias();
-    renderInvestidores();
-    montarTabelaBC();
-    atualizarResumoBC();
-    iniciarRotacao();   // ✅ (1) SÓ A CHAMADA fica aqui dentro
-  }
-
-  // ===== BANNERS (isolado, FORA de qualquer função) =====
+        
+        // ===== BANNERS (isolado, FORA de qualquer função) =====
   var BANNER_IMGS = {
     topo:    ["/static/topo-azul.png","/static/topo-amarelo.png","/static/topo-bordo.png"],
     central: ["/static/central-azul.png","/static/central-amarelo.png","/static/central-bordo.png"],
@@ -371,7 +331,37 @@
     }, 8000);
   }
 </script>    
-    
+        
+        /* Footer */
+        footer {
+            padding: 60px 20px;
+            text-align: center;
+            border-top: 1px solid #222;
+            color: #555;
+            font-size: 0.9rem;
+        }
+        /* Animations */
+        .fade-in { animation: fadeIn 0.8s ease-out forwards; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hidden-form { display: none; }
+        @media (max-width: 768px) {
+            .btn-outline { margin-left: 0; margin-top: 15px; }
+            .step { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <!-- BANNER TOPO (2 lado a lado) -->
+<div class="a1-zona" id="zonaTopo">
+  <div class="a1-banner" id="bannerTopoA"></div>
+  <div class="a1-banner" id="bannerTopoB"></div>
+</div>
+
+<script>
+     
     <!-- HERO -->
     <section class="hero">
         <img src="https://generated-images.adapta.one/arvigne%40gmail.com/019f56cb-b9e4-7644-9dd8-5d14c5261d46/2026-07-14T13-27-24-531Z_Original_user_intent_A_premium_minimalist_logo_s.png" alt="Logo" class="logo-img">
@@ -1421,8 +1411,6 @@
             window.location.href = '/criar-checkout?lang=' + lang + '&produto=eleitoral';
         }
 
-        
-        
         // ===== BÔNUS DE INSERÇÃO (CLIENTE FINAL) =====
         function ativarBonusInserido() {
             var codigo = document.getElementById("biCodigo").value.trim();
@@ -1539,6 +1527,19 @@
             setLanguage(defaultLang);
             traduzir();
             }
+
+ // ===== OUTRAS FUNÇÕES DO SEU SITE (init, renderProdutos, etc.) =====
+  function init() {
+    // ...
+    renderIdiomas();
+    renderProdutos();
+    renderEnergias();
+    renderInvestidores();
+    montarTabelaBC();
+    atualizarResumoBC();
+    iniciarRotacao();   // ✅ (1) SÓ A CHAMADA fica aqui dentro
+  }
+                
 </script>
 </body>
 </html> 
