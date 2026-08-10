@@ -1478,27 +1478,37 @@
             window.location.href = '/criar-checkout?lang=' + getLang() + '&produto=coletivo&qtd=' + qtdTotal + '&total=' + final + '&itens=' + encodeURIComponent(JSON.stringify(itens));
         }
 
-        // ===== INICIALIZAÇÃO (ÚNICA, SEM DUPLICATAS) =====
-        function init() {
-    const container = document.getElementById('langSelector');  // retorna null!
-    languages.forEach(l => {
-        const btn = document.createElement('button');
-        ...
-        container.appendChild(btn);  // ← linha 1490: erro porque container é null
-    });
-            const savedLang = localStorage.getItem('selectedLang');
-            const browserLang = navigator.language.split('-')[0];
-            const defaultLang = savedLang || (translations[browserLang] ? browserLang : 'pt');
-            setLanguage(defaultLang);
-            traduzir();
-            renderIdiomas();
-            renderProdutos();
-            renderEnergias();
-            renderInvestidores();
-            montarTabelaBC();
-            atualizarResumoBC();
-        }
-        document.addEventListener('DOMContentLoaded', init);
+        // ===== INICIALIZAÇÃO (ÚNICA, À PROVA DE ERROS) =====
+function init() {
+    // 1. Seletor de idiomas — só monta se o elemento existir
+    var container = document.getElementById('langSelector');
+    if (container) {
+        languages.forEach(function(l) {
+            var btn = document.createElement('button');
+            btn.className = 'lang-btn';
+            btn.dataset.lang = l.code;
+            btn.innerHTML = '<span>' + l.flag + '</span> ' + l.name;
+            btn.onclick = (function(c) { return function() { setLanguage(c); }; })(l.code);
+            container.appendChild(btn);
+        });
+    }
+
+    // 2. Idioma salvo / do navegador / padrão
+    var savedLang = localStorage.getItem('selectedLang');
+    var browserLang = navigator.language.split('-')[0];
+    var defaultLang = savedLang || (translations[browserLang] ? browserLang : 'pt');
+    setLanguage(defaultLang);
+    traduzir();
+
+    // 3. Renderizações do site
+    renderIdiomas();
+    renderProdutos();
+    renderEnergias();
+    renderInvestidores();
+    montarTabelaBC();
+    atualizarResumoBC();
+}
+document.addEventListener('DOMContentLoaded', init);
 </script>
     <script src="/static/banners.js"></script>
     <footer>
