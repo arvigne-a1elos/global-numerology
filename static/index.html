@@ -1469,72 +1469,75 @@
                 if (BC_QUANTIDADES[id] > 0) {
                     var prod = BC_PRODUTOS.find(function(p) { return p[0] === id; });
                     if (prod) itens.push({ produto: id, nome: prod[1], preco: prod[2], qtd: BC_QUANTIDADES[id] });
-                }
-            }
-            if (itens.length === 0) { alert("Selecione pelo menos 1 serviço."); return; }
+                    if (itens.length === 0) { alert("Selecione pelo menos 1 serviço."); return; }
             var bruto = itens.reduce(function(a, i) { return a + i.preco * i.qtd; }, 0);
             var qtdTotal = itens.reduce(function(a, i) { return a + i.qtd; }, 0);
             var pct = descontoBC(qtdTotal);
             var final = bruto - Math.round(bruto * pct / 100);
             var linhas = itens.map(function(i) { return i.nome + ": " + i.qtd + "x R$ " + i.preco + " = R$ " + (i.qtd * i.preco); }).join("\n");
             var msg = "RESUMO DO PEDIDO\n\n" + linhas + "\n\nTotal bruto: R$ " + bruto + "\nDesconto (" + pct + "%): R$ " + Math.round(bruto * pct / 100) + "\nTOTAL FINAL: R$ " + final + "\n\nConfirmar e ir para pagamento?";
-            if (!confirm(msg)) return;
+                    if (!confirm(msg)) return;
             window.location.href = '/criar-checkout?lang=' + getLang() + '&produto=coletivo&qtd=' + qtdTotal + '&total=' + final + '&itens=' + encodeURIComponent(JSON.stringify(itens));
-        }
-
-        function init() {
-    const container = document.getElementById('langSelector');
-    languages.forEach(l => {
-        ...
-    });
-    const savedLang = localStorage.getItem('selectedLang');
-    ...
-    setLanguage(defaultLang);
-    traduzir();
+            }
+            function init() {
+            const container = document.getElementById('langSelector');
+            languages.forEach(l => {
+        
+            });
+            const savedLang = localStorage.getItem('selectedLang');
+            setLanguage(defaultLang);
+            traduzir();
+            }
+</script>
+<script>
+  // ===== OUTRAS FUNÇÕES DO SEU SITE (init, renderProdutos, etc.) =====
+  function init() {
+    // ...
     renderIdiomas();
     renderProdutos();
     renderEnergias();
     renderInvestidores();
     montarTabelaBC();
     atualizarResumoBC();
-    iniciarRotacao();   // <-- ADICIONE ESTA LINHA
-}
-        // ===== BANNERS (topo/central/base, rotação 8s) =====
-var BANNER_IMGS = {
-  topo:    ["/static/topo-azul.png","/static/topo-amarelo.png","/static/topo-bordo.png"],
-  central: ["/static/central-azul.png","/static/central-amarelo.png","/static/central-bordo.png"],
-  base:    ["/static/base-azul.png","/static/base-amarelo.png","/static/base-bordo.png"]
-};
-function carregarBanners(posicao){
-  var imgs = BANNER_IMGS[posicao] || [];
-  var ids = ["A","B"];
-  ids.forEach(function(sufixo, i){
-    var el = document.getElementById("banner" + posicao.charAt(0).toUpperCase() + posicao.slice(1) + sufixo);
-    if(!el) return;
-    if(imgs.length === 0){ el.innerHTML = ""; return; }
-    var idx = i % imgs.length;
-    el.innerHTML = '<a href="#" target="_blank" rel="noopener"><img src="' + imgs[idx] + '" alt="Banner"></a>';
-  });
-}
-function iniciarRotacao(){
-  ["topo","central","base"].forEach(function(p){ carregarBanners(p); });
-  setInterval(function(){
-    ["topo","central","base"].forEach(function(p){
-      var imgs = BANNER_IMGS[p] || [];
-      var ids = ["A","B"];
-      ids.forEach(function(sufixo, i){
-        var el = document.getElementById("banner" + p.charAt(0).toUpperCase() + p.slice(1) + sufixo);
-        if(!el || imgs.length === 0) return;
-        var atual = el.querySelector("img");
-        if(!atual) return;
-        var src = atual.getAttribute("src");
-        var idx = imgs.indexOf(src);
-        var prox = (idx + 1) % imgs.length;
-        atual.setAttribute("src", imgs[prox]);
-      });
+    iniciarRotacao();   // ✅ (1) SÓ A CHAMADA fica aqui dentro
+  }
+
+  // ===== BANNERS (isolado, FORA de qualquer função) =====
+  var BANNER_IMGS = {
+    topo:    ["/static/topo-azul.png","/static/topo-amarelo.png","/static/topo-bordo.png"],
+    central: ["/static/central-azul.png","/static/central-amarelo.png","/static/central-bordo.png"],
+    base:    ["/static/base-azul.png","/static/base-amarelo.png","/static/base-bordo.png"]
+  };
+  function carregarBanners(posicao){
+    var imgs = BANNER_IMGS[posicao] || [];
+    var ids = ["A","B"];
+    ids.forEach(function(sufixo, i){
+      var el = document.getElementById("banner" + posicao.charAt(0).toUpperCase() + posicao.slice(1) + sufixo);
+      if(!el) return;
+      if(imgs.length === 0){ el.innerHTML = ""; return; }
+      var idx = i % imgs.length;
+      el.innerHTML = '<a href="#" target="_blank" rel="noopener"><img src="' + imgs[idx] + '" alt="Banner"></a>';
     });
-  }, 8000);
-}
+  }
+  function iniciarRotacao(){
+    ["topo","central","base"].forEach(function(p){ carregarBanners(p); });
+    setInterval(function(){
+      ["topo","central","base"].forEach(function(p){
+        var imgs = BANNER_IMGS[p] || [];
+        var ids = ["A","B"];
+        ids.forEach(function(sufixo, i){
+          var el = document.getElementById("banner" + p.charAt(0).toUpperCase() + p.slice(1) + sufixo);
+          if(!el || imgs.length === 0) return;
+          var atual = el.querySelector("img");
+          if(!atual) return;
+          var src = atual.getAttribute("src");
+          var idx = imgs.indexOf(src);
+          var prox = (idx + 1) % imgs.length;
+          atual.setAttribute("src", imgs[prox]);
+        });
+      });
+    }, 8000);
+  }
 </script>
 </body>
 </html> 
