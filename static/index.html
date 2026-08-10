@@ -1478,9 +1478,20 @@
             window.location.href = '/criar-checkout?lang=' + getLang() + '&produto=coletivo&qtd=' + qtdTotal + '&total=' + final + '&itens=' + encodeURIComponent(JSON.stringify(itens));
         }
 
-        // ===== INICIALIZAÇÃO (ÚNICA, À PROVA DE ERROS) =====
+        // ===== FUNÇÃO DE TRADUÇÃO =====
+function traduzir() {
+    var lang = getLang();
+    document.querySelectorAll('[data-i18n]').forEach(function(el) {
+        var chave = el.getAttribute('data-i18n');
+        if (translations[lang] && translations[lang][chave]) {
+            el.textContent = translations[lang][chave];
+        }
+    });
+}
+
+// ===== INICIALIZAÇÃO (À PROVA DE ERROS) =====
 function init() {
-    // 1. Seletor de idiomas — só monta se o elemento existir
+    // 1. Seletor de idiomas — SÓ monta se o elemento existir
     var container = document.getElementById('langSelector');
     if (container) {
         languages.forEach(function(l) {
@@ -1493,14 +1504,14 @@ function init() {
         });
     }
 
-    // 2. Idioma salvo / do navegador / padrão
+    // 2. Idioma salvo / navegador / padrão
     var savedLang = localStorage.getItem('selectedLang');
     var browserLang = navigator.language.split('-')[0];
     var defaultLang = savedLang || (translations[browserLang] ? browserLang : 'pt');
     setLanguage(defaultLang);
     traduzir();
 
-    // 3. Renderizações do site
+    // 3. Renderizações
     renderIdiomas();
     renderProdutos();
     renderEnergias();
@@ -1508,6 +1519,8 @@ function init() {
     montarTabelaBC();
     atualizarResumoBC();
 }
+
+// ===== GATILHO (só roda quando a página carregou) =====
 document.addEventListener('DOMContentLoaded', init);
 </script>
     <script src="/static/banners.js"></script>
