@@ -289,10 +289,10 @@
             padding: 20px;
             margin-bottom: 20px;
         }
-        /* Banners */
-        #banner-topo { display: none; text-align: center; padding: 10px 5%; background: rgba(201,169,78,.05); border-bottom: 1px solid #1a1a1a; }
-        #banner-lateral { display: none; margin: 20px 0; }
-        #banner-rodape { display: none; text-align: center; padding: 20px 5%; border-top: 1px solid #1a1a1a; }
+        /* ===== BANNERS ===== */
+.a1-zona{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;max-width:1200px;margin:18px auto;padding:0 16px}
+.a1-banner{flex:1 1 340px;max-width:560px;min-height:90px;border-radius:10px;overflow:hidden;background:#111;display:flex;align-items:center;justify-content:center}
+.a1-banner img{width:100%;height:auto;display:block;border-radius:10px}
         /* Footer */
         footer {
             padding: 60px 20px;
@@ -315,15 +315,11 @@
     </style>
 </head>
 <body>
-    <!-- BANNER TOPO -->
-    <div id="banner-topo"></div>
-
-    <!-- SELETOR DE IDIOMAS -->
-    <nav class="lang-wrapper">
-        <div class="lang-container" id="langSelector">
-            <!-- Botões gerados via JS -->
-        </div>
-    </nav>
+    <!-- BANNER TOPO (2 lado a lado) -->
+<div class="a1-zona" id="zonaTopo">
+  <div class="a1-banner" id="bannerTopoA"></div>
+  <div class="a1-banner" id="bannerTopoB"></div>
+</div>
 
     <!-- HERO -->
     <section class="hero">
@@ -724,10 +720,13 @@
         </div>
     </section>
 
-    <!-- BANNER LATERAL -->
-    <div id="banner-lateral"></div>
-
-    <!-- INVESTIDORES -->
+    <!-- BANNER CENTRAL (2 lado a lado) -->
+<div class="a1-zona" id="zonaCentral">
+  <div class="a1-banner" id="bannerCentralA"></div>
+  <div class="a1-banner" id="bannerCentralB"></div>
+</div>
+    
+     <!-- INVESTIDORES -->
     <section id="investidores">
         <h2 class="section-title" data-i18n="inv_title">Investidores e Parceiros</h2>
         <p class="section-sub" data-i18n="inv_sub">Baixe a apresentação empresarial da A1ELOS no seu idioma, gratuitamente.</p>
@@ -783,12 +782,15 @@
         </div>
     </section>
 
+<!-- BANNER BASE (2 lado a lado) -->
+<div class="a1-zona" id="zonaBase">
+  <div class="a1-banner" id="bannerBaseA"></div>
+  <div class="a1-banner" id="bannerBaseB"></div>
+</div>
+    
     <footer>
         <p data-i18n="footer_text">© 2026 A1ELOS Assessoria e Consultoria. Todos os direitos reservados.</p>
     </footer>
-
-    <!-- BANNER RODAPÉ -->
-    <div id="banner-rodape"></div>
 
     <script>
         // ===== TRADUÇÕES (12 IDIOMAS) =====
@@ -1368,6 +1370,8 @@
             window.location.href = '/criar-checkout?lang=' + lang + '&produto=eleitoral';
         }
 
+        
+        
         // ===== BÔNUS DE INSERÇÃO (CLIENTE FINAL) =====
         function ativarBonusInserido() {
             var codigo = document.getElementById("biCodigo").value.trim();
@@ -1478,32 +1482,6 @@
             window.location.href = '/criar-checkout?lang=' + getLang() + '&produto=coletivo&qtd=' + qtdTotal + '&total=' + final + '&itens=' + encodeURIComponent(JSON.stringify(itens));
         }
 
-        // ===== BANNERS GEOLOCALIZADOS =====
-        function detectarPais() {
-            return fetch("https://ipapi.co/json/")
-                .then(function(r) { return r.json(); })
-                .then(function(data) { return data.country_code || "BR"; })
-                .catch(function() { return "BR"; });
-        }
-        function carregarBanner(posicao) {
-            var container = document.getElementById("banner-" + posicao);
-            if (!container) return;
-            detectarPais().then(function(pais) {
-                fetch("/api/banner?posicao=" + posicao + "&pais=" + pais)
-                    .then(function(r) { return r.json(); })
-                    .then(function(data) {
-                        if (data.ok && data.banner) {
-                            var b = data.banner;
-                            container.innerHTML = '<a href="' + b.url_anunciante + '" target="_blank" rel="sponsored"><img src="' + b.imagem_url + '" alt="' + b.marca + '" style="max-width:100%;border-radius:12px"></a>';
-                            container.style.display = "block";
-                        } else {
-                            container.style.display = "none";
-                        }
-                    })
-                    .catch(function() { container.style.display = "none"; });
-            });
-        }
-
         // ===== INICIALIZAÇÃO =====
         function init() {
             const container = document.getElementById('langSelector');
@@ -1519,15 +1497,54 @@
             const browserLang = navigator.language.split('-')[0];
             const defaultLang = savedLang || (translations[browserLang] ? browserLang : 'pt');
             setLanguage(defaultLang);
+            traduzir();
+            renderIdiomas();
+            renderProdutos();
+            renderEnergias();
+            renderInvestidores();
+            montarTabelaBC();
         }
 
-        // Inicialização após DOM carregado (funções de bônus/banners FORA do setLanguage — bug corrigido)
-        document.addEventListener("DOMContentLoaded", function() {
-            init();
-            montarTabelaBC();
-            carregarBanner("topo");
-            carregarBanner("lateral");
-            carregarBanner("rodape");
+  
+  atualizarResumoBC();
+  iniciarRotacao();   // <-- ADICIONE ESTA LINHA
+}
+        // ===== BANNERS (topo/central/base, rotação 8s) =====
+var BANNER_IMGS = {
+  topo:   ["/static/topo-azul.png","/static/topo-amarelo.png","/static/topo-bordo.png"],
+  central:["/static/central-azul.png","/static/central-amarelo.png","/static/central-bordo.png"],
+  base:   ["/static/base-azul.png","/static/base-amarelo.png","/static/base-bordo.png"]
+};
+function carregarBanners(posicao){
+  var imgs = BANNER_IMGS[posicao] || [];
+  var ids = ["A","B"];
+  ids.forEach(function(sufixo, i){
+    var el = document.getElementById("banner"+posicao.charAt(0).toUpperCase()+posicao.slice(1)+sufixo);
+    if(!el) return;
+    if(imgs.length === 0){ el.innerHTML = ""; return; }
+    var idx = i % imgs.length;
+    el.innerHTML = '<a href="#" target="_blank" rel="noopener"><img src="'+imgs[idx]+'" alt="Banner"></a>';
+  });
+}
+function iniciarRotacao(){
+  ["topo","central","base"].forEach(function(p){ carregarBanners(p); });
+  setInterval(function(){
+    ["topo","central","base"].forEach(function(p){
+      var imgs = BANNER_IMGS[p] || [];
+      var ids = ["A","B"];
+      ids.forEach(function(sufixo, i){
+        var el = document.getElementById("banner"+p.charAt(0).toUpperCase()+p.slice(1)+sufixo);
+        if(!el || imgs.length === 0) return;
+        var atual = el.querySelector("img");
+        if(!atual) return;
+        var src = atual.getAttribute("src");
+        var idx = imgs.indexOf(src);
+        var prox = (idx + 1) % imgs.length;
+        atual.setAttribute("src", imgs[prox]);
+      });
+    });
+  }, 8000);
+}
         });
     </script>
 </body>
