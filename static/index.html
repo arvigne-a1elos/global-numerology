@@ -1480,15 +1480,12 @@
 
         // ===== INICIALIZAÇÃO (ÚNICA, SEM DUPLICATAS) =====
         function init() {
-            const container = document.getElementById('langSelector');
-            languages.forEach(l => {
-                const btn = document.createElement('button');
-                btn.className = 'lang-btn';
-                btn.dataset.lang = l.code;
-                btn.innerHTML = '<span>' + l.flag + '</span> ' + l.name;
-                btn.onclick = () => setLanguage(l.code);
-                container.appendChild(btn);
-            });
+    const container = document.getElementById('langSelector');  // retorna null!
+    languages.forEach(l => {
+        const btn = document.createElement('button');
+        ...
+        container.appendChild(btn);  // ← linha 1490: erro porque container é null
+    });
             const savedLang = localStorage.getItem('selectedLang');
             const browserLang = navigator.language.split('-')[0];
             const defaultLang = savedLang || (translations[browserLang] ? browserLang : 'pt');
