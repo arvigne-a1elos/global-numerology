@@ -1033,7 +1033,6 @@ function comprarEnergia(produto, energia) {
 function calcularMapa() {
     var nome = document.getElementById("calcNome").value.trim();
     var nasc = document.getElementById("calcNasc").value;
-    var email = document.getElementById("calcEmail").value.trim();
     if (!nome || !nasc || !email) { alert("Preencha todos os campos."); return; }
     var lang = getLang();
     var nums = calcular5Numeros(nome, nasc);
@@ -1043,6 +1042,11 @@ function calcularMapa() {
     document.getElementById("calcResultado").innerHTML = html;
     document.getElementById("calcResultado").scrollIntoView({behavior:"smooth"});
 }
+// ===== TABELA PITAGÓRICA (A=1 ... I=9, J=1 ... Z=8) =====
+var TABELA_LETRAS = {A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8};
+function valorLetra(c){ return TABELA_LETRAS[c] || 0; }
+function somaLetras(s){ return s.split("").reduce(function(a,c){return a+valorLetra(c);},0); }
+
 function calcular5Numeros(nome, nasc) {
     var d = nasc.split("-");
     var soma = function(s){ return s.split("").reduce(function(a,c){return a+(parseInt(c)||0);},0); };
@@ -1051,9 +1055,9 @@ function calcular5Numeros(nome, nasc) {
     var vogais = letras.match(/[AEIOU]/g)||[];
     var conso = letras.match(/[^AEIOU]/g)||[];
     var caminho = reduz(soma(d[2])+soma(d[1])+soma(d[0]));
-    var destino = reduz(soma(letras));
-    var alma = reduz(soma(vogais.join("")));
-    var personalidade = reduz(soma(conso.join("")));
+    var destino = reduz(somaLetras(letras));
+    var alma = reduz(somaLetras(vogais.join("")));
+    var personalidade = reduz(somaLetras(conso.join("")));
     var realizacao = reduz(caminho+destino);
     var lang = getLang();
     var nomes = translations[lang].nomes5 || {caminho:"Caminho da Vida",destino:"Destino",alma:"Alma",personalidade:"Personalidade",realizacao:"Realização"};
@@ -1064,6 +1068,7 @@ function calcular5Numeros(nome, nasc) {
         {nome:nomes.personalidade, valor:personalidade},
         {nome:nomes.realizacao, valor:realizacao}
     ];
+}
 }
 function init() {
     var container = document.getElementById('langSelector');
@@ -1086,6 +1091,7 @@ function init() {
     atualizarResumoBC();
     montarEnergias();
 }
+document.addEventListener('DOMContentLoaded', init);
 </script>
     <footer>
         <p data-i18n="footer_text">© 2026 A1ELOS Assessoria e Consultoria. Todos os direitos reservados.</p>
