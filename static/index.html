@@ -895,10 +895,15 @@ function atualizarResumoBC() {
     var descontoPct = descontoBC(qtdTotal);
     var desconto = Math.round(bruto * descontoPct / 100);
     var final = bruto - desconto;
-    document.getElementById("bcTotalBruto").textContent = "R$ " + bruto.toLocaleString("pt-BR");
-    document.getElementById("bcDesconto").textContent = "R$ " + desconto.toLocaleString("pt-BR") + " (" + descontoPct + "%)";
-    document.getElementById("bcTotalFinal").textContent = "R$ " + final.toLocaleString("pt-BR");
-    document.getElementById("bcFaixaInfo").textContent = "Quantidade total: " + qtdTotal + " códigos";
+
+    // ---- APENAS A PARTE DE EXIBIÇÃO FOI QUALIFICADA ----
+    var lang = getLang();
+    var bc = BC_TEXTS[lang] || BC_TEXTS.pt;
+    var simbolo = PRECO_DISPLAY[lang][0].replace(/[0-9.,\s]/g, '').trim() || 'R$';
+    document.getElementById("bcTotalBruto").textContent = simbolo + " " + bruto.toLocaleString("pt-BR");
+    document.getElementById("bcDesconto").textContent = simbolo + " " + desconto.toLocaleString("pt-BR") + " (" + descontoPct + "%)";
+    document.getElementById("bcTotalFinal").textContent = simbolo + " " + final.toLocaleString("pt-BR");
+    document.getElementById("bcFaixaInfo").textContent = bc.qtd_total + " " + qtdTotal + " " + bc.codigos;
 }
 
 function descontoBC(qtd) {
