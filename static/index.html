@@ -24,38 +24,34 @@
         [dir="rtl"] { text-align: right; }
         /* Language Selector */
         .lang-wrapper {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            background: rgba(10, 10, 10, 0.85);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid #222;
-            padding: 10px 0;
-        }
-        .lang-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-            padding: 0 20px;
-        }
-        .lang-btn {
-            background: transparent;
-            border: 1px solid #333;
-            color: #fff;
-            padding: 6px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    width: 100%;
+    background: rgba(10,10,10,0.95);
+    padding: 6px 0;
+    display: flex;
+    justify-content: center;
+    overflow-x: auto;
+}
+.lang-container {
+    display: flex;
+    gap: 6px;
+    flex-wrap: nowrap;
+    padding: 0 10px;
+}
+.lang-btn {
+    white-space: nowrap;
+    padding: 4px 10px;
+    border: 1px solid var(--gold);
+    border-radius: 20px;
+    background: transparent;
+    color: #fff;
+    font-size: 12px;
+    cursor: pointer;
+}
         .lang-btn:hover, .lang-btn.active {
             border-color: var(--gold);
             color: var(--gold);
@@ -406,7 +402,7 @@
                 <div class="icon">🔮</div>
                 <h3 class="prod-nome" data-i18n="p_express">Mapa Express</h3>
                 <div class="price prod-preco">R$ 8</div>
-                <p class="desc">1 página com os 5 números principais e seu significado resumido. Ideal para uma visão rápida.</p>
+                <p class="desc" data-i18n="desc_>1 página com os 5 números principais e seu significado resumido. Ideal para uma visão rápida.</p>
                 <ul class="features">
                     <li>✅ Caminho da Vida</li>
                     <li>✅ Expressão, Alma, Personalidade</li>
@@ -420,7 +416,7 @@
                 <div class="icon">🔢</div>
                 <h3 class="prod-nome" data-i18n="p_vida">Qual Vida/Ano</h3>
                 <div class="price prod-preco">R$ 8</div>
-                <p class="desc">Análise da fase de vida e do ano pessoal em que você está, com orientações para o ciclo atual.</p>
+                <p class="desc" data-i18n="desc_>Análise da fase de vida e do ano pessoal em que você está, com orientações para o ciclo atual.</p>
                 <ul class="features">
                     <li>✅ Fase de Vida atual</li>
                     <li>✅ Ano Pessoal</li>
@@ -435,7 +431,7 @@
                 <span class="badge" data-i18n="recommended">RECOMENDADO</span>
                 <h3 class="prod-nome" data-i18n="p_completo">Mapa Completo</h3>
                 <div class="price prod-preco">R$ 17</div>
-                <p class="desc">Análise completa com descrições positivas/negativas, ciclos de vida, desafios, grade de inclusão e nota final.</p>
+                <p class="desc" data-i18n="desc_>Análise completa com descrições positivas/negativas, ciclos de vida, desafios, grade de inclusão e nota final.</p>
                 <ul class="features">
                     <li>✅ 5 números detalhados</li>
                     <li>✅ 3 Ciclos de Vida</li>
@@ -450,7 +446,7 @@
                 <div class="icon">🤖</div>
                 <h3 class="prod-nome" data-i18n="p_ia">Pesquisa IA de Nomes</h3>
                 <div class="price prod-preco">R$ 17</div>
-                <p class="desc">Pesquisa inteligente com IA para encontrar o nome ideal para você, seu filho, sua marca ou seu projeto.</p>
+                <p class="desc" data-i18n="desc_>Pesquisa inteligente com IA para encontrar o nome ideal para você, seu filho, sua marca ou seu projeto.</p>
                 <ul class="features">
                     <li>✅ Sugestões com IA</li>
                     <li>✅ Análise energética de nomes</li>
@@ -464,7 +460,7 @@
                 <div class="icon">🗳️</div>
                 <h3 class="prod-nome" data-i18n="p_urna">Validação Nome de Urna</h3>
                 <div class="price prod-preco">R$ 26</div>
-                <p class="desc">5 tentativas + sugestões com cargo + PDF sigiloso por email. Análise completa de cada nome de candidatura.</p>
+                <p class="desc" data-i18n="desc_>5 tentativas + sugestões com cargo + PDF sigiloso por email. Análise completa de cada nome de candidatura.</p>
                 <ul class="features">
                     <li>✅ 5 nomes testados</li>
                     <li>✅ Sugestões com energia 8</li>
@@ -478,7 +474,7 @@
                 <div class="icon">🔢</div>
                 <h3 class="prod-nome" data-i18n="p_eleitoral">Número Eleitoral</h3>
                 <div class="price prod-preco">R$ 26</div>
-                <p class="desc">Sugestões de números com energia 8 para sua candidatura política. Análise com PDF sigiloso.</p>
+                <p class="desc" data-i18n="desc_Sugestões de números com energia 8 para sua candidatura política. Análise com PDF sigiloso.</p>
                 <ul class="features">
                     <li>✅ 5 números sugeridos</li>
                     <li>✅ Prioridade energia 8 (Poder)</li>
@@ -492,7 +488,7 @@
                 <div class="icon">🏠</div>
                 <h3 class="prod-nome" data-i18n="p_imovel">Número do Imóvel</h3>
                 <div class="price prod-preco">R$ 26</div>
-                <p class="desc">Análise da vibração do número da sua casa, apartamento ou comércio e como ela influencia o ambiente.</p>
+                <p class="desc" data-i18n="desc_>Análise da vibração do número da sua casa, apartamento ou comércio e como ela influencia o ambiente.</p>
                 <ul class="features">
                     <li>✅ Número do imóvel analisado</li>
                     <li>✅ Energia do ambiente</li>
@@ -506,7 +502,7 @@
                 <div class="icon">📅</div>
                 <h3 class="prod-nome" data-i18n="p_calendario">Calendário Mensal Energético</h3>
                 <div class="price prod-preco">R$ 26</div>
-                <p class="desc">Previsão energética dia a dia para o mês, com os melhores momentos para decisões importantes.</p>
+                <p class="desc" data-i18n="desc_>Previsão energética dia a dia para o mês, com os melhores momentos para decisões importantes.</p>
                 <ul class="features">
                     <li>✅ Vibração diária</li>
                     <li>✅ Dias favoráveis</li>
@@ -520,7 +516,7 @@
                 <div class="icon">🎭</div>
                 <h3 class="prod-nome" data-i18n="p_artistico">Validação Nome Artístico</h3>
                 <div class="price prod-preco">R$ 35</div>
-                <p class="desc">Escolha o nome artístico ideal para sua carreira. Análise energética de opções e sugestões com força.</p>
+                <p class="desc" data-i18n="desc_>Escolha o nome artístico ideal para sua carreira. Análise energética de opções e sugestões com força.</p>
                 <ul class="features">
                     <li>✅ Nomes testados</li>
                     <li>✅ Sugestões de palco</li>
@@ -534,7 +530,7 @@
                 <div class="icon">👶</div>
                 <h3 class="prod-nome" data-i18n="p_bebe">Planejamento Nome de Bebê</h3>
                 <div class="price prod-preco">R$ 35</div>
-                <p class="desc">Encontre o nome perfeito para seu bebê com a energia certa para uma vida próspera e equilibrada.</p>
+                <p class="desc" data-i18n="desc_>Encontre o nome perfeito para seu bebê com a energia certa para uma vida próspera e equilibrada.</p>
                 <ul class="features">
                     <li>✅ Sugestões de nomes</li>
                     <li>✅ Análise energética</li>
@@ -548,7 +544,7 @@
                 <div class="icon">✍️</div>
                 <h3 class="prod-nome" data-i18n="p_assinatura">Validação de Assinaturas</h3>
                 <div class="price prod-preco">R$ 35</div>
-                <p class="desc">Análise da sua assinatura e das variações possíveis para atrair sucesso, poder e prosperidade.</p>
+                <p class="desc" data-i18n="desc_>Análise da sua assinatura e das variações possíveis para atrair sucesso, poder e prosperidade.</p>
                 <ul class="features">
                     <li>✅ Assinatura atual analisada</li>
                     <li>✅ Variações sugeridas</li>
@@ -562,7 +558,7 @@
                 <div class="icon">🏪</div>
                 <h3 class="prod-nome" data-i18n="p_negocio">Nome para Negócio/Produto</h3>
                 <div class="price prod-preco">R$ 44</div>
-                <p class="desc">Escolha o nome ideal para sua empresa, produto ou marca com a vibração certa para prosperar.</p>
+                <p class="desc" data-i18n="desc_>Escolha o nome ideal para sua empresa, produto ou marca com a vibração certa para prosperar.</p>
                 <ul class="features">
                     <li>✅ Nomes testados</li>
                     <li>✅ Sugestões empresariais</li>
@@ -576,7 +572,7 @@
                 <div class="icon">💞</div>
                 <h3 class="prod-nome" data-i18n="p_casal">Mapa do Casal</h3>
                 <div class="price prod-preco">R$ 44</div>
-                <p class="desc">Análise da compatibilidade energética entre duas pessoas, com pontos fortes e desafios da relação.</p>
+                <p class="desc" data-i18n="desc_>Análise da compatibilidade energética entre duas pessoas, com pontos fortes e desafios da relação.</p>
                 <ul class="features">
                     <li>✅ Compatibilidade</li>
                     <li>✅ Pontos fortes do casal</li>
@@ -591,7 +587,7 @@
                 <span class="badge" data-i18n="premium">PREMIUM</span>
                 <h3 class="prod-nome" data-i18n="p_familia">Mapa Família Premium</h3>
                 <div class="price prod-preco">R$ 98</div>
-                <p class="desc">Mapa completo de toda a família: análise individual + sinergia entre os membros + orientações personalizadas.</p>
+                <p class="desc" data-i18n="desc_>Mapa completo de toda a família: análise individual + sinergia entre os membros + orientações personalizadas.</p>
                 <ul class="features">
                     <li>✅ Todos os membros</li>
                     <li>✅ Sinergia familiar</li>
@@ -605,7 +601,7 @@
                 <div class="icon">🏢</div>
                 <h3 class="prod-nome" data-i18n="p_coletivo">Bônus Coletivo/Empresarial</h3>
                 <div class="price" data-i18n="sob_consulta">Sob consulta</div>
-                <p class="desc">Contrate brindes numerológicos para seus clientes ou funcionários. Descontos de 10% a 70%.</p>
+                <p class="desc" data-i18n="desc_>Contrate brindes numerológicos para seus clientes ou funcionários. Descontos de 10% a 70%.</p>
                 <ul class="features">
                     <li>✅ Planos prontos</li>
                     <li>✅ Sob medida</li>
@@ -879,11 +875,13 @@ function montarTabelaBC() {
     corpo.innerHTML = "";
     BC_PRODUTOS.forEach(function(p) {
         var tr = document.createElement("tr");
-        tr.innerHTML = '<td>' + p[3] + ' ' + p[1] + '</td>'
-            + '<td style="text-align:center;color:var(--gold)">R$ ' + p[2] + '</td>'
+        tr.setAttribute("data-prod", p[0]);
+        tr.innerHTML = '<td><span class="bc-prod-nome">' + p[3] + ' ' + p[1] + '</span></td>'
+            + '<td style="text-align:center;color:var(--gold)" class="bc-prod-preco">R$ ' + p[2] + '</td>'
             + '<td style="text-align:center"><input type="number" min="0" max="1000" value="0" data-prod="' + p[0] + '" oninput="atualizarResumoBC()"></td>';
         corpo.appendChild(tr);
     });
+    traduzirTabelaBC();
 }
 
 function atualizarResumoBC() {
