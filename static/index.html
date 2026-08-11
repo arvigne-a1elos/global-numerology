@@ -268,6 +268,30 @@
             font-size: 1.5rem;
             color: var(--gold);
         }
+.energias-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+.energia-card {
+    background: var(--card-bg);
+    border: 1px solid #222;
+    border-radius: 16px;
+    padding: 25px;
+    text-align: center;
+    transition: var(--transition);
+}
+.energia-card:hover { border-color: var(--gold); transform: translateY(-5px); }
+.energia-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: var(--gold);
+}
+.energia-icone { font-size: 2rem; margin: 8px 0; }
+.energia-nome { color: var(--gold); margin-bottom: 12px; }
+@media (max-width: 600px) { .energias-grid { grid-template-columns: 1fr; } }
         /* Bonus table */
         table.bc-tabela { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
         table.bc-tabela th { padding: 10px; text-align: left; color: var(--gold); border-bottom: 1px solid #333; }
@@ -335,6 +359,28 @@
             <a href="#produtos" class="btn btn-outline" data-i18n="hero_btn2">VER PRODUTOS</a>
         </div>
     </section>
+
+        <!-- CALCULADORA GRATUITA (5 números) -->
+<section id="calculadora">
+    <div class="form-container" style="max-width:700px">
+        <h2 class="section-title" data-i18n="calc_title">Calcule seu Mapa</h2>
+        <p class="section-sub" data-i18n="calc_sub">Descubra os 5 números que regem sua vida — grátis, sem explicações.</p>
+        <div class="form-group">
+            <label data-i18n="calc_nome">Nome Completo</label>
+            <input type="text" id="calcNome" placeholder="Seu nome completo">
+        </div>
+        <div class="form-group">
+            <label data-i18n="calc_nasc">Data de Nascimento</label>
+            <input type="date" id="calcNasc">
+        </div>
+        <div class="form-group">
+            <label data-i18n="calc_email">Email</label>
+            <input type="email" id="calcEmail" placeholder="seu@email.com">
+        </div>
+        <button class="btn btn-full" onclick="calcularMapa()" data-i18n="calc_btn">✨ Calcular Agora</button>
+        <div id="calcResultado" style="margin-top:20px"></div>
+    </div>
+</section>
 
     <!-- SOBRE -->
     <section id="about">
@@ -758,19 +804,14 @@
         </div>
     </section>
 
-    <!-- NÚMEROS -->
-    <section id="numbers">
-        <div class="section-header">
-            <h2 data-i18n="section_numbers_title">Os Números no Centro</h2>
-            <p data-i18n="section_numbers_subtitle">Cada número de 1 a 9 carrega uma energia única</p>
-        </div>
-        <div class="numbers-grid">
-            <div class="num-circle">1</div><div class="num-circle">2</div><div class="num-circle">3</div>
-            <div class="num-circle">4</div><div class="num-circle">5</div><div class="num-circle">6</div>
-            <div class="num-circle">7</div><div class="num-circle">8</div><div class="num-circle">9</div>
-        </div>
-        <p style="text-align:center;color:var(--gold)" data-i18n="numbers_masters">✦ Números Mestres 11, 22 e 33 também são considerados ✦</p>
-    </section>
+    <!-- ENERGIAS DE PESQUISA (3×3) -->
+<section id="energias">
+    <div class="section-header">
+        <h2 data-i18n="energias_title">Energias de Pesquisa</h2>
+        <p data-i18n="energias_sub">Cada número carrega uma vibração específica. Escolha a energia para pesquisar seus nomes.</p>
+    </div>
+    <div class="energias-grid" id="energiasGrid"><!-- gerado por JS --></div>
+</section>
 
     <!-- CTA FINAL -->
     <section class="hero" style="min-height:auto;padding:80px 20px">
@@ -943,7 +984,87 @@ function confirmarBC() {
     if (!confirm(msg)) return;
     window.location.href = '/criar-checkout?lang=' + getLang() + '&produto=coletivo&qtd=' + qtdTotal + '&total=' + final + '&itens=' + encodeURIComponent(JSON.stringify(itens));
 }
-
+// ===== ENERGIAS 3×3 =====
+var ENERGIAS = [
+    {n:1, nome:"Liderança", icone:"☀️", produtos:["bebe","negocio","assinatura"]},
+    {n:2, nome:"Cooperação", icone:"🌙", produtos:["bebe","negocio","assinatura"]},
+    {n:3, nome:"Criatividade", icone:"🎨", produtos:["bebe","negocio","assinatura"]},
+    {n:4, nome:"Estabilidade", icone:"🛡️", produtos:["bebe","negocio","assinatura"]},
+    {n:5, nome:"Liberdade", icone:"🕊️", produtos:["bebe","negocio","assinatura"]},
+    {n:6, nome:"Harmonia", icone:"💞", produtos:["bebe","negocio","assinatura"]},
+    {n:7, nome:"Espiritualidade", icone:"🔮", produtos:["bebe","negocio","assinatura"]},
+    {n:8, nome:"Poder", icone:"⚡", produtos:["bebe","negocio","assinatura"]},
+    {n:9, nome:"Realização", icone:"🌟", produtos:["bebe","negocio","assinatura"]}
+];
+function montarEnergias() {
+    var grid = document.getElementById("energiasGrid");
+    if (!grid) return;
+    grid.innerHTML = "";
+    ENERGIAS.forEach(function(e) {
+        var card = document.createElement("div");
+        card.className = "energia-card";
+        card.setAttribute("data-energia", e.n);
+        card.innerHTML = '<div class="energia-num">' + e.n + '</div>'
+            + '<div class="energia-icone">' + e.icone + '</div>'
+            + '<h4 class="energia-nome" data-i18n-energia="' + e.n + '">' + e.nome + '</h4>'
+            + '<button class="btn btn-full btn-outline" onclick="abrirEnergia(' + e.n + ')">' + (translations[getLang()].energia_btn || "Pesquisar") + '</button>';
+        grid.appendChild(card);
+    });
+}
+function abrirEnergia(n) {
+    var e = ENERGIAS.find(function(x){return x.n===n;});
+    if (!e) return;
+    var lang = getLang();
+    var produtos = e.produtos.map(function(p){
+        return '<button class="btn btn-full" style="margin:5px 0" onclick="comprarEnergia(\'' + p + '\',' + n + ')">'
+            + (PRODUTOS_TRAD[lang][p] || p) + ' — ' + (PRECO_DISPLAY[lang][PRODUTO_FAIXA[p]] || "") + '</button>';
+    }).join("");
+    document.getElementById("calcResultado").innerHTML =
+        '<div class="bc-resumo"><h4 style="color:var(--gold)">Energia ' + n + ' — ' + e.nome + '</h4>'
+        + '<p style="color:#ccc;margin:10px 0">' + (translations[lang].energia_desc || "") + '</p>'
+        + produtos + '</div>';
+    document.getElementById("calcResultado").scrollIntoView({behavior:"smooth"});
+}
+function comprarEnergia(produto, energia) {
+    var lang = getLang();
+    window.location.href = '/criar-checkout?lang=' + lang + '&produto=' + produto + '&energia=' + energia;
+}
+// ===== CALCULADORA GRATUITA (5 números) =====
+function calcularMapa() {
+    var nome = document.getElementById("calcNome").value.trim();
+    var nasc = document.getElementById("calcNasc").value;
+    var email = document.getElementById("calcEmail").value.trim();
+    if (!nome || !nasc || !email) { alert("Preencha todos os campos."); return; }
+    var lang = getLang();
+    var nums = calcular5Numeros(nome, nasc);
+    var html = '<div class="bc-resumo"><h4 style="color:var(--gold)">' + (translations[lang].calc_resultado || "Seus 5 números") + '</h4>';
+    nums.forEach(function(n){ html += '<p style="color:#fff;margin:5px 0">' + n.nome + ': <strong>' + n.valor + '</strong></p>'; });
+    html += '<p style="color:#888;font-size:.8rem;margin-top:10px">' + (translations[lang].calc_convite || "Quer o mapa completo? Veja os produtos acima.") + '</p></div>';
+    document.getElementById("calcResultado").innerHTML = html;
+    document.getElementById("calcResultado").scrollIntoView({behavior:"smooth"});
+}
+function calcular5Numeros(nome, nasc) {
+    var d = nasc.split("-");
+    var soma = function(s){ return s.split("").reduce(function(a,c){return a+(parseInt(c)||0);},0); };
+    var reduz = function(n){ while(n>9 && n!==11 && n!==22){ n=soma(String(n)); } return n; };
+    var letras = nome.toUpperCase().replace(/[^A-Z]/g,"");
+    var vogais = letras.match(/[AEIOU]/g)||[];
+    var conso = letras.match(/[^AEIOU]/g)||[];
+    var caminho = reduz(soma(d[2])+soma(d[1])+soma(d[0]));
+    var destino = reduz(soma(letras));
+    var alma = reduz(soma(vogais.join("")));
+    var personalidade = reduz(soma(conso.join("")));
+    var realizacao = reduz(caminho+destino);
+    var lang = getLang();
+    var nomes = translations[lang].nomes5 || {caminho:"Caminho da Vida",destino:"Destino",alma:"Alma",personalidade:"Personalidade",realizacao:"Realização"};
+    return [
+        {nome:nomes.caminho, valor:caminho},
+        {nome:nomes.destino, valor:destino},
+        {nome:nomes.alma, valor:alma},
+        {nome:nomes.personalidade, valor:personalidade},
+        {nome:nomes.realizacao, valor:realizacao}
+    ];
+}
 function init() {
     var container = document.getElementById('langSelector');
     if (container) {
@@ -964,7 +1085,19 @@ function init() {
     montarTabelaBC();
     atualizarResumoBC();
 }
-
+calc_title: "Calcule seu Mapa",
+calc_sub: "Descubra os 5 números que regem sua vida — grátis, sem explicações.",
+calc_nome: "Nome Completo",
+calc_nasc: "Data de Nascimento",
+calc_email: "Email",
+calc_btn: "✨ Calcular Agora",
+calc_resultado: "Seus 5 números",
+calc_convite: "Quer o mapa completo? Veja os produtos acima.",
+energias_title: "Energias de Pesquisa",
+energias_sub: "Cada número carrega uma vibração específica. Escolha a energia para pesquisar seus nomes.",
+energia_btn: "Pesquisar",
+energia_desc: "Escolha um produto para pesquisar os nomes com esta energia.",
+nomes5: { caminho:"Caminho da Vida", destino:"Destino", alma:"Alma", personalidade:"Personalidade", realizacao:"Realização" }
 document.addEventListener('DOMContentLoaded', init);
     
 </script>
