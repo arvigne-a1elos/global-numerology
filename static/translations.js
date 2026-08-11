@@ -255,8 +255,8 @@ function setLanguage(lang) {
             precoEl.innerText = PRECO_DISPLAY[lang][PRODUTO_FAIXA[prod]];
         }
     });
-   traduzirFeatures();
-   traduzirTabelaBC();
+    traduzirFeatures();
+    traduzirTabelaBC();
 }
     function traduzir() {
     var lang = getLang();
