@@ -23,34 +23,37 @@
         }
         [dir="rtl"] { text-align: right; }
         /* Language Selector */
-        .lang-wrapper {
-    position: fixed;
+       .lang-wrapper {
+    position: relative;
     top: 0;
     left: 0;
     right: 0;
     z-index: 9999;
     width: 100%;
     background: rgba(10,10,10,0.95);
-    padding: 6px 0;
+    padding: 10px 0;
     display: flex;
     justify-content: center;
     overflow-x: auto;
+    margin: 0;
 }
 .lang-container {
     display: flex;
     gap: 6px;
     flex-wrap: nowrap;
     padding: 0 10px;
+    align-items: center;
 }
 .lang-btn {
     white-space: nowrap;
-    padding: 4px 10px;
+    padding: 6px 12px;
     border: 1px solid var(--gold);
     border-radius: 20px;
     background: transparent;
     color: #fff;
     font-size: 12px;
     cursor: pointer;
+    line-height: 1;
 }
         .lang-btn:hover, .lang-btn.active {
             border-color: var(--gold);
