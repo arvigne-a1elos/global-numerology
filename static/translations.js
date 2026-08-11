@@ -332,3 +332,18 @@ function traduzirFeatures() {
         }
     });
 }
+// ===== TEXTO DA QUANTIDADE TOTAL (tabela BC, 12 idiomas) =====
+const BC_TEXTS = {
+    pt: { qtd_total: "Quantidade total:", codigos: "códigos" },
+    en: { qtd_total: "Total quantity:", codigos: "codes" },
+    es: { qtd_total: "Cantidad total:", codigos: "códigos" },
+    it: { qtd_total: "Quantità totale:", codigos: "codici" },
+    fr: { qtd_total: "Quantité totale:", codigos: "codes" },
+    de: { qtd_total: "Gesamtmenge:", codigos: "Codes" },
+    ja: { qtd_total: "合計数量:", codigos: "コード" },
+    zh: { qtd_total: "总数量:", codigos: "个代码" },
+    ru: { qtd_total: "Общее количество:", codigos: "кодов" },
+    hi: { qtd_total: "कुल मात्रा:", codigos: "कोड" },
+    he: { qtd_total: "כמות כוללת:", codigos: "קודים" },
+    ar: { qtd_total: "الكمية الإجمالية:", codigos: "رمز" }
+};
