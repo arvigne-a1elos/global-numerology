@@ -350,7 +350,6 @@ const PRODUTOS_TRAD = {
     he: { express:"מפה מהירה", vida:"שלב חיים ושנה", completo:"מפה מלאה", ia:"חיפוש שמות AI", urna:"אימות שם פתק", eleitoral:"מספר בחירות", imovel:"מספר נכס", calendario:"לוח אנרגיה חודשי", artistico:"אימות שם במה", bebe:"תכנון שם לתינוק", assinatura:"אימות חתימות", negocio:"שם לעסק/מוצר", casal:"מפת זוג", familia:"מפת משפחה פרימיום", coletivo:"בונוס ארגוני" },
     ar: { express:"خريطة سريعة", vida:"مرحلة الحياة والسنة", completo:"خريطة كاملة", ia:"بحث الأسماء بالذكاء الاصطناعي", urna:"التحقق من اسم الاقتراع", eleitoral:"الرقم الانتخابي", imovel:"رقم العقار", calendario:"تقويم الطاقة الشهري", artistico:"التحقق من الاسم الفني", bebe:"تخطيط اسم الطفل", assinatura:"التحقق من التوقيعات", negocio:"اسم للأعمال/المنتج", casal:"خريطة الزوجين", familia:"خريطة العائلة المميزة", coletivo:"مكافأة الشركات" }
 };
-}
 // ===== PRECOS POR IDIOMA (faixas: 0, 1, 2, 3, 4, 5) =====
 const PRODUTO_FAIXA = { express:0, vida:0, completo:1, ia:1, urna:2, eleitoral:2, imovel:2, calendario:2, artistico:3, bebe:3, assinatura:3, negocio:4, casal:4, familia:5 };
 
