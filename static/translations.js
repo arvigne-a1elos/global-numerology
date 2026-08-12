@@ -370,17 +370,20 @@ const PRECO_DISPLAY = {
 };
 
 // ===== FUNCOES DE IDIOMA =====
-function getLang() {
-    return localStorage.getItem('selectedLang') || 'pt';
+    function getLang() {
+    return localStorage.getItem('lang') || 'pt';
 }
-function setLanguage(lang) {
+    function setLanguage(lang) {
     localStorage.setItem('lang', lang);
-    var isRTL = ['ar', 'he'].includes(lang);
+        var isRTL = ['ar', 'he'].includes(lang);
     document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
     document.body.dir = isRTL ? 'rtl' : 'ltr';
     document.documentElement.lang = lang;
     document.querySelectorAll('.lang-btn').forEach(function(btn) {
         btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+        if (typeof traduzir === 'function') traduzir(lang);
+        if (typeof traduzirTabelaBC === 'function') traduzirTabelaBC(lang);
+        if (typeof traduzirFeatures === 'function') traduzirFeatures(lang);
     });
     document.querySelectorAll('[data-i18n]').forEach(function(el) {
         var key = el.getAttribute('data-i18n');
