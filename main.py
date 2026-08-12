@@ -25,8 +25,6 @@ logger = logging.getLogger(__name__)
 
 STRIPE_KEY = os.getenv("STRIPE_SECRET_KEY", "")
 STRIPE_PUB = os.getenv("STRIPE_PUBLISHABLE_KEY", "")
-SENDGRID_KEY = os.getenv("SENDGRID_API_KEY", "")
-FROM_EMAIL = os.getenv("FROM_EMAIL", "noreply@a1elos.com.br")
 FROM_NAME = "A1ELOS Numerologia Global"
 BASE_URL = os.getenv("BASE_URL", os.getenv("SITE_URL", "https://global-numerology.onrender.com"))
 DB_URL = os.getenv("DATABASE_URL", "sqlite:///./numerologia.db")
@@ -274,42 +272,32 @@ PRODUTO_TARGET = {
 }
 # ===== MODELOS PYDANTIC =====
 class PayReq(BaseModel):
-    name: str = ""
-    birth_date: str = ""
-    email: str = ""
-    product: Optional[str] = "express"
-    price: Optional[float] = 0
-    calculation_id: Optional[str] = None
-    lang: Optional[str] = "pt"
-    nome: str = ""
-    nascimento: str = ""
+    nome: str
+    nascimento: str
+    email: Optional[str] = ""   # campo preservado, sem uso
+    lang: str = "pt"
+
 class UrnaPayReq(BaseModel):
     nome_completo: str
-    cargo: str = "vereador"
-    nome1: str = ""
-    nome2: str = ""
-    nome3: str = ""
-    nome4: str = ""
-    nome5: str = ""
-    email: str = ""
-    lang: Optional[str] = "pt"
+    nome_urna: str
+    email: Optional[str] = ""   # preservado
+    lang: str = "pt"
+
 class EleitoralPayReq(BaseModel):
-    nome_completo: str = ""
-    numero: str = ""
-    cargo: str = "vereador"
-    email: str = ""
-    lang: Optional[str] = "pt"
+    nome_completo: str
+    numero: str
+    email: Optional[str] = ""   # preservado
+    lang: str = "pt"
+
 class SugestaoReq(BaseModel):
-    nome: str = ""
-    email: str = ""
+    nome: str
+    email: Optional[str] = ""   # preservado
     mensagem: str
+
 class BonusReq(BaseModel):
     nome: str
-    email: str
-    produto: str = ""
-    mensagem: str = ""
-class AtivarBonusReq(BaseModel):
-    codigo: str
+    email: Optional[str] = ""   # preservado
+    motivo: str
 # ===== CONSTANTES DE ESTILO (PDFs) =====
 GOLD = colors.HexColor("#B8860B")
 LGRAY = colors.HexColor("#f0f0f0")
@@ -590,22 +578,27 @@ def pdf_produto(produto, nome, bd_str, lang="pt"):
     e.append(Paragraph("(c) A1ELOS", estilo(7, False, GRAY, TA_CENTER)))
     doc.build(e)
     return path
-# ===== EMAIL SIMPLES (SMTP) =====
-def _enviar_email_simples(destinatario, assunto, corpo):
-    try:
-        msg = MIMEMultipart()
-        msg["From"] = FROM_EMAIL
-        msg["To"] = destinatario
-        msg["Subject"] = assunto
-        msg.attach(MIMEText(corpo, "plain", "utf-8"))
-        with smtplib.SMTP(os.getenv("SMTP_HOST"), int(os.getenv("SMTP_PORT", 587))) as s:
-            s.starttls()
-            s.login(os.getenv("SMTP_USER"), os.getenv("SMTP_PASS"))
-            s.send_message(msg)
-        return True
-    except Exception as e:
-        logger.error(f"SMTP: {e}")
-        return False
+def _entregar_arquivo(tipo, nome, lang, extra=""):
+    """Gera PDF + QRCode e salva em static/relatorios (sem email)"""
+    import io
+    from reportlab.pdfgen import canvas
+    os.makedirs("static/relatorios", exist_ok=True)
+    codigo = uuid.uuid4().hex[:8]
+    arquivo_pdf = f"static/relatorios/{tipo}_{codigo}.pdf"
+    c = canvas.Canvas(arquivo_pdf)
+    c.setFont("Helvetica-Bold", 18)
+    c.drawString(60, 780, f"A1ELOS - {tipo.upper()}")
+    c.setFont("Helvetica", 12)
+    c.drawString(60, 750, f"Nome: {nome} | Idioma: {lang}")
+    c.drawString(60, 730, "Documento sigiloso - entrega por PDF/QRCode.")
+    c.save()
+    # QRCode apontando para o PDF
+    url_pdf = f"{SITE_URL}/{arquivo_pdf}"
+    img = qrcode.make(url_pdf)
+    arquivo_qr = f"static/relatorios/{tipo}_{codigo}.png"
+    img.save(arquivo_qr)
+    logger.info(f"Entregue via PDF/QRCode: {arquivo_pdf} / {arquivo_qr}")
+    return url_pdf
 # ===== PAGINA DE SUCESSO COM DOWNLOAD DO PDF =====
 def pagina_sucesso(pdf_path, nome, prod_nome):
     b64 = ""
@@ -950,10 +943,16 @@ async def stripe_webhook(req: Request):
     else:
         data = json.loads(payload)
         event = {"type": data.get("type", ""), "data": data.get("data", {})}
-    if event["type"] == "checkout.session.completed":
-        sess = event["data"]["object"]
-        logger.info(f"Pagamento confirmado: {sess.get('id')}")
-    return {"ok": True}
+   if event["type"] == "checkout.session.completed":
+        session = event["data"]["object"]
+        meta = session.get("metadata", {})
+        tipo = meta.get("tipo", "express")
+        nome = meta.get("nome", "Cliente")
+        lang = meta.get("lang", "pt")
+        logger.info(f"Pagamento confirmado: {session['id']} -> {tipo}")
+        url = _entregar_arquivo(tipo, nome, lang)   # entrega via PDF/QRCode
+        logger.info(f"Link de entrega: {url}")
+    return {"status": "success"}
 # ===== SISTEMA DE BONUS =====
 ARQ_BONUS = "bonus_codes.json"
 def _carregar_codigos():
@@ -1000,23 +999,22 @@ async def gerar_codigos_coletivo(req: Request):
 @app.post("/sugestao")
 async def receber_sugestao(req: SugestaoReq):
     try:
-        _enviar_email_simples(ADMIN_EMAIL, "Nova sugestao/reclamacao - A1ELOS",
-                              f"Sugestao de {req.nome} ({req.email}):\n\n{req.mensagem}")
-        return {"ok": True}
-    except Exception:
-        return {"ok": False}
+        with open("sugestoes.json", "a") as f:
+            f.write(json.dumps({"nome": req.nome, "mensagem": req.mensagem,
+                                "data": datetime.now().isoformat()}, ensure_ascii=False) + "\n")
+    except Exception as e:
+        logger.error(f"Erro sugestao: {e}")
+    return {"ok": True}
+
 @app.post("/bonus")
 async def solicitar_bonus(req: BonusReq):
-    codigo = "BONUS-" + secrets.token_hex(3).upper()
     try:
-        corpo = (f"Cliente: {req.nome}\nEmail: {req.email}\nProduto: {req.produto}\n"
-                 f"Codigo gerado: {codigo}\nRelato:\n{req.mensagem}")
-        _enviar_email_simples(ADMIN_EMAIL, "Pedido de BONUS - pane no pagamento", corpo)
-        _enviar_email_simples(req.email, "A1ELOS - Seu codigo bonus",
-                              f"Ola, {req.nome}!\nSeu codigo: {codigo}\n\nA1ELOS")
-        return {"ok": True, "codigo": codigo}
-    except Exception:
-        return {"ok": False}
+        with open("bonus_solicitacoes.json", "a") as f:
+            f.write(json.dumps({"nome": req.nome, "motivo": req.motivo,
+                                "data": datetime.now().isoformat()}, ensure_ascii=False) + "\n")
+    except Exception as e:
+        logger.error(f"Erro bonus: {e}")
+    return {"ok": True}
 # ===== SISTEMA DE PUBLICIDADE GEOLOCALIZADA =====
 ARQ_BANNERS = "banners.json"
 PAIS_CONTINENTE = {
