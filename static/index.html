@@ -828,6 +828,21 @@
 <script>
 function comprar(produto) {
     const lang = getLang();
+    // 1. Pega nome e data (da calculadora)
+    var nome = (document.getElementById("calcNome") ? document.getElementById("calcNome").value : "").trim();
+    var nasc = (document.getElementById("calcData") ? document.getElementById("calcData").value : "").trim();
+    // 2. Valida: sem nome/data, não cobra — leva para a calculadora
+    if (!nome || !nasc) {
+        alert(translations[lang].preencha_dados || "Preencha nome e data de nascimento primeiro.");
+        var sec = document.getElementById("calcSection") || document.getElementById("calc");
+        if (sec) sec.scrollIntoView({ behavior: "smooth" });
+        return;
+    }
+    // 3. Calcula e mostra os 5 números grátis ANTES de cobrar
+    if (typeof calcularMapa === "function") {
+        calcularMapa();
+    }
+    // 4. Só então vai para o pagamento (libera o PDF completo)
     window.location.href = '/criar-checkout?lang=' + lang + '&produto=' + produto;
 }
 
@@ -932,7 +947,7 @@ function atualizarResumoBC() {
     var final = bruto - desconto;
 
     // ---- APENAS A PARTE DE EXIBIÇÃO FOI QUALIFICADA ----
-       var lang = getLang();
+    var lang = getLang();
     var bc = BC_TEXTS[lang] || BC_TEXTS.pt;
     var simbolo = PRECO_DISPLAY[lang][0].replace(/[0-9.,\s]/g, '').trim() || 'R$';
     document.getElementById("bcTotalBruto").textContent = simbolo + " " + bruto.toLocaleString("pt-BR");
