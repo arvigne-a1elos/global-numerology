@@ -366,8 +366,10 @@
         <h2 class="section-title" data-i18n="calc_title">Calcule seu Mapa</h2>
         <p class="section-sub" data-i18n="calc_sub">Descubra os 5 números que regem sua vida — grátis, sem explicações.</p>
         <div class="form-group">
-            <label data-i18n="calc_nome">Nome Completo</label>
-            <input type="text" id="calcNome" placeholder="Seu nome completo">
+<label data-i18n="calc_nome">Nome Completo</label>
+<input id="calcNome" placeholder="Seu nome completo">
+<label data-i18n="calc_data">Data de Nascimento</label>
+<button data-i18n="calc_btn">Calcular Agora</button>
         </div>
         <div class="form-group">
             <label data-i18n="calc_nasc">Data de Nascimento</label>
@@ -1078,7 +1080,7 @@ function calcular5Numeros(nome, nasc) {
         {nome:nomes.realizacao, valor:realizacao}
     ];
 }
-function init() {
+    function init() {
     var container = document.getElementById('langSelector');
     if (container) {
         languages.forEach(function(l) {
@@ -1099,6 +1101,44 @@ function init() {
     atualizarResumoBC();
     montarEnergias();
 }
+function aplicarTraducoes(lang) {
+    var t = translations[lang] || translations.pt;
+    // Placeholder do nome
+    var nomeInp = document.getElementById("calcNome");
+    if (nomeInp && t.calc_nome_ph) nomeInp.placeholder = t.calc_nome_ph;
+    // Rótulos do resultado (os 5 números)
+    var map = { caminho:"caminho", destino:"destino", alma:"alma", personalidade:"personalidade", realizacao:"realizacao" };
+    Object.keys(map).forEach(function(k) {
+        var el = document.getElementById("res_" + k);
+        if (el && t.nomes5 && t.nomes5[k]) el.textContent = t.nomes5[k] + ":";
+    });
+    // Título e convite do resultado
+    var tRes = document.getElementById("res_titulo");
+    if (tRes && t.calc_resultado) tRes.textContent = t.calc_resultado;
+    var tConv = document.getElementById("res_convite");
+    if (tConv && t.calc_convite) tConv.textContent = t.calc_convite;
+    // Preços (Correção B)
+    atualizarPrecos(lang);
+}
+   function atualizarPrecos(lang) {
+    var precos = PRECO_DISPLAY[lang] || PRECO_DISPLAY.pt;
+    // Cards de produtos
+    document.querySelectorAll('.product-card[data-prod]').forEach(function(card) {
+        var prod = card.getAttribute('data-prod');
+        var precoEl = card.querySelector('.prod-preco');
+        if (precoEl && PRODUTO_FAIXA[prod] !== undefined && precos[PRODUTO_FAIXA[prod]]) {
+            precoEl.innerText = precos[PRODUTO_FAIXA[prod]];
+        }
+    });
+    // Montar Sob Medida
+    document.querySelectorAll('.bc-row[data-prod]').forEach(function(tr) {
+        var prod = tr.getAttribute('data-prod');
+        var precoEl = tr.querySelector('.bc-prod-preco');
+        if (precoEl && PRODUTO_FAIXA[prod] !== undefined && precos[PRODUTO_FAIXA[prod]]) {
+            precoEl.innerText = precos[PRODUTO_FAIXA[prod]];
+        }
+    });
+} 
 document.addEventListener('DOMContentLoaded', init);
 </script>
     <footer>
