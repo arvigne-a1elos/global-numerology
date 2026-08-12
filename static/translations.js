@@ -335,6 +335,7 @@ desc_ia: "بحث ذكي بالذكاء الاصطناعي للعثور على ا
     energia_desc: "اختر منتجًا للبحث عن الأسماء بهذه الطاقة.",
     nomes5: { caminho:"مسار الحياة", destino:"القدر", alma:"الروح", personalidade:"الشخصية", realizacao:"الإنجاز" }
 }
+};       
 // ===== NOMES DOS 15 PRODUTOS (12 IDIOMAS) =====
 const PRODUTOS_TRAD = {
     pt: { express:"Mapa Express", vida:"Qual Vida/Ano", completo:"Mapa Completo", ia:"Pesquisa IA de Nomes", urna:"Validação Nome de Urna", eleitoral:"Número Eleitoral", imovel:"Número do Imóvel", calendario:"Calendário Mensal Energético", artistico:"Validação Nome Artístico", bebe:"Planejamento Nome de Bebê", assinatura:"Validação de Assinaturas", negocio:"Nome para Negócio/Produto", casal:"Mapa do Casal", familia:"Mapa Família Premium", coletivo:"Bônus Coletivo/Empresarial" },
