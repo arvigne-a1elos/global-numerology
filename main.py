@@ -189,6 +189,82 @@ PRODUTOS = {
         "assinatura": "التحقق من التوقيعات", "negocio": "اسم للأعمال/المنتج",
         "casal": "خريطة الزوجين", "familia": "خريطة العائلة المميزة", "coletivo": "مكافأة الشركات"}
 }
+
+# ===== TEXTOS DOS PDFS (12 IDIOMAS) =====
+PDF_TEXTS = {
+    "pt": {"t_express": "MAPA EXPRESS", "t_completo": "MAPA COMPLETO", "t_urna": "VALIDACAO DE NOME DE URNA", "t_eleitoral": "NUMERO ELEITORAL",
+           "numero": "Numero", "valor": "Valor", "caminho": "Caminho de Vida", "expressao": "Expressao", "motivacao": "Motivacao", "personalidade": "Personalidade", "destino": "Destino",
+           "cargo": "Cargo", "sugestoes": "Sugestoes:", "op8": "Opcoes com Energia 8 - IDEAL:", "op_alt": "Opcoes Alternativas:", "num_existente": "Numero existente",
+           "ciclos": "Ciclo 1 (0-{a}a) | Ciclo 2 ({b}-{c}a) | Ciclo 3 ({d}+a)", "desafios": "Desafios: {x} | {y} | Principal {z}", "ano_pessoal": "Ano Pessoal {ano}: {v}",
+           "grade": "Grade: Presentes {p} | Carencias {c}", "baixar": "BAIXAR PDF", "confirmado": "Confirmado!", "gerado": "Ola {nome}, seu {prod} foi gerado.",
+           "voltar": "Voltar", "qr_titulo": "Seu PDF nao pode ser gerado.", "qr_instrucao": "Escaneie o QRCode abaixo para acessar seu documento.", "entrega": "Documento sigiloso - entrega por PDF/QRCode."},
+    "en": {"t_express": "EXPRESS MAP", "t_completo": "COMPLETE MAP", "t_urna": "BALLOT NAME VALIDATION", "t_eleitoral": "ELECTORAL NUMBER",
+           "numero": "Number", "valor": "Value", "caminho": "Life Path", "expressao": "Expression", "motivacao": "Soul Urge", "personalidade": "Personality", "destino": "Destiny",
+           "cargo": "Position", "sugestoes": "Suggestions:", "op8": "Options with Energy 8 - IDEAL:", "op_alt": "Alternative Options:", "num_existente": "Existing number",
+           "ciclos": "Cycle 1 (0-{a}) | Cycle 2 ({b}-{c}) | Cycle 3 ({d}+)", "desafios": "Challenges: {x} | {y} | Main {z}", "ano_pessoal": "Personal Year {ano}: {v}",
+           "grade": "Grid: Present {p} | Missing {c}", "baixar": "DOWNLOAD PDF", "confirmado": "Confirmed!", "gerado": "Hello {nome}, your {prod} has been generated.",
+           "voltar": "Back", "qr_titulo": "Your PDF could not be generated.", "qr_instrucao": "Scan the QR code below to access your document.", "entrega": "Confidential document - delivered via PDF/QRCode."},
+    "es": {"t_express": "MAPA EXPRES", "t_completo": "MAPA COMPLETO", "t_urna": "VALIDACION NOMBRE DE URNA", "t_eleitoral": "NUMERO ELECTORAL",
+           "numero": "Numero", "valor": "Valor", "caminho": "Camino de la Vida", "expressao": "Expresion", "motivacao": "Motivacion", "personalidade": "Personalidad", "destino": "Destino",
+           "cargo": "Cargo", "sugestoes": "Sugerencias:", "op8": "Opciones con Energia 8 - IDEAL:", "op_alt": "Opciones Alternativas:", "num_existente": "Numero existente",
+           "ciclos": "Ciclo 1 (0-{a}) | Ciclo 2 ({b}-{c}) | Ciclo 3 ({d}+)", "desafios": "Desafios: {x} | {y} | Principal {z}", "ano_pessoal": "Ano Personal {ano}: {v}",
+           "grade": "Cuadricula: Presentes {p} | Ausentes {c}", "baixar": "DESCARGAR PDF", "confirmado": "Confirmado!", "gerado": "Hola {nome}, tu {prod} fue generado.",
+           "voltar": "Volver", "qr_titulo": "Tu PDF no pudo generarse.", "qr_instrucao": "Escanea el codigo QR para acceder a tu documento.", "entrega": "Documento confidencial - entrega por PDF/QRCode."},
+    "it": {"t_express": "MAPPA ESPRESSA", "t_completo": "MAPPA COMPLETA", "t_urna": "VALIDAZIONE NOME DELLA SCHEDA", "t_eleitoral": "NUMERO ELETTORALE",
+           "numero": "Numero", "valor": "Valore", "caminho": "Sentiero della Vita", "expressao": "Espressione", "motivacao": "Spinta dell'Anima", "personalidade": "Personalita", "destino": "Destino",
+           "cargo": "Carica", "sugestoes": "Suggerimenti:", "op8": "Opzioni con Energia 8 - IDEALE:", "op_alt": "Opzioni Alternative:", "num_existente": "Numero esistente",
+           "ciclos": "Ciclo 1 (0-{a}) | Ciclo 2 ({b}-{c}) | Ciclo 3 ({d}+)", "desafios": "Sfide: {x} | {y} | Principale {z}", "ano_pessoal": "Anno Personale {ano}: {v}",
+           "grade": "Griglia: Presenti {p} | Mancanti {c}", "baixar": "SCARICA PDF", "confirmado": "Confermato!", "gerado": "Ciao {nome}, il tuo {prod} e stato generato.",
+           "voltar": "Indietro", "qr_titulo": "Il tuo PDF non puo essere generato.", "qr_instrucao": "Scansiona il QR code per accedere al documento.", "entrega": "Documento riservato - consegna via PDF/QRCode."},
+    "fr": {"t_express": "CARTE EXPRESS", "t_completo": "CARTE COMPLETE", "t_urna": "VALIDATION NOM DU BULLETIN", "t_eleitoral": "NUMERO ELECTORAL",
+           "numero": "Numero", "valor": "Valeur", "caminho": "Chemin de Vie", "expressao": "Expression", "motivacao": "Elan de l'Ame", "personalidade": "Personnalite", "destino": "Destin",
+           "cargo": "Poste", "sugestoes": "Suggestions :", "op8": "Options avec Energie 8 - IDEAL :", "op_alt": "Options Alternatives :", "num_existente": "Numero existant",
+           "ciclos": "Cycle 1 (0-{a}) | Cycle 2 ({b}-{c}) | Cycle 3 ({d}+)", "desafios": "Defis : {x} | {y} | Principal {z}", "ano_pessoal": "Annee Personnelle {ano} : {v}",
+           "grade": "Grille : Presents {p} | Manquants {c}", "baixar": "TELECHARGER PDF", "confirmado": "Confirme !", "gerado": "Bonjour {nome}, votre {prod} a ete genere.",
+           "voltar": "Retour", "qr_titulo": "Votre PDF n'a pas pu etre genere.", "qr_instrucao": "Scannez le QR code pour acceder a votre document.", "entrega": "Document confidentiel - livraison par PDF/QRCode."},
+    "de": {"t_express": "EXPRESS-KARTE", "t_completo": "VOLLSTANDIGE KARTE", "t_urna": "STIMMZETTELNAME-VALIDIERUNG", "t_eleitoral": "WAHLNUMMER",
+           "numero": "Zahl", "valor": "Wert", "caminho": "Lebensweg", "expressao": "Ausdruck", "motivacao": "Seelenwunsch", "personalidade": "Personlichkeit", "destino": "Schicksal",
+           "cargo": "Position", "sugestoes": "Vorschlage:", "op8": "Optionen mit Energie 8 - IDEAL:", "op_alt": "Alternative Optionen:", "num_existente": "Bestehende Nummer",
+           "ciclos": "Zyklus 1 (0-{a}) | Zyklus 2 ({b}-{c}) | Zyklus 3 ({d}+)", "desafios": "Herausforderungen: {x} | {y} | Haupt {z}", "ano_pessoal": "Persoenliches Jahr {ano}: {v}",
+           "grade": "Raster: Vorhanden {p} | Fehlend {c}", "baixar": "PDF HERUNTERLADEN", "confirmado": "Bestaetigt!", "gerado": "Hallo {nome}, Ihr {prod} wurde erstellt.",
+           "voltar": "Zurueck", "qr_titulo": "Ihr PDF konnte nicht erstellt werden.", "qr_instrucao": "Scannen Sie den QR-Code, um auf Ihr Dokument zuzugreifen.", "entrega": "Vertrauliches Dokument - Lieferung per PDF/QRCode."},
+    "ja": {"t_express": "エクスプレスマップ", "t_completo": "完全マップ", "t_urna": "投票用紙名の検証", "t_eleitoral": "選挙番号",
+           "numero": "数字", "valor": "値", "caminho": "ライフパス", "expressao": "表現", "motivacao": "魂の欲求", "personalidade": "性格", "destino": "運命",
+           "cargo": "役職", "sugestoes": "提案:", "op8": "エネルギー8のオプション - 理想的:", "op_alt": "代替オプション:", "num_existente": "既存の番号",
+           "ciclos": "サイクル1 (0-{a}) | サイクル2 ({b}-{c}) | サイクル3 ({d}+)", "desafios": "課題: {x} | {y} | 主要 {z}", "ano_pessoal": "パーソナルイヤー {ano}: {v}",
+           "grade": "グリッド: あり {p} | 欠け {c}", "baixar": "PDFをダウンロード", "confirmado": "確認済み!", "gerado": "{nome} さん、{prod} が生成されました。",
+           "voltar": "戻る", "qr_titulo": "PDFを生成できませんでした。", "qr_instrucao": "下のQRコードをスキャンして文書にアクセスしてください。", "entrega": "機密文書 - PDF/QRコードで納品。"},
+    "zh": {"t_express": "快速地图", "t_completo": "完整地图", "t_urna": "选票名称验证", "t_eleitoral": "选举号码",
+           "numero": "数字", "valor": "数值", "caminho": "生命路径", "expressao": "表达", "motivacao": "灵魂冲动", "personalidade": "个性", "destino": "命运",
+           "cargo": "职位", "sugestoes": "建议:", "op8": "能量8选项 - 理想:", "op_alt": "备选方案:", "num_existente": "现有号码",
+           "ciclos": "周期1 (0-{a}) | 周期2 ({b}-{c}) | 周期3 ({d}+)", "desafios": "挑战: {x} | {y} | 主要 {z}", "ano_pessoal": "个人年份 {ano}: {v}",
+           "grade": "网格: 存在 {p} | 缺失 {c}", "baixar": "下载PDF", "confirmado": "已确认!", "gerado": "您好 {nome}，您的{prod}已生成。",
+           "voltar": "返回", "qr_titulo": "无法生成PDF。", "qr_instrucao": "扫描下方二维码访问您的文档。", "entrega": "保密文档 - 通过PDF/二维码交付。"},
+    "ru": {"t_express": "ЭКСПРЕСС-КАРТА", "t_completo": "ПОЛНАЯ КАРТА", "t_urna": "ПРОВЕРКА НАЗВАНИЯ БЮЛЛЕТЕНЯ", "t_eleitoral": "ИЗБИРАТЕЛЬНЫЙ НОМЕР",
+           "numero": "Число", "valor": "Значение", "caminho": "Путь Жизни", "expressao": "Выражение", "motivacao": "Порыв Души", "personalidade": "Личность", "destino": "Судьба",
+           "cargo": "Должность", "sugestoes": "Предложения:", "op8": "Варианты с Энергией 8 - ИДЕАЛ:", "op_alt": "Альтернативные варианты:", "num_existente": "Существующий номер",
+           "ciclos": "Цикл 1 (0-{a}) | Цикл 2 ({b}-{c}) | Цикл 3 ({d}+)", "desafios": "Вызовы: {x} | {y} | Главный {z}", "ano_pessoal": "Личный год {ano}: {v}",
+           "grade": "Сетка: Есть {p} | Нет {c}", "baixar": "СКАЧАТЬ PDF", "confirmado": "Подтверждено!", "gerado": "Здравствуйте {nome}, ваш {prod} создан.",
+           "voltar": "Назад", "qr_titulo": "Не удалось создать PDF.", "qr_instrucao": "Отсканируйте QR-код ниже, чтобы получить доступ к документу.", "entrega": "Конфиденциальный документ - доставка через PDF/QRCode."},
+    "hi": {"t_express": "त्वरित मानचित्र", "t_completo": "पूर्ण मानचित्र", "t_urna": "मतपत्र नाम सत्यापन", "t_eleitoral": "निर्वाचन संख्या",
+           "numero": "अंक", "valor": "मान", "caminho": "जीवन पथ", "expressao": "अभिव्यक्ति", "motivacao": "आत्मा की इच्छा", "personalidade": "व्यक्तित्व", "destino": "भाग्य",
+           "cargo": "पद", "sugestoes": "सुझाव:", "op8": "ऊर्जा 8 विकल्प - आदर्श:", "op_alt": "वैकल्पिक विकल्प:", "num_existente": "मौजूदा संख्या",
+           "ciclos": "चक्र 1 (0-{a}) | चक्र 2 ({b}-{c}) | चक्र 3 ({d}+)", "desafios": "चुनौतियाँ: {x} | {y} | मुख्य {z}", "ano_pessoal": "व्यक्तिगत वर्ष {ano}: {v}",
+           "grade": "ग्रिड: मौजूद {p} | अनुपस्थित {c}", "baixar": "PDF डाउनलोड करें", "confirmado": "पुष्टि हुई!", "gerado": "नमस्ते {nome}, आपका {prod} तैयार है।",
+           "voltar": "वापस", "qr_titulo": "आपका PDF नहीं बन सका।", "qr_instrucao": "नीचे QR कोड स्कैन करके अपने दस्तावेज़ तक पहुँचें।", "entrega": "गोपनीय दस्तावेज़ - PDF/QRCode द्वारा डिलीवरी।"},
+    "he": {"t_express": "מפה מהירה", "t_completo": "מפה מלאה", "t_urna": "אימות שם פתק", "t_eleitoral": "מספר בחירות",
+           "numero": "מספר", "valor": "ערך", "caminho": "נתיב החיים", "expressao": "ביטוי", "motivacao": "דחף הנשמה", "personalidade": "אישיות", "destino": "גורל",
+           "cargo": "תפקיד", "sugestoes": "הצעות:", "op8": "אפשרויות עם אנרגיה 8 - אידיאלי:", "op_alt": "אפשרויות חלופיות:", "num_existente": "מספר קיים",
+           "ciclos": "מחזור 1 (0-{a}) | מחזור 2 ({b}-{c}) | מחזור 3 ({d}+)", "desafios": "אתגרים: {x} | {y} | עיקרי {z}", "ano_pessoal": "שנה אישית {ano}: {v}",
+           "grade": "רשת: קיימים {p} | חסרים {c}", "baixar": "הורד PDF", "confirmado": "אושר!", "gerado": "שלום {nome}, ה-{prod} שלך נוצר.",
+           "voltar": "חזור", "qr_titulo": "לא ניתן היה ליצור את ה-PDF.", "qr_instrucao": "סרוק את קוד ה-QR למטה כדי לגשת למסמך שלך.", "entrega": "מסמך חסוי - מסירה באמצעות PDF/QRCode."},
+    "ar": {"t_express": "خريطة سريعة", "t_completo": "خريطة كاملة", "t_urna": "التحقق من اسم الاقتراع", "t_eleitoral": "الرقم الانتخابي",
+           "numero": "الرقم", "valor": "القيمة", "caminho": "مسار الحياة", "expressao": "التعبير", "motivacao": "دافع الروح", "personalidade": "الشخصية", "destino": "القدر",
+           "cargo": "المنصب", "sugestoes": "اقتراحات:", "op8": "خيارات بالطاقة 8 - مثالي:", "op_alt": "خيارات بديلة:", "num_existente": "الرقم الموجود",
+           "ciclos": "دورة 1 (0-{a}) | دورة 2 ({b}-{c}) | دورة 3 ({d}+)", "desafios": "التحديات: {x} | {y} | الرئيسي {z}", "ano_pessoal": "السنة الشخصية {ano}: {v}",
+           "grade": "الشبكة: موجودة {p} | ناقصة {c}", "baixar": "تحميل PDF", "confirmado": "تم التأكيد!", "gerado": "مرحباً {nome}، تم إنشاء {prod} الخاص بك.",
+           "voltar": "رجوع", "qr_titulo": "تعذر إنشاء ملف PDF الخاص بك.", "qr_instrucao": "امسح رمز QR أدناه للوصول إلى مستندك.", "entrega": "مستند سري - التسليم عبر PDF/QRCode."}
+}
 # ===== PRICE IDS STRIPE =====
 PRICE_IDS = {
     "pt": {"express": "price_1TxocVBMLa84bVJ0EL0kb9Dn", "completo": "price_1TxohlBMLa84bVJ0jVj9307b",
@@ -282,6 +358,12 @@ class UrnaPayReq(BaseModel):
     nome_urna: str
     email: Optional[str] = ""   # preservado
     lang: str = "pt"
+    cargo: str = "vereador"
+    nome1: str = ""
+    nome2: str = ""
+    nome3: str = ""
+    nome4: str = ""
+    nome5: str = ""
 
 class EleitoralPayReq(BaseModel):
     nome_completo: str
@@ -298,6 +380,10 @@ class BonusReq(BaseModel):
     nome: str
     email: Optional[str] = ""   # preservado
     motivo: str
+
+class AtivarBonusReq(BaseModel):
+    codigo: str
+
 # ===== CONSTANTES DE ESTILO (PDFs) =====
 GOLD = colors.HexColor("#B8860B")
 LGRAY = colors.HexColor("#f0f0f0")
@@ -427,133 +513,129 @@ def estilo(tam, negrito=False, cor=DARK, alinhamento=TA_LEFT, antes=0, depois=4)
                          fontSize=tam, textColor=cor,
                          alignment=alinhamento, spaceBefore=antes,
                          spaceAfter=depois)
-# ===== PDF EXPRESS =====
-def pdf8(data, nome, bd):
+# ===== PDF EXPRESS (traduzido) =====
+def pdf8(data, nome, bd, lang="pt"):
+    T = PDF_TEXTS.get(lang, PDF_TEXTS["pt"])
     path = f"/tmp/p8_{uuid.uuid4().hex[:8]}.pdf"
-    doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
-                            topMargin=40, bottomMargin=30)
+    doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50, topMargin=40, bottomMargin=30)
     e = []
     e.append(Spacer(1, 15))
-    e.append(Paragraph("MAPA EXPRESS", estilo(20, True, GOLD, TA_CENTER, 0, 6)))
+    e.append(Paragraph(T["t_express"], estilo(20, True, GOLD, TA_CENTER, 0, 6)))
     e.append(Paragraph(nome.upper(), estilo(12, True, DARK, TA_CENTER, 0, 2)))
     e.append(Paragraph(bd, estilo(9, False, GRAY, TA_CENTER, 0, 10)))
-    td = [["Numero", "Valor"]] + [[l, str(data[k])] for k, l in [
-        ("life_path", "Caminho de Vida"), ("expression", "Expressao"),
-        ("soul_urge", "Motivacao"), ("personality", "Personalidade"),
-        ("destiny", "Destino")]]
+    td = [[T["numero"], T["valor"]],
+          [T["caminho"], str(data["life_path"])],
+          [T["expressao"], str(data["expression"])],
+          [T["motivacao"], str(data["soul_urge"])],
+          [T["personalidade"], str(data["personality"])],
+          [T["destino"], str(data["destiny"])]]
     tbl = Table(td, colWidths=[200, 100])
     tbl.setStyle(TableStyle([
-        ("BACKGROUND", (0, 0), (-1, 0), GOLD),
-        ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
-        ("FONTSIZE", (0, 0), (-1, -1), 9),
-        ("GRID", (0, 0), (-1, -1), 0.3, colors.grey),
-        ("BACKGROUND", (0, 1), (-1, -1), LGRAY),
-    ]))
+        ("BACKGROUND", (0, 0), (-1, 0), GOLD), ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+        ("FONTSIZE", (0, 0), (-1, -1), 9), ("GRID", (0, 0), (-1, -1), 0.3, colors.grey),
+        ("BACKGROUND", (0, 1), (-1, -1), LGRAY)]))
     e.append(tbl)
     e.append(Spacer(1, 10))
     e.append(Paragraph("(c) A1ELOS", estilo(7, False, GRAY, TA_CENTER)))
     doc.build(e)
     return path
 # ===== PDF COMPLETO =====
-def pdf17(data, nome, bd_str):
+def pdf17(data, nome, bd_str, lang="pt"):
+    T = PDF_TEXTS.get(lang, PDF_TEXTS["pt"])
     path = f"/tmp/p17_{uuid.uuid4().hex[:8]}.pdf"
-    doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
-                            topMargin=35, bottomMargin=25)
+    doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50, topMargin=35, bottomMargin=25)
     e = []
     lp = data["life_path"]
     e.append(Spacer(1, 15))
-    e.append(Paragraph("MAPA COMPLETO", estilo(20, True, GOLD, TA_CENTER, 0, 6)))
+    e.append(Paragraph(T["t_completo"], estilo(20, True, GOLD, TA_CENTER, 0, 6)))
     e.append(Paragraph(nome.upper(), estilo(12, True, DARK, TA_CENTER, 0, 2)))
     e.append(Paragraph(bd_str, estilo(9, False, GRAY, TA_CENTER, 0, 10)))
-    e.append(Paragraph(f"Caminho de Vida {lp}", estilo(11, False, DARK, TA_CENTER)))
+    e.append(Paragraph(f"{T['caminho']} {lp}", estilo(11, False, DARK, TA_CENTER)))
     e.append(Spacer(1, 8))
-    td = [["Numero", "Valor"]] + [[l, str(data[k])] for k, l in [
-        ("life_path", "Caminho de Vida"), ("expression", "Expressao"),
-        ("soul_urge", "Motivacao"), ("personality", "Personalidade"),
-        ("destiny", "Destino")]]
+    td = [[T["numero"], T["valor"]],
+          [T["caminho"], str(data["life_path"])],
+          [T["expressao"], str(data["expression"])],
+          [T["motivacao"], str(data["soul_urge"])],
+          [T["personalidade"], str(data["personality"])],
+          [T["destino"], str(data["destiny"])]]
     tbl = Table(td, colWidths=[200, 100])
     tbl.setStyle(TableStyle([
-        ("BACKGROUND", (0, 0), (-1, 0), GOLD),
-        ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
-        ("FONTSIZE", (0, 0), (-1, -1), 9),
-        ("GRID", (0, 0), (-1, -1), 0.3, colors.grey),
-        ("BACKGROUND", (0, 1), (-1, -1), LGRAY),
-    ]))
+        ("BACKGROUND", (0, 0), (-1, 0), GOLD), ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+        ("FONTSIZE", (0, 0), (-1, -1), 9), ("GRID", (0, 0), (-1, -1), 0.3, colors.grey),
+        ("BACKGROUND", (0, 1), (-1, -1), LGRAY)]))
     e.append(tbl)
     e.append(Spacer(1, 10))
     bb = dp.parse(bd_str.split(" ")[0] if " " in bd_str else bd_str).date()
     d, m, a = bb.day, bb.month, bb.year
     fe = max(36 - min(lp, 36), 25)
-    e.append(Paragraph(f"Ciclo 1 (0-{fe}a) | Ciclo 2 ({fe+1}-{fe+27}a) | Ciclo 3 ({fe+28}+a)", estilo(10, False, DARK)))
-    d1 = r1(abs(d - m))
-    d2 = r1(abs(m - r1(a)))
-    dp_ = r1(abs(d1 - d2))
-    e.append(Paragraph(f"Desafios: {d1} | {d2} | Principal {dp_}", estilo(10, False, DARK)))
+    e.append(Paragraph(T["ciclos"].format(a=fe, b=fe + 1, c=fe + 27, d=fe + 28), estilo(10, False, DARK)))
+    d1 = r1(abs(d - m)); d2 = r1(abs(m - r1(a))); dp_ = r1(abs(d1 - d2))
+    e.append(Paragraph(T["desafios"].format(x=d1, y=d2, z=dp_), estilo(10, False, DARK)))
     ap = r1(d + m + datetime.utcnow().year)
-    e.append(Paragraph(f"Ano Pessoal {datetime.utcnow().year}: {ap}", estilo(10, False, DARK)))
+    e.append(Paragraph(T["ano_pessoal"].format(ano=datetime.utcnow().year, v=ap), estilo(10, False, DARK)))
     grid = calc_grid(nome)
     pres = [str(n) for n in range(1, 10) if grid.get(n, 0) > 0]
     aus = [str(n) for n in range(1, 10) if grid.get(n, 0) == 0]
-    e.append(Paragraph(f"Grade: Presentes {', '.join(pres) or '-'} | Carencias {', '.join(aus) or '-'}", estilo(10, False, DARK)))
+    e.append(Paragraph(T["grade"].format(p=", ".join(pres) or "-", c=", ".join(aus) or "-"), estilo(10, False, DARK)))
     e.append(Spacer(1, 15))
     e.append(Paragraph("(c) A1ELOS", estilo(7, False, GRAY, TA_CENTER)))
     doc.build(e)
     return path
 # ===== PDF NOME DE URNA =====
-def pdf_urna(nc, cl, resultados, sugestoes):
+def pdf_urna(nc, cl, resultados, sugestoes, lang="pt"):
+    T = PDF_TEXTS.get(lang, PDF_TEXTS["pt"])
     path = f"/tmp/u_{uuid.uuid4().hex[:8]}.pdf"
-    doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
-                            topMargin=40, bottomMargin=30)
+    doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50, topMargin=40, bottomMargin=30)
     e = []
     e.append(Spacer(1, 15))
-    e.append(Paragraph("VALIDACAO DE NOME DE URNA", estilo(20, True, GOLD, TA_CENTER)))
+    e.append(Paragraph(T["t_urna"], estilo(20, True, GOLD, TA_CENTER)))
     e.append(Paragraph(nc.title(), estilo(12, True, DARK, TA_CENTER)))
-    e.append(Paragraph(f"Cargo: {cl}", estilo(9, False, GRAY, TA_CENTER)))
+    e.append(Paragraph(f"{T['cargo']}: {cl}", estilo(9, False, GRAY, TA_CENTER)))
     for r in resultados:
         ic = "OK" if r["eh_ideal"] else "X"
-        e.append(Paragraph(f'{ic} {r["nome"]} - Energia {r["energia"]}', estilo(11, True, DARK)))
+        e.append(Paragraph(f'{ic} {r["nome"]} - {T["motivacao"][:7]} {r["energia"]}', estilo(11, True, DARK)))
         if r["letras"]:
             ls = ", ".join([f'{l["letra"]}={l["valor"]}' for l in r["letras"]])
             e.append(Paragraph(f"{ls} -> {r['soma']} -> {r['energia']}", estilo(9, False, GRAY)))
         e.append(Paragraph(r["explicacao"], estilo(10, False, DARK)))
     if sugestoes:
         e.append(Spacer(1, 10))
-        e.append(Paragraph("Sugestoes:", estilo(16, True, GOLD)))
+        e.append(Paragraph(T["sugestoes"], estilo(16, True, GOLD)))
         for s in sugestoes[:3]:
-            e.append(Paragraph(f'{s["nome"]} - Energia {s["energia"]}', estilo(11, False, DARK)))
+            e.append(Paragraph(f'{s["nome"]} - {T["motivacao"][:7]} {s["energia"]}', estilo(11, False, DARK)))
     e.append(Paragraph("(c) A1ELOS", estilo(7, False, GRAY, TA_CENTER)))
     doc.build(e)
     return path
 # ===== PDF NUMERO ELEITORAL =====
-def pdf_eleitoral(ss, cl, sugestoes, ni=None):
+def pdf_eleitoral(ss, cl, sugestoes, ni=None, lang="pt"):
+    T = PDF_TEXTS.get(lang, PDF_TEXTS["pt"])
     path = f"/tmp/e_{uuid.uuid4().hex[:8]}.pdf"
-    doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
-                            topMargin=40, bottomMargin=30)
+    doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50, topMargin=40, bottomMargin=30)
     e = []
     e.append(Spacer(1, 15))
-    e.append(Paragraph("NUMERO ELEITORAL", estilo(20, True, GOLD, TA_CENTER)))
-    e.append(Paragraph(f"Cargo: {cl} | Sigla: {ss}", estilo(9, False, GRAY, TA_CENTER)))
+    e.append(Paragraph(T["t_eleitoral"], estilo(20, True, GOLD, TA_CENTER)))
+    e.append(Paragraph(f"{T['cargo']}: {cl} | {T['numero']}: {ss}", estilo(9, False, GRAY, TA_CENTER)))
     e.append(Spacer(1, 10))
     ids = [s for s in sugestoes if s.get("ideal")]
     fbs = [s for s in sugestoes if not s.get("ideal")]
     if ids:
-        e.append(Paragraph("Opcoes com Energia 8 - IDEAL:", estilo(11, True, DARK)))
+        e.append(Paragraph(T["op8"], estilo(11, True, DARK)))
         for s in ids:
-            e.append(Paragraph(f'{s["numero"]} - Energia 8!', estilo(11, False, colors.HexColor("#4CAF50"))))
+            e.append(Paragraph(f'{s["numero"]} - 8!', estilo(11, False, colors.HexColor("#4CAF50"))))
     if fbs:
-        e.append(Paragraph("Opcoes Alternativas:", estilo(11, True, DARK)))
+        e.append(Paragraph(T["op_alt"], estilo(11, True, DARK)))
         for s in fbs:
-            e.append(Paragraph(f'{s["numero"]} - Energia {s["energia"]}', estilo(11, False, DARK)))
+            e.append(Paragraph(f'{s["numero"]} - {s["energia"]}', estilo(11, False, DARK)))
     if ni:
-        e.append(Paragraph(f'Numero: {ni["numero"]} - Energia: {ni["energia"]}', estilo(11, False, DARK)))
+        e.append(Paragraph(f'{T["num_existente"]}: {ni["numero"]} - {ni["energia"]}', estilo(11, False, DARK)))
     e.append(Paragraph("(c) A1ELOS", estilo(7, False, GRAY, TA_CENTER)))
     doc.build(e)
     return path
 # ===== PDF GENERICO (11 produtos novos) =====
 def pdf_produto(produto, nome, bd_str, lang="pt"):
+    T = PDF_TEXTS.get(lang, PDF_TEXTS["pt"])
     path = f"/tmp/p_{uuid.uuid4().hex[:8]}.pdf"
-    doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
-                            topMargin=40, bottomMargin=30)
+    doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50, topMargin=40, bottomMargin=30)
     titulo = PRODUTOS.get(lang, PRODUTOS["pt"]).get(produto, produto).upper()
     data = calc(nome, bd_str)
     e = []
@@ -561,44 +643,83 @@ def pdf_produto(produto, nome, bd_str, lang="pt"):
     e.append(Paragraph(titulo, estilo(18, True, GOLD, TA_CENTER, 0, 6)))
     e.append(Paragraph(nome.upper(), estilo(12, True, DARK, TA_CENTER, 0, 2)))
     e.append(Paragraph(bd_str, estilo(9, False, GRAY, TA_CENTER, 0, 10)))
-    td = [["Numero", "Valor"]] + [[l, str(data[k])] for k, l in [
-        ("life_path", "Caminho de Vida"), ("expression", "Expressao"),
-        ("soul_urge", "Motivacao"), ("personality", "Personalidade"),
-        ("destiny", "Destino")]]
+    td = [[T["numero"], T["valor"]],
+          [T["caminho"], str(data["life_path"])],
+          [T["expressao"], str(data["expression"])],
+          [T["motivacao"], str(data["soul_urge"])],
+          [T["personalidade"], str(data["personality"])],
+          [T["destino"], str(data["destiny"])]]
     tbl = Table(td, colWidths=[200, 100])
     tbl.setStyle(TableStyle([
-        ("BACKGROUND", (0, 0), (-1, 0), GOLD),
-        ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
-        ("FONTSIZE", (0, 0), (-1, -1), 9),
-        ("GRID", (0, 0), (-1, -1), 0.3, colors.grey),
-        ("BACKGROUND", (0, 1), (-1, -1), LGRAY),
-    ]))
+        ("BACKGROUND", (0, 0), (-1, 0), GOLD), ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+        ("FONTSIZE", (0, 0), (-1, -1), 9), ("GRID", (0, 0), (-1, -1), 0.3, colors.grey),
+        ("BACKGROUND", (0, 1), (-1, -1), LGRAY)]))
     e.append(tbl)
     e.append(Spacer(1, 10))
     e.append(Paragraph("(c) A1ELOS", estilo(7, False, GRAY, TA_CENTER)))
     doc.build(e)
     return path
-def _entregar_arquivo(tipo, nome, lang, extra=""):
-    """Gera PDF + QRCode e salva em static/relatorios (sem email)"""
-    import io
-    from reportlab.pdfgen import canvas
+def _entregar_arquivo(tipo, nome, lang="pt", extra=""):
+    """Gera PDF + QRCode (sem email). Se o PDF falhar, entrega apenas o QRCode."""
     os.makedirs("static/relatorios", exist_ok=True)
     codigo = uuid.uuid4().hex[:8]
     arquivo_pdf = f"static/relatorios/{tipo}_{codigo}.pdf"
-    c = canvas.Canvas(arquivo_pdf)
-    c.setFont("Helvetica-Bold", 18)
-    c.drawString(60, 780, f"A1ELOS - {tipo.upper()}")
-    c.setFont("Helvetica", 12)
-    c.drawString(60, 750, f"Nome: {nome} | Idioma: {lang}")
-    c.drawString(60, 730, "Documento sigiloso - entrega por PDF/QRCode.")
-    c.save()
-    # QRCode apontando para o PDF
-    url_pdf = f"{SITE_URL}/{arquivo_pdf}"
-    img = qrcode.make(url_pdf)
     arquivo_qr = f"static/relatorios/{tipo}_{codigo}.png"
-    img.save(arquivo_qr)
-    logger.info(f"Entregue via PDF/QRCode: {arquivo_pdf} / {arquivo_qr}")
-    return url_pdf
+    pdf_ok = False
+    try:
+        from reportlab.pdfgen import canvas
+        c = canvas.Canvas(arquivo_pdf)
+        c.setFont("Helvetica-Bold", 18)
+        c.drawString(60, 780, f"A1ELOS - {tipo.upper()}")
+        c.setFont("Helvetica", 12)
+        c.drawString(60, 750, f"{nome} | {lang}")
+        c.setFont("Helvetica", 10)
+        c.drawString(60, 730, PDF_TEXTS.get(lang, PDF_TEXTS["pt"])["entrega"])
+        c.save()
+        pdf_ok = True
+    except Exception as e:
+        logger.error(f"Falha ao gerar PDF: {e}")
+        arquivo_pdf = None
+    # QRCode aponta para o PDF gerado; se falhou, aponta para a home com o pedido
+    alvo = f"{BASE_URL}/{arquivo_pdf}" if pdf_ok else f"{BASE_URL}/?tipo={tipo}&lang={lang}"
+    try:
+        img = qrcode.make(alvo)
+        img.save(arquivo_qr)
+        logger.info(f"QRCode gerado: {arquivo_qr} -> {alvo}")
+    except Exception as e:
+        logger.error(f"Falha ao gerar QRCode: {e}")
+        arquivo_qr = None
+    return {"pdf": arquivo_pdf, "qr": arquivo_qr, "url": alvo, "pdf_ok": pdf_ok}
+
+def pagina_sucesso(pdf_path, nome, prod_nome, lang="pt"):
+    T = PDF_TEXTS.get(lang, PDF_TEXTS["pt"])
+    b64 = ""
+    if pdf_path and os.path.exists(pdf_path):
+        with open(pdf_path, "rb") as f:
+            b64 = base64.b64encode(f.read()).decode()
+    btn = ""
+    qr_html = ""
+    if b64:
+        btn = (f'<a href="data:application/pdf;base64,{b64}" download="Documento.pdf" '
+               f'style="display:inline-block;padding:18px 50px;background:#C9A94E;color:#000;'
+               f'text-decoration:none;border-radius:50px;font-weight:700;font-size:1.2rem;margin:25px 0">{T["baixar"]}</a>')
+    else:
+        # Fallback: tenta gerar QRCode se o PDF falhou
+        try:
+            import io
+            buf = io.BytesIO()
+            img = qrcode.make(BASE_URL)
+            img.save(buf, format="PNG")
+            qr_b64 = base64.b64encode(buf.getvalue()).decode()
+            qr_html = (f'<p style="color:#C9A94E;font-size:1.1rem">{T["qr_titulo"]}</p>'
+                       f'<p style="color:#ccc">{T["qr_instrucao"]}</p>'
+                       f'<img src="data:image/png;base64,{qr_b64}" style="width:200px;height:200px;margin:15px 0">')
+        except Exception as e:
+            logger.error(f"Falha QRCode fallback: {e}")
+    return (f'<html><body style="background:#0a0a0a;color:#fff;text-align:center;padding:40px;'
+            f'font-family:sans-serif"><h1 style="color:#C9A94E">{T["confirmado"]}</h1>'
+            f'<p>{T["gerado"].format(nome=nome, prod=prod_nome)}</p>{btn}{qr_html}'
+            f'<a href="/" style="color:#C9A94E">{T["voltar"]}</a></body></html>')
 # ===== PAGINA DE SUCESSO COM DOWNLOAD DO PDF =====
 def pagina_sucesso(pdf_path, nome, prod_nome):
     b64 = ""
@@ -668,14 +789,13 @@ def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=No
         logger.error(f"Stripe: {e}")
         raise HTTPException(500, "Erro ao criar pagamento")
 # ===== ROTA GENERICA /pay/{produto} =====
-_ALIAS_PRODUTO = {"complete": "completo"}
-@app.post("/pay/{produto}")
+_@app.post("/pay/{produto}")
 def pay_produto(produto: str, req: PayReq):
     if not STRIPE_KEY:
         raise HTTPException(503, "Stripe nao configurado")
     produto = _ALIAS_PRODUTO.get(produto, produto)
-    nome = req.nome or req.name
-    nasc = req.nascimento or req.birth_date
+    nome = req.nome
+    nasc = req.nascimento
     lang = req.lang or "pt"
     return _criar_sessao(produto, lang, req.email, nome, nasc)
 # ===== CHECKOUT NOME DE URNA =====
@@ -787,17 +907,17 @@ def pay_success(request: Request):
         finally:
             db.close()
         pn = PRODUTOS.get(lang, PRODUTOS["pt"]).get(prod, prod)
-        if prod == "completo":
-            pf = pdf17(data, nome, bd)
+                if prod == "completo":
+            pf = pdf17(data, nome, bd, lang)
         elif prod == "urna":
             pf = pdf_produto("urna", nome, bd, lang)
         elif prod == "eleitoral":
             pf = pdf_produto("eleitoral", nome, bd, lang)
         elif prod == "express":
-            pf = pdf8(data, nome, bd)
+            pf = pdf8(data, nome, bd, lang)
         else:
             pf = pdf_produto(prod, nome, bd, lang)
-        html = pagina_sucesso(pf, nome, pn)
+        html = pagina_sucesso(pf, nome, pn, lang)
         if pf and os.path.exists(pf):
             os.remove(pf)
         return HTMLResponse(html)
@@ -821,8 +941,9 @@ def pay_urna_success(request: Request):
             return HTMLResponse("ERRO")
         res, _, sugs = validar_nomes_urna(nomes, cr)
         cl = CARGO_INFO.get(cr, {}).get("label", cr)
-        pf = pdf_urna(nc, cl, res, sugs)
-        html = pagina_sucesso(pf, nc, "Validacao de Nome de Urna")
+                lang = meta.get("lang", "pt")
+        pf = pdf_urna(nc, cl, res, sugs, lang)
+        html = pagina_sucesso(pf, nc, PRODUTOS.get(lang, PRODUTOS["pt"]).get("urna", "Urna"), lang)
         if pf and os.path.exists(pf):
             os.remove(pf)
         return HTMLResponse(html)
@@ -851,8 +972,9 @@ def pay_eleitoral_success(request: Request):
                 ni = {"numero": ne_str, "energia": r1(sum(int(d) for d in ne_str))}
             except Exception:
                 pass
-        pf = pdf_eleitoral(ss, cl2, sugs, ni)
-        html = pagina_sucesso(pf, f"Candidato {cl2}", "Numero Eleitoral")
+                lang = meta.get("lang", "pt")
+        pf = pdf_eleitoral(ss, cl2, sugs, ni, lang)
+        html = pagina_sucesso(pf, f"Candidato {cl2}", PRODUTOS.get(lang, PRODUTOS["pt"]).get("eleitoral", "Eleitoral"), lang)
         if pf and os.path.exists(pf):
             os.remove(pf)
         return HTMLResponse(html)
@@ -926,9 +1048,8 @@ def root():
 @app.get("/config")
 def config():
     return {"stripe_pk": STRIPE_PUB}
+
 @app.get("/api/health")
-def health():
-    @app.get("/api/health")
 def health():
     return {"status": "ok", "stripe": bool(STRIPE_KEY)}
 # ===== WEBHOOK STRIPE =====
@@ -942,18 +1063,18 @@ async def stripe_webhook(req: Request):
             event = stripe.Webhook.construct_event(payload, sig, whsec)
         except Exception:
             raise HTTPException(400, "Assinatura invalida")
-    else:
+       else:
         data = json.loads(payload)
         event = {"type": data.get("type", ""), "data": data.get("data", {})}
-     if event["type"] == "checkout.session.completed":
+     if event["type"] == "checkout.session.completed":         # ← 4 espaços (CERTO)
         session = event["data"]["object"]
         meta = session.get("metadata", {})
         tipo = meta.get("tipo", "express")
         nome = meta.get("nome", "Cliente")
         lang = meta.get("lang", "pt")
         logger.info(f"Pagamento confirmado: {session['id']} -> {tipo}")
-        url = _entregar_arquivo(tipo, nome, lang)   # entrega via PDF/QRCode
-        logger.info(f"Link de entrega: {url}")
+        entrega = _entregar_arquivo(tipo, nome, lang)   # entrega via PDF/QRCode com fallback
+        logger.info(f"Entrega: {entrega}")
     return {"status": "success"}
 # ===== SISTEMA DE BONUS =====
 ARQ_BONUS = "bonus_codes.json"
