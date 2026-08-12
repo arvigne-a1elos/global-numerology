@@ -370,6 +370,7 @@ class EleitoralPayReq(BaseModel):
     numero: str
     email: Optional[str] = ""   # preservado
     lang: str = "pt"
+    cargo: str = "vereador"
 
 class SugestaoReq(BaseModel):
     nome: str
@@ -720,21 +721,6 @@ def pagina_sucesso(pdf_path, nome, prod_nome, lang="pt"):
             f'font-family:sans-serif"><h1 style="color:#C9A94E">{T["confirmado"]}</h1>'
             f'<p>{T["gerado"].format(nome=nome, prod=prod_nome)}</p>{btn}{qr_html}'
             f'<a href="/" style="color:#C9A94E">{T["voltar"]}</a></body></html>')
-# ===== PAGINA DE SUCESSO COM DOWNLOAD DO PDF =====
-def pagina_sucesso(pdf_path, nome, prod_nome):
-    b64 = ""
-    if pdf_path and os.path.exists(pdf_path):
-        with open(pdf_path, "rb") as f:
-            b64 = base64.b64encode(f.read()).decode()
-    btn = ""
-    if b64:
-        btn = (f'<a href="data:application/pdf;base64,{b64}" download="Documento.pdf" '
-               f'style="display:inline-block;padding:18px 50px;background:#C9A94E;color:#000;'
-               f'text-decoration:none;border-radius:50px;font-weight:700;font-size:1.2rem;margin:25px 0">BAIXAR PDF</a>')
-    return (f'<html><body style="background:#0a0a0a;color:#fff;text-align:center;padding:40px;'
-            f'font-family:sans-serif"><h1 style="color:#C9A94E">Confirmado!</h1>'
-            f'<p>Ola <b>{nome}</b>, seu {prod_nome} foi gerado.</p>{btn}'
-            f'<a href="/" style="color:#C9A94E">Voltar</a></body></html>')
 # ===== DESCONTO PROGRESSIVO (server-side) =====
 def desconto_bc(qtd_total, empresarial=False):
     if empresarial:
@@ -789,7 +775,7 @@ def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=No
         logger.error(f"Stripe: {e}")
         raise HTTPException(500, "Erro ao criar pagamento")
 # ===== ROTA GENERICA /pay/{produto} =====
-_@app.post("/pay/{produto}")
+@app.post("/pay/{produto}")
 def pay_produto(produto: str, req: PayReq):
     if not STRIPE_KEY:
         raise HTTPException(503, "Stripe nao configurado")
@@ -907,16 +893,16 @@ def pay_success(request: Request):
         finally:
             db.close()
         pn = PRODUTOS.get(lang, PRODUTOS["pt"]).get(prod, prod)
-                if prod == "completo":
-            pf = pdf17(data, nome, bd, lang)
+        if prod == "completo":
+           pf = pdf17(data, nome, bd, lang)
         elif prod == "urna":
-            pf = pdf_produto("urna", nome, bd, lang)
+           pf = pdf_produto("urna", nome, bd, lang)
         elif prod == "eleitoral":
-            pf = pdf_produto("eleitoral", nome, bd, lang)
+           pf = pdf_produto("eleitoral", nome, bd, lang)
         elif prod == "express":
-            pf = pdf8(data, nome, bd, lang)
+           pf = pdf8(data, nome, bd, lang)
         else:
-            pf = pdf_produto(prod, nome, bd, lang)
+           pf = pdf_produto(prod, nome, bd, lang)
         html = pagina_sucesso(pf, nome, pn, lang)
         if pf and os.path.exists(pf):
             os.remove(pf)
@@ -941,7 +927,7 @@ def pay_urna_success(request: Request):
             return HTMLResponse("ERRO")
         res, _, sugs = validar_nomes_urna(nomes, cr)
         cl = CARGO_INFO.get(cr, {}).get("label", cr)
-                lang = meta.get("lang", "pt")
+        lang = meta.get("lang", "pt")
         pf = pdf_urna(nc, cl, res, sugs, lang)
         html = pagina_sucesso(pf, nc, PRODUTOS.get(lang, PRODUTOS["pt"]).get("urna", "Urna"), lang)
         if pf and os.path.exists(pf):
@@ -973,7 +959,7 @@ def pay_eleitoral_success(request: Request):
             except Exception:
                 pass
                 lang = meta.get("lang", "pt")
-        pf = pdf_eleitoral(ss, cl2, sugs, ni, lang)
+                pf = pdf_eleitoral(ss, cl2, sugs, ni, lang)
         html = pagina_sucesso(pf, f"Candidato {cl2}", PRODUTOS.get(lang, PRODUTOS["pt"]).get("eleitoral", "Eleitoral"), lang)
         if pf and os.path.exists(pf):
             os.remove(pf)
@@ -985,7 +971,7 @@ def pay_cancel():
     return HTMLResponse("<h1>Cancelado</h1><a href='/'>Voltar</a>")
 # ===== ROTAS LEGADO (reserva para futuro alinhamento com o Stripe) =====
 @app.post("/api/pay/stripe")
-def pay_stripe_legado(req: PayReq):
+    def pay_stripe_legado(req: PayReq):
     return _criar_sessao(req.product or "express", req.lang or "pt", req.email, req.nome or req.name, req.nascimento or req.birth_date)
 @app.post("/api/pay/urna-session")
 def pay_urna_session_legado(req: UrnaPayReq):
@@ -1006,13 +992,13 @@ def pay_eleitoral_session_legado(req: EleitoralPayReq):
 def calculate(req: PayReq):
     db = SessionLocal()
     try:
-        if len(req.name.strip()) < 2:
-            raise HTTPException(400, "Nome curto")
-        if not req.birth_date:
-            raise HTTPException(400, "Data obrigatoria")
-        res = calc(req.name, req.birth_date)
+        if len(req.nome.strip()) < 2:
+           raise HTTPException(400, "Nome curto")
+        if not req.nascimento:
+           raise HTTPException(400, "Data obrigatoria")
+        res = calc(req.nome, req.nascimento)
         cid = uuid.uuid4().hex[:8]
-        db.add(Calc(id=cid, name=req.name, birth_date=req.birth_date, email=req.email or "", **res))
+        db.add(Calc(id=cid, name=req.nome, birth_date=req.nascimento, email=req.email or "", **res))
         db.commit()
         res["download_pdf"] = False
         return {"id": cid, **res}
@@ -1060,13 +1046,13 @@ async def stripe_webhook(req: Request):
     whsec = os.getenv("STRIPE_WEBHOOK_SECRET", "")
     if whsec:
         try:
-            event = stripe.Webhook.construct_event(payload, sig, whsec)
+          event = stripe.Webhook.construct_event(payload, sig, whsec)
         except Exception:
             raise HTTPException(400, "Assinatura invalida")
-       else:
+    else:
         data = json.loads(payload)
         event = {"type": data.get("type", ""), "data": data.get("data", {})}
-     if event["type"] == "checkout.session.completed":         # ← 4 espaços (CERTO)
+    if event["type"] == "checkout.session.completed":         # ← 4 espaços (CERTO)
         session = event["data"]["object"]
         meta = session.get("metadata", {})
         tipo = meta.get("tipo", "express")
