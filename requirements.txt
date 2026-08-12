@@ -6,3 +6,4 @@ sendgrid
 reportlab
 python-dateutil
 pydantic
+qrcode[pil]
