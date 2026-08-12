@@ -380,7 +380,7 @@ function setLanguage(lang) {
     document.body.dir = isRTL ? 'rtl' : 'ltr';              // ← RESETA para ltr
     document.querySelectorAll('.lang-btn').forEach(function(btn) {
         btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
-    });
+       }
     });
     var isRTL = ['ar', 'he'].includes(lang);
     document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
