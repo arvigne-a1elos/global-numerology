@@ -775,6 +775,7 @@ def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=No
         logger.error(f"Stripe: {e}")
         raise HTTPException(500, "Erro ao criar pagamento")
 # ===== ROTA GENERICA /pay/{produto} =====
+_ALIAS_PRODUTO = {"complete": "completo"}
 @app.post("/pay/{produto}")
 def pay_produto(produto: str, req: PayReq):
     if not STRIPE_KEY:
@@ -958,8 +959,8 @@ def pay_eleitoral_success(request: Request):
                 ni = {"numero": ne_str, "energia": r1(sum(int(d) for d in ne_str))}
             except Exception:
                 pass
-                lang = meta.get("lang", "pt")
-                pf = pdf_eleitoral(ss, cl2, sugs, ni, lang)
+        lang = meta.get("lang", "pt")
+        pf = pdf_eleitoral(ss, cl2, sugs, ni, lang)
         html = pagina_sucesso(pf, f"Candidato {cl2}", PRODUTOS.get(lang, PRODUTOS["pt"]).get("eleitoral", "Eleitoral"), lang)
         if pf and os.path.exists(pf):
             os.remove(pf)
@@ -971,8 +972,8 @@ def pay_cancel():
     return HTMLResponse("<h1>Cancelado</h1><a href='/'>Voltar</a>")
 # ===== ROTAS LEGADO (reserva para futuro alinhamento com o Stripe) =====
 @app.post("/api/pay/stripe")
-    def pay_stripe_legado(req: PayReq):
-    return _criar_sessao(req.product or "express", req.lang or "pt", req.email, req.nome or req.name, req.nascimento or req.birth_date)
+def pay_stripe_legado(req: PayReq):
+ return _criar_sessao(req.product or "express", req.lang or "pt", req.email, req.nome or req.name, req.nascimento or req.birth_date)
 @app.post("/api/pay/urna-session")
 def pay_urna_session_legado(req: UrnaPayReq):
     nomes = [n.strip() for n in [req.nome1, req.nome2, req.nome3, req.nome4, req.nome5] if n.strip()]
