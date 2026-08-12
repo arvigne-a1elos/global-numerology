@@ -376,15 +376,12 @@ function getLang() {
 function setLanguage(lang) {
     localStorage.setItem('lang', lang);
     var isRTL = ['ar', 'he'].includes(lang);
-    document.documentElement.dir = isRTL ? 'rtl' : 'ltr';   // ← RESETA para ltr
-    document.body.dir = isRTL ? 'rtl' : 'ltr';              // ← RESETA para ltr
+    document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
+    document.body.dir = isRTL ? 'rtl' : 'ltr';
+    document.documentElement.lang = lang;
     document.querySelectorAll('.lang-btn').forEach(function(btn) {
         btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
-       }
     });
-    var isRTL = ['ar', 'he'].includes(lang);
-    document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
-    document.documentElement.lang = lang;
     document.querySelectorAll('[data-i18n]').forEach(function(el) {
         var key = el.getAttribute('data-i18n');
         if (translations[lang] && translations[lang][key]) {
@@ -396,10 +393,6 @@ function setLanguage(lang) {
         var nomeEl = card.querySelector('.prod-nome');
         if (nomeEl && PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang][prod]) {
             nomeEl.innerText = PRODUTOS_TRAD[lang][prod];
-        }
-        var precoEl = card.querySelector('.prod-preco');
-        if (precoEl && PRODUTO_FAIXA[prod] !== undefined && PRECO_DISPLAY[lang]) {
-            precoEl.innerText = PRECO_DISPLAY[lang][PRODUTO_FAIXA[prod]];
         }
     });
     traduzirFeatures();
