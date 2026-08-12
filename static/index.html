@@ -932,7 +932,7 @@ function atualizarResumoBC() {
     var final = bruto - desconto;
 
     // ---- APENAS A PARTE DE EXIBIÇÃO FOI QUALIFICADA ----
-    var lang = getLang();
+       var lang = getLang();
     var bc = BC_TEXTS[lang] || BC_TEXTS.pt;
     var simbolo = PRECO_DISPLAY[lang][0].replace(/[0-9.,\s]/g, '').trim() || 'R$';
     document.getElementById("bcTotalBruto").textContent = simbolo + " " + bruto.toLocaleString("pt-BR");
