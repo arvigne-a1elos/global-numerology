@@ -928,7 +928,9 @@ def config():
     return {"stripe_pk": STRIPE_PUB}
 @app.get("/api/health")
 def health():
-    return {"status": "ok", "stripe": bool(STRIPE_KEY), "sendgrid": bool(SENDGRID_KEY)}
+    @app.get("/api/health")
+def health():
+    return {"status": "ok", "stripe": bool(STRIPE_KEY)}
 # ===== WEBHOOK STRIPE =====
 @app.post("/stripe-webhook")
 async def stripe_webhook(req: Request):
@@ -943,7 +945,7 @@ async def stripe_webhook(req: Request):
     else:
         data = json.loads(payload)
         event = {"type": data.get("type", ""), "data": data.get("data", {})}
-   if event["type"] == "checkout.session.completed":
+     if event["type"] == "checkout.session.completed":
         session = event["data"]["object"]
         meta = session.get("metadata", {})
         tipo = meta.get("tipo", "express")
