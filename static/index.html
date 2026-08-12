@@ -367,8 +367,9 @@
         <p class="section-sub" data-i18n="calc_sub">Descubra os 5 números que regem sua vida — grátis, sem explicações.</p>
         <div class="form-group">
 <label data-i18n="calc_nome">Nome Completo</label>
-<input id="calcNome" placeholder="Seu nome completo">
+<input id="calcNome" data-i18n-ph="calc_nome_ph" placeholder="Seu nome completo">
 <label data-i18n="calc_data">Data de Nascimento</label>
+<input id="calcData" ...>
 <button data-i18n="calc_btn">Calcular Agora</button>
         </div>
         <div class="form-group">
@@ -745,9 +746,9 @@
             <table class="bc-tabela">
                 <thead>
                     <tr>
-                        <th data-i18n="bc_tbl_service">Serviço</th>
-                        <th style="text-align:center" data-i18n="bc_tbl_price">Valor</th>
-                        <th style="text-align:center" data-i18n="bc_tbl_qty">Quantidade</th>
+                        <th data-i18n-bc="servico">Serviço</th>
+                        <th data-i18n-bc="preco">Preço</th>
+                        <th data-i18n-bc="qtd">Quantidade</th>                        
                     </tr>
                 </thead>
                 <tbody id="bcTabelaCorpo"></tbody>
