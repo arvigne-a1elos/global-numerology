@@ -983,24 +983,6 @@ def pay_eleitoral_success(request: Request):
 @app.get("/api/pay/cancel")
 def pay_cancel():
     return HTMLResponse("<h1>Cancelado</h1><a href='/'>Voltar</a>")
-# ===== ROTAS LEGADO (reserva para futuro alinhamento com o Stripe) =====
-@app.post("/api/pay/stripe")
-def pay_stripe_legado(req: PayReq):
- return _criar_sessao(req.product or "express", req.lang or "pt", req.email, req.nome or req.name, req.nascimento or req.birth_date)
-@app.post("/api/pay/urna-session")
-def pay_urna_session_legado(req: UrnaPayReq):
-    nomes = [n.strip() for n in [req.nome1, req.nome2, req.nome3, req.nome4, req.nome5] if n.strip()]
-    meta = {"tipo": "urna", "lang": req.lang or "pt", "nome_completo": req.nome_completo,
-            "cargo": req.cargo, "email": req.email, "nome": req.nome_completo}
-    for i, n in enumerate(nomes, 1):
-        meta[f"nome{i}"] = n
-    return _criar_sessao("urna", req.lang or "pt", req.email, req.nome_completo, "", meta)
-@app.post("/api/pay/eleitoral-session")
-def pay_eleitoral_session_legado(req: EleitoralPayReq):
-    meta = {"tipo": "eleitoral", "lang": req.lang or "pt", "sigla": req.numero,
-            "cargo": req.cargo, "email": req.email, "numero_existente": "",
-            "nome_completo": req.nome_completo}
-    return _criar_sessao("eleitoral", req.lang or "pt", req.email, req.nome_completo, "", meta)
 # ===== CALCULO GRATIS =====
 @app.post("/calculate")
 def calculate(req: PayReq):
