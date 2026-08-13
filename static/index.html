@@ -989,22 +989,6 @@ function ativarBonusInserido() {
     });
 }
 
-function enviarMensagem() {
-    var nome = document.getElementById("msgNome").value.trim();
-    var texto = document.getElementById("msgTexto").value.trim();
-    var st = document.getElementById("msgStatus");
-    if (!texto) { st.style.color = "#dc3545"; st.textContent = "Escreva sua mensagem."; return; }
-    st.style.color = "var(--gold)"; st.textContent = "Enviando...";
-    fetch("/sugestao", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nome: nome, mensagem: texto })
-    })
-    .then(function(r){ return r.json(); })
-    .then(function(d){ if (d.ok) { st.style.color = "#28a745"; st.textContent = "Mensagem enviada! Obrigado."; document.getElementById("msgTexto").value = ""; } else { st.style.color = "#dc3545"; st.textContent = "Erro ao enviar."; } })
-    .catch(function(){ st.style.color = "#dc3545"; st.textContent = "Erro de conexão."; });
-}    
-    
 var BC_PRODUTOS = [
     ["express","Mapa Express",8,"🔮"],
     ["vida","Qual Vida/Ano",8,"🔢"],
