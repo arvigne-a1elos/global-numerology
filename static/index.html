@@ -1146,7 +1146,10 @@ function abrirEnergia(n) {
 }
 function comprarEnergia(produto, energia) {
     var lang = getLang();
-    window.location.href = '/criar-checkout?lang=' + lang + '&produto=' + produto + '&energia=' + energia;
+    var nome = (document.getElementById("calcNome") ? document.getElementById("calcNome").value : "").trim();
+    var nasc = (document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim();
+    window.location.href = '/criar-checkout?lang=' + lang + '&produto=' + produto + '&energia=' + energia
+        + '&nome=' + encodeURIComponent(nome) + '&nascimento=' + encodeURIComponent(nasc);
 }
 // ===== CALCULADORA GRATUITA (5 números) =====
 function calcularMapa() {
