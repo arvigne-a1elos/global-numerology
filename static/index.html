@@ -886,6 +886,7 @@ function traduzirTudo() {
         if (titulo) {
             var alvo = el.querySelector('.energia-titulo, h3, h4');
             if (alvo) alvo.innerText = titulo; else el.innerText = titulo;
+            if (typeof montarEnergias === "function") montarEnergias();
         }
     });
 
@@ -1110,39 +1111,53 @@ var ENERGIAS = [
     {n:9, nome:"Sabedoria", icone:"🌟", desc:"Compaixão, conclusão e humanitarismo. O 9 encerra ciclos.", produtos:["bebe","negocio","assinatura"]}
 ];
 function montarEnergias() {
-    var grid = document.getElementById("energiasGrid");
-    if (!grid) return;
     var lang = getLang();
-    grid.innerHTML = "";
-    ENERGIAS.forEach(function(e) {
-        var card = document.createElement("div");
-        card.className = "energia-card";
-        card.setAttribute("data-energia", e.n);
-        var nome = (ENERGIAS_TRAD[lang] && ENERGIAS_TRAD[lang][e.n]) || e.nome;
-        var desc = (ENERGIAS_DESC[lang] && ENERGIAS_DESC[lang][e.n]) || e.desc;
-        card.innerHTML = '<div class="energia-num">' + e.n + '</div>'
-            + '<div class="energia-icone">' + e.icone + '</div>'
-            + '<h4 class="energia-nome">' + nome + '</h4>'
-            + '<p class="energia-desc">' + desc + '</p>'
-            + '<button class="btn btn-full btn-outline" onclick="abrirEnergia(' + e.n + ')">' + (translations[lang].energia_btn || "Pesquisar") + '</button>';
-        grid.appendChild(card);
-    });
+    var container = document.getElementById("energiasGrid")
+        || document.getElementById("energias")
+        || document.querySelector(".energias-grid");
+    if (!container) return;
+    var titulos = (ENERGIA_TITULOS && ENERGIA_TITULOS[lang]) ? ENERGIA_TITULOS[lang] : ENERGIA_TITULOS["pt"];
+    var descs = (ENERGIAS_DESC && ENERGIAS_DESC[lang]) ? ENERGIAS_DESC[lang] : ENERGIAS_DESC["pt"];
+    var btn = (ENERGIAS_BTN && ENERGIAS_BTN[lang]) ? ENERGIAS_BTN[lang] : "Pesquisar";
+    var html = "";
+    for (var i = 1; i <= 9; i++) {
+        html += '<div class="energia-card">'
+            + '<div class="energia-numero">' + i + '</div>'
+            + '<div class="energia-titulo">' + (titulos[String(i)] || ("Energia " + i)) + '</div>'
+            + '<div class="energia-desc">' + (descs[String(i)] || "") + '</div>'
+            + '<button class="btn btn-gold" onclick="abrirEnergia(' + i + ')">' + btn + '</button>'
+            + '</div>';
     }
+    container.innerHTML = html;
+}
 function abrirEnergia(n) {
-    var e = ENERGIAS.find(function(x){return x.n===n;});
-    if (!e) return;
     var lang = getLang();
-    var nome = (ENERGIAS_TRAD[lang] && ENERGIAS_TRAD[lang][n]) || e.nome;
-    var desc = (ENERGIAS_DESC[lang] && ENERGIAS_DESC[lang][n]) || e.desc;
-    var produtos = e.produtos.map(function(p){
-        return '<button class="btn btn-full" style="margin:5px 0" onclick="comprarEnergia(\'' + p + '\',' + n + ')">'
-            + (PRODUTOS_TRAD[lang][p] || p) + ' — ' + (PRECO_DISPLAY[lang][PRODUTO_FAIXA[p]] || "") + '</button>';
-    }).join("");
-    document.getElementById("calcResultado").innerHTML =
-        '<div class="bc-resumo"><h4 style="color:var(--gold)">' + (translations[lang].energia_btn || "Energia") + ' ' + n + ' — ' + nome + '</h4>'
-        + '<p style="color:#ccc;margin:10px 0">' + desc + '</p>'
-        + produtos + '</div>';
-    document.getElementById("calcResultado").scrollIntoView({behavior:"smooth"});
+    var titulos = (ENERGIA_TITULOS && ENERGIA_TITULOS[lang]) ? ENERGIA_TITULOS[lang] : ENERGIA_TITULOS["pt"];
+    var descs = (ENERGIAS_DESC && ENERGIAS_DESC[lang]) ? ENERGIAS_DESC[lang] : ENERGIAS_DESC["pt"];
+    var servicos = (SERVICOS_TRAD && SERVICOS_TRAD[lang]) ? SERVICOS_TRAD[lang] : SERVICOS_TRAD["pt"];
+    var titulo = titulos[String(n)] || ("Energia " + n);
+    var desc = descs[String(n)] || "";
+    var html = '<div class="energia-modal" id="energiaModal">'
+        + '<div class="energia-modal-box">'
+        + '<button class="energia-modal-fechar" onclick="fecharEnergia()">✕</button>'
+        + '<div class="energia-modal-numero">' + n + '</div>'
+        + '<div class="energia-modal-titulo">' + titulo + '</div>'
+        + '<div class="energia-modal-desc">' + desc + '</div>'
+        + '<div class="energia-modal-servicos">'
+        + '<button class="btn btn-gold" onclick="comprarEnergia(\'express\',' + n + ')">' + servicos[0][0] + ' · ' + servicos[0][1] + '</button>'
+        + '<button class="btn btn-gold" onclick="comprarEnergia(\'completo\',' + n + ')">' + servicos[1][0] + ' · ' + servicos[1][1] + '</button>'
+        + '<button class="btn btn-gold" onclick="comprarEnergia(\'urna\',' + n + ')">' + servicos[2][0] + ' · ' + servicos[2][1] + '</button>'
+        + '</div></div></div>';
+    var old = document.getElementById("energiaModal");
+    if (old) old.remove();
+    var div = document.createElement("div");
+    div.innerHTML = html;
+    document.body.appendChild(div.firstChild);
+}
+
+function fecharEnergia() {
+    var el = document.getElementById("energiaModal");
+    if (el) el.remove();
 }
 function comprarEnergia(produto, energia) {
     var lang = getLang();
