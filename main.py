@@ -341,10 +341,11 @@ PRICE_IDS = {
            "negocio": "PRICE_ID_AR_NEGOCIO", "casal": "PRICE_ID_AR_CASAL", "familia": "PRICE_ID_AR_FAMILIA"}
 }
 PRODUTO_TARGET = {
-    "express": "mapa", "vida": "vida", "completo": "mapa", "ia": "pesquisa-ia",
-    "urna": "urna", "eleitoral": "eleitoral", "imovel": "imovel", "calendario": "calendario",
-    "artistico": "artistico", "bebe": "bebe", "assinatura": "assinatura",
-    "negocio": "negocio", "casal": "casal", "familia": "familia", "coletivo": "corporativo"
+    "express": "calculadora", "vida": "produtos", "completo": "calculadora",
+    "ia": "produtos", "urna": "form-urna", "eleitoral": "form-eleitoral",
+    "imovel": "produtos", "calendario": "produtos", "artistico": "produtos",
+    "bebe": "produtos", "assinatura": "produtos", "negocio": "produtos",
+    "casal": "produtos", "familia": "produtos", "coletivo": "corporativo"
 }
 # ===== MODELOS PYDANTIC =====
 class PayReq(BaseModel):
@@ -830,16 +831,13 @@ async def criar_checkout_coletivo(lang: str = "pt", items: str = "[]"):
         qtd = int(it.get("qtd", 0))
         if not pid or qtd <= 0 or pid == "coletivo":
             continue
-        price_id = PRICE_IDS.get(lang, PRICE_IDS["pt"]).get(pid, "")
-        if price_id and price_id.startswith("price_"):
-            line_items.append({"price": price_id, "quantity": qtd})
-        else:
-            unit = preco_local(pid, lang)
-            if desc > 0:
-                unit = int(round(unit * (1 - desc)))
-            line_items.append({"price_data": {"currency": MOEDA.get(lang, "brl"),
-                "product_data": {"name": PRODUTOS.get(lang, PRODUTOS["pt"]).get(pid, pid)},
-                "unit_amount": unit}, "quantity": qtd})
+                # Sempre price_data: garante que o desconto progressivo seja cobrado de fato
+        unit = preco_local(pid, lang)
+        if desc > 0:
+            unit = int(round(unit * (1 - desc)))
+        line_items.append({"price_data": {"currency": MOEDA.get(lang, "brl"),
+            "product_data": {"name": PRODUTOS.get(lang, PRODUTOS["pt"]).get(pid, pid)},
+            "unit_amount": unit}, "quantity": qtd})
     if not line_items:
         raise HTTPException(400, "Itens invalidos")
     pay_types = ["card", "boleto"] if MOEDA.get(lang, "brl") == "brl" else ["card"]
@@ -848,19 +846,20 @@ async def criar_checkout_coletivo(lang: str = "pt", items: str = "[]"):
         mode="payment", payment_method_types=pay_types,
         line_items=line_items,
         locale=locale,
-        metadata={"tipo": "coletivo", "lang": lang, "desconto": str(int(desc * 100))},
+        metadata={"tipo": "coletivo", "lang": lang, "desconto": str(int(desc * 100)),
+                  "itens": json.dumps(itens)},
         success_url=f"{BASE_URL}/api/pay/success?session_id={{CHECKOUT_SESSION_ID}}",
         cancel_url=f"{BASE_URL}/api/pay/cancel")
     return RedirectResponse(url=session.url)
     # ===== ROTA /criar-checkout (usada pelo site: comprar, pagarUrna, pagarEleitoral, confirmarBC) =====
-@app.get("/criar-checkout")
 async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
                                 qtd: int = 0, total: float = 0, itens: str = "",
                                 nome: str = "", nascimento: str = "",
                                 nome_completo: str = "", cargo: str = "vereador",
                                 numero: str = "",
                                 nome1: str = "", nome2: str = "", nome3: str = "",
-                                nome4: str = "", nome5: str = ""):
+                                nome4: str = "", nome5: str = "",
+                                energia: str = ""):
     if not STRIPE_KEY:
         raise HTTPException(503, "Stripe nao configurado")
     if produto == "coletivo":
@@ -875,6 +874,8 @@ async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
     elif produto == "eleitoral":
         meta = {"sigla": numero, "cargo": cargo,
                 "nome_completo": nome_completo, "numero_existente": ""}
+    else:
+        meta = {"energia": energia}    
     s = _criar_sessao(produto, lang, "", nome, nascimento, meta)
     return RedirectResponse(url=s["url"])
 # ===== SUCESSO POS-PAGAMENTO =====
@@ -1052,6 +1053,13 @@ async def stripe_webhook(req: Request):
         session = event["data"]["object"]
         meta = session.get("metadata", {})
         tipo = meta.get("tipo", "express")
+                if tipo == "coletivo":
+            try:
+                items = json.loads(meta.get("itens", "[]"))
+                gerados = _gerar_codigos_para_itens(items)
+                logger.info(f"Coletivo: {len(gerados)} codigos gerados")
+            except Exception as e:
+                logger.error(f"Erro codigos coletivo: {e}")
         nome = meta.get("nome", "Cliente")
         lang = meta.get("lang", "pt")
         logger.info(f"Pagamento confirmado: {session['id']} -> {tipo}")
@@ -1074,6 +1082,19 @@ def _gerar_codigo_bonus():
     p1 = "".join(secrets.choice(chars) for _ in range(4))
     p2 = "".join(secrets.choice(chars) for _ in range(4))
     return f"A1-{p1}-{p2}"
+def _gerar_codigos_para_itens(itens):
+    """Gera e salva os códigos A1-XXXX-XXXX de um pedido coletivo."""
+    codigos = _carregar_codigos()
+    gerados = []
+    for item in itens:
+        pid = item.get("id")
+        qtd = int(item.get("qtd", 0))
+        for _ in range(qtd):
+            cod = _gerar_codigo_bonus()
+            codigos[cod] = {"produto": pid, "usado": False}
+            gerados.append({"codigo": cod, "produto": pid})
+    _salvar_codigos(codigos)
+    return gerados    
 @app.post("/ativar-bonus")
 async def ativar_bonus(req: AtivarBonusReq):
     codigos = _carregar_codigos()
@@ -1091,14 +1112,7 @@ async def ativar_bonus(req: AtivarBonusReq):
 async def gerar_codigos_coletivo(req: Request):
     corpo = await req.json()
     itens = corpo.get("itens", [])
-    codigos = _carregar_codigos()
-    gerados = []
-    for item in itens:
-        for _ in range(item["qtd"]):
-            cod = _gerar_codigo_bonus()
-            codigos[cod] = {"produto": item["produto"], "usado": False}
-            gerados.append({"codigo": cod, "produto": item["produto"]})
-    _salvar_codigos(codigos)
+    gerados = _gerar_codigos_para_itens(itens)
     return {"ok": True, "total": len(gerados), "codigos": gerados}
 # ===== CAIXA DE SUGESTOES + BONUS =====
 @app.post("/sugestao")
