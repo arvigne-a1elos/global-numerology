@@ -1166,6 +1166,21 @@ function calcular5Numeros(nome, nasc) {
         {nome:nomes.realizacao, valor:realizacao}
     ];
 }
+    function enviarMensagem() {
+    var nome = document.getElementById("msgNome").value.trim();
+    var texto = document.getElementById("msgTexto").value.trim();
+    var st = document.getElementById("msgStatus");
+    if (!texto) { st.style.color = "#dc3545"; st.textContent = "Escreva sua mensagem."; return; }
+    st.style.color = "var(--gold)"; st.textContent = "Enviando...";
+    fetch("/sugestao", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nome: nome, mensagem: texto })
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(d){ if (d.ok) { st.style.color = "#28a745"; st.textContent = "Mensagem enviada! Obrigado."; document.getElementById("msgTexto").value = ""; } else { st.style.color = "#dc3545"; st.textContent = "Erro ao enviar."; } })
+    .catch(function(){ st.style.color = "#dc3545"; st.textContent = "Erro de conexão."; });
+}
     function init() {
     var container = document.getElementById('langSelector');
     if (container) {
@@ -1192,5 +1207,16 @@ function calcular5Numeros(nome, nasc) {
   <footer>
     <p data-i18n="footer_text">© 2026 A1ELOS Assessoria e Consultoria. Todos os direitos reservados.</p>
   </footer>
+    <!-- CAIXA DE MENSAGENS (sugestões e reclamações) -->
+<section id="mensagens">
+    <div class="form-container" style="max-width:700px">
+        <h2 class="section-title" data-i18n="msg_title">💬 Sugestões e Reclamações</h2>
+        <p class="section-sub" data-i18n="msg_sub">Sua opinião é importante. Envie diretamente pelo site — sem e-mail.</p>
+        <div class="form-group"><label for="msgNome" data-i18n="msg_nome">Seu Nome</label><input type="text" id="msgNome" placeholder="Nome"></div>
+        <div class="form-group"><label for="msgTexto" data-i18n="msg_texto">Mensagem</label><textarea id="msgTexto" rows="4" placeholder="Escreva aqui sua sugestão ou reclamação..."></textarea></div>
+        <button class="btn btn-full" onclick="enviarMensagem()" data-i18n="msg_btn">📨 Enviar Mensagem</button>
+        <p id="msgStatus" style="text-align:center;margin-top:12px;color:var(--gold)"></p>
+    </div>
+</section>
 </body>
 </html>    
