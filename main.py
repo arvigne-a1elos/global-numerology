@@ -855,14 +855,25 @@ async def criar_checkout_coletivo(lang: str = "pt", items: str = "[]"):
     # ===== ROTA /criar-checkout (usada pelo site: comprar, pagarUrna, pagarEleitoral, confirmarBC) =====
 @app.get("/criar-checkout")
 async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
-                                qtd: int = 0, total: float = 0, itens: str = ""):
+                                qtd: int = 0, total: float = 0, itens: str = "",
+                                nome: str = "", nascimento: str = "",
+                                nome_completo: str = "", cargo: str = "vereador",
+                                numero: str = ""):
     if not STRIPE_KEY:
         raise HTTPException(503, "Stripe nao configurado")
     if produto == "coletivo":
         return await criar_checkout_coletivo(lang=lang, items=itens or "[]")
     if produto not in PRODUTO_FAIXA:
         raise HTTPException(400, "Produto invalido")
-    s = _criar_sessao(produto, lang)
+    meta = {}
+    if produto == "urna":
+        meta = {"nome_completo": nome_completo, "cargo": cargo, "nome": nome_completo}
+        for i in range(1, 6):
+            meta[f"nome{i}"] = ""   # vira nome1..nome5 se o index enviar via query
+    elif produto == "eleitoral":
+        meta = {"sigla": numero, "cargo": cargo,
+                "nome_completo": nome_completo, "numero_existente": ""}
+    s = _criar_sessao(produto, lang, "", nome, nascimento, meta)
     return RedirectResponse(url=s["url"])
 # ===== SUCESSO POS-PAGAMENTO =====
 @app.get("/api/pay/success")
