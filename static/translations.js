@@ -25,14 +25,9 @@ function getLang() {
 }
 function setLanguage(lang) {
     localStorage.setItem('lang', lang);
+    document.documentElement.setAttribute('lang', lang);
     document.documentElement.setAttribute('dir', (lang === 'ar' || lang === 'he') ? 'rtl' : 'ltr');
-    if (typeof traduzirTudo === 'function') {
-        traduzirTudo();
-    } else {
-        if (typeof traduzirTudo === 'function') traduzirTudo();
-        if (typeof traduzirTabelaBC === 'function') traduzirTabelaBC();
-        if (typeof traduzirFeatures === 'function') traduzirFeatures();
-    }
+    if (typeof traduzirTudo === 'function') traduzirTudo();
 }
 
 // ===== TRADUÇÕES (12 IDIOMAS) =====
