@@ -910,22 +910,17 @@ function traduzirTudo() {
     
 function comprar(produto) {
     const lang = getLang();
-    // 1. Pega nome e data (da calculadora)
     var nome = (document.getElementById("calcNome") ? document.getElementById("calcNome").value : "").trim();
     var nasc = (document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim();
-    // 2. Valida: sem nome/data, não cobra — leva para a calculadora
     if (!nome || !nasc) {
         alert(translations[lang].preencha_dados || "Preencha nome e data de nascimento primeiro.");
         var sec = document.getElementById("calcSection") || document.getElementById("calculadora");
         if (sec) sec.scrollIntoView({ behavior: "smooth" });
         return;
     }
-    // 3. Calcula e mostra os 5 números grátis ANTES de cobrar
-    if (typeof calcularMapa === "function") {
-        calcularMapa();
-    }
-    // 4. Só então vai para o pagamento (libera o PDF completo)
-    window.location.href = '/criar-checkout?lang=' + lang + '&produto=' + produto;
+    if (typeof calcularMapa === "function") { calcularMapa(); }
+    window.location.href = '/criar-checkout?lang=' + lang + '&produto=' + produto
+        + '&nome=' + encodeURIComponent(nome) + '&nascimento=' + encodeURIComponent(nasc);
 }
 
 function toggleForm(tipo) {
@@ -946,14 +941,25 @@ function pagarUrna() {
     const nome = document.getElementById('urnaNome').value.trim();
     if (!nome) { alert('Informe o nome completo.'); return; }
     const lang = getLang();
-    window.location.href = '/criar-checkout?lang=' + lang + '&produto=urna';
+    var cargo = (document.getElementById('urnaCargo') ? document.getElementById('urnaCargo').value : 'vereador');
+    var qs = 'lang=' + lang + '&produto=urna&nome_completo=' + encodeURIComponent(nome) + '&cargo=' + encodeURIComponent(cargo);
+    for (var i = 1; i <= 5; i++) {
+        var v = (document.getElementById('urnaNome' + i) ? document.getElementById('urnaNome' + i).value : '').trim();
+        if (v) qs += '&nome' + i + '=' + encodeURIComponent(v);
+    }
+    window.location.href = '/criar-checkout?' + qs;
 }
 
 function pagarEleitoral() {
     const nome = document.getElementById('eleiNome').value.trim();
     if (!nome) { alert('Informe o nome completo.'); return; }
     const lang = getLang();
-    window.location.href = '/criar-checkout?lang=' + lang + '&produto=eleitoral';
+    var cargo = (document.getElementById('eleiCargo') ? document.getElementById('eleiCargo').value : 'vereador');
+    var sigla = (document.getElementById('eleiSigla') ? document.getElementById('eleiSigla').value : '').trim();
+    window.location.href = '/criar-checkout?lang=' + lang + '&produto=eleitoral'
+        + '&nome_completo=' + encodeURIComponent(nome)
+        + '&cargo=' + encodeURIComponent(cargo)
+        + '&numero=' + encodeURIComponent(sigla);
 }
 
 function ativarBonusInserido() {
