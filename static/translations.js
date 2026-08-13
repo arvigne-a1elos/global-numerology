@@ -400,16 +400,7 @@ const PRECO_DISPLAY = {
     });
     traduzirFeatures();
     traduzirTabelaBC();
-   }
-    function traduzir() {
-    var lang = getLang();
-    document.querySelectorAll('[data-i18n]').forEach(function(el) {
-        var chave = el.getAttribute('data-i18n');
-        if (translations[lang] && translations[lang][chave]) {
-            el.textContent = translations[lang][chave];
-        }
-    });
-}
+    
 // ===== TRADUCAO DA TABELA BC (montar sob medida) =====
 function traduzirTabelaBC() {
     var lang = getLang();
