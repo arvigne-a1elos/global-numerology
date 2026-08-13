@@ -457,7 +457,7 @@
                     <li>✅ Caminho da Vida</li>
                     <li>✅ Expressão, Alma, Personalidade</li>
                     <li>✅ Destino</li>
-                    <li> E📲 PDF + QRCode</li>
+                    <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="comprar('express')" data-i18n="buy_btn">Comprar</button>
             </div>
@@ -1105,6 +1105,7 @@ function montarEnergias() {
             + '<button class="btn btn-full btn-outline" onclick="abrirEnergia(' + e.n + ')">' + (translations[lang].energia_btn || "Pesquisar") + '</button>';
         grid.appendChild(card);
     });
+    }
 function abrirEnergia(n) {
     var e = ENERGIAS.find(function(x){return x.n===n;});
     if (!e) return;
