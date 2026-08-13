@@ -916,7 +916,7 @@ function comprar(produto) {
     // 2. Valida: sem nome/data, não cobra — leva para a calculadora
     if (!nome || !nasc) {
         alert(translations[lang].preencha_dados || "Preencha nome e data de nascimento primeiro.");
-        var sec = document.getElementById("calcSection") || document.getElementById("calc");
+        var sec = document.getElementById("calcSection") || document.getElementById("calculadora");
         if (sec) sec.scrollIntoView({ behavior: "smooth" });
         return;
     }
@@ -1090,30 +1090,34 @@ var ENERGIAS = [
 function montarEnergias() {
     var grid = document.getElementById("energiasGrid");
     if (!grid) return;
+    var lang = getLang();
     grid.innerHTML = "";
     ENERGIAS.forEach(function(e) {
         var card = document.createElement("div");
         card.className = "energia-card";
         card.setAttribute("data-energia", e.n);
+        var nome = (ENERGIAS_TRAD[lang] && ENERGIAS_TRAD[lang][e.n]) || e.nome;
+        var desc = (ENERGIAS_DESC[lang] && ENERGIAS_DESC[lang][e.n]) || e.desc;
         card.innerHTML = '<div class="energia-num">' + e.n + '</div>'
             + '<div class="energia-icone">' + e.icone + '</div>'
-            + '<h4 class="energia-nome">' + e.nome + '</h4>'
-            + '<p class="energia-desc">' + e.desc + '</p>'
-            + '<button class="btn btn-full btn-outline" onclick="abrirEnergia(' + e.n + ')">' + (translations[getLang()].energia_btn || "Pesquisar") + '</button>';
+            + '<h4 class="energia-nome">' + nome + '</h4>'
+            + '<p class="energia-desc">' + desc + '</p>'
+            + '<button class="btn btn-full btn-outline" onclick="abrirEnergia(' + e.n + ')">' + (translations[lang].energia_btn || "Pesquisar") + '</button>';
         grid.appendChild(card);
     });
-}
 function abrirEnergia(n) {
     var e = ENERGIAS.find(function(x){return x.n===n;});
     if (!e) return;
     var lang = getLang();
+    var nome = (ENERGIAS_TRAD[lang] && ENERGIAS_TRAD[lang][n]) || e.nome;
+    var desc = (ENERGIAS_DESC[lang] && ENERGIAS_DESC[lang][n]) || e.desc;
     var produtos = e.produtos.map(function(p){
         return '<button class="btn btn-full" style="margin:5px 0" onclick="comprarEnergia(\'' + p + '\',' + n + ')">'
             + (PRODUTOS_TRAD[lang][p] || p) + ' — ' + (PRECO_DISPLAY[lang][PRODUTO_FAIXA[p]] || "") + '</button>';
     }).join("");
     document.getElementById("calcResultado").innerHTML =
-        '<div class="bc-resumo"><h4 style="color:var(--gold)">Energia ' + n + ' — ' + e.nome + '</h4>'
-        + '<p style="color:#ccc;margin:10px 0">' + (translations[lang].energia_desc || "") + '</p>'
+        '<div class="bc-resumo"><h4 style="color:var(--gold)">' + (translations[lang].energia_btn || "Energia") + ' ' + n + ' — ' + nome + '</h4>'
+        + '<p style="color:#ccc;margin:10px 0">' + desc + '</p>'
         + produtos + '</div>';
     document.getElementById("calcResultado").scrollIntoView({behavior:"smooth"});
 }
