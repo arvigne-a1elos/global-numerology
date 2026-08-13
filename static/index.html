@@ -879,7 +879,7 @@ function traduzirTudo() {
         if (feats) card.querySelectorAll('.features li').forEach(function(li, i) { if (feats[i]) li.innerText = feats[i]; });
     });
 
-    // 4) Energias 1-9
+        // 4) Energias 1-9
     document.querySelectorAll('[data-energia]').forEach(function(el) {
         var n = el.getAttribute('data-energia');
         var titulo = ENERGIAS_TRAD[lang] && ENERGIAS_TRAD[lang][n];
@@ -1062,15 +1062,17 @@ function atualizarResumoBC() {
 }
 
 function descontoBC(qtd) {
-    if (qtd >= 1000) return 70;
-    if (qtd >= 500) return 50;
-    if (qtd >= 200) return 40;
-    if (qtd >= 100) return 30;
+    // Mesma tabela do backend main.py (desconto_bc, não-empresarial)
+    if (qtd >= 2000) return 50;
+    if (qtd >= 1000) return 45;
+    if (qtd >= 500) return 40;
+    if (qtd >= 200) return 30;
+    if (qtd >= 100) return 25;
     if (qtd >= 50) return 20;
     if (qtd >= 10) return 10;
     return 0;
 }
-
+    
 function usarPlanoPronto(qExpress, qVida, qIa, qCompleto) {
     var mapa = { express: qExpress, vida: qVida, ia: qIa, completo: qCompleto };
     document.querySelectorAll("#bcTabelaCorpo input[data-prod]").forEach(function(inp) {
@@ -1085,7 +1087,7 @@ function confirmarBC() {
     for (var id in BC_QUANTIDADES) {
         if (BC_QUANTIDADES[id] > 0) {
             var prod = BC_PRODUTOS.find(function(p) { return p[0] === id; });
-            if (prod) itens.push({ produto: id, nome: prod[1], preco: prod[2], qtd: BC_QUANTIDADES[id] });
+            if (prod) itens.push({ id: id, nome: prod[1], preco: prod[2], qtd: BC_QUANTIDADES[id] });
         }
     }
     if (itens.length === 0) { alert("Selecione pelo menos 1 serviço."); return; }
@@ -1165,9 +1167,34 @@ function comprarEnergia(produto, energia) {
     window.location.href = '/criar-checkout?lang=' + lang + '&produto=' + produto + '&energia=' + energia
         + '&nome=' + encodeURIComponent(nome) + '&nascimento=' + encodeURIComponent(nasc);
 }
+
+ // Redução pitagórica (mesma lógica do backend main.py)
+function r1Num(n) {
+    while (n > 9 && n !== 11 && n !== 22 && n !== 33) {
+        n = String(n).split('').reduce(function(a, d) { return a + parseInt(d, 10); }, 0);
+    }
+    return n;
+}
+// Calcula os 5 números do mapa (mesma ordem do backend: caminho, expressão, alma, personalidade, destino)
+function calcular5Numeros(nome, nasc) {
+    var t = {};
+    var letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    for (var i = 0; i < letras.length; i++) { t[letras[i]] = (i % 9 || 9); }
+    var parts = nasc.split('-'); // formato YYYY-MM-DD (input type="date")
+    var lp = r1Num(parseInt(parts[0], 10) + parseInt(parts[1], 10) + parseInt(parts[2], 10));
+    var nu = nome.toUpperCase().replace(/[^A-Z]/g, '');
+    var te = 0, tv = 0, tp = 0;
+    for (var j = 0; j < nu.length; j++) {
+        var ch = nu[j];
+        var val = t[ch] || 0;
+        te += val;
+        if ("AEIOU".indexOf(ch) >= 0) { tv += val; } else { tp += val; }
+    }
+    return [lp, r1Num(te), r1Num(tv), r1Num(tp), r1Num(r1Num(te) + lp)];
+}   
+    
 // ===== CALCULADORA GRATUITA (5 números) =====
 var ultimosNumeros = null;   // guarda os 5 números para re-renderizar ao trocar idioma
-
 function calcularMapa() {
     var lang = getLang();
     var t = translations[lang] || translations["pt"];
@@ -1192,10 +1219,12 @@ function renderizarNumeros() {
     var lang = getLang();
     var t = translations[lang] || translations["pt"];
     var nomes = t.nomes5 || {};
+    // Ordem do backend: [caminho, expressão/realização, alma, personalidade, destino]
+    var chaves5 = ['caminho', 'realizacao', 'alma', 'personalidade', 'destino'];
     var html = "";
-    for (var i = 0; i < ultimosNumeros.length; i++) {
+    for (var i = 0; i < ultimosNumeros.length && i < chaves5.length; i++) {
         var n = ultimosNumeros[i];
-        var nomeE = nomes[String(n)] || nomes[n] || ("Energia " + n);
+        var nomeE = nomes[chaves5[i]] || ("Energia " + n);
         html += '<div class="numero-gratis"><span class="numero-valor">' + n
               + '</span><span class="numero-nome">' + nomeE + '</span></div>';
     }
@@ -1209,6 +1238,7 @@ function renderizarNumeros() {
     var box = document.getElementById("resultadoBox") || el;
     if (box) box.style.display = "block";
    }
+ function init() {
     var savedLang = localStorage.getItem('lang');
     var browserLang = navigator.language.split('-')[0];
     var defaultLang = savedLang || (translations[browserLang] ? browserLang : 'pt');
@@ -1217,7 +1247,8 @@ function renderizarNumeros() {
     atualizarResumoBC();
     montarEnergias();
     traduzirTudo();
-   }
+}
+document.addEventListener('DOMContentLoaded', init); 
    document.addEventListener('DOMContentLoaded', init);
 </script>
   <footer>
