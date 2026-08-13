@@ -879,15 +879,8 @@ function traduzirTudo() {
         if (feats) card.querySelectorAll('.features li').forEach(function(li, i) { if (feats[i]) li.innerText = feats[i]; });
     });
 
-        // 4) Energias 1-9
-    document.querySelectorAll('[data-energia]').forEach(function(el) {
-        var n = el.getAttribute('data-energia');
-        var titulo = ENERGIAS_TRAD[lang] && ENERGIAS_TRAD[lang][n];
-        if (titulo) {
-            var alvo = el.querySelector('.energia-titulo, h3, h4');
-            if (alvo) alvo.innerText = titulo; else el.innerText = titulo;
-            if (typeof montarEnergias === "function") montarEnergias();
-        }
+        // 4) Energias 1-9 — a grade é 100% gerada por JS; reconstrói traduzida
+    if (typeof montarEnergias === "function") montarEnergias();
     });
 
     // 5) Montar Sob Medida: cabeçalhos + linhas
@@ -1249,7 +1242,6 @@ function renderizarNumeros() {
     traduzirTudo();
 }
 document.addEventListener('DOMContentLoaded', init); 
-   document.addEventListener('DOMContentLoaded', init);
 </script>
   <footer>
     <p data-i18n="footer_text">© 2026 A1ELOS Assessoria e Consultoria. Todos os direitos reservados.</p>
