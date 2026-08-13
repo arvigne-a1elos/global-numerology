@@ -29,7 +29,7 @@ function setLanguage(lang) {
     if (typeof traduzirTudo === 'function') {
         traduzirTudo();
     } else {
-        if (typeof traduzir === 'function') traduzir();
+        if (typeof traduzirTudo === 'function') traduzirTudo();
         if (typeof traduzirTabelaBC === 'function') traduzirTabelaBC();
         if (typeof traduzirFeatures === 'function') traduzirFeatures();
     }
