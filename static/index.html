@@ -375,7 +375,11 @@
             <input type="date" id="calcNasc">
         </div>
         <button class="btn btn-full" onclick="calcularMapa()" data-i18n="calc_btn">✨ Calcular Agora</button>
-        <div id="calcResultado" style="margin-top:20px"></div>
+<div class="calc-atalhos" style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:16px">
+    <button class="btn btn-outline" onclick="comprar('express')" data-i18n="calc_btn_express">✦ Gerar Mapa Express</button>
+    <button class="btn btn-outline" onclick="comprar('completo')" data-i18n="calc_btn_completo">✦ Gerar Mapa Completo</button>
+</div>
+<div id="calcResultado" style="margin-top:20px"></div>
     </div>
 </section>
 
@@ -453,7 +457,7 @@
                     <li>✅ Caminho da Vida</li>
                     <li>✅ Expressão, Alma, Personalidade</li>
                     <li>✅ Destino</li>
-                    <li>📧 Envio por email</li>
+                    <li> E📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="comprar('express')" data-i18n="buy_btn">Comprar</button>
             </div>
@@ -467,7 +471,7 @@
                     <li>✅ Fase de Vida atual</li>
                     <li>✅ Ano Pessoal</li>
                     <li>✅ Tendências do ciclo</li>
-                    <li>📧 Envio por email</li>
+                    <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="comprar('vida')" data-i18n="buy_btn">Comprar</button>
             </div>
@@ -482,7 +486,7 @@
                     <li>✅ 3 Ciclos de Vida</li>
                     <li>✅ Desafios e Realizações</li>
                     <li>✅ Grade de Inclusão</li>
-                    <li>📧 Envio por email</li>
+                    <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="comprar('completo')" data-i18n="buy_btn">Comprar</button>
             </div>
@@ -495,7 +499,7 @@
                     <li>✅ Sugestões com IA</li>
                     <li>✅ Análise energética de nomes</li>
                     <li>✅ Comparativo de opções</li>
-                    <li>📧 Envio por email</li>
+                    <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="comprar('ia')" data-i18n="buy_btn">Comprar</button>
             </div>
@@ -504,11 +508,11 @@
                 <div class="icon">🗳️</div>
                 <h3 class="prod-nome" data-i18n="p_urna">Validação Nome de Urna</h3>
                 <div class="price prod-preco">R$ 26</div>
-                <p class="desc" data-i18n="desc_urna">5 tentativas + cálculo letra a letra + PDF sigiloso por email. Análise completa de cada nome de candidatura.</p>                <ul class="features">
+                <p class="desc" data-i18n="desc_urna">5 tentativas + cálculo letra a letra + 📲 PDF + QRCode. Análise completa de cada nome de candidatura.</p>                <ul class="features">
                     <li>✅ 5 nomes testados</li>
                     <li>✅ Sugestões com energia 8</li>
                     <li>✅ Cálculo letra a letra</li>
-                    <li>🔒 PDF sigiloso por email</li>
+                    <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('urna')" data-i18n="start_urna">Iniciar Validação</button>
             </div>
@@ -522,7 +526,7 @@
                     <li>✅ 5 números sugeridos</li>
                     <li>✅ Prioridade energia 8 (Poder)</li>
                     <li>✅ Cálculo completo</li>
-                    <li>🔒 PDF sigiloso por email</li>
+                    <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('eleitoral')" data-i18n="start_eleitoral">Calcular Nº Eleitoral</button>
             </div>
@@ -536,7 +540,7 @@
                     <li>✅ Número do imóvel analisado</li>
                     <li>✅ Energia do ambiente</li>
                     <li>✅ Sugestões de harmonização</li>
-                    <li>📧 Envio por email</li>
+                    <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="comprar('imovel')" data-i18n="buy_btn">Comprar</button>
             </div>
@@ -550,7 +554,7 @@
                     <li>✅ Vibração diária</li>
                     <li>✅ Dias favoráveis</li>
                     <li>✅ Orientação mensal</li>
-                    <li>📧 Envio por email</li>
+                    <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="comprar('calendario')" data-i18n="buy_btn">Comprar</button>
             </div>
@@ -564,7 +568,7 @@
                     <li>✅ Nomes testados</li>
                     <li>✅ Sugestões de palco</li>
                     <li>✅ Energia do nome</li>
-                    <li>📧 Envio por email</li>
+                    <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="comprar('artistico')" data-i18n="buy_btn">Comprar</button>
             </div>
@@ -578,7 +582,7 @@
                     <li>✅ Sugestões de nomes</li>
                     <li>✅ Análise energética</li>
                     <li>✅ Compatibilidade com sobrenome</li>
-                    <li>📧 Envio por email</li>
+                    <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="comprar('bebe')" data-i18n="buy_btn">Comprar</button>
             </div>
@@ -592,7 +596,7 @@
                     <li>✅ Assinatura atual analisada</li>
                     <li>✅ Variações sugeridas</li>
                     <li>✅ Energia da assinatura</li>
-                    <li>📧 Envio por email</li>
+                    <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="comprar('assinatura')" data-i18n="buy_btn">Comprar</button>
             </div>
@@ -606,7 +610,7 @@
                     <li>✅ Nomes testados</li>
                     <li>✅ Sugestões empresariais</li>
                     <li>✅ Energia do nome</li>
-                    <li>📧 Envio por email</li>
+                    <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="comprar('negocio')" data-i18n="buy_btn">Comprar</button>
             </div>
@@ -620,7 +624,7 @@
                     <li>✅ Compatibilidade</li>
                     <li>✅ Pontos fortes do casal</li>
                     <li>✅ Desafios da relação</li>
-                    <li>📧 Envio por email</li>
+                    <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="comprar('casal')" data-i18n="buy_btn">Comprar</button>
             </div>
@@ -635,7 +639,7 @@
                     <li>✅ Todos os membros</li>
                     <li>✅ Sinergia familiar</li>
                     <li>✅ Orientação por membro</li>
-                    <li>📧 Envio por email</li>
+                    <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="comprar('familia')" data-i18n="buy_btn">Comprar</button>
             </div>
@@ -669,7 +673,7 @@
             <div class="form-group"><input type="text" id="urnaNome3" placeholder="Nome 3"></div>
             <div class="form-group"><input type="text" id="urnaNome4" placeholder="Nome 4"></div>
             <div class="form-group"><input type="text" id="urnaNome5" placeholder="Nome 5"></div>
-            <button class="btn btn-full" onclick="pagarUrna()" data-i18n="pay_urna">🔒 Pagar R$ 26 — Resultado por Email</button>
+            <button class="btn btn-full" onclick="pagarUrna()" data-i18n="pay_urna">🔒 Pagar R$ 26 — Resultado em PDF + QRCode</button>
         </div>
     </section>
 
@@ -689,7 +693,7 @@
             </div>
             <div class="form-group"><label data-i18n="f_sigla">Número da Sigla Partidária (2 dígitos)</label><input type="text" id="eleiSigla" maxlength="2" placeholder="Ex: 45"></div>
             <div class="form-group"><label data-i18n="f_existente">Número já existente (opcional)</label><input type="text" id="eleiExistente" placeholder="Ex: 45123"></div>
-            <button class="btn btn-full" onclick="pagarEleitoral()" data-i18n="pay_eleitoral">🔒 Pagar R$ 26 — Sugestões por Email</button>
+            <button class="btn btn-full" onclick="pagarEleitoral()" data-i18n="pay_eleitoral">🔒 Pagar R$ 26 — Sugestões em PDF + QRCode</button>
         </div>
     </section>
 
