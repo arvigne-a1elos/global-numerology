@@ -809,7 +809,78 @@
     </div>
     <div class="energias-grid" id="energiasGrid"><!-- gerado por JS --></div>
 </section>
+<!-- ===== ENERGIA 1 ===== -->
+<div class="energia-card" data-energia="1">
+    <div class="energia-numero">1</div>
+    <h4 class="energia-titulo">Liderança</h4>
+    <p class="energia-desc">Iniciativa, coragem e pioneirismo. Quem nasce sob o 1 abre caminhos e inspira os outros a segui-lo.</p>
+    <button class="btn energia-btn" onclick="abrirServicosEnergia(1)">Pesquisar</button>
+</div>
 
+<!-- ===== ENERGIA 2 ===== -->
+<div class="energia-card" data-energia="2">
+    <div class="energia-numero">2</div>
+    <h4 class="energia-titulo">Cooperação</h4>
+    <p class="energia-desc">Diplomacia, parceria e sensibilidade. O 2 une pessoas e harmoniza ambientes com equilíbrio.</p>
+    <button class="btn energia-btn" onclick="abrirServicosEnergia(2)">Pesquisar</button>
+</div>
+
+<!-- ===== ENERGIA 3 ===== -->
+<div class="energia-card" data-energia="3">
+    <div class="energia-numero">3</div>
+    <h4 class="energia-titulo">Criatividade</h4>
+    <p class="energia-desc">Expressão, comunicação e otimismo. O 3 transforma ideias em arte e inspira pela palavra.</p>
+    <button class="btn energia-btn" onclick="abrirServicosEnergia(3)">Pesquisar</button>
+</div>
+
+<!-- ===== ENERGIA 4 ===== -->
+<div class="energia-card" data-energia="4">
+    <div class="energia-numero">4</div>
+    <h4 class="energia-titulo">Estabilidade</h4>
+    <p class="energia-desc">Organização, disciplina e segurança. O 4 constrói bases sólidas e duradouras.</p>
+    <button class="btn energia-btn" onclick="abrirServicosEnergia(4)">Pesquisar</button>
+</div>
+
+<!-- ===== ENERGIA 5 ===== -->
+<div class="energia-card" data-energia="5">
+    <div class="energia-numero">5</div>
+    <h4 class="energia-titulo">Liberdade</h4>
+    <p class="energia-desc">Aventura, adaptação e versatilidade. O 5 ama a mudança e vive em movimento.</p>
+    <button class="btn energia-btn" onclick="abrirServicosEnergia(5)">Pesquisar</button>
+</div>
+
+<!-- ===== ENERGIA 6 ===== -->
+<div class="energia-card" data-energia="6">
+    <div class="energia-numero">6</div>
+    <h4 class="energia-titulo">Harmonia</h4>
+    <p class="energia-desc">Amor, responsabilidade e cuidado. O 6 protege a família e cultiva a beleza.</p>
+    <button class="btn energia-btn" onclick="abrirServicosEnergia(6)">Pesquisar</button>
+</div>
+
+<!-- ===== ENERGIA 7 ===== -->
+<div class="energia-card" data-energia="7">
+    <div class="energia-numero">7</div>
+    <h4 class="energia-titulo">Análise</h4>
+    <p class="energia-desc">Introspecção, sabedoria e espiritualidade. O 7 busca o conhecimento profundo.</p>
+    <button class="btn energia-btn" onclick="abrirServicosEnergia(7)">Pesquisar</button>
+</div>
+
+<!-- ===== ENERGIA 8 ===== -->
+<div class="energia-card" data-energia="8">
+    <div class="energia-numero">8</div>
+    <h4 class="energia-titulo">Poder</h4>
+    <p class="energia-desc">Realização, autoridade e abundância. O 8 domina o mundo material com determinação.</p>
+    <button class="btn energia-btn" onclick="abrirServicosEnergia(8)">Pesquisar</button>
+</div>
+
+<!-- ===== ENERGIA 9 ===== -->
+<div class="energia-card" data-energia="9">
+    <div class="energia-numero">9</div>
+    <h4 class="energia-titulo">Sabedoria</h4>
+    <p class="energia-desc">Compaixão, conclusão e humanitarismo. O 9 encerra ciclos e serve ao todo.</p>
+    <button class="btn energia-btn" onclick="abrirServicosEnergia(9)">Pesquisar</button>
+</div>
+    </section>
     <!-- CTA FINAL -->
     <section class="hero" style="min-height:auto;padding:80px 20px">
         <h2 data-i18n="cta_title" style="font-family:'Playfair Display';color:var(--gold);font-size:2.5rem;margin-bottom:20px">Pronto para descobrir seu caminho?</h2>
@@ -829,6 +900,117 @@
 <script src="/static/translations.js"></script>
 <script src="/static/banners.js"></script>
 <script>
+
+// ===== SELEÇÃO DE SERVIÇO POR ENERGIA =====
+var SERVICOS_ENERGIA = [
+    { id: "bebe",      nome: "Planejamento Nome de Bebê",        icon: "👶" },
+    { id: "assinatura", nome: "Validação de Assinaturas",        icon: "✍️" },
+    { id: "negocio",   nome: "Nome para Negócio/Produto",        icon: "🏢" }
+];
+
+function abrirServicosEnergia(num) {
+    var nomes = {
+        1:"Liderança",2:"Cooperação",3:"Criatividade",4:"Estabilidade",
+        5:"Liberdade",6:"Harmonia",7:"Análise",8:"Poder",9:"Sabedoria"
+    };
+    var opcoes = SERVICOS_ENERGIA.map(function(s){
+        return '<button class="btn" onclick="irParaServico(' + num + ',\'' + s.id + '\')">' + s.icon + ' ' + s.nome + '</button>';
+    }).join('');
+    var modal = document.getElementById('modalEnergia');
+    document.getElementById('modalEnergiaTitulo').textContent = 'Energia ' + num + ' — ' + nomes[num];
+    document.getElementById('modalEnergiaOpcoes').innerHTML = opcoes;
+    modal.style.display = 'flex';
+}
+
+function irParaServico(num, servico) {
+    // Fecha o modal e rola até o serviço escolhido
+    document.getElementById('modalEnergia').style.display = 'none';
+    var alvo = document.getElementById('servico-' + servico);
+    if (alvo) alvo.scrollIntoView({ behavior: 'smooth' });
+    // Aqui você pode também disparar o formulário do serviço com a energia selecionada
+    console.log('Energia ' + num + ' → ' + servico);
+}
+
+function fecharModalEnergia() {
+    document.getElementById('modalEnergia').style.display = 'none';
+}
+    
+  // ===== TITULOS DAS ENERGIAS 1-9 (12 IDIOMAS) =====
+var ENERGIAS_TRAD = {
+ pt:{1:"Liderança",2:"Cooperação",3:"Criatividade",4:"Estabilidade",5:"Liberdade",6:"Harmonia",7:"Análise",8:"Poder",9:"Sabedoria"},
+ en:{1:"Leadership",2:"Cooperation",3:"Creativity",4:"Stability",5:"Freedom",6:"Harmony",7:"Analysis",8:"Power",9:"Wisdom"},
+ es:{1:"Liderazgo",2:"Cooperación",3:"Creatividad",4:"Estabilidad",5:"Libertad",6:"Armonía",7:"Análisis",8:"Poder",9:"Sabiduría"},
+ it:{1:"Leadership",2:"Cooperazione",3:"Creatività",4:"Stabilità",5:"Libertà",6:"Armonia",7:"Analisi",8:"Potere",9:"Saggezza"},
+ fr:{1:"Leadership",2:"Coopération",3:"Créativité",4:"Stabilité",5:"Liberté",6:"Harmonie",7:"Analyse",8:"Pouvoir",9:"Sagesse"},
+ de:{1:"Führung",2:"Kooperation",3:"Kreativität",4:"Stabilität",5:"Freiheit",6:"Harmonie",7:"Analyse",8:"Macht",9:"Weisheit"},
+ ja:{1:"リーダーシップ",2:"協力",3:"創造性",4:"安定",5:"自由",6:"調和",7:"分析",8:"力",9:"知恵"},
+ zh:{1:"领导力",2:"合作",3:"创造力",4:"稳定",5:"自由",6:"和谐",7:"分析",8:"力量",9:"智慧"},
+ ru:{1:"Лидерство",2:"Сотрудничество",3:"Творчество",4:"Стабильность",5:"Свобода",6:"Гармония",7:"Анализ",8:"Сила",9:"Мудрость"},
+ hi:{1:"नेतृत्व",2:"सहयोग",3:"रचनात्मकता",4:"स्थिरता",5:"स्वतंत्रता",6:"सद्भाव",7:"विश्लेषण",8:"शक्ति",9:"ज्ञान"},
+ he:{1:"מנהיגות",2:"שיתוף פעולה",3:"יצירתיות",4:"יציבות",5:"חופש",6:"הרמוניה",7:"ניתוח",8:"כוח",9:"חוכמה"},
+ ar:{1:"القيادة",2:"التعاون",3:"الإبداع",4:"الاستقرار",5:"الحرية",6:"الانسجام",7:"التحليل",8:"القوة",9:"الحكمة"}
+};
+
+// ===== TRADUZ TUDO (substitui as 3 funções antigas) =====
+function traduzirTudo() {
+    var lang = getLang();
+    var t = translations[lang] || translations.pt;
+
+    // 1) Textos com data-i18n
+    document.querySelectorAll('[data-i18n]').forEach(function(el) {
+        var k = el.getAttribute('data-i18n');
+        if (t[k]) el.innerText = t[k];
+    });
+    // 1b) "Data de Nascimento" usa calc_nasc (não calc_data)
+    var lblData = document.querySelector('label[data-i18n="calc_data"]');
+    if (lblData && t.calc_nasc) lblData.innerText = t.calc_nasc;
+
+    // 2) Placeholders (data-i18n-ph) — com fallback para calc_nome
+    document.querySelectorAll('[data-i18n-ph]').forEach(function(el) {
+        var k = el.getAttribute('data-i18n-ph');
+        var v = t[k] || t.calc_nome;
+        if (v) el.placeholder = v;
+    });
+
+    // 3) Cards: nome + preço + lista
+    document.querySelectorAll('.product-card[data-prod]').forEach(function(card) {
+        var prod = card.getAttribute('data-prod');
+        var nome = card.querySelector('.prod-nome');
+        if (nome && PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang][prod]) nome.innerText = PRODUTOS_TRAD[lang][prod];
+        var preco = card.querySelector('.prod-preco');
+        if (preco && PRODUTO_FAIXA[prod] !== undefined && PRECO_DISPLAY[lang]) preco.innerText = PRECO_DISPLAY[lang][PRODUTO_FAIXA[prod]];
+        var feats = FEAT_TRAD[lang] && FEAT_TRAD[lang][prod];
+        if (feats) card.querySelectorAll('.features li').forEach(function(li, i) { if (feats[i]) li.innerText = feats[i]; });
+    });
+
+    // 4) Energias 1-9
+    document.querySelectorAll('[data-energia]').forEach(function(el) {
+        var n = el.getAttribute('data-energia');
+        var titulo = ENERGIAS_TRAD[lang] && ENERGIAS_TRAD[lang][n];
+        if (titulo) {
+            var alvo = el.querySelector('.energia-titulo, h3, h4');
+            if (alvo) alvo.innerText = titulo; else el.innerText = titulo;
+        }
+    });
+
+    // 5) Montar Sob Medida: cabeçalhos + linhas
+    document.querySelectorAll('[data-i18n-bc]').forEach(function(el) {
+        var k = el.getAttribute('data-i18n-bc');
+        var v = t[k] || t['bc_tbl_' + k];
+        if (v) el.innerText = v;
+    });
+    document.querySelectorAll('#bcTabelaCorpo tr[data-prod]').forEach(function(tr) {
+        var prod = tr.getAttribute('data-prod');
+        var nome = tr.querySelector('.bc-prod-nome');
+        if (nome && PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang][prod]) nome.innerText = PRODUTOS_TRAD[lang][prod];
+        var preco = tr.querySelector('.bc-prod-preco');
+        if (preco && PRODUTO_FAIXA[prod] !== undefined && PRECO_DISPLAY[lang]) preco.innerText = PRECO_DISPLAY[lang][PRODUTO_FAIXA[prod]];
+    });
+
+    // 6) Recalcula o resumo (as 3 cifras + quantidade total)
+    if (typeof atualizarResumoBC === 'function') atualizarResumoBC();
+}  
+    
 function comprar(produto) {
     const lang = getLang();
     // 1. Pega nome e data (da calculadora)
@@ -1145,5 +1327,12 @@ document.addEventListener('DOMContentLoaded', init);
     <footer>
         <p data-i18n="footer_text">© 2026 A1ELOS Assessoria e Consultoria. Todos os direitos reservados.</p>
     </footer>
+    <div id="modalEnergia" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);align-items:center;justify-content:center;z-index:9999">
+    <div style="background:#1a1a1a;border:1px solid var(--gold);border-radius:12px;padding:28px;max-width:420px;width:90%;text-align:center">
+        <h3 id="modalEnergiaTitulo" style="color:var(--gold);margin-bottom:18px"></h3>
+        <div id="modalEnergiaOpcoes" style="display:flex;flex-direction:column;gap:12px"></div>
+        <button class="btn" style="margin-top:18px;background:transparent;border:1px solid #555" onclick="fecharModalEnergia()">Cancelar</button>
+    </div>
+</div>
 </body>
 </html>    
