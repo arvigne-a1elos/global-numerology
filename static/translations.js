@@ -1228,27 +1228,27 @@ const translations = {
         nomes5: { caminho: "जीवन पथ", destino: "भाग्य", alma: "आत्मा", personalidade: "व्यक्तित्व", realizacao: "उपलब्धि" }
     },
     he: {
-        hero_title: "מפת נומרולוגיה",
+        hero_title: "מפה נומרולוגית",
         hero_subtitle: "גלו מה המספרים חושפים עליכם",
-        hero_desc: "מסע של הכרה עצמית המבוסס על הנומרולוגיה הפיתגורית. המפה האישית שלכם חושפת כישרונות, אתגרים ונתיבים דרך המספרים השולטים בחייכם.",
+        hero_desc: "מסע של גילוי עצמי המבוסס על נומרולוגיה פיתגורית. המפה האישית שלכם חושפת כישרונות, אתגרים ונתיבים דרך המספרים השולטים בחייכם.",
         hero_btn: "✦ צור את המפה שלי",
-        hero_btn2: "צפה במוצרים",
+        hero_btn2: "ראה מוצרים",
         section_what_title: "מהי המפה הנומרולוגית?",
-        section_what_subtitle: "כלי להכרה עצמית המבוסס על הנומרולוגיה הפיתגורית",
-        card1_title: "מספרי חייכם",
-        card1_desc: "אנו מחשבים נתיב חיים, גורל, נשמה, הגשמה ומספרים חיוניים אחרים מתאריך הלידה והשם המלא שלכם.",
+        section_what_subtitle: "כלי לגילוי עצמי המבוסס על נומרולוגיה פיתגורית",
+        card1_title: "המספרים של חייכם",
+        card1_desc: "אנו מחשבים את נתיב החיים, הגורל, הנשמה, ההגשמה ומספרים חיוניים נוספים מתאריך הלידה והשם המלא שלכם.",
         card2_title: "המפה האישית שלכם",
-        card2_desc: "כל מספר חושף ממד ייחודי של אישיותכם, כישרונות מולדים, אתגרים והזדמנויות לאורך החיים.",
+        card2_desc: "כל מספר חושף מימד ייחודי של אישיותכם, כישרונות מולדים, אתגרים והזדמנויות לאורך החיים.",
         card3_title: "דוח מלא",
-        card3_desc: "אתם מקבלים דוח PDF מפורט עם הפרשנות המקצועית של כל מספר במפה שלכם, מוכן להורדה.",
+        card3_desc: "תקבלו דוח מפורט ב-PDF עם הפרשנות המקצועית של כל מספר במפה שלכם, מוכן להורדה.",
         card4_title: "הכוונה מעשית",
-        card4_desc: "יותר מקריאה, מדריך לקבלת החלטות המותאמות למחזורים הנומרולוגיים ולמטרת חייכם.",
+        card4_desc: "יותר מקריאה — מדריך לקבלת החלטות המותאמות למחזורים הנומרולוגיים שלכם ולמטרת חייכם.",
         section_how_title: "איך זה עובד",
-        section_how_subtitle: "בכמה צעדים, המפה שלכם מוכנה",
-        step1_title: "הזינו את הנתונים שלכם",
-        step1_desc: "הזינו את שמכם המלא ותאריך הלידה — שני המפתחות למפה הנומרולוגית שלכם.",
+        section_how_subtitle: "בכמה צעדים המפה שלכם מוכנה",
+        step1_title: "הזינו את הפרטים שלכם",
+        step1_desc: "ציינו את שמכם המלא ותאריך לידתכם — שני המפתחות למפה הנומרולוגית שלכם.",
         step2_title: "חישוב אוטומטי",
-        step2_desc: "המנוע שלנו מחשב את כל המספרים הבסיסיים של הנומרולוגיה הפיתגורית בדיוק.",
+        step2_desc: "המנוע שלנו מחשב את כל המספרים היסודיים של הנומרולוגיה הפיתגורית בדיוק.",
         step3_title: "דוח PDF",
         step3_desc: "קבלו דוח מקצועי ואלגנטי עם הפרשנות המלאה של המפה שלכם.",
         section_products_title: "מוצרים ושירותים",
@@ -1257,102 +1257,369 @@ const translations = {
         recommended: "מומלץ",
         premium: "פרימיום",
         sob_consulta: "בהתייעצות",
-        know_more: "למד עוד",
+        know_more: "מידע נוסף",
         start_urna: "התחל אימות",
         start_eleitoral: "חשב מספר בחירות",
-        urna_title: "אימות שם פתק",
-        urna_sub: "5 ניסיונות + חישוב אות אחר אות + PDF חסוי — ₪ 19",
+        urna_title: "אימות שם פתק ההצבעה",
+        urna_sub: "5 ניסיונות + חישוב אות-אות + PDF חסוי — ₪ 19",
         f_nome: "שם מלא של האדם",
-        f_cargo: "תפקיד במחלוקת",
-        f_email: "מסירה: PDF או QRCode",
+        f_cargo: "התפקיד הנבחר",
+        f_email: "משלוח: PDF או QRCode",
         urna_options: "הזינו עד 5 אפשרויות שם למועמד:",
         pay_urna: "🔒 שלם ₪ 19 — PDF חסוי",
         eleitoral_title: "חישוב מספר הבחירות",
         eleitoral_sub: "הצעות עם אנרגיה 8 למועמדותכם — ₪ 19",
         f_cargo2: "תפקיד",
         c_vereador: "חבר מועצה",
-        c_estadual: "חבר כנסת מדינה",
-        c_federal: "חבר כנסת פדרלי",
-        c_senador: "סנאטור",
-        f_sigla: "מספר קיצור המפלגה (2 ספרות)",
+        c_estadual: "נציג מחוזי",
+        c_federal: "נציג פדרלי",
+        c_senador: "סנטור",
+        f_sigla: "מספר סיסמת המפלגה (2 ספרות)",
         f_existente: "מספר קיים (אופציונלי)",
         pay_eleitoral: "🔒 שלם ₪ 19 — PDF חסוי",
         bi_title: "🎁 הפעל קוד בונוס",
-        bi_sub: "קיבלתם קוד? הזינו אותו למטה והפעילו כדי ליצור את המתנה שלכם — ללא תשלום.",
+        bi_sub: "קיבלתם קוד? הזינו למטה והפעילו כדי ליצור את המתנה שלכם — ללא תשלום.",
         bi_label: "קוד בונוס",
         bi_btn: "🎁 הפעל קוד",
         bc_title: "🏢 בונוס קולקטיבי / עסקי",
-        bc_sub: "הזמינו מתנות נומרולוגיות ללקוחות או לעובדים שלכם. בחרו תוכנית מוכנה או בנו בהתאמה אישית. הנחות מ-10% עד 70%.",
+        bc_sub: "הזמינו מתנות נומרולוגיות ללקוחות או לעובדים שלכם. הנחות מ-10% עד 70%.",
         bc_plans_title: "תוכניות מוכנות",
         bc_plan1_name: "תוכנית בסיסית",
         bc_plan1_price: "50 קודים",
-        bc_plan1_desc: "50x מפה מהירה (₪ 5) — אידיאלי למתן ללקוחות",
-        bc_plan2_name: "תוכנית ביניים",
+        bc_plan1_desc: "50x מפה מהירה (₪ 5) — אידיאלית למתן מתנות ללקוחות",
+        bc_plan2_name: "תוכנית בינונית",
         bc_plan2_price: "100 קודים",
         bc_plan2_desc: "50x מפה מהירה + 50x חיפוש AI (₪ 13) — לצוותים",
         bc_plan3_name: "תוכנית פרימיום",
         bc_plan3_price: "200 קודים",
         bc_plan3_desc: "100x מפה מהירה + 100x מפה מלאה (₪ 13) — תוכניות מלאות",
         select: "בחר",
-        bc_custom_title: "בנה בהתאמה אישית",
-        bc_custom_sub: "הגדירו את הכמות הרצויה של כל שירות. ההנחה מוחלת אוטומטית.",
+        bc_custom_title: "בנייה מותאמת",
+        bc_custom_sub: "סמנו את הכמות הרצויה של כל שירות. ההנחה מוחלת אוטומטית.",
         bc_tbl_service: "שירות",
         bc_tbl_price: "מחיר",
         bc_tbl_qty: "כמות",
-        bc_total: "סכום ברוטו:",
-        bc_discount: "הנחה שהוחלה:",
-        bc_final: "סכום סופי:",
-        bc_confirm: "📋 אשר סיכום ועבור לתשלום",
+        bc_total: "סה\"כ ברוטו:",
+        bc_discount: "הנחה מוחלת:",
+        bc_final: "סה\"כ סופי:",
+        bc_confirm: "📋 אשרו את הסיכום ועברו לתשלום",
         inv_title: "משקיעים ושותפים",
-        inv_sub: "הורידו את מצגת החברה של A1ELOS בשפתכם, בחינם.",
+        inv_sub: "הורידו את המצגת העסקית של A1ELOS בשפתכם, בחינם.",
         download: "הורד PDF",
         section_numbers_title: "המספרים במרכז",
-        section_numbers_subtitle: "כל מספר מ-1 עד 9 נושא אנרגיה ייחודית",
+        section_numbers_subtitle: "לכל מספר מ-1 עד 9 יש אנרגיה ייחודית",
         numbers_masters: "✦ גם מספרי המאסטר 11, 22 ו-33 נחשבים ✦",
-        cta_title: "מוכנים לגלות את דרככם?",
-        cta_desc: "המפה הנומרולוגית האישית שלכם במרחק כמה קליקים.",
-        cta_btn1: "✦ צור מפה חינם",
+        cta_title: "מוכנים לגלות את הדרך שלכם?",
+        cta_desc: "המפה הנומרולוגית האישית שלכם נמצאת במרחק כמה קליקים.",
+        cta_btn1: "✦ צור מפה בחינם",
         cta_btn2: "הכירו את A1ELOS",
         footer_text: "© 2026 A1ELOS Assessoria e Consultoria. כל הזכויות שמורות.",
-        desc_express: "עמוד אחד עם 5 המספרים העיקריים ומשמעותם המסוכמת. אידיאלי לצפייה מהירה.",
-        desc_vida: "ניתוח שלב החיים והשנה האישית שבה אתם נמצאים, עם הכוונה למחזור הנוכחי.",
+        desc_express: "עמוד אחד עם 5 המספרים העיקריים ומשמעותם המסוכמת. אידיאלי למבט מהיר.",
+        desc_vida: "ניתוח שלב החיים והשנה האישית שלכם, עם הנחיות למחזור הנוכחי.",
         desc_completo: "ניתוח מלא עם תיאורים חיוביים/שליליים, מחזורי חיים, אתגרים, רשת הכללה וציון סופי.",
         desc_ia: "חיפוש AI חכם למציאת השם האידיאלי עבורכם, ילדכם, המותג או הפרויקט שלכם.",
-        desc_urna: "5 ניסיונות + חישוב אות אחר אות + PDF חסוי במייל. ניתוח מלא של כל שם מועמדות.",
-        desc_eleitoral: "הצעות מספרים עם אנרגיה 8 למועמדות הפוליטית שלכם. ניתוח עם PDF חסוי.",
-        desc_imovel: "ניתוח התנודה של מספר הבית, הדירה או העסק שלכם והשפעתה על הסביבה.",
-        desc_calendario: "תחזית אנרגיה יום-יומית לחודש, עם הרגעים הטובים ביותר להחלטות חשובות.",
+        desc_urna: "5 ניסיונות + חישוב אות-אות + PDF חסוי. ניתוח מלא של כל שם מועמדות.",
+        desc_eleitoral: "הצעות מספרים עם אנרגיה 8 למועמדות הפוליטית שלכם. עם PDF חסוי.",
+        desc_imovel: "ניתוח התנודה של מספר הבית, הדירה או העסק שלכם וכיצד היא משפיעה על הסביבה.",
+        desc_calendario: "תחזית אנרגיה יומית לחודש, עם הרגעים הטובים ביותר להחלטות חשובות.",
         desc_artistico: "בחרו את שם הבמה האידיאלי לקריירה שלכם, תוך בדיקת האנרגיה של כל אפשרות.",
-        desc_bebe: "תכנון השם האידיאלי לתינוקכם, עם ניתוח אנרגטי של האפשרויות.",
-        desc_assinatura: "אימות חתימות עם ניתוח אנרגטי והצעות להרמוניזציה.",
+        desc_bebe: "תכנון השם האידיאלי לתינוקכם, עם ניתוח אנרגיה של האפשרויות.",
+        desc_assinatura: "אימות חתימות עם ניתוח אנרגיה והצעות להרמוניה.",
         desc_negocio: "בחרו את השם האידיאלי לחברה או למוצר שלכם, עם ניתוח אנרגיית השם.",
-        desc_casal: "ניתוח נומרולוגי של הזוג, החושף תאימות ואתגרי מערכת היחסים.",
+        desc_casal: "ניתוח נומרולוגי של הזוג, החושף התאמה ואתגרים במערכת היחסים.",
         desc_familia: "מפת משפחה מלאה, החושפת את האנרגיות והדינמיקות של כל החברים.",
         calc_title: "חשבו את המפה שלכם",
         calc_sub: "גלו את 5 המספרים השולטים בחייכם — בחינם, ללא הסברים.",
         calc_nome: "שם מלא",
         calc_nasc: "תאריך לידה",
-        calc_nome_ph: "שמכם המלא",
-        calc_email: "מסירה ב-PDF",
-        calc_btn: "✨ חשב עכשיו",
+        calc_nome_ph: "השם המלא שלכם",
+        calc_email: "משלוח PDF",
+        calc_btn: "✨ חשבו עכשיו",
         calc_btn_express: "✦ צור מפה מהירה",
         calc_btn_completo: "✦ צור מפה מלאה",
         calc_resultado: "5 המספרים שלכם",
         calc_convite: "רוצים את המפה המלאה? ראו את המוצרים למעלה.",
-        preencha_dados: "מלאו תחילה שם ותאריך לידה.",
-        energias_title: "אנרגיות מחקר",
-        energias_sub: "כל מספר נושא תנודה ספציפית. בחרו את האנרגיה לחיפוש שמותיכם.",
+        preencha_dados: "מלאו קודם שם ותאריך לידה.",
+        energias_title: "אנרגיות חיפוש",
+        energias_sub: "לכל מספר יש תנודה ספציפית. בחרו את האנרגיה כדי לחפש את שמותיכם.",
         energia_btn: "חפש",
-        energia_desc: "בחרו מוצר לחיפוש שמות עם אנרגיה זו.",
-        nomes5: { caminho: "נתיב חיים", destino: "גורל", alma: "נשמה", personalidade: "אישיות", realizacao: "הגשמה" }
+        energia_desc: "בחרו מוצר כדי לחפש שמות עם אנרגיה זו.",
+        nomes5: { caminho: "נתיב החיים", destino: "גורל", alma: "נשמה", personalidade: "אישיות", realizacao: "הגשמה" }
     },
     ar: {
         hero_title: "خريطة الأعداد",
         hero_subtitle: "اكتشف ما تكشفه الأرقام عنك",
-        hero_desc: "رحلة معرفة الذات القائمة على علم الأعداد الفيثاغوري. تكشف خريطتك الشخصية المواهب والتحديات والمسارات من خلال الأرقام التي تحكم حياتك.",
-        hero_btn: "✦ إنشاء خرائطي",
+        hero_desc: "رحلة لاكتشاف الذات مبنية على علم الأعداد الفيثاغوري. خريطتك الشخصية تكشف المواهب والتحديات والمسارات عبر الأرقام التي تحكم حياتك.",
+        hero_btn: "✦ إنشاء خريطتي",
         hero_btn2: "عرض المنتجات",
-        section_what_title: "ما هي خريطة الأعداد؟",
-        section_what_subtitle: "أداة معرفة الذات القائمة على علم الأعداد الفيثاغوري",
+        section_what_title: "ما هي الخريطة العددية؟",
+        section_what_subtitle: "أداة لاكتشاف الذات مبنية على علم الأعداد الفيثاغوري",
         card1_title: "أرقام حياتك",
-        card1_desc: "نحسب مسار الحياة والمصير 
+        card1_desc: "نحسب مسار الحياة والمصير والروح والإنجاز وأرقامًا أساسية أخرى من تاريخ ميلادك واسمك الكامل.",
+        card2_title: "خريطتك الشخصية",
+        card2_desc: "كل رقم يكشف بُعدًا فريدًا من شخصيتك ومواهبك الفطرية وتحدياتك وفرصك عبر الحياة.",
+        card3_title: "تقرير كامل",
+        card3_desc: "ستحصل على تقرير مفصل بصيغة PDF مع التفسير الاحترافي لكل رقم في خريطتك، جاهز للتحميل.",
+        card4_title: "توجيه عملي",
+        card4_desc: "أكثر من قراءة — دليل لاتخاذ قرارات متوافقة مع دوراتك العددية وهدف حياتك.",
+        section_how_title: "كيف يعمل",
+        section_how_subtitle: "في خطوات قليلة، خريطتك جاهزة",
+        step1_title: "أدخل بياناتك",
+        step1_desc: "أدخل اسمك الكامل وتاريخ ميلادك — المفتاحان لخريطتك العددية.",
+        step2_title: "حساب تلقائي",
+        step2_desc: "محركنا يحسب جميع الأرقام الأساسية في علم الأعداد الفيثاغوري بدقة.",
+        step3_title: "تقرير PDF",
+        step3_desc: "احصل على تقرير احترافي وأنيق مع التفسير الكامل لخريطتك.",
+        section_products_title: "المنتجات والخدمات",
+        section_products_subtitle: "اختر المنتج المثالي لتحليلك العددي",
+        buy_btn: "اشترِ",
+        recommended: "موصى به",
+        premium: "مميز",
+        sob_consulta: "عند الطلب",
+        know_more: "اعرف المزيد",
+        start_urna: "ابدأ التحقق",
+        start_eleitoral: "احسب الرقم الانتخابي",
+        urna_title: "التحقق من اسم الاقتراع",
+        urna_sub: "5 محاولات + حساب حرف بحرف + PDF سري — ريال 19",
+        f_nome: "الاسم الكامل للشخص",
+        f_cargo: "المنصب المتنافس عليه",
+        f_email: "التسليم: PDF أو QRCode",
+        urna_options: "أدخل حتى 5 خيارات لاسم المرشح:",
+        pay_urna: "🔒 ادفع ريال 19 — PDF سري",
+        eleitoral_title: "حساب الرقم الانتخابي",
+        eleitoral_sub: "اقتراحات بطاقة الطاقة 8 لترشحك — ريال 19",
+        f_cargo2: "المنصب",
+        c_vereador: "عضو مجلس",
+        c_estadual: "نائب الولاية",
+        c_federal: "نائب فيدرالي",
+        c_senador: "سيناتور",
+        f_sigla: "رقم رمز الحزب (رقمان)",
+        f_existente: "رقم موجود (اختياري)",
+        pay_eleitoral: "🔒 ادفع ريال 19 — PDF سري",
+        bi_title: "🎁 تفعيل رمز المكافأة",
+        bi_sub: "هل استلمت رمزًا؟ أدخله أدناه وفعّله لإنشاء هديتك — بدون دفع.",
+        bi_label: "رمز المكافأة",
+        bi_btn: "🎁 تفعيل الرمز",
+        bc_title: "🏢 مكافأة جماعية / مؤسسية",
+        bc_sub: "اطلب هدايا الأعداد لعملائك أو موظفيك. خصومات من 10% إلى 70%.",
+        bc_plans_title: "خطط جاهزة",
+        bc_plan1_name: "الخطة الأساسية",
+        bc_plan1_price: "50 رمزًا",
+        bc_plan1_desc: "50x خريطة سريعة (ريال 6) — مثالية لإهداء العملاء",
+        bc_plan2_name: "الخطة المتوسطة",
+        bc_plan2_price: "100 رمز",
+        bc_plan2_desc: "50x خريطة سريعة + 50x بحث بالذكاء الاصطناعي (ريال 13) — للفرق",
+        bc_plan3_name: "الخطة المميزة",
+        bc_plan3_price: "200 رمز",
+        bc_plan3_desc: "100x خريطة سريعة + 100x خريطة كاملة (ريال 13) — برامج كاملة",
+        select: "اختر",
+        bc_custom_title: "بناء مخصص",
+        bc_custom_sub: "حدد الكمية المطلوبة من كل خدمة. يتم تطبيق الخصم تلقائيًا.",
+        bc_tbl_service: "الخدمة",
+        bc_tbl_price: "السعر",
+        bc_tbl_qty: "الكمية",
+        bc_total: "الإجمالي الخام:",
+        bc_discount: "الخصم المطبق:",
+        bc_final: "الإجمالي النهائي:",
+        bc_confirm: "📋 تأكيد الملخص والانتقال إلى الدفع",
+        inv_title: "المستثمرون والشركاء",
+        inv_sub: "حمّل العرض التقديمي للشركة A1ELOS بلغتك مجانًا.",
+        download: "تحميل PDF",
+        section_numbers_title: "الأرقام في المركز",
+        section_numbers_subtitle: "كل رقم من 1 إلى 9 يحمل طاقة فريدة",
+        numbers_masters: "✦ الأرقام الرئيسية 11 و22 و33 تُعتبر أيضًا ✦",
+        cta_title: "مستعد لاكتشاف طريقك؟",
+        cta_desc: "خريطتك العددية الشخصية على بعد نقرات قليلة.",
+        cta_btn1: "✦ إنشاء خريطة مجانًا",
+        cta_btn2: "تعرّف على A1ELOS",
+        footer_text: "© 2026 A1ELOS Assessoria e Consultoria. جميع الحقوق محفوظة.",
+        desc_express: "صفحة واحدة تحتوي على الأرقام الخمسة الرئيسية ومعناها المختصر. مثالية لنظرة سريعة.",
+        desc_vida: "تحليل مرحلة الحياة والسنة الشخصية التي تمر بها، مع إرشادات للدورة الحالية.",
+        desc_completo: "تحليل كامل مع أوصاف إيجابية/سلبية، دورات الحياة، التحديات، شبكة الإدراج والعلامة النهائية.",
+        desc_ia: "بحث ذكي بالذكاء الاصطناعي للعثور على الاسم المثالي لك أو لطفلك أو علامتك أو مشروعك.",
+        desc_urna: "5 محاولات + حساب حرف بحرف + PDF سري. تحليل كامل لكل اسم ترشيح.",
+        desc_eleitoral: "اقتراحات أرقام بطاقة الطاقة 8 لترشحك السياسي. مع PDF سري.",
+        desc_imovel: "تحليل اهتزاز رقم منزلك أو شقتك أو عملك وكيف يؤثر على البيئة.",
+        desc_calendario: "توقع طاقة يومي للشهر، مع أفضل اللحظات للقرارات المهمة.",
+        desc_artistico: "اختر الاسم الفني المثالي لمسيرتك المهنية، مع اختبار طاقة كل خيار.",
+        desc_bebe: "تخطيط الاسم المثالي لطفلك، مع تحليل الطاقة للخيارات.",
+        desc_assinatura: "التحقق من التوقيعات مع تحليل الطاقة واقتراحات الانسجام.",
+        desc_negocio: "اختر الاسم المثالي لشركتك أو منتجك، مع تحليل طاقة الاسم.",
+        desc_casal: "تحليل عددي للزوجين، يكشف التوافق وتحديات العلاقة.",
+        desc_familia: "خريطة عائلية كاملة، تكشف طاقات وديناميكيات جميع الأعضاء.",
+        calc_title: "احسب خريطتك",
+        calc_sub: "اكتشف الأرقام الخمسة التي تحكم حياتك — مجانًا، دون تفسيرات.",
+        calc_nome: "الاسم الكامل",
+        calc_nasc: "تاريخ الميلاد",
+        calc_nome_ph: "اسمك الكامل",
+        calc_email: "تسليم PDF",
+        calc_btn: "✨ احسب الآن",
+        calc_btn_express: "✦ إنشاء خريطة سريعة",
+        calc_btn_completo: "✦ إنشاء خريطة كاملة",
+        calc_resultado: "أرقامك الخمسة",
+        calc_convite: "تريد الخريطة الكاملة؟ انظر المنتجات أعلاه.",
+        preencha_dados: "املأ الاسم وتاريخ الميلاد أولاً.",
+        energias_title: "طاقات البحث",
+        energias_sub: "كل رقم يحمل اهتزازًا محددًا. اختر الطاقة للبحث عن أسمائك.",
+        energia_btn: "بحث",
+        energia_desc: "اختر منتجًا للبحث عن الأسماء بهذه الطاقة.",
+        nomes5: { caminho: "مسار الحياة", destino: "القدر", alma: "الروح", personalidade: "الشخصية", realizacao: "الإنجاز" }
+    }
+};
+// ===== NOMES DOS 15 PRODUTOS (12 IDIOMAS) =====
+const PRODUTOS_TRAD = {
+    pt: { express:"Mapa Express", vida:"Qual Vida/Ano", completo:"Mapa Completo", ia:"Pesquisa IA de Nomes", urna:"Validação Nome de Urna", eleitoral:"Número Eleitoral", imovel:"Número do Imóvel", calendario:"Calendário Mensal Energético", artistico:"Validação Nome Artístico", bebe:"Planejamento Nome de Bebê", assinatura:"Validação de Assinaturas", negocio:"Nome para Negócio/Produto", casal:"Mapa do Casal", familia:"Mapa Família Premium", coletivo:"Bônus Coletivo/Empresarial" },
+    en: { express:"Express Map", vida:"Life Phase/Year", completo:"Complete Map", ia:"AI Name Search", urna:"Ballot Name Validation", eleitoral:"Electoral Number", imovel:"Property Number", calendario:"Monthly Energy Calendar", artistico:"Stage Name Validation", bebe:"Baby Name Planning", assinatura:"Signature Validation", negocio:"Business/Product Name", casal:"Couple Map", familia:"Premium Family Map", coletivo:"Corporate/Group Bonus" },
+    es: { express:"Mapa Express", vida:"Fase de Vida/Año", completo:"Mapa Completo", ia:"Búsqueda IA de Nombres", urna:"Validación Nombre de Urna", eleitoral:"Número Electoral", imovel:"Número del Inmueble", calendario:"Calendario Mensual Energético", artistico:"Validación Nombre Artístico", bebe:"Planificación Nombre de Bebé", assinatura:"Validación de Firmas", negocio:"Nombre para Negocio/Producto", casal:"Mapa de la Pareja", familia:"Mapa Familia Premium", coletivo:"Bono Colectivo/Empresarial" },
+    it: { express:"Mappa Express", vida:"Fase di Vita/Anno", completo:"Mappa Completa", ia:"Ricerca IA di Nomi", urna:"Validazione Nome Scheda", eleitoral:"Numero Elettorale", imovel:"Numero dell'Immobile", calendario:"Calendario Mensile Energetico", artistico:"Validazione Nome d'Arte", bebe:"Pianificazione Nome del Bambino", assinatura:"Validazione Firma", negocio:"Nome per Azienda/Prodotto", casal:"Mappa della Coppia", familia:"Mappa Famiglia Premium", coletivo:"Bonus Collettivo/Aziendale" },
+    fr: { express:"Carte Express", vida:"Phase de Vie/Année", completo:"Carte Complète", ia:"Recherche IA de Noms", urna:"Validation Nom du Bulletin", eleitoral:"Numéro Électoral", imovel:"Numéro du Bien", calendario:"Calendrier Mensuel Énergétique", artistico:"Validation Nom de Scène", bebe:"Planification Nom de Bébé", assinatura:"Validation des Signatures", negocio:"Nom pour Entreprise/Produit", casal:"Carte du Couple", familia:"Carte Famille Premium", coletivo:"Bonus Collectif/Entreprise" },
+    de: { express:"Express-Karte", vida:"Lebensphase/Jahr", completo:"Vollständige Karte", ia:"KI-Namenssuche", urna:"Stimmzettelname-Validierung", eleitoral:"Wahlnummer", imovel:"Immobiliennummer", calendario:"Monatlicher Energiekalender", artistico:"Künstlername-Validierung", bebe:"Babynamen-Planung", assinatura:"Signatur-Validierung", negocio:"Name für Unternehmen/Produkt", casal:"Paarkarte", familia:"Premium-Familienkarte", coletivo:"Kollektiv-/Firmenbonus" },
+    ja: { express:"エクスプレスマップ", vida:"ライフフェーズ/年", completo:"完全マップ", ia:"AI名前検索", urna:"投票用紙名検証", eleitoral:"選挙番号", imovel:"物件番号", calendario:"月間エネルギーフォーカレンダー", artistico:"芸名検証", bebe:"赤ちゃんの名前計画", assinatura:"署名検証", negocio:"ビジネス/製品名", casal:"カップルマップ", familia:"プレミアム家族マップ", coletivo:"団体/法人ボーナス" },
+    zh: { express:"快速地图", vida:"人生阶段/年份", completo:"完整地图", ia:"AI名称搜索", urna:"选票名称验证", eleitoral:"选举号码", imovel:"房产号码", calendario:"月度能量日历", artistico:"艺名验证", bebe:"宝宝名字规划", assinatura:"签名验证", negocio:"企业/产品名称", casal:"情侣地图", familia:"高级家庭地图", coletivo:"集体/企业奖励" },
+    ru: { express:"Экспресс-карта", vida:"Фаза жизни/Год", completo:"Полная карта", ia:"ИИ-поиск имён", urna:"Проверка названия бюллетеня", eleitoral:"Избирательный номер", imovel:"Номер объекта", calendario:"Месячный энергетический календарь", artistico:"Проверка псевдонима", bebe:"Планирование имени ребёнка", assinatura:"Проверка подписей", negocio:"Название для бизнеса/продукта", casal:"Карта пары", familia:"Премиум семейная карта", coletivo:"Коллективный/корпоративный бонус" },
+    hi: { express:"एक्सप्रेस मानचित्र", vida:"जीवन चरण/वर्ष", completo:"पूर्ण मानचित्र", ia:"AI नाम खोज", urna:"मतपत्र नाम सत्यापन", eleitoral:"चुनावी संख्या", imovel:"संपत्ति संख्या", calendario:"मासिक ऊर्जा कैलेंडर", artistico:"कलात्मक नाम सत्यापन", bebe:"शिशु नाम योजना", assinatura:"हस्ताक्षर सत्यापन", negocio:"व्यवसाय/उत्पाद नाम", casal:"जोड़ा मानचित्र", familia:"प्रीमियम परिवार मानचित्र", coletivo:"सामूहिक/कॉर्पोरेट बोनस" },
+    he: { express:"מפה מהירה", vida:"שלב חיים/שנה", completo:"מפה מלאה", ia:"חיפוש שמות AI", urna:"אימות שם פתק", eleitoral:"מספר בחירות", imovel:"מספר נכס", calendario:"לוח שנה אנרגטי חודשי", artistico:"אימות שם במה", bebe:"תכנון שם תינוק", assinatura:"אימות חתימות", negocio:"שם לעסק/מוצר", casal:"מפת זוג", familia:"מפת משפחה פרימיום", coletivo:"בונוס קולקטיבי/עסקי" },
+    ar: { express:"خريطة سريعة", vida:"مرحلة الحياة/السنة", completo:"خريطة كاملة", ia:"بحث الأسماء بالذكاء الاصطناعي", urna:"التحقق من اسم الاقتراع", eleitoral:"الرقم الانتخابي", imovel:"رقم العقار", calendario:"التقويم الشهري للطاقة", artistico:"التحقق من الاسم الفني", bebe:"تخطيط اسم الطفل", assinatura:"التحقق من التوقيعات", negocio:"اسم للعمل/المنتج", casal:"خريطة الزوجين", familia:"خريطة العائلة المميزة", coletivo:"مكافأة جماعية/مؤسسية" }
+};
+
+// ===== FAIXA DE PREÇO DE CADA PRODUTO =====
+const PRODUTO_FAIXA = {
+    express:0, vida:0, completo:1, ia:1, urna:2, eleitoral:2, imovel:2, calendario:2,
+    artistico:3, bebe:3, assinatura:3, negocio:4, casal:4, familia:5
+};
+
+// ===== PREÇOS POR IDIOMA (6 faixas) =====
+const PRECO_DISPLAY = {
+    pt: ["R$ 8","R$ 17","R$ 26","R$ 35","R$ 44","R$ 98"],
+    en: ["US$ 1,50","US$ 3,50","US$ 5","US$ 7","US$ 9","US$ 20"],
+    es: ["€ 1,50","€ 3,50","€ 5","€ 7","€ 9","€ 20"],
+    it: ["€ 1,50","€ 3,50","€ 5","€ 7","€ 9","€ 20"],
+    fr: ["€ 1,50","€ 3,50","€ 5","€ 7","€ 9","€ 20"],
+    de: ["€ 1,50","€ 3,50","€ 5","€ 7","€ 9","€ 20"],
+    ja: ["¥ 250","¥ 550","¥ 800","¥ 1.100","¥ 1.400","¥ 3.000"],
+    zh: ["¥ 12","¥ 25","¥ 40","¥ 55","¥ 70","¥ 150"],
+    ru: ["₽ 130","₽ 280","₽ 430","₽ 580","₽ 730","₽ 1.600"],
+    hi: ["₹ 120","₹ 280","₹ 430","₹ 580","₹ 730","₹ 1.600"],
+    he: ["₪ 5","₪ 13","₪ 19","₪ 26","₪ 33","₪ 73"],
+    ar: ["ريال 6","ريال 13","ريال 19","ريال 26","ريال 33","ريال 73"]
+};
+
+// ===== FEATURES DOS CARDS (12 IDIOMAS) =====
+const FEAT_TRAD = {
+    pt: {
+        express:["✅ Caminho da Vida","✅ Expressão, Alma, Personalidade","✅ Destino","📲 PDF + QRCode"],
+        vida:["✅ Fase de Vida atual","✅ Ano Pessoal","✅ Tendências do ciclo","📲 PDF + QRCode"],
+        completo:["✅ 5 números detalhados","✅ 3 Ciclos de Vida","✅ Desafios e Realizações","✅ Grade de Inclusão","📲 PDF + QRCode"],
+        ia:["✅ Sugestões com IA","✅ Análise energética de nomes","✅ Comparativo de opções","📲 PDF + QRCode"],
+        urna:["✅ 5 nomes testados","✅ Sugestões com energia 8","✅ Cálculo letra a letra","🔒 PDF sigiloso + QRCode"],
+        eleitoral:["✅ 5 números sugeridos","✅ Prioridade energia 8 (Poder)","✅ Cálculo completo","🔒 PDF sigiloso + QRCode"],
+        imovel:["✅ Número do imóvel analisado","✅ Energia do ambiente","✅ Sugestões de harmonização","📲 PDF + QRCode"],
+        calendario:["✅ Vibração diária","✅ Dias favoráveis","✅ Orientação mensal","📲 PDF + QRCode"],
+        artistico:["✅ Nomes testados","✅ Sugestões de palco","✅ Energia do nome","📲 PDF + QRCode"],
+        bebe:["✅ Sugestões de nomes","✅ Análise energética","✅ Compatibilidade com sobrenome","📲 PDF + QRCode"],
+        assinatura:["✅ Assinatura atual analisada","✅ Variações sugeridas","✅ Energia da assinatura","📲 PDF + QRCode"],
+        negocio:["✅ Nomes testados","✅ Sugestões empresariais","✅ Energia do nome","📲 PDF + QRCode"],
+        casal:["✅ Compatibilidade","✅ Pontos fortes do casal","✅ Desafios da relação","📲 PDF + QRCode"],
+        familia:["✅ Todos os membros","✅ Sinergia familiar","✅ Orientação por membro","📲 PDF + QRCode"],
+        coletivo:["✅ Planos prontos","✅ Sob medida","✅ Descontos progressivos","✅ Códigos de presente"]
+    },
+    en: {
+        express:["✅ Life Path","✅ Expression, Soul, Personality","✅ Destiny","📲 PDF + QRCode"],
+        vida:["✅ Current Life Phase","✅ Personal Year","✅ Cycle trends","📲 PDF + QRCode"],
+        completo:["✅ 5 detailed numbers","✅ 3 Life Cycles","✅ Challenges and Achievements","✅ Inclusion Grid","📲 PDF + QRCode"],
+        ia:["✅ AI suggestions","✅ Energetic name analysis","✅ Option comparison","📲 PDF + QRCode"],
+        urna:["✅ 5 tested names","✅ Energy 8 suggestions","✅ Letter-by-letter calculation","🔒 Confidential PDF + QRCode"],
+        eleitoral:["✅ 5 suggested numbers","✅ Energy 8 priority (Power)","✅ Complete calculation","🔒 Confidential PDF + QRCode"],
+        imovel:["✅ Property number analyzed","✅ Environment energy","✅ Harmonization suggestions","📲 PDF + QRCode"],
+        calendario:["✅ Daily vibration","✅ Favorable days","✅ Monthly guidance","📲 PDF + QRCode"],
+        artistico:["✅ Tested names","✅ Stage suggestions","✅ Name energy","📲 PDF + QRCode"],
+        bebe:["✅ Name suggestions","✅ Energetic analysis","✅ Surname compatibility","📲 PDF + QRCode"],
+        assinatura:["✅ Current signature analyzed","✅ Suggested variations","✅ Signature energy","📲 PDF + QRCode"],
+        negocio:["✅ Tested names","✅ Business suggestions","✅ Name energy","📲 PDF + QRCode"],
+        casal:["✅ Compatibility","✅ Couple strengths","✅ Relationship challenges","📲 PDF + QRCode"],
+        familia:["✅ All members","✅ Family synergy","✅ Guidance per member","📲 PDF + QRCode"],
+        coletivo:["✅ Ready plans","✅ Custom build","✅ Progressive discounts","✅ Gift codes"]
+    }
+    // ⚠️ es, it, fr, de, ja, zh, ru, hi, he, ar seguem o MESMO padrão do pt/en
+    //    (basta traduzir as 4-5 frases de cada produto para o idioma)
+};
+
+// ===== DESCRIÇÃO DO CARD COLETIVO =====
+const DESC_COLETIVO = {
+    pt: "Contrate brindes numerológicos para seus clientes ou funcionários. Descontos de 10% a 70%.",
+    en: "Hire numerology gifts for your clients or employees. Discounts from 10% to 70%.",
+    es: "Contrata regalos numerológicos para tus clientes o empleados. Descuentos del 10% al 70%.",
+    it: "Assumi regali numerologici per i tuoi clienti o dipendenti. Sconti dal 10% al 70%.",
+    fr: "Engagez des cadeaux numérologiques pour vos clients ou employés. Réductions de 10% à 70%.",
+    de: "Engagieren Sie numerologische Geschenke für Ihre Kunden oder Mitarbeiter. Rabatte von 10% bis 70%.",
+    ja: "顧客や従業員向けの数秘術ギフトを手配します。10%〜70%の割引。",
+    zh: "为您的客户或员工安排数字命理礼物。折扣从10%到70%。",
+    ru: "Закажите нумерологические подарки для клиентов или сотрудников. Скидки от 10% до 70%.",
+    hi: "कर्मचारियों या ग्राहकों के लिए अंकशास्त्रीय उपहार बुक करें। 10% से 70% तक छूट।",
+    he: "הזמינו מתנות נומרולוגיות ללקוחות או לעובדים שלכם. הנחות מ-10% עד 70%.",
+    ar: "اطلب هدايا الأعداد لعملائك أو موظفيك. خصومات من 10% إلى 70%."
+};
+
+// ===== TEXTO DA QUANTIDADE TOTAL (tabela BC, 12 idiomas) =====
+const BC_TEXTS = {
+    pt: { qtd_total: "Quantidade total:", codigos: "códigos" },
+    en: { qtd_total: "Total quantity:", codigos: "codes" },
+    es: { qtd_total: "Cantidad total:", codigos: "códigos" },
+    it: { qtd_total: "Quantità totale:", codigos: "codici" },
+    fr: { qtd_total: "Quantité totale:", codigos: "codes" },
+    de: { qtd_total: "Gesamtmenge:", codigos: "Codes" },
+    ja: { qtd_total: "合計数量:", codigos: "コード" },
+    zh: { qtd_total: "总数量:", codigos: "个代码" },
+    ru: { qtd_total: "Общее количество:", codigos: "кодов" },
+    hi: { qtd_total: "कुल मात्रा:", codigos: "कोड" },
+    he: { qtd_total: "כמות כוללת:", codigos: "קודים" },
+    ar: { qtd_total: "الكمية الإجمالية:", codigos: "رمز" }
+};
+// ===== FUNCOES DE IDIOMA =====
+function getLang() {
+    return localStorage.getItem('lang') || 'pt';
+}
+function setLanguage(lang) {
+    localStorage.setItem('lang', lang);
+    document.documentElement.setAttribute('lang', lang);
+    document.documentElement.setAttribute('dir', (lang === 'ar' || lang === 'he') ? 'rtl' : 'ltr');
+    if (typeof traduzirTudo === 'function') traduzirTudo();
+}
+function traduzir() {
+    var lang = getLang();
+    document.querySelectorAll('[data-i18n]').forEach(function(el) {
+        var chave = el.getAttribute('data-i18n');
+        if (translations[lang] && translations[lang][chave]) {
+            el.textContent = translations[lang][chave];
+        }
+    });
+}
+function traduzirTabelaBC() {
+    var lang = getLang();
+    document.querySelectorAll("#bcTabelaCorpo tr[data-prod]").forEach(function(tr) {
+        var prod = tr.getAttribute("data-prod");
+        var nomeEl = tr.querySelector(".bc-prod-nome");
+        if (nomeEl && PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang][prod]) {
+            nomeEl.innerText = PRODUTOS_TRAD[lang][prod];
+        }
+        var precoEl = tr.querySelector(".bc-prod-preco");
+        if (precoEl && PRODUTO_FAIXA[prod] !== undefined && PRECO_DISPLAY[lang]) {
+            precoEl.innerText = PRECO_DISPLAY[lang][PRODUTO_FAIXA[prod]];
+        }
+    });
+}
+function traduzirFeatures() {
+    var lang = getLang();
+    document.querySelectorAll('.product-card[data-prod]').forEach(function(card) {
+        var prod = card.getAttribute('data-prod');
+        var feats = FEAT_TRAD[lang] && FEAT_TRAD[lang][prod];
+        if (feats) {
+            var lis = card.querySelectorAll('.features li');
+            lis.forEach(function(li, i) { if (feats[i]) li.innerText = feats[i]; });
+        }
+        if (prod === 'coletivo') {
+            var desc = card.querySelector('.desc');
+            if (desc && DESC_COLETIVO[lang]) desc.innerText = DESC_COLETIVO[lang];
+        }
+    });
+}
