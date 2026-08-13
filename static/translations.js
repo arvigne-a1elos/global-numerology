@@ -149,6 +149,11 @@ const translations = {
         energias_sub: "Cada número carrega uma vibração específica. Escolha a energia para pesquisar seus nomes.",
         energia_btn: "Pesquisar",
         energia_desc: "Escolha um produto para pesquisar os nomes com essa energia.",
+        msg_title: "💬 Sugestões e Reclamações",
+        msg_sub: "Sua opinião é importante. Envie diretamente pelo site — sem e-mail.",
+        msg_nome: "Seu Nome",
+        msg_texto: "Mensagem",
+        msg_btn: "📨 Enviar Mensagem",
         nomes5: { caminho: "Caminho da Vida", destino: "Destino", alma: "Alma", personalidade: "Personalidade", realizacao: "Realização" }
     },
     en: {
@@ -268,6 +273,11 @@ const translations = {
         energias_sub: "Each number carries a specific vibration. Choose the energy to search your names.",
         energia_btn: "Search",
         energia_desc: "Choose a product to search names with this energy.",
+        msg_title: "💬 Suggestions and Complaints",
+        msg_sub: "Your opinion matters. Send directly on the site — no email.",
+        msg_nome: "Your Name",
+        msg_texto: "Message",
+        msg_btn: "📨 Send Message",
         nomes5: { caminho: "Life Path", destino: "Destiny", alma: "Soul", personalidade: "Personality", realizacao: "Realization" }
     },
     es: {
@@ -387,6 +397,11 @@ const translations = {
         energias_sub: "Cada número lleva una vibración específica. Elige la energía para buscar tus nombres.",
         energia_btn: "Buscar",
         energia_desc: "Elige un producto para buscar nombres con esta energía.",
+        msg_title: "💬 Sugerencias y Reclamos",
+        msg_sub: "Tu opinión es importante. Envía directo en el sitio — sin email.",
+        msg_nome: "Tu Nombre",
+        msg_texto: "Mensaje",
+        msg_btn: "📨 Enviar Mensaje",
         nomes5: { caminho: "Camino de Vida", destino: "Destino", alma: "Alma", personalidade: "Personalidad", realizacao: "Realización" }
     },
     it: {
@@ -506,6 +521,11 @@ const translations = {
         energias_sub: "Ogni numero porta una vibrazione specifica. Scegli l'energia per cercare i tuoi nomi.",
         energia_btn: "Cerca",
         energia_desc: "Scegli un prodotto per cercare nomi con questa energia.",
+        msg_title: "💬 Suggerimenti e Reclami",
+        msg_sub: "La tua opinione è importante. Invia direttamente sul sito — senza email.",
+        msg_nome: "Il Tuo Nome",
+        msg_texto: "Messaggio",
+        msg_btn: "📨 Invia Messaggio",
         nomes5: { caminho: "Percorso di Vita", destino: "Destino", alma: "Anima", personalidade: "Personalità", realizacao: "Realizzazione" }
     },
     fr: {
@@ -625,6 +645,11 @@ const translations = {
         energias_sub: "Chaque nombre porte une vibration spécifique. Choisissez l'énergie pour rechercher vos noms.",
         energia_btn: "Rechercher",
         energia_desc: "Choisissez un produit pour rechercher des noms avec cette énergie.",
+        msg_title: "💬 Suggestions et Réclamations",
+        msg_sub: "Votre avis compte. Envoyez directement sur le site — sans email.",
+        msg_nome: "Votre Nom",
+        msg_texto: "Message",
+        msg_btn: "📨 Envoyer le Message",
         nomes5: { caminho: "Chemin de Vie", destino: "Destin", alma: "Âme", personalidade: "Personnalité", realizacao: "Réalisation" }
     },
     de: {
@@ -744,6 +769,11 @@ const translations = {
         energias_sub: "Jede Zahl trägt eine spezifische Schwingung. Wählen Sie die Energie, um Ihre Namen zu suchen.",
         energia_btn: "Suchen",
         energia_desc: "Wählen Sie ein Produkt, um Namen mit dieser Energie zu suchen.",
+        msg_title: "💬 Vorschläge und Beschwerden",
+        msg_sub: "Ihre Meinung zählt. Senden Sie direkt auf der Website — ohne E-Mail.",
+        msg_nome: "Ihr Name",
+        msg_texto: "Nachricht",
+        msg_btn: "📨 Nachricht Senden",
         nomes5: { caminho: "Lebensweg", destino: "Schicksal", alma: "Seele", personalidade: "Persönlichkeit", realizacao: "Verwirklichung" }
     },
     ja: {
@@ -863,6 +893,11 @@ const translations = {
         energias_sub: "各数字は特定の振動を持ちます。名前を検索するエネルギーを選択してください。",
         energia_btn: "検索",
         energia_desc: "このエネルギーで名前を検索する製品を選択してください。",
+        msg_title: "💬 提案と苦情",
+        msg_sub: "あなたの意見は重要です。サイトから直接送信 — メールなし。",
+        msg_nome: "お名前",
+        msg_texto: "メッセージ",
+        msg_btn: "📨 送信",
         nomes5: { caminho: "ライフパス", destino: "運命", alma: "魂", personalidade: "性格", realizacao: "実現" }
     },
     zh: {
@@ -982,6 +1017,11 @@ const translations = {
         energias_sub: "每个数字都带有特定振动。选择能量来搜索你的名字。",
         energia_btn: "搜索",
         energia_desc: "选择一个产品来搜索这种能量的名字。",
+        msg_title: "💬 建议与投诉",
+        msg_sub: "您的意见很重要。直接在网站发送 — 无需邮件。",
+        msg_nome: "您的名字",
+        msg_texto: "消息",
+        msg_btn: "📨 发送消息",
         nomes5: { caminho: "生命路径", destino: "命运", alma: "灵魂", personalidade: "个性", realizacao: "实现" }
     },
     ru: {
@@ -1101,6 +1141,11 @@ const translations = {
         energias_sub: "Каждое число несет определенную вибрацию. Выберите энергию для поиска ваших имен.",
         energia_btn: "Искать",
         energia_desc: "Выберите продукт для поиска имен с этой энергией.",
+        msg_title: "💬 Предложения и Жалобы",
+        msg_sub: "Ваше мнение важно. Отправьте прямо на сайте — без email.",
+        msg_nome: "Ваше Имя",
+        msg_texto: "Сообщение",
+        msg_btn: "📨 Отправить",
         nomes5: { caminho: "Путь Жизни", destino: "Судьба", alma: "Душа", personalidade: "Личность", realizacao: "Реализация" }
     },
     hi: {
@@ -1220,6 +1265,11 @@ const translations = {
         energias_sub: "प्रत्येक अंक एक विशिष्ट कंपन रखता है। अपने नाम खोजने के लिए ऊर्जा चुनें।",
         energia_btn: "खोजें",
         energia_desc: "इस ऊर्जा के साथ नाम खोजने के लिए एक उत्पाद चुनें।",
+        msg_title: "💬 सुझाव और शिकायतें",
+        msg_sub: "आपकी राय महत्वपूर्ण है। साइट पर सीधे भेजें — बिना ईमेल।",
+        msg_nome: "आपका नाम",
+        msg_texto: "संदेश",
+        msg_btn: "📨 भेजें",
         nomes5: { caminho: "जीवन पथ", destino: "भाग्य", alma: "आत्मा", personalidade: "व्यक्तित्व", realizacao: "उपलब्धि" }
     },
     he: {
@@ -1339,6 +1389,11 @@ const translations = {
         energias_sub: "לכל מספר יש תנודה ספציפית. בחרו את האנרגיה כדי לחפש את שמותיכם.",
         energia_btn: "חפש",
         energia_desc: "בחרו מוצר כדי לחפש שמות עם אנרגיה זו.",
+        msg_title: "💬 הצעות ותלונות",
+        msg_sub: "דעתכם חשובה. שלחו ישירות באתר — ללא אימייל.",
+        msg_nome: "שמכם",
+        msg_texto: "הודעה",
+        msg_btn: "📨 שליחה",
         nomes5: { caminho: "נתיב החיים", destino: "גורל", alma: "נשמה", personalidade: "אישיות", realizacao: "הגשמה" }
     },
     ar: {
@@ -1458,6 +1513,11 @@ const translations = {
         energias_sub: "كل رقم يحمل اهتزازًا محددًا. اختر الطاقة للبحث عن أسمائك.",
         energia_btn: "بحث",
         energia_desc: "اختر منتجًا للبحث عن الأسماء بهذه الطاقة.",
+        msg_title: "💬 اقتراحات وشكاوى",
+        msg_sub: "رأيك مهم. أرسل مباشرة على الموقع — بدون بريد إلكتروني.",
+        msg_nome: "اسمك",
+        msg_texto: "رسالة",
+        msg_btn: "📨 إرسال",
         nomes5: { caminho: "مسار الحياة", destino: "القدر", alma: "الروح", personalidade: "الشخصية", realizacao: "الإنجاز" }
     }
 };
