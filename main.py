@@ -858,7 +858,9 @@ async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
                                 qtd: int = 0, total: float = 0, itens: str = "",
                                 nome: str = "", nascimento: str = "",
                                 nome_completo: str = "", cargo: str = "vereador",
-                                numero: str = ""):
+                                numero: str = "",
+                                nome1: str = "", nome2: str = "", nome3: str = "",
+                                nome4: str = "", nome5: str = ""):
     if not STRIPE_KEY:
         raise HTTPException(503, "Stripe nao configurado")
     if produto == "coletivo":
@@ -867,9 +869,9 @@ async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
         raise HTTPException(400, "Produto invalido")
     meta = {}
     if produto == "urna":
-        meta = {"nome_completo": nome_completo, "cargo": cargo, "nome": nome_completo}
-        for i in range(1, 6):
-            meta[f"nome{i}"] = ""   # vira nome1..nome5 se o index enviar via query
+        meta = {"nome_completo": nome_completo, "cargo": cargo, "nome": nome_completo,
+                "nome1": nome1, "nome2": nome2, "nome3": nome3,
+                "nome4": nome4, "nome5": nome5}
     elif produto == "eleitoral":
         meta = {"sigla": numero, "cargo": cargo,
                 "nome_completo": nome_completo, "numero_existente": ""}
