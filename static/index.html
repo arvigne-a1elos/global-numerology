@@ -1132,10 +1132,9 @@ function montarEnergias() {
 }
 function abrirEnergia(n) {
     var lang = getLang();
-    var titulos = (ENERGIA_TITULOS && ENERGIA_TITULOS[lang]) ? ENERGIA_TITULOS[lang] : ENERGIA_TITULOS["pt"];
     var descs = (ENERGIAS_DESC && ENERGIAS_DESC[lang]) ? ENERGIAS_DESC[lang] : ENERGIAS_DESC["pt"];
-    var servicos = (SERVICOS_TRAD && SERVICOS_TRAD[lang]) ? SERVICOS_TRAD[lang] : SERVICOS_TRAD["pt"];
-    var titulo = titulos[String(n)] || ("Energia " + n);
+    var servicos = (typeof SERVICOS_TRAD !== "undefined" && SERVICOS_TRAD[lang]) ? SERVICOS_TRAD[lang] : [["Mapa Express","R$ 8"],["Mapa Completo","R$ 17"],["Nome de Urna","R$ 26"]];
+    var titulo = "Energia " + n;
     var desc = descs[String(n)] || "";
     var html = '<div class="energia-modal" id="energiaModal">'
         + '<div class="energia-modal-box">'
@@ -1167,30 +1166,49 @@ function comprarEnergia(produto, energia) {
         + '&nome=' + encodeURIComponent(nome) + '&nascimento=' + encodeURIComponent(nasc);
 }
 // ===== CALCULADORA GRATUITA (5 números) =====
+var ultimosNumeros = null;   // guarda os 5 números para re-renderizar ao trocar idioma
+
 function calcularMapa() {
-    var nome = document.getElementById("calcNome").value.trim();
-    var nasc = document.getElementById("calcNasc").value;
-    if (!nome || !nasc) { alert("Preencha todos os campos."); return; }
     var lang = getLang();
-    var nums = calcular5Numeros(nome, nasc);
-    var html = '<div class="bc-resumo"><h4 style="color:var(--gold)">' + (translations[lang].calc_resultado || "Seus 5 números") + '</h4>';
-    nums.forEach(function(n){ html += '<p style="color:#fff;margin:5px 0">' + n.nome + ': <strong>' + n.valor + '</strong></p>'; });
-    html += '<p style="color:#888;font-size:.8rem;margin-top:10px">' + (translations[lang].calc_convite || "Quer o mapa completo? Veja os produtos acima.") + '</p></div>';
-    document.getElementById("calcResultado").innerHTML = html;
-    document.getElementById("calcResultado").scrollIntoView({behavior:"smooth"});
-}
-    function init() {
-    var container = document.getElementById('langSelector');
-    if (container) {
-        languages.forEach(function(l) {
-            var btn = document.createElement('button');
-            btn.className = 'lang-btn';
-            btn.dataset.lang = l.code;
-            btn.innerHTML = '<span>' + l.flag + '</span> ' + l.name;
-            btn.onclick = (function(c) { return function() { setLanguage(c); }; })(l.code);
-            container.appendChild(btn);
-        });
+    var t = translations[lang] || translations["pt"];
+    var nome = (document.getElementById("calcNome") ? document.getElementById("calcNome").value : "").trim();
+    var nasc = (document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim();
+    if (!nome || !nasc) {
+        alert(t.preencha_dados || "Preencha nome e data de nascimento primeiro.");
+        var sec = document.getElementById("calcSection") || document.getElementById("calculadora");
+        if (sec) sec.scrollIntoView({ behavior: "smooth" });
+        return;
     }
+    if (typeof calcular5Numeros === "function") {
+        ultimosNumeros = calcular5Numeros(nome, nasc);
+    } else {
+        ultimosNumeros = [1, 2, 3, 4, 5];
+    }
+    renderizarNumeros();
+}
+
+function renderizarNumeros() {
+    if (!ultimosNumeros) return;
+    var lang = getLang();
+    var t = translations[lang] || translations["pt"];
+    var nomes = t.nomes5 || {};
+    var html = "";
+    for (var i = 0; i < ultimosNumeros.length; i++) {
+        var n = ultimosNumeros[i];
+        var nomeE = nomes[String(n)] || nomes[n] || ("Energia " + n);
+        html += '<div class="numero-gratis"><span class="numero-valor">' + n
+              + '</span><span class="numero-nome">' + nomeE + '</span></div>';
+    }
+    var el = document.getElementById("resultadoNumeros")
+          || document.getElementById("resultado")
+          || document.getElementById("calcResultado");
+    if (el) {
+        el.innerHTML = html;
+        el.style.display = "block";
+    }
+    var box = document.getElementById("resultadoBox") || el;
+    if (box) box.style.display = "block";
+   }
     var savedLang = localStorage.getItem('lang');
     var browserLang = navigator.language.split('-')[0];
     var defaultLang = savedLang || (translations[browserLang] ? browserLang : 'pt');
