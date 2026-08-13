@@ -27,7 +27,8 @@ function setLanguage(lang) {
     localStorage.setItem('lang', lang);
     document.documentElement.setAttribute('lang', lang);
     document.documentElement.setAttribute('dir', (lang === 'ar' || lang === 'he') ? 'rtl' : 'ltr');
-    if (typeof traduzirTudo === 'function') traduzirTudo();
+    // Re-traduz todos os textos, cards, preços, energias e tabela BC
+    if (typeof traduzirTudo === "function") { traduzirTudo(); }
 }
 
 // ===== TRADUÇÕES (12 IDIOMAS) =====
