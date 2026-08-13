@@ -291,6 +291,7 @@
 }
 .energia-icone { font-size: 2rem; margin: 8px 0; }
 .energia-nome { color: var(--gold); margin-bottom: 12px; }
+.energia-desc { color: #999; font-size: 0.85rem; margin: 8px 0 12px; line-height: 1.5; }        
 @media (max-width: 600px) { .energias-grid { grid-template-columns: 1fr; } }
         /* Bonus table */
         table.bc-tabela { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
@@ -366,14 +367,11 @@
         <h2 class="section-title" data-i18n="calc_title">Calcule seu Mapa</h2>
         <p class="section-sub" data-i18n="calc_sub">Descubra os 5 números que regem sua vida — grátis, sem explicações.</p>
         <div class="form-group">
-<label data-i18n="calc_nome">Nome Completo</label>
-<input id="calcNome" data-i18n-ph="calc_nome_ph" placeholder="Seu nome completo">
-<label data-i18n="calc_data">Data de Nascimento</label>
-<input id="calcData" ...>
-<button data-i18n="calc_btn">Calcular Agora</button>
+            <label for="calcNome" data-i18n="calc_nome">Nome Completo</label>
+            <input type="text" id="calcNome" data-i18n-ph="calc_nome_ph" placeholder="Seu nome completo">
         </div>
         <div class="form-group">
-            <label data-i18n="calc_nasc">Data de Nascimento</label>
+            <label for="calcNasc" data-i18n="calc_nasc">Data de Nascimento</label>
             <input type="date" id="calcNasc">
         </div>
         <button class="btn btn-full" onclick="calcularMapa()" data-i18n="calc_btn">✨ Calcular Agora</button>
@@ -809,78 +807,6 @@
     </div>
     <div class="energias-grid" id="energiasGrid"><!-- gerado por JS --></div>
 </section>
-<!-- ===== ENERGIA 1 ===== -->
-<div class="energia-card" data-energia="1">
-    <div class="energia-numero">1</div>
-    <h4 class="energia-titulo">Liderança</h4>
-    <p class="energia-desc">Iniciativa, coragem e pioneirismo. Quem nasce sob o 1 abre caminhos e inspira os outros a segui-lo.</p>
-    <button class="btn energia-btn" onclick="abrirServicosEnergia(1)">Pesquisar</button>
-</div>
-
-<!-- ===== ENERGIA 2 ===== -->
-<div class="energia-card" data-energia="2">
-    <div class="energia-numero">2</div>
-    <h4 class="energia-titulo">Cooperação</h4>
-    <p class="energia-desc">Diplomacia, parceria e sensibilidade. O 2 une pessoas e harmoniza ambientes com equilíbrio.</p>
-    <button class="btn energia-btn" onclick="abrirServicosEnergia(2)">Pesquisar</button>
-</div>
-
-<!-- ===== ENERGIA 3 ===== -->
-<div class="energia-card" data-energia="3">
-    <div class="energia-numero">3</div>
-    <h4 class="energia-titulo">Criatividade</h4>
-    <p class="energia-desc">Expressão, comunicação e otimismo. O 3 transforma ideias em arte e inspira pela palavra.</p>
-    <button class="btn energia-btn" onclick="abrirServicosEnergia(3)">Pesquisar</button>
-</div>
-
-<!-- ===== ENERGIA 4 ===== -->
-<div class="energia-card" data-energia="4">
-    <div class="energia-numero">4</div>
-    <h4 class="energia-titulo">Estabilidade</h4>
-    <p class="energia-desc">Organização, disciplina e segurança. O 4 constrói bases sólidas e duradouras.</p>
-    <button class="btn energia-btn" onclick="abrirServicosEnergia(4)">Pesquisar</button>
-</div>
-
-<!-- ===== ENERGIA 5 ===== -->
-<div class="energia-card" data-energia="5">
-    <div class="energia-numero">5</div>
-    <h4 class="energia-titulo">Liberdade</h4>
-    <p class="energia-desc">Aventura, adaptação e versatilidade. O 5 ama a mudança e vive em movimento.</p>
-    <button class="btn energia-btn" onclick="abrirServicosEnergia(5)">Pesquisar</button>
-</div>
-
-<!-- ===== ENERGIA 6 ===== -->
-<div class="energia-card" data-energia="6">
-    <div class="energia-numero">6</div>
-    <h4 class="energia-titulo">Harmonia</h4>
-    <p class="energia-desc">Amor, responsabilidade e cuidado. O 6 protege a família e cultiva a beleza.</p>
-    <button class="btn energia-btn" onclick="abrirServicosEnergia(6)">Pesquisar</button>
-</div>
-
-<!-- ===== ENERGIA 7 ===== -->
-<div class="energia-card" data-energia="7">
-    <div class="energia-numero">7</div>
-    <h4 class="energia-titulo">Análise</h4>
-    <p class="energia-desc">Introspecção, sabedoria e espiritualidade. O 7 busca o conhecimento profundo.</p>
-    <button class="btn energia-btn" onclick="abrirServicosEnergia(7)">Pesquisar</button>
-</div>
-
-<!-- ===== ENERGIA 8 ===== -->
-<div class="energia-card" data-energia="8">
-    <div class="energia-numero">8</div>
-    <h4 class="energia-titulo">Poder</h4>
-    <p class="energia-desc">Realização, autoridade e abundância. O 8 domina o mundo material com determinação.</p>
-    <button class="btn energia-btn" onclick="abrirServicosEnergia(8)">Pesquisar</button>
-</div>
-
-<!-- ===== ENERGIA 9 ===== -->
-<div class="energia-card" data-energia="9">
-    <div class="energia-numero">9</div>
-    <h4 class="energia-titulo">Sabedoria</h4>
-    <p class="energia-desc">Compaixão, conclusão e humanitarismo. O 9 encerra ciclos e serve ao todo.</p>
-    <button class="btn energia-btn" onclick="abrirServicosEnergia(9)">Pesquisar</button>
-</div>
-    </section>
     <!-- CTA FINAL -->
     <section class="hero" style="min-height:auto;padding:80px 20px">
         <h2 data-i18n="cta_title" style="font-family:'Playfair Display';color:var(--gold);font-size:2.5rem;margin-bottom:20px">Pronto para descobrir seu caminho?</h2>
@@ -901,40 +827,6 @@
 <script src="/static/banners.js"></script>
 <script>
 
-// ===== SELEÇÃO DE SERVIÇO POR ENERGIA =====
-var SERVICOS_ENERGIA = [
-    { id: "bebe",      nome: "Planejamento Nome de Bebê",        icon: "👶" },
-    { id: "assinatura", nome: "Validação de Assinaturas",        icon: "✍️" },
-    { id: "negocio",   nome: "Nome para Negócio/Produto",        icon: "🏢" }
-];
-
-function abrirServicosEnergia(num) {
-    var nomes = {
-        1:"Liderança",2:"Cooperação",3:"Criatividade",4:"Estabilidade",
-        5:"Liberdade",6:"Harmonia",7:"Análise",8:"Poder",9:"Sabedoria"
-    };
-    var opcoes = SERVICOS_ENERGIA.map(function(s){
-        return '<button class="btn" onclick="irParaServico(' + num + ',\'' + s.id + '\')">' + s.icon + ' ' + s.nome + '</button>';
-    }).join('');
-    var modal = document.getElementById('modalEnergia');
-    document.getElementById('modalEnergiaTitulo').textContent = 'Energia ' + num + ' — ' + nomes[num];
-    document.getElementById('modalEnergiaOpcoes').innerHTML = opcoes;
-    modal.style.display = 'flex';
-}
-
-function irParaServico(num, servico) {
-    // Fecha o modal e rola até o serviço escolhido
-    document.getElementById('modalEnergia').style.display = 'none';
-    var alvo = document.getElementById('servico-' + servico);
-    if (alvo) alvo.scrollIntoView({ behavior: 'smooth' });
-    // Aqui você pode também disparar o formulário do serviço com a energia selecionada
-    console.log('Energia ' + num + ' → ' + servico);
-}
-
-function fecharModalEnergia() {
-    document.getElementById('modalEnergia').style.display = 'none';
-}
-    
   // ===== TITULOS DAS ENERGIAS 1-9 (12 IDIOMAS) =====
 var ENERGIAS_TRAD = {
  pt:{1:"Liderança",2:"Cooperação",3:"Criatividade",4:"Estabilidade",5:"Liberdade",6:"Harmonia",7:"Análise",8:"Poder",9:"Sabedoria"},
@@ -994,11 +886,12 @@ function traduzirTudo() {
     });
 
     // 5) Montar Sob Medida: cabeçalhos + linhas
+        var BC_HEAD_KEY = { servico:'bc_tbl_service', preco:'bc_tbl_price', qtd:'bc_tbl_qty' };
     document.querySelectorAll('[data-i18n-bc]').forEach(function(el) {
         var k = el.getAttribute('data-i18n-bc');
-        var v = t[k] || t['bc_tbl_' + k];
+        var v = t[BC_HEAD_KEY[k]] || t[k];
         if (v) el.innerText = v;
-    });
+     });
     document.querySelectorAll('#bcTabelaCorpo tr[data-prod]').forEach(function(tr) {
         var prod = tr.getAttribute('data-prod');
         var nome = tr.querySelector('.bc-prod-nome');
@@ -1015,7 +908,7 @@ function comprar(produto) {
     const lang = getLang();
     // 1. Pega nome e data (da calculadora)
     var nome = (document.getElementById("calcNome") ? document.getElementById("calcNome").value : "").trim();
-    var nasc = (document.getElementById("calcData") ? document.getElementById("calcData").value : "").trim();
+    var nasc = (document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim();
     // 2. Valida: sem nome/data, não cobra — leva para a calculadora
     if (!nome || !nasc) {
         alert(translations[lang].preencha_dados || "Preencha nome e data de nascimento primeiro.");
@@ -1180,15 +1073,15 @@ function confirmarBC() {
 }
 // ===== ENERGIAS 3×3 =====
 var ENERGIAS = [
-    {n:1, nome:"Liderança", icone:"☀️", produtos:["bebe","negocio","assinatura"]},
-    {n:2, nome:"Cooperação", icone:"🌙", produtos:["bebe","negocio","assinatura"]},
-    {n:3, nome:"Criatividade", icone:"🎨", produtos:["bebe","negocio","assinatura"]},
-    {n:4, nome:"Estabilidade", icone:"🛡️", produtos:["bebe","negocio","assinatura"]},
-    {n:5, nome:"Liberdade", icone:"🕊️", produtos:["bebe","negocio","assinatura"]},
-    {n:6, nome:"Harmonia", icone:"💞", produtos:["bebe","negocio","assinatura"]},
-    {n:7, nome:"Espiritualidade", icone:"🔮", produtos:["bebe","negocio","assinatura"]},
-    {n:8, nome:"Poder", icone:"⚡", produtos:["bebe","negocio","assinatura"]},
-    {n:9, nome:"Realização", icone:"🌟", produtos:["bebe","negocio","assinatura"]}
+    {n:1, nome:"Liderança", icone:"☀️", desc:"Iniciativa, coragem e pioneirismo. Quem nasce sob o 1 abre caminhos.", produtos:["bebe","negocio","assinatura"]},
+    {n:2, nome:"Cooperação", icone:"🌙", desc:"Diplomacia, parceria e sensibilidade. O 2 une pessoas.", produtos:["bebe","negocio","assinatura"]},
+    {n:3, nome:"Criatividade", icone:"🎨", desc:"Expressão, comunicação e otimismo. O 3 inspira pela palavra.", produtos:["bebe","negocio","assinatura"]},
+    {n:4, nome:"Estabilidade", icone:"🛡️", desc:"Organização, disciplina e segurança. O 4 constrói bases sólidas.", produtos:["bebe","negocio","assinatura"]},
+    {n:5, nome:"Liberdade", icone:"🕊️", desc:"Aventura, adaptação e versatilidade. O 5 vive em movimento.", produtos:["bebe","negocio","assinatura"]},
+    {n:6, nome:"Harmonia", icone:"💞", desc:"Amor, responsabilidade e cuidado. O 6 protege e cultiva.", produtos:["bebe","negocio","assinatura"]},
+    {n:7, nome:"Análise", icone:"🔮", desc:"Introspecção, sabedoria e espiritualidade. O 7 busca o conhecimento.", produtos:["bebe","negocio","assinatura"]},
+    {n:8, nome:"Poder", icone:"⚡", desc:"Realização, autoridade e abundância. O 8 domina o material.", produtos:["bebe","negocio","assinatura"]},
+    {n:9, nome:"Sabedoria", icone:"🌟", desc:"Compaixão, conclusão e humanitarismo. O 9 encerra ciclos.", produtos:["bebe","negocio","assinatura"]}
 ];
 function montarEnergias() {
     var grid = document.getElementById("energiasGrid");
@@ -1200,7 +1093,8 @@ function montarEnergias() {
         card.setAttribute("data-energia", e.n);
         card.innerHTML = '<div class="energia-num">' + e.n + '</div>'
             + '<div class="energia-icone">' + e.icone + '</div>'
-            + '<h4 class="energia-nome" data-i18n-energia="' + e.n + '">' + e.nome + '</h4>'
+            + '<h4 class="energia-nome">' + e.nome + '</h4>'
+            + '<p class="energia-desc">' + e.desc + '</p>'
             + '<button class="btn btn-full btn-outline" onclick="abrirEnergia(' + e.n + ')">' + (translations[getLang()].energia_btn || "Pesquisar") + '</button>';
         grid.appendChild(card);
     });
@@ -1275,44 +1169,15 @@ function calcular5Numeros(nome, nasc) {
             container.appendChild(btn);
         });
     }
-    var savedLang = localStorage.getItem('selectedLang');
+    var savedLang = localStorage.getItem('lang');
     var browserLang = navigator.language.split('-')[0];
     var defaultLang = savedLang || (translations[browserLang] ? browserLang : 'pt');
     setLanguage(defaultLang);
-    traduzir();
     montarTabelaBC();
     atualizarResumoBC();
     montarEnergias();
+    traduzirTudo();
 }
-function aplicarTraducoes(lang) {
-    var t = translations[lang] || translations.pt;
-    // Placeholder do nome
-    var nomeInp = document.getElementById("calcNome");
-    if (nomeInp && t.calc_nome_ph) nomeInp.placeholder = t.calc_nome_ph;
-    // Rótulos do resultado (os 5 números)
-    var map = { caminho:"caminho", destino:"destino", alma:"alma", personalidade:"personalidade", realizacao:"realizacao" };
-    Object.keys(map).forEach(function(k) {
-        var el = document.getElementById("res_" + k);
-        if (el && t.nomes5 && t.nomes5[k]) el.textContent = t.nomes5[k] + ":";
-    });
-    // Título e convite do resultado
-    var tRes = document.getElementById("res_titulo");
-    if (tRes && t.calc_resultado) tRes.textContent = t.calc_resultado;
-    var tConv = document.getElementById("res_convite");
-    if (tConv && t.calc_convite) tConv.textContent = t.calc_convite;
-    // Preços (Correção B)
-    atualizarPrecos(lang);
-}
-   function atualizarPrecos(lang) {
-    var precos = PRECO_DISPLAY[lang] || PRECO_DISPLAY.pt;
-    // Cards de produtos
-    document.querySelectorAll('.product-card[data-prod]').forEach(function(card) {
-        var prod = card.getAttribute('data-prod');
-        var precoEl = card.querySelector('.prod-preco');
-        if (precoEl && PRODUTO_FAIXA[prod] !== undefined && precos[PRODUTO_FAIXA[prod]]) {
-            precoEl.innerText = precos[PRODUTO_FAIXA[prod]];
-        }
-    });
     // Montar Sob Medida
     document.querySelectorAll('.bc-row[data-prod]').forEach(function(tr) {
         var prod = tr.getAttribute('data-prod');
@@ -1327,7 +1192,6 @@ document.addEventListener('DOMContentLoaded', init);
     <footer>
         <p data-i18n="footer_text">© 2026 A1ELOS Assessoria e Consultoria. Todos os direitos reservados.</p>
     </footer>
-    <div id="modalEnergia" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);align-items:center;justify-content:center;z-index:9999">
     <div style="background:#1a1a1a;border:1px solid var(--gold);border-radius:12px;padding:28px;max-width:420px;width:90%;text-align:center">
         <h3 id="modalEnergiaTitulo" style="color:var(--gold);margin-bottom:18px"></h3>
         <div id="modalEnergiaOpcoes" style="display:flex;flex-direction:column;gap:12px"></div>
