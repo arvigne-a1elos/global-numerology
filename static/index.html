@@ -1164,48 +1164,6 @@ function calcularMapa() {
     document.getElementById("calcResultado").innerHTML = html;
     document.getElementById("calcResultado").scrollIntoView({behavior:"smooth"});
 }
-// ===== TABELA PITAGÓRICA (A=1 ... I=9, J=1 ... Z=8) =====
-var TABELA_LETRAS = {A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8};
-function valorLetra(c){ return TABELA_LETRAS[c] || 0; }
-function somaLetras(s){ return s.split("").reduce(function(a,c){return a+valorLetra(c);},0); }
-
-function calcular5Numeros(nome, nasc) {
-    var d = nasc.split("-");
-    var soma = function(s){ return s.split("").reduce(function(a,c){return a+(parseInt(c)||0);},0); };
-    var reduz = function(n){ while(n>9 && n!==11 && n!==22){ n=soma(String(n)); } return n; };
-    var letras = nome.toUpperCase().replace(/[^A-Z]/g,"");
-    var vogais = letras.match(/[AEIOU]/g)||[];
-    var conso = letras.match(/[^AEIOU]/g)||[];
-    var caminho = reduz(soma(d[2])+soma(d[1])+soma(d[0]));
-    var destino = reduz(somaLetras(letras));
-    var alma = reduz(somaLetras(vogais.join("")));
-    var personalidade = reduz(somaLetras(conso.join("")));
-    var realizacao = reduz(caminho+destino);
-    var lang = getLang();
-    var nomes = translations[lang].nomes5 || {caminho:"Caminho da Vida",destino:"Destino",alma:"Alma",personalidade:"Personalidade",realizacao:"Realização"};
-    return [
-        {nome:nomes.caminho, valor:caminho},
-        {nome:nomes.destino, valor:destino},
-        {nome:nomes.alma, valor:alma},
-        {nome:nomes.personalidade, valor:personalidade},
-        {nome:nomes.realizacao, valor:realizacao}
-    ];
-}
-    function enviarMensagem() {
-    var nome = document.getElementById("msgNome").value.trim();
-    var texto = document.getElementById("msgTexto").value.trim();
-    var st = document.getElementById("msgStatus");
-    if (!texto) { st.style.color = "#dc3545"; st.textContent = "Escreva sua mensagem."; return; }
-    st.style.color = "var(--gold)"; st.textContent = "Enviando...";
-    fetch("/sugestao", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nome: nome, mensagem: texto })
-    })
-    .then(function(r){ return r.json(); })
-    .then(function(d){ if (d.ok) { st.style.color = "#28a745"; st.textContent = "Mensagem enviada! Obrigado."; document.getElementById("msgTexto").value = ""; } else { st.style.color = "#dc3545"; st.textContent = "Erro ao enviar."; } })
-    .catch(function(){ st.style.color = "#dc3545"; st.textContent = "Erro de conexão."; });
-}
     function init() {
     var container = document.getElementById('langSelector');
     if (container) {
