@@ -1053,7 +1053,7 @@ async def stripe_webhook(req: Request):
         session = event["data"]["object"]
         meta = session.get("metadata", {})
         tipo = meta.get("tipo", "express")
-                if tipo == "coletivo":
+        if tipo == "coletivo":
             try:
                 items = json.loads(meta.get("itens", "[]"))
                 gerados = _gerar_codigos_para_itens(items)
