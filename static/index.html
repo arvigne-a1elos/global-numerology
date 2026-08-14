@@ -868,7 +868,7 @@ function traduzirTudo() {
         if (v) el.placeholder = v;
     });
 
-    // 3) Cards: nome + preço + lista
+        // 3) Cards: nome + preço + lista
     document.querySelectorAll('.product-card[data-prod]').forEach(function(card) {
         var prod = card.getAttribute('data-prod');
         var nome = card.querySelector('.prod-nome');
@@ -876,13 +876,10 @@ function traduzirTudo() {
         var preco = card.querySelector('.prod-preco');
         if (preco && PRODUTO_FAIXA[prod] !== undefined && PRECO_DISPLAY[lang]) preco.innerText = PRECO_DISPLAY[lang][PRODUTO_FAIXA[prod]];
         var feats = FEAT_TRAD[lang] && FEAT_TRAD[lang][prod];
-        if (feats) card.querySelectorAll('.features li').forEach(function(li, i) { if (feats[i]) li.innerText = feats[i]; 
+        if (feats) card.querySelectorAll('.features li').forEach(function(li, i) { if (feats[i]) li.innerText = feats[i]; });
     });
-    
     // 4) Energias 1-9 — a grade é 100% gerada por JS; reconstrói traduzida
     if (typeof montarEnergias === "function") montarEnergias();
-    });    
-    
     // 5) Montar Sob Medida: cabeçalhos + linhas
         var BC_HEAD_KEY = { servico:'bc_tbl_service', preco:'bc_tbl_price', qtd:'bc_tbl_qty' };
     document.querySelectorAll('[data-i18n-bc]').forEach(function(el) {
