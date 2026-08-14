@@ -649,12 +649,12 @@
                 <div class="icon">🏢</div>
                 <h3 class="prod-nome" data-i18n="p_coletivo">Bônus Coletivo/Empresarial</h3>
                 <div class="price" data-i18n="sob_consulta">Sob consulta</div>
-                <p class="desc">Contrate brindes numerológicos para seus clientes ou funcionários. Descontos de 10% a 70%.</p>
-                <ul class="features">
-                    <li>✅ Planos prontos</li>
-                    <li>✅ Sob medida</li>
-                    <li>✅ Descontos progressivos</li>
-                    <li>✅ Códigos de presente</li>
+                <p class="desc" data-i18n="desc_coletivo">Contrate brindes numerológicos para seus clientes ou funcionários. Descontos de 10% a 70%.</p>
+                <ul class="features" data-feat="coletivo">
+                 <li>✅ Planos prontos</li>
+                 <li>✅ Sob medida</li>
+                 <li>✅ Descontos progressivos</li>
+                 <li>✅ Códigos de presente</li>
                 </ul>
                 <button class="btn btn-full" onclick="document.getElementById('corporativo').scrollIntoView({behavior:'smooth'})" data-i18n="know_more">Saiba Mais</button>
             </div>
@@ -666,14 +666,14 @@
         <div class="form-container">
             <h2 class="section-title" data-i18n="urna_title">Validação do Nome de Urna</h2>
             <p class="section-sub" data-i18n="urna_sub">5 tentativas + cálculo letra a letra + PDF sigiloso — R$ 26</p>
-            <div class="form-group"><label data-i18n="f_nome">Nome Completo da Pessoa</label><input type="text" id="urnaNome" placeholder="Nome completo"></div>
-            <div class="form-group"><label data-i18n="f_cargo">Cargo em Disputa</label><input type="text" id="urnaCargo" placeholder="Ex: Vereador"></div>
+            <div class="form-group"><label data-i18n="f_nome">Nome Completo da Pessoa</label><input type="text" id="urnaNome" data-i18n-ph="ph_nome_completo" placeholder="Nome completo"></div>
+            <div class="form-group"><label data-i18n="f_cargo">Cargo em Disputa</label><input type="text" id="urnaCargo" data-i18n-ph="ph_ex_vereador" placeholder="Ex: Vereador"></div>
             <h3 style="color:var(--gold);margin:20px 0 10px" data-i18n="urna_options">Insira até 5 opções de nome de candidato:</h3>
-            <div class="form-group"><input type="text" id="urnaNome1" placeholder="Nome 1"></div>
-            <div class="form-group"><input type="text" id="urnaNome2" placeholder="Nome 2"></div>
-            <div class="form-group"><input type="text" id="urnaNome3" placeholder="Nome 3"></div>
-            <div class="form-group"><input type="text" id="urnaNome4" placeholder="Nome 4"></div>
-            <div class="form-group"><input type="text" id="urnaNome5" placeholder="Nome 5"></div>
+            <div class="form-group"><input type="text" id="urnaNome1" data-i18n-ph="ph_nome_1" placeholder="Nome 1"></div>
+            <div class="form-group"><input type="text" id="urnaNome1" data-i18n-ph="ph_nome_1" placeholder="Nome 2"></div>
+            <div class="form-group"><input type="text" id="urnaNome1" data-i18n-ph="ph_nome_1" placeholder="Nome 3"></div>
+            <div class="form-group"><input type="text" id="urnaNome1" data-i18n-ph="ph_nome_1" placeholder="Nome 4"></div>
+            <div class="form-group"><input type="text" id="urnaNome1" data-i18n-ph="ph_nome_1" placeholder="Nome 5"></div>
             <button class="btn btn-full" onclick="pagarUrna()" data-i18n="pay_urna">🔒 Pagar R$ 26 — Resultado em PDF + QRCode</button>
         </div>
     </section>
@@ -683,7 +683,7 @@
         <div class="form-container">
             <h2 class="section-title" data-i18n="eleitoral_title">Cálculo do Número Eleitoral</h2>
             <p class="section-sub" data-i18n="eleitoral_sub">Sugestões com energia 8 para sua candidatura — R$ 26</p>
-            <div class="form-group"><label data-i18n="f_nome">Nome Completo da Pessoa</label><input type="text" id="eleiNome" placeholder="Nome completo"></div>
+            <div class="form-group"><label data-i18n="f_nome">Nome Completo da Pessoa</label><input type="text" id="eleiNome" data-i18n-ph="ph_nome_completo" placeholder="Nome completo"></div>
             <div class="form-group"><label data-i18n="f_cargo2">Cargo</label>
                 <select id="eleiCargo">
                     <option value="vereador" data-i18n="c_vereador">Vereador</option>
@@ -692,8 +692,8 @@
                     <option value="senador" data-i18n="c_senador">Senador</option>
                 </select>
             </div>
-            <div class="form-group"><label data-i18n="f_sigla">Número da Sigla Partidária (2 dígitos)</label><input type="text" id="eleiSigla" maxlength="2" placeholder="Ex: 45"></div>
-            <div class="form-group"><label data-i18n="f_existente">Número já existente (opcional)</label><input type="text" id="eleiExistente" placeholder="Ex: 45123"></div>
+            <div class="form-group"><label data-i18n="f_sigla">Número da Sigla Partidária (2 dígitos)</label><input type="text" id="eleiSigla" maxlength="2" data-i18n-ph="ph_ex_45" placeholder="Ex: 45"></div>
+            <div class="form-group"><label data-i18n="f_existente">Número já existente (opcional)</label><input type="text" id="eleiExistente" data-i18n-ph="ph_ex_45123" placeholder="Ex: 45123"></div>
             <button class="btn btn-full" onclick="pagarEleitoral()" data-i18n="pay_eleitoral">🔒 Pagar R$ 26 — Sugestões em PDF + QRCode</button>
         </div>
     </section>
@@ -705,7 +705,7 @@
             <p class="section-sub" data-i18n="bi_sub">Recebeu um código? Insira abaixo e ative para gerar seu presente — sem pagamento.</p>
             <div class="form-group">
                 <label for="biCodigo" data-i18n="bi_label">Código Bônus</label>
-                <input type="text" id="biCodigo" placeholder="Ex: A1-XXXX-XXXX" style="text-align:center;letter-spacing:2px;font-weight:bold" autocomplete="off">
+                <input type="text" id="biCodigo" data-i18n-ph="ph_codigo_bonus" placeholder="Ex: A1-XXXX-XXXX" style="text-align:center;letter-spacing:2px;font-weight:bold" autocomplete="off">
             </div>
             <button class="btn btn-full" onclick="ativarBonusInserido()" data-i18n="bi_btn">🎁 Ativar Código</button>
             <p id="biStatus" class="hint" style="text-align:center;margin-top:12px;color:var(--gold)"></p>
@@ -832,22 +832,6 @@
 <script src="/static/banners.js"></script>
 <script>
 
-  // ===== TITULOS DAS ENERGIAS 1-9 (12 IDIOMAS) =====
-var ENERGIAS_TRAD = {
- pt:{1:"Liderança",2:"Cooperação",3:"Criatividade",4:"Estabilidade",5:"Liberdade",6:"Harmonia",7:"Análise",8:"Poder",9:"Sabedoria"},
- en:{1:"Leadership",2:"Cooperation",3:"Creativity",4:"Stability",5:"Freedom",6:"Harmony",7:"Analysis",8:"Power",9:"Wisdom"},
- es:{1:"Liderazgo",2:"Cooperación",3:"Creatividad",4:"Estabilidad",5:"Libertad",6:"Armonía",7:"Análisis",8:"Poder",9:"Sabiduría"},
- it:{1:"Leadership",2:"Cooperazione",3:"Creatività",4:"Stabilità",5:"Libertà",6:"Armonia",7:"Analisi",8:"Potere",9:"Saggezza"},
- fr:{1:"Leadership",2:"Coopération",3:"Créativité",4:"Stabilité",5:"Liberté",6:"Harmonie",7:"Analyse",8:"Pouvoir",9:"Sagesse"},
- de:{1:"Führung",2:"Kooperation",3:"Kreativität",4:"Stabilität",5:"Freiheit",6:"Harmonie",7:"Analyse",8:"Macht",9:"Weisheit"},
- ja:{1:"リーダーシップ",2:"協力",3:"創造性",4:"安定",5:"自由",6:"調和",7:"分析",8:"力",9:"知恵"},
- zh:{1:"领导力",2:"合作",3:"创造力",4:"稳定",5:"自由",6:"和谐",7:"分析",8:"力量",9:"智慧"},
- ru:{1:"Лидерство",2:"Сотрудничество",3:"Творчество",4:"Стабильность",5:"Свобода",6:"Гармония",7:"Анализ",8:"Сила",9:"Мудрость"},
- hi:{1:"नेतृत्व",2:"सहयोग",3:"रचनात्मकता",4:"स्थिरता",5:"स्वतंत्रता",6:"सद्भाव",7:"विश्लेषण",8:"शक्ति",9:"ज्ञान"},
- he:{1:"מנהיגות",2:"שיתוף פעולה",3:"יצירתיות",4:"יציבות",5:"חופש",6:"הרמוניה",7:"ניתוח",8:"כוח",9:"חוכמה"},
- ar:{1:"القيادة",2:"التعاون",3:"الإبداع",4:"الاستقرار",5:"الحرية",6:"الانسجام",7:"التحليل",8:"القوة",9:"الحكمة"}
-};
-
 // ===== TRADUZ TUDO (substitui as 3 funções antigas) =====
 function traduzirTudo() {
     var lang = getLang();
@@ -931,7 +915,7 @@ function toggleForm(tipo) {
 
 function pagarUrna() {
     const nome = document.getElementById('urnaNome').value.trim();
-    if (!nome) { alert('Informe o nome completo.'); return; }
+    if (!nome) { alert(translations[getLang()].alert_urna_nome || 'Informe o nome completo.'); return; }
     const lang = getLang();
     var cargo = (document.getElementById('urnaCargo') ? document.getElementById('urnaCargo').value : 'vereador');
     var qs = 'lang=' + lang + '&produto=urna&nome_completo=' + encodeURIComponent(nome) + '&cargo=' + encodeURIComponent(cargo);
@@ -944,7 +928,7 @@ function pagarUrna() {
 
 function pagarEleitoral() {
     const nome = document.getElementById('eleiNome').value.trim();
-    if (!nome) { alert('Informe o nome completo.'); return; }
+    if (!nome) { alert(translations[getLang()].alert_eleitoral_nome || 'Informe o nome completo.'); return; }
     const lang = getLang();
     var cargo = (document.getElementById('eleiCargo') ? document.getElementById('eleiCargo').value : 'vereador');
     var sigla = (document.getElementById('eleiSigla') ? document.getElementById('eleiSigla').value : '').trim();
@@ -957,8 +941,9 @@ function pagarEleitoral() {
 function ativarBonusInserido() {
     var codigo = document.getElementById("biCodigo").value.trim();
     var st = document.getElementById("biStatus");
-    if (!codigo) { st.style.color = "#dc3545"; st.textContent = "Digite seu código bônus."; return; }
-    st.style.color = "var(--gold)"; st.textContent = "Validando código...";
+    var t = translations[getLang()] || translations.pt;
+    if (!codigo) { st.style.color = "#dc3545"; st.textContent = t.alert_bonus_vazio; return; }
+    st.style.color = "var(--gold)"; st.textContent = t.alert_bonus_validando;
     fetch("/ativar-bonus", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -968,16 +953,16 @@ function ativarBonusInserido() {
     .then(function(data) {
         if (data.ok) {
             st.style.color = "#28a745";
-            st.textContent = "Código ativado! Gerando seu PDF...";
+            st.textContent = t.alert_bonus_ok;
             setTimeout(function() { window.location.href = "/#" + data.target; }, 800);
         } else {
             st.style.color = "#dc3545";
-            st.textContent = "Código inválido ou já utilizado.";
+            st.textContent = t.alert_bonus_invalido;
         }
     })
     .catch(function() {
         st.style.color = "#dc3545";
-        st.textContent = "Erro na ativação. Tente novamente.";
+        st.textContent = t.alert_bonus_erro;
     });
 }
 
@@ -985,16 +970,17 @@ function enviarMensagem() {
     var nome = document.getElementById("msgNome").value.trim();
     var texto = document.getElementById("msgTexto").value.trim();
     var st = document.getElementById("msgStatus");
-    if (!texto) { st.style.color = "#dc3545"; st.textContent = "Escreva sua mensagem."; return; }
-    st.style.color = "var(--gold)"; st.textContent = "Enviando...";
-    fetch("/sugestao", {
+    var t = translations[getLang()] || translations.pt;
+    if (!texto) { st.style.color = "#dc3545"; st.textContent = t.alert_msg_vazia; return; }
+    st.style.color = "var(--gold)"; st.textContent = t.alert_msg_enviando;
+        fetch("/sugestao", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nome: nome, mensagem: texto })
     })
     .then(function(r){ return r.json(); })
-    .then(function(d){ if (d.ok) { st.style.color = "#28a745"; st.textContent = "Mensagem enviada! Obrigado."; document.getElementById("msgTexto").value = ""; } else { st.style.color = "#dc3545"; st.textContent = "Erro ao enviar."; } })
-    .catch(function(){ st.style.color = "#dc3545"; st.textContent = "Erro de conexão."; });
+    .then(function(d){ if (d.ok) { st.style.color = "#28a745"; st.textContent = t.alert_msg_ok; document.getElementById("msgTexto").value = ""; } else { st.style.color = "#dc3545"; st.textContent = t.alert_msg_erro; } })
+    .catch(function(){ st.style.color = "#dc3545"; st.textContent = t.alert_msg_conexao; });
 }
     
 var BC_PRODUTOS = [
@@ -1081,28 +1067,17 @@ function confirmarBC() {
             if (prod) itens.push({ id: id, nome: prod[1], preco: prod[2], qtd: BC_QUANTIDADES[id] });
         }
     }
-    if (itens.length === 0) { alert("Selecione pelo menos 1 serviço."); return; }
+    var t = translations[getLang()] || translations.pt;
+    if (itens.length === 0) { alert(t.alert_bc_vazio); return; }
     var bruto = itens.reduce(function(a, i) { return a + i.preco * i.qtd; }, 0);
     var qtdTotal = itens.reduce(function(a, i) { return a + i.qtd; }, 0);
     var pct = descontoBC(qtdTotal);
     var final = bruto - Math.round(bruto * pct / 100);
     var linhas = itens.map(function(i) { return i.nome + ": " + i.qtd + "x R$ " + i.preco + " = R$ " + (i.qtd * i.preco); }).join("\n");
-    var msg = "RESUMO DO PEDIDO\n\n" + linhas + "\n\nTotal bruto: R$ " + bruto + "\nDesconto (" + pct + "%): R$ " + Math.round(bruto * pct / 100) + "\nTOTAL FINAL: R$ " + final + "\n\nConfirmar e ir para pagamento?";
+    var msg = t.bc_resumo_titulo + "\n\n" + linhas + "\n\n" + t.bc_total + " R$ " + bruto + "\n" + t.bc_discount + " (" + pct + "%): R$ " + ... + "\n" + t.bc_final + " R$ " + final + "\n\n" + t.bc_confirmar_pag;
     if (!confirm(msg)) return;
     window.location.href = '/criar-checkout?lang=' + getLang() + '&produto=coletivo&qtd=' + qtdTotal + '&total=' + final + '&itens=' + encodeURIComponent(JSON.stringify(itens));
 }
-// ===== ENERGIAS 3×3 =====
-var ENERGIAS = [
-    {n:1, nome:"Liderança", icone:"☀️", desc:"Iniciativa, coragem e pioneirismo. Quem nasce sob o 1 abre caminhos.", produtos:["bebe","negocio","assinatura"]},
-    {n:2, nome:"Cooperação", icone:"🌙", desc:"Diplomacia, parceria e sensibilidade. O 2 une pessoas.", produtos:["bebe","negocio","assinatura"]},
-    {n:3, nome:"Criatividade", icone:"🎨", desc:"Expressão, comunicação e otimismo. O 3 inspira pela palavra.", produtos:["bebe","negocio","assinatura"]},
-    {n:4, nome:"Estabilidade", icone:"🛡️", desc:"Organização, disciplina e segurança. O 4 constrói bases sólidas.", produtos:["bebe","negocio","assinatura"]},
-    {n:5, nome:"Liberdade", icone:"🕊️", desc:"Aventura, adaptação e versatilidade. O 5 vive em movimento.", produtos:["bebe","negocio","assinatura"]},
-    {n:6, nome:"Harmonia", icone:"💞", desc:"Amor, responsabilidade e cuidado. O 6 protege e cultiva.", produtos:["bebe","negocio","assinatura"]},
-    {n:7, nome:"Análise", icone:"🔮", desc:"Introspecção, sabedoria e espiritualidade. O 7 busca o conhecimento.", produtos:["bebe","negocio","assinatura"]},
-    {n:8, nome:"Poder", icone:"⚡", desc:"Realização, autoridade e abundância. O 8 domina o material.", produtos:["bebe","negocio","assinatura"]},
-    {n:9, nome:"Sabedoria", icone:"🌟", desc:"Compaixão, conclusão e humanitarismo. O 9 encerra ciclos.", produtos:["bebe","negocio","assinatura"]}
-];
 function montarEnergias() {
     var lang = getLang();
     var container = document.getElementById("energiasGrid")
@@ -1249,8 +1224,8 @@ document.addEventListener('DOMContentLoaded', init);
     <div class="form-container" style="max-width:700px">
         <h2 class="section-title" data-i18n="msg_title">💬 Sugestões e Reclamações</h2>
         <p class="section-sub" data-i18n="msg_sub">Sua opinião é importante. Envie diretamente pelo site — sem e-mail.</p>
-        <div class="form-group"><label for="msgNome" data-i18n="msg_nome">Seu Nome</label><input type="text" id="msgNome" placeholder="Nome"></div>
-        <div class="form-group"><label for="msgTexto" data-i18n="msg_texto">Mensagem</label><textarea id="msgTexto" rows="4" placeholder="Escreva aqui sua sugestão ou reclamação..."></textarea></div>
+        <div class="form-group"><label for="msgNome" data-i18n="msg_nome">Seu Nome</label>input type="text" id="msgNome" data-i18n-ph="ph_seu_nome" placeholder="Nome"></div>
+        <div class="form-group"><label for="msgTexto" data-i18n="msg_texto">Mensagem</label><textarea id="msgTexto" rows="4" data-i18n-ph="ph_sua_mensagem" placeholder="Escreva aqui sua sugestão ou reclamação..."></textarea></div>
         <button class="btn btn-full" onclick="enviarMensagem()" data-i18n="msg_btn">📨 Enviar Mensagem</button>
         <p id="msgStatus" style="text-align:center;margin-top:12px;color:var(--gold)"></p>
     </div>
