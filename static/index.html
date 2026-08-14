@@ -454,7 +454,6 @@
                 <h3 class="prod-nome" data-i18n="p_express">Mapa Express</h3>
                 <div class="price prod-preco">R$ 8</div>
                 <p class="desc" data-i18n="desc_express">1 página com os 5 números principais e seu significado resumido. Ideal para uma visão rápida.</p>
-                <ul class="features" data-prod>
                     <li>✅ Caminho da Vida</li>
                     <li>✅ Expressão, Alma, Personalidade</li>
                     <li>✅ Destino</li>
@@ -886,6 +885,33 @@ function traduzirTudo() {
     // 6) Recalcula o resumo (as 3 cifras + quantidade total)
     if (typeof atualizarResumoBC === 'function') atualizarResumoBC();
 }  
+
+// ===== MONTAR SELETOR DE IDIOMAS (12 bandeiras) =====
+function montarSeletorIdioma() {
+    var container = document.getElementById('langSelector');
+    if (!container) return;
+    if (container.children.length > 0) return; // já montado
+    var lista = [
+        {id:'pt', b:'🇧🇷'},{id:'en', b:'🇺🇸'},{id:'es', b:'🇪🇸'},{id:'it', b:'🇮🇹'},
+        {id:'fr', b:'🇫🇷'},{id:'de', b:'🇩🇪'},{id:'ja', b:'🇯🇵'},{id:'zh', b:'🇨🇳'},
+        {id:'ru', b:'🇷🇺'},{id:'hi', b:'🇮🇳'},{id:'he', b:'🇮🇱'},{id:'ar', b:'🇸🇦'}
+    ];
+    var atual = getLang();
+    lista.forEach(function(l) {
+        var b = document.createElement('button');
+        b.className = 'lang-btn' + (l.id === atual ? ' active' : '');
+        b.title = l.id.toUpperCase();
+        b.innerHTML = l.b;
+        b.onclick = function() {
+            setLanguage(l.id);
+            if (typeof traduzirTudo === 'function') traduzirTudo();
+            var ativos = container.querySelectorAll('.lang-btn');
+            for (var i = 0; i < ativos.length; i++) ativos[i].classList.remove('active');
+            b.classList.add('active');
+        };
+        container.appendChild(b);
+    });
+}
     
 function comprar(produto) {
     const lang = getLang();
@@ -1221,6 +1247,7 @@ function renderizarNumeros() {
     var savedLang = localStorage.getItem('lang');
     var browserLang = navigator.language.split('-')[0];
     var defaultLang = savedLang || (translations[browserLang] ? browserLang : 'pt');
+    montarSeletorIdioma();          // ← NOVO: monta as 12 bandeiras
     setLanguage(defaultLang);
     montarTabelaBC();
     atualizarResumoBC();
