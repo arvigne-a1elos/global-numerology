@@ -338,6 +338,16 @@
             .btn-outline { margin-left: 0; margin-top: 15px; }
             .step { flex-direction: column; text-align: center; }
         }
+        .numero-gratis {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 12px; background: #151515; border: 1px solid #333;
+    border-radius: 10px; padding: 10px 16px; margin: 8px 0;
+}
+.numero-nome { color: #ccc; font-size: 0.95rem; }
+.numero-valor {
+    font-family: 'Playfair Display', serif; font-size: 1.4rem;
+    color: var(--gold); font-weight: 700; min-width: 32px; text-align: center;
+}
     </style>
 </head>
 <body>
@@ -453,12 +463,13 @@
                 <div class="icon">🔮</div>
                 <h3 class="prod-nome" data-i18n="p_express">Mapa Express</h3>
                 <div class="price prod-preco">R$ 8</div>
-                <p class="desc" data-i18n="desc_express">1 página com os 5 números principais e seu significado resumido. Ideal para uma visão rápida.</p>
-                    <li>✅ Caminho da Vida</li>
-                    <li>✅ Expressão, Alma, Personalidade</li>
-                    <li>✅ Destino</li>
-                    <li>📲 PDF + QRCode</li>
-                </ul>
+             <p class="desc" data-i18n="desc_express">1 página com os 5 números principais e seu significado resumido. Ideal para uma visão rápida.</p>
+             <ul class="features">
+              <li>✅ Caminho da Vida</li>
+              <li>✅ Expressão, Alma, Personalidade</li>
+              <li>✅ Destino</li>
+              <li>📲 PDF + QRCode</li>
+             </ul>
                 <button class="btn btn-full" onclick="comprar('express')" data-i18n="buy_btn">Comprar</button>
             </div>
             <!-- 2. Qual Vida/Ano -->
@@ -1042,10 +1053,7 @@ function montarTabelaBC() {
             + '<td style="text-align:center"><input type="number" min="0" max="1000" value="0" data-prod="' + p[0] + '" oninput="atualizarResumoBC()"></td>';
         corpo.appendChild(tr);
     });
-    traduzirTabelaBC();
-}
-
-function atualizarResumoBC() {
+  function atualizarResumoBC() {
     var bruto = 0, qtdTotal = 0;
     document.querySelectorAll("#bcTabelaCorpo input[data-prod]").forEach(function(inp) {
         var q = parseInt(inp.value) || 0;
@@ -1230,8 +1238,8 @@ function renderizarNumeros() {
     for (var i = 0; i < ultimosNumeros.length && i < chaves5.length; i++) {
         var n = ultimosNumeros[i];
         var nomeE = nomes[chaves5[i]] || ("Energia " + n);
-        html += '<div class="numero-gratis"><span class="numero-valor">' + n
-              + '</span><span class="numero-nome">' + nomeE + '</span></div>';
+        html += '<div class="numero-gratis"><span class="numero-nome">' + nomeE
+      + ':</span> <span class="numero-valor">' + n + '</span></div>';
     }
     var el = document.getElementById("resultadoNumeros")
           || document.getElementById("resultado")
