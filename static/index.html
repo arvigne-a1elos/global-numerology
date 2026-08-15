@@ -1156,7 +1156,7 @@ var BC_PRODUTOS = [
     ["assinatura","Assinaturas",35,"✍️"],
     ["negocio","Nome para Negócio",44,"🏪"],
     ["casal","Mapa do Casal",44,"💞"],
-    ["familia","Mapa Família Premium",98,"🌟"]
+    ["familia","Mapa Família Premium",98,"🌟"],
     ["nome_pet","Nome do Pet",8,"🐾"],
     ["nickname","Nickname Digital",8,"🎮"],
     ["nome_dominio","Nome do Domínio",8,"🌐"],
@@ -1180,6 +1180,8 @@ function montarTabelaBC() {
             + '<td style="text-align:center"><input type="number" min="0" max="1000" value="0" data-prod="' + p[0] + '" oninput="atualizarResumoBC()"></td>';
         corpo.appendChild(tr);
     });
+    }
+    
   function atualizarResumoBC() {
     var bruto = 0, qtdTotal = 0;
     document.querySelectorAll("#bcTabelaCorpo input[data-prod]").forEach(function(inp) {
