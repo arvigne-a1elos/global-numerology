@@ -789,16 +789,7 @@ def pay_success(request: Request):
         finally:
             db.close()
         pn = PRODUTOS.get(lang, PRODUTOS["pt"]).get(prod, prod)
-        if prod == "completo":
-           pf = pdf17(data, nome, bd, lang)
-        elif prod == "urna":
-           pf = pdf_produto("urna", nome, bd, lang)
-        elif prod == "eleitoral":
-           pf = pdf_produto("eleitoral", nome, bd, lang)
-        elif prod == "express":
-           pf = pdf8(data, nome, bd, lang)
-        else:
-           pf = pdf_produto(prod, nome, bd, lang)
+        pf = gerar_pdf(prod, data, lang, nome, bd)
         html = pagina_sucesso(pf, nome, pn, lang)
         if pf and os.path.exists(pf):
             os.remove(pf)
@@ -824,8 +815,11 @@ def pay_urna_success(request: Request):
         res, _, sugs = validar_nomes_urna(nomes, cr)
         cl = CARGO_INFO.get(cr, {}).get("label", cr)
         lang = meta.get("lang", "pt")
-        pf = pdf_urna(nc, cl, res, sugs, lang)
-        html = pagina_sucesso(pf, nc, PRODUTOS.get(lang, PRODUTOS["pt"]).get("urna", "Urna"), lang)
+        dados_urna = {"nome_completo": nc, "cargo_label": cl,
+                      "resultados": res, "sugestoes": sugs}
+        pf = gerar_pdf("urna", dados_urna, lang, nc, "")
+        html = pagina_sucesso(pf, nc,
+                              PRODUTOS.get(lang, PRODUTOS["pt"]).get("urna", "Urna"), lang)
         if pf and os.path.exists(pf):
             os.remove(pf)
         return HTMLResponse(html)
@@ -845,7 +839,8 @@ def pay_eleitoral_success(request: Request):
         cr = meta.get("cargo", "vereador")
         ne_str = meta.get("numero_existente", "")
         ss = str(sg).zfill(2)
-        cl_map = {"vereador": "Vereador", "dep_estadual": "Dep. Estadual", "dep_federal": "Dep. Federal", "senador": "Senador"}
+        cl_map = {"vereador": "Vereador", "dep_estadual": "Dep. Estadual",
+                  "dep_federal": "Dep. Federal", "senador": "Senador"}
         cl2 = cl_map.get(cr, cr)
         sugs = gerar_numeros(sg, cr)
         ni = None
@@ -855,8 +850,11 @@ def pay_eleitoral_success(request: Request):
             except Exception:
                 pass
         lang = meta.get("lang", "pt")
-        pf = pdf_eleitoral(ss, cl2, sugs, ni, lang)
-        html = pagina_sucesso(pf, f"Candidato {cl2}", PRODUTOS.get(lang, PRODUTOS["pt"]).get("eleitoral", "Eleitoral"), lang)
+        dados_ele = {"sigla": ss, "cargo_label": cl2,
+                     "sugestoes": sugs, "numero_existente": ni}
+        pf = gerar_pdf("eleitoral", dados_ele, lang, f"Candidato {cl2}", "")
+        html = pagina_sucesso(pf, f"Candidato {cl2}",
+                              PRODUTOS.get(lang, PRODUTOS["pt"]).get("eleitoral", "Eleitoral"), lang)
         if pf and os.path.exists(pf):
             os.remove(pf)
         return HTMLResponse(html)
