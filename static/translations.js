@@ -2089,10 +2089,14 @@ const ENERGIAS_TRAD = {
   ar:{1:"القيادة",2:"التعاون",3:"الإبداع",4:"الاستقرار",5:"الحرية",6:"الانسجام",7:"التحليل",8:"القوة",9:"الحكمة"}
 };
 
-// ===== FAIXA DE PREÇO DE CADA PRODUTO =====
+// ===== FAIXA DE PREÇO DE CADA PRODUTO (23 produtos) =====
 const PRODUTO_FAIXA = {
     express:0, vida:0, completo:1, ia:1, urna:2, eleitoral:2, imovel:2, calendario:2,
-    artistico:3, bebe:3, assinatura:3, negocio:4, casal:4, familia:5
+    artistico:3, bebe:3, assinatura:3, negocio:4, casal:4, familia:5,
+    // --- 8 produtos novos (todos na faixa R$ 8, mesma do Mapa Express) ---
+    nome_pet:0, nickname:0, nome_dominio:0, nome_canal:0,
+    nome_equipe:0, nome_ong:0, nome_projeto:0, nome_evento:0
+    // coletivo: usa "Sob consulta" (data-i18n="sob_consulta") → sem faixa de preço fixa
 };
 
 // ===== PREÇOS POR IDIOMA (6 faixas) =====
