@@ -117,7 +117,7 @@ VALORES = {
 def preco_local(produto, lang):
     return VALORES[lang][PRODUTO_FAIXA[produto]]
 
-# ===== NOMES DOS 15 PRODUTOS =====
+# ===== NOMES DOS 23 PRODUTOS =====
 PRODUTOS = {
     "pt": {"express": "Mapa Express", "vida": "Qual Vida/Ano", "completo": "Mapa Completo",
         "ia": "Pesquisa IA de Nomes", "urna": "Validacao Nome de Urna", "eleitoral": "Numero Eleitoral",
