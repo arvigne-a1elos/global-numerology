@@ -442,6 +442,170 @@ REALIZ_HEAD = {
     "hi": ("चरण", "अवधि"), "he": ("שלב", "תקופה"), "ar": ("المرحلة", "الفترة")
 }
 
+# ===== AMOR_TXT — DISTINÇÃO 5 E 6 NO AMOR (12 IDIOMAS) =====
+# REGRA DE OURO: 5 = amor romântico/paixão | 6 = amor espiritual/humanitário
+AMOR_TXT = {
+    5: {
+        "pt": "No amor, o 5 é paixão e sensualidade: atração intensa, sedução e desejo de liberdade afetiva.",
+        "en": "In love, 5 is passion and sensuality: intense attraction, seduction and a desire for affective freedom.",
+        "es": "En el amor, el 5 es pasión y sensualidad: atracción intensa, seducción y deseo de libertad afectiva.",
+        "it": "In amore, il 5 è passione e sensualità: attrazione intensa, seduzione e desiderio di libertà affettiva.",
+        "fr": "En amour, le 5 est passion et sensualité : attraction intense, séduction et désir de liberté affective.",
+        "de": "In der Liebe ist die 5 Leidenschaft und Sinnlichkeit: intensive Anziehung, Verführung und Freiheitsdrang.",
+        "ja": "恋愛において5は情熱と官能性：激しい魅力、誘惑、そして自由な愛の欲求。",
+        "zh": "在爱情中，5是激情与感官：强烈的吸引、诱惑以及对情感自由的渴望。",
+        "ru": "В любви 5 — это страсть и чувственность: сильное влечение, соблазн и стремление к свободе чувств.",
+        "hi": "प्रेम में 5 जुनून और कामुकता है: तीव्र आकर्षण, प्रलोभन और भावनात्मक स्वतंत्रता की इच्छा।",
+        "he": "באהבה, 5 הוא תשוקה וחושניות: משיכה עוצמתית, פיתוי ורצון לחופש רגשי.",
+        "ar": "في الحب، 5 هو شغف وحسية: انجذاب شديد وإغراء ورغبة في الحرية العاطفية."
+    },
+    6: {
+        "pt": "No amor, o 6 é amor humano e solidário: cuidado, compaixão, família e responsabilidade afetiva.",
+        "en": "In love, 6 is human and solidary love: care, compassion, family and affective responsibility.",
+        "es": "En el amor, el 6 es amor humano y solidario: cuidado, compasión, familia y responsabilidad afectiva.",
+        "it": "In amore, il 6 è amore umano e solidale: cura, compassione, famiglia e responsabilità affettiva.",
+        "fr": "En amour, le 6 est amour humain et solidaire : soin, compassion, famille et responsabilité affective.",
+        "de": "In der Liebe ist die 6 menschliche und solidarische Liebe: Fürsorge, Mitgefühl, Familie und Verantwortung.",
+        "ja": "恋愛において6は人間的で連帯する愛：思いやり、慈愛、家族、そして感情的な責任。",
+        "zh": "在爱情中，6是人文与团结之爱：关怀、同情、家庭与情感责任。",
+        "ru": "В любви 6 — это человеческая и солидарная любовь: забота, сострадание, семья и эмоциональная ответственность.",
+        "hi": "प्रेम में 6 मानवीय और एकजुट प्रेम है: देखभाल, करुणा, परिवार और भावनात्मक जिम्मेदारी।",
+        "he": "באהבה, 6 הוא אהבה אנושית ומלאת סולידריות: אכפתיות, חמלה, משפחה ואחריות רגשית.",
+        "ar": "في الحب، 6 هو حب إنساني وتضامني: رعاية ورحمة وأسرة ومسؤولية عاطفية."
+    }
+}
+
+# ===== ENERGIAS_TXT — DESCRIÇÕES DAS ENERGIAS 1 A 9 (12 IDIOMAS) =====
+# Cards da seção "Energias de Pesquisa" + alimenta PDFs. 5 e 6 trazem a distinção do amor.
+ENERGIAS_TXT = {
+    1: {
+        "pt": "Liderança: coragem, pioneirismo e inspiração.",
+        "en": "Leadership: courage, pioneering and inspiration.",
+        "es": "Liderazgo: coraje, pionerismo e inspiración.",
+        "it": "Leadership: coraggio, spirito pionieristico e ispirazione.",
+        "fr": "Leadership : courage, esprit pionnier et inspiration.",
+        "de": "Führung: Mut, Pioniergeist und Inspiration.",
+        "ja": "リーダーシップ：勇気、開拓者精神、ひらめき。",
+        "zh": "领导力：勇气、开拓精神与灵感。",
+        "ru": "Лидерство: смелость, первопроходчество и вдохновение.",
+        "hi": "नेतृत्व: साहस, अग्रणी भावना और प्रेरणा।",
+        "he": "מנהיגות: אומץ, חלוציות והשראה.",
+        "ar": "القيادة: شجاعة وريادة وإلهام."
+    },
+    2: {
+        "pt": "Cooperação: diplomacia, sensibilidade e união.",
+        "en": "Cooperation: diplomacy, sensitivity and union.",
+        "es": "Cooperación: diplomacia, sensibilidad y unión.",
+        "it": "Cooperazione: diplomazia, sensibilità e unione.",
+        "fr": "Coopération : diplomatie, sensibilité et union.",
+        "de": "Zusammenarbeit: Diplomatie, Feingefühl und Einheit.",
+        "ja": "協力：外交、感受性、団結。",
+        "zh": "合作：外交、敏感与团结。",
+        "ru": "Сотрудничество: дипломатия, чуткость и единство.",
+        "hi": "सहयोग: कूटनीति, संवेदनशीलता और एकता।",
+        "he": "שיתוף פעולה: דיפלומטיה, רגישות ואחדות.",
+        "ar": "التعاون: دبلوماسية وحساسية واتحاد."
+    },
+    3: {
+        "pt": "Criatividade: expressão, comunicação e otimismo.",
+        "en": "Creativity: expression, communication and optimism.",
+        "es": "Creatividad: expresión, comunicación y optimismo.",
+        "it": "Creatività: espressione, comunicazione e ottimismo.",
+        "fr": "Créativité : expression, communication et optimisme.",
+        "de": "Kreativität: Ausdruck, Kommunikation und Optimismus.",
+        "ja": "創造性：表現、コミュニケーション、楽観。",
+        "zh": "创造力：表达、沟通与乐观。",
+        "ru": "Творчество: выражение, общение и оптимизм.",
+        "hi": "रचनात्मकता: अभिव्यक्ति, संचार और आशावाद।",
+        "he": "יצירתיות: ביטוי, תקשורת ואופטימיות.",
+        "ar": "الإبداع: تعبير وتواصل وتفاؤل."
+    },
+    4: {
+        "pt": "Estrutura: organização, disciplina e segurança.",
+        "en": "Structure: organization, discipline and security.",
+        "es": "Estructura: organización, disciplina y seguridad.",
+        "it": "Struttura: organizzazione, disciplina e sicurezza.",
+        "fr": "Structure : organisation, discipline et sécurité.",
+        "de": "Struktur: Organisation, Disziplin und Sicherheit.",
+        "ja": "構造：組織、規律、安全。",
+        "zh": "结构：组织、纪律与安全。",
+        "ru": "Структура: организация, дисциплина и безопасность.",
+        "hi": "संरचना: संगठन, अनुशासन और सुरक्षा।",
+        "he": "מבנה: ארגון, משמעת וביטחון.",
+        "ar": "البنية: تنظيم وانضباط وأمان."
+    },
+    5: {
+        "pt": "Liberdade: aventura, adaptabilidade e versatilidade. O 5 fala do amor romântico/paixão.",
+        "en": "Freedom: adventure, adaptability and versatility. 5 speaks of romantic/passionate love.",
+        "es": "Libertad: aventura, adaptabilidad y versatilidad. El 5 habla del amor romántico/pasión.",
+        "it": "Libertà: avventura, adattabilità e versatilità. Il 5 parla dell'amore romantico/passione.",
+        "fr": "Liberté : aventure, adaptabilité et polyvalence. Le 5 parle de l'amour romantique/passion.",
+        "de": "Freiheit: Abenteuer, Anpassungsfähigkeit und Vielseitigkeit. Die 5 spricht von romantischer/leidenschaftlicher Liebe.",
+        "ja": "自由：冒険、適応力、多才。5はロマンチックな愛・情熱を語ります。",
+        "zh": "自由：冒险、适应与多才。5代表浪漫/激情之爱。",
+        "ru": "Свобода: приключения, адаптивность и универсальность. 5 говорит о романтической/страстной любви.",
+        "hi": "स्वतंत्रता: रोमांच, अनुकूलन और बहुमुखी। 5 रोमांटिक/भावुक प्रेम की बात करता है।",
+        "he": "חופש: הרפתקאות, יכולת הסתגלות ורב-גוניות. 5 מדבר על אהבה רומנטית/תשוקה.",
+        "ar": "الحرية: مغامرة وتكيف وتعدد مواهب. 5 يتحدث عن الحب الرومانسي/الشغف."
+    },
+    6: {
+        "pt": "Harmonia: amor humano, compaixão e responsabilidade. O 6 fala do amor espiritual/humanitário.",
+        "en": "Harmony: human love, compassion and responsibility. 6 speaks of spiritual/humanitarian love.",
+        "es": "Armonía: amor humano, compasión y responsabilidad. El 6 habla del amor espiritual/humanitario.",
+        "it": "Armonia: amore umano, compassione e responsabilità. Il 6 parla dell'amore spirituale/umanitario.",
+        "fr": "Harmonie : amour humain, compassion et responsabilité. Le 6 parle de l'amour spirituel/humanitaire.",
+        "de": "Harmonie: menschliche Liebe, Mitgefühl und Verantwortung. Die 6 spricht von spiritueller/humanitärer Liebe.",
+        "ja": "調和：人間愛、慈愛、責任。6は精神的な愛・人道を語ります。",
+        "zh": "和谐：人文之爱、同情与责任。6代表精神/人道之爱。",
+        "ru": "Гармония: человеческая любовь, сострадание и ответственность. 6 говорит о духовной/гуманитарной любви.",
+        "hi": "सामंजस्य: मानवीय प्रेम, करुणा और जिम्मेदारी। 6 आध्यात्मिक/मानवतावादी प्रेम की बात करता है।",
+        "he": "הרמוניה: אהבה אנושית, חמלה ואחריות. 6 מדבר על אהבה רוחנית/הומניטרית.",
+        "ar": "الانسجام: حب إنساني ورحمة ومسؤولية. 6 يتحدث عن الحب الروحي/الإنساني."
+    },
+    7: {
+        "pt": "Espiritualidade: introspecção, sabedoria e profundidade.",
+        "en": "Spirituality: introspection, wisdom and depth.",
+        "es": "Espiritualidad: introspección, sabiduría y profundidad.",
+        "it": "Spiritualità: introspezione, saggezza e profondità.",
+        "fr": "Spiritualité : introspection, sagesse et profondeur.",
+        "de": "Spiritualität: Innenschau, Weisheit und Tiefe.",
+        "ja": "精神性：内省、知恵、深み。",
+        "zh": "灵性：内省、智慧与深度。",
+        "ru": "Духовность: самоанализ, мудрость и глубина.",
+        "hi": "आध्यात्मिकता: आत्मनिरीक्षण, ज्ञान और गहराई।",
+        "he": "רוחניות: התבוננות פנימית, חוכמה ועומק.",
+        "ar": "الروحانية: استبطان وحكمة وعمق."
+    },
+    8: {
+        "pt": "Poder: realização, autoridade e prosperidade.",
+        "en": "Power: achievement, authority and prosperity.",
+        "es": "Poder: logro, autoridad y prosperidad.",
+        "it": "Potere: realizzazione, autorità e prosperità.",
+        "fr": "Pouvoir : accomplissement, autorité et prospérité.",
+        "de": "Macht: Leistung, Autorität und Wohlstand.",
+        "ja": "力：達成、権威、豊かさ。",
+        "zh": "力量：成就、权威与丰盛。",
+        "ru": "Сила: достижение, власть и процветание.",
+        "hi": "शक्ति: उपलब्धि, अधिकार और समृद्धि।",
+        "he": "כוח: הישג, סמכות ושפע.",
+        "ar": "القوة: إنجاز وسلطة وازدهار."
+    },
+    9: {
+        "pt": "Humanitarismo: compaixão, conclusão e serviço ao todo.",
+        "en": "Humanitarianism: compassion, completion and service to all.",
+        "es": "Humanitarismo: compasión, conclusión y servicio al todo.",
+        "it": "Umanitarismo: compassione, compimento e servizio al tutto.",
+        "fr": "Humanitarisme : compassion, achèvement et service au tout.",
+        "de": "Humanitarismus: Mitgefühl, Vollendung und Dienst am Ganzen.",
+        "ja": "人道主義：思いやり、完結、全体への奉仕。",
+        "zh": "人道主义：同情、圆满与服务整体。",
+        "ru": "Гуманизм: сострадание, завершение и служение целому.",
+        "hi": "मानवतावाद: करुणा, पूर्णता और समग्र की सेवा।",
+        "he": "הומניטריות: חמלה, השלמה ושירות לכלל.",
+        "ar": "الإنسانية: رحمة وإنجاز وخدمة الكل."
+    }
+}
+
 # =====================================================================
 # SIG - Significados completos dos números (Monique Cissay)
 # Cada entrada: (Título, Aspectos Positivos, Aspectos Negativos, Lição)
