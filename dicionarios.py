@@ -165,7 +165,7 @@ def t(chave, lang):
 # ===== Funções de acesso =====
 def get_sig(n, lang="pt"):
     d = SIG.get(n)
-    if not d: return ("Número único", "Número único, como você.", "", "")
+    if not d: return (t("nenhum", lang),", "", "")
     return d
 
 def get_cam(n, lang="pt"):
@@ -179,7 +179,7 @@ def get_des(n, lang="pt"):
 def get_vib(n, lang="pt"):
     return VIB.get(n, "")
 
-# ===== NOMES DOS 15 PRODUTOS =====
+# ===== NOMES DOS 23 PRODUTOS =====
 PRODUTOS = {
     "pt": {"express": "Mapa Express", "vida": "Qual Vida/Ano", "completo": "Mapa Completo",
         "ia": "Pesquisa IA de Nomes", "urna": "Validacao Nome de Urna", "eleitoral": "Numero Eleitoral",
@@ -404,6 +404,42 @@ PDF_SECOES = {
     "ar": {"numeros_principais": "أرقامك الرئيسية", "caminho_ciclos": "مسار الحياة والدورات",
            "desafios_realizacoes": "التحديات والإنجازات", "como_calculamos": "كيف نحسب؟",
            "por_que_energia_8": "لماذا الطاقة 8؟", "energia_8_ideal": "الطاقة 8 — مثالي:", "alternativas": "بدائل:"}
+}
+
+# ===== BOAS-VINDAS, PERIODOS E CABEÇALHOS DE REALIZAÇÕES (12 IDIOMAS) =====
+BOAS_VINDAS = {
+    "pt": "Seja bem-vindo(a)! Este relatório revela as energias que moldam a sua essência. Que a sabedoria dos números ilumine o seu caminho.",
+    "en": "Welcome! This report reveals the energies that shape your essence. May the wisdom of numbers illuminate your path.",
+    "es": "¡Bienvenido(a)! Este informe revela las energías que moldean tu esencia. Que la sabiduría de los números ilumine tu camino.",
+    "it": "Benvenuto/a! Questo report rivela le energie che plasmano la tua essenza. Che la saggezza dei numeri illumini il tuo cammino.",
+    "fr": "Bienvenue ! Ce rapport révèle les énergies qui façonnent votre essence. Que la sagesse des nombres éclaire votre chemin.",
+    "de": "Willkommen! Dieser Bericht offenbart die Energien, die Ihr Wesen prägen. Möge die Weisheit der Zahlen Ihren Weg erhellen.",
+    "ja": "ようこそ！このレポートは、あなたの本質を形作るエネルギーを明らかにします。数字の叡智があなたの道を照らしますように。",
+    "zh": "欢迎！这份报告揭示了塑造您本质的能量。愿数字的智慧照亮您的道路。",
+    "ru": "Добро пожаловать! Этот отчёт раскрывает энергии, формирующие вашу сущность. Пусть мудрость чисел осветит ваш путь.",
+    "hi": "स्वागत है! यह रिपोर्ट उन ऊर्जाओं को प्रकट करती है जो आपके सार को आकार देती हैं। अंकों की बुद्धि आपके मार्ग को रोशन करे।",
+    "he": "ברוכים הבאים! דוח זה חושף את האנרגיות המעצבות את מהותכם. שתיאיר חכמת המספרים את דרככם.",
+    "ar": "مرحباً بك! يكشف هذا التقرير الطاقات التي تشكل جوهرك. لتنير حكمة الأرقام طريقك."
+}
+PERIODOS = {
+    "pt": ("0 a 28/36 anos", "28/36 a 54/63 anos", "54/63 anos em diante"),
+    "en": ("0 to 28/36 years", "28/36 to 54/63 years", "54/63 years and beyond"),
+    "es": ("0 a 28/36 años", "28/36 a 54/63 años", "54/63 años en adelante"),
+    "it": ("0-28/36 anni", "28/36-54/63 anni", "54/63 anni in poi"),
+    "fr": ("0 à 28/36 ans", "28/36 à 54/63 ans", "54/63 ans et plus"),
+    "de": ("0 bis 28/36 Jahre", "28/36 bis 54/63 Jahre", "54/63 Jahre und mehr"),
+    "ja": ("0〜28/36歳", "28/36〜54/63歳", "54/63歳以上"),
+    "zh": ("0至28/36岁", "28/36至54/63岁", "54/63岁以上"),
+    "ru": ("0-28/36 лет", "28/36-54/63 лет", "54/63 лет и старше"),
+    "hi": ("0-28/36 वर्ष", "28/36-54/63 वर्ष", "54/63 वर्ष और अधिक"),
+    "he": ("0-28/36 שנים", "28/36-54/63 שנים", "54/63 ומעלה"),
+    "ar": ("0-28/36 سنة", "28/36-54/63 سنة", "54/63 سنة فأكثر")
+}
+REALIZ_HEAD = {
+    "pt": ("Fase", "Período"), "en": ("Phase", "Period"), "es": ("Fase", "Período"),
+    "it": ("Fase", "Periodo"), "fr": ("Phase", "Période"), "de": ("Phase", "Zeitraum"),
+    "ja": ("段階", "期間"), "zh": ("阶段", "时期"), "ru": ("Этап", "Период"),
+    "hi": ("चरण", "अवधि"), "he": ("שלב", "תקופה"), "ar": ("المرحلة", "الفترة")
 }
 
 # =====================================================================
