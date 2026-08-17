@@ -810,7 +810,7 @@
         </div>
     </section>
 
-    <!-- FORMULÁRIO NÚMERO ELEITORAL -->
+        <!-- FORMULÁRIO NÚMERO ELEITORAL -->
     <section id="form-eleitoral" class="hidden-form">
         <div class="form-container">
             <h2 class="section-title" data-i18n="eleitoral_title">Cálculo do Número Eleitoral</h2>
@@ -1141,6 +1141,41 @@ function enviarMensagem() {
     .then(function(d){ if (d.ok) { st.style.color = "#28a745"; st.textContent = t.alert_msg_ok; document.getElementById("msgTexto").value = ""; } else { st.style.color = "#dc3545"; st.textContent = t.alert_msg_erro; } })
     .catch(function(){ st.style.color = "#dc3545"; st.textContent = t.alert_msg_conexao; });
 }
+
+// CAMPO_LBL — rótulos do seletor de energia e campos contextuais (12 idiomas)
+const CAMPO_LBL = {
+  "energia": {
+    "pt": "Energia", "en": "Energy", "es": "Energía", "it": "Energia",
+    "fr": "Énergie", "de": "Energie", "ja": "エネルギー", "zh": "能量",
+    "ru": "Энергия", "hi": "ऊर्जा", "he": "אנרגיה", "ar": "الطاقة"
+  },
+  "selecione_energia": {
+    "pt": "Selecione a Energia", "en": "Select the Energy", "es": "Seleccione la Energía",
+    "it": "Seleziona l'Energia", "fr": "Sélectionnez l'Énergie", "de": "Energie auswählen",
+    "ja": "エネルギーを選択", "zh": "选择能量", "ru": "Выберите энергию",
+    "hi": "ऊर्जा चुनें", "he": "בחרו אנרגיה", "ar": "اختر الطاقة"
+  },
+  "tipo_pet": {
+    "pt": "Tipo do Pet", "en": "Pet Type", "es": "Tipo de Mascota", "it": "Tipo di Animale",
+    "fr": "Type d'Animal", "de": "Haustierart", "ja": "ペットの種類", "zh": "宠物类型",
+    "ru": "Тип питомца", "hi": "पालतू जानवर का प्रकार", "he": "סוג חיית המחמד", "ar": "نوع الحيوان الأليف"
+  },
+  "sexo_pet": {
+    "pt": "Macho / Fêmea", "en": "Male / Female", "es": "Macho / Hembra", "it": "Maschio / Femmina",
+    "fr": "Mâle / Femelle", "de": "Männlich / Weiblich", "ja": "オス / メス", "zh": "公 / 母",
+    "ru": "Самец / Самка", "hi": "नर / मादा", "he": "זכר / נקבה", "ar": "ذكر / أنثى"
+  },
+  "genero_bebe": {
+    "pt": "Menino / Menina", "en": "Boy / Girl", "es": "Niño / Niña", "it": "Maschio / Femmina",
+    "fr": "Garçon / Fille", "de": "Junge / Mädchen", "ja": "男の子 / 女の子", "zh": "男孩 / 女孩",
+    "ru": "Мальчик / Девочка", "hi": "लड़का / लड़की", "he": "ילד / ילדה", "ar": "ولد / بنت"
+  },
+  "outro_qual": {
+    "pt": "Outro / Qual?", "en": "Other / Which?", "es": "Otro / ¿Cuál?", "it": "Altro / Quale?",
+    "fr": "Autre / Lequel ?", "de": "Anderes / Welches?", "ja": "その他 / どれ？", "zh": "其他 / 哪种？",
+    "ru": "Другое / Какое?", "hi": "अन्य / कौन सा?", "he": "אחר / איזה?", "ar": "آخر / أي؟"
+  }
+};
     
 var BC_PRODUTOS = [
     ["express","Mapa Express",8,"🔮"],
