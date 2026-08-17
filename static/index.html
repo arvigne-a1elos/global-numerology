@@ -1141,41 +1141,6 @@ function enviarMensagem() {
     .catch(function(){ st.style.color = "#dc3545"; st.textContent = t.alert_msg_conexao; });
 }
 
-// CAMPO_LBL — rótulos do seletor de energia e campos contextuais (12 idiomas)
-const CAMPO_LBL = {
-  "energia": {
-    "pt": "Energia", "en": "Energy", "es": "Energía", "it": "Energia",
-    "fr": "Énergie", "de": "Energie", "ja": "エネルギー", "zh": "能量",
-    "ru": "Энергия", "hi": "ऊर्जा", "he": "אנרגיה", "ar": "الطاقة"
-  },
-  "selecione_energia": {
-    "pt": "Selecione a Energia", "en": "Select the Energy", "es": "Seleccione la Energía",
-    "it": "Seleziona l'Energia", "fr": "Sélectionnez l'Énergie", "de": "Energie auswählen",
-    "ja": "エネルギーを選択", "zh": "选择能量", "ru": "Выберите энергию",
-    "hi": "ऊर्जा चुनें", "he": "בחרו אנרגיה", "ar": "اختر الطاقة"
-  },
-  "tipo_pet": {
-    "pt": "Tipo do Pet", "en": "Pet Type", "es": "Tipo de Mascota", "it": "Tipo di Animale",
-    "fr": "Type d'Animal", "de": "Haustierart", "ja": "ペットの種類", "zh": "宠物类型",
-    "ru": "Тип питомца", "hi": "पालतू जानवर का प्रकार", "he": "סוג חיית המחמד", "ar": "نوع الحيوان الأليف"
-  },
-  "sexo_pet": {
-    "pt": "Macho / Fêmea", "en": "Male / Female", "es": "Macho / Hembra", "it": "Maschio / Femmina",
-    "fr": "Mâle / Femelle", "de": "Männlich / Weiblich", "ja": "オス / メス", "zh": "公 / 母",
-    "ru": "Самец / Самка", "hi": "नर / मादा", "he": "זכר / נקבה", "ar": "ذكر / أنثى"
-  },
-  "genero_bebe": {
-    "pt": "Menino / Menina", "en": "Boy / Girl", "es": "Niño / Niña", "it": "Maschio / Femmina",
-    "fr": "Garçon / Fille", "de": "Junge / Mädchen", "ja": "男の子 / 女の子", "zh": "男孩 / 女孩",
-    "ru": "Мальчик / Девочка", "hi": "लड़का / लड़की", "he": "ילד / ילדה", "ar": "ولد / بنت"
-  },
-  "outro_qual": {
-    "pt": "Outro / Qual?", "en": "Other / Which?", "es": "Otro / ¿Cuál?", "it": "Altro / Quale?",
-    "fr": "Autre / Lequel ?", "de": "Anderes / Welches?", "ja": "その他 / どれ？", "zh": "其他 / 哪种？",
-    "ru": "Другое / Какое?", "hi": "अन्य / कौन सा?", "he": "אחר / איזה?", "ar": "آخر / أي؟"
-  }
-};
-    
 var BC_PRODUTOS = [
     ["express","Mapa Express",8,"🔮"],
     ["vida","Qual Vida/Ano",8,"🔢"],
@@ -1288,6 +1253,7 @@ function usarPlanoPronto(qExpress, qVida, qIa, qCompleto) {
     if (!confirm(msg)) return;
     window.location.href = '/criar-checkout?lang=' + getLang() + '&produto=coletivo&qtd=' + qtdTotal + '&total=' + final + '&itens=' + encodeURIComponent(JSON.stringify(itens));
 }
+// ===== SEÇÃO ENERGIAS — CORRIGIDA (cards fixos, botão leva à pesquisa) =====
 function montarEnergias() {
     var lang = getLang();
     var container = document.getElementById("energiasGrid")
@@ -1300,50 +1266,30 @@ function montarEnergias() {
     var html = "";
     for (var i = 1; i <= 9; i++) {
         html += '<div class="energia-card">'
-            + '<div class="energia-numero">' + i + '</div>'
-            + '<div class="energia-titulo">' + (titulos[String(i)] || ("Energia " + i)) + '</div>'
+            + '<div class="energia-num">' + i + '</div>'
+            + '<div class="energia-nome">' + (titulos[String(i)] || ("Energia " + i)) + '</div>'
             + '<div class="energia-desc">' + (descs[String(i)] || "") + '</div>'
-            + '<button class="btn btn-gold" onclick="abrirEnergia(' + i + ')">' + btn + '</button>'
+            + '<button class="btn btn-full" onclick="pesquisarEnergia(' + i + ')">' + btn + '</button>'
             + '</div>';
     }
     container.innerHTML = html;
-}    
-function abrirEnergia(n) {
-    var lang = getLang();
-    var descs = (ENERGIAS_DESC && ENERGIAS_DESC[lang]) ? ENERGIAS_DESC[lang] : ENERGIAS_DESC["pt"];
-    var servicos = (typeof SERVICOS_TRAD !== "undefined" && SERVICOS_TRAD[lang]) ? SERVICOS_TRAD[lang] : [["Mapa Express","R$ 8"],["Mapa Completo","R$ 17"],["Nome de Urna","R$ 26"]];
-    var titulo = "Energia " + n;
-    var desc = descs[String(n)] || "";
-    var html = '<div class="energia-modal" id="energiaModal">'
-        + '<div class="energia-modal-box">'
-        + '<button class="energia-modal-fechar" onclick="fecharEnergia()">✕</button>'
-        + '<div class="energia-modal-numero">' + n + '</div>'
-        + '<div class="energia-modal-titulo">' + titulo + '</div>'
-        + '<div class="energia-modal-desc">' + desc + '</div>'
-        + '<div class="energia-modal-servicos">'
-        + '<button class="btn btn-gold" onclick="comprarEnergia(\'express\',' + n + ')">' + servicos[0][0] + ' · ' + servicos[0][1] + '</button>'
-        + '<button class="btn btn-gold" onclick="comprarEnergia(\'completo\',' + n + ')">' + servicos[1][0] + ' · ' + servicos[1][1] + '</button>'
-        + '<button class="btn btn-gold" onclick="comprarEnergia(\'urna\',' + n + ')">' + servicos[2][0] + ' · ' + servicos[2][1] + '</button>'
-        + '</div></div></div>';
-    var old = document.getElementById("energiaModal");
-    if (old) old.remove();
-    var div = document.createElement("div");
-    div.innerHTML = html;
-    document.body.appendChild(div.firstChild);
 }
 
-function fecharEnergia() {
-    var el = document.getElementById("energiaModal");
-    if (el) el.remove();
-}
-function comprarEnergia(produto, energia) {
+function pesquisarEnergia(n) {
+    // Card da energia leva direto ao serviço de pesquisa com a energia pré-selecionada
+    // (sem modal solto no fim da página)
     var lang = getLang();
     var nome = (document.getElementById("calcNome") ? document.getElementById("calcNome").value : "").trim();
     var nasc = (document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim();
-    window.location.href = '/criar-checkout?lang=' + lang + '&produto=' + produto + '&energia=' + energia
+    if (!nome || !nasc) {
+        alert(translations[lang].preencha_dados || "Preencha nome e data de nascimento primeiro.");
+        var sec = document.getElementById("calcSection") || document.getElementById("calculadora");
+        if (sec) sec.scrollIntoView({ behavior: "smooth" });
+        return;
+    }
+    window.location.href = '/criar-checkout?lang=' + lang + '&produto=ia&energia=' + n
         + '&nome=' + encodeURIComponent(nome) + '&nascimento=' + encodeURIComponent(nasc);
 }
-
  // Redução pitagórica (mesma lógica do backend main.py)
 function r1Num(n) {
     while (n > 9 && n !== 11 && n !== 22 && n !== 33) {
