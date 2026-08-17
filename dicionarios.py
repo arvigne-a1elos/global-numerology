@@ -165,7 +165,7 @@ def t(chave, lang):
 # ===== Funções de acesso =====
 def get_sig(n, lang="pt"):
     d = SIG.get(n)
-    if not d: return (t("nenhum",lang),","","") 
+    if not d: return (t("nenhum",lang),'','','')   
     return d
 
 def get_cam(n, lang="pt"):
