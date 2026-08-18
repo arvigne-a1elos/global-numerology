@@ -1253,7 +1253,7 @@ function usarPlanoPronto(qExpress, qVida, qIa, qCompleto) {
     if (!confirm(msg)) return;
     window.location.href = '/criar-checkout?lang=' + getLang() + '&produto=coletivo&qtd=' + qtdTotal + '&total=' + final + '&itens=' + encodeURIComponent(JSON.stringify(itens));
 }
-// ===== SEÇÃO ENERGIAS — CORRIGIDA (cards fixos, botão leva à pesquisa) =====
+// ===== SEÇÃO ENERGIAS — CORRIGIDA (cards fixos + botão leva à pesquisa, sem modal solto) =====
 function montarEnergias() {
     var lang = getLang();
     var container = document.getElementById("energiasGrid")
@@ -1272,6 +1272,23 @@ function montarEnergias() {
             + '<button class="btn btn-full" onclick="pesquisarEnergia(' + i + ')">' + btn + '</button>'
             + '</div>';
     }
+    container.innerHTML = html;
+}
+
+function pesquisarEnergia(n) {
+    // Card da energia → Pesquisa IA de Nomes com a energia pré-selecionada (sem modal solto no rodapé)
+    var lang = getLang();
+    var nome = (document.getElementById("calcNome") ? document.getElementById("calcNome").value : "").trim();
+    var nasc = (document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim();
+    if (!nome || !nasc) {
+        alert(translations[lang].preencha_dados || "Preencha nome e data de nascimento primeiro.");
+        var sec = document.getElementById("calcSection") || document.getElementById("calculadora");
+        if (sec) sec.scrollIntoView({ behavior: "smooth" });
+        return;
+    }
+    window.location.href = '/criar-checkout?lang=' + lang + '&produto=ia&energia=' + n
+        + '&nome=' + encodeURIComponent(nome) + '&nascimento=' + encodeURIComponent(nasc);
+}
     container.innerHTML = html;
 }
 
