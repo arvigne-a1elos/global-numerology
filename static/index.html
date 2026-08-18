@@ -1291,22 +1291,6 @@ function pesquisarEnergia(n) {
 }
     container.innerHTML = html;
 }
-
-function pesquisarEnergia(n) {
-    // Card da energia leva direto ao serviço de pesquisa com a energia pré-selecionada
-    // (sem modal solto no fim da página)
-    var lang = getLang();
-    var nome = (document.getElementById("calcNome") ? document.getElementById("calcNome").value : "").trim();
-    var nasc = (document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim();
-    if (!nome || !nasc) {
-        alert(translations[lang].preencha_dados || "Preencha nome e data de nascimento primeiro.");
-        var sec = document.getElementById("calcSection") || document.getElementById("calculadora");
-        if (sec) sec.scrollIntoView({ behavior: "smooth" });
-        return;
-    }
-    window.location.href = '/criar-checkout?lang=' + lang + '&produto=ia&energia=' + n
-        + '&nome=' + encodeURIComponent(nome) + '&nascimento=' + encodeURIComponent(nasc);
-}
  // Redução pitagórica (mesma lógica do backend main.py)
 function r1Num(n) {
     while (n > 9 && n !== 11 && n !== 22 && n !== 33) {
