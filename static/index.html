@@ -992,6 +992,9 @@ function traduzirTudo() {
         var feats = FEAT_TRAD[lang] && FEAT_TRAD[lang][prod];
         if (feats) card.querySelectorAll('.features li').forEach(function(li, i) { if (feats[i]) li.innerText = feats[i]; });
     });
+
+      // 4) Energias 1-9 — reconstrói traduzida
+    if (typeof montarEnergias === "function") montarEnergias();
     
     // 5) Montar Sob Medida: cabeçalhos + linhas
         var BC_HEAD_KEY = { servico:'bc_tbl_service', preco:'bc_tbl_price', qtd:'bc_tbl_qty' };
@@ -1053,6 +1056,41 @@ function comprar(produto) {
         + '&nome=' + encodeURIComponent(nome) + '&nascimento=' + encodeURIComponent(nasc);
 }
 
+// ===== SEÇÃO ENERGIAS — cards fixos + botão leva à pesquisa (sem modal solto) =====
+function montarEnergias() {
+    var lang = getLang();
+    var container = document.getElementById("energiasGrid")
+        || document.getElementById("energias")
+        || document.querySelector(".energias-grid");
+    if (!container) return;
+    var titulos = (ENERGIA_TITULOS && ENERGIA_TITULOS[lang]) ? ENERGIA_TITULOS[lang] : ENERGIA_TITULOS["pt"];
+    var descs = (ENERGIAS_DESC && ENERGIAS_DESC[lang]) ? ENERGIAS_DESC[lang] : ENERGIAS_DESC["pt"];
+    var btn = (ENERGIAS_BTN && ENERGIAS_BTN[lang]) ? ENERGIAS_BTN[lang] : "Pesquisar";
+    var html = "";
+    for (var i = 1; i <= 9; i++) {
+        html += '<div class="energia-card">'
+            + '<div class="energia-num">' + i + '</div>'
+            + '<div class="energia-nome">' + (titulos[String(i)] || ("Energia " + i)) + '</div>'
+            + '<div class="energia-desc">' + (descs[String(i)] || "") + '</div>'
+            + '<button class="btn btn-full" onclick="pesquisarEnergia(' + i + ')">' + btn + '</button>'
+            + '</div>';
+    }
+    container.innerHTML = html;
+}
+function pesquisarEnergia(n) {
+    var lang = getLang();
+    var nome = (document.getElementById("calcNome") ? document.getElementById("calcNome").value : "").trim();
+    var nasc = (document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim();
+    if (!nome || !nasc) {
+        alert(translations[lang].preencha_dados || "Preencha nome e data de nascimento primeiro.");
+        var sec = document.getElementById("calcSection") || document.getElementById("calculadora");
+        if (sec) sec.scrollIntoView({ behavior: "smooth" });
+        return;
+    }
+    window.location.href = '/criar-checkout?lang=' + lang + '&produto=ia&energia=' + n
+        + '&nome=' + encodeURIComponent(nome) + '&nascimento=' + encodeURIComponent(nasc);
+}
+    
 function toggleForm(tipo) {
     const fUrna = document.getElementById('form-urna');
     const fEle = document.getElementById('form-eleitoral');
@@ -1328,6 +1366,7 @@ function renderizarNumeros() {
     setLanguage(defaultLang);
     montarTabelaBC();
     atualizarResumoBC();
+    montarEnergias(); 
     traduzirTudo();
 }
 document.addEventListener('DOMContentLoaded', init); 
