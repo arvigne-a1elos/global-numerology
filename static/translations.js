@@ -189,8 +189,10 @@ const translations = {
         // Card Coletivo (features)
         feat_coletivo: ["✅ Planos prontos", "✅ Sob medida", "✅ Descontos progressivos", "✅ Códigos de presente"],
         desc_coletivo: "Contrate brindes numerológicos para seus clientes ou funcionários. Descontos de 10% a 70%.",
+                        // 8 produtos novos — títulos
+        "nome_pet": "Nome do Pet", "nickname": "Nickname Digital", "nome_dominio": "Nome do Domínio", "nome_canal": "Nome do Canal",
+        "nome_equipe": "Nome da Equipe", "nome_ong": "Nome de ONG", "nome_projeto": "Nome do Projeto", "nome_evento": "Nome do Evento", 
         nomes5: { caminho: "Caminho da Vida", destino: "Destino", alma: "Alma", personalidade: "Personalidade", realizacao: "Realização" }
-        
     },
     en: {
         hero_title: "NUMEROLOGICAL MAP",
@@ -345,6 +347,9 @@ const translations = {
         ph_sua_mensagem: "Write your suggestion or complaint here...",
         feat_coletivo: ["✅ Ready-made plans", "✅ Custom-made", "✅ Progressive discounts", "✅ Gift codes"],
         desc_coletivo: "Hire numerology gifts for your clients or employees. Discounts from 10% to 70%.",
+                        // 8 produtos novos — títulos
+        "nome_pet": "Pet Name", "nickname": "Digital Nickname", "nome_dominio": "Domain Name", "nome_canal": "Channel Name",
+        "nome_equipe": "Team Name", "nome_ong": "NGO Name", "nome_projeto": "Project Name", "nome_evento": "Event Name",
         nomes5: { caminho: "Life Path", destino: "Destiny", alma: "Soul", personalidade: "Personality", realizacao: "Realization" }
     },
     es: {
@@ -500,6 +505,9 @@ const translations = {
         ph_sua_mensagem: "Escriba aquí su sugerencia o reclamo...",
         feat_coletivo: ["✅ Planes listos", "✅ A medida", "✅ Descuentos progresivos", "✅ Códigos de regalo"],
         desc_coletivo: "Contrate obsequios numerológicos para sus clientes o empleados. Descuentos del 10% al 70%.",
+                       // 8 produtos novos — títulos
+        "nome_pet": "Nombre de Mascota", "nickname": "Nickname Digital", "nome_dominio": "Nombre de Dominio", "nome_canal": "Nombre de Canal",
+        "nome_equipe": "Nombre de Equipo", "nome_ong": "Nombre de ONG", "nome_projeto": "Nombre de Proyecto", "nome_evento": "Nombre de Evento",
         nomes5: { caminho: "Camino de Vida", destino: "Destino", alma: "Alma", personalidade: "Personalidad", realizacao: "Realización" }
     },
     it: {
@@ -655,6 +663,9 @@ const translations = {
         ph_sua_mensagem: "Scrivi qui il tuo suggerimento o reclamo...",
         feat_coletivo: ["✅ Piani pronti", "✅ Su misura", "✅ Sconti progressivi", "✅ Codici regalo"],
         desc_coletivo: "Assumi regali numerologici per i tuoi clienti o dipendenti. Sconti dal 10% al 70%.",
+                        // 8 produtos novos — títulos
+        "nome_pet": "Nome dell'Animale", "nickname": "Nickname Digitale", "nome_dominio": "Nome del Dominio", "nome_canal": "Nome del Canale",
+        "nome_equipe": "Nome del Team", "nome_ong": "Nome dell'ONG", "nome_projeto": "Nome del Progetto", "nome_evento": "Nome dell'Evento",
         nomes5: { caminho: "Percorso di Vita", destino: "Destino", alma: "Anima", personalidade: "Personalità", realizacao: "Realizzazione" }
     },
     fr: {
@@ -810,6 +821,9 @@ const translations = {
         ph_sua_mensagem: "Écrivez ici votre suggestion ou réclamation...",
         feat_coletivo: ["✅ Formules prêtes", "✅ Sur mesure", "✅ Remises progressives", "✅ Codes cadeaux"],
         desc_coletivo: "Commandez des cadeaux numérologiques pour vos clients ou employés. Remises de 10% à 70%.",
+                        // 8 produtos novos — títulos
+        "nome_pet": "Nom d'Animal", "nickname": "Pseudo Numérique", "nome_dominio": "Nom de Domaine", "nome_canal": "Nom de Chaîne",
+        "nome_equipe": "Nom d'Équipe", "nome_ong": "Nom d'ONG", "nome_projeto": "Nom de Projet", "nome_evento": "Nom d'Événement",
         nomes5: { caminho: "Chemin de Vie", destino: "Destin", alma: "Âme", personalidade: "Personnalité", realizacao: "Réalisation" }
     },
     de: {
@@ -965,7 +979,10 @@ const translations = {
         ph_sua_mensagem: "Schreiben Sie hier Ihren Vorschlag oder Ihre Beschwerde...",
         feat_coletivo: ["✅ Fertige Pläne", "✅ Maßgeschneidert", "✅ Progressive Rabatte", "✅ Geschenkcodes"],
         desc_coletivo: "Buchen Sie numerologische Geschenke für Ihre Kunden oder Mitarbeiter. Rabatte von 10% bis 70%.",
-        nomes5: { caminho: "Lebensweg", destino: "Schicksal", alma: "Seele", personalidade: "Persönlichkeit", realizacao: "Verwirklichung" }
+                        // 8 produtos novos — títulos
+        "nome_pet": "Haustiername", "nickname": "Digitaler Spitzname", "nome_dominio": "Domainname", "nome_canal": "Kanalname",
+        "nome_equipe": "Teamname", "nome_ong": "NGO-Name", "nome_projeto": "Projektname", "nome_evento": "Veranstaltungsname",
+         nomes5: { caminho: "Lebensweg", destino: "Schicksal", alma: "Seele", personalidade: "Persönlichkeit", realizacao: "Verwirklichung" }
     },
     ja: {
         hero_title: "数秘術マップ",
@@ -1120,6 +1137,9 @@ const translations = {
         ph_sua_mensagem: "ここにご提案やご意見をご記入ください...",
         feat_coletivo: ["✅ 既製プラン", "✅ カスタムメイド", "✅ 段階的割引", "✅ ギフトコード"],
         desc_coletivo: "顧客や従業員向けに数秘術ギフトをご用意。10%〜70%の割引。",
+                        // 8 produtos novos — títulos
+        "nome_pet": "ペットの名前", "nickname": "ニックネーム", "nome_dominio": "ドメイン名", "nome_canal": "チャンネル名",
+        "nome_equipe": "チーム名", "nome_ong": "NGO・団体名", "nome_projeto": "プロジェクト名", "nome_evento": "イベント名",
         nomes5: { caminho: "ライフパス", destino: "運命", alma: "魂", personalidade: "性格", realizacao: "実現" }
     },
     zh: {
@@ -1275,6 +1295,9 @@ const translations = {
         ph_sua_mensagem: "请在此写下您的建议或投诉...",
         feat_coletivo: ["✅ 现成方案", "✅ 量身定制", "✅ 阶梯折扣", "✅ 礼品代码"],
         desc_coletivo: "为您的客户或员工订购数字命理礼物。折扣10%至70%。",
+                        // 8 produtos novos — títulos
+        "nome_pet": "宠物名字", "nickname": "昵称", "nome_dominio": "域名", "nome_canal": "频道名称",
+        "nome_equipe": "团队名称", "nome_ong": "非政府组织名称", "nome_projeto": "项目名称", "nome_evento": "活动名称",
         nomes5: { caminho: "生命路径", destino: "命运", alma: "灵魂", personalidade: "个性", realizacao: "实现" }
     },
     ru: {
@@ -1430,6 +1453,9 @@ const translations = {
         ph_sua_mensagem: "Напишите здесь ваше предложение или жалобу...",
         feat_coletivo: ["✅ Готовые планы", "✅ По индивидуальному заказу", "✅ Прогрессивные скидки", "✅ Подарочные коды"],
         desc_coletivo: "Закажите нумерологические подарки для ваших клиентов или сотрудников. Скидки от 10% до 70%.",
+                        // 8 produtos novos — títulos
+        "nome_pet": "Имя питомца", "nickname": "Никнейм", "nome_dominio": "Имя домена", "nome_canal": "Название канала",
+        "nome_equipe": "Название команды", "nome_ong": "Название НКО", "nome_projeto": "Название проекта", "nome_evento": "Название события",
         nomes5: { caminho: "Путь Жизни", destino: "Судьба", alma: "Душа", personalidade: "Личность", realizacao: "Реализация" }
     },
     hi: {
@@ -1585,6 +1611,9 @@ const translations = {
         ph_sua_mensagem: "अपना सुझाव या शिकायत यहाँ लिखें...",
         feat_coletivo: ["✅ तैयार योजनाएं", "✅ कस्टम निर्मित", "✅ क्रमिक छूट", "✅ उपहार कोड"],
         desc_coletivo: "अपने ग्राहकों या कर्मचारियों के लिए अंकशास्त्र उपहार बुक करें। 10% से 70% तक छूट।",
+                        // 8 produtos novos — títulos
+        "nome_pet": "पालतू जानवर का नाम", "nickname": "उपनाम", "nome_dominio": "डोमेन नाम", "nome_canal": "चैनल नाम",
+        "nome_equipe": "टीम का नाम", "nome_ong": "एनजीओ का नाम", "nome_projeto": "परियोजना का नाम", "nome_evento": "इवेंट का नाम",
         nomes5: { caminho: "जीवन पथ", destino: "भाग्य", alma: "आत्मा", personalidade: "व्यक्तित्व", realizacao: "उपलब्धि" }
     },
     he: {
@@ -1740,6 +1769,9 @@ const translations = {
         ph_sua_mensagem: "כתוב כאן את ההצעה או התלונה שלך...",
         feat_coletivo: ["✅ תוכניות מוכנות", "✅ לפי הזמנה", "✅ הנחות מדורגות", "✅ קודי מתנה"],
         desc_coletivo: "הזמינו מתנות נומרולוגיות ללקוחות או לעובדים שלכם. הנחות של 10% עד 70%.",
+                        // 8 produtos novos — títulos
+        "nome_pet": "שם חיית המחמד", "nickname": "כינוי דיגיטלי", "nome_dominio": "שם דומיין", "nome_canal": "שם הערוץ",
+        "nome_equipe": "שם הצוות", "nome_ong": "שם העמותה", "nome_projeto": "שם הפרויקט", "nome_evento": "שם האירוע",
         nomes5: { caminho: "נתיב החיים", destino: "גורל", alma: "נשמה", personalidade: "אישיות", realizacao: "הגשמה" }
     },
     ar: {
@@ -1895,6 +1927,9 @@ const translations = {
         ph_sua_mensagem: "اكتب هنا اقتراحك أو شكواك...",
         feat_coletivo: ["✅ خطط جاهزة", "✅ حسب الطلب", "✅ خصومات تصاعدية", "✅ رموز هدايا"],
         desc_coletivo: "اطلب هدايا علم الأعداد لعملائك أو موظفيك. خصومات من 10% إلى 70%.",
+                        // 8 produtos novos — títulos
+        "nome_pet": "اسم الحيوان الأليف", "nickname": "اللقب الرقمي", "nome_dominio": "اسم النطاق", "nome_canal": "اسم القناة",
+        "nome_equipe": "اسم الفريق", "nome_ong": "اسم المنظمة", "nome_projeto": "اسم المشروع", "nome_evento": "اسم الحدث",
         nomes5: { caminho: "مسار الحياة", destino: "القدر", alma: "الروح", personalidade: "الشخصية", realizacao: "الإنجاز" }
     }
 };
