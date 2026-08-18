@@ -22,6 +22,8 @@
             overflow-x: hidden;
             line-height: 1.6;
         }
+        nav.sections a{color:#888;text-decoration:none;font-size:.75rem;text-transform:uppercase;letter-spacing:1px;transition:.3s}
+        nav.sections a:hover{color:var(--gold)}
         [dir="rtl"] { text-align: right; }
         /* Language Selector */
       .lang-wrapper {
@@ -360,7 +362,16 @@
   <div class="a1-banner" id="bannerTopoB"></div>
 </div>
 
-    <!-- HERO -->
+<nav class="sections" style="position:relative;top:0;width:100%;z-index:9990;background:rgba(10,10,10,0.9);border-bottom:1px solid #222;padding:8px 0;display:flex;justify-content:center;gap:18px;flex-wrap:wrap">
+    <a href="#calculadora" data-i18n="nav_map">Mapa</a>
+    <a href="#produtos" data-i18n="nav_prod">Produtos</a>
+    <a href="#form-urna" data-i18n="nav_urna">Urna</a>
+    <a href="#form-eleitoral" data-i18n="nav_elec">Eleitoral</a>
+    <a href="#energias" data-i18n="nav_energy">Energias</a>
+    <a href="#corporativo" data-i18n="nav_bc">Bônus</a>
+    <a href="#investidores" data-i18n="nav_inv">Investidores</a>
+</nav>
+        <!-- HERO -->
     <section class="hero">
         <img src="https://generated-images.adapta.one/arvigne%40gmail.com/019f56cb-b9e4-7644-9dd8-5d14c5261d46/2026-07-14T13-27-24-531Z_Original_user_intent_A_premium_minimalist_logo_s.png" alt="Logo" class="logo-img">
         <h1 data-i18n="hero_title">MAPA NUMEROLÓGICO</h1>
@@ -799,7 +810,14 @@
             <h2 class="section-title" data-i18n="urna_title">Validação do Nome de Urna</h2>
             <p class="section-sub" data-i18n="urna_sub">5 tentativas + cálculo letra a letra + PDF sigiloso — R$ 26</p>
             <div class="form-group"><label data-i18n="f_nome">Nome Completo da Pessoa</label><input type="text" id="urnaNome" data-i18n-ph="ph_nome_completo" placeholder="Nome completo"></div>
-            <div class="form-group"><label data-i18n="f_cargo">Cargo em Disputa</label><input type="text" id="urnaCargo" data-i18n-ph="ph_ex_vereador" placeholder="Ex: Vereador"></div>
+            <div class="form-group"><label data-i18n="f_cargo">Cargo em Disputa</label>
+    <select id="urnaCargo">
+        <option value="vereador" data-i18n="c_vereador">Vereador</option>
+        <option value="dep_estadual" data-i18n="c_estadual">Dep. Estadual</option>
+        <option value="dep_federal" data-i18n="c_federal">Dep. Federal</option>
+        <option value="senador" data-i18n="c_senador">Senador</option>
+    </select>
+</div>
             <h3 style="color:var(--gold);margin:20px 0 10px" data-i18n="urna_options">Insira até 5 opções de nome de candidato:</h3>
             <div class="form-group"><input type="text" id="urnaNome1" data-i18n-ph="ph_nome_1" placeholder="Nome 1"></div>
             <div class="form-group"><input type="text" id="urnaNome2" data-i18n-ph="ph_nome_2" placeholder="Nome 2"></div>
@@ -815,6 +833,7 @@
         <div class="form-container">
             <h2 class="section-title" data-i18n="eleitoral_title">Cálculo do Número Eleitoral</h2>
             <p class="section-sub" data-i18n="eleitoral_sub">Sugestões com energia 8 para sua candidatura — R$ 26</p>
+            <p style="text-align:center;color:#555;margin-bottom:20px;font-size:.8rem;font-style:italic" data-i18n="elec_mask">Por lei eleitoral, números só podem ser divulgados publicamente no período legal.</p>
             <div class="form-group"><label data-i18n="f_nome">Nome Completo da Pessoa</label><input type="text" id="eleiNome" data-i18n-ph="ph_nome_completo" placeholder="Nome completo"></div>
             <div class="form-group"><label data-i18n="f_cargo2">Cargo</label>
                 <select id="eleiCargo">
