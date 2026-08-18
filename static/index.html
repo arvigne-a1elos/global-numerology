@@ -974,10 +974,7 @@ function traduzirTudo() {
         var k = el.getAttribute('data-i18n');
         if (t[k]) el.innerText = t[k];
     });
-    // 1b) "Data de Nascimento" usa calc_nasc (não calc_data)
-    var lblData = document.querySelector('label[data-i18n="calc_data"]');
-    if (lblData && t.calc_nasc) lblData.innerText = t.calc_nasc;
-
+    
     // 2) Placeholders (data-i18n-ph) — com fallback para calc_nome
     document.querySelectorAll('[data-i18n-ph]').forEach(function(el) {
         var k = el.getAttribute('data-i18n-ph');
@@ -995,8 +992,7 @@ function traduzirTudo() {
         var feats = FEAT_TRAD[lang] && FEAT_TRAD[lang][prod];
         if (feats) card.querySelectorAll('.features li').forEach(function(li, i) { if (feats[i]) li.innerText = feats[i]; });
     });
-    // 4) Energias 1-9 — a grade é 100% gerada por JS; reconstrói traduzida
-    if (typeof montarEnergias === "function") montarEnergias();
+    
     // 5) Montar Sob Medida: cabeçalhos + linhas
         var BC_HEAD_KEY = { servico:'bc_tbl_service', preco:'bc_tbl_price', qtd:'bc_tbl_qty' };
     document.querySelectorAll('[data-i18n-bc]').forEach(function(el) {
@@ -1253,45 +1249,8 @@ function usarPlanoPronto(qExpress, qVida, qIa, qCompleto) {
     if (!confirm(msg)) return;
     window.location.href = '/criar-checkout?lang=' + getLang() + '&produto=coletivo&qtd=' + qtdTotal + '&total=' + final + '&itens=' + encodeURIComponent(JSON.stringify(itens));
 }
-// ===== SEÇÃO ENERGIAS — CORRIGIDA (cards fixos + botão leva à pesquisa, sem modal solto) =====
-function montarEnergias() {
-    var lang = getLang();
-    var container = document.getElementById("energiasGrid")
-        || document.getElementById("energias")
-        || document.querySelector(".energias-grid");
-    if (!container) return;
-    var titulos = (ENERGIA_TITULOS && ENERGIA_TITULOS[lang]) ? ENERGIA_TITULOS[lang] : ENERGIA_TITULOS["pt"];
-    var descs = (ENERGIAS_DESC && ENERGIAS_DESC[lang]) ? ENERGIAS_DESC[lang] : ENERGIAS_DESC["pt"];
-    var btn = (ENERGIAS_BTN && ENERGIAS_BTN[lang]) ? ENERGIAS_BTN[lang] : "Pesquisar";
-    var html = "";
-    for (var i = 1; i <= 9; i++) {
-        html += '<div class="energia-card">'
-            + '<div class="energia-num">' + i + '</div>'
-            + '<div class="energia-nome">' + (titulos[String(i)] || ("Energia " + i)) + '</div>'
-            + '<div class="energia-desc">' + (descs[String(i)] || "") + '</div>'
-            + '<button class="btn btn-full" onclick="pesquisarEnergia(' + i + ')">' + btn + '</button>'
-            + '</div>';
-    }
-    container.innerHTML = html;
-}
 
-function pesquisarEnergia(n) {
-    // Card da energia → Pesquisa IA de Nomes com a energia pré-selecionada (sem modal solto no rodapé)
-    var lang = getLang();
-    var nome = (document.getElementById("calcNome") ? document.getElementById("calcNome").value : "").trim();
-    var nasc = (document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim();
-    if (!nome || !nasc) {
-        alert(translations[lang].preencha_dados || "Preencha nome e data de nascimento primeiro.");
-        var sec = document.getElementById("calcSection") || document.getElementById("calculadora");
-        if (sec) sec.scrollIntoView({ behavior: "smooth" });
-        return;
-    }
-    window.location.href = '/criar-checkout?lang=' + lang + '&produto=ia&energia=' + n
-        + '&nome=' + encodeURIComponent(nome) + '&nascimento=' + encodeURIComponent(nasc);
-}
-    container.innerHTML = html;
-}
- // Redução pitagórica (mesma lógica do backend main.py)
+// Redução pitagórica (mesma lógica do backend main.py)
 function r1Num(n) {
     while (n > 9 && n !== 11 && n !== 22 && n !== 33) {
         n = String(n).split('').reduce(function(a, d) { return a + parseInt(d, 10); }, 0);
@@ -1369,7 +1328,6 @@ function renderizarNumeros() {
     setLanguage(defaultLang);
     montarTabelaBC();
     atualizarResumoBC();
-    montarEnergias();
     traduzirTudo();
 }
 document.addEventListener('DOMContentLoaded', init); 
