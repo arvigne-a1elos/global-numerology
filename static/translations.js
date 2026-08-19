@@ -199,6 +199,12 @@ const translations = {
                         // 8 produtos novos — títulos
         "nome_pet": "Nome do Pet", "nickname": "Nickname Digital", "nome_dominio": "Nome do Domínio", "nome_canal": "Nome do Canal",
         "nome_equipe": "Nome da Equipe", "nome_ong": "Nome de ONG", "nome_projeto": "Nome do Projeto", "nome_evento": "Nome do Evento", 
+        confirmar: "Confirmar",
+        cancelar: "Cancelar",
+        fechar: "Fechar",
+        energia_label: "Energia",
+        energia_escolha: "Escolha um produto para pesquisar com esta energia:",
+        preencha_dado: "Preencha o dado solicitado.",
         nomes5: { caminho: "Caminho da Vida", destino: "Destino", alma: "Alma", personalidade: "Personalidade", realizacao: "Realização" }
     },
     en: {
@@ -364,6 +370,12 @@ const translations = {
                         // 8 produtos novos — títulos
         "nome_pet": "Pet Name", "nickname": "Digital Nickname", "nome_dominio": "Domain Name", "nome_canal": "Channel Name",
         "nome_equipe": "Team Name", "nome_ong": "NGO Name", "nome_projeto": "Project Name", "nome_evento": "Event Name",
+        confirmar: "Confirm",
+        cancelar: "Cancel",
+        fechar: "Close",
+        energia_label: "Energy",
+        energia_escolha: "Choose a product to search with this energy:",
+        preencha_dado: "Fill in the requested data",
         nomes5: { caminho: "Life Path", destino: "Destiny", alma: "Soul", personalidade: "Personality", realizacao: "Realization" }
     },
     es: {
@@ -529,6 +541,12 @@ const translations = {
                        // 8 produtos novos — títulos
         "nome_pet": "Nombre de Mascota", "nickname": "Nickname Digital", "nome_dominio": "Nombre de Dominio", "nome_canal": "Nombre de Canal",
         "nome_equipe": "Nombre de Equipo", "nome_ong": "Nombre de ONG", "nome_projeto": "Nombre de Proyecto", "nome_evento": "Nombre de Evento",
+        confirmar: "Confirmar",
+        cancelar: "Cancelar",
+        fechar: "Cerrar",
+        energia_label: "Energía",
+        energia_escolha: "Elige un producto para buscar con esta energía:",
+        preencha_dado: "Completa el dato solicitado",
         nomes5: { caminho: "Camino de Vida", destino: "Destino", alma: "Alma", personalidade: "Personalidad", realizacao: "Realización" }
     },
     it: {
@@ -694,6 +712,12 @@ const translations = {
                         // 8 produtos novos — títulos
         "nome_pet": "Nome dell'Animale", "nickname": "Nickname Digitale", "nome_dominio": "Nome del Dominio", "nome_canal": "Nome del Canale",
         "nome_equipe": "Nome del Team", "nome_ong": "Nome dell'ONG", "nome_projeto": "Nome del Progetto", "nome_evento": "Nome dell'Evento",
+        confirmar: "Conferma",
+        cancelar: "Annulla",
+        fechar: "Chiudi",
+        energia_label: "Energia",
+        energia_escolha: "Scegli un prodotto per cercare con questa energia:",
+        preencha_dado: "Compila il dato richiesto",
         nomes5: { caminho: "Percorso di Vita", destino: "Destino", alma: "Anima", personalidade: "Personalità", realizacao: "Realizzazione" }
     },
     fr: {
@@ -859,6 +883,12 @@ const translations = {
                         // 8 produtos novos — títulos
         "nome_pet": "Nom d'Animal", "nickname": "Pseudo Numérique", "nome_dominio": "Nom de Domaine", "nome_canal": "Nom de Chaîne",
         "nome_equipe": "Nom d'Équipe", "nome_ong": "Nom d'ONG", "nome_projeto": "Nom de Projet", "nome_evento": "Nom d'Événement",
+        confirmar: "Confirmer",
+        cancelar: "Annuler",
+        fechar: "Fermer",
+        energia_label: "Énergie",
+        energia_escolha: "Choisissez un produit pour rechercher avec cette énergie :",
+        preencha_dado: "Renseignez la donnée demandée",
         nomes5: { caminho: "Chemin de Vie", destino: "Destin", alma: "Âme", personalidade: "Personnalité", realizacao: "Réalisation" }
     },
     de: {
@@ -1024,7 +1054,13 @@ const translations = {
                         // 8 produtos novos — títulos
         "nome_pet": "Haustiername", "nickname": "Digitaler Spitzname", "nome_dominio": "Domainname", "nome_canal": "Kanalname",
         "nome_equipe": "Teamname", "nome_ong": "NGO-Name", "nome_projeto": "Projektname", "nome_evento": "Veranstaltungsname",
-         nomes5: { caminho: "Lebensweg", destino: "Schicksal", alma: "Seele", personalidade: "Persönlichkeit", realizacao: "Verwirklichung" }
+        confirmar: "Bestätigen",
+        cancelar: "Abbrechen",
+        fechar: "Schließen",
+        energia_label: "Energie",
+        energia_escolha: "Wählen Sie ein Produkt, um mit dieser Energie zu suchen:",
+        preencha_dado: "Füllen Sie die angeforderte Angabe aus",
+        nomes5: { caminho: "Lebensweg", destino: "Schicksal", alma: "Seele", personalidade: "Persönlichkeit", realizacao: "Verwirklichung" }
     },
     ja: {
         hero_title: "数秘術マップ",
@@ -1189,6 +1225,12 @@ const translations = {
                         // 8 produtos novos — títulos
         "nome_pet": "ペットの名前", "nickname": "ニックネーム", "nome_dominio": "ドメイン名", "nome_canal": "チャンネル名",
         "nome_equipe": "チーム名", "nome_ong": "NGO・団体名", "nome_projeto": "プロジェクト名", "nome_evento": "イベント名",
+        confirmar: "確認",
+        cancelar: "キャンセル",
+        fechar: "閉じる",
+        energia_label: "エネルギー",
+        energia_escolha: "このエネルギーで検索する商品を選んでください:",
+        preencha_dado: "要求されたデータを入力してください",
         nomes5: { caminho: "ライフパス", destino: "運命", alma: "魂", personalidade: "性格", realizacao: "実現" }
     },
     zh: {
@@ -1354,6 +1396,12 @@ const translations = {
                         // 8 produtos novos — títulos
         "nome_pet": "宠物名字", "nickname": "昵称", "nome_dominio": "域名", "nome_canal": "频道名称",
         "nome_equipe": "团队名称", "nome_ong": "非政府组织名称", "nome_projeto": "项目名称", "nome_evento": "活动名称",
+        confirmar: "确认",
+        cancelar: "取消",
+        fechar: "关闭",
+        energia_label: "能量",
+        energia_escolha: "选择要使用此能量搜索的产品:",
+        preencha_dado: "请填写要求的数据",
         nomes5: { caminho: "生命路径", destino: "命运", alma: "灵魂", personalidade: "个性", realizacao: "实现" }
     },
     ru: {
@@ -1515,6 +1563,12 @@ const translations = {
         ph_seu_nome: "Имя",
         ph_sua_mensagem: "Напишите здесь ваше предложение или жалобу...",
         feat_coletivo: ["✅ Готовые планы", "✅ По индивидуальному заказу", "✅ Прогрессивные скидки", "✅ Подарочные коды"],
+        confirmar: "Подтвердить",
+        cancelar: "Отмена",
+        fechar: "Закрыть",
+        energia_label: "Энергия",
+        energia_escolha: "Выберите продукт для поиска с этой энергией:",
+        preencha_dado: "Заполните запрошенные данные",
         desc_coletivo: "Закажите нумерологические подарки для ваших клиентов или сотрудников. Скидки от 10% до 70%.",
                         // 8 produtos novos — títulos
         "nome_pet": "Имя питомца", "nickname": "Никнейм", "nome_dominio": "Имя домена", "nome_canal": "Название канала",
@@ -1684,6 +1738,12 @@ const translations = {
                         // 8 produtos novos — títulos
         "nome_pet": "पालतू जानवर का नाम", "nickname": "उपनाम", "nome_dominio": "डोमेन नाम", "nome_canal": "चैनल नाम",
         "nome_equipe": "टीम का नाम", "nome_ong": "एनजीओ का नाम", "nome_projeto": "परियोजना का नाम", "nome_evento": "इवेंट का नाम",
+        confirmar: "पुष्टि करें",
+        cancelar: "रद्द करें",
+        fechar: "बंद करें",
+        energia_label: "ऊर्जा",
+        energia_escolha: "इस ऊर्जा से खोजने के लिए उत्पाद चुनें:",
+        preencha_dado: "अनुरोधित डेटा भरें।",
         nomes5: { caminho: "जीवन पथ", destino: "भाग्य", alma: "आत्मा", personalidade: "व्यक्तित्व", realizacao: "उपलब्धि" }
     },
     he: {
@@ -1849,6 +1909,12 @@ const translations = {
                         // 8 produtos novos — títulos
         "nome_pet": "שם חיית המחמד", "nickname": "כינוי דיגיטלי", "nome_dominio": "שם דומיין", "nome_canal": "שם הערוץ",
         "nome_equipe": "שם הצוות", "nome_ong": "שם העמותה", "nome_projeto": "שם הפרויקט", "nome_evento": "שם האירוע",
+        confirmar: "אישור",
+        cancelar: "ביטול",
+        fechar: "סגור",
+        energia_label: "אנרגיה",
+        energia_escolha: "בחר מוצר לחיפוש עם אנרגיה זו:",
+        preencha_dado: "מלא את הנתון המבוקש",
         nomes5: { caminho: "נתיב החיים", destino: "גורל", alma: "נשמה", personalidade: "אישיות", realizacao: "הגשמה" }
     },
     ar: {
@@ -2014,6 +2080,12 @@ const translations = {
                         // 8 produtos novos — títulos
         "nome_pet": "اسم الحيوان الأليف", "nickname": "اللقب الرقمي", "nome_dominio": "اسم النطاق", "nome_canal": "اسم القناة",
         "nome_equipe": "اسم الفريق", "nome_ong": "اسم المنظمة", "nome_projeto": "اسم المشروع", "nome_evento": "اسم الحدث",
+        confirmar: "تأكيد",
+        cancelar: "إلغاء",
+        fechar: "إغلاق",
+        energia_label: "الطاقة",
+        energia_escolha: "اختر منتجًا للبحث بهذه الطاقة:",
+        preencha_dado: "املأ البيانات المطلوبة",
         nomes5: { caminho: "مسار الحياة", destino: "القدر", alma: "الروح", personalidade: "الشخصية", realizacao: "الإنجاز" }
     }
 };
