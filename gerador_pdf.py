@@ -88,21 +88,20 @@ def pagina_sucesso(pdf_path, nome, prod_nome, lang="pt"):
             f'<a href="/" style="color:#C9A94E">{tx("voltar")}</a></body></html>')
 
 # ===== FUNÇÃO ÚNICA DO ORQUESTRADOR =====
-def gerar_pdf(produto, dados, lang="pt", nome="", nascimento=""):
+def gerar_pdf(prod, data, lang="pt", nome="", bd="", dado=""):
     """Gera o PDF do produto no idioma e retorna o caminho do arquivo.
-
-    dados: dict dos 5 números (calc) para a maioria dos produtos.
-    Para urna: dados = {nome_completo, cargo_label, resultados, sugestoes}
-    Para eleitoral: dados = {sigla, cargo_label, sugestoes, numero_existente}
+    data: dict dos 5 números (calc) para a maioria dos produtos.
+    Para urna: data = {nome_completo, cargo_label, resultados, sugestoes}
+    Para eleitoral: data = {sigla, cargo_label, sugestoes, numero_existente}
     """
-    if produto == "express":
-        return pdf8(dados, nome, nascimento, lang)
-    if produto == "completo":
-        return pdf17(dados, nome, nascimento, lang)
-    if produto == "urna":
-        return pdf_urna(dados["nome_completo"], dados["cargo_label"],
-                        dados["resultados"], dados["sugestoes"], lang)
-    if produto == "eleitoral":
-        return pdf_eleitoral(dados["sigla"], dados["cargo_label"],
-                             dados["sugestoes"], dados.get("numero_existente"), lang)
-    return pdf_produto(produto, dados, nome, nascimento, lang)
+    if prod == "express":
+        return pdf8(data, nome, bd, lang)
+    if prod == "completo":
+        return pdf17(data, nome, bd, lang)
+    if prod == "urna":
+        return pdf_urna(data["nome_completo"], data["cargo_label"],
+                        data["resultados"], data["sugestoes"], lang)
+    if prod == "eleitoral":
+        return pdf_eleitoral(data["sigla"], data["cargo_label"],
+                             data["sugestoes"], data.get("numero_existente"), lang)
+    return pdf_produto(prod, data, nome, bd, lang, dado=dado)
