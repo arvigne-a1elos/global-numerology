@@ -517,7 +517,8 @@ def pay_eleitoral(req: EleitoralPayReq):
             "cargo": req.cargo, "email": req.email, "numero_existente": "",
             "nome_completo": req.nome_completo}
     return _criar_sessao("eleitoral", req.lang or "pt", req.email, req.nome_completo, "", meta)
- def _enviar_email_simples(destinatario, assunto, corpo):
+ # ===== EMAIL SIMPLES =====
+def _enviar_email_simples(destinatario, assunto, corpo):   # ← coluna 0, sem espaços
     try:
         msg = MIMEMultipart()
         msg["From"] = FROM_EMAIL
