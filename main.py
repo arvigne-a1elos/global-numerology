@@ -18,12 +18,11 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, Tabl
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER, TA_LEFT
-from calc_service import reduzir, calc_mapa, calc_grid, validar_nomes_urna, gerar_numeros
-from dicionarios import PRODUTOS, PDF_TEXTS
-> import smtplib
-> from email.mime.text import MIMEText
-> from email.mime.multipart import MIMEMultipart
->
+import qrcode
+import dateutil.parser as dp
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 import qrcode
 import dateutil.parser as dp
 
