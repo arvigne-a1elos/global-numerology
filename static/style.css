@@ -103,3 +103,79 @@ footer { padding: 60px 20px; text-align: center; border-top: 1px solid #222; col
 .numero-gratis { display: flex; justify-content: space-between; align-items: center; gap: 12px; background: #151515; border: 1px solid #333; border-radius: 10px; padding: 10px 16px; margin: 8px 0; }
 .numero-nome { color: #ccc; font-size: 0.95rem; }
 .numero-valor { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--gold); font-weight: 700; min-width: 32px; text-align: center; }
+/* ===== MODAIS (dado específico + menu de energia) ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 99999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.modal-overlay.active {
+  display: flex;
+}
+.modal-box {
+  background: #111;
+  border: 2px solid var(--gold, #C9A94E);
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 460px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  color: #fff;
+  text-align: center;
+}
+.modal-box h3 {
+  color: var(--gold, #C9A94E);
+  margin-bottom: 8px;
+  font-size: 1.15rem;
+}
+.modal-box p {
+  color: #ccc;
+  margin-bottom: 14px;
+  font-size: 0.95rem;
+}
+.modal-input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #333;
+  background: #1a1a1a;
+  color: #fff;
+  margin-bottom: 14px;
+  text-align: center;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.modal-actions .btn {
+  flex: 1;
+  min-width: 120px;
+  margin: 0;
+}
+.modal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.modal-grid .btn {
+  margin: 0;
+  padding: 10px;
+  font-size: 0.85rem;
+}
+/* RTL: alinha modais à direita para árabe/hebraico */
+[dir="rtl"] .modal-box,
+[dir="rtl"] .modal-box p,
+[dir="rtl"] .modal-input {
+  text-align: right;
+}
