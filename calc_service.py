@@ -75,3 +75,28 @@ def calc_realizacoes(dia, mes, ano):
         "r3": reduzir(reduzir(dia + mes) + reduzir(dia + ano)),
         "r4": reduzir(dia + mes + ano),
     }
+# ===== FUNÇÕES MOVIDAS DO MAIN.PY (coesão: toda a numerologia aqui) =====
+
+def validar_nomes_urna(nomes, cargo_key):
+    """Valida e calcula a energia de até 5 nomes de candidato para a urna."""
+    cargos = {
+        "vereador": "Vereador", "dep_estadual": "Deputado Estadual",
+        "dep_federal": "Deputado Federal", "senador": "Senador",
+    }
+    rotulo = cargos.get(cargo_key, cargo_key)
+    resultados = []
+    for nome in nomes:
+        if not nome or not nome.strip():
+            continue
+        energia, soma = calc_nome(nome)
+        resultados.append({"nome": nome.strip(), "energia": energia, "soma": soma})
+    return {"cargo": rotulo, "resultados": resultados}
+
+def gerar_numeros(sigla, cargo, qtd=5):
+    """Gera números eleitorais a partir da sigla + cargo."""
+    base = calc_nome(sigla)[0]
+    numeros = []
+    for i in range(qtd):
+        num = reduzir(base + i + 1)
+        numeros.append({"numero": num, "energia": num})
+    return numeros
