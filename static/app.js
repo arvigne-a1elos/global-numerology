@@ -67,55 +67,154 @@ function montarSeletorIdioma() {
     });
 }
 
-// ===== COMPRAR =====
+// ===== COMPRAR (abre modal do dado específico do produto) =====
+var DADO_LABEL = {
+  pt:{nome_pet:"Nome do Pet",nickname:"Nickname Digital",nome_dominio:"Nome do Domínio",nome_canal:"Nome do Canal",nome_equipe:"Nome da Equipe",nome_ong:"Nome da ONG",nome_projeto:"Nome do Projeto",nome_evento:"Nome do Evento"},
+  en:{nome_pet:"Pet Name",nickname:"Digital Nickname",nome_dominio:"Domain Name",nome_canal:"Channel Name",nome_equipe:"Team Name",nome_ong:"NGO Name",nome_projeto:"Project Name",nome_evento:"Event Name"},
+  es:{nome_pet:"Nombre de Mascota",nickname:"Nickname Digital",nome_dominio:"Nombre de Dominio",nome_canal:"Nombre de Canal",nome_equipe:"Nombre del Equipo",nome_ong:"Nombre de la ONG",nome_projeto:"Nombre del Proyecto",nome_evento:"Nombre del Evento"},
+  it:{nome_pet:"Nome dell'Animale",nickname:"Nickname Digitale",nome_dominio:"Nome del Dominio",nome_canal:"Nome del Canale",nome_equipe:"Nome del Team",nome_ong:"Nome dell'ONG",nome_projeto:"Nome del Progetto",nome_evento:"Nome dell'Evento"},
+  fr:{nome_pet:"Nom de l'Animal",nickname:"Pseudo Digital",nome_dominio:"Nom de Domaine",nome_canal:"Nom de Chaîne",nome_equipe:"Nom de l'Équipe",nome_ong:"Nom de l'ONG",nome_projeto:"Nom du Projet",nome_evento:"Nom de l'Événement"},
+  de:{nome_pet:"Haustiername",nickname:"Digitaler Nickname",nome_dominio:"Domainname",nome_canal:"Kanalname",nome_equipe:"Teamname",nome_ong:"NGO-Name",nome_projeto:"Projektname",nome_evento:"Veranstaltungsname"},
+  ja:{nome_pet:"ペットの名前",nickname:"デジタルニックネーム",nome_dominio:"ドメイン名",nome_canal:"チャンネル名",nome_equipe:"チーム名",nome_ong:"NGO名",nome_projeto:"プロジェクト名",nome_evento:"イベント名"},
+  zh:{nome_pet:"宠物名字",nickname:"数字昵称",nome_dominio:"域名",nome_canal:"频道名称",nome_equipe:"团队名称",nome_ong:"NGO名称",nome_projeto:"项目名称",nome_evento:"活动名称"},
+  ru:{nome_pet:"Имя питомца",nickname:"Цифровой никнейм",nome_dominio:"Имя домена",nome_canal:"Название канала",nome_equipe:"Название команды",nome_ong:"Название НКО",nome_projeto:"Название проекта",nome_evento:"Название события"},
+  hi:{nome_pet:"पालतू नाम",nickname:"डिजिटल उपनाम",nome_dominio:"डोमेन नाम",nome_canal:"चैनल नाम",nome_equipe:"टीम नाम",nome_ong:"एनजीओ नाम",nome_projeto:"परियोजना नाम",nome_evento:"इवेंट नाम"},
+  he:{nome_pet:"שם חיית המחמד",nickname:"כינוי דיגיטלי",nome_dominio:"שם דומיין",nome_canal:"שם הערוץ",nome_equipe:"שם הצוות",nome_ong:"שם העמותה",nome_projeto:"שם הפרויקט",nome_evento:"שם האירוע"},
+  ar:{nome_pet:"اسم الحيوان الأليف",nickname:"اللقب الرقمي",nome_dominio:"اسم النطاق",nome_canal:"اسم القناة",nome_equipe:"اسم الفريق",nome_ong:"اسم المنظمة",nome_projeto:"اسم المشروع",nome_evento:"اسم الفعالية"}
+};
+// ===== COMPRAR (abre modal do dado específico do produto) =====
+var DADO_APLICA = ["nome_pet","nickname","nome_dominio","nome_canal","nome_equipe","nome_ong","nome_projeto","nome_evento"];
+
 function comprar(produto) {
-    const lang = getLang();
-    var nome = (document.getElementById("calcNome") ? document.getElementById("calcNome").value : "").trim();
-    var nasc = (document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim();
-    if (!nome || !nasc) {
-        alert(translations[lang].preencha_dados || "Preencha nome e data de nascimento primeiro.");
-        var sec = document.getElementById("calcSection") || document.getElementById("calculadora");
-        if (sec) sec.scrollIntoView({ behavior: "smooth" });
-        return;
-    }
-    if (typeof calcularMapa === "function") { calcularMapa(); }
-    window.location.href = '/criar-checkout?lang=' + lang + '&produto=' + produto
-        + '&nome=' + encodeURIComponent(nome) + '&nascimento=' + encodeURIComponent(nasc);
+  var lang = getLang();
+  var t = translations[lang] || translations.pt;
+  // Produtos que precisam de dado específico → abre modal
+  if (DADO_APLICA.indexOf(produto) !== -1) {
+    abrirModalDado(produto, lang);
+    return;
+  }
+  // Demais produtos → fluxo atual (nome + nascimento)
+  var nome = (document.getElementById("calcNome") ? document.getElementById("calcNome").value : "").trim();
+  var nasc = (document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim();
+  if (!nome || !nasc) {
+    alert(t.preencha_dados || "Preencha nome e data de nascimento primeiro.");
+    var sec = document.getElementById("calcSection") || document.getElementById("calculadora");
+    if (sec) sec.scrollIntoView({ behavior: "smooth" });
+    return;
+  }
+  window.location.href = '/criar-checkout?lang=' + lang + '&produto=' + produto
+    + '&nome=' + encodeURIComponent(nome) + '&nascimento=' + encodeURIComponent(nasc);
 }
 
-// ===== ENERGIAS =====
-function montarEnergias() {
-    var lang = getLang();
-    var container = document.getElementById("energiasGrid")
-        || document.getElementById("energias")
-        || document.querySelector(".energias-grid");
-    if (!container) return;
-    var titulos = (ENERGIA_TITULOS && ENERGIA_TITULOS[lang]) ? ENERGIA_TITULOS[lang] : ENERGIA_TITULOS["pt"];
-    var descs = (ENERGIAS_DESC && ENERGIAS_DESC[lang]) ? ENERGIAS_DESC[lang] : ENERGIAS_DESC["pt"];
-    var btn = (ENERGIAS_BTN && ENERGIAS_BTN[lang]) ? ENERGIAS_BTN[lang] : "Pesquisar";
-    var html = "";
-    for (var i = 1; i <= 9; i++) {
-        html += '<div class="energia-card">'
-            + '<div class="energia-num">' + i + '</div>'
-            + '<div class="energia-nome">' + (titulos[String(i)] || ("Energia " + i)) + '</div>'
-            + '<div class="energia-desc">' + (descs[String(i)] || "") + '</div>'
-            + '<button class="btn btn-full" onclick="pesquisarEnergia(' + i + ')">' + btn + '</button>'
-            + '</div>';
-    }
-    container.innerHTML = html;
+// ===== MODAL DO DADO ESPECÍFICO =====
+function abrirModalDado(produto, lang) {
+  var t = translations[lang] || translations.pt;
+  var label = (DADO_LABEL[lang] && DADO_LABEL[lang][produto]) ? DADO_LABEL[lang][produto] : DADO_LABEL.pt[produto];
+  var titulo = (PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang][produto]) ? PRODUTOS_TRAD[lang][produto] : label;
+  var overlay = document.getElementById("modalDado");
+  if (!overlay) {
+    overlay = document.createElement("div");
+    overlay.id = "modalDado";
+    overlay.className = "modal-overlay";
+    overlay.innerHTML = '<div class="modal-box">'
+      + '<h3 id="modalDadoTitulo"></h3>'
+      + '<p id="modalDadoLabel"></p>'
+      + '<input id="modalDadoInput" type="text" class="modal-input">'
+      + '<div class="modal-actions">'
+      + '<button id="modalDadoOk" class="btn">' + (t.confirmar || "Confirmar") + '</button>'
+      + '<button id="modalDadoCancel" class="btn btn-outline">' + (t.cancelar || "Cancelar") + '</button>'
+      + '</div></div>';
+    document.body.appendChild(overlay);
+    overlay.addEventListener("click", function(e){ if (e.target === overlay) fecharModalDado(); });
+    document.getElementById("modalDadoCancel").onclick = fecharModalDado;
+    document.getElementById("modalDadoOk").onclick = function(){ confirmarModalDado(produto, lang); };
+  }
+  document.getElementById("modalDadoTitulo").textContent = titulo;
+  document.getElementById("modalDadoLabel").textContent = label;
+  document.getElementById("modalDadoInput").value = "";
+  overlay.classList.add("active");
+  document.getElementById("modalDadoInput").focus();
 }
+function fecharModalDado() {
+  var o = document.getElementById("modalDado");
+  if (o) o.classList.remove("active");
+}
+function confirmarModalDado(produto, lang) {
+  var dado = document.getElementById("modalDadoInput").value.trim();
+  if (!dado) {
+    alert((translations[lang] || translations.pt).preencha_dado || "Preencha o dado solicitado.");
+    return;
+  }
+  fecharModalDado();
+  window.location.href = '/criar-checkout?lang=' + lang + '&produto=' + produto
+    + '&dado=' + encodeURIComponent(dado);
+}
+
+// ===== ENERGIAS (abre menu de produtos da energia) =====
+function montarEnergias() {
+  var lang = getLang();
+  var container = document.getElementById("energiasGrid")
+    || document.getElementById("energias")
+    || document.querySelector(".energias-grid");
+  if (!container) return;
+  var titulos = (ENERGIA_TITULOS && ENERGIA_TITULOS[lang]) ? ENERGIA_TITULOS[lang] : ENERGIA_TITULOS["pt"];
+  var descs = (ENERGIAS_DESC && ENERGIAS_DESC[lang]) ? ENERGIAS_DESC[lang] : ENERGIAS_DESC["pt"];
+  var btn = (ENERGIAS_BTN && ENERGIAS_BTN[lang]) ? ENERGIAS_BTN[lang] : "Pesquisar";
+  var html = "";
+  for (var i = 1; i <= 9; i++) {
+    html += '<div class="energia-card">'
+      + '<div class="energia-num">' + i + '</div>'
+      + '<div class="energia-nome">' + (titulos[String(i)] || ("Energia " + i)) + '</div>'
+      + '<div class="energia-desc">' + (descs[String(i)] || "") + '</div>'
+      + '<button class="btn btn-full" onclick="pesquisarEnergia(' + i + ')">' + btn + '</button>'
+      + '</div>';
+  }
+  container.innerHTML = html;
+}
+
 function pesquisarEnergia(n) {
-    var lang = getLang();
-    var nome = (document.getElementById("calcNome") ? document.getElementById("calcNome").value : "").trim();
-    var nasc = (document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim();
-    if (!nome || !nasc) {
-        alert(translations[lang].preencha_dados || "Preencha nome e data de nascimento primeiro.");
-        var sec = document.getElementById("calcSection") || document.getElementById("calculadora");
-        if (sec) sec.scrollIntoView({ behavior: "smooth" });
-        return;
-    }
-    window.location.href = '/criar-checkout?lang=' + lang + '&produto=ia&energia=' + n
-        + '&nome=' + encodeURIComponent(nome) + '&nascimento=' + encodeURIComponent(nasc);
+  var lang = getLang();
+  abrirMenuEnergia(n, lang);
+}
+
+var ENERGIA_PRODUTOS = [["express","🔮"],["completo","📘"],["ia","🤖"],["nome_pet","🐾"],["nickname","🎮"],["nome_dominio","🌐"],["nome_canal","🎥"],["nome_equipe","🧭"],["nome_ong","🏛️"],["nome_projeto","📋"],["nome_evento","🎪"]];
+
+function abrirMenuEnergia(n, lang) {
+  var t = translations[lang] || translations.pt;
+  var titulo = (ENERGIA_TITULOS[lang] && ENERGIA_TITULOS[lang][String(n)]) ? ENERGIA_TITULOS[lang][String(n)] : ("Energia " + n);
+  var overlay = document.getElementById("menuEnergia");
+  if (!overlay) {
+    overlay = document.createElement("div");
+    overlay.id = "menuEnergia";
+    overlay.className = "modal-overlay";
+    overlay.innerHTML = '<div class="modal-box">'
+      + '<h3 id="menuEnergiaTitulo"></h3>'
+      + '<p id="menuEnergiaSub"></p>'
+      + '<div id="menuEnergiaLista" class="modal-grid"></div>'
+      + '<div class="modal-actions"><button id="menuEnergiaFechar" class="btn btn-outline">' + (t.fechar || "Fechar") + '</button></div>'
+      + '</div>';
+    document.body.appendChild(overlay);
+    overlay.addEventListener("click", function(e){ if (e.target === overlay) fecharMenuEnergia(); });
+    document.getElementById("menuEnergiaFechar").onclick = fecharMenuEnergia;
+  }
+  document.getElementById("menuEnergiaTitulo").textContent = (t.energia_label || "Energia") + " " + n + " — " + titulo;
+  document.getElementById("menuEnergiaSub").textContent = t.energia_escolha || "Escolha um produto para pesquisar com esta energia:";
+  var lista = document.getElementById("menuEnergiaLista");
+  lista.innerHTML = "";
+  ENERGIA_PRODUTOS.forEach(function(p) {
+    var prod = p[0], icone = p[1];
+    var nome = (PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang][prod]) ? PRODUTOS_TRAD[lang][prod] : prod;
+    var b = document.createElement("button");
+    b.className = "btn btn-full";
+    b.innerHTML = icone + " " + nome;
+    b.onclick = function(){ fecharMenuEnergia(); comprar(prod); };
+    lista.appendChild(b);
+  });
+  overlay.classList.add("active");
+}
+function fecharMenuEnergia() {
+  var o = document.getElementById("menuEnergia");
+  if (o) o.classList.remove("active");
 }
 
 // ===== FORMULÁRIOS URNA / ELEITORAL =====
