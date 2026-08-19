@@ -11,7 +11,7 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER, TA_LEFT
 import dateutil.parser as dp
-from calc_service import reduzir, calc_grid
+from calc_service import reduzir, calc_grid, calc_ciclos, calc_desafios, calc_realizacoes
 from dicionarios import SIG, CAM, DES, VIB, t, PRODUTOS, PDF_TEXTS, PDF_SECOES, BOAS_VINDAS, PERIODOS, REALIZ_HEAD
 
 # ---- Identidade visual (Padrão Mínimo de Qualidade Total) ----
@@ -195,11 +195,10 @@ def pdf17(data, nome, bd_str, lang="pt"):
     # DESAFIOS E REALIZAÇÕES
     e.append(Paragraph(S.get("desafios_realizacoes", "Desafios e Realizações"),
                        _estilo("SEC", FN, 18, GOLD, TA_LEFT, sb=LINHA, sa=LINHA)))
-    try:
+        try:
         dt = dp.parse(bd_str)
-        m_r, d_r, a_r = reduzir(dt.month), reduzir(dt.day), reduzir(dt.year)
-        d1, d2 = abs(m_r - d_r), abs(d_r - a_r)
-        dp_ = abs(d1 - d2)
+        desafios_calc = calc_desafios(dt.day, dt.month, dt.year)
+        d1, d2, dp_ = desafios_calc["menor1"], desafios_calc["menor2"], desafios_calc["principal"]
     except Exception:
         d1, d2, dp_ = 0, 0, 0
     desafios = [[t("menor1", lang), t("menor2", lang), t("principal", lang)],
@@ -220,13 +219,10 @@ def pdf17(data, nome, bd_str, lang="pt"):
                            _estilo("J", FONTE, 10, DARK, TA_JUSTIFY, sa=LINHA)))
     e.append(Paragraph(f"<b>{t('realizacoes', lang)}</b>",
                        _estilo("BL", FN, 11, GOLD, TA_LEFT, sb=LINHA, sa=LINHA)))
-    try:
+        try:
         dt = dp.parse(bd_str)
-        m2, d2r, a2 = reduzir(dt.month), reduzir(dt.day), reduzir(dt.year)
-        r1 = reduzir(m2 + d2r)
-        r2 = reduzir(d2r + a2)
-        r3 = reduzir(r1 + r2)
-        r4 = reduzir(m2 + a2)
+        realiz_calc = calc_realizacoes(dt.day, dt.month, dt.year)
+        r1, r2, r3, r4 = realiz_calc["r1"], realiz_calc["r2"], realiz_calc["r3"], realiz_calc["r4"]
     except Exception:
         r1, r2, r3, r4 = 0, 0, 0, 0
     realiz = [[t("realizacoes", lang), RH[0], RH[1], t("numero", lang)],
