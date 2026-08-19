@@ -518,7 +518,6 @@ def pay_eleitoral(req: EleitoralPayReq):
             "nome_completo": req.nome_completo}
     return _criar_sessao("eleitoral", req.lang or "pt", req.email, req.nome_completo, "", meta)
  def _enviar_email_simples(destinatario, assunto, corpo):
-    """Envia e-mail simples via SMTP. Retorna True/False."""
     try:
         msg = MIMEMultipart()
         msg["From"] = FROM_EMAIL
