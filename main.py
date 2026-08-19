@@ -597,8 +597,8 @@ async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
         meta = {"sigla": numero, "cargo": cargo,
                 "nome_completo": nome_completo, "numero_existente": ""}
     else:
-    meta = {"energia": energia, "dado": dado}    
-    s = _criar_sessao(produto, lang, "", nome, nascimento, meta)
+        meta = {"energia": energia, "dado": dado}    
+        s = _criar_sessao(produto, lang, "", nome, nascimento, meta)
     return RedirectResponse(url=s["url"])
 # ===== SUCESSO POS-PAGAMENTO =====
 @app.get("/api/pay/success")
