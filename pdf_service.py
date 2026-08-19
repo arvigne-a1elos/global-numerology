@@ -195,7 +195,7 @@ def pdf17(data, nome, bd_str, lang="pt"):
     # DESAFIOS E REALIZAÇÕES
     e.append(Paragraph(S.get("desafios_realizacoes", "Desafios e Realizações"),
                        _estilo("SEC", FN, 18, GOLD, TA_LEFT, sb=LINHA, sa=LINHA)))
-        try:
+    try:
         dt = dp.parse(bd_str)
         desafios_calc = calc_desafios(dt.day, dt.month, dt.year)
         d1, d2, dp_ = desafios_calc["menor1"], desafios_calc["menor2"], desafios_calc["principal"]
@@ -219,7 +219,7 @@ def pdf17(data, nome, bd_str, lang="pt"):
                            _estilo("J", FONTE, 10, DARK, TA_JUSTIFY, sa=LINHA)))
     e.append(Paragraph(f"<b>{t('realizacoes', lang)}</b>",
                        _estilo("BL", FN, 11, GOLD, TA_LEFT, sb=LINHA, sa=LINHA)))
-        try:
+    try:
         dt = dp.parse(bd_str)
         realiz_calc = calc_realizacoes(dt.day, dt.month, dt.year)
         r1, r2, r3, r4 = realiz_calc["r1"], realiz_calc["r2"], realiz_calc["r3"], realiz_calc["r4"]
