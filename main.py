@@ -20,6 +20,10 @@ from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER, TA_LEFT
 from calc_service import reduzir, calc_mapa, calc_grid, validar_nomes_urna, gerar_numeros
 from dicionarios import PRODUTOS, PDF_TEXTS
+> import smtplib
+> from email.mime.text import MIMEText
+> from email.mime.multipart import MIMEMultipart
+>
 import qrcode
 import dateutil.parser as dp
 
@@ -231,81 +235,6 @@ PRODUTOS = {
         "nome_projeto": "اسم المشروع", "nome_evento": "اسم الفعالية"}
 }
 
-# ===== TEXTOS DOS PDFS (12 IDIOMAS) =====
-PDF_TEXTS = {
-    "pt": {"t_express": "MAPA EXPRESS", "t_completo": "MAPA COMPLETO", "t_urna": "VALIDACAO DE NOME DE URNA", "t_eleitoral": "NUMERO ELEITORAL",
-           "numero": "Numero", "valor": "Valor", "caminho": "Caminho de Vida", "expressao": "Expressao", "motivacao": "Motivacao", "personalidade": "Personalidade", "destino": "Destino",
-           "cargo": "Cargo", "sugestoes": "Sugestoes:", "op8": "Opcoes com Energia 8 - IDEAL:", "op_alt": "Opcoes Alternativas:", "num_existente": "Numero existente",
-           "ciclos": "Ciclo 1 (0-{a}a) | Ciclo 2 ({b}-{c}a) | Ciclo 3 ({d}+a)", "desafios": "Desafios: {x} | {y} | Principal {z}", "ano_pessoal": "Ano Pessoal {ano}: {v}",
-           "grade": "Grade: Presentes {p} | Carencias {c}", "baixar": "BAIXAR PDF", "confirmado": "Confirmado!", "gerado": "Ola {nome}, seu {prod} foi gerado.",
-           "voltar": "Voltar", "qr_titulo": "Seu PDF nao pode ser gerado.", "qr_instrucao": "Escaneie o QRCode abaixo para acessar seu documento.", "entrega": "Documento sigiloso - entrega por PDF/QRCode."},
-    "en": {"t_express": "EXPRESS MAP", "t_completo": "COMPLETE MAP", "t_urna": "BALLOT NAME VALIDATION", "t_eleitoral": "ELECTORAL NUMBER",
-           "numero": "Number", "valor": "Value", "caminho": "Life Path", "expressao": "Expression", "motivacao": "Soul Urge", "personalidade": "Personality", "destino": "Destiny",
-           "cargo": "Position", "sugestoes": "Suggestions:", "op8": "Options with Energy 8 - IDEAL:", "op_alt": "Alternative Options:", "num_existente": "Existing number",
-           "ciclos": "Cycle 1 (0-{a}) | Cycle 2 ({b}-{c}) | Cycle 3 ({d}+)", "desafios": "Challenges: {x} | {y} | Main {z}", "ano_pessoal": "Personal Year {ano}: {v}",
-           "grade": "Grid: Present {p} | Missing {c}", "baixar": "DOWNLOAD PDF", "confirmado": "Confirmed!", "gerado": "Hello {nome}, your {prod} has been generated.",
-           "voltar": "Back", "qr_titulo": "Your PDF could not be generated.", "qr_instrucao": "Scan the QR code below to access your document.", "entrega": "Confidential document - delivered via PDF/QRCode."},
-    "es": {"t_express": "MAPA EXPRES", "t_completo": "MAPA COMPLETO", "t_urna": "VALIDACION NOMBRE DE URNA", "t_eleitoral": "NUMERO ELECTORAL",
-           "numero": "Numero", "valor": "Valor", "caminho": "Camino de la Vida", "expressao": "Expresion", "motivacao": "Motivacion", "personalidade": "Personalidad", "destino": "Destino",
-           "cargo": "Cargo", "sugestoes": "Sugerencias:", "op8": "Opciones con Energia 8 - IDEAL:", "op_alt": "Opciones Alternativas:", "num_existente": "Numero existente",
-           "ciclos": "Ciclo 1 (0-{a}) | Ciclo 2 ({b}-{c}) | Ciclo 3 ({d}+)", "desafios": "Desafios: {x} | {y} | Principal {z}", "ano_pessoal": "Ano Personal {ano}: {v}",
-           "grade": "Cuadricula: Presentes {p} | Ausentes {c}", "baixar": "DESCARGAR PDF", "confirmado": "Confirmado!", "gerado": "Hola {nome}, tu {prod} fue generado.",
-           "voltar": "Volver", "qr_titulo": "Tu PDF no pudo generarse.", "qr_instrucao": "Escanea el codigo QR para acceder a tu documento.", "entrega": "Documento confidencial - entrega por PDF/QRCode."},
-    "it": {"t_express": "MAPPA ESPRESSA", "t_completo": "MAPPA COMPLETA", "t_urna": "VALIDAZIONE NOME DELLA SCHEDA", "t_eleitoral": "NUMERO ELETTORALE",
-           "numero": "Numero", "valor": "Valore", "caminho": "Sentiero della Vita", "expressao": "Espressione", "motivacao": "Spinta dell'Anima", "personalidade": "Personalita", "destino": "Destino",
-           "cargo": "Carica", "sugestoes": "Suggerimenti:", "op8": "Opzioni con Energia 8 - IDEALE:", "op_alt": "Opzioni Alternative:", "num_existente": "Numero esistente",
-           "ciclos": "Ciclo 1 (0-{a}) | Ciclo 2 ({b}-{c}) | Ciclo 3 ({d}+)", "desafios": "Sfide: {x} | {y} | Principale {z}", "ano_pessoal": "Anno Personale {ano}: {v}",
-           "grade": "Griglia: Presenti {p} | Mancanti {c}", "baixar": "SCARICA PDF", "confirmado": "Confermato!", "gerado": "Ciao {nome}, il tuo {prod} e stato generato.",
-           "voltar": "Indietro", "qr_titulo": "Il tuo PDF non puo essere generato.", "qr_instrucao": "Scansiona il QR code per accedere al documento.", "entrega": "Documento riservato - consegna via PDF/QRCode."},
-    "fr": {"t_express": "CARTE EXPRESS", "t_completo": "CARTE COMPLETE", "t_urna": "VALIDATION NOM DU BULLETIN", "t_eleitoral": "NUMERO ELECTORAL",
-           "numero": "Numero", "valor": "Valeur", "caminho": "Chemin de Vie", "expressao": "Expression", "motivacao": "Elan de l'Ame", "personalidade": "Personnalite", "destino": "Destin",
-           "cargo": "Poste", "sugestoes": "Suggestions :", "op8": "Options avec Energie 8 - IDEAL :", "op_alt": "Options Alternatives :", "num_existente": "Numero existant",
-           "ciclos": "Cycle 1 (0-{a}) | Cycle 2 ({b}-{c}) | Cycle 3 ({d}+)", "desafios": "Defis : {x} | {y} | Principal {z}", "ano_pessoal": "Annee Personnelle {ano} : {v}",
-           "grade": "Grille : Presents {p} | Manquants {c}", "baixar": "TELECHARGER PDF", "confirmado": "Confirme !", "gerado": "Bonjour {nome}, votre {prod} a ete genere.",
-           "voltar": "Retour", "qr_titulo": "Votre PDF n'a pas pu etre genere.", "qr_instrucao": "Scannez le QR code pour acceder a votre document.", "entrega": "Document confidentiel - livraison par PDF/QRCode."},
-    "de": {"t_express": "EXPRESS-KARTE", "t_completo": "VOLLSTANDIGE KARTE", "t_urna": "STIMMZETTELNAME-VALIDIERUNG", "t_eleitoral": "WAHLNUMMER",
-           "numero": "Zahl", "valor": "Wert", "caminho": "Lebensweg", "expressao": "Ausdruck", "motivacao": "Seelenwunsch", "personalidade": "Personlichkeit", "destino": "Schicksal",
-           "cargo": "Position", "sugestoes": "Vorschlage:", "op8": "Optionen mit Energie 8 - IDEAL:", "op_alt": "Alternative Optionen:", "num_existente": "Bestehende Nummer",
-           "ciclos": "Zyklus 1 (0-{a}) | Zyklus 2 ({b}-{c}) | Zyklus 3 ({d}+)", "desafios": "Herausforderungen: {x} | {y} | Haupt {z}", "ano_pessoal": "Persoenliches Jahr {ano}: {v}",
-           "grade": "Raster: Vorhanden {p} | Fehlend {c}", "baixar": "PDF HERUNTERLADEN", "confirmado": "Bestaetigt!", "gerado": "Hallo {nome}, Ihr {prod} wurde erstellt.",
-           "voltar": "Zurueck", "qr_titulo": "Ihr PDF konnte nicht erstellt werden.", "qr_instrucao": "Scannen Sie den QR-Code, um auf Ihr Dokument zuzugreifen.", "entrega": "Vertrauliches Dokument - Lieferung per PDF/QRCode."},
-    "ja": {"t_express": "エクスプレスマップ", "t_completo": "完全マップ", "t_urna": "投票用紙名の検証", "t_eleitoral": "選挙番号",
-           "numero": "数字", "valor": "値", "caminho": "ライフパス", "expressao": "表現", "motivacao": "魂の欲求", "personalidade": "性格", "destino": "運命",
-           "cargo": "役職", "sugestoes": "提案:", "op8": "エネルギー8のオプション - 理想的:", "op_alt": "代替オプション:", "num_existente": "既存の番号",
-           "ciclos": "サイクル1 (0-{a}) | サイクル2 ({b}-{c}) | サイクル3 ({d}+)", "desafios": "課題: {x} | {y} | 主要 {z}", "ano_pessoal": "パーソナルイヤー {ano}: {v}",
-           "grade": "グリッド: あり {p} | 欠け {c}", "baixar": "PDFをダウンロード", "confirmado": "確認済み!", "gerado": "{nome} さん、{prod} が生成されました。",
-           "voltar": "戻る", "qr_titulo": "PDFを生成できませんでした。", "qr_instrucao": "下のQRコードをスキャンして文書にアクセスしてください。", "entrega": "機密文書 - PDF/QRコードで納品。"},
-    "zh": {"t_express": "快速地图", "t_completo": "完整地图", "t_urna": "选票名称验证", "t_eleitoral": "选举号码",
-           "numero": "数字", "valor": "数值", "caminho": "生命路径", "expressao": "表达", "motivacao": "灵魂冲动", "personalidade": "个性", "destino": "命运",
-           "cargo": "职位", "sugestoes": "建议:", "op8": "能量8选项 - 理想:", "op_alt": "备选方案:", "num_existente": "现有号码",
-           "ciclos": "周期1 (0-{a}) | 周期2 ({b}-{c}) | 周期3 ({d}+)", "desafios": "挑战: {x} | {y} | 主要 {z}", "ano_pessoal": "个人年份 {ano}: {v}",
-           "grade": "网格: 存在 {p} | 缺失 {c}", "baixar": "下载PDF", "confirmado": "已确认!", "gerado": "您好 {nome}，您的{prod}已生成。",
-           "voltar": "返回", "qr_titulo": "无法生成PDF。", "qr_instrucao": "扫描下方二维码访问您的文档。", "entrega": "保密文档 - 通过PDF/二维码交付。"},
-    "ru": {"t_express": "ЭКСПРЕСС-КАРТА", "t_completo": "ПОЛНАЯ КАРТА", "t_urna": "ПРОВЕРКА НАЗВАНИЯ БЮЛЛЕТЕНЯ", "t_eleitoral": "ИЗБИРАТЕЛЬНЫЙ НОМЕР",
-           "numero": "Число", "valor": "Значение", "caminho": "Путь Жизни", "expressao": "Выражение", "motivacao": "Порыв Души", "personalidade": "Личность", "destino": "Судьба",
-           "cargo": "Должность", "sugestoes": "Предложения:", "op8": "Варианты с Энергией 8 - ИДЕАЛ:", "op_alt": "Альтернативные варианты:", "num_existente": "Существующий номер",
-           "ciclos": "Цикл 1 (0-{a}) | Цикл 2 ({b}-{c}) | Цикл 3 ({d}+)", "desafios": "Вызовы: {x} | {y} | Главный {z}", "ano_pessoal": "Личный год {ano}: {v}",
-           "grade": "Сетка: Есть {p} | Нет {c}", "baixar": "СКАЧАТЬ PDF", "confirmado": "Подтверждено!", "gerado": "Здравствуйте {nome}, ваш {prod} создан.",
-           "voltar": "Назад", "qr_titulo": "Не удалось создать PDF.", "qr_instrucao": "Отсканируйте QR-код ниже, чтобы получить доступ к документу.", "entrega": "Конфиденциальный документ - доставка через PDF/QRCode."},
-    "hi": {"t_express": "त्वरित मानचित्र", "t_completo": "पूर्ण मानचित्र", "t_urna": "मतपत्र नाम सत्यापन", "t_eleitoral": "निर्वाचन संख्या",
-           "numero": "अंक", "valor": "मान", "caminho": "जीवन पथ", "expressao": "अभिव्यक्ति", "motivacao": "आत्मा की इच्छा", "personalidade": "व्यक्तित्व", "destino": "भाग्य",
-           "cargo": "पद", "sugestoes": "सुझाव:", "op8": "ऊर्जा 8 विकल्प - आदर्श:", "op_alt": "वैकल्पिक विकल्प:", "num_existente": "मौजूदा संख्या",
-           "ciclos": "चक्र 1 (0-{a}) | चक्र 2 ({b}-{c}) | चक्र 3 ({d}+)", "desafios": "चुनौतियाँ: {x} | {y} | मुख्य {z}", "ano_pessoal": "व्यक्तिगत वर्ष {ano}: {v}",
-           "grade": "ग्रिड: मौजूद {p} | अनुपस्थित {c}", "baixar": "PDF डाउनलोड करें", "confirmado": "पुष्टि हुई!", "gerado": "नमस्ते {nome}, आपका {prod} तैयार है।",
-           "voltar": "वापस", "qr_titulo": "आपका PDF नहीं बन सका।", "qr_instrucao": "नीचे QR कोड स्कैन करके अपने दस्तावेज़ तक पहुँचें।", "entrega": "गोपनीय दस्तावेज़ - PDF/QRCode द्वारा डिलीवरी।"},
-    "he": {"t_express": "מפה מהירה", "t_completo": "מפה מלאה", "t_urna": "אימות שם פתק", "t_eleitoral": "מספר בחירות",
-           "numero": "מספר", "valor": "ערך", "caminho": "נתיב החיים", "expressao": "ביטוי", "motivacao": "דחף הנשמה", "personalidade": "אישיות", "destino": "גורל",
-           "cargo": "תפקיד", "sugestoes": "הצעות:", "op8": "אפשרויות עם אנרגיה 8 - אידיאלי:", "op_alt": "אפשרויות חלופיות:", "num_existente": "מספר קיים",
-           "ciclos": "מחזור 1 (0-{a}) | מחזור 2 ({b}-{c}) | מחזור 3 ({d}+)", "desafios": "אתגרים: {x} | {y} | עיקרי {z}", "ano_pessoal": "שנה אישית {ano}: {v}",
-           "grade": "רשת: קיימים {p} | חסרים {c}", "baixar": "הורד PDF", "confirmado": "אושר!", "gerado": "שלום {nome}, ה-{prod} שלך נוצר.",
-           "voltar": "חזור", "qr_titulo": "לא ניתן היה ליצור את ה-PDF.", "qr_instrucao": "סרוק את קוד ה-QR למטה כדי לגשת למסמך שלך.", "entrega": "מסמך חסוי - מסירה באמצעות PDF/QRCode."},
-    "ar": {"t_express": "خريطة سريعة", "t_completo": "خريطة كاملة", "t_urna": "التحقق من اسم الاقتراع", "t_eleitoral": "الرقم الانتخابي",
-           "numero": "الرقم", "valor": "القيمة", "caminho": "مسار الحياة", "expressao": "التعبير", "motivacao": "دافع الروح", "personalidade": "الشخصية", "destino": "القدر",
-           "cargo": "المنصب", "sugestoes": "اقتراحات:", "op8": "خيارات بالطاقة 8 - مثالي:", "op_alt": "خيارات بديلة:", "num_existente": "الرقم الموجود",
-           "ciclos": "دورة 1 (0-{a}) | دورة 2 ({b}-{c}) | دورة 3 ({d}+)", "desafios": "التحديات: {x} | {y} | الرئيسي {z}", "ano_pessoal": "السنة الشخصية {ano}: {v}",
-           "grade": "الشبكة: موجودة {p} | ناقصة {c}", "baixar": "تحميل PDF", "confirmado": "تم التأكيد!", "gerado": "مرحباً {nome}، تم إنشاء {prod} الخاص بك.",
-           "voltar": "رجوع", "qr_titulo": "تعذر إنشاء ملف PDF الخاص بك.", "qr_instrucao": "امسح رمز QR أدناه للوصول إلى مستندك.", "entrega": "مستند سري - التسليم عبر PDF/QRCode."}
-}
 # ===== PRICE IDS STRIPE =====
 PRICE_IDS = {
     "pt": {"express": "price_1TxocVBMLa84bVJ0EL0kb9Dn", "completo": "price_1TxohlBMLa84bVJ0jVj9307b",
@@ -534,16 +463,18 @@ def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=No
                 line_items=[{"price": price_id, "quantity": 1}],
                 customer_email=email or None,
                 locale=locale, metadata=meta,
+                payment_method_options={"card": {"installments": {"enabled": True}}} if MOEDA.get(lang, "brl") == "brl" else None,
                 success_url=success_url,
                 cancel_url=f"{BASE_URL}/api/pay/cancel")
         else:
-            session = stripe.checkout.Session.create(
+             session = stripe.checkout.Session.create(
                 mode="payment", payment_method_types=pay_types,
                 line_items=[{"price_data": {"currency": MOEDA.get(lang, "brl"),
                     "product_data": {"name": nome_prod},
                     "unit_amount": preco_local(produto, lang)}, "quantity": 1}],
                 customer_email=email or None,
                 locale=locale, metadata=meta,
+                payment_method_options={"card": {"installments": {"enabled": True}}} if MOEDA.get(lang, "brl") == "brl" else None,
                 success_url=success_url,
                 cancel_url=f"{BASE_URL}/api/pay/cancel")
         return {"id": session.id, "url": session.url}
@@ -587,6 +518,22 @@ def pay_eleitoral(req: EleitoralPayReq):
             "cargo": req.cargo, "email": req.email, "numero_existente": "",
             "nome_completo": req.nome_completo}
     return _criar_sessao("eleitoral", req.lang or "pt", req.email, req.nome_completo, "", meta)
+ def _enviar_email_simples(destinatario, assunto, corpo):
+    """Envia e-mail simples via SMTP. Retorna True/False."""
+    try:
+        msg = MIMEMultipart()
+        msg["From"] = FROM_EMAIL
+        msg["To"] = destinatario
+        msg["Subject"] = assunto
+        msg.attach(MIMEText(corpo, "plain", "utf-8"))
+        with smtplib.SMTP(os.getenv("SMTP_HOST"), int(os.getenv("SMTP_PORT", 587))) as s:
+            s.starttls()
+            s.login(os.getenv("SMTP_USER"), os.getenv("SMTP_PASS"))
+            s.send_message(msg)
+        return True
+    except Exception as e:
+        logger.error(f"SMTP: {e}")
+        return False
 # ===== CHECKOUT COLETIVO (com desconto progressivo) =====
 @app.get("/criar-checkout-coletivo")
 async def criar_checkout_coletivo(lang: str = "pt", items: str = "[]"):
@@ -626,7 +573,7 @@ async def criar_checkout_coletivo(lang: str = "pt", items: str = "[]"):
         success_url=f"{BASE_URL}/api/pay/success?session_id={{CHECKOUT_SESSION_ID}}",
         cancel_url=f"{BASE_URL}/api/pay/cancel")
     return RedirectResponse(url=session.url)
-    # ===== ROTA /criar-checkout (usada pelo site: comprar, pagarUrna, pagarEleitoral, confirmarBC) =====
+        # ===== ROTA /criar-checkout (usada pelo site: comprar, pagarUrna, pagarEleitoral, confirmarBC) =====
 @app.get("/criar-checkout")
 async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
                                 qtd: int = 0, total: float = 0, itens: str = "",
@@ -635,7 +582,7 @@ async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
                                 numero: str = "",
                                 nome1: str = "", nome2: str = "", nome3: str = "",
                                 nome4: str = "", nome5: str = "",
-                                energia: str = ""):
+                                energia: str = "", dado: str = ""):
     if not STRIPE_KEY:
         raise HTTPException(503, "Stripe nao configurado")
     if produto == "coletivo":
@@ -651,7 +598,7 @@ async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
         meta = {"sigla": numero, "cargo": cargo,
                 "nome_completo": nome_completo, "numero_existente": ""}
     else:
-        meta = {"energia": energia}    
+    meta = {"energia": energia, "dado": dado}    
     s = _criar_sessao(produto, lang, "", nome, nascimento, meta)
     return RedirectResponse(url=s["url"])
 # ===== SUCESSO POS-PAGAMENTO =====
@@ -670,6 +617,7 @@ def pay_success(request: Request):
         bd = meta.get("birth", "")
         prod = meta.get("tipo", "express")
         lang = meta.get("lang", "pt")
+        dado = meta.get("dado", "")
         if not bd:
             bd = "2000-01-01"
         data = calc_mapa(nome, bd)
@@ -684,7 +632,7 @@ def pay_success(request: Request):
         finally:
             db.close()
         pn = PRODUTOS.get(lang, PRODUTOS["pt"]).get(prod, prod)
-        pf = gerar_pdf(prod, data, lang, nome, bd)
+        pf = gerar_pdf(prod, data, lang, nome, bd, dado=dado)
         html = pagina_sucesso(pf, nome, pn, lang)
         if pf and os.path.exists(pf):
             os.remove(pf)
@@ -897,6 +845,12 @@ async def receber_sugestao(req: SugestaoReq):
                                 "data": datetime.now().isoformat()}, ensure_ascii=False) + "\n")
     except Exception as e:
         logger.error(f"Erro sugestao: {e}")
+    # NOVO: notifica o admin por e-mail
+    try:
+        _enviar_email_simples(ADMIN_EMAIL, "Nova sugestão/reclamação — A1ELOS",
+                              f"Sugestão de {req.nome} ({req.email}):\n\n{req.mensagem}")
+    except Exception as e:
+        logger.error(f"Erro email sugestao: {e}")
     return {"ok": True}
 
 @app.post("/bonus")
@@ -907,6 +861,12 @@ async def solicitar_bonus(req: BonusReq):
                                 "data": datetime.now().isoformat()}, ensure_ascii=False) + "\n")
     except Exception as e:
         logger.error(f"Erro bonus: {e}")
+    # NOVO: notifica o admin por e-mail
+    try:
+        _enviar_email_simples(ADMIN_EMAIL, "Solicitação de BÔNUS — A1ELOS",
+                              f"Cliente: {req.nome}\nEmail: {req.email}\nMotivo: {req.motivo}")
+    except Exception as e:
+        logger.error(f"Erro email bonus: {e}")
     return {"ok": True}
 # ===== SISTEMA DE PUBLICIDADE GEOLOCALIZADA =====
 ARQ_BANNERS = "banners.json"
