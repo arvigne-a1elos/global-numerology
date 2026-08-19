@@ -75,28 +75,91 @@ def calc_realizacoes(dia, mes, ano):
         "r3": reduzir(reduzir(dia + mes) + reduzir(dia + ano)),
         "r4": reduzir(dia + mes + ano),
     }
-# ===== FUNÇÕES MOVIDAS DO MAIN.PY (coesão: toda a numerologia aqui) =====
+# ===== FUNÇÕES MOVIDAS DO MAIN.PY (CORRIGIDAS — preservam o comportamento original) =====
+
+CARGO_INFO = {
+    "vereador": {"label": "Vereador"},
+    "dep_estadual": {"label": "Deputado Estadual"},
+    "dep_federal": {"label": "Deputado Federal"},
+    "senador": {"label": "Senador"},
+}
+ENERGIAS = {
+    1: "Lideranca", 2: "Cooperacao", 3: "Criatividade",
+    4: "Trabalho", 5: "Liberdade", 6: "Familia",
+    7: "Sabedoria", 8: "Poder e Prosperidade (IDEAL)", 9: "Humanitarismo",
+}
 
 def validar_nomes_urna(nomes, cargo_key):
-    """Valida e calcula a energia de até 5 nomes de candidato para a urna."""
-    cargos = {
-        "vereador": "Vereador", "dep_estadual": "Deputado Estadual",
-        "dep_federal": "Deputado Federal", "senador": "Senador",
-    }
-    rotulo = cargos.get(cargo_key, cargo_key)
-    resultados = []
+    results = []
+    lv = {c: (i % 9 or 9) for i, c in enumerate("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 1)}
     for nome in nomes:
-        if not nome or not nome.strip():
+        if not nome.strip():
             continue
-        energia, soma = calc_nome(nome)
-        resultados.append({"nome": nome.strip(), "energia": energia, "soma": soma})
-    return {"cargo": rotulo, "resultados": resultados}
+        limpo = nome.upper().replace(" ", "").replace(".", "").replace("-", "").replace(",", "")
+        letras = []
+        st = 0
+        for c in limpo:
+            v = lv.get(c, 0)
+            letras.append({"letra": c, "valor": v})
+            st += v
+        en = reduzir(st)
+        if en == 8:
+            expl = f"Nome {nome.strip().title()} tem ENERGIA 8! Ideal para candidatura."
+        else:
+            expl = f"Nome {nome.strip().title()} tem energia {en}. {ENERGIAS.get(en, '')}."
+        results.append({"nome": nome.strip().title(), "energia": en,
+                        "soma": st, "eh_ideal": en == 8,
+                        "explicacao": expl, "letras": letras})
+    ideal = any(r["eh_ideal"] for r in results)
+    sugs = []
+    if not ideal:
+        for nome in nomes:
+            if not nome.strip():
+                continue
+            lbl = CARGO_INFO.get(cargo_key, {}).get("label", "")
+            if not lbl:
+                continue
+            for nt in [f"{lbl[:3]} {nome.strip()}", f"{nome.strip()} - {lbl.lower()[:3]}"]:
+                en, _ = calc_nome(nt)
+                sugs.append({"nome": nt.title(), "energia": en, "eh_ideal": en == 8})
+                if len(sugs) >= 3:
+                    break
+            if len(sugs) >= 3:
+                break
+    return results, ideal, sugs[:3]
 
 def gerar_numeros(sigla, cargo, qtd=5):
-    """Gera números eleitorais a partir da sigla + cargo."""
-    base = calc_nome(sigla)[0]
-    numeros = []
-    for i in range(qtd):
-        num = reduzir(base + i + 1)
-        numeros.append({"numero": num, "energia": num})
-    return numeros
+    dc = {"vereador": 5, "dep_estadual": 5, "dep_federal": 4, "senador": 3}
+    td = dc.get(cargo, 5)
+    ss = str(sigla).zfill(2)[:2]
+    sm = int(ss[0]) + int(ss[1])
+    lv = td - 2
+    res = []
+    tent = set()
+    def busca(alvo):
+        enc = []
+        for x in range(10 ** lv):
+            if len(enc) + len(res) >= qtd:
+                break
+            dl = str(x).zfill(lv)
+            en = reduzir(sm + sum(int(d) for d in dl))
+            if en == alvo:
+                n = ss + dl
+                if n not in tent:
+                    if x in range(1, 10) and alvo != reduzir(sm):
+                        continue
+                    tent.add(n)
+                    st = sm + sum(int(d) for d in dl)
+                    enc.append({"numero": n, "energia": alvo, "ideal": alvo == 8,
+                                "sigla": ss, "digitos_livres": dl,
+                                "soma_sigla": sm, "soma_total": st})
+        return enc
+    res.extend(busca(8))
+    if len(res) < qtd:
+        res.extend(busca(3))
+    if len(res) < qtd:
+        for e in [7, 1, 9, 5, 6, 4, 2]:
+            if len(res) >= qtd:
+                break
+            res.extend(busca(e))
+    return res[:qtd]
