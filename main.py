@@ -18,6 +18,8 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, Tabl
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER, TA_LEFT
+from calc_service import reduzir, calc_mapa, calc_grid, validar_nomes_urna, gerar_numeros
+from dicionarios import PRODUTOS, PDF_TEXTS
 import qrcode
 import dateutil.parser as dp
 
@@ -494,117 +496,6 @@ ENERGIAS = {
     4: "Trabalho", 5: "Liberdade", 6: "Familia",
     7: "Sabedoria", 8: "Poder e Prosperidade (IDEAL)", 9: "Humanitarismo",
 }
-# ===== CALCULO NUMEROLOGICO =====
-def r1(n):
-    while n > 9 and n not in (11, 22, 33):
-        n = sum(int(d) for d in str(n))
-    return n
-def calc_nome(nome):
-    t = {c: (i % 9 or 9) for i, c in enumerate("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 1)}
-    limpo = nome.upper().replace(" ", "").replace(".", "").replace("-", "").replace(",", "")
-    total = sum(t.get(c, 0) for c in limpo if c in t)
-    return r1(total), total
-def calc(nome, data_str):
-    bd = dp.parse(data_str).date()
-    lp = r1(bd.day + bd.month + bd.year)
-    t = {c: (i % 9 or 9) for i, c in enumerate("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 1)}
-    nu = nome.upper().replace(" ", "")
-    te = tv = tp = 0
-    for ch in nu:
-        val = t.get(ch, 0)
-        te += val
-        if ch in "AEIOU":
-            tv += val
-        else:
-            tp += val
-    return {"life_path": lp, "expression": r1(te), "soul_urge": r1(tv),
-            "personality": r1(tp), "destiny": r1(r1(te) + lp)}
-def calc_grid(nome):
-    t = {c: (i % 9 or 9) for i, c in enumerate("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 1)}
-    g = {i: 0 for i in range(1, 10)}
-    for ch in nome.upper().replace(" ", ""):
-        v = t.get(ch, 0)
-        if v in range(1, 10):
-            g[v] += 1
-    return g
-def validar_nomes_urna(nomes, cargo_key):
-    results = []
-    lv = {c: (i % 9 or 9) for i, c in enumerate("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 1)}
-    for nome in nomes:
-        if not nome.strip():
-            continue
-        limpo = nome.upper().replace(" ", "").replace(".", "").replace("-", "").replace(",", "")
-        letras = []
-        st = 0
-        for c in limpo:
-            v = lv.get(c, 0)
-            letras.append({"letra": c, "valor": v})
-            st += v
-        en = r1(st)
-        if en == 8:
-            expl = f"Nome {nome.strip().title()} tem ENERGIA 8! Ideal para candidatura."
-        else:
-            expl = f"Nome {nome.strip().title()} tem energia {en}. {ENERGIAS.get(en, '')}."
-        results.append({"nome": nome.strip().title(), "energia": en,
-                        "soma": st, "eh_ideal": en == 8,
-                        "explicacao": expl, "letras": letras})
-    ideal = any(r["eh_ideal"] for r in results)
-    sugs = []
-    if not ideal:
-        for nome in nomes:
-            if not nome.strip():
-                continue
-            lbl = CARGO_INFO.get(cargo_key, {}).get("label", "")
-            if not lbl:
-                continue
-            for nt in [f"{lbl[:3]} {nome.strip()}", f"{nome.strip()} - {lbl.lower()[:3]}"]:
-                en, _ = calc_nome(nt)
-                sugs.append({"nome": nt.title(), "energia": en, "eh_ideal": en == 8})
-                if len(sugs) >= 3:
-                    break
-            if len(sugs) >= 3:
-                break
-    return results, ideal, sugs[:3]
-def gerar_numeros(sigla, cargo, qtd=5):
-    dc = {"vereador": 5, "dep_estadual": 5, "dep_federal": 4, "senador": 3}
-    td = dc.get(cargo, 5)
-    ss = str(sigla).zfill(2)[:2]
-    sm = int(ss[0]) + int(ss[1])
-    lv = td - 2
-    res = []
-    tent = set()
-    def busca(alvo):
-        enc = []
-        for x in range(10 ** lv):
-            if len(enc) + len(res) >= qtd:
-                break
-            dl = str(x).zfill(lv)
-            en = r1(sm + sum(int(d) for d in dl))
-            if en == alvo:
-                n = ss + dl
-                if n not in tent:
-                    if x in range(1, 10) and alvo != r1(sm):
-                        continue
-                    tent.add(n)
-                    st = sm + sum(int(d) for d in dl)
-                    enc.append({"numero": n, "energia": alvo, "ideal": alvo == 8,
-                                "sigla": ss, "digitos_livres": dl,
-                                "soma_sigla": sm, "soma_total": st})
-        return enc
-    res.extend(busca(8))
-    if len(res) < qtd:
-        res.extend(busca(3))
-    if len(res) < qtd:
-        for e in [7, 1, 9, 5, 6, 4, 2]:
-            if len(res) >= qtd:
-                break
-            res.extend(busca(e))
-    return res[:qtd]
-def estilo(tam, negrito=False, cor=DARK, alinhamento=TA_LEFT, antes=0, depois=4):
-    return ParagraphStyle("S", fontName=FN if negrito else FONTE,
-                         fontSize=tam, textColor=cor,
-                         alignment=alinhamento, spaceBefore=antes,
-                         spaceAfter=depois)
 
 # ===== DESCONTO PROGRESSIVO (server-side) =====
 def desconto_bc(qtd_total, empresarial=False):
@@ -781,7 +672,7 @@ def pay_success(request: Request):
         lang = meta.get("lang", "pt")
         if not bd:
             bd = "2000-01-01"
-        data = calc(nome, bd)
+        data = calc_mapa(nome, bd)
         db = SessionLocal()
         try:
             db.add(Order(id=uuid.uuid4().hex[:12], email=email or "sem-email",
@@ -850,7 +741,7 @@ def pay_eleitoral_success(request: Request):
         ni = None
         if ne_str and len(ne_str) >= 3:
             try:
-                ni = {"numero": ne_str, "energia": r1(sum(int(d) for d in ne_str))}
+                ni = {"numero": ne_str, "energia": reduzir(sum(int(d) for d in ne_str))}
             except Exception:
                 pass
         lang = meta.get("lang", "pt")
@@ -876,16 +767,16 @@ def calculate(req: PayReq):
            raise HTTPException(400, "Nome curto")
         if not req.nascimento:
            raise HTTPException(400, "Data obrigatoria")
-        res = calc(req.nome, req.nascimento)
+        res = calc_mapa(req.nome, req.nascimento)   # ✅ só aqui troca calc -> calc_mapa
         cid = uuid.uuid4().hex[:8]
-        db.add(Calc(id=cid, name=req.nome, birth_date=req.nascimento, email=req.email or "", **res))
+        db.add(Calc(id=cid, name=req.nome, birth_date=req.nascimento, email=req.email or "", **res))   # ✅ Calc (modelo) fica
         db.commit()
         res["download_pdf"] = False
         return {"id": cid, **res}
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Calc: {e}")
+        logger.error(f"Calc: {e}")   # ✅ pode manter "Calc" no log, é só texto
         raise HTTPException(500, "Erro")
     finally:
         db.close()
