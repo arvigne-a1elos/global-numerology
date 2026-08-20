@@ -210,7 +210,7 @@ const translations = {
         alma: "Alma",
         personalidade: "Personalidade",
         destino: "Destino",
-        nomes5: { caminho: "Caminho da Vida", destino: "Destino", alma: "Alma", personalidade: "Personalidade", realizacao: "Realização" 
+        nomes5: { caminho: "Caminho da Vida", destino: "Destino", alma: "Alma", personalidade: "Personalidade", realizacao: "Realização" }, 
     },
     en: {
         hero_title: "NUMEROLOGICAL MAP",
@@ -386,7 +386,7 @@ const translations = {
         alma: "Soul",
         personalidade: "Personality",
         destino: "Destiny",    
-        nomes5: { caminho: "Life Path", destino: "Destiny", alma: "Soul", personalidade: "Personality", realizacao: "Realization"          
+        nomes5: { caminho: "Life Path", destino: "Destiny", alma: "Soul", personalidade: "Personality", realizacao: "Realization"   },        
     },
     es: { 
         hero_title: "MAPA NUMEROLÓGICO",
@@ -562,7 +562,7 @@ const translations = {
         alma: "Alma",
         personalidade: "Personalidad",
         destino: "Destino",
-        nomes5: { caminho: "Camino de Vida", destino: "Destino", alma: "Alma", personalidade: "Personalidad", realizacao: "Realización"
+        nomes5: { caminho: "Camino de Vida", destino: "Destino", alma: "Alma", personalidade: "Personalidad", realizacao: "Realización" },
     },
     
     it: { 
@@ -739,7 +739,7 @@ const translations = {
         alma: "Anima",
         personalidade: "Personalità",
         destino: "Destino",
-        nomes5: { caminho: "Percorso di Vita", destino: "Destino", alma: "Anima", personalidade: "Personalità", realizacao: "Realizzazione"
+        nomes5: { caminho: "Percorso di Vita", destino: "Destino", alma: "Anima", personalidade: "Personalità", realizacao: "Realizzazione" },
     },
     fr: {
         hero_title: "CARTE NUMÉROLOGIQUE",
@@ -915,7 +915,7 @@ const translations = {
         alma: "Âme",
         personalidade: "Personnalité",
         destino: "Destin",
-        nomes5: { caminho: "Chemin de Vie", destino: "Destin", alma: "Âme", personalidade: "Personnalité", realizacao: "Réalisation" 
+        nomes5: { caminho: "Chemin de Vie", destino: "Destin", alma: "Âme", personalidade: "Personnalité", realizacao: "Réalisation"  },
     },
     de: {
         hero_title: "NUMEROLOGISCHE KARTE",
@@ -1091,7 +1091,7 @@ const translations = {
         alma: "Seele",
         personalidade: "Persönlichkeit",
         destino: "Schicksal",
-        nomes5: { caminho: "Lebensweg", destino: "Schicksal", alma: "Seele", personalidade: "Persönlichkeit", realizacao: "Verwirklichung"
+        nomes5: { caminho: "Lebensweg", destino: "Schicksal", alma: "Seele", personalidade: "Persönlichkeit", realizacao: "Verwirklichung" },
     },
     ja: {
         hero_title: "数秘術マップ",
@@ -1267,7 +1267,7 @@ const translations = {
         alma: "魂",
         personalidade: "性格",
         destino: "運命",
-        nomes5: { caminho: "ライフパス", destino: "運命", alma: "魂", personalidade: "性格", realizacao: "実現"
+        nomes5: { caminho: "ライフパス", destino: "運命", alma: "魂", personalidade: "性格", realizacao: "実現" },
     },
     zh: {
         hero_title: "数字命理图",
@@ -1443,7 +1443,7 @@ const translations = {
         alma: "灵魂",
         personalidade: "个性",
         destino: "命运",  
-        nomes5: { caminho: "生命路径", destino: "命运", alma: "灵魂", personalidade: "个性", realizacao: "实现"
+        nomes5: { caminho: "生命路径", destino: "命运", alma: "灵魂", personalidade: "个性", realizacao: "实现" },
     },
     ru: {
         hero_title: "НУМЕРОЛОГИЧЕСКАЯ КАРТА",
@@ -1619,7 +1619,7 @@ const translations = {
         alma: "Душа",
         personalidade: "Личность",
         destino: "Судьба",
-        nomes5: { caminho: "Путь Жизни", destino: "Судьба", alma: "Душа", personalidade: "Личность", realizacao: "Реализация"
+        nomes5: { caminho: "Путь Жизни", destino: "Судьба", alma: "Душа", personalidade: "Личность", realizacao: "Реализация" },
     },
     hi: {
         hero_title: "अंकशास्त्र मानचित्र",
@@ -1795,7 +1795,7 @@ const translations = {
         alma: "आत्मा",
         personalidade: "व्यक्तित्व",
         destino: "भाग्य",
-        nomes5: { caminho: "जीवन पथ", destino: "भाग्य", alma: "आत्मा", personalidade: "व्यक्तित्व", realizacao: "उपलब्धि"
+        nomes5: { caminho: "जीवन पथ", destino: "भाग्य", alma: "आत्मा", personalidade: "व्यक्तित्व", realizacao: "उपलब्धि" },
     },
     he: {
         hero_title: "מפה נומרולוגית",
@@ -1971,7 +1971,7 @@ const translations = {
         alma: "נשמה",
         personalidade: "אישיות",
         destino: "גורל",  
-        nomes5: { caminho: "נתיב החיים", destino: "גורל", alma: "נשמה", personalidade: "אישיות", realizacao: "הגשמה"
+        nomes5: { caminho: "נתיב החיים", destino: "גורל", alma: "נשמה", personalidade: "אישיות", realizacao: "הגשמה" },
     },
     ar: {
         hero_title: "خريطة الأعداد",
@@ -2147,8 +2147,7 @@ const translations = {
         alma: "الروح",
         personalidade: "الشخصية",
         destino: "القدر",
-        nomes5: { caminho: "مسار الحياة", destino: "القدر", alma: "الروح", personalidade: "الشخصية", realizacao: "الإنجاز"
-      },
+        nomes5: { caminho: "مسار الحياة", destino: "القدر", alma: "الروح", personalidade: "الشخصية", realizacao: "الإنجاز" },
       },  
     };
 // ===== NOMES DOS 15 PRODUTOS (12 IDIOMAS) =====
