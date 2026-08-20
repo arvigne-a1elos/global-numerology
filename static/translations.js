@@ -2149,6 +2149,7 @@ const translations = {
         destino: "القدر",
         nomes5: { caminho: "مسار الحياة", destino: "القدر", alma: "الروح", personalidade: "الشخصية", realizacao: "الإنجاز"
       },
+      },  
     };
 // ===== NOMES DOS 15 PRODUTOS (12 IDIOMAS) =====
 const PRODUTOS_TRAD = {
