@@ -205,7 +205,13 @@ const translations = {
         energia_label: "Energia",
         energia_escolha: "Escolha um produto para pesquisar com esta energia:",
         preencha_dado: "Preencha o dado solicitado.",
-        nomes5: { caminho: "Caminho da Vida", destino: "Destino", alma: "Alma", personalidade: "Personalidade", realizacao: "Realização" }
+        nomes5: { caminho: "Caminho da Vida", destino: "Destino", alma: "Alma", personalidade: "Personalidade", realizacao: "Realização" },
+        caminho: "Caminho da Vida",
+        realizacao: "Realização",
+        alma: "Alma",
+        personalidade: "Personalidade",
+        destino: "Destino"
+    }    
     },
     en: {
         hero_title: "NUMEROLOGICAL MAP",
@@ -369,16 +375,22 @@ const translations = {
         desc_coletivo: "Hire numerology gifts for your clients or employees. Discounts from 10% to 70%.",
                         // 8 produtos novos — títulos
         "nome_pet": "Pet Name", "nickname": "Digital Nickname", "nome_dominio": "Domain Name", "nome_canal": "Channel Name",
-        "nome_equipe": "Team Name", "nome_ong": "NGO Name", "nome_projeto": "Project Name", "nome_evento": "Event Name",
-        confirmar: "Confirm",
+        "nome_equipe": "Team Name", "nome_ong": "NGO Name", "nome_projeto": "Project Name", "nome_evento": "Event Name", 
+    {   confirmar: "Confirm",
         cancelar: "Cancel",
         fechar: "Close",
         energia_label: "Energy",
         energia_escolha: "Choose a product to search with this energy:",
         preencha_dado: "Fill in the requested data",
-        nomes5: { caminho: "Life Path", destino: "Destiny", alma: "Soul", personalidade: "Personality", realizacao: "Realization" }
+        nomes5: { caminho: "Life Path", destino: "Destiny", alma: "Soul", personalidade: "Personality", realizacao: "Realization",   
+        caminho: "Life Path",
+        realizacao: "Achievement",
+        alma: "Soul",
+        personalidade: "Personality",
+        destino: "Destiny"    
+                  
     },
-    es: {
+    es: { 
         hero_title: "MAPA NUMEROLÓGICO",
         hero_subtitle: "Descubre lo que los números revelan sobre ti",
         hero_desc: "Un viaje de autoconocimiento basado en la numerología pitagórica. Tu mapa personal revela talentos, desafíos y caminos a través de los números que rigen tu vida.",
@@ -388,7 +400,7 @@ const translations = {
         nav_prod: "Produtos",
         nav_urna: "Urna",
         nav_elec: "Eleitoral",
-        nav_energy: "Energias",
+        nav_energy: "Energias", 
         nav_bc: "Bônus",
         nav_inv: "Investidores",
         section_what_title: "¿Qué es el Mapa Numerológico?",
@@ -547,11 +559,17 @@ const translations = {
         energia_label: "Energía",
         energia_escolha: "Elige un producto para buscar con esta energía:",
         preencha_dado: "Completa el dato solicitado",
-        nomes5: { caminho: "Camino de Vida", destino: "Destino", alma: "Alma", personalidade: "Personalidad", realizacao: "Realización" }
+        nomes5: { caminho: "Camino de Vida", destino: "Destino", alma: "Alma", personalidade: "Personalidad", realizacao: "Realización",
+        caminho: "Camino de la Vida",
+        realizacao: "Logro",
+        alma: "Alma",
+        personalidade: "Personalidad",
+        destino: "Destino"
     },
-    it: {
+    
+    it: { 
         hero_title: "MAPA NUMEROLOGICO",
-        hero_subtitle: "Scopri cosa rivelano i numeri su di te",
+    {   hero_subtitle: "Scopri cosa rivelano i numeri su di te",
         hero_desc: "Un viaggio di conoscenza di sé basato sulla numerologia pitagorica. La tua mappa personale rivela talenti, sfide e percorsi attraverso i numeri che governano la tua vita.",
         hero_btn: "✦ GENERA LA MIA MAPPA",
         hero_btn2: "VEDERE PRODOTTI",
@@ -708,7 +726,7 @@ const translations = {
         ph_seu_nome: "Nome",
         ph_sua_mensagem: "Scrivi qui il tuo suggerimento o reclamo...",
         feat_coletivo: ["✅ Piani pronti", "✅ Su misura", "✅ Sconti progressivi", "✅ Codici regalo"],
-        desc_coletivo: "Assumi regali numerologici per i tuoi clienti o dipendenti. Sconti dal 10% al 70%.",
+        desc_coletivo: "Assumi regali numerologici per i tuoi clienti o dipendenti. Sconti dal 10% al 70%.", 
                         // 8 produtos novos — títulos
         "nome_pet": "Nome dell'Animale", "nickname": "Nickname Digitale", "nome_dominio": "Nome del Dominio", "nome_canal": "Nome del Canale",
         "nome_equipe": "Nome del Team", "nome_ong": "Nome dell'ONG", "nome_projeto": "Nome del Progetto", "nome_evento": "Nome dell'Evento",
@@ -718,7 +736,12 @@ const translations = {
         energia_label: "Energia",
         energia_escolha: "Scegli un prodotto per cercare con questa energia:",
         preencha_dado: "Compila il dato richiesto",
-        nomes5: { caminho: "Percorso di Vita", destino: "Destino", alma: "Anima", personalidade: "Personalità", realizacao: "Realizzazione" }
+        nomes5: { caminho: "Percorso di Vita", destino: "Destino", alma: "Anima", personalidade: "Personalità", realizacao: "Realizzazione", 
+        caminho: "Percorso di Vita",
+        realizacao: "Traguardo",
+        alma: "Anima",
+        personalidade: "Personalità",
+        destino: "Destino"   
     },
     fr: {
         hero_title: "CARTE NUMÉROLOGIQUE",
@@ -889,7 +912,12 @@ const translations = {
         energia_label: "Énergie",
         energia_escolha: "Choisissez un produit pour rechercher avec cette énergie :",
         preencha_dado: "Renseignez la donnée demandée",
-        nomes5: { caminho: "Chemin de Vie", destino: "Destin", alma: "Âme", personalidade: "Personnalité", realizacao: "Réalisation" }
+        nomes5: { caminho: "Chemin de Vie", destino: "Destin", alma: "Âme", personalidade: "Personnalité", realizacao: "Réalisation" },
+        caminho: "Chemin de Vie",
+        realizacao: "Réalisation",
+        alma: "Âme",
+        personalidade: "Personnalité",
+        destino: "Destin" 
     },
     de: {
         hero_title: "NUMEROLOGISCHE KARTE",
@@ -1060,7 +1088,12 @@ const translations = {
         energia_label: "Energie",
         energia_escolha: "Wählen Sie ein Produkt, um mit dieser Energie zu suchen:",
         preencha_dado: "Füllen Sie die angeforderte Angabe aus",
-        nomes5: { caminho: "Lebensweg", destino: "Schicksal", alma: "Seele", personalidade: "Persönlichkeit", realizacao: "Verwirklichung" }
+        nomes5: { caminho: "Lebensweg", destino: "Schicksal", alma: "Seele", personalidade: "Persönlichkeit", realizacao: "Verwirklichung", 
+        caminho: "Lebensweg",
+        realizacao: "Erfolg",
+        alma: "Seele",
+        personalidade: "Persönlichkeit",
+        destino: "Schicksal"}  
     },
     ja: {
         hero_title: "数秘術マップ",
@@ -1231,7 +1264,12 @@ const translations = {
         energia_label: "エネルギー",
         energia_escolha: "このエネルギーで検索する商品を選んでください:",
         preencha_dado: "要求されたデータを入力してください",
-        nomes5: { caminho: "ライフパス", destino: "運命", alma: "魂", personalidade: "性格", realizacao: "実現" }
+        nomes5: { caminho: "ライフパス", destino: "運命", alma: "魂", personalidade: "性格", realizacao: "実現",  
+        caminho: "ライフパス",
+        realizacao: "達成",
+        alma: "魂",
+        personalidade: "性格",
+        destino: "運命"}            
     },
     zh: {
         hero_title: "数字命理图",
@@ -1402,7 +1440,12 @@ const translations = {
         energia_label: "能量",
         energia_escolha: "选择要使用此能量搜索的产品:",
         preencha_dado: "请填写要求的数据",
-        nomes5: { caminho: "生命路径", destino: "命运", alma: "灵魂", personalidade: "个性", realizacao: "实现" }
+        nomes5: { caminho: "生命路径", destino: "命运", alma: "灵魂", personalidade: "个性", realizacao: "实现",  
+        caminho: "生命道路",
+        realizacao: "成就",
+        alma: "灵魂",
+        personalidade: "个性",
+        destino: "命运"}             
     },
     ru: {
         hero_title: "НУМЕРОЛОГИЧЕСКАЯ КАРТА",
@@ -1573,7 +1616,12 @@ const translations = {
                         // 8 produtos novos — títulos
         "nome_pet": "Имя питомца", "nickname": "Никнейм", "nome_dominio": "Имя домена", "nome_canal": "Название канала",
         "nome_equipe": "Название команды", "nome_ong": "Название НКО", "nome_projeto": "Название проекта", "nome_evento": "Название события",
-        nomes5: { caminho: "Путь Жизни", destino: "Судьба", alma: "Душа", personalidade: "Личность", realizacao: "Реализация" }
+        nomes5: { caminho: "Путь Жизни", destino: "Судьба", alma: "Душа", personalidade: "Личность", realizacao: "Реализация",  
+        caminho: "Путь жизни",
+        realizacao: "Достижение",
+        alma: "Душа",
+        personalidade: "Личность",
+        destino: "Судьба"}       
     },
     hi: {
         hero_title: "अंकशास्त्र मानचित्र",
@@ -1744,7 +1792,12 @@ const translations = {
         energia_label: "ऊर्जा",
         energia_escolha: "इस ऊर्जा से खोजने के लिए उत्पाद चुनें:",
         preencha_dado: "अनुरोधित डेटा भरें।",
-        nomes5: { caminho: "जीवन पथ", destino: "भाग्य", alma: "आत्मा", personalidade: "व्यक्तित्व", realizacao: "उपलब्धि" }
+        nomes5: { caminho: "जीवन पथ", destino: "भाग्य", alma: "आत्मा", personalidade: "व्यक्तित्व", realizacao: "उपलब्धि", 
+        caminho: "जीवन पथ",
+        realizacao: "उपलब्धि",
+        alma: "आत्मा",
+        personalidade: "व्यक्तित्व",
+        destino: "भाग्य"}         
     },
     he: {
         hero_title: "מפה נומרולוגית",
@@ -1915,7 +1968,12 @@ const translations = {
         energia_label: "אנרגיה",
         energia_escolha: "בחר מוצר לחיפוש עם אנרגיה זו:",
         preencha_dado: "מלא את הנתון המבוקש",
-        nomes5: { caminho: "נתיב החיים", destino: "גורל", alma: "נשמה", personalidade: "אישיות", realizacao: "הגשמה" }
+        nomes5: { caminho: "נתיב החיים", destino: "גורל", alma: "נשמה", personalidade: "אישיות", realizacao: "הגשמה", 
+        caminho: "נתיב החיים",
+        realizacao: "הישג",
+        alma: "נשמה",
+        personalidade: "אישיות",
+        destino: "גורל"}         
     },
     ar: {
         hero_title: "خريطة الأعداد",
@@ -2086,9 +2144,14 @@ const translations = {
         energia_label: "الطاقة",
         energia_escolha: "اختر منتجًا للبحث بهذه الطاقة:",
         preencha_dado: "املأ البيانات المطلوبة",
-        nomes5: { caminho: "مسار الحياة", destino: "القدر", alma: "الروح", personalidade: "الشخصية", realizacao: "الإنجاز" }
-    }
-};
+        nomes5: { caminho: "مسار الحياة", destino: "القدر", alma: "الروح", personalidade: "الشخصية", realizacao: "الإنجاز",
+        caminho: "مسار الحياة",
+        realizacao: "إنجاز",
+        alma: "الروح",
+        personalidade: "الشخصية",
+        destino: "القدر"}
+    }     
+    };
 // ===== NOMES DOS 15 PRODUTOS (12 IDIOMAS) =====
 const PRODUTOS_TRAD = {
     pt: { express:"Mapa Express", vida:"Qual Vida/Ano", completo:"Mapa Completo", ia:"Pesquisa IA de Nomes", urna:"Validação Nome de Urna", eleitoral:"Número Eleitoral", imovel:"Número do Imóvel", calendario:"Calendário Mensal Energético", artistico:"Validação Nome Artístico", bebe:"Planejamento Nome de Bebê", assinatura:"Validação de Assinaturas", negocio:"Nome para Negócio/Produto", casal:"Mapa do Casal", familia:"Mapa Família Premium", coletivo:"Bônus Coletivo/Empresarial" },
