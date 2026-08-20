@@ -131,15 +131,7 @@ function pesquisar(produto) {
   }
 }
 
-  // Calcula os 5 números e mostra na calculadora (amostra grátis)
-  ultimosNumeros = calcular5Numeros(nome, nasc);
-  renderizarNumeros();
-
-  // Abre o modal de resultado com os números + significados + botão COMPRAR
-  abrirResultadoPesquisa(produto, nome, nasc, lang);
-}
-
-// ===== MODAL DE RESULTADO DA PESQUISA =====
+ // ===== MODAL DE RESULTADO DA PESQUISA =====
 function abrirResultadoPesquisa(produto, nome, nasc, lang) {
   var t = translations[lang] || translations.pt;
   var titulo = (PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang][produto]) ? PRODUTOS_TRAD[lang][produto] : produto;
