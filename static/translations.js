@@ -375,7 +375,7 @@ const translations = {
                         // 8 produtos novos — títulos
         "nome_pet": "Pet Name", "nickname": "Digital Nickname", "nome_dominio": "Domain Name", "nome_canal": "Channel Name",
         "nome_equipe": "Team Name", "nome_ong": "NGO Name", "nome_projeto": "Project Name", "nome_evento": "Event Name", 
-    {   confirmar: "Confirm",
+        confirmar: "Confirm",
         cancelar: "Cancel",
         fechar: "Close",
         energia_label: "Energy",
@@ -567,7 +567,7 @@ const translations = {
     
     it: { 
         hero_title: "MAPA NUMEROLOGICO",
-    {   hero_subtitle: "Scopri cosa rivelano i numeri su di te",
+        hero_subtitle: "Scopri cosa rivelano i numeri su di te",
         hero_desc: "Un viaggio di conoscenza di sé basato sulla numerologia pitagorica. La tua mappa personale rivela talenti, sfide e percorsi attraverso i numeri che governano la tua vita.",
         hero_btn: "✦ GENERA LA MIA MAPPA",
         hero_btn2: "VEDERE PRODOTTI",
