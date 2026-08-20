@@ -300,6 +300,92 @@ var BC_PRODUTOS = [
   ["nome_projeto","Nome do Projeto",8,"📋"],["nome_evento","Nome do Evento",8,"🎪"]
 ];
 
+// ===== BÔNUS COLETIVO / EMPRESARIAL (funções resgatadas) =====
+var BC_QUANTIDADES = {};
+
+function montarTabelaBC() {
+  var corpo = document.getElementById("bcTabelaCorpo");
+  if (!corpo) return;
+  corpo.innerHTML = "";
+  BC_PRODUTOS.forEach(function(p) {
+    var tr = document.createElement("tr");
+    tr.setAttribute("data-prod", p[0]);
+    tr.innerHTML = '<td><span class="bc-prod-nome">' + p[3] + ' ' + p[1] + '</span></td>'
+      + '<td style="text-align:center;color:var(--gold)" class="bc-prod-preco">R$ ' + p[2] + '</td>'
+      + '<td style="text-align:center"><input type="number" min="0" max="1000" value="0" data-prod="' + p[0] + '" oninput="atualizarResumoBC()"></td>';
+    corpo.appendChild(tr);
+  });
+}
+
+function atualizarResumoBC() {
+  var bruto = 0, qtdTotal = 0;
+  document.querySelectorAll("#bcTabelaCorpo input[data-prod]").forEach(function(inp) {
+    var q = parseInt(inp.value) || 0;
+    BC_QUANTIDADES[inp.getAttribute("data-prod")] = q;
+    var prod = BC_PRODUTOS.find(function(p) { return p[0] === inp.getAttribute("data-prod"); });
+    if (prod) { bruto += q * prod[2]; qtdTotal += q; }
+  });
+  var descontoPct = descontoBC(qtdTotal);
+  var desconto = Math.round(bruto * descontoPct / 100);
+  var final = bruto - desconto;
+  var lang = getLang();
+  var bc = BC_TEXTS[lang] || BC_TEXTS.pt;
+  var simbolo = PRECO_DISPLAY[lang][0].replace(/[0-9.,\s]/g, '').trim() || 'R$';
+  document.getElementById("bcTotalBruto").textContent = simbolo + " " + bruto.toLocaleString("pt-BR");
+  document.getElementById("bcDesconto").textContent = simbolo + " " + desconto.toLocaleString("pt-BR") + " (" + descontoPct + "%)";
+  document.getElementById("bcTotalFinal").textContent = simbolo + " " + final.toLocaleString("pt-BR");
+  document.getElementById("bcFaixaInfo").textContent = bc.qtd_total + " " + qtdTotal + " " + bc.codigos;
+}
+
+function descontoBC(qtd) {
+  if (qtd >= 2000) return 50;
+  if (qtd >= 1000) return 45;
+  if (qtd >= 500) return 40;
+  if (qtd >= 200) return 30;
+  if (qtd >= 100) return 25;
+  if (qtd >= 50) return 20;
+  if (qtd >= 10) return 10;
+  return 0;
+}
+
+function usarPlanoPronto(qExpress, qVida, qIa, qCompleto) {
+  var mapa = { express: qExpress, vida: qVida, ia: qIa, completo: qCompleto };
+  document.querySelectorAll("#bcTabelaCorpo input[data-prod]").forEach(function(inp) {
+    var prod = inp.getAttribute("data-prod");
+    inp.value = mapa[prod] || 0;
+  });
+  atualizarResumoBC();
+}
+
+function confirmarBC() {
+  var itens = [];
+  for (var id in BC_QUANTIDADES) {
+    if (BC_QUANTIDADES[id] > 0) {
+      var prod = BC_PRODUTOS.find(function(p) { return p[0] === id; });
+      if (prod) itens.push({ id: id, nome: prod[1], preco: prod[2], qtd: BC_QUANTIDADES[id] });
+    }
+  }
+  var t = translations[getLang()] || translations.pt;
+  if (itens.length === 0) { alert(t.alert_bc_vazio || "Selecione pelo menos 1 serviço."); return; }
+  var bruto = itens.reduce(function(a, i) { return a + i.preco * i.qtd; }, 0);
+  var qtdTotal = itens.reduce(function(a, i) { return a + i.qtd; }, 0);
+  var pct = descontoBC(qtdTotal);
+  var final = bruto - Math.round(bruto * pct / 100);
+  var simbolo = (PRECO_DISPLAY[getLang()] ? PRECO_DISPLAY[getLang()][0].replace(/[0-9.,\s]/g, '').trim() : '') || 'R$';
+  var linhas = itens.map(function(i) {
+    return (t.bc_linha || "{nome}: {qtd}x {simbolo} {preco} = {simbolo} {total}")
+      .replace('{nome}', i.nome).replace('{qtd}', i.qtd).replace('{simbolo}', simbolo)
+      .replace('{preco}', i.preco).replace('{total}', (i.qtd * i.preco));
+  }).join("\n");
+  var msg = (t.bc_resumo_titulo || "RESUMO DO PEDIDO") + "\n\n" + linhas + "\n\n"
+    + (t.bc_total || "Total bruto:") + " " + simbolo + " " + bruto + "\n"
+    + (t.bc_discount || "Desconto aplicado:") + " (" + pct + "%): " + simbolo + " " + Math.round(bruto * pct / 100) + "\n"
+    + (t.bc_final || "Total final:") + " " + simbolo + " " + final + "\n\n"
+    + (t.bc_confirmar_pag || "Confirmar e ir para pagamento?");
+  if (!confirm(msg)) return;
+  window.location.href = '/criar-checkout?lang=' + getLang() + '&produto=coletivo&qtd=' + qtdTotal + '&total=' + final + '&itens=' + encodeURIComponent(JSON.stringify(itens));
+}
+
 // ===== INICIALIZAÇÃO =====
 function init() {
   var savedLang = localStorage.getItem('lang');
