@@ -98,26 +98,38 @@ function comprar(produto) {
   window.location.href = '/criar-checkout?lang=' + lang + '&produto=' + produto
     + '&nome=' + encodeURIComponent(nome) + '&nascimento=' + encodeURIComponent(nasc);
 }
-// ===== PESQUISAR (mostra o resultado ANTES de comprar) =====
+// ===== PESQUISAR (abre o espaço de coleta de dados do produto) =====
+// Não mostra resultado antes de pagar. Coleta dados → paga → PDF na página de sucesso.
+var PESQUISA_TARGET = {
+  // produtos que usam a calculadora (nome + data)
+  express: "calculadora", vida: "calculadora", completo: "calculadora",
+  ia: "calculadora", casal: "calculadora", familia: "calculadora",
+  imovel: "calculadora", calendario: "calculadora", artistico: "calculadora",
+  bebe: "calculadora", assinatura: "calculadora", negocio: "calculadora",
+  // produtos com formulário próprio
+  urna: "form-urna", eleitoral: "form-eleitoral",
+  // coletivo
+  coletivo: "corporativo"
+};
+
 function pesquisar(produto) {
-  var lang = getLang();
-  var t = translations[lang] || translations.pt;
-
-  // 8 produtos novos (dado específico) → abre o modal de pesquisa
+  // 8 produtos novos → modal de dado específico (já existe no app.js)
   if (DADO_APLICA.indexOf(produto) !== -1) {
-    abrirModalDado(produto, lang);
+    abrirModalDado(produto, getLang());
     return;
   }
 
-  // Demais produtos → precisa de nome + nascimento (da calculadora)
-  var nome = (document.getElementById("calcNome") ? document.getElementById("calcNome").value : "").trim();
-  var nasc = (document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim();
-  if (!nome || !nasc) {
-    alert(t.preencha_dados || "Preencha nome e data de nascimento primeiro.");
-    var sec = document.getElementById("calcSection") || document.getElementById("calculadora");
-    if (sec) sec.scrollIntoView({ behavior: "smooth" });
-    return;
+  // Demais produtos → rola até o espaço de coleta correspondente
+  var target = PESQUISA_TARGET[produto] || "calculadora";
+  var el = document.getElementById(target);
+  if (el) {
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+    // destaca o campo para chamar atenção
+    el.style.transition = "box-shadow 0.5s";
+    el.style.boxShadow = "0 0 0 3px var(--gold)";
+    setTimeout(function(){ el.style.boxShadow = ""; }, 2000);
   }
+}
 
   // Calcula os 5 números e mostra na calculadora (amostra grátis)
   ultimosNumeros = calcular5Numeros(nome, nasc);
