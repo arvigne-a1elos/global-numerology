@@ -312,3 +312,4 @@ function init() {
   montarEnergias();
   traduzirTudo();
 }
+document.addEventListener('DOMContentLoaded', init);
