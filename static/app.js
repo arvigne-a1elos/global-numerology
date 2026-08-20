@@ -42,11 +42,12 @@ function traduzirTudo() {
     if (preco && PRODUTO_FAIXA[prod] !== undefined && PRECO_DISPLAY[lang]) preco.innerText = PRECO_DISPLAY[lang][PRODUTO_FAIXA[prod]];
   });
   if (typeof atualizarResumoBC === 'function') atualizarResumoBC();
-}
+
   // ===== NOVO: re-renderiza a calculadora no idioma trocado =====
   if (typeof renderizarNumeros === "function") renderizarNumeros();
   if (typeof montarEnergias === "function") montarEnergias();
-}
+}   
+  
 // ===== MONTAR SELETOR DE IDIOMAS (12 bandeiras) =====
 function montarSeletorIdioma() {
   var container = document.getElementById('langSelector');
