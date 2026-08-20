@@ -385,6 +385,66 @@ function confirmarBC() {
   if (!confirm(msg)) return;
   window.location.href = '/criar-checkout?lang=' + getLang() + '&produto=coletivo&qtd=' + qtdTotal + '&total=' + final + '&itens=' + encodeURIComponent(JSON.stringify(itens));
 }
+// ===== CALCULADORA GRATUITA (5 números) =====
+function r1Num(n) {
+  while (n > 9 && n !== 11 && n !== 22 && n !== 33) {
+    n = String(n).split('').reduce(function(a, d) { return a + parseInt(d, 10); }, 0);
+  }
+  return n;
+}
+
+function calcular5Numeros(nome, nasc) {
+  var t = {};
+  var letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  for (var i = 0; i < letras.length; i++) { t[letras[i]] = (i % 9 || 9); }
+  var parts = nasc.split('-');
+  var lp = r1Num(parseInt(parts[0], 10) + parseInt(parts[1], 10) + parseInt(parts[2], 10));
+  var nu = nome.toUpperCase().replace(/[^A-Z]/g, '');
+  var te = 0, tv = 0, tp = 0;
+  for (var j = 0; j < nu.length; j++) {
+    var ch = nu[j];
+    var val = t[ch] || 0;
+    te += val;
+    if ("AEIOU".indexOf(ch) >= 0) { tv += val; } else { tp += val; }
+  }
+  return [lp, r1Num(te), r1Num(tv), r1Num(tp), r1Num(r1Num(te) + lp)];
+}
+
+var ultimosNumeros = null;
+
+function calcularMapa() {
+  var lang = getLang();
+  var t = translations[lang] || translations["pt"];
+  var nome = (document.getElementById("calcNome") ? document.getElementById("calcNome").value : "").trim();
+  var nasc = (document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim();
+  if (!nome || !nasc) {
+    alert(t.preencha_dados || "Preencha nome e data de nascimento primeiro.");
+    var sec = document.getElementById("calcSection") || document.getElementById("calculadora");
+    if (sec) sec.scrollIntoView({ behavior: "smooth" });
+    return;
+  }
+  if (typeof calcular5Numeros === "function") { ultimosNumeros = calcular5Numeros(nome, nasc); }
+  else { ultimosNumeros = [1, 2, 3, 4, 5]; }
+  renderizarNumeros();
+}
+
+function renderizarNumeros() {
+  if (!ultimosNumeros) return;
+  var lang = getLang();
+  var t = translations[lang] || translations["pt"];
+  var nomes = t.nomes5 || {};
+  var chaves5 = ['caminho', 'realizacao', 'alma', 'personalidade', 'destino'];
+  var html = "";
+  for (var i = 0; i < ultimosNumeros.length && i < chaves5.length; i++) {
+    var n = ultimosNumeros[i];
+    var nomeE = nomes[chaves5[i]] || ("Energia " + n);
+    html += '<div class="numero-gratis"><span class="numero-nome">' + nomeE + ':</span> <span class="numero-valor">' + n + '</span></div>';
+  }
+  var el = document.getElementById("resultadoNumeros") || document.getElementById("resultado") || document.getElementById("calcResultado");
+  if (el) { el.innerHTML = html; el.style.display = "block"; }
+  var box = document.getElementById("resultadoBox") || el;
+  if (box) box.style.display = "block";
+}
 
 // ===== INICIALIZAÇÃO =====
 function init() {
