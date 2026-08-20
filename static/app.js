@@ -284,17 +284,34 @@ function enviarMensagem() {
     .then(function(d){ if (d.ok) { st.style.color = "#28a745"; st.textContent = t.alert_msg_ok; document.getElementById("msgTexto").value = ""; } else { st.style.color = "#dc3545"; st.textContent = t.alert_msg_erro; } })
     .catch(function(){ st.style.color = "#dc3545"; st.textContent = t.alert_msg_conexao; });
 }
-
 // ===== BÔNUS COLETIVO / EMPRESARIAL =====
+// ===== PRODUTOS DA TABELA "MONTAR SOB MEDIDA" (23 produtos) =====
+// Formato: [id, nome, preco_R$, icone]
 var BC_PRODUTOS = [
-    ["express","Mapa Express",8,"🔮"],["vida","Qual Vida/Ano",8,"🔢"],["completo","Mapa Completo",17,"📘"],
-    ["ia","Pesquisa IA de Nomes",17,"🤖"],["urna","Validação Nome de Urna",26,"🗳️"],["eleitoral","Número Eleitoral",26,"🔢"],
-    ["imovel","Número do Imóvel",26,"🏠"],["calendario","Calendário Mensal",26,"📅"],["artistico","Nome Artístico",35,"🎭"],
-    ["bebe","Nome de Bebê",35,"👶"],["assinatura","Assinaturas",35,"✍️"],["negocio","Nome para Negócio",44,"🏪"],
-    ["casal","Mapa do Casal",44,"💞"],["familia","Mapa Família Premium",98,"🌟"],
-    ["nome_pet","Nome do Pet",8,"🐾"],["nickname","Nickname Digital",8,"🎮"],["nome_dominio","Nome do Domínio",8,"🌐"],
-    ["nome_canal","Nome do Canal",8,"🎥"],["nome_equipe","Nome da Equipe",8,"🧭"],["nome_ong","Nome de ONG",8,"🏛️"],
-    ["nome_projeto","Nome do Projeto",8,"📋"],["nome_evento","Nome do Evento",8,"🎪"]
+  // --- 15 produtos originais ---
+  ["express", "Mapa Express", 8, "🔮"],
+  ["vida", "Qual Vida/Ano", 8, "🔢"],
+  ["completo", "Mapa Completo", 17, "📘"],
+  ["ia", "Pesquisa IA de Nomes", 17, "🤖"],
+  ["urna", "Validação Nome de Urna", 26, "🗳️"],
+  ["eleitoral", "Número Eleitoral", 26, "🔢"],
+  ["imovel", "Número do Imóvel", 26, "🏠"],
+  ["calendario", "Calendário Mensal Energético", 26, "📅"],
+  ["artistico", "Validação Nome Artístico", 35, "🎭"],
+  ["bebe", "Planejamento Nome de Bebê", 35, "👶"],
+  ["assinatura", "Validação de Assinaturas", 35, "✍️"],
+  ["negocio", "Nome para Negócio/Produto", 44, "🏪"],
+  ["casal", "Mapa do Casal", 44, "💞"],
+  ["familia", "Mapa Família Premium", 98, "🌟"],
+  // --- 8 produtos novos (faixa R$ 8) ---
+  ["nome_pet", "Nome do Pet", 8, "🐾"],
+  ["nickname", "Nickname Digital", 8, "🎮"],
+  ["nome_dominio", "Nome do Domínio", 8, "🌐"],
+  ["nome_canal", "Nome do Canal", 8, "🎥"],
+  ["nome_equipe", "Nome da Equipe", 8, "🧭"],
+  ["nome_ong", "Nome de ONG, Associação, Instituto ou Fundação", 8, "🏛️"],
+  ["nome_projeto", "Nome do Projeto", 8, "📋"],
+  ["nome_evento", "Nome do Evento", 8, "🎪"]
 ];
 var BC_QUANTIDADES = {};
 function montarTabelaBC() {
