@@ -192,18 +192,22 @@ def pdf17(data, nome, bd_str, lang="pt"):
     ]))
     e.append(tbl3)
     e.append(Spacer(1, LINHA))
-    # DESAFIOS E REALIZAÇÕES
+        # DESAFIOS E REALIZAÇÕES
     e.append(Paragraph(S.get("desafios_realizacoes", "Desafios e Realizações"),
                        _estilo("SEC", FN, 18, GOLD, TA_LEFT, sb=LINHA, sa=LINHA)))
     try:
         dt = dp.parse(bd_str)
         desafios_calc = calc_desafios(dt.day, dt.month, dt.year)
         d1, d2, dp_ = desafios_calc["menor1"], desafios_calc["menor2"], desafios_calc["principal"]
+        mes_r = reduzir(dt.month)
+        dia_r = reduzir(dt.day)
+        ano_r = reduzir(dt.year)
     except Exception:
         d1, d2, dp_ = 0, 0, 0
+        mes_r, dia_r, ano_r = 0, 0, 0
     desafios = [[t("menor1", lang), t("menor2", lang), t("principal", lang)],
                 [str(d1), str(d2), str(dp_)],
-                [f"|{m_r} - {d_r}|", f"|{d_r} - {a_r}|", f"|{d1} - {d2}|"]]
+                [f"|{mes_r} - {dia_r}|", f"|{dia_r} - {ano_r}|", f"|{d1} - {d2}|"]]
     tbl4 = Table(desafios, colWidths=[165, 165, 165])  # 495pt
     tbl4.setStyle(TableStyle([
         ("BACKGROUND", (0, 0), (-1, 0), GOLD), ("TEXTCOLOR", (0, 0), (-1, 0), WHITE),
