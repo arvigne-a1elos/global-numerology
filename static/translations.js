@@ -210,6 +210,7 @@ const translations = {
         alma: "Alma",
         personalidade: "Personalidade",
         destino: "Destino",
+        pesquisar_btn: "Pesquisar",
         nomes5: { caminho: "Caminho da Vida", destino: "Destino", alma: "Alma", personalidade: "Personalidade", realizacao: "Realização" }, 
     },
     en: {
@@ -385,7 +386,8 @@ const translations = {
         realizacao: "Achievement",
         alma: "Soul",
         personalidade: "Personality",
-        destino: "Destiny",    
+        destino: "Destiny",
+        pesquisar_btn: "Search",
         nomes5: { caminho: "Life Path", destino: "Destiny", alma: "Soul", personalidade: "Personality", realizacao: "Realization"   },        
     },
     es: { 
@@ -562,6 +564,7 @@ const translations = {
         alma: "Alma",
         personalidade: "Personalidad",
         destino: "Destino",
+        pesquisar_btn: "Buscar",
         nomes5: { caminho: "Camino de Vida", destino: "Destino", alma: "Alma", personalidade: "Personalidad", realizacao: "Realización" },
     },
     
@@ -739,6 +742,7 @@ const translations = {
         alma: "Anima",
         personalidade: "Personalità",
         destino: "Destino",
+        pesquisar_btn: "Cerca",
         nomes5: { caminho: "Percorso di Vita", destino: "Destino", alma: "Anima", personalidade: "Personalità", realizacao: "Realizzazione" },
     },
     fr: {
@@ -915,6 +919,7 @@ const translations = {
         alma: "Âme",
         personalidade: "Personnalité",
         destino: "Destin",
+        pesquisar_btn: "Rechercher",
         nomes5: { caminho: "Chemin de Vie", destino: "Destin", alma: "Âme", personalidade: "Personnalité", realizacao: "Réalisation"  },
     },
     de: {
@@ -1091,6 +1096,7 @@ const translations = {
         alma: "Seele",
         personalidade: "Persönlichkeit",
         destino: "Schicksal",
+        pesquisar_btn: "Suchen",
         nomes5: { caminho: "Lebensweg", destino: "Schicksal", alma: "Seele", personalidade: "Persönlichkeit", realizacao: "Verwirklichung" },
     },
     ja: {
@@ -1267,6 +1273,7 @@ const translations = {
         alma: "魂",
         personalidade: "性格",
         destino: "運命",
+        pesquisar_btn: "検索",
         nomes5: { caminho: "ライフパス", destino: "運命", alma: "魂", personalidade: "性格", realizacao: "実現" },
     },
     zh: {
@@ -1442,7 +1449,8 @@ const translations = {
         realizacao: "成就",
         alma: "灵魂",
         personalidade: "个性",
-        destino: "命运",  
+        destino: "命运", 
+        pesquisar_btn: "搜索",
         nomes5: { caminho: "生命路径", destino: "命运", alma: "灵魂", personalidade: "个性", realizacao: "实现" },
     },
     ru: {
@@ -1619,6 +1627,7 @@ const translations = {
         alma: "Душа",
         personalidade: "Личность",
         destino: "Судьба",
+        pesquisar_btn: "Поиск",
         nomes5: { caminho: "Путь Жизни", destino: "Судьба", alma: "Душа", personalidade: "Личность", realizacao: "Реализация" },
     },
     hi: {
@@ -1795,6 +1804,7 @@ const translations = {
         alma: "आत्मा",
         personalidade: "व्यक्तित्व",
         destino: "भाग्य",
+        pesquisar_btn: "खोजें",
         nomes5: { caminho: "जीवन पथ", destino: "भाग्य", alma: "आत्मा", personalidade: "व्यक्तित्व", realizacao: "उपलब्धि" },
     },
     he: {
@@ -1970,7 +1980,8 @@ const translations = {
         realizacao: "הישג",
         alma: "נשמה",
         personalidade: "אישיות",
-        destino: "גורל",  
+        destino: "גורל",
+        pesquisar_btn: "חיפוש",
         nomes5: { caminho: "נתיב החיים", destino: "גורל", alma: "נשמה", personalidade: "אישיות", realizacao: "הגשמה" },
     },
     ar: {
@@ -2147,6 +2158,7 @@ const translations = {
         alma: "الروح",
         personalidade: "الشخصية",
         destino: "القدر",
+        pesquisar_btn: "بحث",
         nomes5: { caminho: "مسار الحياة", destino: "القدر", alma: "الروح", personalidade: "الشخصية", realizacao: "الإنجاز" },
       },  
     };
