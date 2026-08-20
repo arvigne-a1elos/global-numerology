@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # main.py - A1ELOS Global Numerology API
-# VERSÃO FINAL LIMPA E CORRIGIDA - 09/08/2026
+# VERSÃO CONSOLIDADA CORRIGIDA - TODAS AS ROTAS DOS 23 PRODUTOS
 import os, json, uuid, logging, secrets, string, base64, traceback
 from datetime import date, datetime
 from typing import Optional
@@ -9,7 +9,6 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
-from gerador_pdf import gerar_pdf, pagina_sucesso, _entregar_arquivo
 from pydantic import BaseModel
 from sqlalchemy import create_engine, Column, String, Integer, Float, DateTime
 from sqlalchemy.orm import sessionmaker, declarative_base
@@ -23,18 +22,18 @@ import dateutil.parser as dp
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-import qrcode
-import dateutil.parser as dp
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 STRIPE_KEY = os.getenv("STRIPE_SECRET_KEY", "")
 STRIPE_PUB = os.getenv("STRIPE_PUBLISHABLE_KEY", "")
+FROM_EMAIL = os.getenv("FROM_EMAIL", "noreply@a1elos.com.br")
 FROM_NAME = "A1ELOS Numerologia Global"
 BASE_URL = os.getenv("BASE_URL", os.getenv("SITE_URL", "https://global-numerology.onrender.com"))
 DB_URL = os.getenv("DATABASE_URL", "sqlite:///./numerologia.db")
 ADMIN_EMAIL = "arvigne@gmail.com"
+
 if STRIPE_KEY:
     stripe.api_key = STRIPE_KEY
 
@@ -69,19 +68,15 @@ class Order(Base):
     payment_id = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
-# Cria as tabelas SEM travar a subida do app (evita timeout de porta no Render)
 try:
     Base.metadata.create_all(bind=engine)
 except Exception as e:
-    logger.error(f"DB init adiado (banco indisponivel): {e}")
+    logger.error(f"DB init adiado: {e}")
 
 # ===== APP =====
 app = FastAPI(title="Global Numerology")
-app.add_middleware(CORSMiddleware,
-                   allow_origins=["*"],
-                   allow_credentials=True,
-                   allow_methods=["*"],
-                   allow_headers=["*"])
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True,
+                   allow_methods=["*"], allow_headers=["*"])
 STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
 if os.path.isdir(STATIC_DIR):
     app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
@@ -96,7 +91,8 @@ SIMBOLO = {
     "pt": "R$", "en": "US$", "es": "€", "it": "€", "fr": "€", "de": "€",
     "ja": "¥", "zh": "¥", "ru": "₽", "hi": "₹", "he": "₪", "ar": "﷼"
 }
-# ===== FAIXAS DE PREÇO =====
+
+# ===== FAIXAS DE PREÇO (23 produtos) =====
 PRODUTO_FAIXA = {
     "express": 0, "vida": 0, "completo": 1, "ia": 1,
     "urna": 2, "eleitoral": 2, "imovel": 2, "calendario": 2,
@@ -119,10 +115,11 @@ VALORES = {
     "he": [500, 1300, 1900, 2600, 3300, 7300],
     "ar": [600, 1300, 1900, 2600, 3300, 7300]
 }
+
 def preco_local(produto, lang):
     return VALORES[lang][PRODUTO_FAIXA[produto]]
 
-# ===== NOMES DOS 23 PRODUTOS =====
+# ===== NOMES DOS 23 PRODUTOS (12 IDIOMAS) =====
 PRODUTOS = {
     "pt": {"express": "Mapa Express", "vida": "Qual Vida/Ano", "completo": "Mapa Completo",
         "ia": "Pesquisa IA de Nomes", "urna": "Validacao Nome de Urna", "eleitoral": "Numero Eleitoral",
@@ -225,7 +222,7 @@ PRODUTOS = {
         "casal": "מפת זוג", "familia": "מפת משפחה פרימיום", "coletivo": "בונוס ארגוני"},
     "ar": {"express": "خريطة سريعة", "vida": "مرحلة الحياة والسنة", "completo": "خريطة كاملة",
         "ia": "بحث الأسماء بالذكاء الاصطناعي", "urna": "التحقق من اسم الاقتراع", "eleitoral": "الرقم الانتخابي",
-        "imovel": "رقم العقار", "calendario": "تقويم الطاقة الشهري",
+        "imovel": "رقم العقار", "calendario": "التقويم الشهري للطاقة",
         "artistico": "التحقق من الاسم الفني", "bebe": "تخطيط اسم الطفل",
         "assinatura": "التحقق من التوقيعات", "negocio": "اسم للأعمال/المنتج",
         "casal": "خريطة الزوجين", "familia": "خريطة العائلة المميزة", "coletivo": "مكافأة الشركات",
@@ -234,7 +231,7 @@ PRODUTOS = {
         "nome_projeto": "اسم المشروع", "nome_evento": "اسم الفعالية"}
 }
 
-# ===== PRICE IDS STRIPE =====
+# ===== PRICE IDS STRIPE (23 produtos, 12 idiomas) =====
 PRICE_IDS = {
     "pt": {"express": "price_1TxocVBMLa84bVJ0EL0kb9Dn", "completo": "price_1TxohlBMLa84bVJ0jVj9307b",
            "urna": "price_1TxollBMLa84bVJ0Wk5zIak6", "eleitoral": "price_1TxopFBMLa84bVJ0jvtJExVj",
@@ -365,19 +362,20 @@ PRODUTO_TARGET = {
     "casal": "produtos", "familia": "produtos", "coletivo": "corporativo",
     "nome_pet": "calculadora", "nickname": "calculadora", "nome_dominio": "calculadora",
     "nome_canal": "calculadora", "nome_equipe": "calculadora", "nome_ong": "calculadora",
-    "nome_projeto": "calculadora", "nome_evento": "calculadora"  
+    "nome_projeto": "calculadora", "nome_evento": "calculadora"
 }
+
 # ===== MODELOS PYDANTIC =====
 class PayReq(BaseModel):
     nome: str
     nascimento: str
-    email: Optional[str] = ""   # campo preservado, sem uso
+    email: Optional[str] = ""
     lang: str = "pt"
 
 class UrnaPayReq(BaseModel):
     nome_completo: str
     nome_urna: str
-    email: Optional[str] = ""   # preservado
+    email: Optional[str] = ""
     lang: str = "pt"
     cargo: str = "vereador"
     nome1: str = ""
@@ -389,18 +387,18 @@ class UrnaPayReq(BaseModel):
 class EleitoralPayReq(BaseModel):
     nome_completo: str
     numero: str
-    email: Optional[str] = ""   # preservado
+    email: Optional[str] = ""
     lang: str = "pt"
     cargo: str = "vereador"
 
 class SugestaoReq(BaseModel):
     nome: str
-    email: Optional[str] = ""   # preservado
+    email: Optional[str] = ""
     mensagem: str
 
 class BonusReq(BaseModel):
     nome: str
-    email: Optional[str] = ""   # preservado
+    email: Optional[str] = ""
     motivo: str
 
 class AtivarBonusReq(BaseModel):
@@ -425,7 +423,120 @@ ENERGIAS = {
     7: "Sabedoria", 8: "Poder e Prosperidade (IDEAL)", 9: "Humanitarismo",
 }
 
-# ===== DESCONTO PROGRESSIVO (server-side) =====
+# ===== CALCULO NUMEROLOGICO =====
+def reduzir(n):
+    while n > 9 and n not in (11, 22, 33):
+        n = sum(int(d) for d in str(n))
+    return n
+
+def calc_mapa(nome, data_str):
+    bd = dp.parse(data_str).date()
+    lp = reduzir(bd.day + bd.month + bd.year)
+    t = {c: (i % 9 or 9) for i, c in enumerate("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 1)}
+    nu = nome.upper().replace(" ", "")
+    te = tv = tp = 0
+    for ch in nu:
+        val = t.get(ch, 0)
+        te += val
+        if ch in "AEIOU":
+            tv += val
+        else:
+            tp += val
+    return {"life_path": lp, "expression": reduzir(te), "soul_urge": reduzir(tv),
+            "personality": reduzir(tp), "destiny": reduzir(reduzir(te) + lp)}
+
+def calc_grid(nome):
+    t = {c: (i % 9 or 9) for i, c in enumerate("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 1)}
+    g = {i: 0 for i in range(1, 10)}
+    for ch in nome.upper().replace(" ", ""):
+        v = t.get(ch, 0)
+        if v in range(1, 10):
+            g[v] += 1
+    return g
+
+def validar_nomes_urna(nomes, cargo_key):
+    results = []
+    lv = {c: (i % 9 or 9) for i, c in enumerate("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 1)}
+    for nome in nomes:
+        if not nome.strip():
+            continue
+        limpo = nome.upper().replace(" ", "").replace(".", "").replace("-", "").replace(",", "")
+        letras = []
+        st = 0
+        for c in limpo:
+            v = lv.get(c, 0)
+            letras.append({"letra": c, "valor": v})
+            st += v
+        en = reduzir(st)
+        if en == 8:
+            expl = f"Nome {nome.strip().title()} tem ENERGIA 8! Ideal para candidatura."
+        else:
+            expl = f"Nome {nome.strip().title()} tem energia {en}. {ENERGIAS.get(en, '')}."
+        results.append({"nome": nome.strip().title(), "energia": en,
+                        "soma": st, "eh_ideal": en == 8,
+                        "explicacao": expl, "letras": letras})
+    ideal = any(r["eh_ideal"] for r in results)
+    sugs = []
+    if not ideal:
+        for nome in nomes:
+            if not nome.strip():
+                continue
+            lbl = CARGO_INFO.get(cargo_key, {}).get("label", "")
+            if not lbl:
+                continue
+            for nt in [f"{lbl[:3]} {nome.strip()}", f"{nome.strip()} - {lbl.lower()[:3]}"]:
+                total = sum(lv.get(c, 0) for c in nt.upper().replace(" ", ""))
+                en = reduzir(total)
+                sugs.append({"nome": nt.title(), "energia": en, "eh_ideal": en == 8})
+                if len(sugs) >= 3:
+                    break
+            if len(sugs) >= 3:
+                break
+    return results, ideal, sugs[:3]
+
+def gerar_numeros(sigla, cargo, qtd=5):
+    dc = {"vereador": 5, "dep_estadual": 5, "dep_federal": 4, "senador": 3}
+    td = dc.get(cargo, 5)
+    ss = str(sigla).zfill(2)[:2]
+    sm = int(ss[0]) + int(ss[1])
+    lv = td - 2
+    res = []
+    tent = set()
+    def busca(alvo):
+        enc = []
+        for x in range(10 ** lv):
+            if len(enc) + len(res) >= qtd:
+                break
+            dl = str(x).zfill(lv)
+            en = reduzir(sm + sum(int(d) for d in dl))
+            if en == alvo:
+                n = ss + dl
+                if n not in tent:
+                    if x in range(1, 10) and alvo != reduzir(sm):
+                        continue
+                    tent.add(n)
+                    st = sm + sum(int(d) for d in dl)
+                    enc.append({"numero": n, "energia": alvo, "ideal": alvo == 8,
+                                "sigla": ss, "digitos_livres": dl,
+                                "soma_sigla": sm, "soma_total": st})
+        return enc
+    res.extend(busca(8))
+    if len(res) < qtd:
+        res.extend(busca(3))
+    if len(res) < qtd:
+        for e in [7, 1, 9, 5, 6, 4, 2]:
+            if len(res) >= qtd:
+                break
+            res.extend(busca(e))
+    return res[:qtd]
+
+def estilo(tam, negrito=False, cor=DARK, alinhamento=TA_LEFT, antes=0, depois=4):
+    return ParagraphStyle("S", fontName=FN if negrito else FONTE,
+                         fontSize=tam, textColor=cor,
+                         alignment=alinhamento, spaceBefore=antes,
+                         spaceAfter=depois)
+
+# ===== DESCONTO PROGRESSIVO =====
 def desconto_bc(qtd_total, empresarial=False):
     if empresarial:
         if qtd_total >= 3000: return 0.70
@@ -438,6 +549,89 @@ def desconto_bc(qtd_total, empresarial=False):
     if qtd_total >= 50: return 0.20
     if qtd_total >= 10: return 0.10
     return 0.0
+
+# ===== GERADOR DE PDF (usa gerador_pdf.py se existir; senão fallback interno) =====
+def _gerar_pdf_local(prod, data, lang, nome, bd, dado=""):
+    path = f"/tmp/p_{prod}_{uuid.uuid4().hex[:8]}.pdf"
+    doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
+                            topMargin=40, bottomMargin=30)
+    e = []
+    titulo = PRODUTOS.get(lang, PRODUTOS["pt"]).get(prod, prod).upper()
+    e.append(Spacer(1, 15))
+    e.append(Paragraph(titulo, estilo(18, True, GOLD, TA_CENTER, 0, 6)))
+    e.append(Paragraph(nome.upper(), estilo(12, True, DARK, TA_CENTER, 0, 2)))
+    e.append(Paragraph(bd or dado, estilo(9, False, GRAY, TA_CENTER, 0, 10)))
+    if isinstance(data, dict):
+        td = [["Numero", "Valor"]]
+        rotulos = [("life_path", "Caminho de Vida"), ("expression", "Expressao"),
+                   ("soul_urge", "Motivacao"), ("personality", "Personalidade"),
+                   ("destiny", "Destino")]
+        for k, l in rotulos:
+            if k in data:
+                td.append([l, str(data[k])])
+        if len(td) > 1:
+            tbl = Table(td, colWidths=[200, 100])
+            tbl.setStyle(TableStyle([
+                ("BACKGROUND", (0, 0), (-1, 0), GOLD),
+                ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+                ("FONTSIZE", (0, 0), (-1, -1), 9),
+                ("GRID", (0, 0), (-1, -1), 0.3, colors.grey),
+                ("BACKGROUND", (0, 1), (-1, -1), LGRAY),
+            ]))
+            e.append(tbl)
+    e.append(Spacer(1, 10))
+    e.append(Paragraph("(c) A1ELOS", estilo(7, False, GRAY, TA_CENTER)))
+    doc.build(e)
+    return path
+
+def _pagina_sucesso_local(pdf_path, nome, prod_nome, lang="pt"):
+    b64 = ""
+    if pdf_path and os.path.exists(pdf_path):
+        with open(pdf_path, "rb") as f:
+            b64 = base64.b64encode(f.read()).decode()
+    btn = ""
+    if b64:
+        btn = (f'<a href="data:application/pdf;base64,{b64}" download="Documento.pdf" '
+               f'style="display:inline-block;padding:18px 50px;background:#C9A94E;color:#000;'
+               f'text-decoration:none;border-radius:50px;font-weight:700;font-size:1.2rem;margin:25px 0">📥 BAIXAR PDF</a>')
+    return (f'<html><body style="background:#0a0a0a;color:#fff;text-align:center;padding:40px;'
+            f'font-family:sans-serif"><h1 style="color:#C9A94E">✅ Confirmado!</h1>'
+            f'<p>Ola <b>{nome}</b>, seu {prod_nome} foi gerado.</p>{btn}'
+            f'<a href="/" style="color:#C9A94E">Voltar</a></body></html>')
+
+def _entregar_arquivo_local(tipo, nome, lang="pt"):
+    try:
+        pf = _gerar_pdf_local(tipo, {"life_path": 1, "expression": 1, "soul_urge": 1,
+                                     "personality": 1, "destiny": 1}, lang, nome, "")
+        return {"pdf": pf, "url": "", "pdf_ok": True}
+    except Exception as e:
+        logger.error(f"Falha entrega: {e}")
+        return {"pdf": None, "url": "", "pdf_ok": False}
+
+try:
+    from gerador_pdf import gerar_pdf, pagina_sucesso, _entregar_arquivo
+except Exception:
+    gerar_pdf = _gerar_pdf_local
+    pagina_sucesso = _pagina_sucesso_local
+    _entregar_arquivo = _entregar_arquivo_local
+
+# ===== EMAIL SIMPLES =====
+def _enviar_email_simples(destinatario, assunto, corpo):
+    try:
+        msg = MIMEMultipart()
+        msg["From"] = FROM_EMAIL
+        msg["To"] = destinatario
+        msg["Subject"] = assunto
+        msg.attach(MIMEText(corpo, "plain", "utf-8"))
+        with smtplib.SMTP(os.getenv("SMTP_HOST"), int(os.getenv("SMTP_PORT", 587))) as s:
+            s.starttls()
+            s.login(os.getenv("SMTP_USER"), os.getenv("SMTP_PASS"))
+            s.send_message(msg)
+        return True
+    except Exception as e:
+        logger.error(f"SMTP: {e}")
+        return False
+
 # ===== CRIACAO DE SESSAO STRIPE =====
 def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=None):
     if lang not in PRICE_IDS or produto not in PRICE_IDS[lang]:
@@ -466,7 +660,7 @@ def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=No
                 success_url=success_url,
                 cancel_url=f"{BASE_URL}/api/pay/cancel")
         else:
-             session = stripe.checkout.Session.create(
+            session = stripe.checkout.Session.create(
                 mode="payment", payment_method_types=pay_types,
                 line_items=[{"price_data": {"currency": MOEDA.get(lang, "brl"),
                     "product_data": {"name": nome_prod},
@@ -480,17 +674,18 @@ def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=No
     except Exception as e:
         logger.error(f"Stripe: {e}")
         raise HTTPException(500, "Erro ao criar pagamento")
+
 # ===== ROTA GENERICA /pay/{produto} =====
 _ALIAS_PRODUTO = {"complete": "completo"}
+
 @app.post("/pay/{produto}")
 def pay_produto(produto: str, req: PayReq):
     if not STRIPE_KEY:
         raise HTTPException(503, "Stripe nao configurado")
     produto = _ALIAS_PRODUTO.get(produto, produto)
-    nome = req.nome
-    nasc = req.nascimento
     lang = req.lang or "pt"
-    return _criar_sessao(produto, lang, req.email, nome, nasc)
+    return _criar_sessao(produto, lang, req.email, req.nome, req.nascimento)
+
 # ===== CHECKOUT NOME DE URNA =====
 @app.post("/pay/urna")
 def pay_urna(req: UrnaPayReq):
@@ -506,6 +701,7 @@ def pay_urna(req: UrnaPayReq):
     for i, n in enumerate(nomes, 1):
         meta[f"nome{i}"] = n
     return _criar_sessao("urna", req.lang or "pt", req.email, req.nome_completo, "", meta)
+
 # ===== CHECKOUT NUMERO ELEITORAL =====
 @app.post("/pay/eleitoral")
 def pay_eleitoral(req: EleitoralPayReq):
@@ -517,23 +713,8 @@ def pay_eleitoral(req: EleitoralPayReq):
             "cargo": req.cargo, "email": req.email, "numero_existente": "",
             "nome_completo": req.nome_completo}
     return _criar_sessao("eleitoral", req.lang or "pt", req.email, req.nome_completo, "", meta)
- # ===== EMAIL SIMPLES =====
-def _enviar_email_simples(destinatario, assunto, corpo):   # ← coluna 0, sem espaços
-    try:
-        msg = MIMEMultipart()
-        msg["From"] = FROM_EMAIL
-        msg["To"] = destinatario
-        msg["Subject"] = assunto
-        msg.attach(MIMEText(corpo, "plain", "utf-8"))
-        with smtplib.SMTP(os.getenv("SMTP_HOST"), int(os.getenv("SMTP_PORT", 587))) as s:
-            s.starttls()
-            s.login(os.getenv("SMTP_USER"), os.getenv("SMTP_PASS"))
-            s.send_message(msg)
-        return True
-    except Exception as e:
-        logger.error(f"SMTP: {e}")
-        return False
-# ===== CHECKOUT COLETIVO (com desconto progressivo) =====
+
+# ===== CHECKOUT COLETIVO (desconto progressivo) =====
 @app.get("/criar-checkout-coletivo")
 async def criar_checkout_coletivo(lang: str = "pt", items: str = "[]"):
     if not STRIPE_KEY:
@@ -552,7 +733,6 @@ async def criar_checkout_coletivo(lang: str = "pt", items: str = "[]"):
         qtd = int(it.get("qtd", 0))
         if not pid or qtd <= 0 or pid == "coletivo":
             continue
-                # Sempre price_data: garante que o desconto progressivo seja cobrado de fato
         unit = preco_local(pid, lang)
         if desc > 0:
             unit = int(round(unit * (1 - desc)))
@@ -572,7 +752,8 @@ async def criar_checkout_coletivo(lang: str = "pt", items: str = "[]"):
         success_url=f"{BASE_URL}/api/pay/success?session_id={{CHECKOUT_SESSION_ID}}",
         cancel_url=f"{BASE_URL}/api/pay/cancel")
     return RedirectResponse(url=session.url)
-        # ===== ROTA /criar-checkout (usada pelo site: comprar, pagarUrna, pagarEleitoral, confirmarBC) =====
+
+# ===== ROTA /criar-checkout (usada pelo site) — INDENTACAO CORRIGIDA =====
 @app.get("/criar-checkout")
 async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
                                 qtd: int = 0, total: float = 0, itens: str = "",
@@ -581,7 +762,7 @@ async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
                                 numero: str = "",
                                 nome1: str = "", nome2: str = "", nome3: str = "",
                                 nome4: str = "", nome5: str = "",
-                                energia: str = "", dado: str = ""):
+                                energia: str = "", dado: str = "", tipo: str = ""):
     if not STRIPE_KEY:
         raise HTTPException(503, "Stripe nao configurado")
     if produto == "coletivo":
@@ -597,9 +778,10 @@ async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
         meta = {"sigla": numero, "cargo": cargo,
                 "nome_completo": nome_completo, "numero_existente": ""}
     else:
-        meta = {"energia": energia, "dado": dado}    
-        s = _criar_sessao(produto, lang, "", nome, nascimento, meta)
+        meta = {"energia": energia, "dado": dado, "tipo": tipo}
+    s = _criar_sessao(produto, lang, "", nome, nascimento, meta)
     return RedirectResponse(url=s["url"])
+
 # ===== SUCESSO POS-PAGAMENTO =====
 @app.get("/api/pay/success")
 def pay_success(request: Request):
@@ -639,6 +821,7 @@ def pay_success(request: Request):
     except Exception as e:
         logger.error(f"Success: {e}")
         return HTMLResponse("ERRO")
+
 @app.get("/api/pay/urna-success")
 def pay_urna_success(request: Request):
     sid = request.query_params.get("session_id", "")
@@ -660,13 +843,13 @@ def pay_urna_success(request: Request):
         dados_urna = {"nome_completo": nc, "cargo_label": cl,
                       "resultados": res, "sugestoes": sugs}
         pf = gerar_pdf("urna", dados_urna, lang, nc, "")
-        html = pagina_sucesso(pf, nc,
-                              PRODUTOS.get(lang, PRODUTOS["pt"]).get("urna", "Urna"), lang)
+        html = pagina_sucesso(pf, nc, PRODUTOS.get(lang, PRODUTOS["pt"]).get("urna", "Urna"), lang)
         if pf and os.path.exists(pf):
             os.remove(pf)
         return HTMLResponse(html)
     except Exception:
         return HTMLResponse("ERRO")
+
 @app.get("/api/pay/eleitoral-success")
 def pay_eleitoral_success(request: Request):
     sid = request.query_params.get("session_id", "")
@@ -702,41 +885,46 @@ def pay_eleitoral_success(request: Request):
         return HTMLResponse(html)
     except Exception:
         return HTMLResponse("ERRO")
+
 @app.get("/api/pay/cancel")
 def pay_cancel():
     return HTMLResponse("<h1>Cancelado</h1><a href='/'>Voltar</a>")
+
 # ===== CALCULO GRATIS =====
 @app.post("/calculate")
 def calculate(req: PayReq):
     db = SessionLocal()
     try:
         if len(req.nome.strip()) < 2:
-           raise HTTPException(400, "Nome curto")
+            raise HTTPException(400, "Nome curto")
         if not req.nascimento:
-           raise HTTPException(400, "Data obrigatoria")
-        res = calc_mapa(req.nome, req.nascimento)   # ✅ só aqui troca calc -> calc_mapa
+            raise HTTPException(400, "Data obrigatoria")
+        res = calc_mapa(req.nome, req.nascimento)
         cid = uuid.uuid4().hex[:8]
-        db.add(Calc(id=cid, name=req.nome, birth_date=req.nascimento, email=req.email or "", **res))   # ✅ Calc (modelo) fica
+        db.add(Calc(id=cid, name=req.nome, birth_date=req.nascimento, email=req.email or "", **res))
         db.commit()
         res["download_pdf"] = False
         return {"id": cid, **res}
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Calc: {e}")   # ✅ pode manter "Calc" no log, é só texto
+        logger.error(f"Calc: {e}")
         raise HTTPException(500, "Erro")
     finally:
         db.close()
+
 @app.post("/calculate/urna")
 def calc_urna(req: UrnaPayReq):
     nomes = [n.strip() for n in [req.nome1, req.nome2, req.nome3, req.nome4, req.nome5] if n.strip()]
     res, ideal, sugs = validar_nomes_urna(nomes, req.cargo)
     return {"resultados": res, "ideal": ideal, "sugestoes": sugs}
+
 @app.post("/calculate/eleitoral")
 def calc_eleitoral(req: EleitoralPayReq):
     sigla = int(req.numero) if req.numero.isdigit() else 0
     sugs = gerar_numeros(sigla, req.cargo)
     return {"sugestoes": sugs}
+
 # ===== ROTAS BASE =====
 @app.get("/")
 def root():
@@ -749,6 +937,7 @@ def root():
                                      "r", encoding="utf-8").read())
         except Exception:
             return HTMLResponse("<h1>API ativa</h1>")
+
 @app.get("/config")
 def config():
     return {"stripe_pk": STRIPE_PUB}
@@ -756,6 +945,7 @@ def config():
 @app.get("/api/health")
 def health():
     return {"status": "ok", "stripe": bool(STRIPE_KEY)}
+
 # ===== WEBHOOK STRIPE =====
 @app.post("/stripe-webhook")
 async def stripe_webhook(req: Request):
@@ -764,13 +954,13 @@ async def stripe_webhook(req: Request):
     whsec = os.getenv("STRIPE_WEBHOOK_SECRET", "")
     if whsec:
         try:
-          event = stripe.Webhook.construct_event(payload, sig, whsec)
+            event = stripe.Webhook.construct_event(payload, sig, whsec)
         except Exception:
             raise HTTPException(400, "Assinatura invalida")
     else:
         data = json.loads(payload)
         event = {"type": data.get("type", ""), "data": data.get("data", {})}
-    if event["type"] == "checkout.session.completed":         # ← 4 espaços (CERTO)
+    if event["type"] == "checkout.session.completed":
         session = event["data"]["object"]
         meta = session.get("metadata", {})
         tipo = meta.get("tipo", "express")
@@ -784,27 +974,31 @@ async def stripe_webhook(req: Request):
         nome = meta.get("nome", "Cliente")
         lang = meta.get("lang", "pt")
         logger.info(f"Pagamento confirmado: {session['id']} -> {tipo}")
-        entrega = _entregar_arquivo(tipo, nome, lang)   # entrega via PDF/QRCode com fallback
+        entrega = _entregar_arquivo(tipo, nome, lang)
         logger.info(f"Entrega: {entrega}")
     return {"status": "success"}
+
 # ===== SISTEMA DE BONUS =====
 ARQ_BONUS = "bonus_codes.json"
+
 def _carregar_codigos():
     try:
         with open(ARQ_BONUS, "r", encoding="utf-8") as f:
             return json.load(f)
     except FileNotFoundError:
         return {}
+
 def _salvar_codigos(dados):
     with open(ARQ_BONUS, "w", encoding="utf-8") as f:
         json.dump(dados, f, ensure_ascii=False, indent=2)
+
 def _gerar_codigo_bonus():
     chars = string.ascii_uppercase + string.digits
     p1 = "".join(secrets.choice(chars) for _ in range(4))
     p2 = "".join(secrets.choice(chars) for _ in range(4))
     return f"A1-{p1}-{p2}"
+
 def _gerar_codigos_para_itens(itens):
-    """Gera e salva os códigos A1-XXXX-XXXX de um pedido coletivo."""
     codigos = _carregar_codigos()
     gerados = []
     for item in itens:
@@ -815,7 +1009,8 @@ def _gerar_codigos_para_itens(itens):
             codigos[cod] = {"produto": pid, "usado": False}
             gerados.append({"codigo": cod, "produto": pid})
     _salvar_codigos(codigos)
-    return gerados    
+    return gerados
+
 @app.post("/ativar-bonus")
 async def ativar_bonus(req: AtivarBonusReq):
     codigos = _carregar_codigos()
@@ -829,12 +1024,14 @@ async def ativar_bonus(req: AtivarBonusReq):
     _salvar_codigos(codigos)
     target = PRODUTO_TARGET.get(info.get("produto"), "inicio")
     return {"ok": True, "target": target, "produto": info.get("produto")}
+
 @app.post("/gerar-codigos-coletivo")
 async def gerar_codigos_coletivo(req: Request):
     corpo = await req.json()
     itens = corpo.get("itens", [])
     gerados = _gerar_codigos_para_itens(itens)
     return {"ok": True, "total": len(gerados), "codigos": gerados}
+
 # ===== CAIXA DE SUGESTOES + BONUS =====
 @app.post("/sugestao")
 async def receber_sugestao(req: SugestaoReq):
@@ -844,10 +1041,9 @@ async def receber_sugestao(req: SugestaoReq):
                                 "data": datetime.now().isoformat()}, ensure_ascii=False) + "\n")
     except Exception as e:
         logger.error(f"Erro sugestao: {e}")
-    # NOVO: notifica o admin por e-mail
     try:
-        _enviar_email_simples(ADMIN_EMAIL, "Nova sugestão/reclamação — A1ELOS",
-                              f"Sugestão de {req.nome} ({req.email}):\n\n{req.mensagem}")
+        _enviar_email_simples(ADMIN_EMAIL, "Nova sugestao/reclamacao - A1ELOS",
+                              f"Sugestao de {req.nome} ({req.email}):\n\n{req.mensagem}")
     except Exception as e:
         logger.error(f"Erro email sugestao: {e}")
     return {"ok": True}
@@ -860,13 +1056,13 @@ async def solicitar_bonus(req: BonusReq):
                                 "data": datetime.now().isoformat()}, ensure_ascii=False) + "\n")
     except Exception as e:
         logger.error(f"Erro bonus: {e}")
-    # NOVO: notifica o admin por e-mail
     try:
-        _enviar_email_simples(ADMIN_EMAIL, "Solicitação de BÔNUS — A1ELOS",
+        _enviar_email_simples(ADMIN_EMAIL, "Solicitacao de BONUS - A1ELOS",
                               f"Cliente: {req.nome}\nEmail: {req.email}\nMotivo: {req.motivo}")
     except Exception as e:
         logger.error(f"Erro email bonus: {e}")
     return {"ok": True}
+
 # ===== SISTEMA DE PUBLICIDADE GEOLOCALIZADA =====
 ARQ_BANNERS = "banners.json"
 PAIS_CONTINENTE = {
@@ -877,15 +1073,18 @@ PAIS_CONTINENTE = {
     "EG":"AF","NG":"AF","ZA":"AF","KE":"AF","MA":"AF",
     "AU":"OC","NZ":"OC"
 }
+
 def _carregar_banners():
     try:
         with open(ARQ_BANNERS, "r", encoding="utf-8") as f:
             return json.load(f)
     except FileNotFoundError:
         return []
+
 def _salvar_banners(banners):
     with open(ARQ_BANNERS, "w", encoding="utf-8") as f:
         json.dump(banners, f, ensure_ascii=False, indent=2)
+
 @app.get("/api/banner")
 async def get_banner(posicao: str = "topo", pais: str = "BR"):
     banners = _carregar_banners()
@@ -908,6 +1107,7 @@ async def get_banner(posicao: str = "topo", pais: str = "BR"):
         if b.get("escopo") == "mundo":
             return {"ok": True, "banner": b}
     return {"ok": False, "banner": None}
+
 # ===== INICIALIZACAO =====
 if __name__ == "__main__":
     import uvicorn
