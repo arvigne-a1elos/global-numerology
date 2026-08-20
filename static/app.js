@@ -98,6 +98,82 @@ function comprar(produto) {
   window.location.href = '/criar-checkout?lang=' + lang + '&produto=' + produto
     + '&nome=' + encodeURIComponent(nome) + '&nascimento=' + encodeURIComponent(nasc);
 }
+// ===== PESQUISAR (mostra o resultado ANTES de comprar) =====
+function pesquisar(produto) {
+  var lang = getLang();
+  var t = translations[lang] || translations.pt;
+
+  // 8 produtos novos (dado específico) → abre o modal de pesquisa
+  if (DADO_APLICA.indexOf(produto) !== -1) {
+    abrirModalDado(produto, lang);
+    return;
+  }
+
+  // Demais produtos → precisa de nome + nascimento (da calculadora)
+  var nome = (document.getElementById("calcNome") ? document.getElementById("calcNome").value : "").trim();
+  var nasc = (document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim();
+  if (!nome || !nasc) {
+    alert(t.preencha_dados || "Preencha nome e data de nascimento primeiro.");
+    var sec = document.getElementById("calcSection") || document.getElementById("calculadora");
+    if (sec) sec.scrollIntoView({ behavior: "smooth" });
+    return;
+  }
+
+  // Calcula os 5 números e mostra na calculadora (amostra grátis)
+  ultimosNumeros = calcular5Numeros(nome, nasc);
+  renderizarNumeros();
+
+  // Abre o modal de resultado com os números + significados + botão COMPRAR
+  abrirResultadoPesquisa(produto, nome, nasc, lang);
+}
+
+// ===== MODAL DE RESULTADO DA PESQUISA =====
+function abrirResultadoPesquisa(produto, nome, nasc, lang) {
+  var t = translations[lang] || translations.pt;
+  var titulo = (PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang][produto]) ? PRODUTOS_TRAD[lang][produto] : produto;
+  var chaves5 = ['caminho', 'realizacao', 'alma', 'personalidade', 'destino'];
+  var nomes = t.nomes5 || {};
+
+  // Monta as linhas do resultado (número + significado da energia)
+  var linhas = "";
+  for (var i = 0; i < ultimosNumeros.length && i < chaves5.length; i++) {
+    var n = ultimosNumeros[i];
+    var nomeE = nomes[chaves5[i]] || ("Energia " + n);
+    var desc = (ENERGIAS_DESC[lang] && ENERGIAS_DESC[lang][String(n)]) ? ENERGIAS_DESC[lang][String(n)] : "";
+    linhas += '<div style="border-bottom:1px solid #333;padding:10px 0">'
+      + '<strong style="color:var(--gold)">' + nomeE + ':</strong> <span style="font-size:1.4rem;color:#fff">' + n + '</span>'
+      + (desc ? '<div style="color:#ccc;font-size:.85rem;margin-top:4px">' + desc + '</div>' : '')
+      + '</div>';
+  }
+
+  var overlay = document.getElementById("modalPesquisa");
+  if (!overlay) {
+    overlay = document.createElement("div");
+    overlay.id = "modalPesquisa";
+    overlay.className = "modal-overlay";
+    overlay.innerHTML = '<div class="modal-box">'
+      + '<h3 id="modalPesquisaTitulo" style="color:var(--gold)"></h3>'
+      + '<p style="color:#ccc;font-size:.9rem" id="modalPesquisaNome"></p>'
+      + '<div id="modalPesquisaConteudo" style="margin:15px 0"></div>'
+      + '<div class="modal-actions">'
+      + '<button id="modalPesquisaComprar" class="btn">' + (t.buy_btn || "Comprar") + '</button>'
+      + '<button id="modalPesquisaFechar" class="btn btn-outline">' + (t.fechar || "Fechar") + '</button>'
+      + '</div></div>';
+    document.body.appendChild(overlay);
+    overlay.addEventListener("click", function(e){ if (e.target === overlay) fecharModalPesquisa(); });
+    document.getElementById("modalPesquisaFechar").onclick = fecharModalPesquisa;
+    document.getElementById("modalPesquisaComprar").onclick = function(){ fecharModalPesquisa(); comprar(produto); };
+  }
+  document.getElementById("modalPesquisaTitulo").textContent = titulo;
+  document.getElementById("modalPesquisaNome").textContent = nome + " · " + nasc;
+  document.getElementById("modalPesquisaConteudo").innerHTML = linhas;
+  overlay.classList.add("active");
+}
+
+function fecharModalPesquisa() {
+  var o = document.getElementById("modalPesquisa");
+  if (o) o.classList.remove("active");
+}
 
 // ===== MODAL DO DADO ESPECÍFICO (múltiplos passos) =====
 var DADO_LABEL = {
