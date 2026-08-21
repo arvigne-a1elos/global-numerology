@@ -642,6 +642,44 @@
   <footer>
     <p data-i18n="footer_text">© 2026 A1ELOS Assessoria e Consultoria. Todos os direitos reservados.</p>
   </footer>
+    <!-- ===== MODAL DE COLETA DE DADOS (formulários de pesquisa dos produtos) ===== -->
+<div id="modalColeta" class="modal-overlay" style="display:none">
+  <div class="modal-box">
+    <button type="button" id="coletaFechar" class="modal-fechar" style="position:absolute;top:10px;right:14px;background:none;border:none;color:#fff;font-size:1.4rem;cursor:pointer">✕</button>
+    <h3 id="coletaTitulo" style="color:var(--gold);text-align:center"></h3>
+
+    <div class="coleta-col">
+      <p class="coleta-label" id="coletaLabelTipo" style="color:var(--gold);font-weight:700"></p>
+      <div id="coletaOpcoesTipo" class="coleta-opcoes"></div>
+      <div id="coletaOutroWrap" style="display:none;margin-top:8px">
+        <input type="text" id="coletaOutroTexto" class="coleta-input" style="width:100%;padding:8px;border-radius:8px;border:1px solid var(--gold);background:#111;color:#fff">
+      </div>
+    </div>
+
+    <div class="coleta-col" style="margin-top:14px">
+      <p class="coleta-label" id="coletaLabelEnergia" style="color:var(--gold);font-weight:700" data-i18n="f_energia"></p>
+      <div id="coletaEnergia" class="energia-grid" style="display:grid;grid-template-columns:repeat(9,1fr);gap:6px;margin-top:6px"></div>
+    </div>
+
+    <div class="coleta-col" id="coletaAreaWrap" style="display:none;margin-top:14px">
+      <p class="coleta-label" id="coletaLabelArea" style="color:var(--gold);font-weight:700" data-i18n="f_area"></p>
+      <div id="coletaOpcoesArea" class="coleta-opcoes"></div>
+      <div id="coletaAreaOutroWrap" style="display:none;margin-top:8px">
+        <input type="text" id="coletaAreaOutroTexto" class="coleta-input" style="width:100%;padding:8px;border-radius:8px;border:1px solid var(--gold);background:#111;color:#fff">
+      </div>
+    </div>
+
+    <div class="coleta-col" id="coletaDetalheWrap" style="display:none;margin-top:14px">
+      <p class="coleta-label" id="coletaLabelDetalhe" style="color:var(--gold);font-weight:700" data-i18n="f_detalhe"></p>
+      <input type="text" id="coletaDetalheTexto" class="coleta-input" style="width:100%;padding:8px;border-radius:8px;border:1px solid var(--gold);background:#111;color:#fff;margin-top:6px">
+    </div>
+
+    <div class="modal-actions" style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px">
+      <button type="button" id="coletaCancelar" class="btn btn-outline" data-i18n="cancelar_btn"></button>
+      <button type="button" id="coletaConfirmar" class="btn btn-full" data-i18n="confirmar_btn"></button>
+    </div>
+  </div>
+</div>
     <!-- CAIXA DE MENSAGENS (sugestões e reclamações) -->
 <section id="mensagens">
     <div class="form-container" style="max-width:700px">
