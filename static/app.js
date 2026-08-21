@@ -99,7 +99,7 @@ function comprar(produto) {
     + '&nome=' + encodeURIComponent(nome) + '&nascimento=' + encodeURIComponent(nasc);
 }
 // ============================================================
-// FORMULÁRIOS DE COLETA — 8 produtos novos (usa as chaves do translations.js)
+// FORMULÁRIOS DE COLETA — 8 produtos (versão ÚNICA e limpa)
 // ============================================================
 var OPCOES_FALLBACK = {
   loja:"Loja", empresa:"Empresa", blog:"Blog", portfolio:"Portfólio",
@@ -116,63 +116,6 @@ function tradOpcao(chave) {
   var t = translations[getLang()] || translations.pt;
   return t[chave] || OPCOES_FALLBACK[chave] || chave;
 }
-
-var CONF_COLETA = {
-  nome_canal:   { labelTipo:"f_tipo_canal",   tipos:["youtube","podcast","tiktok","twitch"],             temArea:true,  areas:["esporte","noticias","politica","beleza"], temDetalhe:false },
-  nickname:     { labelTipo:"f_tipo_nickname", tipos:["gamer","profissional","criador","artista"],       temArea:false, areas:[], temDetalhe:false },
-  nome_ong:     { labelTipo:"f_tipo_ong",      tipos:["ong","instituto","associacao","fundacao"],        temArea:false, areas:[], temDetalhe:false },
-  nome_evento:  { labelTipo:"f_tipo_evento",   tipos:["show","congresso","festa","curso","palestra"],    temArea:true,  areas:["musica","esporte","cultura","politica","beleza"], temDetalhe:false },
-  nome_projeto: { labelTipo:"f_tipo_projeto",  tipos:["pessoal","social","empresarial","cultural"],      temArea:false, areas:[], temDetalhe:false },
-  nome_equipe:  { labelTipo:"f_tipo_equipe",   tipos:["empresarial","projeto","esportiva","banda"],      temArea:false, areas:[], temDetalhe:false },
-  nome_dominio: { labelTipo:"f_tipo_site",     tipos:["loja","empresa","blog","portfolio"],              temArea:true,  areas:["comercio","industria","servicos","pessoal"], temDetalhe:false },
-  nome_pet:     { labelTipo:"f_tipo_pet",      tipos:["cao","gato","passaro","reptil"],                  temArea:false, areas:[], temDetalhe:true }
-};
-
-var coletaAtual = null;
-
-// ===== PESQUISAR (substitua a função antiga por esta) =====
-function pesquisar(produto) {
-  // 1) Express e Completo → calculadora (confirmado)
-  if (produto === "express" || produto === "completo") {
-    var sec = document.getElementById("calculadora") || document.getElementById("calcSection");
-    if (sec) sec.scrollIntoView({ behavior:"smooth", block:"center" });
-    return;
-  }
-  // 2) 8 produtos novos → modal de coleta
-  if (CONF_COLETA[produto]) { abrirModalColeta(produto); return; }
-  // 3) Demais produtos → rolar até o formulário próprio (se existir)
-  var alvo = document.getElementById("form-" + produto);
-  if (alvo) {
-    alvo.scrollIntoView({ behavior:"smooth", block:"center" });
-    alvo.style.transition = "box-shadow .5s";
-    alvo.style.boxShadow = "0 0 0 3px var(--gold)";
-    setTimeout(function(){ alvo.style.boxShadow = ""; }, 2000);
-    return;
-  }
-  // fallback → calculadora
-  var calc = document.getElementById("calculadora") || document.getElementById("calcSection");
-  if (calc) calc.scrollIntoView({ behavior:"smooth" });
-}
-
-// ============================================================
-// FORMULÁRIOS DE COLETA — 8 produtos (alinhado aos desenhos)
-// ============================================================
-var OPCOES_FALLBACK = {
-  loja:"Loja", empresa:"Empresa", blog:"Blog", portfolio:"Portfólio",
-  comercio:"Comércio", industria:"Indústria", servicos:"Serviços", pessoal:"Pessoal/Individual",
-  cao:"Cão", gato:"Gato", passaro:"Pássaro", reptil:"Réptil",
-  show:"Show", congresso:"Congresso", festa:"Festa", curso:"Curso", palestra:"Palestra",
-  musica:"Música", esporte:"Esporte", cultura:"Cultura", politica:"Política", beleza:"Beleza",
-  social:"Social", cultural:"Cultural", esportiva:"Esportiva", banda:"Banda",
-  youtube:"YouTube", podcast:"Podcast", tiktok:"TikTok", twitch:"Twitch", noticias:"Notícias",
-  gamer:"Gamer", profissional:"Profissional", criador:"Criador", artista:"Artista",
-  ong:"ONG", instituto:"Instituto", associacao:"Associação", fundacao:"Fundação"
-};
-function tradOpcao(chave) {
-  var t = translations[getLang()] || translations.pt;
-  return t[chave] || OPCOES_FALLBACK[chave] || chave;
-}
-
 var CONF_COLETA = {
   nome_canal:   { labelTipo:"f_tipo_canal",   tipos:["youtube","podcast","tiktok","twitch"],        temArea:true,  areas:["esporte","noticias","politica","beleza"], temDetalhe:false },
   nickname:     { labelTipo:"f_tipo_nickname", tipos:["gamer","profissional","criador","artista"],  temArea:false, areas:[], temDetalhe:false },
@@ -183,10 +126,7 @@ var CONF_COLETA = {
   nome_dominio: { labelTipo:"f_tipo_site",     tipos:["loja","empresa","blog","portfolio"],         temArea:true,  areas:["comercio","industria","servicos","pessoal"], temDetalhe:false },
   nome_pet:     { labelTipo:"f_tipo_pet",      tipos:["cao","gato","passaro","reptil"],             temArea:false, areas:[], temDetalhe:true }
 };
-
 var coletaAtual = null;
-
-// ===== PESQUISAR (substitua a antiga por esta) =====
 function pesquisar(produto) {
   if (produto === "express" || produto === "completo") {
     var sec = document.getElementById("calculadora") || document.getElementById("calcSection");
@@ -205,8 +145,6 @@ function pesquisar(produto) {
   var calc = document.getElementById("calculadora") || document.getElementById("calcSection");
   if (calc) calc.scrollIntoView({ behavior:"smooth" });
 }
-
-// ===== ABRIR MODAL =====
 function abrirModalColeta(produto) {
   var lang = getLang();
   var t = translations[lang] || translations.pt;
@@ -214,12 +152,9 @@ function abrirModalColeta(produto) {
   var overlay = document.getElementById("modalColeta");
   if (!overlay) return;
   coletaAtual = produto;
-
   document.getElementById("coletaTitulo").textContent =
     (PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang][produto]) || produto;
-
   document.getElementById("coletaLabelTipo").textContent = t[conf.labelTipo] || t.f_tipo || "Tipo";
-
   var wrap = document.getElementById("coletaOpcoesTipo");
   wrap.innerHTML = "";
   conf.tipos.forEach(function(ch){
@@ -239,9 +174,7 @@ function abrirModalColeta(produto) {
   wrap.appendChild(bOutro);
   document.getElementById("coletaOutroWrap").style.display = "none";
   document.getElementById("coletaOutroTexto").value = "";
-
   montarGradeEnergia("coletaEnergia");
-
   var areaWrap = document.getElementById("coletaAreaWrap");
   if (conf.temArea) {
     areaWrap.style.display = "block";
@@ -268,7 +201,6 @@ function abrirModalColeta(produto) {
   } else {
     areaWrap.style.display = "none";
   }
-
   var detWrap = document.getElementById("coletaDetalheWrap");
   if (conf.temDetalhe) {
     detWrap.style.display = "block";
@@ -277,16 +209,13 @@ function abrirModalColeta(produto) {
   } else {
     detWrap.style.display = "none";
   }
-
   overlay.style.display = "flex";
   if (typeof traduzirTudo === "function") traduzirTudo();
 }
-
 function selecionarOpcao(container, btn) {
   container.querySelectorAll(".coleta-opcao").forEach(function(b){ b.classList.remove("ativo"); });
   btn.classList.add("ativo");
 }
-
 function montarGradeEnergia(idContainer) {
   var c = document.getElementById(idContainer);
   if (!c) return;
@@ -304,27 +233,21 @@ function montarGradeEnergia(idContainer) {
     })(i);
   }
 }
-
 function fecharModalColeta() {
   var o = document.getElementById("modalColeta");
   if (o) o.style.display = "none";
   coletaAtual = null;
 }
-
-// ===== CONFIRMAR → CHECKOUT =====
 function confirmarColeta() {
   if (!coletaAtual) return;
   var lang = getLang();
   var t = translations[lang] || translations.pt;
   var conf = CONF_COLETA[coletaAtual];
-
   var tipoEl = document.querySelector("#coletaOpcoesTipo .coleta-opcao.ativo");
   var tipo = tipoEl ? tipoEl.getAttribute("data-valor") : "";
   if (tipo === "__outro__") tipo = document.getElementById("coletaOutroTexto").value.trim();
-
   var enEl = document.querySelector("#coletaEnergia .energia-num.ativo");
   var energia = enEl ? enEl.textContent : "";
-
   var area = "";
   if (conf.temArea) {
     var areaEl = document.querySelector("#coletaOpcoesArea .coleta-opcao.ativo");
@@ -332,21 +255,16 @@ function confirmarColeta() {
     if (area === "__outro__") area = document.getElementById("coletaAreaOutroTexto").value.trim();
   }
   var detalhe = conf.temDetalhe ? document.getElementById("coletaDetalheTexto").value.trim() : "";
-
   if (!tipo || !energia) { alert(t.preencha_dado || "Preencha os dados solicitados."); return; }
-
   var qs = "lang=" + encodeURIComponent(lang)
          + "&produto=" + encodeURIComponent(coletaAtual)
          + "&tipo=" + encodeURIComponent(tipo)
          + "&energia=" + encodeURIComponent(energia);
   if (area) qs += "&area=" + encodeURIComponent(area);
   if (detalhe) qs += "&detalhe=" + encodeURIComponent(detalhe);
-
   fecharModalColeta();
   window.location.href = "/criar-checkout?" + qs;
 }
-
-// ===== LIGAR BOTÕES DO MODAL =====
 document.addEventListener("DOMContentLoaded", function(){
   var f = document.getElementById("coletaFechar");   if (f) f.onclick = fecharModalColeta;
   var c = document.getElementById("coletaCancelar"); if (c) c.onclick = fecharModalColeta;
@@ -354,175 +272,6 @@ document.addEventListener("DOMContentLoaded", function(){
   var ov = document.getElementById("modalColeta");
   if (ov) ov.addEventListener("click", function(e){ if (e.target === ov) fecharModalColeta(); });
 });
-
-  document.getElementById("coletaTitulo").textContent =
-    (PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang][produto]) || produto;
-
-  document.getElementById("coletaLabelTipo").textContent = t[conf.labelTipo] || t.f_tipo || "Tipo";
-
-  var wrap = document.getElementById("coletaOpcoesTipo");
-  wrap.innerHTML = "";
-  conf.tipos.forEach(function(ch){
-    var b = document.createElement("button");
-    b.type = "button"; b.className = "btn btn-outline coleta-opcao";
-    b.setAttribute("data-valor", ch); b.textContent = tradOpcao(ch);
-    b.onclick = function(){ selecionarOpcao(wrap, b); };
-    wrap.appendChild(b);
-  });
-  var bOutro = document.createElement("button");
-  bOutro.type = "button"; bOutro.className = "btn btn-outline coleta-opcao";
-  bOutro.setAttribute("data-valor", "__outro__"); bOutro.textContent = t.f_outro || "OUTRO/QUAL?";
-  bOutro.onclick = function(){
-    selecionarOpcao(wrap, bOutro);
-    document.getElementById("coletaOutroWrap").style.display = "block";
-  };
-  wrap.appendChild(bOutro);
-  document.getElementById("coletaOutroWrap").style.display = "none";
-  document.getElementById("coletaOutroTexto").value = "";
-
-  montarGradeEnergia("coletaEnergia");
-
-  var areaWrap = document.getElementById("coletaAreaWrap");
-  if (conf.temArea) {
-    areaWrap.style.display = "block";
-    document.getElementById("coletaLabelArea").textContent = t.f_area || "Área Desejada";
-    var aw = document.getElementById("coletaOpcoesArea");
-    aw.innerHTML = "";
-    conf.areas.forEach(function(ch){
-      var b = document.createElement("button");
-      b.type = "button"; b.className = "btn btn-outline coleta-opcao";
-      b.setAttribute("data-valor", ch); b.textContent = tradOpcao(ch);
-      b.onclick = function(){ selecionarOpcao(aw, b); };
-      aw.appendChild(b);
-    });
-    var bAOutro = document.createElement("button");
-    bAOutro.type = "button"; bAOutro.className = "btn btn-outline coleta-opcao";
-    bAOutro.setAttribute("data-valor", "__outro__"); bAOutro.textContent = t.f_outro || "OUTRO/QUAL?";
-    bAOutro.onclick = function(){
-      selecionarOpcao(aw, bAOutro);
-      document.getElementById("coletaAreaOutroWrap").style.display = "block";
-    };
-    aw.appendChild(bAOutro);
-    document.getElementById("coletaAreaOutroWrap").style.display = "none";
-    document.getElementById("coletaAreaOutroTexto").value = "";
-  } else {
-    areaWrap.style.display = "none";
-  }
-
-  var detWrap = document.getElementById("coletaDetalheWrap");
-  if (conf.temDetalhe) {
-    detWrap.style.display = "block";
-    document.getElementById("coletaLabelDetalhe").textContent = t.f_detalhe || "Detalhe / Particularidade";
-    document.getElementById("coletaDetalheTexto").value = "";
-  } else {
-    detWrap.style.display = "none";
-  }
-
-  overlay.style.display = "flex";
-  if (typeof traduzirTudo === "function") traduzirTudo();
-}
-
-function selecionarOpcao(container, btn) {
-  container.querySelectorAll(".coleta-opcao").forEach(function(b){ b.classList.remove("ativo"); });
-  btn.classList.add("ativo");
-}
-
-function montarGradeEnergia(idContainer) {
-  var c = document.getElementById(idContainer);
-  if (!c) return;
-  c.innerHTML = "";
-  for (var i = 1; i <= 9; i++) {
-    (function(n){
-      var b = document.createElement("button");
-      b.type = "button"; b.className = "btn btn-outline energia-num";
-      b.textContent = String(n);
-      b.onclick = function(){
-        c.querySelectorAll(".energia-num").forEach(function(x){ x.classList.remove("ativo"); });
-        b.classList.add("ativo");
-      };
-      c.appendChild(b);
-    })(i);
-  }
-}
-
-function fecharModalColeta() {
-  var o = document.getElementById("modalColeta");
-  if (o) o.style.display = "none";
-  coletaAtual = null;
-}
-
-// ===== Confirmar: coleta os dados e vai para o checkout (Stripe) =====
-function confirmarColeta() {
-  if (!coletaAtual) return;
-  var lang = getLang();
-  var t = translations[lang] || translations.pt;
-  var conf = CONF_COLETA[coletaAtual];
-
-  var tipoEl = document.querySelector("#coletaOpcoesTipo .coleta-opcao.ativo");
-  var tipo = tipoEl ? tipoEl.getAttribute("data-valor") : "";
-  if (tipo === "__outro__") tipo = document.getElementById("coletaOutroTexto").value.trim();
-
-  var enEl = document.querySelector("#coletaEnergia .energia-num.ativo");
-  var energia = enEl ? enEl.textContent : "";
-
-  var area = "";
-  if (conf.temArea) {
-    var areaEl = document.querySelector("#coletaOpcoesArea .coleta-opcao.ativo");
-    area = areaEl ? areaEl.getAttribute("data-valor") : "";
-    if (area === "__outro__") area = document.getElementById("coletaAreaOutroTexto").value.trim();
-  }
-  var detalhe = conf.temDetalhe ? document.getElementById("coletaDetalheTexto").value.trim() : "";
-
-  if (!tipo || !energia) { alert(t.preencha_dado || "Preencha os dados solicitados."); return; }
-
-  var qs = "lang=" + encodeURIComponent(lang)
-         + "&produto=" + encodeURIComponent(coletaAtual)
-         + "&tipo=" + encodeURIComponent(tipo)
-         + "&energia=" + encodeURIComponent(energia);
-  if (area) qs += "&area=" + encodeURIComponent(area);
-  if (detalhe) qs += "&detalhe=" + encodeURIComponent(detalhe);
-
-  fecharModalColeta();
-  window.location.href = "/criar-checkout?" + qs;
-}
-
-// ===== Ligar os botões do modal (rodar uma vez, ao final) =====
-document.addEventListener("DOMContentLoaded", function(){
-  var f = document.getElementById("coletaFechar");   if (f) f.onclick = fecharModalColeta;
-  var c = document.getElementById("coletaCancelar"); if (c) c.onclick = fecharModalColeta;
-  var ok = document.getElementById("coletaConfirmar"); if (ok) ok.onclick = confirmarColeta;
-  var ov = document.getElementById("modalColeta");
-  if (ov) ov.addEventListener("click", function(e){ if (e.target === ov) fecharModalColeta(); });
-});
-
-// Produtos que estão na lista das energias (abrem o seletor de energia)
-var PRODUTO_ENERGIA = ["vida","ia","imovel","calendario","artistico","bebe","assinatura","negocio","casal","familia"];
-
-function pesquisar(produto) {
-  var lang = getLang();
-
-  // 1) 8 produtos novos → modal de dado específico (já existe)
-  if (DADO_APLICA.indexOf(produto) !== -1) {
-    abrirModalDado(produto, lang);
-    return;
-  }
-
-  // 2) Produtos que estão nas energias → abre o seletor de energia
-  if (PRODUTO_ENERGIA.indexOf(produto) !== -1) {
-    abrirSeletorEnergia(produto, lang);
-    return;
-  }
-
-  // 3) Demais → rola até o formulário específico do produto
-  var target = PESQUISA_TARGET[produto] || "calculadora";
-  var el = document.getElementById(target);
-  if (el) {
-    el.scrollIntoView({ behavior: "smooth", block: "center" });
-    el.style.transition = "box-shadow 0.5s";
-    el.style.boxShadow = "0 0 0 3px var(--gold)";
-    setTimeout(function(){ el.style.boxShadow = ""; }, 2000);
-  }
-}
 
 // ===== SELETOR DE ENERGIA (para produtos da lista de energias) =====
 function abrirSeletorEnergia(produto, lang) {
