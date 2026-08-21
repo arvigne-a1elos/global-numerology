@@ -362,7 +362,7 @@ function abrirMenuEnergia(n, lang) {
     var b = document.createElement("button");
     b.className = "btn btn-full";
     b.innerHTML = icone + " " + nome;
-    b.onclick = function(){ fecharMenuEnergia(); comprar(prod); };
+    b.onclick = function(){ fecharMenuEnergia(); pesquisar(prod); };
     lista.appendChild(b);
   });
   overlay.classList.add("active");
