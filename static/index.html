@@ -680,6 +680,44 @@
     </div>
   </div>
 </div>
+    <!-- ===== MODAL DE COLETA DE DADOS (formulários de pesquisa dos produtos) ===== -->
+<div id="modalColeta" class="modal-overlay" style="display:none">
+  <div class="modal-box">
+    <button type="button" id="coletaFechar" class="modal-fechar">✕</button>
+    <h3 id="coletaTitulo" class="coleta-titulo"></h3>
+
+    <div class="coleta-col">
+      <p class="coleta-label" id="coletaLabelTipo"></p>
+      <div id="coletaOpcoesTipo" class="coleta-opcoes"></div>
+      <div id="coletaOutroWrap" style="display:none;margin-top:8px">
+        <input type="text" id="coletaOutroTexto" class="coleta-input">
+      </div>
+    </div>
+
+    <div class="coleta-col">
+      <p class="coleta-label" id="coletaLabelEnergia" data-i18n="f_energia"></p>
+      <div id="coletaEnergia" class="energia-grid"></div>
+    </div>
+
+    <div class="coleta-col" id="coletaAreaWrap" style="display:none">
+      <p class="coleta-label" id="coletaLabelArea" data-i18n="f_area"></p>
+      <div id="coletaOpcoesArea" class="coleta-opcoes"></div>
+      <div id="coletaAreaOutroWrap" style="display:none;margin-top:8px">
+        <input type="text" id="coletaAreaOutroTexto" class="coleta-input">
+      </div>
+    </div>
+
+    <div class="coleta-col" id="coletaDetalheWrap" style="display:none">
+      <p class="coleta-label" id="coletaLabelDetalhe" data-i18n="f_detalhe"></p>
+      <input type="text" id="coletaDetalheTexto" class="coleta-input">
+    </div>
+
+    <div class="modal-actions">
+      <button type="button" id="coletaCancelar" class="btn btn-outline" data-i18n="cancelar_btn"></button>
+      <button type="button" id="coletaConfirmar" class="btn btn-full" data-i18n="confirmar_btn"></button>
+    </div>
+  </div>
+</div>
     <!-- CAIXA DE MENSAGENS (sugestões e reclamações) -->
 <section id="mensagens">
     <div class="form-container" style="max-width:700px">
