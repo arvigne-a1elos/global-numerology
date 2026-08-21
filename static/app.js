@@ -720,7 +720,27 @@ function renderizarNumeros() {
   var box = document.getElementById("resultadoBox") || el;
   if (box) box.style.display = "block";
 }
+// ===== IR PARA COMPRA (com energia) — usada pelos botões de energia e cards =====
+function irParaCompra(produto, lang, energia) {
+  if (!lang) lang = getLang();
+  var qs = 'lang=' + encodeURIComponent(lang) + '&produto=' + encodeURIComponent(produto);
+  if (energia) qs += '&energia=' + encodeURIComponent(energia);
+  // aproveita nome/data da calculadora se já preenchidos
+  var nome = (document.getElementById("calcNome") ? document.getElementById("calcNome").value : "").trim();
+  var nasc = (document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim();
+  if (nome) qs += '&nome=' + encodeURIComponent(nome);
+  if (nasc) qs += '&nascimento=' + encodeURIComponent(nasc);
+  window.location.href = '/criar-checkout?' + qs;
+}
 
+// ===== TOGGLE FORM (mostra/oculta um formulário) — usada pelos botões "Iniciar Validação" etc. =====
+function toggleForm(formId) {
+  var el = document.getElementById(formId);
+  if (!el) return;
+  var escondido = (el.style.display === 'none' || el.style.display === '');
+  el.style.display = escondido ? 'block' : 'none';
+  if (escondido) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
 // ===== INICIALIZAÇÃO =====
 function init() {
   var savedLang = localStorage.getItem('lang');
