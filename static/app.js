@@ -101,81 +101,82 @@ function comprar(produto) {
 // ===== PESQUISAR (abre o espaço de coleta de dados do produto) =====
 // Não mostra resultado antes de pagar. Coleta dados → paga → PDF na página de sucesso.
 var PESQUISA_TARGET = {
-  // produtos que usam a calculadora (nome + data)
-  express: "calculadora", vida: "calculadora", completo: "calculadora",
-  ia: "calculadora", casal: "calculadora", familia: "calculadora",
-  imovel: "calculadora", calendario: "calculadora", artistico: "calculadora",
-  bebe: "calculadora", assinatura: "calculadora", negocio: "calculadora",
-  // produtos com formulário próprio
+  // usa a calculadora (nome + data)
+  express: "calculadora", completo: "calculadora",
+  // cada um com seu formulário próprio
+  vida: "form-vida", ia: "form-ia",
   urna: "form-urna", eleitoral: "form-eleitoral",
-  // coletivo
+  imovel: "form-imovel", calendario: "form-calendario",
+  artistico: "form-artistico", bebe: "form-bebe",
+  assinatura: "form-assinatura", negocio: "form-negocio",
+  casal: "form-casal", familia: "form-familia",
   coletivo: "corporativo"
 };
 
+// Produtos que estão na lista das energias (abrem o seletor de energia)
+var PRODUTO_ENERGIA = ["vida","ia","imovel","calendario","artistico","bebe","assinatura","negocio","casal","familia"];
+
 function pesquisar(produto) {
-  // 8 produtos novos → modal de dado específico (já existe no app.js)
+  var lang = getLang();
+
+  // 1) 8 produtos novos → modal de dado específico (já existe)
   if (DADO_APLICA.indexOf(produto) !== -1) {
-    abrirModalDado(produto, getLang());
+    abrirModalDado(produto, lang);
     return;
   }
 
-  // Demais produtos → rola até o espaço de coleta correspondente
+  // 2) Produtos que estão nas energias → abre o seletor de energia
+  if (PRODUTO_ENERGIA.indexOf(produto) !== -1) {
+    abrirSeletorEnergia(produto, lang);
+    return;
+  }
+
+  // 3) Demais → rola até o formulário específico do produto
   var target = PESQUISA_TARGET[produto] || "calculadora";
   var el = document.getElementById(target);
   if (el) {
     el.scrollIntoView({ behavior: "smooth", block: "center" });
-    // destaca o campo para chamar atenção
     el.style.transition = "box-shadow 0.5s";
     el.style.boxShadow = "0 0 0 3px var(--gold)";
     setTimeout(function(){ el.style.boxShadow = ""; }, 2000);
   }
 }
 
- // ===== MODAL DE RESULTADO DA PESQUISA =====
-function abrirResultadoPesquisa(produto, nome, nasc, lang) {
+// ===== SELETOR DE ENERGIA (para produtos da lista de energias) =====
+function abrirSeletorEnergia(produto, lang) {
   var t = translations[lang] || translations.pt;
   var titulo = (PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang][produto]) ? PRODUTOS_TRAD[lang][produto] : produto;
-  var chaves5 = ['caminho', 'realizacao', 'alma', 'personalidade', 'destino'];
-  var nomes = t.nomes5 || {};
-
-  // Monta as linhas do resultado (número + significado da energia)
-  var linhas = "";
-  for (var i = 0; i < ultimosNumeros.length && i < chaves5.length; i++) {
-    var n = ultimosNumeros[i];
-    var nomeE = nomes[chaves5[i]] || ("Energia " + n);
-    var desc = (ENERGIAS_DESC[lang] && ENERGIAS_DESC[lang][String(n)]) ? ENERGIAS_DESC[lang][String(n)] : "";
-    linhas += '<div style="border-bottom:1px solid #333;padding:10px 0">'
-      + '<strong style="color:var(--gold)">' + nomeE + ':</strong> <span style="font-size:1.4rem;color:#fff">' + n + '</span>'
-      + (desc ? '<div style="color:#ccc;font-size:.85rem;margin-top:4px">' + desc + '</div>' : '')
-      + '</div>';
-  }
-
-  var overlay = document.getElementById("modalPesquisa");
+  var overlay = document.getElementById("modalEnergiaSel");
   if (!overlay) {
     overlay = document.createElement("div");
-    overlay.id = "modalPesquisa";
+    overlay.id = "modalEnergiaSel";
     overlay.className = "modal-overlay";
     overlay.innerHTML = '<div class="modal-box">'
-      + '<h3 id="modalPesquisaTitulo" style="color:var(--gold)"></h3>'
-      + '<p style="color:#ccc;font-size:.9rem" id="modalPesquisaNome"></p>'
-      + '<div id="modalPesquisaConteudo" style="margin:15px 0"></div>'
-      + '<div class="modal-actions">'
-      + '<button id="modalPesquisaComprar" class="btn">' + (t.buy_btn || "Comprar") + '</button>'
-      + '<button id="modalPesquisaFechar" class="btn btn-outline">' + (t.fechar || "Fechar") + '</button>'
-      + '</div></div>';
+      + '<h3 id="modalEnergiaSelTitulo" style="color:var(--gold)"></h3>'
+      + '<p style="color:#ccc;font-size:.9rem">' + (t.energia_escolha || "Escolha a energia para pesquisar:") + '</p>'
+      + '<div id="modalEnergiaSelLista" class="modal-grid"></div>'
+      + '<div class="modal-actions"><button id="modalEnergiaSelFechar" class="btn btn-outline">' + (t.fechar || "Fechar") + '</button></div>'
+      + '</div>';
     document.body.appendChild(overlay);
-    overlay.addEventListener("click", function(e){ if (e.target === overlay) fecharModalPesquisa(); });
-    document.getElementById("modalPesquisaFechar").onclick = fecharModalPesquisa;
-    document.getElementById("modalPesquisaComprar").onclick = function(){ fecharModalPesquisa(); comprar(produto); };
+    overlay.addEventListener("click", function(e){ if (e.target === overlay) fecharSeletorEnergia(); });
+    document.getElementById("modalEnergiaSelFechar").onclick = fecharSeletorEnergia;
   }
-  document.getElementById("modalPesquisaTitulo").textContent = titulo;
-  document.getElementById("modalPesquisaNome").textContent = nome + " · " + nasc;
-  document.getElementById("modalPesquisaConteudo").innerHTML = linhas;
+  document.getElementById("modalEnergiaSelTitulo").textContent = titulo;
+  var lista = document.getElementById("modalEnergiaSelLista");
+  lista.innerHTML = "";
+  var titulos = (ENERGIA_TITULOS && ENERGIA_TITULOS[lang]) ? ENERGIA_TITULOS[lang] : ENERGIA_TITULOS["pt"];
+  for (var i = 1; i <= 9; i++) {
+    var nomeE = titulos[String(i)] || ("Energia " + i);
+    var b = document.createElement("button");
+    b.className = "btn btn-full";
+    b.textContent = i + " - " + nomeE;
+    b.onclick = function(){ fecharSeletorEnergia(); irParaCompra(produto, lang, this.textContent.split(" - ")[0]); };
+    lista.appendChild(b);
+  }
   overlay.classList.add("active");
 }
-
-function fecharModalPesquisa() {
-  var o = document.getElementById("modalPesquisa");
+function fecharSeletorEnergia() {
+  var o = document.getElementById("modalEnergiaSel");
   if (o) o.classList.remove("active");
 }
 
