@@ -153,7 +153,7 @@ function abrirModalColeta(produto) {
   if (!overlay) return;
   coletaAtual = produto;
   document.getElementById("coletaTitulo").textContent =
-    (PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang][produto]) || produto;
+  (PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang][produto]) || produto;
   document.getElementById("coletaLabelTipo").textContent = t[conf.labelTipo] || t.f_tipo || "Tipo";
   var wrap = document.getElementById("coletaOpcoesTipo");
   wrap.innerHTML = "";
