@@ -602,7 +602,11 @@ function confirmarBC() {
 }
 
 // ===== TRADUZ TUDO =====
+var _traduzindo = false;
 function traduzirTudo() {
+  if (_traduzindo) return;   // ← trava: se já está traduzindo, não re-entra
+  _traduzindo = true;
+  try {  
   var lang = getLang();
   var t = translations[lang] || translations.pt;
   document.querySelectorAll('[data-i18n]').forEach(function(el) {
@@ -636,6 +640,10 @@ function traduzirTudo() {
     if (nome && PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang][prod]) nome.innerText = PRODUTOS_TRAD[lang][prod];
     var preco = tr.querySelector('.bc-prod-preco');
     if (preco && PRODUTO_FAIXA[prod] !== undefined && PRECO_DISPLAY[lang]) preco.innerText = PRECO_DISPLAY[lang][PRODUTO_FAIXA[prod]];
+    } finally {
+    _traduzindo = false;     // ← libera a trava ao terminar
+  }
+}
   });
 montarTabelaBC();
 montarEnergias();
