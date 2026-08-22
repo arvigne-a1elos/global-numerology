@@ -1,13 +1,10 @@
 // ===== A1ELOS GLOBAL NUMEROLOGY - APP.JS (VERSÃO CONSOLIDADA) =====
 // ================================================================
 
-
   if (typeof atualizarResumoBC === 'function') atualizarResumoBC();
-
   // ===== NOVO: re-renderiza a calculadora no idioma trocado =====
   if (typeof renderizarNumeros === "function") renderizarNumeros();
   if (typeof montarEnergias === "function") montarEnergias();
-}   
   
 // ===== MONTAR SELETOR DE IDIOMAS (12 bandeiras) =====
 function montarSeletorIdioma() {
