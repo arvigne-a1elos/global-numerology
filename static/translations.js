@@ -30,7 +30,6 @@ function setLanguage(lang) {
     // Re-traduz todos os textos, cards, preços, energias e tabela BC
     if (typeof traduzirTudo === "function") { traduzirTudo(); }
 }
-
 // ===== TRADUÇÕES (12 IDIOMAS) =====
 const translations = {
     pt: {
@@ -196,14 +195,6 @@ const translations = {
         // Card Coletivo (features)
         feat_coletivo: ["✅ Planos prontos", "✅ Sob medida", "✅ Descontos progressivos", "✅ Códigos de presente"],
         desc_coletivo: "Contrate brindes numerológicos para seus clientes ou funcionários. Descontos de 10% a 70%.",
-        "nome_canal": "Nome do Canal",
-        "nickname": "Nickname Digital",
-        "nome_ong": "Nome da ONG",
-        "nome_evento": "Nome do Evento",
-        "nome_projeto": "Nome do Projeto",
-        "nome_equipe": "Nome da Equipe",
-        "nome_dominio": "Nome do Domínio",
-        "nome_pet": "Nome do Pet",
         confirmar: "Confirmar",
         cancelar: "Cancelar",
         fechar: "Fechar",
@@ -415,15 +406,7 @@ const translations = {
         ph_sua_mensagem: "Write your suggestion or complaint here...",
         feat_coletivo: ["✅ Ready-made plans", "✅ Custom-made", "✅ Progressive discounts", "✅ Gift codes"],
         desc_coletivo: "Hire numerology gifts for your clients or employees. Discounts from 10% to 70%.",
-        "nome_canal": "Channel Name",
-        "nickname": "Digital Nickname",
-        "nome_ong": "NGO Name",
-        "nome_evento": "Event Name",
-        "nome_projeto": "Project Name",
-        "nome_equipe": "Team Name",
-        "nome_dominio": "Domain Name",
-        "nome_pet": "Pet Name",
-        confirmar: "Confirm",
+        confirmar: "Confirm", 
         cancelar: "Cancel",
         fechar: "Close",
         energia_label: "Energy",
@@ -625,14 +608,6 @@ const translations = {
         ph_sua_mensagem: "Escriba aquí su sugerencia o reclamo...",
         feat_coletivo: ["✅ Planes listos", "✅ A medida", "✅ Descuentos progresivos", "✅ Códigos de regalo"],
         desc_coletivo: "Contrate obsequios numerológicos para sus clientes o empleados. Descuentos del 10% al 70%.",
-        "nome_canal": "Nombre del Canal",
-        "nickname": "Apodo Digital",
-        "nome_ong": "Nombre de la ONG",
-        "nome_evento": "Nombre del Evento",
-        "nome_projeto": "Nombre del Proyecto",
-        "nome_equipe": "Nombre del Equipo",
-        "nome_dominio": "Nombre del Dominio",
-        "nome_pet": "Nombre de la Mascota".
         confirmar: "Confirmar",
         cancelar: "Cancelar",
         fechar: "Cerrar",
@@ -836,14 +811,6 @@ const translations = {
         ph_sua_mensagem: "Scrivi qui il tuo suggerimento o reclamo...",
         feat_coletivo: ["✅ Piani pronti", "✅ Su misura", "✅ Sconti progressivi", "✅ Codici regalo"],
         desc_coletivo: "Assumi regali numerologici per i tuoi clienti o dipendenti. Sconti dal 10% al 70%.", 
-        "nome_canal": "Nome del canale",
-        "nickname": "Soprannome digitale",
-        "nome_ong": "Nome dell'ONG",
-        "nome_evento": "Nome dell'evento",
-        "nome_projeto": "Nome del progetto",
-        "nome_equipe": "Nome del team",
-        "nome_dominio": "Nome del dominio",
-        "nome_pet": "Nome dell'animale",
         confirmar: "Conferma",
         cancelar: "Annulla",
         fechar: "Chiudi",
@@ -1046,14 +1013,6 @@ const translations = {
         ph_sua_mensagem: "Écrivez ici votre suggestion ou réclamation...",
         feat_coletivo: ["✅ Formules prêtes", "✅ Sur mesure", "✅ Remises progressives", "✅ Codes cadeaux"],
         desc_coletivo: "Commandez des cadeaux numérologiques pour vos clients ou employés. Remises de 10% à 70%.",
-        "nome_canal": "Nom de la chaîne",
-        "nickname": "Surnom numérique",
-        "nome_ong": "Nom de l'ONG",
-        "nome_evento": "Nom de l'événement",
-        "nome_projeto": "Nom du projet",
-        "nome_equipe": "Nom de l'équipe",
-        "nome_dominio": "Nom de domaine",
-        "nome_pet": "Nom de l'animal",
         confirmar: "Confirmer",
         cancelar: "Annuler",
         fechar: "Fermer",
@@ -1256,14 +1215,6 @@ const translations = {
         ph_sua_mensagem: "Schreiben Sie hier Ihren Vorschlag oder Ihre Beschwerde...",
         feat_coletivo: ["✅ Fertige Pläne", "✅ Maßgeschneidert", "✅ Progressive Rabatte", "✅ Geschenkcodes"],
         desc_coletivo: "Buchen Sie numerologische Geschenke für Ihre Kunden oder Mitarbeiter. Rabatte von 10% bis 70%.",
-        "nome_canal": "Kanalname",
-        "nickname": "Digitaler Spitzname",
-        "nome_ong": "NGO-Name",
-        "nome_evento": "Veranstaltungsname",
-        "nome_projeto": "Projektname",
-        "nome_equipe": "Teamname",
-        "nome_dominio": "Domainname",
-        "nome_pet": "Haustiername",
         confirmar: "Bestätigen",
         cancelar: "Abbrechen",
         fechar: "Schließen",
@@ -1466,14 +1417,6 @@ const translations = {
         ph_sua_mensagem: "ここにご提案やご意見をご記入ください...",
         feat_coletivo: ["✅ 既製プラン", "✅ カスタムメイド", "✅ 段階的割引", "✅ ギフトコード"],
         desc_coletivo: "顧客や従業員向けに数秘術ギフトをご用意。10%〜70%の割引。",
-        "nome_canal": "チャンネル名",
-        "nickname": "デジタルニックネーム",
-        "nome_ong": "NGO名",
-        "nome_evento": "イベント名",
-        "nome_projeto": "プロジェクト名",
-        "nome_equipe": "チーム名",
-        "nome_dominio": "ドメイン名",
-        "nome_pet": "ペット名",
         confirmar: "確認",
         cancelar: "キャンセル",
         fechar: "閉じる",
@@ -1676,14 +1619,6 @@ const translations = {
         ph_sua_mensagem: "请在此写下您的建议或投诉...",
         feat_coletivo: ["✅ 现成方案", "✅ 量身定制", "✅ 阶梯折扣", "✅ 礼品代码"],
         desc_coletivo: "为您的客户或员工订购数字命理礼物。折扣10%至70%。",
-        "nome_canal": "频道名称",
-        "nickname": "数字昵称",
-        "nome_ong": "非政府组织名称",
-        "nome_evento": "活动名称",
-        "nome_projeto": "项目名称",
-        "nome_equipe": "团队名称",
-        "nome_dominio": "域名",
-        "nome_pet": "宠物名称",
         confirmar: "确认",
         cancelar: "取消",
         fechar: "关闭",
@@ -1892,14 +1827,6 @@ const translations = {
         energia_escolha: "Выберите продукт для поиска с этой энергией:",
         preencha_dado: "Заполните запрошенные данные",
         desc_coletivo: "Закажите нумерологические подарки для ваших клиентов или сотрудников. Скидки от 10% до 70%.",
-        "nome_canal": "Название канала",
-        "nickname": "Цифровой никнейм",
-        "nome_ong": "Название НПО",
-        "nome_evento": "Название события",
-        "nome_projeto": "Название проекта",
-        "nome_equipe": "Название команды",
-        "nome_dominio": "Доменное имя",
-        "nome_pet": "Имя питомца",
         caminho: "Путь жизни",
         realizacao: "Достижение",
         alma: "Душа",
@@ -2096,14 +2023,6 @@ const translations = {
         ph_sua_mensagem: "अपना सुझाव या शिकायत यहाँ लिखें...",
         feat_coletivo: ["✅ तैयार योजनाएं", "✅ कस्टम निर्मित", "✅ क्रमिक छूट", "✅ उपहार कोड"],
         desc_coletivo: "अपने ग्राहकों या कर्मचारियों के लिए अंकशास्त्र उपहार बुक करें। 10% से 70% तक छूट।",
-        "nome_canal": "चैनल का नाम",
-        "nickname": "डिजिटल उपनाम",
-        "nome_ong": "एनजीओ का नाम",
-        "nome_evento": "कार्यक्रम का नाम",
-        "nome_projeto": "परियोजना का नाम",
-        "nome_equipe": "टीम का नाम",
-        "nome_dominio": "डोमेन का नाम",
-        "nome_pet": "पालतू जानवर का नाम",
         confirmar: "पुष्टि करें",
         cancelar: "रद्द करें",
         fechar: "बंद करें",
@@ -2306,14 +2225,6 @@ const translations = {
         ph_sua_mensagem: "כתוב כאן את ההצעה או התלונה שלך...",
         feat_coletivo: ["✅ תוכניות מוכנות", "✅ לפי הזמנה", "✅ הנחות מדורגות", "✅ קודי מתנה"],
         desc_coletivo: "הזמינו מתנות נומרולוגיות ללקוחות או לעובדים שלכם. הנחות של 10% עד 70%.",
-        "nome_canal": "שם הערוץ",
-        "nickname": "כינוי דיגיטלי",
-        "nome_ong": "שם הארגון",
-        "nome_evento": "שם האירוע",
-        "nome_projeto": "שם הפרויקט",
-        "nome_equipe": "שם הצוות",
-        "nome_dominio": "שם הדומיין",
-        "nome_pet": "שם חיית המחמד",
         confirmar: "אישור",
         cancelar: "ביטול",
         fechar: "סגור",
@@ -2516,14 +2427,6 @@ const translations = {
         ph_sua_mensagem: "اكتب هنا اقتراحك أو شكواك...",
         feat_coletivo: ["✅ خطط جاهزة", "✅ حسب الطلب", "✅ خصومات تصاعدية", "✅ رموز هدايا"],
         desc_coletivo: "اطلب هدايا علم الأعداد لعملائك أو موظفيك. خصومات من 10% إلى 70%.",
-        "nome_canal": "اسم القناة",
-        "nickname": "الاسم المستعار الرقمي",
-        "nome_ong": "اسم المنظمة",
-        "nome_evento": "اسم الفعالية",
-        "nome_projeto": "اسم المشروع",
-        "nome_equipe": "اسم الفريق",
-        "nome_dominio": "اسم النطاق",
-        "nome_pet": "اسم الحيوان الأليف",
         confirmar: "تأكيد",
         cancelar: "إلغاء",
         fechar: "إغلاق",
@@ -2567,6 +2470,151 @@ const translations = {
         nomes5: { caminho: "مسار الحياة", destino: "القدر", alma: "الروح", personalidade: "الشخصية", realizacao: "الإنجاز" },
       },  
     };
+// ===== PRODUTOS_TRAD — 8 produtos de pesquisa em 12 idiomas =====
+
+// pt (Português)
+"pt": {
+  "nome_canal": "Nome do Canal",
+  "nickname": "Nickname Digital",
+  "nome_ong": "Nome da ONG",
+  "nome_evento": "Nome do Evento",
+  "nome_projeto": "Nome do Projeto",
+  "nome_equipe": "Nome da Equipe",
+  "nome_dominio": "Nome do Domínio",
+  "nome_pet": "Nome do Pet"
+},
+
+// en (English)
+"en": {
+  "nome_canal": "Channel Name",
+  "nickname": "Digital Nickname",
+  "nome_ong": "NGO Name",
+  "nome_evento": "Event Name",
+  "nome_projeto": "Project Name",
+  "nome_equipe": "Team Name",
+  "nome_dominio": "Domain Name",
+  "nome_pet": "Pet Name"
+},
+
+// es (Español)
+"es": {
+  "nome_canal": "Nombre del Canal",
+  "nickname": "Apodo Digital",
+  "nome_ong": "Nombre de la ONG",
+  "nome_evento": "Nombre del Evento",
+  "nome_projeto": "Nombre del Proyecto",
+  "nome_equipe": "Nombre del Equipo",
+  "nome_dominio": "Nombre del Dominio",
+  "nome_pet": "Nombre de la Mascota"
+},
+
+// fr (Français)
+"fr": {
+  "nome_canal": "Nom de la chaîne",
+  "nickname": "Surnom numérique",
+  "nome_ong": "Nom de l'ONG",
+  "nome_evento": "Nom de l'événement",
+  "nome_projeto": "Nom du projet",
+  "nome_equipe": "Nom de l'équipe",
+  "nome_dominio": "Nom de domaine",
+  "nome_pet": "Nom de l'animal"
+},
+
+// it (Italiano)
+"it": {
+  "nome_canal": "Nome del canale",
+  "nickname": "Soprannome digitale",
+  "nome_ong": "Nome dell'ONG",
+  "nome_evento": "Nome dell'evento",
+  "nome_projeto": "Nome del progetto",
+  "nome_equipe": "Nome del team",
+  "nome_dominio": "Nome del dominio",
+  "nome_pet": "Nome dell'animale"
+},
+
+// de (Deutsch)
+"de": {
+  "nome_canal": "Kanalname",
+  "nickname": "Digitaler Spitzname",
+  "nome_ong": "NGO-Name",
+  "nome_evento": "Veranstaltungsname",
+  "nome_projeto": "Projektname",
+  "nome_equipe": "Teamname",
+  "nome_dominio": "Domainname",
+  "nome_pet": "Haustiername"
+},
+
+// ru (Русский)
+"ru": {
+  "nome_canal": "Название канала",
+  "nickname": "Цифровой никнейм",
+  "nome_ong": "Название НПО",
+  "nome_evento": "Название события",
+  "nome_projeto": "Название проекта",
+  "nome_equipe": "Название команды",
+  "nome_dominio": "Доменное имя",
+  "nome_pet": "Имя питомца"
+},
+
+// zh (简体中文)
+"zh": {
+  "nome_canal": "频道名称",
+  "nickname": "数字昵称",
+  "nome_ong": "非政府组织名称",
+  "nome_evento": "活动名称",
+  "nome_projeto": "项目名称",
+  "nome_equipe": "团队名称",
+  "nome_dominio": "域名",
+  "nome_pet": "宠物名称"
+},
+
+// ja (日本語)
+"ja": {
+  "nome_canal": "チャンネル名",
+  "nickname": "デジタルニックネーム",
+  "nome_ong": "NGO名",
+  "nome_evento": "イベント名",
+  "nome_projeto": "プロジェクト名",
+  "nome_equipe": "チーム名",
+  "nome_dominio": "ドメイン名",
+  "nome_pet": "ペット名"
+},
+
+// ar (العربية)
+"ar": {
+  "nome_canal": "اسم القناة",
+  "nickname": "الاسم المستعار الرقمي",
+  "nome_ong": "اسم المنظمة",
+  "nome_evento": "اسم الفعالية",
+  "nome_projeto": "اسم المشروع",
+  "nome_equipe": "اسم الفريق",
+  "nome_dominio": "اسم النطاق",
+  "nome_pet": "اسم الحيوان الأليف"
+},
+
+// he (עברית)
+"he": {
+  "nome_canal": "שם הערוץ",
+  "nickname": "כינוי דיגיטלי",
+  "nome_ong": "שם הארגון",
+  "nome_evento": "שם האירוע",
+  "nome_projeto": "שם הפרויקט",
+  "nome_equipe": "שם הצוות",
+  "nome_dominio": "שם הדומיין",
+  "nome_pet": "שם חיית המחמד"
+},
+
+// hi (हिन्दी)
+"hi": {
+  "nome_canal": "चैनल का नाम",
+  "nickname": "डिजिटल उपनाम",
+  "nome_ong": "एनजीओ का नाम",
+  "nome_evento": "कार्यक्रम का नाम",
+  "nome_projeto": "परियोजना का नाम",
+  "nome_equipe": "टीम का नाम",
+  "nome_dominio": "डोमेन का नाम",
+  "nome_pet": "पालतू जानवर का नाम"
+}
 // ===== NOMES DOS 15 PRODUTOS (12 IDIOMAS) =====
 const PRODUTOS_TRAD = {
     pt: { express:"Mapa Express", vida:"Qual Vida/Ano", completo:"Mapa Completo", ia:"Pesquisa IA de Nomes", urna:"Validação Nome de Urna", eleitoral:"Número Eleitoral", imovel:"Número do Imóvel", calendario:"Calendário Mensal Energético", artistico:"Validação Nome Artístico", bebe:"Planejamento Nome de Bebê", assinatura:"Validação de Assinaturas", negocio:"Nome para Negócio/Produto", casal:"Mapa do Casal", familia:"Mapa Família Premium", coletivo:"Bônus Coletivo/Empresarial" },
