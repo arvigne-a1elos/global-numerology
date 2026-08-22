@@ -628,6 +628,7 @@ function traduzirTudo() {
     if (feats) card.querySelectorAll('.features li').forEach(function(li, i) { if (feats[i]) li.innerText = feats[i]; });
   });
   if (typeof montarEnergias === "function") montarEnergias();
+  if (typeof montarTabelaBC === "function") montarTabelaBC();    
   var BC_HEAD_KEY = { servico:'bc_tbl_service', preco:'bc_tbl_price', qtd:'bc_tbl_qty' };
   document.querySelectorAll('[data-i18n-bc]').forEach(function(el) {
     var k = el.getAttribute('data-i18n-bc');
