@@ -250,7 +250,6 @@ function init() {
   var defaultLang = savedLang || (translations[browserLang] ? browserLang : 'pt');
   montarSeletorIdioma();
   setLanguage(defaultLang);
-  montarTabelaBC();
   atualizarResumoBC();
   montarEnergias();
   traduzirTudo();
