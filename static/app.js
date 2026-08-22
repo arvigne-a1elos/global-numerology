@@ -1,8 +1,4 @@
 // ===== A1ELOS GLOBAL NUMEROLOGY - APP.JS (VERSÃO CONSOLIDADA) =====
-// Preserva todas as funções existentes + adiciona:
-//  - Modal de dado específico (8 produtos novos) com múltiplos passos
-//  - Menu de produtos por energia
-//  - BC_PRODUTOS com 23 produtos
 // ================================================================
 
 
@@ -96,7 +92,6 @@ function fecharModalColeta() {
 function abrirModalDado(produto, lang) {
   var t = translations[lang] || translations.pt;
   var label = (DADO_LABEL[lang] && DADO_LABEL[lang][produto]) ? DADO_LABEL[lang][produto] : DADO_LABEL.pt[produto];
-  var titulo = (PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang][produto]) ? PRODUTOS_TRAD[lang][produto] : label;
   var overlay = document.getElementById("modalDado");
   if (!overlay) {
     overlay = document.createElement("div");
@@ -126,23 +121,6 @@ function abrirModalDado(produto, lang) {
   window._modalDado = { produto: produto, lang: lang, tipo: "", energia: "" };
   montarPassoTipo(produto, lang);
   overlay.classList.add("active");
-}
-function montarPassoTipo(produto, lang) {
-  var t = translations[lang] || translations.pt;
-  var tipos = DADO_TIPOS[produto] || { label: "Tipo", opcoes: [] };
-  document.getElementById("modalPassoTipo").style.display = "block";
-  document.getElementById("modalPassoEnergia").style.display = "none";
-  document.getElementById("modalPassoNome").style.display = "none";
-  document.getElementById("modalTipoLabel").textContent = tipos.label + ":";
-  var box = document.getElementById("modalTipoOpcoes");
-  box.innerHTML = "";
-  tipos.opcoes.forEach(function(op) {
-    var b = document.createElement("button");
-    b.className = "btn btn-full";
-    b.textContent = op;
-    b.onclick = function(){ _modalDado.tipo = op; montarPassoEnergia(produto, lang); };
-    box.appendChild(b);
-  });
 }
 
 function fecharModalDado() {
