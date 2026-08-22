@@ -621,6 +621,7 @@ function montarEnergias() {
       + '<button class="btn btn-full" onclick="pesquisarEnergia(' + i + ')">' + btn + '</button>'
       + '</div>';
   }
+};  
   container.innerHTML = html;
 }
 
