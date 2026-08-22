@@ -193,21 +193,21 @@ footer { padding: 60px 20px; text-align: center; border-top: 1px solid #222; col
 .coleta-col{margin-top:16px}
 .coleta-label{color:var(--gold);font-weight:700;margin-bottom:10px;font-size:.95rem}
 
-/* ===== GRADE DE ENERGIA: CÍRCULOS PERFEITOS ===== */
+/* ===== GRADE DE ENERGIA: CÍRCULOS MENORES, NÚMEROS MAIORES ===== */
 .energia-grid{
   display:grid;
-  grid-template-columns:repeat(3,1fr);   /* 3 colunas = grade 3x3 */
-  gap:14px;                              /* respiro uniforme entre círculos */
+  grid-template-columns:repeat(3,1fr);   /* grade 3x3 */
+  gap:12px;                              /* respiro uniforme */
   width:100%;
   box-sizing:border-box;
 }
 .energia-num{
   width:100%;            /* largura = célula */
-  aspect-ratio:1/1;      /* FORÇA círculo perfeito (largura = altura) */
-  border-radius:50%;     /* círculo */
+  aspect-ratio:1/1;      /* círculo perfeito */
+  border-radius:50%;
   display:flex;align-items:center;justify-content:center;
-  font-size:1.35rem;     /* números MAIORES (antes ~0.95rem) */
-  font-weight:700;       /* negrito para melhor leitura */
+  font-size:1.8rem;      /* números BEM maiores (antes 1.35rem) */
+  font-weight:700;       /* negrito */
   color:#fff;
   background:transparent;border:2px solid var(--gold);
   cursor:pointer;transition:all .2s;margin:0;
