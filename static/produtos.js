@@ -691,5 +691,6 @@ function traduzirTudo() {
   });
 montarTabelaBC();
 montarEnergias();
-  traduzirTudo();}  
-};  
+  traduzirTudo();
+}  
+  
