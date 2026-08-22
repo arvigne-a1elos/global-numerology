@@ -250,7 +250,5 @@ function init() {
   var defaultLang = savedLang || (translations[browserLang] ? browserLang : 'pt');
   montarSeletorIdioma();
   setLanguage(defaultLang);
-  montarEnergias();
-  traduzirTudo();
-}
+  }
 document.addEventListener('DOMContentLoaded', init);
