@@ -690,3 +690,5 @@ function traduzirTudo() {
     if (preco && PRODUTO_FAIXA[prod] !== undefined && PRECO_DISPLAY[lang]) preco.innerText = PRECO_DISPLAY[lang][PRODUTO_FAIXA[prod]];
   });
 montarTabelaBC();
+montarEnergias();
+  traduzirTudo();  
