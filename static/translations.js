@@ -108,7 +108,7 @@ const translations = {
         select: "Selecionar",
         bc_custom_title: "Montar Sob Medida",
         bc_custom_sub: "Marque a quantidade desejada de cada serviço. O desconto é aplicado automaticamente.",
-        bc_tbl_service:"Serviço", bc_tbl_price:"Preço", bc_tbl_qty:"Quantidade",,
+        bc_tbl_service:"Serviço", bc_tbl_price:"Preço", bc_tbl_qty:"Quantidade",
         bc_total: "Total bruto:",
         bc_discount: "Desconto aplicado:",
         bc_final: "Total final:",
