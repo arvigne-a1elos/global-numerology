@@ -2,7 +2,17 @@
 // Versão Consolidada e Corrigida - 13/08/2026
 // 12 idiomas, 15 serviços, tradução de ponta a ponta
 // Entrega em PDF e QRCode (sem email, sigilo total)
-
+// ===== FUNÇÕES DE IDIOMA =====
+function getLang() {
+    return localStorage.getItem('lang') || 'pt';
+}
+function setLanguage(lang) {
+    localStorage.setItem('lang', lang);
+    document.documentElement.setAttribute('lang', lang);
+    document.documentElement.setAttribute('dir', (lang === 'ar' || lang === 'he') ? 'rtl' : 'ltr');
+    // Re-traduz todos os textos, cards, preços, energias e tabela BC
+    if (typeof traduzirTudo === "function") { traduzirTudo(); }
+}
 // ===== IDIOMAS DISPONÍVEIS (12) =====
 const languages = [
     { code: 'pt', name: 'PT', flag: '🇧🇷' },
@@ -19,17 +29,6 @@ const languages = [
     { code: 'ar', name: 'AR', flag: '🇸🇦' }
 ];
 
-// ===== FUNÇÕES DE IDIOMA =====
-function getLang() {
-    return localStorage.getItem('lang') || 'pt';
-}
-function setLanguage(lang) {
-    localStorage.setItem('lang', lang);
-    document.documentElement.setAttribute('lang', lang);
-    document.documentElement.setAttribute('dir', (lang === 'ar' || lang === 'he') ? 'rtl' : 'ltr');
-    // Re-traduz todos os textos, cards, preços, energias e tabela BC
-    if (typeof traduzirTudo === "function") { traduzirTudo(); }
-}
 // ===== TRADUÇÕES (12 IDIOMAS) =====
 const translations = {
     pt: {
