@@ -33,7 +33,7 @@ function pesquisar(produto) {
   if (calc) calc.scrollIntoView({ behavior:"smooth" });
 }
 
-// ===== CARDS_TRAD — Cards dos 8 produtos (12 idiomas) =====
+/* ===== CARDS_TRAD — Cards dos 8 produtos (12 idiomas) =====*/
 var CARDS_TRAD = {
   pt:{ nome_pet:"Nome do Pet", nome_pet_desc:"A energia do nome do seu animal de estimação.",
        nickname:"Nickname Digital", nickname_desc:"A vibração do seu nickname nas redes.",
@@ -144,7 +144,7 @@ var CARDS_TRAD = {
        nome_evento:"कार्यक्रम का नाम", nome_evento_desc:"आपके कार्यक्रम के नाम की कंपन।",
        buscar:"खोज" }
 };
-// ===== MONTAR_TRAD — Montar Sob Medida (12 idiomas) =====
+/* =====  MONTAR_TRAD — Montar Sob Medida (12 idiomas) =====*/
 var MONTAR_TRAD = {
   pt:{ titulo:"Montar Sob Medida", subtitulo:"Escolha os produtos e a energia desejada.",
        produto:"Produto", energia:"Energia", quantidade:"Quantidade", preco:"Preço",
@@ -207,7 +207,7 @@ var MONTAR_TRAD = {
        bruto:"सकल राशि", desconto:"लागू छूट", total:"कुल",
        vazio:"आपकी टोकरी खाली है" }
 };
-// ===== ENERGIA_TRAD — Nomes das 9 energias (12 idiomas) =====
+/* =====  ENERGIA_TRAD — Nomes das 9 energias (12 idiomas) =====*/
 var ENERGIA_TRAD = {
   pt:{ e1:"Líder", e2:"Diplomata", e3:"Criatividade", e4:"Estrutura", e5:"Liberdade", e6:"Harmonia", e7:"Espiritualidade", e8:"Poder", e9:"Humanitarismo" },
   en:{ e1:"Leader", e2:"Diplomat", e3:"Creativity", e4:"Structure", e5:"Freedom", e6:"Harmony", e7:"Spirituality", e8:"Power", e9:"Humanitarianism" },
@@ -227,7 +227,7 @@ function tradCard(chave){ var l=getLang(); var t=CARDS_TRAD[l]||CARDS_TRAD.pt; r
 function tradMontar(chave){ var l=getLang(); var t=MONTAR_TRAD[l]||MONTAR_TRAD.pt; return t[chave]||chave; }
 function tradEnergia(n){ var l=getLang(); var t=ENERGIA_TRAD[l]||ENERGIA_TRAD.pt; return t["e"+n]||"Energia "+n; }
 
-// ===== MODAL DO DADO ESPECÍFICO (múltiplos passos) =====
+/* =====  MODAL DO DADO ESPECÍFICO (múltiplos passos) =====*/
 var DADO_LABEL = {
   pt:{nome_pet:"Nome do Pet",nickname:"Nickname Digital",nome_dominio:"Nome do Domínio",nome_canal:"Nome do Canal",nome_equipe:"Nome da Equipe",nome_ong:"Nome da ONG",nome_projeto:"Nome do Projeto",nome_evento:"Nome do Evento"},
   en:{nome_pet:"Pet Name",nickname:"Digital Nickname",nome_dominio:"Domain Name",nome_canal:"Channel Name",nome_equipe:"Team Name",nome_ong:"NGO Name",nome_projeto:"Project Name",nome_evento:"Event Name"},
@@ -243,7 +243,7 @@ var DADO_LABEL = {
   ar:{nome_pet:"اسم الحيوان الأليف",nickname:"اللقب الرقمي",nome_dominio:"اسم النطاق",nome_canal:"اسم القناة",nome_equipe:"اسم الفريق",nome_ong:"اسم المنظمة",nome_projeto:"اسم المشروع",nome_evento:"اسم الفعالية"}
 };
 
-// ===== DADOS DE TIPO POR PRODUTO (para o modal de múltiplos passos) =====
+/* =====  DADOS DE TIPO POR PRODUTO (para o modal de múltiplos passos) =====*/
 var DADO_TIPOS = {
   nome_pet: { label:"Tipo de Pet", opcoes:["Gato","Cão","Pássaro","Réptil","Outro"] },
   nickname: { label:"Tipo de Perfil", opcoes:["Gamer","Criador","Profissional","Artista","Outro"] },
@@ -255,9 +255,9 @@ var DADO_TIPOS = {
   nome_evento: { label:"Tipo de Evento", opcoes:["Congresso","Curso","Festa","Palestra","Outro"] }
 };
 
-// ============================================================
+/* ============================================================*/
 // FORMULÁRIOS DE COLETA — 8 produtos (versão ÚNICA e limpa)
-// ============================================================
+/* ============================================================*/
 var OPCOES_FALLBACK = {
   loja:"Loja", empresa:"Empresa", blog:"Blog", portfolio:"Portfólio",
   comercio:"Comércio", industria:"Indústria", servicos:"Serviços", pessoal:"Pessoal/Individual",
@@ -373,7 +373,7 @@ document.addEventListener("DOMContentLoaded", function(){
   if (ov) ov.addEventListener("click", function(e){ if (e.target === ov) fecharModalColeta(); });
 });
 
-// ===== BÔNUS COLETIVO / EMPRESARIAL (23 produtos) =====
+/* ===== BÔNUS COLETIVO / EMPRESARIAL (23 produtos) =====*/
 var BC_PRODUTOS = [
   ["express","Mapa Express",8,"🔮"],["vida","Qual Vida/Ano",8,"🔢"],["completo","Mapa Completo",17,"📘"],
   ["ia","Pesquisa IA de Nomes",17,"🤖"],["urna","Validação Nome de Urna",26,"🗳️"],["eleitoral","Número Eleitoral",26,"🔢"],
@@ -386,13 +386,14 @@ var BC_PRODUTOS = [
   ["nome_projeto","Nome do Projeto",8,"📋"],["nome_evento","Nome do Evento",8,"🎪"]
 ];
 
-// ===== BÔNUS COLETIVO / EMPRESARIAL (funções resgatadas) =====
+/* ===== BÔNUS COLETIVO / EMPRESARIAL (funções resgatadas) =====*/
 var BC_QUANTIDADES = {};
 
 function montarTabelaBC() {
   var corpo = document.getElementById("bcTabelaCorpo");
   if (!corpo) return;
   corpo.innerHTML = "";
+  if (!window.BC_PRODUTOS || !BC_PRODUTOS.length) return;
   BC_PRODUTOS.forEach(function(p) {
     var tr = document.createElement("tr");
     tr.setAttribute("data-prod", p[0]);
@@ -468,7 +469,7 @@ function fecharMenuEnergia() {
   if (o) o.classList.remove("active");
 }
 
-// ===== OPCOES_TRAD — rótulos das opções (12 idiomas) =====
+/*===== OPCOES_TRAD — rótulos das opções (12 idiomas) =====*/
 var OPCOES_TRAD = {
   pt:{ youtube:"YouTube", podcast:"Podcast", tiktok:"TikTok", twitch:"Twitch", gamer:"Gamer", profissional:"Profissional", criador:"Criador", artista:"Artista", ong:"ONG", instituto:"Instituto", associacao:"Associação", fundacao:"Fundação", show:"Show", congresso:"Congresso", festa:"Festa", curso:"Curso", palestra:"Palestra", pessoal:"Pessoal", social:"Social", empresarial:"Empresarial", cultural:"Cultural", esportiva:"Esportiva", banda:"Banda", loja:"Loja", empresa:"Empresa", blog:"Blog", portfolio:"Portfólio", cao:"Cão", gato:"Gato", passaro:"Pássaro", reptil:"Réptil", projeto:"Projeto", esporte:"Esporte", noticias:"Notícias", politica:"Política", beleza:"Beleza", musica:"Música", cultura:"Cultura", comercio:"Comércio", industria:"Indústria", servicos:"Serviços", outro:"OUTRO/QUAL?" },
   en:{ youtube:"YouTube", podcast:"Podcast", tiktok:"TikTok", twitch:"Twitch", gamer:"Gamer", profissional:"Professional", criador:"Creator", artista:"Artist", ong:"NGO", instituto:"Institute", associacao:"Association", fundacao:"Foundation", show:"Show", congresso:"Congress", festa:"Party", curso:"Course", palestra:"Talk", pessoal:"Personal", social:"Social", empresarial:"Business", cultural:"Cultural", esportiva:"Sports", banda:"Band", loja:"Store", empresa:"Company", blog:"Blog", portfolio:"Portfolio", cao:"Dog", gato:"Cat", passaro:"Bird", reptil:"Reptile", projeto:"Project", esporte:"Sports", noticias:"News", politica:"Politics", beleza:"Beauty", musica:"Music", cultura:"Culture", comercio:"Commerce", industria:"Industry", servicos:"Services", outro:"OTHER/WHAT?" },
@@ -484,7 +485,7 @@ var OPCOES_TRAD = {
   hi:{ youtube:"यूट्यूब", podcast:"पॉडकास्ट", tiktok:"टिकटॉक", twitch:"ट्विच", gamer:"गेमर", profissional:"पेशेवर", criador:"निर्माता", artista:"कलाकार", ong:"एनजीओ", instituto:"संस्थान", associacao:"संघ", fundacao:"फाउंडेशन", show:"शो", congresso:"सम्मेलन", festa:"पार्टी", curso:"पाठ्यक्रम", palestra:"व्याख्यान", pessoal:"व्यक्तिगत", social:"सामाजिक", empresarial:"व्यावसायिक", cultural:"सांस्कृतिक", esportiva:"खेल", banda:"बैंड", loja:"दुकान", empresa:"कंपनी", blog:"ब्लॉग", portfolio:"पोर्टफोलियो", cao:"कुत्ता", gato:"बिल्ली", passaro:"पक्षी", reptil:"सरीसृप", projeto:"परियोजना", esporte:"खेल", noticias:"समाचार", politica:"राजनीति", beleza:"सुंदरता", musica:"संगीत", cultura:"संस्कृति", comercio:"वाणिज्य", industria:"उद्योग", servicos:"सेवाएं", outro:"अन्य/क्या?" }
 };
 
-// ===== SELETOR DE ENERGIA (para produtos da lista de energias) =====
+/* ===== SELETOR DE ENERGIA (para produtos da lista de energias) =====*/
 function abrirSeletorEnergia(produto, lang) {
   var t = translations[lang] || translations.pt;
   var titulo = (PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang][produto]) ? PRODUTOS_TRAD[lang][produto] : produto;
@@ -550,7 +551,6 @@ function montarPassoNome(produto, lang) {
   document.getElementById("modalDadoInput").focus();
 }
 
-// ===== ENERGIAS (abre menu de produtos da energia) =====
 function montarEnergias() {
   var lang = getLang();
   var container = document.getElementById("energiasGrid")
@@ -568,7 +568,7 @@ function montarEnergias() {
       + '<div class="energia-desc">' + (descs[String(i)] || "") + '</div>'
       + '<button class="btn btn-full" onclick="pesquisarEnergia(' + i + ')">' + btn + '</button>'
       + '</div>';
-}  
+  }
   container.innerHTML = html;
 }
 
@@ -601,7 +601,7 @@ function confirmarBC() {
   window.location.href = '/criar-checkout?lang=' + getLang() + '&produto=coletivo&qtd=' + qtdTotal + '&total=' + final + '&itens=' + encodeURIComponent(JSON.stringify(itens));
 }
 
-// ===== TRADUZ TUDO =====
+/* ===== TRADUZ TUDO =====*/
 var _traduzindo = false;
 function traduzirTudo() {
   if (_traduzindo) return;   // ← trava: se já está traduzindo, não re-entra
@@ -645,7 +645,7 @@ document.querySelectorAll('.product-card[data-prod]').forEach(function(card) {
     if (preco && PRODUTO_FAIXA[prod] !== undefined && PRECO_DISPLAY[lang]) preco.innerText = PRECO_DISPLAY[lang][PRODUTO_FAIXA[prod]];
   });
     } finally {
-    _traduzindo = false;     // ← libera a trava ao terminar
+    _traduzindo = false;     
   }
 }
   
