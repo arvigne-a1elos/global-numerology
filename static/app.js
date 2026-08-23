@@ -28,6 +28,17 @@ function montarSeletorIdioma() {
   });
 }
 
+function pagarVida(){ var n=document.getElementById('vidaNome').value.trim(), b=document.getElementById('vidaNasc').value; if(!n||!b){alert('Preencha os dados.');return;} window.location.href='/criar-checkout?produto=vida&nome='+encodeURIComponent(n)+'&nascimento='+encodeURIComponent(b)+'&lang='+getLang(); }
+function pagarIa(){ var n=document.getElementById('iaNome').value.trim(), e=document.getElementById('iaEnergia').value; if(!n||!e){alert('Preencha os dados.');return;} window.location.href='/criar-checkout?produto=ia&nome='+encodeURIComponent(n)+'&energia='+encodeURIComponent(e)+'&lang='+getLang(); }
+function pagarImovel(){ var n=document.getElementById('imovelNumero').value.trim(); if(!n){alert('Informe o número.');return;} window.location.href='/criar-checkout?produto=imovel&dado='+encodeURIComponent(n)+'&lang='+getLang(); }
+function pagarCalendario(){ var n=document.getElementById('calNome').value.trim(), m=document.getElementById('calMes').value; if(!n||!m){alert('Preencha os dados.');return;} window.location.href='/criar-checkout?produto=calendario&nome='+encodeURIComponent(n)+'&dado='+encodeURIComponent(m)+'&lang='+getLang(); }
+function pagarArtistico(){ var n=document.getElementById('artNome').value.trim(); if(!n){alert('Informe o nome.');return;} window.location.href='/criar-checkout?produto=artistico&dado='+encodeURIComponent(n)+'&lang='+getLang(); }
+function pagarBebe(){ var n=document.getElementById('bebeSobrenome').value.trim(), e=document.getElementById('bebeEnergia').value; if(!n||!e){alert('Preencha os dados.');return;} window.location.href='/criar-checkout?produto=bebe&dado='+encodeURIComponent(n)+'&energia='+encodeURIComponent(e)+'&lang='+getLang(); }
+function pagarAssinatura(){ var n=document.getElementById('assinaturaTexto').value.trim(); if(!n){alert('Informe a assinatura.');return;} window.location.href='/criar-checkout?produto=assinatura&dado='+encodeURIComponent(n)+'&lang='+getLang(); }
+function pagarNegocio(){ var n=document.getElementById('negocioNome').value.trim(), e=document.getElementById('negocioEnergia').value; if(!n||!e){alert('Preencha os dados.');return;} window.location.href='/criar-checkout?produto=negocio&dado='+encodeURIComponent(n)+'&energia='+encodeURIComponent(e)+'&lang='+getLang(); }
+function pagarCasal(){ var n1=document.getElementById('casalNome1').value.trim(), n2=document.getElementById('casalNome2').value.trim(); if(!n1||!n2){alert('Informe os 2 nomes.');return;} window.location.href='/criar-checkout?produto=casal&dado='+encodeURIComponent(n1+' & '+n2)+'&lang='+getLang(); }
+function pagarFamilia(){ var n=document.getElementById('familiaMembros').value.trim(); if(!n){alert('Informe os membros.');return;} window.location.href='/criar-checkout?produto=familia&dado='+encodeURIComponent(n)+'&lang='+getLang(); }
+
 // ===== COMPRAR (abre modal do dado específico para os 8 produtos) =====
 var DADO_APLICA = ["nome_pet","nickname","nome_dominio","nome_canal","nome_equipe","nome_ong","nome_projeto","nome_evento"];
 
