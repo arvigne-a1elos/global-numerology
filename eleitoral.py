@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-# eleitoral.py - Geração de Números Eleitorais
-from calc_service import reduzir
+# produtos/eleitoral.py - Geração de Números Eleitorais (módulo independente)
+# Uso: from produtos.eleitoral import gerar_numeros
 
 ENERGIAS = {
     8: "Poder e Prosperidade (IDEAL)", 7: "Sabedoria", 3: "Criação",
@@ -12,6 +12,12 @@ DIGITOS_CARGO = {
     "vereador": 5, "dep_estadual": 5,
     "dep_federal": 4, "senador": 3,
 }
+
+def reduzir(n):
+    """Reduz um número a um dígito (ou número mestre 11/22/33)."""
+    while n > 9 and n not in (11, 22, 33):
+        n = sum(int(d) for d in str(n))
+    return n
 
 def gerar_numeros(sigla, cargo, qtd=5):
     """Gera números eleitorais com energia 8 prioritariamente.
