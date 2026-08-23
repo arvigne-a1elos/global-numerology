@@ -244,6 +244,7 @@ const translations = {
         ia_texto: "Escolha o nome ideal com análise numerológica da energia do nome por IA.",
         energia_escolha: "Escolha um produto para pesquisar com esta energia:",
         confirme_energia: "Confirme a Energia X",
+        pay_vida:"🔒 Pagar — Resultado em PDF + QRCode", pay_ia:"🔒 Pagar — Resultado em PDF + QRCode", pay_imovel:"🔒 Pagar — Resultado em PDF + QRCode", pay_calendario:"🔒 Pagar — Resultado em PDF + QRCode", pay_artistico:"🔒 Pagar — Resultado em PDF + QRCode", pay_bebe:"🔒 Pagar — Resultado em PDF + QRCode", pay_assinatura:"🔒 Pagar — Resultado em PDF + QRCode", pay_negocio:"🔒 Pagar — Resultado em PDF + QRCode", pay_casal:"🔒 Pagar — Resultado em PDF + QRCode", pay_familia:"🔒 Pagar — Resultado em PDF + QRCode", f_mes:"Mês", ph_ex_numero:"Ex: 123", ph_nome_artistico:"Seu nome artístico", ph_sobrenome:"Sobrenome", ph_sua_assinatura:"Sua assinatura", ph_nome_negocio:"Nome do negócio", ph_membros:"Nome de cada membro, um por linha",
         nomes5: { caminho: "Caminho da Vida", destino: "Destino", alma: "Alma", personalidade: "Personalidade", realizacao: "Realização" }, 
     },
     en: {
@@ -441,8 +442,9 @@ const translations = {
         ia_texto: "Choose the ideal name with numerological analysis of the name's energy by AI.",
         energia_escolha: "Choose a product to search with this energy:",
         confirme_energia: "Confirm Energy X",
+        pay_vida:"🔒 Pay — Result in PDF + QRCode", pay_ia:"🔒 Pay — Result in PDF + QRCode", pay_imovel:"🔒 Pay — Result in PDF + QRCode", pay_calendario:"🔒 Pay — Result in PDF + QRCode", pay_artistico:"🔒 Pay — Result in PDF + QRCode", pay_bebe:"🔒 Pay — Result in PDF + QRCode", pay_assinatura:"🔒 Pay — Result in PDF + QRCode", pay_negocio:"🔒 Pay — Result in PDF + QRCode", pay_casal:"🔒 Pay — Result in PDF + QRCode", pay_familia:"🔒 Pay — Result in PDF + QRCode", f_mes:"Month", ph_ex_numero:"E.g.: 123", ph_nome_artistico:"Your stage name", ph_sobrenome:"Surname", ph_sua_assinatura:"Your signature", ph_nome_negocio:"Business name", ph_membros:"Each member's name, one per line",
         nomes5: { caminho: "Life Path", destino: "Destiny", alma: "Soul", personalidade: "Personality", realizacao: "Realization"   },        
-    },
+           },
     es: { 
         hero_title: "MAPA NUMEROLÓGICO",
         hero_subtitle: "Descubre lo que los números revelan sobre ti",
@@ -638,6 +640,7 @@ const translations = {
         ia_texto: "Elige el nombre ideal con análisis numerológico de la energía del nombre por IA.",
         energia_escolha: "Elige un producto para buscar con esta energía:",
         confirme_energia: "Confirma la Energía X",
+        pay_vida:"🔒 Pagar — Resultado en PDF + QRCode", pay_ia:"🔒 Pagar — Resultado en PDF + QRCode", pay_imovel:"🔒 Pagar — Resultado en PDF + QRCode", pay_calendario:"🔒 Pagar — Resultado en PDF + QRCode", pay_artistico:"🔒 Pagar — Resultado en PDF + QRCode", pay_bebe:"🔒 Pagar — Resultado en PDF + QRCode", pay_assinatura:"🔒 Pagar — Resultado en PDF + QRCode", pay_negocio:"🔒 Pagar — Resultado en PDF + QRCode", pay_casal:"🔒 Pagar — Resultado en PDF + QRCode", pay_familia:"🔒 Pagar — Resultado en PDF + QRCode", f_mes:"Mes", ph_ex_numero:"Ej.: 123", ph_nome_artistico:"Tu nombre artístico", ph_sobrenome:"Apellido", ph_sua_assinatura:"Tu firma", ph_nome_negocio:"Nombre del negocio", ph_membros:"Nombre de cada miembro, uno por línea",
         nomes5: { caminho: "Camino de Vida", destino: "Destino", alma: "Alma", personalidade: "Personalidad", realizacao: "Realización" },
     },
     
@@ -836,6 +839,7 @@ const translations = {
         ia_texto: "Scegli il nome ideale con analisi numerologica dell'energia del nome tramite IA.",
         energia_escolha: "Scegli un prodotto da cercare con questa energia:",
         confirme_energia: "Conferma l'Energia X",
+        pay_vida:"🔒 Paga — Risultato in PDF + QRCode", pay_ia:"🔒 Paga — Risultato in PDF + QRCode", pay_imovel:"🔒 Paga — Risultato in PDF + QRCode", pay_calendario:"🔒 Paga — Risultato in PDF + QRCode", pay_artistico:"🔒 Paga — Risultato in PDF + QRCode", pay_bebe:"🔒 Paga — Risultato in PDF + QRCode", pay_assinatura:"🔒 Paga — Risultato in PDF + QRCode", pay_negocio:"🔒 Paga — Risultato in PDF + QRCode", pay_casal:"🔒 Paga — Risultato in PDF + QRCode", pay_familia:"🔒 Paga — Risultato in PDF + QRCode", f_mes:"Mese", ph_ex_numero:"Es.: 123", ph_nome_artistico:"Il tuo nome d'arte", ph_sobrenome:"Cognome", ph_sua_assinatura:"La tua firma", ph_nome_negocio:"Nome dell'attività", ph_membros:"Nome di ogni membro, uno per riga",
         nomes5: { caminho: "Percorso di Vita", destino: "Destino", alma: "Anima", personalidade: "Personalità", realizacao: "Realizzazione" },
     },
     fr: {
@@ -1033,6 +1037,7 @@ const translations = {
         ia_texto: "Choisissez le nom idéal avec l'analyse numérologique de l'énergie du nom par IA.",
         energia_escolha: "Choisissez un produit à rechercher avec cette énergie:",
         confirme_energia: "Confirmez l'Énergie X",
+        pay_vida:"🔒 Payer — Résultat en PDF + QRCode", pay_ia:"🔒 Payer — Résultat en PDF + QRCode", pay_imovel:"🔒 Payer — Résultat en PDF + QRCode", pay_calendario:"🔒 Payer — Résultat en PDF + QRCode", pay_artistico:"🔒 Payer — Résultat en PDF + QRCode", pay_bebe:"🔒 Payer — Résultat en PDF + QRCode", pay_assinatura:"🔒 Payer — Résultat en PDF + QRCode", pay_negocio:"🔒 Payer — Résultat en PDF + QRCode", pay_casal:"🔒 Payer — Résultat en PDF + QRCode", pay_familia:"🔒 Payer — Résultat en PDF + QRCode", f_mes:"Mois", ph_ex_numero:"Ex. : 123", ph_nome_artistico:"Votre nom de scène", ph_sobrenome:"Nom de famille", ph_sua_assinatura:"Votre signature", ph_nome_negocio:"Nom de l'entreprise", ph_membros:"Nom de chaque membre, un par ligne",
         nomes5: { caminho: "Chemin de Vie", destino: "Destin", alma: "Âme", personalidade: "Personnalité", realizacao: "Réalisation"  },
     },
     de: {
@@ -1230,6 +1235,7 @@ const translations = {
         ia_texto: "Wählen Sie den idealen Namen mit numerologischer Analyse der Namensenergie durch KI.",
         energia_escolha: "Wählen Sie ein Produkt, um mit dieser Energie zu suchen:",
         confirme_energia: "Energie X bestätigen",
+        pay_vida:"🔒 Bezahlen — Ergebnis als PDF + QRCode", pay_ia:"🔒 Bezahlen — Ergebnis als PDF + QRCode", pay_imovel:"🔒 Bezahlen — Ergebnis als PDF + QRCode", pay_calendario:"🔒 Bezahlen — Ergebnis als PDF + QRCode", pay_artistico:"🔒 Bezahlen — Ergebnis als PDF + QRCode", pay_bebe:"🔒 Bezahlen — Ergebnis als PDF + QRCode", pay_assinatura:"🔒 Bezahlen — Ergebnis als PDF + QRCode", pay_negocio:"🔒 Bezahlen — Ergebnis als PDF + QRCode", pay_casal:"🔒 Bezahlen — Ergebnis als PDF + QRCode", pay_familia:"🔒 Bezahlen — Ergebnis als PDF + QRCode", f_mes:"Monat", ph_ex_numero:"z. B.: 123", ph_nome_artistico:"Ihr Künstlername", ph_sobrenome:"Nachname", ph_sua_assinatura:"Ihre Unterschrift", ph_nome_negocio:"Geschäftsname", ph_membros:"Name jedes Mitglieds, eine Zeile pro Name",
         nomes5: { caminho: "Lebensweg", destino: "Schicksal", alma: "Seele", personalidade: "Persönlichkeit", realizacao: "Verwirklichung" },
     },
     ja: {
@@ -1427,6 +1433,7 @@ const translations = {
         ia_texto: "AIによる名前のエネルギーの数秘学的分析で理想の名前を選びましょう。",
         energia_escolha: "このエネルギーで検索する製品を選択してください:",
         confirme_energia: "エネルギーXを確認",
+        pay_vida:"🔒 支払う — PDF + QRコードで結果", pay_ia:"🔒 支払う — PDF + QRコードで結果", pay_imovel:"🔒 支払う — PDF + QRコードで結果", pay_calendario:"🔒 支払う — PDF + QRコードで結果", pay_artistico:"🔒 支払う — PDF + QRコードで結果", pay_bebe:"🔒 支払う — PDF + QRコードで結果", pay_assinatura:"🔒 支払う — PDF + QRコードで結果", pay_negocio:"🔒 支払う — PDF + QRコードで結果", pay_casal:"🔒 支払う — PDF + QRコードで結果", pay_familia:"🔒 支払う — PDF + QRコードで結果", f_mes:"月", ph_ex_numero:"例: 123", ph_nome_artistico:"芸名", ph_sobrenome:"姓", ph_sua_assinatura:"あなたの署名", ph_nome_negocio:"ビジネス名", ph_membros:"各メンバーの名前（1行に1つ）",
         nomes5: { caminho: "ライフパス", destino: "運命", alma: "魂", personalidade: "性格", realizacao: "実現" },
     },
     zh: {
@@ -1624,6 +1631,7 @@ const translations = {
         ia_texto: "通过AI对名字能量的数字命理分析，选择理想的名字。",
         energia_escolha: "选择使用此能量搜索的产品:",
         confirme_energia: "确认能量X",
+        pay_vida:"🔒 支付 — PDF + 二维码结果", pay_ia:"🔒 支付 — PDF + 二维码结果", pay_imovel:"🔒 支付 — PDF + 二维码结果", pay_calendario:"🔒 支付 — PDF + 二维码结果", pay_artistico:"🔒 支付 — PDF + 二维码结果", pay_bebe:"🔒 支付 — PDF + 二维码结果", pay_assinatura:"🔒 支付 — PDF + 二维码结果", pay_negocio:"🔒 支付 — PDF + 二维码结果", pay_casal:"🔒 支付 — PDF + 二维码结果", pay_familia:"🔒 支付 — PDF + 二维码结果", f_mes:"月份", ph_ex_numero:"例如：123", ph_nome_artistico:"艺名", ph_sobrenome:"姓氏", ph_sua_assinatura:"您的签名", ph_nome_negocio:"企业名称", ph_membros:"每位成员的名字，每行一个",
         nomes5: { caminho: "生命路径", destino: "命运", alma: "灵魂", personalidade: "个性", realizacao: "实现" },
     },
     ru: {
@@ -1821,6 +1829,7 @@ const translations = {
         ia_texto: "Выберите идеальное имя с нумерологическим анализом энергии имени с помощью ИИ.",
         energia_escolha: "Выберите продукт для поиска с этой энергией:",
         confirme_energia: "Подтвердите энергию X",
+        pay_vida:"🔒 Оплатить — Результат в PDF + QRCode", pay_ia:"🔒 Оплатить — Результат в PDF + QRCode", pay_imovel:"🔒 Оплатить — Результат в PDF + QRCode", pay_calendario:"🔒 Оплатить — Результат в PDF + QRCode", pay_artistico:"🔒 Оплатить — Результат в PDF + QRCode", pay_bebe:"🔒 Оплатить — Результат в PDF + QRCode", pay_assinatura:"🔒 Оплатить — Результат в PDF + QRCode", pay_negocio:"🔒 Оплатить — Результат в PDF + QRCode", pay_casal:"🔒 Оплатить — Результат в PDF + QRCode", pay_familia:"🔒 Оплатить — Результат в PDF + QRCode", f_mes:"Месяц", ph_ex_numero:"Напр.: 123", ph_nome_artistico:"Сценическое имя", ph_sobrenome:"Фамилия", ph_sua_assinatura:"Ваша подпись", ph_nome_negocio:"Название бизнеса", ph_membros:"Имя каждого члена, по одному в строке",
         nomes5: { caminho: "Путь Жизни", destino: "Судьба", alma: "Душа", personalidade: "Личность", realizacao: "Реализация" },
     },
     hi: {
@@ -2018,6 +2027,7 @@ const translations = {
         ia_texto: "AI द्वारा नाम की ऊर्जा के अंकशास्त्रीय विश्लेषण से आदर्श नाम चुनें।",
         energia_escolha: "इस ऊर्जा के साथ खोजने के लिए उत्पाद चुनें:",
         confirme_energia: "ऊर्जा X की पुष्टि करें",
+        pay_vida:"🔒 भुगतान करें — PDF + QRCode परिणाम", pay_ia:"🔒 भुगतान करें — PDF + QRCode परिणाम", pay_imovel:"🔒 भुगतान करें — PDF + QRCode परिणाम", pay_calendario:"🔒 भुगतान करें — PDF + QRCode परिणाम", pay_artistico:"🔒 भुगतान करें — PDF + QRCode परिणाम", pay_bebe:"🔒 भुगतान करें — PDF + QRCode परिणाम", pay_assinatura:"🔒 भुगतान करें — PDF + QRCode परिणाम", pay_negocio:"🔒 भुगतान करें — PDF + QRCode परिणाम", pay_casal:"🔒 भुगतान करें — PDF + QRCode परिणाम", pay_familia:"🔒 भुगतान करें — PDF + QRCode परिणाम", f_mes:"महीना", ph_ex_numero:"जैसे: 123", ph_nome_artistico:"आपका कलात्मक नाम", ph_sobrenome:"उपनाम", ph_sua_assinatura:"आपके हस्ताक्षर", ph_nome_negocio:"व्यवसाय का नाम", ph_membros:"प्रत्येक सदस्य का नाम, एक पंक्ति में एक",
         nomes5: { caminho: "जीवन पथ", destino: "भाग्य", alma: "आत्मा", personalidade: "व्यक्तित्व", realizacao: "उपलब्धि" },
     },
     he: {
@@ -2215,6 +2225,7 @@ const translations = {
         ia_texto: "בחרו את השם האידיאלי עם ניתוח נומרולוגי של אנרגיית השם על ידי AI.",
         energia_escolha: "בחרו מוצר לחיפוש עם אנרגיה זו:",
         confirme_energia: "אשר את האנרגיה X",
+        pay_vida:"🔒 שלם — תוצאה ב-PDF + QRCode", pay_ia:"🔒 שלם — תוצאה ב-PDF + QRCode", pay_imovel:"🔒 שלם — תוצאה ב-PDF + QRCode", pay_calendario:"🔒 שלם — תוצאה ב-PDF + QRCode", pay_artistico:"🔒 שלם — תוצאה ב-PDF + QRCode", pay_bebe:"🔒 שלם — תוצאה ב-PDF + QRCode", pay_assinatura:"🔒 שלם — תוצאה ב-PDF + QRCode", pay_negocio:"🔒 שלם — תוצאה ב-PDF + QRCode", pay_casal:"🔒 שלם — תוצאה ב-PDF + QRCode", pay_familia:"🔒 שלם — תוצאה ב-PDF + QRCode", f_mes:"חודש", ph_ex_numero:"לדוגמה: 123", ph_nome_artistico:"שם הבמה שלך", ph_sobrenome:"שם משפחה", ph_sua_assinatura:"החתימה שלך", ph_nome_negocio:"שם העסק", ph_membros:"שם כל חבר, אחד בכל שורה",
         nomes5: { caminho: "נתיב החיים", destino: "גורל", alma: "נשמה", personalidade: "אישיות", realizacao: "הגשמה" },
     },
     ar: {
@@ -2412,6 +2423,7 @@ const translations = {
         ia_texto: "اختر الاسم المثالي مع التحليل العددي لطاقة الاسم بواسطة الذكاء الاصطناعي.",
         energia_escolha: "اختر منتجًا للبحث بهذه الطاقة:",
         confirme_energia: "تأكيد الطاقة X",
+        pay_vida:"🔒 ادفع — النتيجة في PDF + رمز QR", pay_ia:"🔒 ادفع — النتيجة في PDF + رمز QR", pay_imovel:"🔒 ادفع — النتيجة في PDF + رمز QR", pay_calendario:"🔒 ادفع — النتيجة في PDF + رمز QR", pay_artistico:"🔒 ادفع — النتيجة في PDF + رمز QR", pay_bebe:"🔒 ادفع — النتيجة في PDF + رمز QR", pay_assinatura:"🔒 ادفع — النتيجة في PDF + رمز QR", pay_negocio:"🔒 ادفع — النتيجة في PDF + رمز QR", pay_casal:"🔒 ادفع — النتيجة في PDF + رمز QR", pay_familia:"🔒 ادفع — النتيجة في PDF + رمز QR", f_mes:"الشهر", ph_ex_numero:"مثال: 123", ph_nome_artistico:"اسمك الفني", ph_sobrenome:"اسم العائلة", ph_sua_assinatura:"توقيعك", ph_nome_negocio:"اسم النشاط التجاري", ph_membros:"اسم كل عضو، واحد في كل سطر",
         nomes5: { caminho: "مسار الحياة", destino: "القدر", alma: "الروح", personalidade: "الشخصية", realizacao: "الإنجاز" },
       },  
     };
