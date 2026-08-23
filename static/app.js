@@ -273,7 +273,7 @@ function init() {
   var browserLang = navigator.language.split('-')[0];
   var defaultLang = savedLang || (translations[browserLang] ? browserLang : 'pt');
   montarSeletorIdioma();
-  if (typeof montarTabelaBC === "function") montarTabelaBC();   // ← ADICIONAR
-  if (typeof montarEnergias === "function") montarEnergias();   // ← ADICIONAR
-  setLanguage(defaultLang);
+  setLanguage(defaultLang);                       // ← PRIMEIRO o idioma
+  if (typeof montarTabelaBC === "function") montarTabelaBC();   // ← DEPOIS monta
+  if (typeof montarEnergias === "function") montarEnergias();   // ← DEPOIS monta
 }
