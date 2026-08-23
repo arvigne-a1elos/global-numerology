@@ -495,17 +495,16 @@
         </div>
     </section>
 
-      <!-- FORMULÁRIO QUAL VIDA/ANO -->
+    <!-- FORM QUAL VIDA/ANO -->
 <section id="form-vida" class="hidden-form">
   <div class="form-container">
     <h2 class="section-title" data-i18n="p_vida">Qual Vida/Ano</h2>
     <div class="form-group"><label data-i18n="f_nome">Nome Completo</label><input type="text" id="vidaNome" data-i18n-ph="ph_nome_completo" placeholder="Nome completo"></div>
-    <div class="form-group"><label data-i18n="f_nasc">Data de Nascimento</label><input type="date" id="vidaNasc"></div>
+    <div class="form-group"><label data-i18n="calc_nasc">Data de Nascimento</label><input type="date" id="vidaNasc"></div>
     <button class="btn btn-full" onclick="pagarVida()" data-i18n="pay_vida">🔒 Pagar — Resultado em PDF + QRCode</button>
   </div>
 </section>
-
-<!-- FORMULÁRIO PESQUISA IA DE NOMES -->
+<!-- FORM PESQUISA IA -->
 <section id="form-ia" class="hidden-form">
   <div class="form-container">
     <h2 class="section-title" data-i18n="p_ia">Pesquisa IA de Nomes</h2>
@@ -514,17 +513,15 @@
     <button class="btn btn-full" onclick="pagarIa()" data-i18n="pay_ia">🔒 Pagar — Resultado em PDF + QRCode</button>
   </div>
 </section>
-
-<!-- FORMULÁRIO NÚMERO DO IMÓVEL -->
+<!-- FORM Nº DO IMÓVEL -->
 <section id="form-imovel" class="hidden-form">
   <div class="form-container">
     <h2 class="section-title" data-i18n="p_imovel">Número do Imóvel</h2>
-    <div class="form-group"><label data-i18n="f_imovel">Número do Imóvel</label><input type="text" id="imovelNumero" placeholder="Ex: 123"></div>
+    <div class="form-group"><label data-i18n="f_imovel">Número do Imóvel</label><input type="text" id="imovelNumero" data-i18n-ph="ph_ex_numero" placeholder="Ex: 123"></div>
     <button class="btn btn-full" onclick="pagarImovel()" data-i18n="pay_imovel">🔒 Pagar — Resultado em PDF + QRCode</button>
   </div>
 </section>
-
-<!-- FORMULÁRIO CALENDÁRIO MENSAL -->
+<!-- FORM CALENDÁRIO MENSAL -->
 <section id="form-calendario" class="hidden-form">
   <div class="form-container">
     <h2 class="section-title" data-i18n="p_calendario">Calendário Mensal Energético</h2>
@@ -533,46 +530,41 @@
     <button class="btn btn-full" onclick="pagarCalendario()" data-i18n="pay_calendario">🔒 Pagar — Resultado em PDF + QRCode</button>
   </div>
 </section>
-
-<!-- FORMULÁRIO NOME ARTÍSTICO -->
+<!-- FORM NOME ARTÍSTICO -->
 <section id="form-artistico" class="hidden-form">
   <div class="form-container">
     <h2 class="section-title" data-i18n="p_artistico">Validação Nome Artístico</h2>
-    <div class="form-group"><label data-i18n="f_artistico">Nome Artístico</label><input type="text" id="artNome" placeholder="Seu nome artístico"></div>
+    <div class="form-group"><label data-i18n="f_artistico">Nome Artístico</label><input type="text" id="artNome" data-i18n-ph="ph_nome_artistico" placeholder="Seu nome artístico"></div>
     <button class="btn btn-full" onclick="pagarArtistico()" data-i18n="pay_artistico">🔒 Pagar — Resultado em PDF + QRCode</button>
   </div>
 </section>
-
-<!-- FORMULÁRIO NOME DE BEBÊ -->
+<!-- FORM NOME DE BEBÊ -->
 <section id="form-bebe" class="hidden-form">
   <div class="form-container">
     <h2 class="section-title" data-i18n="p_bebe">Planejamento Nome de Bebê</h2>
-    <div class="form-group"><label data-i18n="f_bebe">Sobrenome e Energia</label><input type="text" id="bebeSobrenome" placeholder="Sobrenome"></div>
+    <div class="form-group"><label data-i18n="f_bebe">Sobrenome e Energia</label><input type="text" id="bebeSobrenome" data-i18n-ph="ph_sobrenome" placeholder="Sobrenome"></div>
     <div class="form-group"><label data-i18n="f_energia">Energia Desejada</label><input type="number" id="bebeEnergia" min="1" max="9" placeholder="1-9"></div>
     <button class="btn btn-full" onclick="pagarBebe()" data-i18n="pay_bebe">🔒 Pagar — Resultado em PDF + QRCode</button>
   </div>
 </section>
-
-<!-- FORMULÁRIO VALIDAÇÃO DE ASSINATURAS -->
+<!-- FORM ASSINATURAS -->
 <section id="form-assinatura" class="hidden-form">
   <div class="form-container">
     <h2 class="section-title" data-i18n="p_assinatura">Validação de Assinaturas</h2>
-    <div class="form-group"><label data-i18n="f_assinatura">Sua Assinatura</label><input type="text" id="assinaturaTexto" placeholder="Sua assinatura"></div>
+    <div class="form-group"><label data-i18n="f_assinatura">Sua Assinatura</label><input type="text" id="assinaturaTexto" data-i18n-ph="ph_sua_assinatura" placeholder="Sua assinatura"></div>
     <button class="btn btn-full" onclick="pagarAssinatura()" data-i18n="pay_assinatura">🔒 Pagar — Resultado em PDF + QRCode</button>
   </div>
 </section>
-
-<!-- FORMULÁRIO NOME PARA NEGÓCIO/PRODUTO -->
+<!-- FORM NEGÓCIO/PRODUTO -->
 <section id="form-negocio" class="hidden-form">
   <div class="form-container">
     <h2 class="section-title" data-i18n="p_negocio">Nome para Negócio/Produto</h2>
-    <div class="form-group"><label data-i18n="f_negocio">Nome e Energia</label><input type="text" id="negocioNome" placeholder="Nome do negócio"></div>
+    <div class="form-group"><label data-i18n="f_negocio">Nome e Energia</label><input type="text" id="negocioNome" data-i18n-ph="ph_nome_negocio" placeholder="Nome do negócio"></div>
     <div class="form-group"><label data-i18n="f_energia">Energia Desejada</label><input type="number" id="negocioEnergia" min="1" max="9" placeholder="1-9"></div>
     <button class="btn btn-full" onclick="pagarNegocio()" data-i18n="pay_negocio">🔒 Pagar — Resultado em PDF + QRCode</button>
   </div>
 </section>
-
-<!-- FORMULÁRIO MAPA DO CASAL -->
+<!-- FORM MAPA DO CASAL -->
 <section id="form-casal" class="hidden-form">
   <div class="form-container">
     <h2 class="section-title" data-i18n="p_casal">Mapa do Casal</h2>
@@ -581,12 +573,11 @@
     <button class="btn btn-full" onclick="pagarCasal()" data-i18n="pay_casal">🔒 Pagar — Resultado em PDF + QRCode</button>
   </div>
 </section>
-
-<!-- FORMULÁRIO MAPA FAMÍLIA PREMIUM -->
+<!-- FORM MAPA FAMÍLIA -->
 <section id="form-familia" class="hidden-form">
   <div class="form-container">
     <h2 class="section-title" data-i18n="p_familia">Mapa Família Premium</h2>
-    <div class="form-group"><label data-i18n="f_familia">Membros da Família</label><textarea id="familiaMembros" rows="3" placeholder="Nome de cada membro, um por linha"></textarea></div>
+    <div class="form-group"><label data-i18n="f_familia">Membros da Família</label><textarea id="familiaMembros" rows="3" data-i18n-ph="ph_membros" placeholder="Nome de cada membro, um por linha"></textarea></div>
     <button class="btn btn-full" onclick="pagarFamilia()" data-i18n="pay_familia">🔒 Pagar — Resultado em PDF + QRCode</button>
   </div>
 </section>
