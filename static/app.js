@@ -96,6 +96,7 @@ function fecharModalColeta() {
 function abrirModalDado(produto, lang) {
   var t = translations[lang] || translations.pt;
   var label = (DADO_LABEL[lang] && DADO_LABEL[lang][produto]) ? DADO_LABEL[lang][produto] : DADO_LABEL.pt[produto];
+  var titulo = (PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang][produto]) ? PRODUTOS_TRAD[lang][produto] : produto;  // ← DEFINIR
   var overlay = document.getElementById("modalDado");
   if (!overlay) {
     overlay = document.createElement("div");
@@ -121,7 +122,7 @@ function abrirModalDado(produto, lang) {
   }
   document.getElementById("modalDadoTitulo").textContent = titulo;
   document.getElementById("modalDadoLabel").textContent = label;
-  // Monta passos
+   // Monta passos
   window._modalDado = { produto: produto, lang: lang, tipo: "", energia: "" };
   montarPassoTipo(produto, lang);
   overlay.classList.add("active");
@@ -145,8 +146,24 @@ function confirmarModalDado(produto, lang) {
     + '&tipo=' + encodeURIComponent(tipo)
     + '&energia=' + encodeURIComponent(energia);
 }
-
-
+function montarPassoTipo(produto, lang) {
+  var t = translations[lang] || translations.pt;
+  document.getElementById("modalPassoTipo").style.display = "block";
+  document.getElementById("modalPassoEnergia").style.display = "none";
+  document.getElementById("modalPassoNome").style.display = "none";
+  var conf = CONF_COLETA[produto] || {};
+  var label = (t.f_tipo || "Tipo") + ":";
+  document.getElementById("modalTipoLabel").textContent = label;
+  var box = document.getElementById("modalTipoOpcoes");
+  box.innerHTML = "";
+  (conf.tipos || []).forEach(function(ch) {
+    var b = document.createElement("button");
+    b.className = "btn btn-full";
+    b.textContent = tradOpcao(ch);
+    b.onclick = function(){ _modalDado.tipo = ch; montarPassoEnergia(produto, lang); };
+    box.appendChild(b);
+  });
+}
 
 function descontoBC(qtd) {
   if (qtd >= 2000) return 50;
@@ -256,6 +273,7 @@ function init() {
   var browserLang = navigator.language.split('-')[0];
   var defaultLang = savedLang || (translations[browserLang] ? browserLang : 'pt');
   montarSeletorIdioma();
+  if (typeof montarTabelaBC === "function") montarTabelaBC();   // ← ADICIONAR
+  if (typeof montarEnergias === "function") montarEnergias();   // ← ADICIONAR
   setLanguage(defaultLang);
-  }
-document.addEventListener('DOMContentLoaded', init);
+}
