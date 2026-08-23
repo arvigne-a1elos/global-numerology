@@ -568,7 +568,7 @@ function montarEnergias() {
       + '<div class="energia-desc">' + (descs[String(i)] || "") + '</div>'
       + '<button class="btn btn-full" onclick="pesquisarEnergia(' + i + ')">' + btn + '</button>'
       + '</div>';
-};  
+}  
   container.innerHTML = html;
 }
 
