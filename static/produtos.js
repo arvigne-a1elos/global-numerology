@@ -618,27 +618,25 @@ function traduzirTudo() {
     var v = t[k] || t.calc_nome;
     if (v) el.placeholder = v;
   });
-  document.querySelectorAll('.product-card[data-prod]').forEach(function(card) {
-    var prod = card.getAttribute('data-prod');
-    var nome = card.querySelector('.prod-nome');
-    if (nome && PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang][prod]) nome.innerText = PRODUTOS_TRAD[lang][prod];
-    var preco = card.querySelector('.prod-preco');
-    if (preco && PRODUTO_FAIXA[prod] !== undefined && PRECO_DISPLAY[lang]) preco.innerText = PRECO_DISPLAY[lang][PRODUTO_FAIXA[prod]];
-    var feats = FEAT_TRAD[lang] && FEAT_TRAD[lang][prod];
-    if (feats) card.querySelectorAll('.features li').forEach(function(li, i) { if (feats[i]) li.innerText = feats[i]; });
-  });
-    var desc = card.querySelector('.desc');
-    if (desc && PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang]['desc_' + prod]) {
-      desc.innerText = PRODUTOS_TRAD[lang]['desc_' + prod];
-    }  
-  if (typeof montarEnergias === "function") montarEnergias();
-  if (typeof montarTabelaBC === "function") montarTabelaBC();    
-  var BC_HEAD_KEY = { servico:'bc_tbl_service', preco:'bc_tbl_price', qtd:'bc_tbl_qty' };
-  document.querySelectorAll('[data-i18n-bc]').forEach(function(el) {
-    var k = el.getAttribute('data-i18n-bc');
-    var v = t[BC_HEAD_KEY[k]] || t[k];
-    if (v) el.innerText = v;
-  });
+document.querySelectorAll('.product-card[data-prod]').forEach(function(card) {
+  var prod = card.getAttribute('data-prod');
+  var nome = card.querySelector('.prod-nome');
+  if (nome && PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang][prod]) nome.innerText = PRODUTOS_TRAD[lang][prod];
+
+  var preco = card.querySelector('.prod-preco');
+  if (preco && PRODUTO_FAIXA[prod] !== undefined && PRECO_DISPLAY[lang]) preco.innerText = PRECO_DISPLAY[lang][PRODUTO_FAIXA[prod]];
+
+  var feats = FEAT_TRAD[lang] && FEAT_TRAD[lang][prod];
+  if (feats) card.querySelectorAll('.features li').forEach(function(li, i) {
+    if (feats[i]) li.innerText = feats[i];
+  });   // ← fecha o forEach das features
+
+  // ✅ NOVO: traduz a descrição (dentro do loop do card)
+  var desc = card.querySelector('.desc');
+  if (desc && PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang]['desc_' + prod]) {
+    desc.innerText = PRODUTOS_TRAD[lang]['desc_' + prod];
+  }
+});   // ← fecha o forEach dos cards
   document.querySelectorAll('#bcTabelaCorpo tr[data-prod]').forEach(function(tr) {
     var prod = tr.getAttribute('data-prod');
     var nome = tr.querySelector('.bc-prod-nome');
