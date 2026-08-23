@@ -2561,7 +2561,16 @@ const PRODUTOS_TRAD = {
     desc_nome_projeto:"طاقة اسم مشروعك أو مبادرتك والقوة التي تجذب الدعم والنتائج.",
     desc_nome_evento:"اهتزاز اسم فعاليتك — مؤتمر أو دورة أو حفلة أو محاضرة — والطاقة التي يولدها لدى الجمهور."
 };
-
+PRODUTO_FAIXA = {
+    "express": 0, "vida": 0, "completo": 1, "ia": 1,
+    "urna": 2, "eleitoral": 2, "imovel": 2, "calendario": 2,
+    "artistico": 3, "bebe": 3, "assinatura": 3,
+    "negocio": 4, "casal": 4, "familia": 5,
+    // --- 8 produtos novos (todos na faixa R$ 8, mesma do Mapa Express) ---
+    "nome_pet": 0, "nickname": 0, "nome_dominio": 0, "nome_canal": 0,
+    "nome_equipe": 0, "nome_ong": 0, "nome_projeto": 0, "nome_evento": 0
+    // coletivo: usa "Sob consulta" (data-i18n="sob_consulta") → sem faixa de preço fixa
+};
 // ===== DESCRIÇÕES DAS ENERGIAS 1-9 (12 IDIOMAS) =====
 const ENERGIAS_DESC = {
     pt: { 1:"Iniciativa, coragem e pioneirismo. Quem nasce sob o 1 abre caminhos e inspira os outros a segui-lo.", 2:"Diplomacia, parceria e sensibilidade. O 2 une pessoas e harmoniza ambientes.", 3:"Expressão, comunicação e otimismo. O 3 transforma ideias em arte e inspira pela palavra.", 4:"Organização, disciplina e segurança. O 4 constrói bases sólidas e duradouras.", 5:"Aventura, adaptação e versatilidade. O 5 ama a mudança e vive em movimento.", 6:"Amor, responsabilidade e cuidado. O 6 protege a família e cultiva a beleza.", 7:"Introspecção, sabedoria e espiritualidade. O 7 busca o conhecimento profundo.", 8:"Realização, autoridade e abundância. O 8 domina o mundo material com determinação.", 9:"Compaixão, conclusão e humanitarismo. O 9 encerra ciclos e serve ao todo." },
@@ -2592,16 +2601,6 @@ const ENERGIAS_TRAD = {
   hi:{1:"नेतृत्व",2:"सहयोग",3:"रचनात्मकता",4:"स्थिरता",5:"स्वतंत्रता",6:"सद्भाव",7:"विश्लेषण",8:"शक्ति",9:"ज्ञान"},
   he:{1:"מנהיגות",2:"שיתוף פעולה",3:"יצירתיות",4:"יציבות",5:"חופש",6:"הרמוניה",7:"ניתוח",8:"כוח",9:"חוכמה"},
   ar:{1:"القيادة",2:"التعاون",3:"الإبداع",4:"الاستقرار",5:"الحرية",6:"الانسجام",7:"التحليل",8:"القوة",9:"الحكمة"}
-};
-
-// ===== FAIXA DE PREÇO DE CADA PRODUTO (23 produtos) =====
-const PRODUTO_FAIXA = {
-    express:0, vida:0, completo:1, ia:1, urna:2, eleitoral:2, imovel:2, calendario:2,
-    artistico:3, bebe:3, assinatura:3, negocio:4, casal:4, familia:5,
-    // --- 8 produtos novos (todos na faixa R$ 8, mesma do Mapa Express) ---
-    nome_pet:0, nickname:0, nome_dominio:0, nome_canal:0,
-    nome_equipe:0, nome_ong:0, nome_projeto:0, nome_evento:0
-    // coletivo: usa "Sob consulta" (data-i18n="sob_consulta") → sem faixa de preço fixa
 };
 
 // ===== PREÇOS POR IDIOMA (6 faixas) =====
@@ -2967,10 +2966,12 @@ function setLanguage(lang) {
 }
 function traduzir() {
     var lang = getLang();
-    document.querySelectorAll('[data-i18n]').forEach(function(el) {
-        var chave = el.getAttribute('data-i18n');
-        if (translations[lang] && translations[lang][chave]) {
-            el.textContent = translations[lang][chave];
+    document.querySelectorAll('[data-i18n-bc]').forEach(function(el) {
+        var k = el.getAttribute('data-i18n-bc');
+        var keyMap = { servico: 'bc_tbl_service', preco: 'bc_tbl_price', qtd: 'bc_tbl_qty' };
+        var realKey = keyMap[k] || k;
+        if (translations[lang] && translations[lang][realKey]) {
+            el.innerText = translations[lang][realKey];
         }
     });
 }
