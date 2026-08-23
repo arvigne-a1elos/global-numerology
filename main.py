@@ -1,10 +1,19 @@
 # -*- coding: utf-8 -*-
 # main.py - A1ELOS Global Numerology API
 # VERSÃO CONSOLIDADA CORRIGIDA - TODAS AS ROTAS DOS 23 PRODUTOS
+import stripe
+from produtos.mapa import reduzir, calc_mapa, calc_grid, analisar_express, analisar_completo, analisar_vida
+from produtos.nome import analisar_nome
+from produtos.urna import validar_nomes_urna
+from produtos.eleitoral import gerar_numeros
+from produtos.imovel import analisar_imovel
+from produtos.calendario import analisar_calendario
+from produtos.casal import analisar_casal
+from produtos.familia import analisar_familia
+from produtos.coletivo import desconto_bc
 import os, json, uuid, logging, secrets, string, base64, traceback
 from datetime import date, datetime
 from typing import Optional
-import stripe
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
