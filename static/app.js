@@ -18,12 +18,13 @@ function montarSeletorIdioma() {
     b.title = l.id.toUpperCase();
     b.innerHTML = l.b;
     b.onclick = function() {
-      setLanguage(l.id);
-      if (typeof traduzirTudo === 'function') traduzirTudo();
-      var ativos = container.querySelectorAll('.lang-btn');
-      for (var i = 0; i < ativos.length; i++) ativos[i].classList.remove('active');
-      b.classList.add('active');
-    };
+    setLanguage(l.id);
+    if (typeof montarTudo === "function") montarTudo();          // ← usa montarTudo
+    else if (typeof traduzirTudo === "function") traduzirTudo();
+    var ativos = container.querySelectorAll('.lang-btn');
+    for (var i = 0; i < ativos.length; i++) ativos[i].classList.remove('active');
+    b.classList.add('active');
+};
     container.appendChild(b);
   });
 }
@@ -267,13 +268,30 @@ function toggleForm(formId) {
   if (escondido) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
+// ===== MONTAR TUDO (consolidado e blindado) =====
+function montarTudo() {
+  if (typeof montarTabelaBC === "function") {
+    console.log("[A1ELOS] montarTabelaBC() EXECUTANDO");
+    montarTabelaBC();
+  } else {
+    console.warn("[A1ELOS] montarTabelaBC NÃO encontrada");
+  }
+  if (typeof montarEnergias === "function") {
+    console.log("[A1ELOS] montarEnergias() EXECUTANDO");
+    montarEnergias();
+  } else {
+    console.warn("[A1ELOS] montarEnergias NÃO encontrada");
+  }
+  // Re-traduz TUDO agora que as seções existem (BC + energias + cards)
+  if (typeof traduzirTudo === "function") traduzirTudo();
+}
+
 // ===== INICIALIZAÇÃO =====
 function init() {
   var savedLang = localStorage.getItem('lang');
   var browserLang = navigator.language.split('-')[0];
   var defaultLang = savedLang || (translations[browserLang] ? browserLang : 'pt');
   montarSeletorIdioma();
-  setLanguage(defaultLang);                       // ← PRIMEIRO o idioma
-  if (typeof montarTabelaBC === "function") montarTabelaBC();   // ← DEPOIS monta
-  if (typeof montarEnergias === "function") montarEnergias();   // ← DEPOIS monta
+  setLanguage(defaultLang);
+  montarTudo();   // ← garante montar + re-traduzir
 }
