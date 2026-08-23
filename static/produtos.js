@@ -627,6 +627,10 @@ function traduzirTudo() {
     var feats = FEAT_TRAD[lang] && FEAT_TRAD[lang][prod];
     if (feats) card.querySelectorAll('.features li').forEach(function(li, i) { if (feats[i]) li.innerText = feats[i]; });
   });
+    var desc = card.querySelector('.desc');
+    if (desc && PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang]['desc_' + prod]) {
+      desc.innerText = PRODUTOS_TRAD[lang]['desc_' + prod];
+    }  
   if (typeof montarEnergias === "function") montarEnergias();
   if (typeof montarTabelaBC === "function") montarTabelaBC();    
   var BC_HEAD_KEY = { servico:'bc_tbl_service', preco:'bc_tbl_price', qtd:'bc_tbl_qty' };
