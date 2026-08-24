@@ -3112,3 +3112,19 @@ var SERVICOS_TRAD = {
   "he": [["מפה אקספרס","R$ 8"],["מפה מלאה","R$ 17"],["שם לפתק","R$ 26"]],
   "ar": [["الخريطة السريعة","R$ 8"],["الخريطة الكاملة","R$ 17"],["اسم الاقتراع","R$ 26"]]
 };
+
+// ===== SHIM DE SEGURANÇA: reconstrói PRODUTOS_TRAD se ausente =====
+if (typeof PRODUTOS_TRAD === "undefined") {
+  var PRODUTOS_TRAD = {};
+  var _langs = ["pt","en","es","it","fr","de","ja","zh","ru","hi","he","ar"];
+  var _chaves = ["express","vida","completo","ia","urna","eleitoral","imovel","calendario","artistico","bebe","assinatura","negocio","casal","familia","coletivo","nome_pet","nickname","nome_dominio","nome_canal","nome_equipe","nome_ong","nome_projeto","nome_evento"];
+  _langs.forEach(function(l){
+    PRODUTOS_TRAD[l] = {};
+    var t = (typeof translations !== "undefined" && translations[l]) ? translations[l] : {};
+    _chaves.forEach(function(k){
+      if (t[k] !== undefined) PRODUTOS_TRAD[l][k] = t[k];
+      var dk = "desc_" + k;
+      if (t[dk] !== undefined) PRODUTOS_TRAD[l][dk] = t[dk];
+    });
+  });
+}
