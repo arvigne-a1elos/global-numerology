@@ -241,10 +241,8 @@ const translations = {
         ia_texto: "Escolha o nome ideal com análise numerológica da energia do nome por IA.",
         energia_escolha: "Escolha um produto para pesquisar com esta energia:",
         confirme_energia: "Confirme a Energia X",
-        pt: { express:"Mapa Express", vida:"Qual Vida/Ano", completo:"Mapa Completo", ia:"Pesquisa IA de Nomes", urna:"Validação Nome de Urna", eleitoral:"Número Eleitoral", imovel:"Número do Imóvel", calendario:"Calendário Mensal Energético", artistico:"Validação Nome Artístico", bebe:"Planejamento Nome de Bebê", assinatura:"Validação de Assinaturas", negocio:"Nome para Negócio/Produto", casal:"Mapa do Casal", familia:"Mapa Família Premium", coletivo:"Bônus Coletivo/Empresarial" },
-        // PRODUTOS_TRAD.pt +=
+        express:"Mapa Express", vida:"Qual Vida/Ano", completo:"Mapa Completo", ia:"Pesquisa IA de Nomes", urna:"Validação Nome de Urna", eleitoral:"Número Eleitoral", imovel:"Número do Imóvel", calendario:"Calendário Mensal Energético", artistico:"Validação Nome Artístico", bebe:"Planejamento Nome de Bebê", assinatura:"Validação de Assinaturas", negocio:"Nome para Negócio/Produto", casal:"Mapa do Casal", familia:"Mapa Família Premium", coletivo:"Bônus Coletivo/Empresarial",
         nome_pet:"Nome do Pet", nickname:"Nickname Digital", nome_dominio:"Nome do Domínio", nome_canal:"Nome do Canal", nome_equipe:"Nome da Equipe", nome_ong:"Nome de ONG, Associação, Instituto ou Fundação", nome_projeto:"Nome do Projeto", nome_evento:"Nome do Evento",
-        // translations.pt +=
         desc_nome_pet:"A energia do nome do seu animal de estimação e a sintonia que ele cria com a sua família.",
         desc_nickname:"A vibração do seu nickname ou usuário digital e como ela fortalece sua presença online.",
         desc_nome_dominio:"A energia do nome do seu domínio ou site e como ela atrai visitantes e autoridade.",
@@ -449,10 +447,8 @@ const translations = {
         ia_texto: "Choose the ideal name with numerological analysis of the name's energy by AI.",
         energia_escolha: "Choose a product to search with this energy:",
         confirme_energia: "Confirm Energy X",
-        en: { express:"Express Map", vida:"Life Phase/Year", completo:"Complete Map", ia:"AI Name Search", urna:"Ballot Name Validation", eleitoral:"Electoral Number", imovel:"Property Number", calendario:"Monthly Energy Calendar", artistico:"Stage Name Validation", bebe:"Baby Name Planning", assinatura:"Signature Validation", negocio:"Business/Product Name", casal:"Couple Map", familia:"Premium Family Map", coletivo:"Corporate/Group Bonus" },
-        // PRODUTOS_TRAD.en +=
+        express:"Express Map", vida:"Life Phase/Year", completo:"Complete Map", ia:"AI Name Search", urna:"Ballot Name Validation", eleitoral:"Electoral Number", imovel:"Property Number", calendario:"Monthly Energy Calendar", artistico:"Stage Name Validation", bebe:"Baby Name Planning", assinatura:"Signature Validation", negocio:"Business/Product Name", casal:"Couple Map", familia:"Premium Family Map", coletivo:"Corporate/Group Bonus",
         nome_pet:"Pet Name", nickname:"Digital Nickname", nome_dominio:"Domain Name", nome_canal:"Channel Name", nome_equipe:"Team Name", nome_ong:"NGO, Association, Institute or Foundation Name", nome_projeto:"Project Name", nome_evento:"Event Name",
-        // en:
         desc_nome_pet:"The energy of your pet's name and the harmony it creates with your family.",
         desc_nickname:"The vibration of your nickname or digital handle and how it strengthens your online presence.",
         desc_nome_dominio:"The energy of your domain or website name and how it attracts visitors and authority.",
@@ -657,10 +653,8 @@ const translations = {
         ia_texto: "Elige el nombre ideal con análisis numerológico de la energía del nombre por IA.",
         energia_escolha: "Elige un producto para buscar con esta energía:",
         confirme_energia: "Confirma la Energía X",
-        es: { express:"Mapa Express", vida:"Fase de Vida/Año", completo:"Mapa Completo", ia:"Búsqueda IA de Nombres", urna:"Validación Nombre de Urna", eleitoral:"Número Electoral", imovel:"Número del Inmueble", calendario:"Calendario Mensual Energético", artistico:"Validación Nombre Artístico", bebe:"Planificación Nombre de Bebé", assinatura:"Validación de Firmas", negocio:"Nombre para Negocio/Producto", casal:"Mapa de la Pareja", familia:"Mapa Familia Premium", coletivo:"Bono Colectivo/Empresarial" },
-        // PRODUTOS_TRAD.es +=
+        express:"Mapa Express", vida:"Fase de Vida/Año", completo:"Mapa Completo", ia:"Búsqueda IA de Nombres", urna:"Validación Nombre de Urna", eleitoral:"Número Electoral", imovel:"Número del Inmueble", calendario:"Calendario Mensual Energético", artistico:"Validación Nombre Artístico", bebe:"Planificación Nombre de Bebé", assinatura:"Validación de Firmas", negocio:"Nombre para Negocio/Producto", casal:"Mapa de la Pareja", familia:"Mapa Familia Premium", coletivo:"Bono Colectivo/Empresarial",
         nome_pet:"Nombre de la Mascota", nickname:"Apodo Digital", nome_dominio:"Nombre de Dominio", nome_canal:"Nombre del Canal", nome_equipe:"Nombre del Equipo", nome_ong:"Nombre de ONG, Asociación, Instituto o Fundación", nome_projeto:"Nombre del Proyecto", nome_evento:"Nombre del Evento",
-        // es:
         desc_nome_pet:"La energía del nombre de tu mascota y la sintonía que crea con tu familia.",
         desc_nickname:"La vibración de tu apodo o usuario digital y cómo fortalece tu presencia en línea.",
         desc_nome_dominio:"La energía del nombre de tu dominio o sitio y cómo atrae visitantes y autoridad.",
@@ -866,10 +860,8 @@ const translations = {
         ia_texto: "Scegli il nome ideale con analisi numerologica dell'energia del nome tramite IA.",
         energia_escolha: "Scegli un prodotto da cercare con questa energia:",
         confirme_energia: "Conferma l'Energia X",
-        it: { express:"Mappa Express", vida:"Fase di Vita/Anno", completo:"Mappa Completa", ia:"Ricerca IA di Nomi", urna:"Validazione Nome Scheda", eleitoral:"Numero Elettorale", imovel:"Numero dell'Immobile", calendario:"Calendario Mensile Energetico", artistico:"Validazione Nome d'Arte", bebe:"Pianificazione Nome del Bambino", assinatura:"Validazione Firma", negocio:"Nome per Azienda/Prodotto", casal:"Mappa della Coppia", familia:"Mappa Famiglia Premium", coletivo:"Bonus Collettivo/Aziendale" },
-        // PRODUTOS_TRAD.it +=
+        express:"Mappa Express", vida:"Fase di Vita/Anno", completo:"Mappa Completa", ia:"Ricerca IA di Nomi", urna:"Validazione Nome Scheda", eleitoral:"Numero Elettorale", imovel:"Numero dell'Immobile", calendario:"Calendario Mensile Energetico", artistico:"Validazione Nome d'Arte", bebe:"Pianificazione Nome del Bambino", assinatura:"Validazione Firma", negocio:"Nome per Azienda/Prodotto", casal:"Mappa della Coppia", familia:"Mappa Famiglia Premium", coletivo:"Bonus Collettivo/Aziendale",
         nome_pet:"Nome dell'Animale", nickname:"Nickname Digitale", nome_dominio:"Nome del Dominio", nome_canal:"Nome del Canale", nome_equipe:"Nome della Squadra", nome_ong:"Nome di ONG, Associazione, Istituto o Fondazione", nome_projeto:"Nome del Progetto", nome_evento:"Nome dell'Evento",
-        // it:
         desc_nome_pet:"L'energia del nome del tuo animale e l'armonia che crea con la tua famiglia.",
         desc_nickname:"La vibrazione del tuo nickname o profilo digitale e come rafforza la tua presenza online.",
         desc_nome_dominio:"L'energia del nome del tuo dominio o sito e come attira visitatori e autorità.",
@@ -1074,10 +1066,8 @@ const translations = {
         ia_texto: "Choisissez le nom idéal avec l'analyse numérologique de l'énergie du nom par IA.",
         energia_escolha: "Choisissez un produit à rechercher avec cette énergie:",
         confirme_energia: "Confirmez l'Énergie X",
-         fr: { express:"Carte Express", vida:"Phase de Vie/Année", completo:"Carte Complète", ia:"Recherche IA de Noms", urna:"Validation Nom du Bulletin", eleitoral:"Numéro Électoral", imovel:"Numéro du Bien", calendario:"Calendrier Mensuel Énergétique", artistico:"Validation Nom de Scène", bebe:"Planification Nom de Bébé", assinatura:"Validation des Signatures", negocio:"Nom pour Entreprise/Produit", casal:"Carte du Couple", familia:"Carte Famille Premium", coletivo:"Bonus Collectif/Entreprise" },
-        // PRODUTOS_TRAD.fr +=
+        express:"Carte Express", vida:"Phase de Vie/Année", completo:"Carte Complète", ia:"Recherche IA de Noms", urna:"Validation Nom du Bulletin", eleitoral:"Numéro Électoral", imovel:"Numéro du Bien", calendario:"Calendrier Mensuel Énergétique", artistico:"Validation Nom de Scène", bebe:"Planification Nom de Bébé", assinatura:"Validation des Signatures", negocio:"Nom pour Entreprise/Produit", casal:"Carte du Couple", familia:"Carte Famille Premium", coletivo:"Bonus Collectif/Entreprise",
         numero_celular:"Numéro de Téléphone", nickname:"Pseudo Numérique", nome_dominio:"Nom de Domaine", nome_canal:"Nom de la Chaîne", nome_equipe:"Nom de l'Équipe", nome_ong:"Nom d'ONG, Association, Institut ou Fondation", nome_projeto:"Nom du Projet", nome_evento:"Nom de l'Événement",
-        // fr:
         desc_nome_pet:"L'énergie du nom de votre animal et l'harmonie qu'il crée avec votre famille.",
         desc_nickname:"La vibration de votre pseudo ou profil numérique et comment elle renforce votre présence en ligne.",
         desc_nome_dominio:"L'énergie du nom de votre domaine ou site et comment elle attire visiteurs et autorité.",
@@ -1282,10 +1272,8 @@ const translations = {
         ia_texto: "Wählen Sie den idealen Namen mit numerologischer Analyse der Namensenergie durch KI.",
         energia_escolha: "Wählen Sie ein Produkt, um mit dieser Energie zu suchen:",
         confirme_energia: "Energie X bestätigen",
-        de: { express:"Express-Karte", vida:"Lebensphase/Jahr", completo:"Vollständige Karte", ia:"KI-Namenssuche", urna:"Stimmzettelname-Validierung", eleitoral:"Wahlnummer", imovel:"Immobiliennummer", calendario:"Monatlicher Energiekalender", artistico:"Künstlername-Validierung", bebe:"Babynamen-Planung", assinatura:"Signatur-Validierung", negocio:"Name für Unternehmen/Produkt", casal:"Paarkarte", familia:"Premium-Familienkarte", coletivo:"Kollektiv-/Firmenbonus" },
-        // PRODUTOS_TRAD.de +=
+        express:"Express-Karte", vida:"Lebensphase/Jahr", completo:"Vollständige Karte", ia:"KI-Namenssuche", urna:"Stimmzettelname-Validierung", eleitoral:"Wahlnummer", imovel:"Immobiliennummer", calendario:"Monatlicher Energiekalender", artistico:"Künstlername-Validierung", bebe:"Babynamen-Planung", assinatura:"Signatur-Validierung", negocio:"Name für Unternehmen/Produkt", casal:"Paarkarte", familia:"Premium-Familienkarte", coletivo:"Kollektiv-/Firmenbonus",
         numero_celular:"Handynummer", nickname:"Digitaler Spitzname", nome_dominio:"Domainname", nome_canal:"Kanalname", nome_equipe:"Teamname", nome_ong:"Name von NGO, Verein, Institut oder Stiftung", nome_projeto:"Projektname", nome_evento:"Veranstaltungsname",
-        // de:
         desc_nome_pet:"Die Energie des Namens Ihres Haustiers und die Harmonie, die es mit Ihrer Familie schafft.",
         desc_nickname:"Die Schwingung Ihres Spitznamens oder digitalen Nutzernamens und wie sie Ihre Online-Präsenz stärkt.",
         desc_nome_dominio:"Die Energie Ihres Domain- oder Websitenamens und wie sie Besucher und Autorität anzieht.",
@@ -1490,10 +1478,8 @@ const translations = {
         ia_texto: "AIによる名前のエネルギーの数秘学的分析で理想の名前を選びましょう。",
         energia_escolha: "このエネルギーで検索する製品を選択してください:",
         confirme_energia: "エネルギーXを確認",
-        ja: { express:"エクスプレスマップ", vida:"ライフフェーズ/年", completo:"完全マップ", ia:"AI名前検索", urna:"投票用紙名検証", eleitoral:"選挙番号", imovel:"物件番号", calendario:"月間エネルギーフォーカレンダー", artistico:"芸名検証", bebe:"赤ちゃんの名前計画", assinatura:"署名検証", negocio:"ビジネス/製品名", casal:"カップルマップ", familia:"プレミアム家族マップ", coletivo:"団体/法人ボーナス" },
-        // PRODUTOS_TRAD.ja +=
+        express:"エクスプレスマップ", vida:"ライフフェーズ/年", completo:"完全マップ", ia:"AI名前検索", urna:"投票用紙名検証", eleitoral:"選挙番号", imovel:"物件番号", calendario:"月間エネルギーフォーカレンダー", artistico:"芸名検証", bebe:"赤ちゃんの名前計画", assinatura:"署名検証", negocio:"ビジネス/製品名", casal:"カップルマップ", familia:"プレミアム家族マップ", coletivo:"団体/法人ボーナス",
         numero_celular:"電話番号", nickname:"デジタルニックネーム", nome_dominio:"ドメイン名", nome_canal:"チャンネル名", nome_equipe:"チーム名", nome_ong:"NGO・協会・研究所・財団の名前", nome_projeto:"プロジェクト名", nome_evento:"イベント名",
-        // ja:
         desc_nome_pet:"ペットの名前のエネルギーと、家族との調和を探ります。",
         desc_nickname:"ニックネームやデジタルIDの波動と、オンラインでの存在感を高める方法を探ります。",
         desc_nome_dominio:"ドメインやサイト名のエネルギーと、訪問者や信頼を引き寄せる力を探ります。",
@@ -1698,10 +1684,8 @@ const translations = {
         ia_texto: "通过AI对名字能量的数字命理分析，选择理想的名字。",
         energia_escolha: "选择使用此能量搜索的产品:",
         confirme_energia: "确认能量X",
-        zh: { express:"快速地图", vida:"人生阶段/年份", completo:"完整地图", ia:"AI名称搜索", urna:"选票名称验证", eleitoral:"选举号码", imovel:"房产号码", calendario:"月度能量日历", artistico:"艺名验证", bebe:"宝宝名字规划", assinatura:"签名验证", negocio:"企业/产品名称", casal:"情侣地图", familia:"高级家庭地图", coletivo:"集体/企业奖励" },
-        // PRODUTOS_TRAD.zh +=
+        express:"快速地图", vida:"人生阶段/年份", completo:"完整地图", ia:"AI名称搜索", urna:"选票名称验证", eleitoral:"选举号码", imovel:"房产号码", calendario:"月度能量日历", artistico:"艺名验证", bebe:"宝宝名字规划", assinatura:"签名验证", negocio:"企业/产品名称", casal:"情侣地图", familia:"高级家庭地图", coletivo:"集体/企业奖励",
         numero_celular:"手机号码", nickname:"数字昵称", nome_dominio:"域名", nome_canal:"频道名称", nome_equipe:"团队名称", nome_ong:"非政府组织、协会、研究所或基金会名称", nome_projeto:"项目名称", nome_evento:"活动名称",
-        // zh:
         desc_nome_pet:"宠物名字的振动，以及它与您的家庭建立的和谐。",
         desc_nickname:"您昵称或数字账号的振动，以及它如何增强您的在线影响力。",
         desc_nome_dominio:"您域名或网站名称的振动，以及它如何吸引访客与权威。",
@@ -1906,10 +1890,8 @@ const translations = {
         ia_texto: "Выберите идеальное имя с нумерологическим анализом энергии имени с помощью ИИ.",
         energia_escolha: "Выберите продукт для поиска с этой энергией:",
         confirme_energia: "Подтвердите энергию X",
-        ru: { express:"Экспресс-карта", vida:"Фаза жизни/Год", completo:"Полная карта", ia:"ИИ-поиск имён", urna:"Проверка названия бюллетеня", eleitoral:"Избирательный номер", imovel:"Номер объекта", calendario:"Месячный энергетический календарь", artistico:"Проверка псевдонима", bebe:"Планирование имени ребёнка", assinatura:"Проверка подписей", negocio:"Название для бизнеса/продукта", casal:"Карта пары", familia:"Премиум семейная карта", coletivo:"Коллективный/корпоративный бонус" },
-        // PRODUTOS_TRAD.ru +=
+        express:"Экспресс-карта", vida:"Фаза жизни/Год", completo:"Полная карта", ia:"ИИ-поиск имён", urna:"Проверка названия бюллетеня", eleitoral:"Избирательный номер", imovel:"Номер объекта", calendario:"Месячный энергетический календарь", artistico:"Проверка псевдонима", bebe:"Планирование имени ребёнка", assinatura:"Проверка подписей", negocio:"Название для бизнеса/продукта", casal:"Карта пары", familia:"Премиум семейная карта", coletivo:"Коллективный/корпоративный бонус",
         numero_celular:"Номер телефона", nickname:"Цифровой никнейм", nome_dominio:"Имя домена", nome_canal:"Название канала",nome_equipe:"Название команды", nome_ong:"Название НКО, ассоциации, института или фонда", nome_projeto:"Название проекта", nome_evento:"Название события",
-        // ru:
         desc_nome_pet:"Энергия имени вашего питомца и гармония, которую она создаёт с вашей семьёй.",
         desc_nickname:"Вибрация вашего никнейма и её влияние на ваше цифровое присутствие.",
         desc_nome_dominio:"Энергия имени вашего домена или сайта и её влияние на посетителей и авторитет.",
@@ -2114,10 +2096,8 @@ const translations = {
         ia_texto: "AI द्वारा नाम की ऊर्जा के अंकशास्त्रीय विश्लेषण से आदर्श नाम चुनें।",
         energia_escolha: "इस ऊर्जा के साथ खोजने के लिए उत्पाद चुनें:",
         confirme_energia: "ऊर्जा X की पुष्टि करें",
-        hi: { express:"एक्सप्रेस मानचित्र", vida:"जीवन चरण/वर्ष", completo:"पूर्ण मानचित्र", ia:"AI नाम खोज", urna:"मतपत्र नाम सत्यापन", eleitoral:"चुनावी संख्या", imovel:"संपत्ति संख्या", calendario:"मासिक ऊर्जा कैलेंडर", artistico:"कलात्मक नाम सत्यापन", bebe:"शिशु नाम योजना", assinatura:"हस्ताक्षर सत्यापन", negocio:"व्यवसाय/उत्पाद नाम", casal:"जोड़ा मानचित्र", familia:"प्रीमियम परिवार मानचित्र", coletivo:"सामूहिक/कॉर्पोरेट बोनस" },
-        // PRODUTOS_TRAD.hi +=
+        express:"एक्सप्रेस मानचित्र", vida:"जीवन चरण/वर्ष", completo:"पूर्ण मानचित्र", ia:"AI नाम खोज", urna:"मतपत्र नाम सत्यापन", eleitoral:"चुनावी संख्या", imovel:"संपत्ति संख्या", calendario:"मासिक ऊर्जा कैलेंडर", artistico:"कलात्मक नाम सत्यापन", bebe:"शिशु नाम योजना", assinatura:"हस्ताक्षर सत्यापन", negocio:"व्यवसाय/उत्पाद नाम", casal:"जोड़ा मानचित्र", familia:"प्रीमियम परिवार मानचित्र", coletivo:"सामूहिक/कॉर्पोरेट बोनस",
         numero_celular:"फ़ोन नंबर", nickname:"डिजिटल उपनाम", nome_dominio:"डोमेन नाम", nome_canal:"चैनल नाम", nome_equipe:"टीम नाम", nome_ong:"एनजीओ, संघ, संस्थान या फाउंडेशन का नाम", nome_projeto:"परियोजना नाम", nome_evento:"कार्यक्रम नाम",
-        // hi:
         desc_nome_pet:"आपके पालतू जानवर के नाम की ऊर्जा और परिवार के साथ बनने वाला सामंजस्य।",
         desc_nickname:"आपके उपनाम या डिजिटल नाम की ऊर्जा और ऑनलाइन उपस्थिति पर उसका प्रभाव।",
         desc_nome_dominio:"आपके डोमेन या वेबसाइट नाम की ऊर्जा और आगंतुकों व अधिकार को आकर्षित करने की क्षमता।",
@@ -2322,10 +2302,8 @@ const translations = {
         ia_texto: "בחרו את השם האידיאלי עם ניתוח נומרולוגי של אנרגיית השם על ידי AI.",
         energia_escolha: "בחרו מוצר לחיפוש עם אנרגיה זו:",
         confirme_energia: "אשר את האנרגיה X",
-        he: { express:"מפה מהירה", vida:"שלב חיים/שנה", completo:"מפה מלאה", ia:"חיפוש שמות AI", urna:"אימות שם פתק", eleitoral:"מספר בחירות", imovel:"מספר נכס", calendario:"לוח שנה אנרגטי חודשי", artistico:"אימות שם במה", bebe:"תכנון שם תינוק", assinatura:"אימות חתימות", negocio:"שם לעסק/מוצר", casal:"מפת זוג", familia:"מפת משפחה פרימיום", coletivo:"בונוס קולקטיבי/עסקי" },
-        // PRODUTOS_TRAD.he +=
+        express:"מפה מהירה", vida:"שלב חיים/שנה", completo:"מפה מלאה", ia:"חיפוש שמות AI", urna:"אימות שם פתק", eleitoral:"מספר בחירות", imovel:"מספר נכס", calendario:"לוח שנה אנרגטי חודשי", artistico:"אימות שם במה", bebe:"תכנון שם תינוק", assinatura:"אימות חתימות", negocio:"שם לעסק/מוצר", casal:"מפת זוג", familia:"מפת משפחה פרימיום", coletivo:"בונוס קולקטיבי/עסקי",
         numero_celular:"מספר טלפון", nickname:"כינוי דיגיטלי", nome_dominio:"שם דומיין", nome_canal:"שם הערוץ", nome_equipe:"שם הצוות", nome_ong:"שם עמותה, ארגון, מכון או קרן", nome_projeto:"שם הפרויקט", nome_evento:"שם האירוע",
-        // he:
         desc_nome_pet:"האנרגיה של שם חיית המחמד שלכם וההרמוניה שהיא יוצרת עם המשפחה.",
         desc_nickname:"התנודה של הכינוי או המשתמש הדיגיטלי שלכם וכיצד היא מחזקת את הנוכחות המקוונת.",
         desc_nome_dominio:"האנרגיה של שם הדומיין או האתר שלכם וכיצד היא מושכת מבקרים וסמכות.",
@@ -2530,10 +2508,8 @@ const translations = {
         ia_texto: "اختر الاسم المثالي مع التحليل العددي لطاقة الاسم بواسطة الذكاء الاصطناعي.",
         energia_escolha: "اختر منتجًا للبحث بهذه الطاقة:",
         confirme_energia: "تأكيد الطاقة X",
-        ar: { express:"خريطة سريعة", vida:"مرحلة الحياة/السنة", completo:"خريطة كاملة", ia:"بحث الأسماء بالذكاء الاصطناعي", urna:"التحقق من اسم الاقتراع", eleitoral:"الرقم الانتخابي", imovel:"رقم العقار", calendario:"التقويم الشهري للطاقة", artistico:"التحقق من الاسم الفني", bebe:"تخطيط اسم الطفل", assinatura:"التحقق من التوقيعات", negocio:"اسم للعمل/المنتج", casal:"خريطة الزوجين", familia:"خريطة العائلة المميزة", coletivo:"مكافأة جماعية/مؤسسية" },
-        // PRODUTOS_TRAD.ar +=
+        express:"خريطة سريعة", vida:"مرحلة الحياة/السنة", completo:"خريطة كاملة", ia:"بحث الأسماء بالذكاء الاصطناعي", urna:"التحقق من اسم الاقتراع", eleitoral:"الرقم الانتخابي", imovel:"رقم العقار", calendario:"التقويم الشهري للطاقة", artistico:"التحقق من الاسم الفني", bebe:"تخطيط اسم الطفل", assinatura:"التحقق من التوقيعات", negocio:"اسم للعمل/المنتج", casal:"خريطة الزوجين", familia:"خريطة العائلة المميزة", coletivo:"مكافأة جماعية/مؤسسية",
         numero_celular:"رقم الهاتف", nickname:"اللقب الرقمي", nome_dominio:"اسم النطاق", nome_canal:"اسم القناة", nome_equipe:"اسم الفريق", nome_ong:"اسم منظمة أو جمعية أو معهد أو مؤسسة", nome_projeto:"اسم المشروع", nome_evento:"اسم الفعالية",
-        // ar:
         desc_nome_pet:"طاقة اسم حيوانك الأليف والانسجام الذي يخلقه مع عائلتك.",
         desc_nickname:"اهتزاز لقبك أو اسمك الرقمي وكيف يعزز حضورك عبر الإنترنت.",
         desc_nome_dominio:"طاقة اسم نطاقك أو موقعك وكيف تجذب الزوار والسلطة.",
