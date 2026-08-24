@@ -241,6 +241,18 @@ const translations = {
         ia_texto: "Escolha o nome ideal com análise numerológica da energia do nome por IA.",
         energia_escolha: "Escolha um produto para pesquisar com esta energia:",
         confirme_energia: "Confirme a Energia X",
+        pt: { express:"Mapa Express", vida:"Qual Vida/Ano", completo:"Mapa Completo", ia:"Pesquisa IA de Nomes", urna:"Validação Nome de Urna", eleitoral:"Número Eleitoral", imovel:"Número do Imóvel", calendario:"Calendário Mensal Energético", artistico:"Validação Nome Artístico", bebe:"Planejamento Nome de Bebê", assinatura:"Validação de Assinaturas", negocio:"Nome para Negócio/Produto", casal:"Mapa do Casal", familia:"Mapa Família Premium", coletivo:"Bônus Coletivo/Empresarial" },
+        // PRODUTOS_TRAD.pt +=
+        nome_pet:"Nome do Pet", nickname:"Nickname Digital", nome_dominio:"Nome do Domínio", nome_canal:"Nome do Canal", nome_equipe:"Nome da Equipe", nome_ong:"Nome de ONG, Associação, Instituto ou Fundação", nome_projeto:"Nome do Projeto", nome_evento:"Nome do Evento",
+        // translations.pt +=
+        desc_nome_pet:"A energia do nome do seu animal de estimação e a sintonia que ele cria com a sua família.",
+        desc_nickname:"A vibração do seu nickname ou usuário digital e como ela fortalece sua presença online.",
+        desc_nome_dominio:"A energia do nome do seu domínio ou site e como ela atrai visitantes e autoridade.",
+        desc_nome_canal:"A energia do nome do seu canal, podcast ou projeto digital e seu potencial de audiência.",
+        desc_nome_equipe:"A vibração do nome da sua equipe ou grupo e a sinergia que move o time.",
+        desc_nome_ong:"A energia do nome da sua ONG, associação, instituto ou fundação e a força da sua causa.",
+        desc_nome_projeto:"A energia do nome do seu projeto ou iniciativa e a força que ele carrega para atrair apoio e resultados.",
+        desc_nome_evento:"A vibração do nome do seu evento — congresso, curso, festa ou palestra — e a energia que ele gera no público.",
         pay_vida:"🔒 Pagar — Resultado em PDF + QRCode", pay_ia:"🔒 Pagar — Resultado em PDF + QRCode", pay_imovel:"🔒 Pagar — Resultado em PDF + QRCode", pay_calendario:"🔒 Pagar — Resultado em PDF + QRCode", pay_artistico:"🔒 Pagar — Resultado em PDF + QRCode", pay_bebe:"🔒 Pagar — Resultado em PDF + QRCode", pay_assinatura:"🔒 Pagar — Resultado em PDF + QRCode", pay_negocio:"🔒 Pagar — Resultado em PDF + QRCode", pay_casal:"🔒 Pagar — Resultado em PDF + QRCode", pay_familia:"🔒 Pagar — Resultado em PDF + QRCode", f_mes:"Mês", ph_ex_numero:"Ex: 123", ph_nome_artistico:"Seu nome artístico", ph_sobrenome:"Sobrenome", ph_sua_assinatura:"Sua assinatura", ph_nome_negocio:"Nome do negócio", ph_membros:"Nome de cada membro, um por linha",
         nomes5: { caminho: "Caminho da Vida", destino: "Destino", alma: "Alma", personalidade: "Personalidade", realizacao: "Realização" }, 
     },
@@ -437,6 +449,18 @@ const translations = {
         ia_texto: "Choose the ideal name with numerological analysis of the name's energy by AI.",
         energia_escolha: "Choose a product to search with this energy:",
         confirme_energia: "Confirm Energy X",
+        en: { express:"Express Map", vida:"Life Phase/Year", completo:"Complete Map", ia:"AI Name Search", urna:"Ballot Name Validation", eleitoral:"Electoral Number", imovel:"Property Number", calendario:"Monthly Energy Calendar", artistico:"Stage Name Validation", bebe:"Baby Name Planning", assinatura:"Signature Validation", negocio:"Business/Product Name", casal:"Couple Map", familia:"Premium Family Map", coletivo:"Corporate/Group Bonus" },
+        // PRODUTOS_TRAD.en +=
+        nome_pet:"Pet Name", nickname:"Digital Nickname", nome_dominio:"Domain Name", nome_canal:"Channel Name", nome_equipe:"Team Name", nome_ong:"NGO, Association, Institute or Foundation Name", nome_projeto:"Project Name", nome_evento:"Event Name",
+        // en:
+        desc_nome_pet:"The energy of your pet's name and the harmony it creates with your family.",
+        desc_nickname:"The vibration of your nickname or digital handle and how it strengthens your online presence.",
+        desc_nome_dominio:"The energy of your domain or website name and how it attracts visitors and authority.",
+        desc_nome_canal:"The energy of your channel, podcast or digital project name and its audience potential.",
+        desc_nome_equipe:"The vibration of your team or group name and the synergy that drives the team.",
+        desc_nome_ong:"The energy of your NGO, association, institute or foundation name and the strength of your cause.",
+        desc_nome_projeto:"The energy of your project or initiative name and the force it carries to attract support and results.",
+        desc_nome_evento:"The vibration of your event name — congress, course, party or lecture — and the energy it generates in the audience.",
         pay_vida:"🔒 Pay — Result in PDF + QRCode", pay_ia:"🔒 Pay — Result in PDF + QRCode", pay_imovel:"🔒 Pay — Result in PDF + QRCode", pay_calendario:"🔒 Pay — Result in PDF + QRCode", pay_artistico:"🔒 Pay — Result in PDF + QRCode", pay_bebe:"🔒 Pay — Result in PDF + QRCode", pay_assinatura:"🔒 Pay — Result in PDF + QRCode", pay_negocio:"🔒 Pay — Result in PDF + QRCode", pay_casal:"🔒 Pay — Result in PDF + QRCode", pay_familia:"🔒 Pay — Result in PDF + QRCode", f_mes:"Month", ph_ex_numero:"E.g.: 123", ph_nome_artistico:"Your stage name", ph_sobrenome:"Surname", ph_sua_assinatura:"Your signature", ph_nome_negocio:"Business name", ph_membros:"Each member's name, one per line",
         nomes5: { caminho: "Life Path", destino: "Destiny", alma: "Soul", personalidade: "Personality", realizacao: "Realization"   },        
            },
@@ -633,6 +657,18 @@ const translations = {
         ia_texto: "Elige el nombre ideal con análisis numerológico de la energía del nombre por IA.",
         energia_escolha: "Elige un producto para buscar con esta energía:",
         confirme_energia: "Confirma la Energía X",
+        es: { express:"Mapa Express", vida:"Fase de Vida/Año", completo:"Mapa Completo", ia:"Búsqueda IA de Nombres", urna:"Validación Nombre de Urna", eleitoral:"Número Electoral", imovel:"Número del Inmueble", calendario:"Calendario Mensual Energético", artistico:"Validación Nombre Artístico", bebe:"Planificación Nombre de Bebé", assinatura:"Validación de Firmas", negocio:"Nombre para Negocio/Producto", casal:"Mapa de la Pareja", familia:"Mapa Familia Premium", coletivo:"Bono Colectivo/Empresarial" },
+        // PRODUTOS_TRAD.es +=
+        nome_pet:"Nombre de la Mascota", nickname:"Apodo Digital", nome_dominio:"Nombre de Dominio", nome_canal:"Nombre del Canal", nome_equipe:"Nombre del Equipo", nome_ong:"Nombre de ONG, Asociación, Instituto o Fundación", nome_projeto:"Nombre del Proyecto", nome_evento:"Nombre del Evento",
+        // es:
+        desc_nome_pet:"La energía del nombre de tu mascota y la sintonía que crea con tu familia.",
+        desc_nickname:"La vibración de tu apodo o usuario digital y cómo fortalece tu presencia en línea.",
+        desc_nome_dominio:"La energía del nombre de tu dominio o sitio y cómo atrae visitantes y autoridad.",
+        desc_nome_canal:"La energía del nombre de tu canal, podcast o proyecto digital y su potencial de audiencia.",
+        desc_nome_equipe:"La vibración del nombre de tu equipo o grupo y la sinergia que mueve al equipo.",
+        desc_nome_ong:"La energía del nombre de tu ONG, asociación, instituto o fundación y la fuerza de tu causa.",
+        desc_nome_projeto:"La energía del nombre de tu proyecto o iniciativa y la fuerza que atrae apoyo y resultados.",
+        desc_nome_evento:"La vibración del nombre de tu evento — congreso, curso, fiesta o charla — y la energía que genera en el público.",
         pay_vida:"🔒 Pagar — Resultado en PDF + QRCode", pay_ia:"🔒 Pagar — Resultado en PDF + QRCode", pay_imovel:"🔒 Pagar — Resultado en PDF + QRCode", pay_calendario:"🔒 Pagar — Resultado en PDF + QRCode", pay_artistico:"🔒 Pagar — Resultado en PDF + QRCode", pay_bebe:"🔒 Pagar — Resultado en PDF + QRCode", pay_assinatura:"🔒 Pagar — Resultado en PDF + QRCode", pay_negocio:"🔒 Pagar — Resultado en PDF + QRCode", pay_casal:"🔒 Pagar — Resultado en PDF + QRCode", pay_familia:"🔒 Pagar — Resultado en PDF + QRCode", f_mes:"Mes", ph_ex_numero:"Ej.: 123", ph_nome_artistico:"Tu nombre artístico", ph_sobrenome:"Apellido", ph_sua_assinatura:"Tu firma", ph_nome_negocio:"Nombre del negocio", ph_membros:"Nombre de cada miembro, uno por línea",
         nomes5: { caminho: "Camino de Vida", destino: "Destino", alma: "Alma", personalidade: "Personalidad", realizacao: "Realización" },
     },
@@ -830,6 +866,18 @@ const translations = {
         ia_texto: "Scegli il nome ideale con analisi numerologica dell'energia del nome tramite IA.",
         energia_escolha: "Scegli un prodotto da cercare con questa energia:",
         confirme_energia: "Conferma l'Energia X",
+        it: { express:"Mappa Express", vida:"Fase di Vita/Anno", completo:"Mappa Completa", ia:"Ricerca IA di Nomi", urna:"Validazione Nome Scheda", eleitoral:"Numero Elettorale", imovel:"Numero dell'Immobile", calendario:"Calendario Mensile Energetico", artistico:"Validazione Nome d'Arte", bebe:"Pianificazione Nome del Bambino", assinatura:"Validazione Firma", negocio:"Nome per Azienda/Prodotto", casal:"Mappa della Coppia", familia:"Mappa Famiglia Premium", coletivo:"Bonus Collettivo/Aziendale" },
+        // PRODUTOS_TRAD.it +=
+        nome_pet:"Nome dell'Animale", nickname:"Nickname Digitale", nome_dominio:"Nome del Dominio", nome_canal:"Nome del Canale", nome_equipe:"Nome della Squadra", nome_ong:"Nome di ONG, Associazione, Istituto o Fondazione", nome_projeto:"Nome del Progetto", nome_evento:"Nome dell'Evento",
+        // it:
+        desc_nome_pet:"L'energia del nome del tuo animale e l'armonia che crea con la tua famiglia.",
+        desc_nickname:"La vibrazione del tuo nickname o profilo digitale e come rafforza la tua presenza online.",
+        desc_nome_dominio:"L'energia del nome del tuo dominio o sito e come attira visitatori e autorità.",
+        desc_nome_canal:"L'energia del nome del tuo canale, podcast o progetto digitale e il suo potenziale di pubblico.",
+        desc_nome_equipe:"La vibrazione del nome della tua squadra o gruppo e la sinergia che muove il team.",
+        desc_nome_ong:"L'energia del nome della tua ONG, associazione, istituto o fondazione e la forza della tua causa.",
+        desc_nome_projeto:"L'energia del nome del tuo progetto o iniziativa e la forza che attira supporto e risultati.",
+        desc_nome_evento:"La vibrazione del nome del tuo evento — congresso, corso, festa o conferenza — e l'energia che genera nel pubblico.",
         pay_vida:"🔒 Paga — Risultato in PDF + QRCode", pay_ia:"🔒 Paga — Risultato in PDF + QRCode", pay_imovel:"🔒 Paga — Risultato in PDF + QRCode", pay_calendario:"🔒 Paga — Risultato in PDF + QRCode", pay_artistico:"🔒 Paga — Risultato in PDF + QRCode", pay_bebe:"🔒 Paga — Risultato in PDF + QRCode", pay_assinatura:"🔒 Paga — Risultato in PDF + QRCode", pay_negocio:"🔒 Paga — Risultato in PDF + QRCode", pay_casal:"🔒 Paga — Risultato in PDF + QRCode", pay_familia:"🔒 Paga — Risultato in PDF + QRCode", f_mes:"Mese", ph_ex_numero:"Es.: 123", ph_nome_artistico:"Il tuo nome d'arte", ph_sobrenome:"Cognome", ph_sua_assinatura:"La tua firma", ph_nome_negocio:"Nome dell'attività", ph_membros:"Nome di ogni membro, uno per riga",
         nomes5: { caminho: "Percorso di Vita", destino: "Destino", alma: "Anima", personalidade: "Personalità", realizacao: "Realizzazione" },
     },
@@ -1026,6 +1074,18 @@ const translations = {
         ia_texto: "Choisissez le nom idéal avec l'analyse numérologique de l'énergie du nom par IA.",
         energia_escolha: "Choisissez un produit à rechercher avec cette énergie:",
         confirme_energia: "Confirmez l'Énergie X",
+         fr: { express:"Carte Express", vida:"Phase de Vie/Année", completo:"Carte Complète", ia:"Recherche IA de Noms", urna:"Validation Nom du Bulletin", eleitoral:"Numéro Électoral", imovel:"Numéro du Bien", calendario:"Calendrier Mensuel Énergétique", artistico:"Validation Nom de Scène", bebe:"Planification Nom de Bébé", assinatura:"Validation des Signatures", negocio:"Nom pour Entreprise/Produit", casal:"Carte du Couple", familia:"Carte Famille Premium", coletivo:"Bonus Collectif/Entreprise" },
+        // PRODUTOS_TRAD.fr +=
+        numero_celular:"Numéro de Téléphone", nickname:"Pseudo Numérique", nome_dominio:"Nom de Domaine", nome_canal:"Nom de la Chaîne", nome_equipe:"Nom de l'Équipe", nome_ong:"Nom d'ONG, Association, Institut ou Fondation", nome_projeto:"Nom du Projet", nome_evento:"Nom de l'Événement",
+        // fr:
+        desc_nome_pet:"L'énergie du nom de votre animal et l'harmonie qu'il crée avec votre famille.",
+        desc_nickname:"La vibration de votre pseudo ou profil numérique et comment elle renforce votre présence en ligne.",
+        desc_nome_dominio:"L'énergie du nom de votre domaine ou site et comment elle attire visiteurs et autorité.",
+        desc_nome_canal:"L'énergie du nom de votre chaîne, podcast ou projet numérique et son potentiel d'audience.",
+        desc_nome_equipe:"La vibration du nom de votre équipe ou groupe et la synergie qui anime l'équipe.",
+        desc_nome_ong:"L'énergie du nom de votre ONG, association, institut ou fondation et la force de votre cause.",
+        desc_nome_projeto:"L'énergie du nom de votre projet ou initiative et la force qui attire soutien et résultats.",
+        desc_nome_evento:"La vibration du nom de votre événement — congrès, cours, fête ou conférence — et l'énergie qu'il génère auprès du public.",
         pay_vida:"🔒 Payer — Résultat en PDF + QRCode", pay_ia:"🔒 Payer — Résultat en PDF + QRCode", pay_imovel:"🔒 Payer — Résultat en PDF + QRCode", pay_calendario:"🔒 Payer — Résultat en PDF + QRCode", pay_artistico:"🔒 Payer — Résultat en PDF + QRCode", pay_bebe:"🔒 Payer — Résultat en PDF + QRCode", pay_assinatura:"🔒 Payer — Résultat en PDF + QRCode", pay_negocio:"🔒 Payer — Résultat en PDF + QRCode", pay_casal:"🔒 Payer — Résultat en PDF + QRCode", pay_familia:"🔒 Payer — Résultat en PDF + QRCode", f_mes:"Mois", ph_ex_numero:"Ex. : 123", ph_nome_artistico:"Votre nom de scène", ph_sobrenome:"Nom de famille", ph_sua_assinatura:"Votre signature", ph_nome_negocio:"Nom de l'entreprise", ph_membros:"Nom de chaque membre, un par ligne",
         nomes5: { caminho: "Chemin de Vie", destino: "Destin", alma: "Âme", personalidade: "Personnalité", realizacao: "Réalisation"  },
     },
@@ -1222,6 +1282,18 @@ const translations = {
         ia_texto: "Wählen Sie den idealen Namen mit numerologischer Analyse der Namensenergie durch KI.",
         energia_escolha: "Wählen Sie ein Produkt, um mit dieser Energie zu suchen:",
         confirme_energia: "Energie X bestätigen",
+        de: { express:"Express-Karte", vida:"Lebensphase/Jahr", completo:"Vollständige Karte", ia:"KI-Namenssuche", urna:"Stimmzettelname-Validierung", eleitoral:"Wahlnummer", imovel:"Immobiliennummer", calendario:"Monatlicher Energiekalender", artistico:"Künstlername-Validierung", bebe:"Babynamen-Planung", assinatura:"Signatur-Validierung", negocio:"Name für Unternehmen/Produkt", casal:"Paarkarte", familia:"Premium-Familienkarte", coletivo:"Kollektiv-/Firmenbonus" },
+        // PRODUTOS_TRAD.de +=
+        numero_celular:"Handynummer", nickname:"Digitaler Spitzname", nome_dominio:"Domainname", nome_canal:"Kanalname", nome_equipe:"Teamname", nome_ong:"Name von NGO, Verein, Institut oder Stiftung", nome_projeto:"Projektname", nome_evento:"Veranstaltungsname",
+        // de:
+        desc_nome_pet:"Die Energie des Namens Ihres Haustiers und die Harmonie, die es mit Ihrer Familie schafft.",
+        desc_nickname:"Die Schwingung Ihres Spitznamens oder digitalen Nutzernamens und wie sie Ihre Online-Präsenz stärkt.",
+        desc_nome_dominio:"Die Energie Ihres Domain- oder Websitenamens und wie sie Besucher und Autorität anzieht.",
+        desc_nome_canal:"Die Energie des Namens Ihres Kanals, Podcasts oder digitalen Projekts und sein Publikumspotenzial.",
+        desc_nome_equipe:"Die Schwingung des Namens Ihres Teams oder Ihrer Gruppe und die Synergie, die das Team bewegt.",
+        desc_nome_ong:"Die Energie des Namens Ihrer NGO, Ihres Vereins, Instituts oder Ihrer Stiftung und die Stärke Ihrer Sache.",
+        desc_nome_projeto:"Die Energie des Namens Ihres Projekts oder Ihrer Initiative und die Kraft, die Unterstützung und Ergebnisse anzieht.",
+        desc_nome_evento:"Die Schwingung des Namens Ihrer Veranstaltung — Kongress, Kurs, Party oder Vortrag — und die Energie, die sie beim Publikum erzeugt.",
         pay_vida:"🔒 Bezahlen — Ergebnis als PDF + QRCode", pay_ia:"🔒 Bezahlen — Ergebnis als PDF + QRCode", pay_imovel:"🔒 Bezahlen — Ergebnis als PDF + QRCode", pay_calendario:"🔒 Bezahlen — Ergebnis als PDF + QRCode", pay_artistico:"🔒 Bezahlen — Ergebnis als PDF + QRCode", pay_bebe:"🔒 Bezahlen — Ergebnis als PDF + QRCode", pay_assinatura:"🔒 Bezahlen — Ergebnis als PDF + QRCode", pay_negocio:"🔒 Bezahlen — Ergebnis als PDF + QRCode", pay_casal:"🔒 Bezahlen — Ergebnis als PDF + QRCode", pay_familia:"🔒 Bezahlen — Ergebnis als PDF + QRCode", f_mes:"Monat", ph_ex_numero:"z. B.: 123", ph_nome_artistico:"Ihr Künstlername", ph_sobrenome:"Nachname", ph_sua_assinatura:"Ihre Unterschrift", ph_nome_negocio:"Geschäftsname", ph_membros:"Name jedes Mitglieds, eine Zeile pro Name",
         nomes5: { caminho: "Lebensweg", destino: "Schicksal", alma: "Seele", personalidade: "Persönlichkeit", realizacao: "Verwirklichung" },
     },
@@ -1418,6 +1490,18 @@ const translations = {
         ia_texto: "AIによる名前のエネルギーの数秘学的分析で理想の名前を選びましょう。",
         energia_escolha: "このエネルギーで検索する製品を選択してください:",
         confirme_energia: "エネルギーXを確認",
+        ja: { express:"エクスプレスマップ", vida:"ライフフェーズ/年", completo:"完全マップ", ia:"AI名前検索", urna:"投票用紙名検証", eleitoral:"選挙番号", imovel:"物件番号", calendario:"月間エネルギーフォーカレンダー", artistico:"芸名検証", bebe:"赤ちゃんの名前計画", assinatura:"署名検証", negocio:"ビジネス/製品名", casal:"カップルマップ", familia:"プレミアム家族マップ", coletivo:"団体/法人ボーナス" },
+        // PRODUTOS_TRAD.ja +=
+        numero_celular:"電話番号", nickname:"デジタルニックネーム", nome_dominio:"ドメイン名", nome_canal:"チャンネル名", nome_equipe:"チーム名", nome_ong:"NGO・協会・研究所・財団の名前", nome_projeto:"プロジェクト名", nome_evento:"イベント名",
+        // ja:
+        desc_nome_pet:"ペットの名前のエネルギーと、家族との調和を探ります。",
+        desc_nickname:"ニックネームやデジタルIDの波動と、オンラインでの存在感を高める方法を探ります。",
+        desc_nome_dominio:"ドメインやサイト名のエネルギーと、訪問者や信頼を引き寄せる力を探ります。",
+        desc_nome_canal:"チャンネルやポッドキャスト、デジタルプロジェクト名のエネルギーと集客力を探ります。",
+        desc_nome_equipe:"チームやグループ名の波動と、チームを動かす相乗効果を探ります。",
+        desc_nome_ong:"NGO・協会・研究所・財団の名前のエネルギーと、あなたの活動の力を探ります。",
+        desc_nome_projeto:"プロジェクトや取り組み名のエネルギーと、支援や成果を引き寄せる力を探ります。",
+        desc_nome_evento:"イベント名（大会、講座、パーティー、講演）の波動と、参加者に生まれるエネルギーを探ります。",
         pay_vida:"🔒 支払う — PDF + QRコードで結果", pay_ia:"🔒 支払う — PDF + QRコードで結果", pay_imovel:"🔒 支払う — PDF + QRコードで結果", pay_calendario:"🔒 支払う — PDF + QRコードで結果", pay_artistico:"🔒 支払う — PDF + QRコードで結果", pay_bebe:"🔒 支払う — PDF + QRコードで結果", pay_assinatura:"🔒 支払う — PDF + QRコードで結果", pay_negocio:"🔒 支払う — PDF + QRコードで結果", pay_casal:"🔒 支払う — PDF + QRコードで結果", pay_familia:"🔒 支払う — PDF + QRコードで結果", f_mes:"月", ph_ex_numero:"例: 123", ph_nome_artistico:"芸名", ph_sobrenome:"姓", ph_sua_assinatura:"あなたの署名", ph_nome_negocio:"ビジネス名", ph_membros:"各メンバーの名前（1行に1つ）",
         nomes5: { caminho: "ライフパス", destino: "運命", alma: "魂", personalidade: "性格", realizacao: "実現" },
     },
@@ -1614,6 +1698,18 @@ const translations = {
         ia_texto: "通过AI对名字能量的数字命理分析，选择理想的名字。",
         energia_escolha: "选择使用此能量搜索的产品:",
         confirme_energia: "确认能量X",
+        zh: { express:"快速地图", vida:"人生阶段/年份", completo:"完整地图", ia:"AI名称搜索", urna:"选票名称验证", eleitoral:"选举号码", imovel:"房产号码", calendario:"月度能量日历", artistico:"艺名验证", bebe:"宝宝名字规划", assinatura:"签名验证", negocio:"企业/产品名称", casal:"情侣地图", familia:"高级家庭地图", coletivo:"集体/企业奖励" },
+        // PRODUTOS_TRAD.zh +=
+        numero_celular:"手机号码", nickname:"数字昵称", nome_dominio:"域名", nome_canal:"频道名称", nome_equipe:"团队名称", nome_ong:"非政府组织、协会、研究所或基金会名称", nome_projeto:"项目名称", nome_evento:"活动名称",
+        // zh:
+        desc_nome_pet:"宠物名字的振动，以及它与您的家庭建立的和谐。",
+        desc_nickname:"您昵称或数字账号的振动，以及它如何增强您的在线影响力。",
+        desc_nome_dominio:"您域名或网站名称的振动，以及它如何吸引访客与权威。",
+        desc_nome_canal:"您的频道、播客或数字项目名称的振动及其受众潜力。",
+        desc_nome_equipe:"您的团队或团体名称的振动，以及推动团队的协同效应。",
+        desc_nome_ong:"您的非政府组织、协会、研究所或基金会名称的振动，以及您事业的力量。",
+        desc_nome_projeto:"您的项目或倡议名称的振动，以及它吸引支持与成果的力量。",
+        desc_nome_evento:"您的活动名称——大会、课程、聚会或讲座——的振动及其在观众中产生的能量。",
         pay_vida:"🔒 支付 — PDF + 二维码结果", pay_ia:"🔒 支付 — PDF + 二维码结果", pay_imovel:"🔒 支付 — PDF + 二维码结果", pay_calendario:"🔒 支付 — PDF + 二维码结果", pay_artistico:"🔒 支付 — PDF + 二维码结果", pay_bebe:"🔒 支付 — PDF + 二维码结果", pay_assinatura:"🔒 支付 — PDF + 二维码结果", pay_negocio:"🔒 支付 — PDF + 二维码结果", pay_casal:"🔒 支付 — PDF + 二维码结果", pay_familia:"🔒 支付 — PDF + 二维码结果", f_mes:"月份", ph_ex_numero:"例如：123", ph_nome_artistico:"艺名", ph_sobrenome:"姓氏", ph_sua_assinatura:"您的签名", ph_nome_negocio:"企业名称", ph_membros:"每位成员的名字，每行一个",
         nomes5: { caminho: "生命路径", destino: "命运", alma: "灵魂", personalidade: "个性", realizacao: "实现" },
     },
@@ -1810,6 +1906,18 @@ const translations = {
         ia_texto: "Выберите идеальное имя с нумерологическим анализом энергии имени с помощью ИИ.",
         energia_escolha: "Выберите продукт для поиска с этой энергией:",
         confirme_energia: "Подтвердите энергию X",
+        ru: { express:"Экспресс-карта", vida:"Фаза жизни/Год", completo:"Полная карта", ia:"ИИ-поиск имён", urna:"Проверка названия бюллетеня", eleitoral:"Избирательный номер", imovel:"Номер объекта", calendario:"Месячный энергетический календарь", artistico:"Проверка псевдонима", bebe:"Планирование имени ребёнка", assinatura:"Проверка подписей", negocio:"Название для бизнеса/продукта", casal:"Карта пары", familia:"Премиум семейная карта", coletivo:"Коллективный/корпоративный бонус" },
+        // PRODUTOS_TRAD.ru +=
+        numero_celular:"Номер телефона", nickname:"Цифровой никнейм", nome_dominio:"Имя домена", nome_canal:"Название канала",nome_equipe:"Название команды", nome_ong:"Название НКО, ассоциации, института или фонда", nome_projeto:"Название проекта", nome_evento:"Название события",
+        // ru:
+        desc_nome_pet:"Энергия имени вашего питомца и гармония, которую она создаёт с вашей семьёй.",
+        desc_nickname:"Вибрация вашего никнейма и её влияние на ваше цифровое присутствие.",
+        desc_nome_dominio:"Энергия имени вашего домена или сайта и её влияние на посетителей и авторитет.",
+        desc_nome_canal:"Энергия названия вашего канала, подкаста или цифрового проекта и потенциал аудитории.",
+        desc_nome_equipe:"Вибрация названия вашей команды или группы и синергия, движущая командой.",
+        desc_nome_ong:"Энергия названия вашей НКО, ассоциации, института или фонда и сила вашего дела.",
+        desc_nome_projeto:"Энергия названия вашего проекта или инициативы и сила, привлекающая поддержку и результаты.",
+        desc_nome_evento:"Вибрация названия вашего события — конгресса, курса, вечеринки или лекции — и энергия, которую оно создаёт у публики.",
         pay_vida:"🔒 Оплатить — Результат в PDF + QRCode", pay_ia:"🔒 Оплатить — Результат в PDF + QRCode", pay_imovel:"🔒 Оплатить — Результат в PDF + QRCode", pay_calendario:"🔒 Оплатить — Результат в PDF + QRCode", pay_artistico:"🔒 Оплатить — Результат в PDF + QRCode", pay_bebe:"🔒 Оплатить — Результат в PDF + QRCode", pay_assinatura:"🔒 Оплатить — Результат в PDF + QRCode", pay_negocio:"🔒 Оплатить — Результат в PDF + QRCode", pay_casal:"🔒 Оплатить — Результат в PDF + QRCode", pay_familia:"🔒 Оплатить — Результат в PDF + QRCode", f_mes:"Месяц", ph_ex_numero:"Напр.: 123", ph_nome_artistico:"Сценическое имя", ph_sobrenome:"Фамилия", ph_sua_assinatura:"Ваша подпись", ph_nome_negocio:"Название бизнеса", ph_membros:"Имя каждого члена, по одному в строке",
         nomes5: { caminho: "Путь Жизни", destino: "Судьба", alma: "Душа", personalidade: "Личность", realizacao: "Реализация" },
     },
@@ -2006,6 +2114,18 @@ const translations = {
         ia_texto: "AI द्वारा नाम की ऊर्जा के अंकशास्त्रीय विश्लेषण से आदर्श नाम चुनें।",
         energia_escolha: "इस ऊर्जा के साथ खोजने के लिए उत्पाद चुनें:",
         confirme_energia: "ऊर्जा X की पुष्टि करें",
+        hi: { express:"एक्सप्रेस मानचित्र", vida:"जीवन चरण/वर्ष", completo:"पूर्ण मानचित्र", ia:"AI नाम खोज", urna:"मतपत्र नाम सत्यापन", eleitoral:"चुनावी संख्या", imovel:"संपत्ति संख्या", calendario:"मासिक ऊर्जा कैलेंडर", artistico:"कलात्मक नाम सत्यापन", bebe:"शिशु नाम योजना", assinatura:"हस्ताक्षर सत्यापन", negocio:"व्यवसाय/उत्पाद नाम", casal:"जोड़ा मानचित्र", familia:"प्रीमियम परिवार मानचित्र", coletivo:"सामूहिक/कॉर्पोरेट बोनस" },
+        // PRODUTOS_TRAD.hi +=
+        numero_celular:"फ़ोन नंबर", nickname:"डिजिटल उपनाम", nome_dominio:"डोमेन नाम", nome_canal:"चैनल नाम", nome_equipe:"टीम नाम", nome_ong:"एनजीओ, संघ, संस्थान या फाउंडेशन का नाम", nome_projeto:"परियोजना नाम", nome_evento:"कार्यक्रम नाम",
+        // hi:
+        desc_nome_pet:"आपके पालतू जानवर के नाम की ऊर्जा और परिवार के साथ बनने वाला सामंजस्य।",
+        desc_nickname:"आपके उपनाम या डिजिटल नाम की ऊर्जा और ऑनलाइन उपस्थिति पर उसका प्रभाव।",
+        desc_nome_dominio:"आपके डोमेन या वेबसाइट नाम की ऊर्जा और आगंतुकों व अधिकार को आकर्षित करने की क्षमता।",
+        desc_nome_canal:"आपके चैनल, पॉडकास्ट या डिजिटल प्रोजेक्ट के नाम की ऊर्जा और दर्शक क्षमता।",
+        desc_nome_equipe:"आपकी टीम या समूह के नाम की ऊर्जा और टीम को आगे बढ़ाने वाला तालमेल।",
+        desc_nome_ong:"आपकी एनजीओ, संघ, संस्थान या फाउंडेशन के नाम की ऊर्जा और आपके उद्देश्य की ताकत।",
+        desc_nome_projeto:"आपके प्रोजेक्ट या पहल के नाम की ऊर्जा और समर्थन व परिणाम आकर्षित करने की शक्ति।",
+        desc_nome_evento:"आपके कार्यक्रम के नाम की ऊर्जा — कांग्रेस, पाठ्यक्रम, पार्टी या व्याख्यान — और दर्शकों में उत्पन्न ऊर्जा।",
         pay_vida:"🔒 भुगतान करें — PDF + QRCode परिणाम", pay_ia:"🔒 भुगतान करें — PDF + QRCode परिणाम", pay_imovel:"🔒 भुगतान करें — PDF + QRCode परिणाम", pay_calendario:"🔒 भुगतान करें — PDF + QRCode परिणाम", pay_artistico:"🔒 भुगतान करें — PDF + QRCode परिणाम", pay_bebe:"🔒 भुगतान करें — PDF + QRCode परिणाम", pay_assinatura:"🔒 भुगतान करें — PDF + QRCode परिणाम", pay_negocio:"🔒 भुगतान करें — PDF + QRCode परिणाम", pay_casal:"🔒 भुगतान करें — PDF + QRCode परिणाम", pay_familia:"🔒 भुगतान करें — PDF + QRCode परिणाम", f_mes:"महीना", ph_ex_numero:"जैसे: 123", ph_nome_artistico:"आपका कलात्मक नाम", ph_sobrenome:"उपनाम", ph_sua_assinatura:"आपके हस्ताक्षर", ph_nome_negocio:"व्यवसाय का नाम", ph_membros:"प्रत्येक सदस्य का नाम, एक पंक्ति में एक",
         nomes5: { caminho: "जीवन पथ", destino: "भाग्य", alma: "आत्मा", personalidade: "व्यक्तित्व", realizacao: "उपलब्धि" },
     },
@@ -2202,6 +2322,18 @@ const translations = {
         ia_texto: "בחרו את השם האידיאלי עם ניתוח נומרולוגי של אנרגיית השם על ידי AI.",
         energia_escolha: "בחרו מוצר לחיפוש עם אנרגיה זו:",
         confirme_energia: "אשר את האנרגיה X",
+        he: { express:"מפה מהירה", vida:"שלב חיים/שנה", completo:"מפה מלאה", ia:"חיפוש שמות AI", urna:"אימות שם פתק", eleitoral:"מספר בחירות", imovel:"מספר נכס", calendario:"לוח שנה אנרגטי חודשי", artistico:"אימות שם במה", bebe:"תכנון שם תינוק", assinatura:"אימות חתימות", negocio:"שם לעסק/מוצר", casal:"מפת זוג", familia:"מפת משפחה פרימיום", coletivo:"בונוס קולקטיבי/עסקי" },
+        // PRODUTOS_TRAD.he +=
+        numero_celular:"מספר טלפון", nickname:"כינוי דיגיטלי", nome_dominio:"שם דומיין", nome_canal:"שם הערוץ", nome_equipe:"שם הצוות", nome_ong:"שם עמותה, ארגון, מכון או קרן", nome_projeto:"שם הפרויקט", nome_evento:"שם האירוע",
+        // he:
+        desc_nome_pet:"האנרגיה של שם חיית המחמד שלכם וההרמוניה שהיא יוצרת עם המשפחה.",
+        desc_nickname:"התנודה של הכינוי או המשתמש הדיגיטלי שלכם וכיצד היא מחזקת את הנוכחות המקוונת.",
+        desc_nome_dominio:"האנרגיה של שם הדומיין או האתר שלכם וכיצד היא מושכת מבקרים וסמכות.",
+        desc_nome_canal:"האנרגיה של שם הערוץ, הפודקאסט או הפרויקט הדיגיטלי שלכם והפוטנציאל הקהלי.",
+        desc_nome_equipe:"התנודה של שם הצוות או הקבוצה שלכם והסינרגיה שמניעה את הצוות.",
+        desc_nome_ong:"האנרגיה של שם העמותה, הארגון, המכון או הקרן שלכם ועוצמת המטרה שלכם.",
+        desc_nome_projeto:"האנרגיה של שם הפרויקט או היוזמה שלכם והכוח המושך תמיכה ותוצאות.",
+        desc_nome_evento:"התנודה של שם האירוע שלכם — קונגרס, קורס, מסיבה או הרצאה — והאנרגיה שהיא יוצרת בקהל.",
         pay_vida:"🔒 שלם — תוצאה ב-PDF + QRCode", pay_ia:"🔒 שלם — תוצאה ב-PDF + QRCode", pay_imovel:"🔒 שלם — תוצאה ב-PDF + QRCode", pay_calendario:"🔒 שלם — תוצאה ב-PDF + QRCode", pay_artistico:"🔒 שלם — תוצאה ב-PDF + QRCode", pay_bebe:"🔒 שלם — תוצאה ב-PDF + QRCode", pay_assinatura:"🔒 שלם — תוצאה ב-PDF + QRCode", pay_negocio:"🔒 שלם — תוצאה ב-PDF + QRCode", pay_casal:"🔒 שלם — תוצאה ב-PDF + QRCode", pay_familia:"🔒 שלם — תוצאה ב-PDF + QRCode", f_mes:"חודש", ph_ex_numero:"לדוגמה: 123", ph_nome_artistico:"שם הבמה שלך", ph_sobrenome:"שם משפחה", ph_sua_assinatura:"החתימה שלך", ph_nome_negocio:"שם העסק", ph_membros:"שם כל חבר, אחד בכל שורה",
         nomes5: { caminho: "נתיב החיים", destino: "גורל", alma: "נשמה", personalidade: "אישיות", realizacao: "הגשמה" },
     },
@@ -2398,169 +2530,23 @@ const translations = {
         ia_texto: "اختر الاسم المثالي مع التحليل العددي لطاقة الاسم بواسطة الذكاء الاصطناعي.",
         energia_escolha: "اختر منتجًا للبحث بهذه الطاقة:",
         confirme_energia: "تأكيد الطاقة X",
+        ar: { express:"خريطة سريعة", vida:"مرحلة الحياة/السنة", completo:"خريطة كاملة", ia:"بحث الأسماء بالذكاء الاصطناعي", urna:"التحقق من اسم الاقتراع", eleitoral:"الرقم الانتخابي", imovel:"رقم العقار", calendario:"التقويم الشهري للطاقة", artistico:"التحقق من الاسم الفني", bebe:"تخطيط اسم الطفل", assinatura:"التحقق من التوقيعات", negocio:"اسم للعمل/المنتج", casal:"خريطة الزوجين", familia:"خريطة العائلة المميزة", coletivo:"مكافأة جماعية/مؤسسية" },
+        // PRODUTOS_TRAD.ar +=
+        numero_celular:"رقم الهاتف", nickname:"اللقب الرقمي", nome_dominio:"اسم النطاق", nome_canal:"اسم القناة", nome_equipe:"اسم الفريق", nome_ong:"اسم منظمة أو جمعية أو معهد أو مؤسسة", nome_projeto:"اسم المشروع", nome_evento:"اسم الفعالية",
+        // ar:
+        desc_nome_pet:"طاقة اسم حيوانك الأليف والانسجام الذي يخلقه مع عائلتك.",
+        desc_nickname:"اهتزاز لقبك أو اسمك الرقمي وكيف يعزز حضورك عبر الإنترنت.",
+        desc_nome_dominio:"طاقة اسم نطاقك أو موقعك وكيف تجذب الزوار والسلطة.",
+        desc_nome_canal:"طاقة اسم قناتك أو بودكاستك أو مشروعك الرقمي وإمكانات جمهورها.",
+        desc_nome_equipe:"اهتزاز اسم فريقك أو مجموعتك والتآزر الذي يحرك الفريق.",
+        desc_nome_ong:"طاقة اسم منظمتك أو جمعيتك أو معهدك أو مؤسستك وقوة قضيتك.",
+        desc_nome_projeto:"طاقة اسم مشروعك أو مبادرتك والقوة التي تجذب الدعم والنتائج.",
+        desc_nome_evento:"اهتزاز اسم فعاليتك — مؤتمر أو دورة أو حفلة أو محاضرة — والطاقة التي يولدها لدى الجمهور.",
         pay_vida:"🔒 ادفع — النتيجة في PDF + رمز QR", pay_ia:"🔒 ادفع — النتيجة في PDF + رمز QR", pay_imovel:"🔒 ادفع — النتيجة في PDF + رمز QR", pay_calendario:"🔒 ادفع — النتيجة في PDF + رمز QR", pay_artistico:"🔒 ادفع — النتيجة في PDF + رمز QR", pay_bebe:"🔒 ادفع — النتيجة في PDF + رمز QR", pay_assinatura:"🔒 ادفع — النتيجة في PDF + رمز QR", pay_negocio:"🔒 ادفع — النتيجة في PDF + رمز QR", pay_casal:"🔒 ادفع — النتيجة في PDF + رمز QR", pay_familia:"🔒 ادفع — النتيجة في PDF + رمز QR", f_mes:"الشهر", ph_ex_numero:"مثال: 123", ph_nome_artistico:"اسمك الفني", ph_sobrenome:"اسم العائلة", ph_sua_assinatura:"توقيعك", ph_nome_negocio:"اسم النشاط التجاري", ph_membros:"اسم كل عضو، واحد في كل سطر",
         nomes5: { caminho: "مسار الحياة", destino: "القدر", alma: "الروح", personalidade: "الشخصية", realizacao: "الإنجاز" },
       },  
     };
 
-// ===== NOMES DOS 15 PRODUTOS (12 IDIOMAS) =====
-const PRODUTOS_TRAD = {
-    pt: { express:"Mapa Express", vida:"Qual Vida/Ano", completo:"Mapa Completo", ia:"Pesquisa IA de Nomes", urna:"Validação Nome de Urna", eleitoral:"Número Eleitoral", imovel:"Número do Imóvel", calendario:"Calendário Mensal Energético", artistico:"Validação Nome Artístico", bebe:"Planejamento Nome de Bebê", assinatura:"Validação de Assinaturas", negocio:"Nome para Negócio/Produto", casal:"Mapa do Casal", familia:"Mapa Família Premium", coletivo:"Bônus Coletivo/Empresarial" },
-    // PRODUTOS_TRAD.pt +=
-    nome_pet:"Nome do Pet", nickname:"Nickname Digital", nome_dominio:"Nome do Domínio", nome_canal:"Nome do Canal", nome_equipe:"Nome da Equipe", nome_ong:"Nome de ONG, Associação, Instituto ou Fundação", nome_projeto:"Nome do Projeto", nome_evento:"Nome do Evento",
-    // translations.pt +=
-    desc_nome_pet:"A energia do nome do seu animal de estimação e a sintonia que ele cria com a sua família.",
-    desc_nickname:"A vibração do seu nickname ou usuário digital e como ela fortalece sua presença online.",
-    desc_nome_dominio:"A energia do nome do seu domínio ou site e como ela atrai visitantes e autoridade.",
-    desc_nome_canal:"A energia do nome do seu canal, podcast ou projeto digital e seu potencial de audiência.",
-    desc_nome_equipe:"A vibração do nome da sua equipe ou grupo e a sinergia que move o time.",
-    desc_nome_ong:"A energia do nome da sua ONG, associação, instituto ou fundação e a força da sua causa.",
-    desc_nome_projeto:"A energia do nome do seu projeto ou iniciativa e a força que ele carrega para atrair apoio e resultados.",
-    desc_nome_evento:"A vibração do nome do seu evento — congresso, curso, festa ou palestra — e a energia que ele gera no público.",
-    
-    en: { express:"Express Map", vida:"Life Phase/Year", completo:"Complete Map", ia:"AI Name Search", urna:"Ballot Name Validation", eleitoral:"Electoral Number", imovel:"Property Number", calendario:"Monthly Energy Calendar", artistico:"Stage Name Validation", bebe:"Baby Name Planning", assinatura:"Signature Validation", negocio:"Business/Product Name", casal:"Couple Map", familia:"Premium Family Map", coletivo:"Corporate/Group Bonus" },
-    // PRODUTOS_TRAD.en +=
-    nome_pet:"Pet Name", nickname:"Digital Nickname", nome_dominio:"Domain Name", nome_canal:"Channel Name", nome_equipe:"Team Name", nome_ong:"NGO, Association, Institute or Foundation Name", nome_projeto:"Project Name", nome_evento:"Event Name",
-    // en:
-    desc_nome_pet:"The energy of your pet's name and the harmony it creates with your family.",
-    desc_nickname:"The vibration of your nickname or digital handle and how it strengthens your online presence.",
-    desc_nome_dominio:"The energy of your domain or website name and how it attracts visitors and authority.",
-    desc_nome_canal:"The energy of your channel, podcast or digital project name and its audience potential.",
-    desc_nome_equipe:"The vibration of your team or group name and the synergy that drives the team.",
-    desc_nome_ong:"The energy of your NGO, association, institute or foundation name and the strength of your cause.",
-    desc_nome_projeto:"The energy of your project or initiative name and the force it carries to attract support and results.",
-    desc_nome_evento:"The vibration of your event name — congress, course, party or lecture — and the energy it generates in the audience.",
-    
-    es: { express:"Mapa Express", vida:"Fase de Vida/Año", completo:"Mapa Completo", ia:"Búsqueda IA de Nombres", urna:"Validación Nombre de Urna", eleitoral:"Número Electoral", imovel:"Número del Inmueble", calendario:"Calendario Mensual Energético", artistico:"Validación Nombre Artístico", bebe:"Planificación Nombre de Bebé", assinatura:"Validación de Firmas", negocio:"Nombre para Negocio/Producto", casal:"Mapa de la Pareja", familia:"Mapa Familia Premium", coletivo:"Bono Colectivo/Empresarial" },
-    // PRODUTOS_TRAD.es +=
-    nome_pet:"Nombre de la Mascota", nickname:"Apodo Digital", nome_dominio:"Nombre de Dominio", nome_canal:"Nombre del Canal", nome_equipe:"Nombre del Equipo", nome_ong:"Nombre de ONG, Asociación, Instituto o Fundación", nome_projeto:"Nombre del Proyecto", nome_evento:"Nombre del Evento",
-    // es:
-    desc_nome_pet:"La energía del nombre de tu mascota y la sintonía que crea con tu familia.",
-    desc_nickname:"La vibración de tu apodo o usuario digital y cómo fortalece tu presencia en línea.",
-    desc_nome_dominio:"La energía del nombre de tu dominio o sitio y cómo atrae visitantes y autoridad.",
-    desc_nome_canal:"La energía del nombre de tu canal, podcast o proyecto digital y su potencial de audiencia.",
-    desc_nome_equipe:"La vibración del nombre de tu equipo o grupo y la sinergia que mueve al equipo.",
-    desc_nome_ong:"La energía del nombre de tu ONG, asociación, instituto o fundación y la fuerza de tu causa.",
-    desc_nome_projeto:"La energía del nombre de tu proyecto o iniciativa y la fuerza que atrae apoyo y resultados.",
-    desc_nome_evento:"La vibración del nombre de tu evento — congreso, curso, fiesta o charla — y la energía que genera en el público.",
-    
-    it: { express:"Mappa Express", vida:"Fase di Vita/Anno", completo:"Mappa Completa", ia:"Ricerca IA di Nomi", urna:"Validazione Nome Scheda", eleitoral:"Numero Elettorale", imovel:"Numero dell'Immobile", calendario:"Calendario Mensile Energetico", artistico:"Validazione Nome d'Arte", bebe:"Pianificazione Nome del Bambino", assinatura:"Validazione Firma", negocio:"Nome per Azienda/Prodotto", casal:"Mappa della Coppia", familia:"Mappa Famiglia Premium", coletivo:"Bonus Collettivo/Aziendale" },
-    // PRODUTOS_TRAD.it +=
-    nome_pet:"Nome dell'Animale", nickname:"Nickname Digitale", nome_dominio:"Nome del Dominio", nome_canal:"Nome del Canale", nome_equipe:"Nome della Squadra", nome_ong:"Nome di ONG, Associazione, Istituto o Fondazione", nome_projeto:"Nome del Progetto", nome_evento:"Nome dell'Evento",
-    // it:
-    desc_nome_pet:"L'energia del nome del tuo animale e l'armonia che crea con la tua famiglia.",
-    desc_nickname:"La vibrazione del tuo nickname o profilo digitale e come rafforza la tua presenza online.",
-    desc_nome_dominio:"L'energia del nome del tuo dominio o sito e come attira visitatori e autorità.",
-    desc_nome_canal:"L'energia del nome del tuo canale, podcast o progetto digitale e il suo potenziale di pubblico.",
-    desc_nome_equipe:"La vibrazione del nome della tua squadra o gruppo e la sinergia che muove il team.",
-    desc_nome_ong:"L'energia del nome della tua ONG, associazione, istituto o fondazione e la forza della tua causa.",
-    desc_nome_projeto:"L'energia del nome del tuo progetto o iniziativa e la forza che attira supporto e risultati.",
-    desc_nome_evento:"La vibrazione del nome del tuo evento — congresso, corso, festa o conferenza — e l'energia che genera nel pubblico.",
-    
-    fr: { express:"Carte Express", vida:"Phase de Vie/Année", completo:"Carte Complète", ia:"Recherche IA de Noms", urna:"Validation Nom du Bulletin", eleitoral:"Numéro Électoral", imovel:"Numéro du Bien", calendario:"Calendrier Mensuel Énergétique", artistico:"Validation Nom de Scène", bebe:"Planification Nom de Bébé", assinatura:"Validation des Signatures", negocio:"Nom pour Entreprise/Produit", casal:"Carte du Couple", familia:"Carte Famille Premium", coletivo:"Bonus Collectif/Entreprise" },
-    // PRODUTOS_TRAD.fr +=
-    numero_celular:"Numéro de Téléphone", nickname:"Pseudo Numérique", nome_dominio:"Nom de Domaine", nome_canal:"Nom de la Chaîne", nome_equipe:"Nom de l'Équipe", nome_ong:"Nom d'ONG, Association, Institut ou Fondation", nome_projeto:"Nom du Projet", nome_evento:"Nom de l'Événement",
-    // fr:
-    desc_nome_pet:"L'énergie du nom de votre animal et l'harmonie qu'il crée avec votre famille.",
-    desc_nickname:"La vibration de votre pseudo ou profil numérique et comment elle renforce votre présence en ligne.",
-    desc_nome_dominio:"L'énergie du nom de votre domaine ou site et comment elle attire visiteurs et autorité.",
-    desc_nome_canal:"L'énergie du nom de votre chaîne, podcast ou projet numérique et son potentiel d'audience.",
-    desc_nome_equipe:"La vibration du nom de votre équipe ou groupe et la synergie qui anime l'équipe.",
-    desc_nome_ong:"L'énergie du nom de votre ONG, association, institut ou fondation et la force de votre cause.",
-    desc_nome_projeto:"L'énergie du nom de votre projet ou initiative et la force qui attire soutien et résultats.",
-    desc_nome_evento:"La vibration du nom de votre événement — congrès, cours, fête ou conférence — et l'énergie qu'il génère auprès du public.",
-    
-    de: { express:"Express-Karte", vida:"Lebensphase/Jahr", completo:"Vollständige Karte", ia:"KI-Namenssuche", urna:"Stimmzettelname-Validierung", eleitoral:"Wahlnummer", imovel:"Immobiliennummer", calendario:"Monatlicher Energiekalender", artistico:"Künstlername-Validierung", bebe:"Babynamen-Planung", assinatura:"Signatur-Validierung", negocio:"Name für Unternehmen/Produkt", casal:"Paarkarte", familia:"Premium-Familienkarte", coletivo:"Kollektiv-/Firmenbonus" },
-    // PRODUTOS_TRAD.de +=
-    numero_celular:"Handynummer", nickname:"Digitaler Spitzname", nome_dominio:"Domainname", nome_canal:"Kanalname", nome_equipe:"Teamname", nome_ong:"Name von NGO, Verein, Institut oder Stiftung", nome_projeto:"Projektname", nome_evento:"Veranstaltungsname",
-    // de:
-    desc_nome_pet:"Die Energie des Namens Ihres Haustiers und die Harmonie, die es mit Ihrer Familie schafft.",
-    desc_nickname:"Die Schwingung Ihres Spitznamens oder digitalen Nutzernamens und wie sie Ihre Online-Präsenz stärkt.",
-    desc_nome_dominio:"Die Energie Ihres Domain- oder Websitenamens und wie sie Besucher und Autorität anzieht.",
-    desc_nome_canal:"Die Energie des Namens Ihres Kanals, Podcasts oder digitalen Projekts und sein Publikumspotenzial.",
-    desc_nome_equipe:"Die Schwingung des Namens Ihres Teams oder Ihrer Gruppe und die Synergie, die das Team bewegt.",
-    desc_nome_ong:"Die Energie des Namens Ihrer NGO, Ihres Vereins, Instituts oder Ihrer Stiftung und die Stärke Ihrer Sache.",
-    desc_nome_projeto:"Die Energie des Namens Ihres Projekts oder Ihrer Initiative und die Kraft, die Unterstützung und Ergebnisse anzieht.",
-    desc_nome_evento:"Die Schwingung des Namens Ihrer Veranstaltung — Kongress, Kurs, Party oder Vortrag — und die Energie, die sie beim Publikum erzeugt.",
-    
-    ja: { express:"エクスプレスマップ", vida:"ライフフェーズ/年", completo:"完全マップ", ia:"AI名前検索", urna:"投票用紙名検証", eleitoral:"選挙番号", imovel:"物件番号", calendario:"月間エネルギーフォーカレンダー", artistico:"芸名検証", bebe:"赤ちゃんの名前計画", assinatura:"署名検証", negocio:"ビジネス/製品名", casal:"カップルマップ", familia:"プレミアム家族マップ", coletivo:"団体/法人ボーナス" },
-    // PRODUTOS_TRAD.ja +=
-    numero_celular:"電話番号", nickname:"デジタルニックネーム", nome_dominio:"ドメイン名", nome_canal:"チャンネル名", nome_equipe:"チーム名", nome_ong:"NGO・協会・研究所・財団の名前", nome_projeto:"プロジェクト名", nome_evento:"イベント名",
-    // ja:
-    desc_nome_pet:"ペットの名前のエネルギーと、家族との調和を探ります。",
-    desc_nickname:"ニックネームやデジタルIDの波動と、オンラインでの存在感を高める方法を探ります。",
-    desc_nome_dominio:"ドメインやサイト名のエネルギーと、訪問者や信頼を引き寄せる力を探ります。",
-    desc_nome_canal:"チャンネルやポッドキャスト、デジタルプロジェクト名のエネルギーと集客力を探ります。",
-    desc_nome_equipe:"チームやグループ名の波動と、チームを動かす相乗効果を探ります。",
-    desc_nome_ong:"NGO・協会・研究所・財団の名前のエネルギーと、あなたの活動の力を探ります。",
-    desc_nome_projeto:"プロジェクトや取り組み名のエネルギーと、支援や成果を引き寄せる力を探ります。",
-    desc_nome_evento:"イベント名（大会、講座、パーティー、講演）の波動と、参加者に生まれるエネルギーを探ります。",
-    
-    zh: { express:"快速地图", vida:"人生阶段/年份", completo:"完整地图", ia:"AI名称搜索", urna:"选票名称验证", eleitoral:"选举号码", imovel:"房产号码", calendario:"月度能量日历", artistico:"艺名验证", bebe:"宝宝名字规划", assinatura:"签名验证", negocio:"企业/产品名称", casal:"情侣地图", familia:"高级家庭地图", coletivo:"集体/企业奖励" },
-    // PRODUTOS_TRAD.zh +=
-    numero_celular:"手机号码", nickname:"数字昵称", nome_dominio:"域名", nome_canal:"频道名称", nome_equipe:"团队名称", nome_ong:"非政府组织、协会、研究所或基金会名称", nome_projeto:"项目名称", nome_evento:"活动名称",
-    // zh:
-    desc_nome_pet:"宠物名字的振动，以及它与您的家庭建立的和谐。",
-    desc_nickname:"您昵称或数字账号的振动，以及它如何增强您的在线影响力。",
-    desc_nome_dominio:"您域名或网站名称的振动，以及它如何吸引访客与权威。",
-    desc_nome_canal:"您的频道、播客或数字项目名称的振动及其受众潜力。",
-    desc_nome_equipe:"您的团队或团体名称的振动，以及推动团队的协同效应。",
-    desc_nome_ong:"您的非政府组织、协会、研究所或基金会名称的振动，以及您事业的力量。",
-    desc_nome_projeto:"您的项目或倡议名称的振动，以及它吸引支持与成果的力量。",
-    desc_nome_evento:"您的活动名称——大会、课程、聚会或讲座——的振动及其在观众中产生的能量。",
-    
-    ru: { express:"Экспресс-карта", vida:"Фаза жизни/Год", completo:"Полная карта", ia:"ИИ-поиск имён", urna:"Проверка названия бюллетеня", eleitoral:"Избирательный номер", imovel:"Номер объекта", calendario:"Месячный энергетический календарь", artistico:"Проверка псевдонима", bebe:"Планирование имени ребёнка", assinatura:"Проверка подписей", negocio:"Название для бизнеса/продукта", casal:"Карта пары", familia:"Премиум семейная карта", coletivo:"Коллективный/корпоративный бонус" },
-    // PRODUTOS_TRAD.ru +=
-    numero_celular:"Номер телефона", nickname:"Цифровой никнейм", nome_dominio:"Имя домена", nome_canal:"Название канала",nome_equipe:"Название команды", nome_ong:"Название НКО, ассоциации, института или фонда", nome_projeto:"Название проекта", nome_evento:"Название события",
-    // ru:
-    desc_nome_pet:"Энергия имени вашего питомца и гармония, которую она создаёт с вашей семьёй.",
-    desc_nickname:"Вибрация вашего никнейма и её влияние на ваше цифровое присутствие.",
-    desc_nome_dominio:"Энергия имени вашего домена или сайта и её влияние на посетителей и авторитет.",
-    desc_nome_canal:"Энергия названия вашего канала, подкаста или цифрового проекта и потенциал аудитории.",
-    desc_nome_equipe:"Вибрация названия вашей команды или группы и синергия, движущая командой.",
-    desc_nome_ong:"Энергия названия вашей НКО, ассоциации, института или фонда и сила вашего дела.",
-    desc_nome_projeto:"Энергия названия вашего проекта или инициативы и сила, привлекающая поддержку и результаты.",
-    desc_nome_evento:"Вибрация названия вашего события — конгресса, курса, вечеринки или лекции — и энергия, которую оно создаёт у публики.",
-    
-    hi: { express:"एक्सप्रेस मानचित्र", vida:"जीवन चरण/वर्ष", completo:"पूर्ण मानचित्र", ia:"AI नाम खोज", urna:"मतपत्र नाम सत्यापन", eleitoral:"चुनावी संख्या", imovel:"संपत्ति संख्या", calendario:"मासिक ऊर्जा कैलेंडर", artistico:"कलात्मक नाम सत्यापन", bebe:"शिशु नाम योजना", assinatura:"हस्ताक्षर सत्यापन", negocio:"व्यवसाय/उत्पाद नाम", casal:"जोड़ा मानचित्र", familia:"प्रीमियम परिवार मानचित्र", coletivo:"सामूहिक/कॉर्पोरेट बोनस" },
-    // PRODUTOS_TRAD.hi +=
-    numero_celular:"फ़ोन नंबर", nickname:"डिजिटल उपनाम", nome_dominio:"डोमेन नाम", nome_canal:"चैनल नाम", nome_equipe:"टीम नाम", nome_ong:"एनजीओ, संघ, संस्थान या फाउंडेशन का नाम", nome_projeto:"परियोजना नाम", nome_evento:"कार्यक्रम नाम",
-    // hi:
-    desc_nome_pet:"आपके पालतू जानवर के नाम की ऊर्जा और परिवार के साथ बनने वाला सामंजस्य।",
-    desc_nickname:"आपके उपनाम या डिजिटल नाम की ऊर्जा और ऑनलाइन उपस्थिति पर उसका प्रभाव।",
-    desc_nome_dominio:"आपके डोमेन या वेबसाइट नाम की ऊर्जा और आगंतुकों व अधिकार को आकर्षित करने की क्षमता।",
-    desc_nome_canal:"आपके चैनल, पॉडकास्ट या डिजिटल प्रोजेक्ट के नाम की ऊर्जा और दर्शक क्षमता।",
-    desc_nome_equipe:"आपकी टीम या समूह के नाम की ऊर्जा और टीम को आगे बढ़ाने वाला तालमेल।",
-    desc_nome_ong:"आपकी एनजीओ, संघ, संस्थान या फाउंडेशन के नाम की ऊर्जा और आपके उद्देश्य की ताकत।",
-    desc_nome_projeto:"आपके प्रोजेक्ट या पहल के नाम की ऊर्जा और समर्थन व परिणाम आकर्षित करने की शक्ति।",
-    desc_nome_evento:"आपके कार्यक्रम के नाम की ऊर्जा — कांग्रेस, पाठ्यक्रम, पार्टी या व्याख्यान — और दर्शकों में उत्पन्न ऊर्जा।",
-    
-    he: { express:"מפה מהירה", vida:"שלב חיים/שנה", completo:"מפה מלאה", ia:"חיפוש שמות AI", urna:"אימות שם פתק", eleitoral:"מספר בחירות", imovel:"מספר נכס", calendario:"לוח שנה אנרגטי חודשי", artistico:"אימות שם במה", bebe:"תכנון שם תינוק", assinatura:"אימות חתימות", negocio:"שם לעסק/מוצר", casal:"מפת זוג", familia:"מפת משפחה פרימיום", coletivo:"בונוס קולקטיבי/עסקי" },
-    // PRODUTOS_TRAD.he +=
-    numero_celular:"מספר טלפון", nickname:"כינוי דיגיטלי", nome_dominio:"שם דומיין", nome_canal:"שם הערוץ", nome_equipe:"שם הצוות", nome_ong:"שם עמותה, ארגון, מכון או קרן", nome_projeto:"שם הפרויקט", nome_evento:"שם האירוע",
-    // he:
-    desc_nome_pet:"האנרגיה של שם חיית המחמד שלכם וההרמוניה שהיא יוצרת עם המשפחה.",
-    desc_nickname:"התנודה של הכינוי או המשתמש הדיגיטלי שלכם וכיצד היא מחזקת את הנוכחות המקוונת.",
-    desc_nome_dominio:"האנרגיה של שם הדומיין או האתר שלכם וכיצד היא מושכת מבקרים וסמכות.",
-    desc_nome_canal:"האנרגיה של שם הערוץ, הפודקאסט או הפרויקט הדיגיטלי שלכם והפוטנציאל הקהלי.",
-    desc_nome_equipe:"התנודה של שם הצוות או הקבוצה שלכם והסינרגיה שמניעה את הצוות.",
-    desc_nome_ong:"האנרגיה של שם העמותה, הארגון, המכון או הקרן שלכם ועוצמת המטרה שלכם.",
-    desc_nome_projeto:"האנרגיה של שם הפרויקט או היוזמה שלכם והכוח המושך תמיכה ותוצאות.",
-    desc_nome_evento:"התנודה של שם האירוע שלכם — קונגרס, קורס, מסיבה או הרצאה — והאנרגיה שהיא יוצרת בקהל.",
-    
-    ar: { express:"خريطة سريعة", vida:"مرحلة الحياة/السنة", completo:"خريطة كاملة", ia:"بحث الأسماء بالذكاء الاصطناعي", urna:"التحقق من اسم الاقتراع", eleitoral:"الرقم الانتخابي", imovel:"رقم العقار", calendario:"التقويم الشهري للطاقة", artistico:"التحقق من الاسم الفني", bebe:"تخطيط اسم الطفل", assinatura:"التحقق من التوقيعات", negocio:"اسم للعمل/المنتج", casal:"خريطة الزوجين", familia:"خريطة العائلة المميزة", coletivo:"مكافأة جماعية/مؤسسية" },
-    // PRODUTOS_TRAD.ar +=
-    numero_celular:"رقم الهاتف", nickname:"اللقب الرقمي", nome_dominio:"اسم النطاق", nome_canal:"اسم القناة", nome_equipe:"اسم الفريق", nome_ong:"اسم منظمة أو جمعية أو معهد أو مؤسسة", nome_projeto:"اسم المشروع", nome_evento:"اسم الفعالية",
-    // ar:
-    desc_nome_pet:"طاقة اسم حيوانك الأليف والانسجام الذي يخلقه مع عائلتك.",
-    desc_nickname:"اهتزاز لقبك أو اسمك الرقمي وكيف يعزز حضورك عبر الإنترنت.",
-    desc_nome_dominio:"طاقة اسم نطاقك أو موقعك وكيف تجذب الزوار والسلطة.",
-    desc_nome_canal:"طاقة اسم قناتك أو بودكاستك أو مشروعك الرقمي وإمكانات جمهورها.",
-    desc_nome_equipe:"اهتزاز اسم فريقك أو مجموعتك والتآزر الذي يحرك الفريق.",
-    desc_nome_ong:"طاقة اسم منظمتك أو جمعيتك أو معهدك أو مؤسستك وقوة قضيتك.",
-    desc_nome_projeto:"طاقة اسم مشروعك أو مبادرتك والقوة التي تجذب الدعم والنتائج.",
-    desc_nome_evento:"اهتزاز اسم فعاليتك — مؤتمر أو دورة أو حفلة أو محاضرة — والطاقة التي يولدها لدى الجمهور."
-};
 PRODUTO_FAIXA = {
     "express": 0, "vida": 0, "completo": 1, "ia": 1,
     "urna": 2, "eleitoral": 2, "imovel": 2, "calendario": 2,
