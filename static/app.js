@@ -92,8 +92,6 @@ function fecharModalColeta() {
   coletaAtual = null;
 }
 
-
-
 function abrirModalDado(produto, lang) {
   var t = translations[lang] || translations.pt;
   var label = (DADO_LABEL[lang] && DADO_LABEL[lang][produto]) ? DADO_LABEL[lang][produto] : DADO_LABEL.pt[produto];
