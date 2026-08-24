@@ -293,3 +293,4 @@ function init() {
   setLanguage(defaultLang);
   montarTudo();   // ← garante montar + re-traduzir
 }
+document.addEventListener("DOMContentLoaded", init);
