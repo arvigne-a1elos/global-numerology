@@ -283,7 +283,6 @@ function montarTudo() {
   // Re-traduz TUDO agora que as seções existem (BC + energias + cards)
   if (typeof traduzirTudo === "function") traduzirTudo();
 }
-
 // ===== INICIALIZAÇÃO =====
 function init() {
   var savedLang = localStorage.getItem('lang');
@@ -291,6 +290,19 @@ function init() {
   var defaultLang = savedLang || (translations[browserLang] ? browserLang : 'pt');
   montarSeletorIdioma();
   setLanguage(defaultLang);
-  montarTudo();   // ← garante montar + re-traduzir
+  montarTudo();
 }
-document.addEventListener("DOMContentLoaded", init);
+
+// ===== INICIALIZAÇÃO AUTOMÁTICA GARANTIDA (única via de disparo) =====
+function iniciarSeguro() {
+  try {
+    init();
+  } catch (e) {
+    console.error("[A1ELOS] init() falhou:", e);
+  }
+}
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", iniciarSeguro);
+} else {
+  iniciarSeguro();
+}
