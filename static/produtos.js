@@ -2,7 +2,27 @@ function tradOpcao(chave) {
   var lang = getLang();
   var t = OPCOES_TRAD[lang] || OPCOES_TRAD.pt;
   return t[chave] || OPCOES_FALLBACK[chave] || chave;
-}
+}<!-- PRODUTOS E SERVIÇOS (23) -->
+    <section id="produtos">
+        <div class="section-header">
+            <h2 data-i18n="section_products_title">Produtos e Serviços</h2>
+            <p data-i18n="section_products_subtitle">Escolha o produto ideal para sua análise numerológica</p>
+        </div>
+        <div class="cards-grid" id="produtosGrid">
+            <!-- 1. Mapa Express -->
+            <div class="product-card" data-prod="express">
+                <div class="icon">🔮</div>
+                <h3 class="prod-nome" data-i18n="p_express">Mapa Express</h3>
+                <div class="price prod-preco">R$ 8</div>
+             <p class="desc" data-i18n="desc_express">1 página com os 5 números principais e seu significado resumido. Ideal para uma visão rápida.</p>
+             <ul class="features">
+              <li>✅ Caminho da Vida</li>
+              <li>✅ Expressão, Alma, Personalidade</li>
+              <li>✅ Destino</li>
+              <li>📲 PDF + QRCode</li>
+             </ul>
+                <button class="btn btn-full" onclick="pesquisar('express')" data-i18n="pesquisar_btn">pesquisar</button>
+            </div>
 var CONF_COLETA = {
   nome_canal:   { labelTipo:"f_tipo_canal",   tipos:["youtube","podcast","tiktok","twitch"],        temArea:true,  areas:["esporte","noticias","politica","beleza"], temDetalhe:false },
   nickname:     { labelTipo:"f_tipo_nickname", tipos:["gamer","profissional","criador","artista"],  temArea:false, areas:[], temDetalhe:false },
@@ -648,4 +668,6 @@ document.querySelectorAll('.product-card[data-prod]').forEach(function(card) {
     _traduzindo = false;     
   }
 }
-  
+    if (typeof renderizarNumeros === 'function' && typeof ultimosNumeros !== 'undefined' && ultimosNumeros && ultimosNumeros.length) {
+    renderizarNumeros();
+}  
