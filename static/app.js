@@ -232,12 +232,18 @@ function renderizarNumeros() {
   var lang = getLang();
   var t = translations[lang] || translations["pt"];
   var nomes = t.nomes5 || {};
+  var sigs = t.sig || {};
   var chaves5 = ['caminho', 'realizacao', 'alma', 'personalidade', 'destino'];
   var html = "";
   for (var i = 0; i < ultimosNumeros.length && i < chaves5.length; i++) {
     var n = ultimosNumeros[i];
     var nomeE = nomes[chaves5[i]] || ("Energia " + n);
-    html += '<div class="numero-gratis"><span class="numero-nome">' + nomeE + ':</span> <span class="numero-valor">' + n + '</span></div>';
+    var sigE = sigs["sig_" + chaves5[i]] || "";
+    html += '<div class="numero-gratis">'
+          + '<span class="numero-nome">' + nomeE + ':</span> '
+          + '<span class="numero-valor">' + n + '</span>'
+          + (sigE ? '<p class="numero-sig">' + sigE + '</p>' : '')
+          + '</div>';
   }
   var el = document.getElementById("resultadoNumeros") || document.getElementById("resultado") || document.getElementById("calcResultado");
   if (el) { el.innerHTML = html; el.style.display = "block"; }
