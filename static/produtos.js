@@ -669,5 +669,5 @@ document.querySelectorAll('.product-card[data-prod]').forEach(function(card) {
   }
 }
     if (typeof renderizarNumeros === 'function' && typeof ultimosNumeros !== 'undefined' && ultimosNumeros && ultimosNumeros.length) {
-    renderizarNumeros();
-}  
+  renderizarNumeros();
+}
