@@ -630,8 +630,9 @@ async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
                 "nome1": nome1, "nome2": nome2, "nome3": nome3,
                 "nome4": nome4, "nome5": nome5}
     elif produto == "eleitoral":
+        numero_existente: str = "",   # ← novo parâmetro
         meta = {"sigla": numero, "cargo": cargo,
-                "nome_completo": nome_completo, "numero_existente": ""}
+            "nome_completo": nome_completo, "numero_existente": numero_existente}
     else:
         meta = {"energia": energia, "dado": dado, "tipo": tipo}
     s = _criar_sessao(produto, lang, email, nome, nascimento, meta)
