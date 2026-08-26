@@ -232,7 +232,7 @@ function renderizarNumeros() {
   var lang = getLang();
   var t = translations[lang] || translations["pt"];
   var nomes = t.nomes5 || {};
-  var sigs = t || {};
+  var sigs = t.sig || {};
   var chaves5 = ['caminho', 'realizacao', 'alma', 'personalidade', 'destino'];
   var html = "";
   for (var i = 0; i < ultimosNumeros.length && i < chaves5.length; i++) {
