@@ -633,6 +633,10 @@ function traduzirTudo() {
     var k = el.getAttribute('data-i18n');
     if (t[k]) el.innerText = t[k];
   });
+  }
+    if (typeof renderizarNumeros === 'function' && typeof ultimosNumeros !== 'undefined' && ultimosNumeros && ultimosNumeros.length) {
+  renderizarNumeros();
+  }  
   document.querySelectorAll('[data-i18n-ph]').forEach(function(el) {
     var k = el.getAttribute('data-i18n-ph');
     var v = t[k] || t.calc_nome;
@@ -667,7 +671,4 @@ document.querySelectorAll('.product-card[data-prod]').forEach(function(card) {
     } finally {
     _traduzindo = false;     
   }
-}
-    if (typeof renderizarNumeros === 'function' && typeof ultimosNumeros !== 'undefined' && ultimosNumeros && ultimosNumeros.length) {
-  renderizarNumeros();
-}
+
