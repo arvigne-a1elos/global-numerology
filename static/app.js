@@ -1,6 +1,5 @@
 // ===== A1ELOS GLOBAL NUMEROLOGY - APP.JS (VERSÃO CONSOLIDADA) =====
 // ================================================================
-
  // ===== MONTAR SELETOR DE IDIOMAS (12 bandeiras) =====
 function montarSeletorIdioma() {
   var container = document.getElementById('langSelector');
@@ -28,7 +27,6 @@ function montarSeletorIdioma() {
     container.appendChild(b);
   });
 }
-
 function pagarVida(){var n=document.getElementById('vidaNome').value.trim(),b=document.getElementById('vidaNasc').value;if(!n||!b){alert(t_preencha());return;}location.href='/criar-checkout?produto=vida&nome='+encodeURIComponent(n)+'&nascimento='+encodeURIComponent(b)+'&lang='+getLang();}
 function pagarIa(){var n=document.getElementById('iaNome').value.trim(),e=document.getElementById('iaEnergia').value;if(!n||!e){alert(t_preencha());return;}location.href='/criar-checkout?produto=ia&nome='+encodeURIComponent(n)+'&energia='+encodeURIComponent(e)+'&lang='+getLang();}
 function pagarImovel(){var n=document.getElementById('imovelNumero').value.trim();if(!n){alert(t_preencha());return;}location.href='/criar-checkout?produto=imovel&dado='+encodeURIComponent(n)+'&lang='+getLang();}
@@ -40,10 +38,30 @@ function pagarNegocio(){var n=document.getElementById('negocioNome').value.trim(
 function pagarCasal(){var n1=document.getElementById('casalNome1').value.trim(),n2=document.getElementById('casalNome2').value.trim();if(!n1||!n2){alert(t_preencha());return;}location.href='/criar-checkout?produto=casal&dado='+encodeURIComponent(n1+' & '+n2)+'&lang='+getLang();}
 function pagarFamilia(){var n=document.getElementById('familiaMembros').value.trim();if(!n){alert(t_preencha());return;}location.href='/criar-checkout?produto=familia&dado='+encodeURIComponent(n)+'&lang='+getLang();}
 function t_preencha(){var t=translations[getLang()]||translations.pt;return t.preencha_dado||'Preencha os dados solicitados.';}
-
+// ===== PAGAR URNA / ELEITORAL (adicionadas — padrão do arquivo) =====
+window.pagarUrna = window.pagarUrna || function(){
+  var nomes = [];
+  for (var i = 1; i <= 5; i++) {
+    var v = (document.getElementById('urnaNome'+i) ? document.getElementById('urnaNome'+i).value : '').trim();
+    if (v) nomes.push(v);
+  }
+  var cargo = (document.getElementById('urnaCargo') ? document.getElementById('urnaCargo').value : '').trim();
+  if (!nomes.length || !cargo) { alert(t_preencha()); return; }
+  location.href = '/criar-checkout?produto=urna&cargo=' + encodeURIComponent(cargo) + '&nomes=' + encodeURIComponent(nomes.join('|')) + '&lang=' + getLang();
+};
+window.pagarEleitoral = window.pagarEleitoral || function(){
+  var n = (document.getElementById('eleiNome') ? document.getElementById('eleiNome').value : '').trim();
+  var cargo = (document.getElementById('eleiCargo') ? document.getElementById('eleiCargo').value : '').trim();
+  var sigla = (document.getElementById('eleiSigla') ? document.getElementById('eleiSigla').value : '').trim();
+  var existente = (document.getElementById('eleiExistente') ? document.getElementById('eleiExistente').value : '').trim();
+  if (!n || !sigla) { alert(t_preencha()); return; }
+  var qs = '/criar-checkout?produto=eleitoral&nome=' + encodeURIComponent(n) + '&sigla=' + encodeURIComponent(sigla) + '&lang=' + getLang();
+  if (cargo) qs += '&cargo=' + encodeURIComponent(cargo);
+  if (existente) qs += '&existente=' + encodeURIComponent(existente);
+  location.href = qs;
+};
 // ===== COMPRAR (abre modal do dado específico para os 8 produtos) =====
 var DADO_APLICA = ["nome_pet","nickname","nome_dominio","nome_canal","nome_equipe","nome_ong","nome_projeto","nome_evento"];
-
 function comprar(produto) {
   var lang = getLang();
   var t = translations[lang] || translations.pt;
@@ -64,7 +82,6 @@ function comprar(produto) {
   window.location.href = '/criar-checkout?lang=' + lang + '&produto=' + produto
     + '&nome=' + encodeURIComponent(nome) + '&nascimento=' + encodeURIComponent(nasc);
 }
-
 function selecionarOpcao(container, btn) {
   container.querySelectorAll(".coleta-opcao").forEach(function(b){ b.classList.remove("ativo"); });
   btn.classList.add("ativo");
@@ -91,7 +108,6 @@ function fecharModalColeta() {
   if (o) o.style.display = "none";
   coletaAtual = null;
 }
-
 function abrirModalDado(produto, lang) {
   var t = translations[lang] || translations.pt;
   var label = (DADO_LABEL[lang] && DADO_LABEL[lang][produto]) ? DADO_LABEL[lang][produto] : DADO_LABEL.pt[produto];
@@ -117,8 +133,9 @@ function abrirModalDado(produto, lang) {
     document.body.appendChild(overlay);
     overlay.addEventListener("click", function(e){ if (e.target === overlay) fecharModalDado(); });
     document.getElementById("modalDadoCancel").onclick = fecharModalDado;
-    document.getElementById("modalDadoOk").onclick = function(){ confirmarModalDado(produto, lang); };
   }
+  // ✅ FIX: reatribui o onclick a CADA abertura (evita capturar o 1º produto)
+  document.getElementById("modalDadoOk").onclick = function(){ confirmarModalDado(produto, lang); };
   document.getElementById("modalDadoTitulo").textContent = titulo;
   document.getElementById("modalDadoLabel").textContent = label;
    // Monta passos
@@ -126,7 +143,6 @@ function abrirModalDado(produto, lang) {
   montarPassoTipo(produto, lang);
   overlay.classList.add("active");
 }
-
 function fecharModalDado() {
   var o = document.getElementById("modalDado");
   if (o) o.classList.remove("active");
@@ -163,7 +179,6 @@ function montarPassoTipo(produto, lang) {
     box.appendChild(b);
   });
 }
-
 function descontoBC(qtd) {
   if (qtd >= 2000) return 50;
   if (qtd >= 1000) return 45;
@@ -174,7 +189,6 @@ function descontoBC(qtd) {
   if (qtd >= 10) return 10;
   return 0;
 }
-
 function usarPlanoPronto(qExpress, qVida, qIa, qCompleto) {
   var mapa = { express: qExpress, vida: qVida, ia: qIa, completo: qCompleto };
   document.querySelectorAll("#bcTabelaCorpo input[data-prod]").forEach(function(inp) {
@@ -183,7 +197,6 @@ function usarPlanoPronto(qExpress, qVida, qIa, qCompleto) {
   });
   atualizarResumoBC();
 }
-
 // ===== CALCULADORA GRATUITA (5 números) =====
 function r1Num(n) {
   while (n > 9 && n !== 11 && n !== 22 && n !== 33) {
@@ -191,7 +204,6 @@ function r1Num(n) {
   }
   return n;
 }
-
 function calcular5Numeros(nome, nasc) {
   var t = {};
   var letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -208,9 +220,7 @@ function calcular5Numeros(nome, nasc) {
   }
   return [lp, r1Num(te), r1Num(tv), r1Num(tp), r1Num(r1Num(te) + lp)];
 }
-
 var ultimosNumeros = null;
-
 function calcularMapa() {
   var lang = getLang();
   var t = translations[lang] || translations["pt"];
@@ -226,7 +236,6 @@ function calcularMapa() {
   else { ultimosNumeros = [1, 2, 3, 4, 5]; }
   renderizarNumeros();
 }
-
 function renderizarNumeros() {
   if (!ultimosNumeros) return;
   var lang = getLang();
@@ -262,7 +271,6 @@ function irParaCompra(produto, lang, energia) {
   if (nasc) qs += '&nascimento=' + encodeURIComponent(nasc);
   window.location.href = '/criar-checkout?' + qs;
 }
-
 // ===== TOGGLE FORM (mostra/oculta um formulário) — usada pelos botões "Iniciar Validação" etc. =====
 function toggleForm(formId) {
   var el = document.getElementById(formId);
@@ -271,7 +279,32 @@ function toggleForm(formId) {
   el.style.display = escondido ? 'block' : 'none';
   if (escondido) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
-
+// ===== ENVIAR MENSAGEM / ATIVAR BÔNUS (adicionadas — padrão do arquivo) =====
+window.enviarMensagem = window.enviarMensagem || function(){
+  var nome = (document.getElementById('msgNome') ? document.getElementById('msgNome').value : '').trim();
+  var texto = (document.getElementById('msgTexto') ? document.getElementById('msgTexto').value : '').trim();
+  var st = document.getElementById('msgStatus');
+  if (!nome || !texto) { if (st) st.textContent = t_preencha(); return; }
+  fetch('/sugestao', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ nome: nome, email: '', mensagem: texto })
+  }).then(function(r){ return r.json(); }).then(function(res){
+    if (st) st.textContent = (res && res.ok) ? 'Enviado com sucesso!' : 'Erro ao enviar.';
+  }).catch(function(){ if (st) st.textContent = 'Erro ao enviar.'; });
+};
+window.ativarBonusInserido = window.ativarBonusInserido || function(){
+  var cod = (document.getElementById('biCodigo') ? document.getElementById('biCodigo').value : '').trim();
+  var st = document.getElementById('biStatus');
+  if (!cod) { if (st) st.textContent = t_preencha(); return; }
+  fetch('/ativar-bonus', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ codigo: cod })
+  }).then(function(r){ return r.json(); }).then(function(res){
+    if (st) st.textContent = (res && res.ok) ? '🎁 Código ativado!' : 'Código inválido ou já usado.';
+  }).catch(function(){ if (st) st.textContent = 'Erro ao validar o código.'; });
+};
 /* ===== CARREGADOR DE PARTIALS ===== */
 function carregarPartials() {
   fetch('/static/partials/produtos.html')
@@ -283,7 +316,6 @@ function carregarPartials() {
     })
     .catch(function(e){ console.warn('[partials] produtos.html:', e); });
 }
-
 // ===== MONTAR TUDO (consolidado e blindado) =====
 function montarTudo() {
   if (typeof montarTabelaBC === "function") {
@@ -310,7 +342,6 @@ function init() {
   setLanguage(defaultLang);
   carregarPartials();   // ← injeta os cards e depois chama montarTudo()
 }
-
 // ===== INICIALIZAÇÃO AUTOMÁTICA GARANTIDA (única via de disparo) =====
 function iniciarSeguro() {
   try {
