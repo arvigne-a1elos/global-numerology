@@ -313,6 +313,13 @@ function abrirModalColeta(produto) {
       b.setAttribute("data-valor", ch); b.textContent = tradOpcao(ch);
       b.onclick = function(){ selecionarOpcao(aw, b); };
       aw.appendChild(b);
+  if (window._energiaPresel) {
+  var btns = document.querySelectorAll("#coletaEnergia .energia-num");
+  for (var bi = 0; bi < btns.length; bi++) {
+  if (btns[bi].textContent === String(window._energiaPresel)) { btns[bi].classList.add("ativo"); }
+}
+  window._energiaPresel = null;
+}
     });
     var bAOutro = document.createElement("button");
     bAOutro.type = "button"; bAOutro.className = "btn btn-outline coleta-opcao";
@@ -460,15 +467,26 @@ function abrirMenuEnergia(n, lang) {
     var b = document.createElement("button");
     b.className = "btn btn-full";
     b.innerHTML = icone + " " + nome;
-    b.onclick = function(){ fecharMenuEnergia(); pesquisar(prod); };
-    lista.appendChild(b);
-  });
-  overlay.classList.add("active");
-}
-function fecharMenuEnergia() {
-  var o = document.getElementById("menuEnergia");
-  if (o) o.classList.remove("active");
-}
+    b.onclick = function(){
+  fecharMenuEnergia();
+  var t2 = translations[lang] || translations.pt;
+  if (prod === "express" || prod === "completo" || prod === "ia") {
+    var nome = (document.getElementById("calcNome") ? document.getElementById("calcNome").value : "").trim();
+    var nasc = (document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim();
+    if (!nome || !nasc) {
+      alert(t2.preencha_dados || "Preencha nome e data de nascimento primeiro.");
+      var sec = document.getElementById("calculadora") || document.getElementById("calcSection");
+      if (sec) sec.scrollIntoView({ behavior: "smooth" });
+      return;
+    }
+    window.location.href = "/criar-checkout?lang=" + lang + "&produto=" + prod
+      + "&nome=" + encodeURIComponent(nome) + "&nascimento=" + encodeURIComponent(nasc)
+      + "&energia=" + n;
+    return;
+  }
+  window._energiaPresel = n;
+  pesquisar(prod);
+};
 
 /*===== OPCOES_TRAD — rótulos das opções (12 idiomas) =====*/
 var OPCOES_TRAD = {
