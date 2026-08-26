@@ -655,11 +655,10 @@ def pay_success(request: Request):
         bd = meta.get("birth", "")
         prod = meta.get("tipo", "express")
         lang = meta.get("lang", "pt")
-        dado = meta.get("dado", "")
-        if not bd:
-            bd = "2000-01-01"
-        # ✅ CORREÇÃO: produtos de "dado" usam o dado digitado, não calc_mapa forçado
-        if prod in DADO_PRODUTOS:
+         if dado:
+            data = {"dado": dado}
+            nome_exib = dado or nome
+        elif prod in DADO_PRODUTOS:
             data = {"dado": dado or nome}
             nome_exib = dado or nome
         else:
