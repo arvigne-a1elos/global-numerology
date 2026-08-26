@@ -666,6 +666,11 @@ document.querySelectorAll('.product-card[data-prod]').forEach(function(card) {
     var preco = tr.querySelector('.bc-prod-preco');
     if (preco && PRODUTO_FAIXA[prod] !== undefined && PRECO_DISPLAY[lang]) preco.innerText = PRECO_DISPLAY[lang][PRODUTO_FAIXA[prod]];
   });
+ document.querySelectorAll('[data-i18n-bc]').forEach(function(el) {
+  var k = el.getAttribute('data-i18n-bc');
+  var mapa = { servico: t.bc_servico || "Serviço", preco: t.bc_preco || "Preço", qtd: t.bc_qtd || "Quantidade" };
+  if (mapa[k]) el.innerText = mapa[k];
+});
     } finally {
     _traduzindo = false;     
   }
