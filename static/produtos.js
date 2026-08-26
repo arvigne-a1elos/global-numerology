@@ -633,7 +633,6 @@ function traduzirTudo() {
     var k = el.getAttribute('data-i18n');
     if (t[k]) el.innerText = t[k];
   });
-  }
     if (typeof renderizarNumeros === 'function' && typeof ultimosNumeros !== 'undefined' && ultimosNumeros && ultimosNumeros.length) {
   renderizarNumeros();
   }  
