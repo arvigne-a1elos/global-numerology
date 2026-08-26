@@ -15,7 +15,10 @@ function pesquisar(produto) {
     if (sec) sec.scrollIntoView({ behavior:"smooth", block:"center" });
     return;
   }
-  if (CONF_COLETA[produto]) { abrirModalColeta(produto); return; }
+  if (CONF_COLETA[produto]) {
+  if (typeof comprar === "function") { comprar(produto); return; }
+  abrirModalColeta(produto); return;
+}
   var alvo = document.getElementById("form-" + produto);
   if (alvo) {
     alvo.scrollIntoView({ behavior:"smooth", block:"center" });
