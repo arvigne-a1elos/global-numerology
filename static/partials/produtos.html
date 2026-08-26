@@ -4,20 +4,333 @@
         <h2 data-i18n="section_products_title">Produtos e Serviços</h2>
         <p data-i18n="section_products_subtitle">Escolha o produto ideal para sua análise numerológica</p>
     </div>
+
     <div class="cards-grid" id="produtosGrid">
-        <!-- 1. Mapa Express -->
-        <div class="product-card" data-prod="express">
-            <div class="icon">🔮</div>
-            <h3 class="prod-nome" data-i18n="p_express">Mapa Express</h3>
+            <!-- 1. Mapa Express -->
+            <div class="product-card" data-prod="express">
+                <div class="icon">🔮</div>
+                <h3 class="prod-nome" data-i18n="p_express">Mapa Express</h3>
+                <div class="price prod-preco">R$ 8</div>
+             <p class="desc" data-i18n="desc_express">1 página com os 5 números principais e seu significado resumido. Ideal para uma visão rápida.</p>
+             <ul class="features">
+              <li>✅ Caminho da Vida</li>
+              <li>✅ Expressão, Alma, Personalidade</li>
+              <li>✅ Destino</li>
+              <li>📲 PDF + QRCode</li>
+             </ul>
+                <button class="btn btn-full" onclick="pesquisar('express')" data-i18n="pesquisar_btn">pesquisar</button>
+            </div>
+            <!-- 2. Qual Vida/Ano -->
+            <div class="product-card" data-prod="vida">
+                <div class="icon">🔢</div>
+                <h3 class="prod-nome" data-i18n="p_vida">Qual Vida/Ano</h3>
+                <div class="price prod-preco">R$ 8</div>
+                <p class="desc" data-i18n="desc_vida">Análise da fase de vida e do ano pessoal em que você está, com orientações para o ciclo atual.</p>
+                <ul class="features">
+                    <li>✅ Fase de Vida atual</li>
+                    <li>✅ Ano Pessoal</li>
+                    <li>✅ Tendências do ciclo</li>
+                    <li>📲 PDF + QRCode</li>
+                </ul>
+                <button class="btn btn-full" onclick="toggleForm('form-vida')" data-i18n="pesquisar_btn">pesquisar</button>
+            </div>
+            <!-- 3. Mapa Completo -->
+            <div class="product-card" data-prod="completo">
+                <div class="icon">📘</div>
+                <span class="badge" data-i18n="recommended">RECOMENDADO</span>
+                <h3 class="prod-nome" data-i18n="p_completo">Mapa Completo</h3>
+                <div class="price prod-preco">R$ 17</div>
+                <p class="desc" data-i18n="desc_completo">Análise completa com descrições positivas/negativas, ciclos de vida, desafios, grade de inclusão e nota final.</p> 
+                <ul class="features">
+                    <li>✅ 5 números detalhados</li>
+                    <li>✅ 3 Ciclos de Vida</li>
+                    <li>✅ Desafios e Realizações</li>
+                    <li>✅ Grade de Inclusão</li>
+                    <li>📲 PDF + QRCode</li>
+                </ul>
+                <button class="btn btn-full" onclick="pesquisar('completo')" data-i18n="pesquisar_btn">pesquisar</button>
+            </div>
+            <!-- 4. Pesquisa IA de Nomes -->
+            <div class="product-card" data-prod="ia">
+                <div class="icon">🤖</div>
+                <h3 class="prod-nome" data-i18n="p_ia">Pesquisa IA de Nomes</h3>
+                <div class="price prod-preco">R$ 17</div>
+                <p class="desc" data-i18n="desc_ia">Escolha o nome ideal com análise numerológica da energia do nome por IA.</p> 
+                <ul class="features">
+                    <li>✅ Sugestões com IA</li>
+                    <li>✅ Análise energética de nomes</li>
+                    <li>✅ Comparativo de opções</li>
+                    <li>📲 PDF + QRCode</li>
+                </ul>
+                <button class="btn btn-full" onclick="toggleForm('form-ia')" data-i18n="pesquisar_btn">pesquisar</button>
+            </div>
+            <!-- 5. Validação Nome de Urna -->
+            <div class="product-card" data-prod="urna">
+                <div class="icon">🗳️</div>
+                <h3 class="prod-nome" data-i18n="p_urna">Validação Nome de Urna</h3>
+                <div class="price prod-preco">R$ 26</div>
+                <p class="desc" data-i18n="desc_urna">5 tentativas + cálculo letra a letra + 📲 PDF + QRCode. Análise completa de cada nome de candidatura.</p>
+                <ul class="features">
+                    <li>✅ 5 nomes testados</li>
+                    <li>✅ Sugestões com energia 8</li>
+                    <li>✅ Cálculo letra a letra</li>
+                    <li>📲 PDF + QRCode</li>
+                </ul>
+                <button class="btn btn-full" onclick="toggleForm('form-urna')" data-i18n="start_urna">Iniciar Validação</button>
+            </div>
+            <!-- 6. Número Eleitoral -->
+            <div class="product-card" data-prod="eleitoral">
+                <div class="icon">🔢</div>
+                <h3 class="prod-nome" data-i18n="p_eleitoral">Número Eleitoral</h3>
+                <div class="price prod-preco">R$ 26</div>
+                <p class="desc" data-i18n="desc_eleitoral">Sugestões de números com energia 8 para sua candidatura política. Análise com PDF sigiloso.</p>
+                <ul class="features">
+                    <li>✅ 5 números sugeridos</li>
+                    <li>✅ Prioridade energia 8 (Poder)</li>
+                    <li>✅ Cálculo completo</li>
+                    <li>📲 PDF + QRCode</li>
+                </ul>
+                <button class="btn btn-full" onclick="toggleForm('form-eleitoral')" data-i18n="start_eleitoral">Calcular Nº Eleitoral</button>
+            </div>
+            <!-- 7. Número do Imóvel -->
+            <div class="product-card" data-prod="imovel">
+                <div class="icon">🏠</div>
+                <h3 class="prod-nome" data-i18n="p_imovel">Número do Imóvel</h3>
+                <div class="price prod-preco">R$ 26</div>
+                <p class="desc" data-i18n="desc_imovel">Análise da vibração do número da sua casa, apartamento ou comércio e como ela influencia o ambiente.</p>
+                <ul class="features">
+                    <li>✅ Número do imóvel analisado</li>
+                    <li>✅ Energia do ambiente</li>
+                    <li>✅ Sugestões de harmonização</li>
+                    <li>📲 PDF + QRCode</li>
+                </ul>
+                <button class="btn btn-full" onclick="toggleForm('form-imovel')" data-i18n="pesquisar_btn">pesquisar</button>
+            </div>
+            <!-- 8. Calendário Mensal Energético -->
+            <div class="product-card" data-prod="calendario">
+                <div class="icon">📅</div>
+                <h3 class="prod-nome" data-i18n="p_calendario">Calendário Mensal Energético</h3>
+                <div class="price prod-preco">R$ 26</div>
+                <p class="desc" data-i18n="desc_calendario">Previsão energética dia a dia para o mês, com os melhores momentos para decisões importantes.</p>
+                <ul class="features">
+                    <li>✅ Vibração diária</li>
+                    <li>✅ Dias favoráveis</li>
+                    <li>✅ Orientação mensal</li>
+                    <li>📲 PDF + QRCode</li>
+                </ul>
+                <button class="btn btn-full" onclick="toggleForm('form-calendario')" data-i18n="pesquisar_btn">pesquisar</button>
+            </div>
+            <!-- 9. Validação Nome Artístico -->
+            <div class="product-card" data-prod="artistico">
+                <div class="icon">🎭</div>
+                <h3 class="prod-nome" data-i18n="p_artistico">Validação Nome Artístico</h3>
+                <div class="price prod-preco">R$ 35</div>
+                <p class="desc" data-i18n="desc_artistico">Escolha o nome artístico ideal para sua carreira, testando a energia de cada opção.</p>
+                <ul class="features">
+                    <li>✅ Nomes testados</li>
+                    <li>✅ Sugestões de palco</li>
+                    <li>✅ Energia do nome</li>
+                    <li>📲 PDF + QRCode</li>
+                </ul>
+                <button class="btn btn-full" onclick="toggleForm('form-artistico')" data-i18n="pesquisar_btn">pesquisar</button>
+            </div>
+            <!-- 10. Planejamento Nome de Bebê -->
+            <div class="product-card" data-prod="bebe">
+                <div class="icon">👶</div>
+                <h3 class="prod-nome" data-i18n="p_bebe">Planejamento Nome de Bebê</h3>
+                <div class="price prod-preco">R$ 35</div>
+                <p class="desc" data-i18n="desc_bebe">Planejamento do nome ideal para seu bebê, com análise energética das opções.</p>
+                <ul class="features">
+                    <li>✅ Sugestões de nomes</li>
+                    <li>✅ Análise energética</li>
+                    <li>✅ Compatibilidade com sobrenome</li>
+                    <li>📲 PDF + QRCode</li>
+                </ul>
+                <button class="btn btn-full" onclick="toggleForm('form-bebe')" data-i18n="pesquisar_btn">pesquisar</button>
+            </div>
+            <!-- 11. Validação de Assinaturas -->
+            <div class="product-card" data-prod="assinatura">
+                <div class="icon">✍️</div>
+                <h3 class="prod-nome" data-i18n="p_assinatura">Validação de Assinaturas</h3>
+                <div class="price prod-preco">R$ 35</div>
+                <p class="desc" data-i18n="desc_assinatura">Validação de assinaturas com análise energética e sugestões de harmonização.</p>
+                <ul class="features">
+                    <li>✅ Assinatura atual analisada</li>
+                    <li>✅ Variações sugeridas</li>
+                    <li>✅ Energia da assinatura</li>
+                    <li>📲 PDF + QRCode</li>
+                </ul>
+                <button class="btn btn-full" onclick="toggleForm('form-assinatura')" data-i18n="pesquisar_btn">pesquisar</button>
+            </div>
+            <!-- 12. Nome para Negócio/Produto -->
+            <div class="product-card" data-prod="negocio">
+                <div class="icon">🏪</div>
+                <h3 class="prod-nome" data-i18n="p_negocio">Nome para Negócio/Produto</h3>
+                <div class="price prod-preco">R$ 44</div>
+                <p class="desc" data-i18n="desc_negocio">Escolha o nome ideal para sua empresa ou produto, com análise da energia do nome.</p>
+                <ul class="features">
+                    <li>✅ Nomes testados</li>
+                    <li>✅ Sugestões empresariais</li>
+                    <li>✅ Energia do nome</li>
+                    <li>📲 PDF + QRCode</li>
+                </ul>
+                <button class="btn btn-full" onclick="toggleForm('form-negocio')" data-i18n="pesquisar_btn">pesquisar</button>
+            </div>
+            <!-- 13. Mapa do Casal -->
+            <div class="product-card" data-prod="casal">
+                <div class="icon">💞</div>
+                <h3 class="prod-nome" data-i18n="p_casal">Mapa do Casal</h3>
+                <div class="price prod-preco">R$ 44</div>
+                <p class="desc" data-i18n="desc_casal">Análise numerológica do casal, revelando a compatibilidade e os desafios da relação.</p>
+                <ul class="features">
+                    <li>✅ Compatibilidade</li>
+                    <li>✅ Pontos fortes do casal</li>
+                    <li>✅ Desafios da relação</li>
+                    <li>📲 PDF + QRCode</li>
+                </ul>
+                <button class="btn btn-full" onclick="toggleForm('form-casal')" data-i18n="pesquisar_btn">pesquisar</button>
+            </div>
+            <!-- 14. Mapa Família Premium -->
+            <div class="product-card" data-prod="familia">
+                <div class="icon">🌟</div>
+                <span class="badge" data-i18n="premium">PREMIUM</span>
+                <h3 class="prod-nome" data-i18n="p_familia">Mapa Família Premium</h3>
+                <div class="price prod-preco">R$ 98</div>
+                <p class="desc" data-i18n="desc_familia">Mapa completo da família, revelando as energias e dinâmicas de todos os membros.</p>
+                <ul class="features">
+                    <li>✅ Todos os membros</li>
+                    <li>✅ Sinergia familiar</li>
+                    <li>✅ Orientação por membro</li>
+                    <li>📲 PDF + QRCode</li>
+                </ul>
+                <button class="btn btn-full" onclick="toggleForm('form-familia')" data-i18n="pesquisar_btn">pesquisar</button>
+            </div>
+            <!-- 15. Bônus Coletivo/Empresarial -->
+            <div class="product-card" data-prod="coletivo" style="border:2px solid var(--gold)">
+             <div class="icon">🏢</div>
+             <h3 class="prod-nome" data-i18n="p_coletivo">Bônus Coletivo/Empresarial</h3>
+             <div class="price" data-i18n="sob_consulta">Sob consulta</div>
+             <p class="desc" data-i18n="desc_coletivo">Contrate brindes numerológicos para seus clientes ou funcionários. Descontos de 10% a 70%.</p>
+             <ul class="features">
+              <li>✅ Planos prontos</li>
+              <li>✅ Sob medida</li>
+              <li>✅ Descontos progressivos</li>
+              <li>✅ Códigos de presente</li>
+             </ul>
+             <button class="btn btn-full" onclick="document.getElementById('corporativo').scrollIntoView({behavior:'smooth'})" data-i18n="know_more">Saiba Mais</button>
+            </div>
+           <!-- 16. Nome do Pet -->
+           <div class="product-card" data-prod="nome_pet">
+            <div class="icon">🐾</div>
+            <h3 class="prod-nome" data-i18n="nome_pet">Nome do Pet</h3>
             <div class="price prod-preco">R$ 8</div>
-            <p class="desc" data-i18n="desc_express">1 página com os 5 números principais e seu significado resumido. Ideal para uma visão rápida.</p>
+            <p class="desc" data-i18n="desc_nome_pet">A energia do nome do seu animal de estimação e a sintonia que ele cria com a sua família.</p>
             <ul class="features">
-                <li>✅ Caminho da Vida</li>
-                <li>✅ Expressão, Alma, Personalidade</li>
-                <li>✅ Destino</li>
-                <li>📲 PDF + QRCode</li>
+             <li>✅ Nome do pet analisado</li>
+             <li>✅ Energia do nome</li>
+             <li>✅ Sintonia com a família</li>
+             <li>📲 PDF + QRCode</li>
             </ul>
-            <button class="btn btn-full" onclick="pesquisar('express')" data-i18n="pesquisar_btn">pesquisar</button>
-        </div>
+            <button class="btn btn-full" onclick="pesquisar('nome_pet')" data-i18n="pesquisar_btn">pesquisar</button>
+           </div>
+           <!-- 17. Nickname Digital -->
+           <div class="product-card" data-prod="nickname">
+            <div class="icon">💬</div>
+            <h3 class="prod-nome" data-i18n="nickname">Nickname Digital</h3>
+            <div class="price prod-preco">R$ 8</div>
+            <p class="desc" data-i18n="desc_nickname">A energia do seu apelido digital e como ele projeta a sua imagem no mundo online.</p>
+            <ul class="features">
+             <li>✅ Nickname analisado</li>
+             <li>✅ Energia do nome</li>
+             <li>✅ Imagem no mundo online</li>
+             <li>📲 PDF + QRCode</li>
+            </ul>
+            <button class="btn btn-full" onclick="pesquisar('nickname')" data-i18n="pesquisar_btn">pesquisar</button>
+           </div>
+           <!-- 18. Nome do Domínio -->
+           <div class="product-card" data-prod="nome_dominio">
+            <div class="icon">🌐</div>
+            <h3 class="prod-nome" data-i18n="nome_dominio">Nome do Domínio</h3>
+            <div class="price prod-preco">R$ 8</div>
+            <p class="desc" data-i18n="desc_nome_dominio">A energia do nome do seu domínio e a força que ele transmite para a sua marca.</p>
+            <ul class="features">
+             <li>✅ Domínio analisado</li>
+             <li>✅ Energia do nome</li>
+             <li>✅ Força para a marca</li>
+             <li>📲 PDF + QRCode</li>
+            </ul>
+            <button class="btn btn-full" onclick="pesquisar('nome_dominio')" data-i18n="pesquisar_btn">pesquisar</button>
+           </div>
+           <!-- 19. Nome do Canal -->
+           <div class="product-card" data-prod="nome_canal">
+            <div class="icon">📺</div>
+            <h3 class="prod-nome" data-i18n="nome_canal">Nome do Canal</h3>
+            <div class="price prod-preco">R$ 8</div>
+            <p class="desc" data-i18n="desc_nome_canal">A energia do nome do seu canal e a conexão que ele cria com a sua audiência.</p>
+            <ul class="features">
+             <li>✅ Canal analisado</li>
+             <li>✅ Energia do nome</li>
+             <li>✅ Conexão com a audiência</li>
+             <li>📲 PDF + QRCode</li>
+            </ul>
+            <button class="btn btn-full" onclick="pesquisar('nome_canal')" data-i18n="pesquisar_btn">pesquisar</button>
+           </div>
+           <!-- 20. Nome da Equipe -->
+           <div class="product-card" data-prod="nome_equipe">
+            <div class="icon">👥</div>
+            <h3 class="prod-nome" data-i18n="nome_equipe">Nome da Equipe</h3>
+            <div class="price prod-preco">R$ 8</div>
+            <p class="desc" data-i18n="desc_nome_equipe">A energia do nome da sua equipe e a união que ele fortalece entre os membros.</p>
+            <ul class="features">
+             <li>✅ Equipe analisada</li>
+             <li>✅ Energia do nome</li>
+             <li>✅ União entre os membros</li>
+             <li>📲 PDF + QRCode</li>
+            </ul>
+            <button class="btn btn-full" onclick="pesquisar('nome_equipe')" data-i18n="pesquisar_btn">pesquisar</button>
+           </div>
+           <!-- 21. Nome de ONG -->
+           <div class="product-card" data-prod="nome_ong">
+            <div class="icon">🤝</div>
+            <h3 class="prod-nome" data-i18n="nome_ong">Nome de ONG</h3>
+            <div class="price prod-preco">R$ 8</div>
+            <p class="desc" data-i18n="desc_nome_ong">A energia do nome da sua ONG e a causa que ele potencializa no mundo.</p>
+            <ul class="features">
+             <li>✅ ONG analisada</li>
+             <li>✅ Energia do nome</li>
+             <li>✅ Causa potencializada</li>
+             <li>📲 PDF + QRCode</li>
+            </ul>
+            <button class="btn btn-full" onclick="pesquisar('nome_ong')" data-i18n="pesquisar_btn">pesquisar</button>
+           </div>
+           <!-- 22. Nome do Projeto -->
+           <div class="product-card" data-prod="nome_projeto">
+            <div class="icon">🚀</div>
+            <h3 class="prod-nome" data-i18n="nome_projeto">Nome do Projeto</h3>
+            <div class="price prod-preco">R$ 8</div>
+            <p class="desc" data-i18n="desc_nome_projeto">A energia do nome do seu projeto e o impulso que ele dá para o seu sucesso.</p>
+            <ul class="features">
+             <li>✅ Projeto analisado</li>
+             <li>✅ Energia do nome</li>
+             <li>✅ Impulso para o sucesso</li>
+             <li>📲 PDF + QRCode</li>
+            </ul>
+            <button class="btn btn-full" onclick="pesquisar('nome_projeto')" data-i18n="pesquisar_btn">pesquisar</button>
+           </div>
+           <!-- 23. Nome do Evento -->
+           <div class="product-card" data-prod="nome_evento">
+            <div class="icon">🎉</div>
+            <h3 class="prod-nome" data-i18n="nome_evento">Nome do Evento</h3>
+            <div class="price prod-preco">R$ 8</div>
+            <p class="desc" data-i18n="desc_nome_evento">A energia do nome do seu evento e a atmosfera que ele cria para os participantes.</p>
+            <ul class="features">
+             <li>✅ Evento analisado</li>
+             <li>✅ Energia do nome</li>
+             <li>✅ Atmosfera para os participantes</li>
+             <li>📲 PDF + QRCode</li>
+            </ul>
+            <button class="btn btn-full" onclick="pesquisar('nome_evento')" data-i18n="pesquisar_btn">pesquisar</button>
+           </div>
+
     </div>
 </section>
