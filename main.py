@@ -31,10 +31,8 @@ import dateutil.parser as dp
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
 STRIPE_KEY = os.getenv("STRIPE_SECRET_KEY", "")
 STRIPE_PUB = os.getenv("STRIPE_PUBLISHABLE_KEY", "")
 FROM_EMAIL = os.getenv("FROM_EMAIL", "noreply@a1elos.com.br")
@@ -42,10 +40,8 @@ FROM_NAME = "A1ELOS Numerologia Global"
 BASE_URL = os.getenv("BASE_URL", os.getenv("SITE_URL", "https://global-numerology.onrender.com"))
 DB_URL = os.getenv("DATABASE_URL", "sqlite:///./numerologia.db")
 ADMIN_EMAIL = "arvigne@gmail.com"
-
 if STRIPE_KEY:
     stripe.api_key = STRIPE_KEY
-
 # ===== BANCO DE DADOS =====
 engine_kwargs = {}
 if DB_URL.startswith("sqlite"):
@@ -53,7 +49,6 @@ if DB_URL.startswith("sqlite"):
 engine = create_engine(DB_URL, **engine_kwargs)
 Base = declarative_base()
 SessionLocal = sessionmaker(bind=engine)
-
 class Calc(Base):
     __tablename__ = "calculations"
     id = Column(String, primary_key=True)
@@ -66,7 +61,6 @@ class Calc(Base):
     personality = Column(Integer)
     destiny = Column(Integer)
     created_at = Column(DateTime, default=datetime.utcnow)
-
 class Order(Base):
     __tablename__ = "orders"
     id = Column(String, primary_key=True)
@@ -76,12 +70,10 @@ class Order(Base):
     status = Column(String, default="pending")
     payment_id = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
-
 try:
     Base.metadata.create_all(bind=engine)
 except Exception as e:
     logger.error(f"DB init adiado: {e}")
-
 # ===== APP =====
 app = FastAPI(title="Global Numerology")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True,
@@ -89,7 +81,6 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True,
 STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
 if os.path.isdir(STATIC_DIR):
     app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
-
 # ===== 12 IDIOMAS E MOEDAS =====
 IDIOMAS = ["pt", "en", "es", "it", "fr", "de", "ja", "zh", "ru", "hi", "he", "ar"]
 MOEDA = {
@@ -100,7 +91,6 @@ SIMBOLO = {
     "pt": "R$", "en": "US$", "es": "€", "it": "€", "fr": "€", "de": "€",
     "ja": "¥", "zh": "¥", "ru": "₽", "hi": "₹", "he": "₪", "ar": "﷼"
 }
-
 # ===== FAIXAS DE PREÇO (23 produtos) =====
 PRODUTO_FAIXA = {
     "express": 0, "vida": 0, "completo": 1, "ia": 1,
@@ -124,10 +114,8 @@ VALORES = {
     "he": [500, 1300, 1900, 2600, 3300, 7300],
     "ar": [600, 1300, 1900, 2600, 3300, 7300]
 }
-
 def preco_local(produto, lang):
     return VALORES[lang][PRODUTO_FAIXA[produto]]
-
 # ===== NOMES DOS 23 PRODUTOS (12 IDIOMAS) =====
 PRODUTOS = {
     "pt": {"express": "Mapa Express", "vida": "Qual Vida/Ano", "completo": "Mapa Completo",
@@ -239,7 +227,6 @@ PRODUTOS = {
         "nome_canal": "اسم القناة", "nome_equipe": "اسم الفريق", "nome_ong": "اسم منظمة أو جمعية أو معهد أو مؤسسة",
         "nome_projeto": "اسم المشروع", "nome_evento": "اسم الفعالية"}
 }
-
 # ===== PRICE IDS STRIPE (23 produtos, 12 idiomas) =====
 PRICE_IDS = {
     "pt": {"express": "price_1TxocVBMLa84bVJ0EL0kb9Dn", "completo": "price_1TxohlBMLa84bVJ0jVj9307b",
@@ -373,14 +360,12 @@ PRODUTO_TARGET = {
     "nome_canal": "calculadora", "nome_equipe": "calculadora", "nome_ong": "calculadora",
     "nome_projeto": "calculadora", "nome_evento": "calculadora"
 }
-
 # ===== MODELOS PYDANTIC =====
 class PayReq(BaseModel):
     nome: str
     nascimento: str
     email: Optional[str] = ""
     lang: str = "pt"
-
 class UrnaPayReq(BaseModel):
     nome_completo: str
     nome_urna: str
@@ -392,27 +377,22 @@ class UrnaPayReq(BaseModel):
     nome3: str = ""
     nome4: str = ""
     nome5: str = ""
-
 class EleitoralPayReq(BaseModel):
     nome_completo: str
     numero: str
     email: Optional[str] = ""
     lang: str = "pt"
     cargo: str = "vereador"
-
 class SugestaoReq(BaseModel):
     nome: str
     email: Optional[str] = ""
     mensagem: str
-
 class BonusReq(BaseModel):
     nome: str
     email: Optional[str] = ""
     motivo: str
-
 class AtivarBonusReq(BaseModel):
     codigo: str
-
 # ===== CONSTANTES DE ESTILO (PDFs) =====
 GOLD = colors.HexColor("#B8860B")
 LGRAY = colors.HexColor("#f0f0f0")
@@ -431,7 +411,6 @@ ENERGIAS = {
     4: "Trabalho", 5: "Liberdade", 6: "Familia",
     7: "Sabedoria", 8: "Poder e Prosperidade (IDEAL)", 9: "Humanitarismo",
 }
-
 # ===== GERADOR DE PDF (usa gerador_pdf.py se existir; senão fallback interno) =====
 def _gerar_pdf_local(prod, data, lang, nome, bd, dado=""):
     path = f"/tmp/p_{prod}_{uuid.uuid4().hex[:8]}.pdf"
@@ -465,7 +444,6 @@ def _gerar_pdf_local(prod, data, lang, nome, bd, dado=""):
     e.append(Paragraph("(c) A1ELOS", estilo(7, False, GRAY, TA_CENTER)))
     doc.build(e)
     return path
-
 def _pagina_sucesso_local(pdf_path, nome, prod_nome, lang="pt"):
     b64 = ""
     if pdf_path and os.path.exists(pdf_path):
@@ -480,7 +458,6 @@ def _pagina_sucesso_local(pdf_path, nome, prod_nome, lang="pt"):
             f'font-family:sans-serif"><h1 style="color:#C9A94E">✅ Confirmado!</h1>'
             f'<p>Ola <b>{nome}</b>, seu {prod_nome} foi gerado.</p>{btn}'
             f'<a href="/" style="color:#C9A94E">Voltar</a></body></html>')
-
 def _entregar_arquivo_local(tipo, nome, lang="pt"):
     try:
         pf = _gerar_pdf_local(tipo, {"life_path": 1, "expression": 1, "soul_urge": 1,
@@ -489,14 +466,12 @@ def _entregar_arquivo_local(tipo, nome, lang="pt"):
     except Exception as e:
         logger.error(f"Falha entrega: {e}")
         return {"pdf": None, "url": "", "pdf_ok": False}
-
 try:
     from gerador_pdf import gerar_pdf, pagina_sucesso, _entregar_arquivo
 except Exception:
     gerar_pdf = _gerar_pdf_local
     pagina_sucesso = _pagina_sucesso_local
     _entregar_arquivo = _entregar_arquivo_local
-
 # ===== EMAIL SIMPLES =====
 def _enviar_email_simples(destinatario, assunto, corpo):
     try:
@@ -513,7 +488,6 @@ def _enviar_email_simples(destinatario, assunto, corpo):
     except Exception as e:
         logger.error(f"SMTP: {e}")
         return False
-
 # ===== CRIACAO DE SESSAO STRIPE =====
 def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=None):
     if lang not in PRICE_IDS or produto not in PRICE_IDS[lang]:
@@ -556,10 +530,8 @@ def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=No
     except Exception as e:
         logger.error(f"Stripe: {e}")
         raise HTTPException(500, "Erro ao criar pagamento")
-
 # ===== ROTA GENERICA /pay/{produto} =====
 _ALIAS_PRODUTO = {"complete": "completo"}
-
 @app.post("/pay/{produto}")
 def pay_produto(produto: str, req: PayReq):
     if not STRIPE_KEY:
@@ -567,7 +539,6 @@ def pay_produto(produto: str, req: PayReq):
     produto = _ALIAS_PRODUTO.get(produto, produto)
     lang = req.lang or "pt"
     return _criar_sessao(produto, lang, req.email, req.nome, req.nascimento)
-
 # ===== CHECKOUT NOME DE URNA =====
 @app.post("/pay/urna")
 def pay_urna(req: UrnaPayReq):
@@ -583,7 +554,6 @@ def pay_urna(req: UrnaPayReq):
     for i, n in enumerate(nomes, 1):
         meta[f"nome{i}"] = n
     return _criar_sessao("urna", req.lang or "pt", req.email, req.nome_completo, "", meta)
-
 # ===== CHECKOUT NUMERO ELEITORAL =====
 @app.post("/pay/eleitoral")
 def pay_eleitoral(req: EleitoralPayReq):
@@ -595,7 +565,6 @@ def pay_eleitoral(req: EleitoralPayReq):
             "cargo": req.cargo, "email": req.email, "numero_existente": "",
             "nome_completo": req.nome_completo}
     return _criar_sessao("eleitoral", req.lang or "pt", req.email, req.nome_completo, "", meta)
-
 # ===== CHECKOUT COLETIVO (desconto progressivo) =====
 @app.get("/criar-checkout-coletivo")
 async def criar_checkout_coletivo(lang: str = "pt", items: str = "[]"):
@@ -634,14 +603,13 @@ async def criar_checkout_coletivo(lang: str = "pt", items: str = "[]"):
         success_url=f"{BASE_URL}/api/pay/success?session_id={{CHECKOUT_SESSION_ID}}",
         cancel_url=f"{BASE_URL}/api/pay/cancel")
     return RedirectResponse(url=session.url)
-
 # ===== ROTA /criar-checkout (usada pelo site) — INDENTACAO CORRIGIDA =====
 @app.get("/criar-checkout")
 async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
                                 qtd: int = 0, total: float = 0, itens: str = "",
                                 nome: str = "", nascimento: str = "",
                                 nome_completo: str = "", cargo: str = "vereador",
-                                numero: str = "",
+                                numero: str = "", email: str = "",
                                 nome1: str = "", nome2: str = "", nome3: str = "",
                                 nome4: str = "", nome5: str = "",
                                 energia: str = "", dado: str = "", tipo: str = ""):
@@ -661,10 +629,12 @@ async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
                 "nome_completo": nome_completo, "numero_existente": ""}
     else:
         meta = {"energia": energia, "dado": dado, "tipo": tipo}
-    s = _criar_sessao(produto, lang, "", nome, nascimento, meta)
+    s = _criar_sessao(produto, lang, email, nome, nascimento, meta)
     return RedirectResponse(url=s["url"])
-
 # ===== SUCESSO POS-PAGAMENTO =====
+# Produtos que coletam "dado" (nome digitado) em vez de nome+nascimento
+DADO_PRODUTOS = {"nome_pet", "nickname", "nome_dominio", "nome_canal",
+                 "nome_equipe", "nome_ong", "nome_projeto", "nome_evento"}
 @app.get("/api/pay/success")
 def pay_success(request: Request):
     sid = request.query_params.get("session_id", "")
@@ -683,7 +653,13 @@ def pay_success(request: Request):
         dado = meta.get("dado", "")
         if not bd:
             bd = "2000-01-01"
-        data = calc_mapa(nome, bd)
+        # ✅ CORREÇÃO: produtos de "dado" usam o dado digitado, não calc_mapa forçado
+        if prod in DADO_PRODUTOS:
+            data = {"dado": dado or nome}
+            nome_exib = dado or nome
+        else:
+            data = calc_mapa(nome, bd)
+            nome_exib = nome
         db = SessionLocal()
         try:
             db.add(Order(id=uuid.uuid4().hex[:12], email=email or "sem-email",
@@ -695,15 +671,14 @@ def pay_success(request: Request):
         finally:
             db.close()
         pn = PRODUTOS.get(lang, PRODUTOS["pt"]).get(prod, prod)
-        pf = gerar_pdf(prod, data, lang, nome, bd, dado=dado)
-        html = pagina_sucesso(pf, nome, pn, lang)
+        pf = gerar_pdf(prod, data, lang, nome_exib, bd, dado=dado)
+        html = pagina_sucesso(pf, nome_exib, pn, lang)
         if pf and os.path.exists(pf):
             os.remove(pf)
         return HTMLResponse(html)
     except Exception as e:
         logger.error(f"Success: {e}")
         return HTMLResponse("ERRO")
-
 @app.get("/api/pay/urna-success")
 def pay_urna_success(request: Request):
     sid = request.query_params.get("session_id", "")
@@ -731,7 +706,6 @@ def pay_urna_success(request: Request):
         return HTMLResponse(html)
     except Exception:
         return HTMLResponse("ERRO")
-
 @app.get("/api/pay/eleitoral-success")
 def pay_eleitoral_success(request: Request):
     sid = request.query_params.get("session_id", "")
@@ -767,11 +741,9 @@ def pay_eleitoral_success(request: Request):
         return HTMLResponse(html)
     except Exception:
         return HTMLResponse("ERRO")
-
 @app.get("/api/pay/cancel")
 def pay_cancel():
     return HTMLResponse("<h1>Cancelado</h1><a href='/'>Voltar</a>")
-
 # ===== CALCULO GRATIS =====
 @app.post("/calculate")
 def calculate(req: PayReq):
@@ -811,12 +783,10 @@ def calc_eleitoral(req: EleitoralPayReq):
 @app.get("/")
 def root():
     try:
-        return HTMLResponse(open(os.path.join(os.path.dirname(__file__), "static", "index.html"),
-                                 "r", encoding="utf-8").read())
+        return HTMLResponse(open(os.path.join(os.path.dirname(__file__), "static", "index.html"), "r", encoding="utf-8").read())
     except Exception:
         try:
-            return HTMLResponse(open(os.path.join(os.path.dirname(__file__), "index.html"),
-                                     "r", encoding="utf-8").read())
+            return HTMLResponse(open(os.path.join(os.path.dirname(__file__), "index.html"), "r", encoding="utf-8").read())
         except Exception:
             return HTMLResponse("<h1>API ativa</h1>")
 
