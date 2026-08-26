@@ -1,22 +1,24 @@
 // ===== A1ELOS GLOBAL NUMEROLOGY - APP.JS (VERSÃO CONSOLIDADA) =====
 // ================================================================
 
-// ===== MAPA PDFs INVESTIDORES (nível GLOBAL) =====
-var INV_PDFS = {
-  pt: "Apresentação Empresarial para Investidores e Parceiros.pdf",
-  en: "Formal Business Presentation for Investors & Strategic Partners.pdf",
-  es: "Presentación Empresarial para Inversores y Socios.pdf",
-  fr: "Présentation d'Entreprise — Investisseurs & Partenaires Stratégique.pdf",
-  it: "Presentazione Aziendale per Investidore e Partner.pdf",
-  de: "Unternehmenspräsentation für Investoren und Partner.pdf"
-};
-function atualizarLinkInvestidores(){
-  var btn = document.getElementById("invDownloadBtn");
-  if (!btn) return;
-  var l = (typeof getLang === "function") ? getLang() : "pt";
-  var arquivo = INV_PDFS[l] || INV_PDFS.pt;
-  btn.href = "/static/investidores/" + encodeURIComponent(arquivo);
-}
+<!-- ===== INVESTIDORES E PARCEIROS ===== -->
+<section id="investidores" class="section">
+  <div class="container">
+    <h2 class="section-title" data-i18n="investidores_titulo">Investidores e Parceiros</h2>
+    <p class="section-subtitle" data-i18n="investidores_subtitulo">Baixe a apresentação empresarial</p>
+
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="card-title">📄 Apresentação Empresarial</h3>
+          <p class="card-text">Apresentação para Investidores e Parceiros</p>
+          <a href="/static/investidores/Apresentação Empresarial para Investidores e Parceiros.pdf"
+             target="_blank" class="btn btn-full btn-outline">Baixar PDF</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 // ===== MONTAR SELETOR DE IDIOMAS (12 bandeiras) =====
 function montarSeletorIdioma() {
