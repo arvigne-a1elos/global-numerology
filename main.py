@@ -400,6 +400,11 @@ DARK = colors.HexColor("#222")
 GRAY = colors.HexColor("#888")
 FONTE = "Helvetica"
 FN = "Helvetica-Bold"
+
+def estilo(tam, bold, cor, alinh=TA_LEFT, antes=0, depois=0):
+    return ParagraphStyle("estilo", fontName=FN if bold else FONTE, fontSize=tam,
+                          textColor=cor, alignment=alinh, spaceBefore=antes, spaceAfter=depois)
+
 CARGO_INFO = {
     "vereador": {"label": "Vereador"},
     "dep_estadual": {"label": "Deputado Estadual"},
