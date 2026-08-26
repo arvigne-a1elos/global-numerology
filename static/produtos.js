@@ -301,6 +301,13 @@ function abrirModalColeta(produto) {
   document.getElementById("coletaOutroWrap").style.display = "none";
   document.getElementById("coletaOutroTexto").value = "";
   montarGradeEnergia("coletaEnergia");
+  if (window._energiaPresel) {
+  var btns = document.querySelectorAll("#coletaEnergia .energia-num");
+  for (var bi = 0; bi < btns.length; bi++) {
+  if (btns[bi].textContent === String(window._energiaPresel)) { btns[bi].classList.add("ativo"); }
+}
+  window._energiaPresel = null;
+}
   var areaWrap = document.getElementById("coletaAreaWrap");
   if (conf.temArea) {
     areaWrap.style.display = "block";
@@ -313,13 +320,6 @@ function abrirModalColeta(produto) {
       b.setAttribute("data-valor", ch); b.textContent = tradOpcao(ch);
       b.onclick = function(){ selecionarOpcao(aw, b); };
       aw.appendChild(b);
-  if (window._energiaPresel) {
-  var btns = document.querySelectorAll("#coletaEnergia .energia-num");
-  for (var bi = 0; bi < btns.length; bi++) {
-  if (btns[bi].textContent === String(window._energiaPresel)) { btns[bi].classList.add("ativo"); }
-}
-  window._energiaPresel = null;
-}
     });
     var bAOutro = document.createElement("button");
     bAOutro.type = "button"; bAOutro.className = "btn btn-outline coleta-opcao";
@@ -487,7 +487,8 @@ function abrirMenuEnergia(n, lang) {
   window._energiaPresel = n;
   pesquisar(prod);
 };
-
+ });
+}
 /*===== OPCOES_TRAD — rótulos das opções (12 idiomas) =====*/
 var OPCOES_TRAD = {
   pt:{ youtube:"YouTube", podcast:"Podcast", tiktok:"TikTok", twitch:"Twitch", gamer:"Gamer", profissional:"Profissional", criador:"Criador", artista:"Artista", ong:"ONG", instituto:"Instituto", associacao:"Associação", fundacao:"Fundação", show:"Show", congresso:"Congresso", festa:"Festa", curso:"Curso", palestra:"Palestra", pessoal:"Pessoal", social:"Social", empresarial:"Empresarial", cultural:"Cultural", esportiva:"Esportiva", banda:"Banda", loja:"Loja", empresa:"Empresa", blog:"Blog", portfolio:"Portfólio", cao:"Cão", gato:"Gato", passaro:"Pássaro", reptil:"Réptil", projeto:"Projeto", esporte:"Esporte", noticias:"Notícias", politica:"Política", beleza:"Beleza", musica:"Música", cultura:"Cultura", comercio:"Comércio", industria:"Indústria", servicos:"Serviços", outro:"OUTRO/QUAL?" },
