@@ -38,27 +38,32 @@ function pagarNegocio(){var n=document.getElementById('negocioNome').value.trim(
 function pagarCasal(){var n1=document.getElementById('casalNome1').value.trim(),n2=document.getElementById('casalNome2').value.trim();if(!n1||!n2){alert(t_preencha());return;}location.href='/criar-checkout?produto=casal&dado='+encodeURIComponent(n1+' & '+n2)+'&lang='+getLang();}
 function pagarFamilia(){var n=document.getElementById('familiaMembros').value.trim();if(!n){alert(t_preencha());return;}location.href='/criar-checkout?produto=familia&dado='+encodeURIComponent(n)+'&lang='+getLang();}
 function t_preencha(){var t=translations[getLang()]||translations.pt;return t.preencha_dado||'Preencha os dados solicitados.';}
-// ===== PAGAR URNA / ELEITORAL (adicionadas — padrão do arquivo) =====
+
 window.pagarUrna = window.pagarUrna || function(){
-  var nomes = [];
-  for (var i = 1; i <= 5; i++) {
-    var v = (document.getElementById('urnaNome'+i) ? document.getElementById('urnaNome'+i).value : '').trim();
-    if (v) nomes.push(v);
-  }
+  var nomeCompleto = (document.getElementById('urnaNome') ? document.getElementById('urnaNome').value : '').trim();
   var cargo = (document.getElementById('urnaCargo') ? document.getElementById('urnaCargo').value : '').trim();
-  if (!nomes.length || !cargo) { alert(t_preencha()); return; }
-  location.href = '/criar-checkout?produto=urna&cargo=' + encodeURIComponent(cargo) + '&nomes=' + encodeURIComponent(nomes.join('|')) + '&lang=' + getLang();
+  var n1 = (document.getElementById('urnaNome1') ? document.getElementById('urnaNome1').value : '').trim();
+  var n2 = (document.getElementById('urnaNome2') ? document.getElementById('urnaNome2').value : '').trim();
+  var n3 = (document.getElementById('urnaNome3') ? document.getElementById('urnaNome3').value : '').trim();
+  var n4 = (document.getElementById('urnaNome4') ? document.getElementById('urnaNome4').value : '').trim();
+  var n5 = (document.getElementById('urnaNome5') ? document.getElementById('urnaNome5').value : '').trim();
+  if (!nomeCompleto || (!n1 && !n2 && !n3 && !n4 && !n5)) { alert(t_preencha()); return; }
+  location.href = '/criar-checkout?produto=urna&nome_completo=' + encodeURIComponent(nomeCompleto)
+    + '&cargo=' + encodeURIComponent(cargo)
+    + '&nome1=' + encodeURIComponent(n1) + '&nome2=' + encodeURIComponent(n2)
+    + '&nome3=' + encodeURIComponent(n3) + '&nome4=' + encodeURIComponent(n4)
+    + '&nome5=' + encodeURIComponent(n5) + '&lang=' + getLang();
 };
+
 window.pagarEleitoral = window.pagarEleitoral || function(){
-  var n = (document.getElementById('eleiNome') ? document.getElementById('eleiNome').value : '').trim();
+  var nome = (document.getElementById('eleiNome') ? document.getElementById('eleiNome').value : '').trim();
   var cargo = (document.getElementById('eleiCargo') ? document.getElementById('eleiCargo').value : '').trim();
   var sigla = (document.getElementById('eleiSigla') ? document.getElementById('eleiSigla').value : '').trim();
-  var existente = (document.getElementById('eleiExistente') ? document.getElementById('eleiExistente').value : '').trim();
-  if (!n || !sigla) { alert(t_preencha()); return; }
-  var qs = '/criar-checkout?produto=eleitoral&nome=' + encodeURIComponent(n) + '&sigla=' + encodeURIComponent(sigla) + '&lang=' + getLang();
-  if (cargo) qs += '&cargo=' + encodeURIComponent(cargo);
-  if (existente) qs += '&existente=' + encodeURIComponent(existente);
-  location.href = qs;
+  if (!nome || !sigla) { alert(t_preencha()); return; }
+  location.href = '/criar-checkout?produto=eleitoral&nome_completo=' + encodeURIComponent(nome)
+    + '&cargo=' + encodeURIComponent(cargo)
+    + '&numero=' + encodeURIComponent(sigla)
+    + '&lang=' + getLang();
 };
 // ===== COMPRAR (abre modal do dado específico para os 8 produtos) =====
 var DADO_APLICA = ["nome_pet","nickname","nome_dominio","nome_canal","nome_equipe","nome_ong","nome_projeto","nome_evento"];
