@@ -650,12 +650,15 @@ def pay_success(request: Request):
         meta = getattr(s, "metadata", {}) or {}
         if hasattr(meta, "to_dict"):
             meta = meta.to_dict()
-        nome = meta.get("nome", "Cliente")
+                nome = meta.get("nome", "Cliente")
         email = meta.get("email", "") or getattr(s, "customer_email", "") or ""
         bd = meta.get("birth", "")
         prod = meta.get("tipo", "express")
         lang = meta.get("lang", "pt")
-         if dado:
+        dado = meta.get("dado", "")
+        if not bd:
+            bd = "2000-01-01"
+        if dado:
             data = {"dado": dado}
             nome_exib = dado or nome
         elif prod in DADO_PRODUTOS:
