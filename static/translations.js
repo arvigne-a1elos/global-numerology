@@ -265,6 +265,12 @@ const translations = {
         sig_alma: "O que o seu coração mais deseja e o que alimenta sua essência.",
         sig_personalidade: "Como os outros enxergam você e a impressão que você causa.",
         sig_destino: "Onde suas escolhas e seu potencial podem te levar no futuro.",
+        inv_pt_desc: "Apresentação Empresarial para Investidores e Parceiros",
+        inv_en_desc: "Apresentação Empresarial Formal para Investidores e Parceiros Estratégicos",
+        inv_es_desc: "Apresentação Empresarial para Investidores e Sócios",
+        inv_fr_desc: "Apresentação Empresarial — Investidores e Parceiros Estratégicos",
+        inv_it_desc: "Apresentação Empresarial para Investidores e Parceiros",
+        inv_de_desc: "Apresentação Empresarial para Investidores e Parceiros",
        }
     },
     en: {
@@ -484,6 +490,12 @@ const translations = {
         sig_alma: "What your heart desires most and what feeds your essence.",
         sig_personalidade: "How others see you and the impression you make.",
         sig_destino: "Where your choices and your potential can take you in the future.",
+        inv_pt_desc: "Business Presentation for Investors and Partners",
+        inv_en_desc: "Formal Business Presentation for Investors & Strategic Partners",
+        inv_es_desc: "Business Presentation for Investors and Partners",
+        inv_fr_desc: "Business Presentation — Investors & Strategic Partners",
+        inv_it_desc: "Business Presentation for Investors and Partners",
+        inv_de_desc: "Business Presentation for Investors and Partners",   
        }
     },
     es: { 
@@ -703,6 +715,12 @@ const translations = {
         sig_alma: "Lo que tu corazón más desea y lo que alimenta tu esencia.",
         sig_personalidade: "Cómo te ven los demás y la impresión que causas.",
         sig_destino: "A dónde pueden llevarte tus elecciones y tu potencial en el futuro.",
+        inv_pt_desc: "Presentación Empresarial para Inversores y Socios",
+        inv_en_desc: "Presentación Empresarial Formal para Inversores y Socios Estratégicos",
+        inv_es_desc: "Presentación Empresarial para Inversores y Socios",
+        inv_fr_desc: "Presentación Empresarial — Inversores y Socios Estratégicos",
+        inv_it_desc: "Presentación Empresarial para Inversores y Socios",
+        inv_de_desc: "Presentación Empresarial para Inversores y Socios",   
        }
     },
     it: { 
@@ -922,6 +940,12 @@ const translations = {
         sig_alma: "Ciò che il tuo cuore desidera di più e ciò che nutre la tua essenza.",
         sig_personalidade: "Come gli altri ti vedono e l'impressione che susciti.",
         sig_destino: "Dove le tue scelte e il tuo potenziale possono portarti in futuro.",
+        inv_pt_desc: "Presentazione Aziendale per Investitori e Partner",
+        inv_en_desc: "Presentazione Aziendale Formale per Investitori e Partner Strategici",
+        inv_es_desc: "Presentazione Aziendale per Investitori e Soci",
+        inv_fr_desc: "Presentazione Aziendale — Investitori e Partner Strategici",
+        inv_it_desc: "Presentazione Aziendale per Investitori e Partner",
+        inv_de_desc: "Presentazione Aziendale per Investitori e Partner",   
        }   
     },
     fr: {
@@ -1141,6 +1165,12 @@ const translations = {
         sig_alma: "Ce que votre cœur désire le plus et ce qui nourrit votre essence.",
         sig_personalidade: "Comment les autres vous voient et l'impression que vous laissez.",
         sig_destino: "Où vos choix et votre potentiel peuvent vous mener à l'avenir.",
+        inv_pt_desc: "Présentation d'Entreprise pour Investisseurs et Partenaires",
+        inv_en_desc: "Présentation d'Entreprise Formelle pour Investisseurs et Partenaires Stratégiques",
+        inv_es_desc: "Présentation d'Entreprise pour Investisseurs et Associés",
+        inv_fr_desc: "Présentation d'Entreprise — Investisseurs & Partenaires Stratégiques",
+        inv_it_desc: "Présentation d'Entreprise pour Investisseurs et Partenaires",
+        inv_de_desc: "Présentation d'Entreprise pour Investisseurs et Partenaires",   
        }    
     },
     de: {
@@ -1360,6 +1390,12 @@ const translations = {
         sig_alma: "Was dein Herz sich am meisten wünscht und was deine Essenz nährt.",
         sig_personalidade: "Wie andere dich sehen und welchen Eindruck du hinterlässt.",
         sig_destino: "Wohin deine Entscheidungen und dein Potenzial dich in der Zukunft führen können.",
+        inv_pt_desc: "Unternehmenspräsentation für Investoren und Partner",
+        inv_en_desc: "Formelle Unternehmenspräsentation für Investoren und strategische Partner",
+        inv_es_desc: "Unternehmenspräsentation für Investoren und Partner",
+        inv_fr_desc: "Unternehmenspräsentation — Investoren und strategische Partner",
+        inv_it_desc: "Unternehmenspräsentation für Investoren und Partner",
+        inv_de_desc: "Unternehmenspräsentation für Investoren und Partner",   
        }    
     },
     ja: {
@@ -1579,6 +1615,12 @@ const translations = {
         sig_alma: "あなたの心が最も望むものと、あなたの本質を育むもの。",
         sig_personalidade: "他の人があなたをどう見るか、そしてあなたが与える印象。",
         sig_destino: "あなたの選択と可能性が未来に導く場所。",
+        inv_pt_desc: "投資家とパートナーのための企業プレゼンテーション",
+        inv_en_desc: "投資家と戦略的パートナーのための正式な企業プレゼンテーション",
+        inv_es_desc: "投資家とパートナーのための企業プレゼンテーション",
+        inv_fr_desc: "企業プレゼンテーション — 投資家と戦略的パートナー",
+        inv_it_desc: "投資家とパートナーのための企業プレゼンテーション",
+        inv_de_desc: "投資家とパートナーのための企業プレゼンテーション",   
        }        
     },
     zh: {
@@ -1798,6 +1840,12 @@ const translations = {
         sig_alma: "你内心最渴望的东西，以及滋养你本质的东西。",
         sig_personalidade: "别人如何看待你，以及你留下的印象。",
         sig_destino: "你的选择和潜力能在未来带你走向何方。",
+        inv_pt_desc: "面向投资者和合作伙伴的企业介绍",
+        inv_en_desc: "面向投资者和战略合作伙伴的正式企业介绍",
+        inv_es_desc: "面向投资者和合作伙伴的企业介绍",
+        inv_fr_desc: "企业介绍 — 投资者与战略合作伙伴",
+        inv_it_desc: "面向投资者和合作伙伴的企业介绍",
+        inv_de_desc: "面向投资者和合作伙伴的企业介绍",   
        }    
     },
     ru: {
@@ -2017,6 +2065,12 @@ const translations = {
         sig_alma: "Чего больше всего желает ваше сердце и что питает вашу сущность.",
         sig_personalidade: "Как другие видят вас и какое впечатление вы производите.",
         sig_destino: "Куда ваши выборы и ваш потенциал могут привести вас в будущем.",
+        inv_pt_desc: "Деловая презентация для инвесторов и партнёров",
+        inv_en_desc: "Официальная деловая презентация для инвесторов и стратегических партнёров",
+        inv_es_desc: "Деловая презентация для инвесторов и партнёров",
+        inv_fr_desc: "Презентация компании — инвесторы и стратегические партнёры",
+        inv_it_desc: "Деловая презентация для инвесторов и партнёров",
+        inv_de_desc: "Деловая презентация для инвесторов и партнёров",   
        }    
     },
     hi: {
@@ -2236,6 +2290,12 @@ const translations = {
         sig_alma: "आपका दिल सबसे अधिक क्या चाहता है और आपके सार का पोषण क्या करता है।",
         sig_personalidade: "दूसरे आपको कैसे देखते हैं और आप क्या प्रभाव छोड़ते हैं।",
         sig_destino: "आपकी पसंद और आपकी क्षमता भविष्य में आपको कहाँ ले जा सकती है।",
+        inv_pt_desc: "निवेशकों और साझेदारों के लिए व्यावसायिक प्रस्तुति",
+        inv_en_desc: "निवेशकों और रणनीतिक साझेदारों के लिए औपचारिक व्यावसायिक प्रस्तुति",
+        inv_es_desc: "निवेशकों और साझेदारों के लिए व्यावसायिक प्रस्तुति",
+        inv_fr_desc: "व्यावसायिक प्रस्तुति — निवेशक और रणनीतिक साझेदार",
+        inv_it_desc: "निवेशकों और साझेदारों के लिए व्यावसायिक प्रस्तुति",
+        inv_de_desc: "निवेशकों और साझेदारों के लिए व्यावसायिक प्रस्तुति",   
        }    
     },
     he: {
@@ -2455,6 +2515,12 @@ const translations = {
         sig_alma: "מה הלב שלך הכי רוצה ומה מזין את המהות שלך.",
         sig_personalidade: "איך אחרים רואים אותך ומה הרושם שאתה משאיר.",
         sig_destino: "לאן הבחירות שלך והפוטנציאל שלך יכולים להוביל אותך בעתיד.",
+        inv_pt_desc: "מצגת עסקית למשקיעים ושותפים",
+        inv_en_desc: "מצגת עסקית רשמית למשקיעים ושותפים אסטרטגיים",
+        inv_es_desc: "מצגת עסקית למשקיעים ושותפים",
+        inv_fr_desc: "מצגת עסקית — משקיעים ושותפים אסטרטגיים",
+        inv_it_desc: "מצגת עסקית למשקיעים ושותפים",
+        inv_de_desc: "מצגת עסקית למשקיעים ושותפים",   
        }    
     },
     ar: {
@@ -2674,6 +2740,12 @@ const translations = {
         sig_alma: "ما الذي يرغب فيه قلبك أكثر وما الذي يغذي جوهرك.",
         sig_personalidade: "كيف يراك الآخرون والانطباع الذي تتركه.",
         sig_destino: "أين يمكن أن تقودك خياراتك وإمكاناتك في المستقبل.", 
+        inv_pt_desc: "عرض تقديمي للشركة للمستثمرين والشركاء",
+        inv_en_desc: "عرض تقديمي رسمي للشركة للمستثمرين والشركاء الاستراتيجيين",
+        inv_es_desc: "عرض تقديمي للشركة للمستثمرين والشركاء",
+        inv_fr_desc: "عرض تقديمي للشركة — المستثمرون والشركاء الاستراتيجيون",
+        inv_it_desc: "عرض تقديمي للشركة للمستثمرين والشركاء",
+        inv_de_desc: "عرض تقديمي للشركة للمستثمرين والشركاء",   
        }    
       },  
     };
