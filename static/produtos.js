@@ -1,3 +1,286 @@
+}<!-- PRODUTOS E SERVIÇOS (23) -->
+    <section id="produtos">
+        <div class="section-header">
+            <h2 data-i18n="section_products_title">Produtos e Serviços</h2>
+            <p data-i18n="section_products_subtitle">Escolha o produto ideal para sua análise numerológica</p>
+        </div>
+        <div class="cards-grid" id="produtosGrid">
+            <!-- 1. Mapa Express -->
+            <div class="product-card" data-prod="express">
+                <div class="icon">🔮</div>
+                <h3 class="prod-nome" data-i18n="p_express">Mapa Express</h3>
+                <div class="price prod-preco">R$ 8</div>
+             <p class="desc" data-i18n="desc_express">1 página com os 5 números principais e seu significado resumido. Ideal para uma visão rápida.</p>
+             <ul class="features">
+              <li>✅ Caminho da Vida</li>
+              <li>✅ Expressão, Alma, Personalidade</li>
+              <li>✅ Destino</li>
+              <li>📲 PDF + QRCode</li>
+             </ul>
+                <button class="btn btn-full" onclick="pesquisar('express')" data-i18n="pesquisar_btn">pesquisar</button>
+            </div>
+var CONF_COLETA = {
+  nome_canal:   { labelTipo:"f_tipo_canal",   tipos:["youtube","podcast","tiktok","twitch"],        temArea:true,  areas:["esporte","noticias","politica","beleza"], temDetalhe:false },
+  nickname:     { labelTipo:"f_tipo_nickname", tipos:["gamer","profissional","criador","artista"],  temArea:false, areas:[], temDetalhe:false },
+  nome_ong:     { labelTipo:"f_tipo_ong",      tipos:["ong","instituto","associacao","fundacao"],   temArea:false, areas:[], temDetalhe:false },
+  nome_evento:  { labelTipo:"f_tipo_evento",   tipos:["show","congresso","festa","curso","palestra"],temArea:true,  areas:["musica","esporte","cultura","politica","beleza"], temDetalhe:false },
+  nome_projeto: { labelTipo:"f_tipo_projeto",  tipos:["pessoal","social","empresarial","cultural"], temArea:false, areas:[], temDetalhe:false },
+  nome_equipe:  { labelTipo:"f_tipo_equipe",   tipos:["empresarial","projeto","esportiva","banda"], temArea:false, areas:[], temDetalhe:false },
+  nome_dominio: { labelTipo:"f_tipo_site",     tipos:["loja","empresa","blog","portfolio"],         temArea:true,  areas:["comercio","industria","servicos","pessoal"], temDetalhe:false },
+  nome_pet:     { labelTipo:"f_tipo_pet",      tipos:["cao","gato","passaro","reptil"],             temArea:false, areas:[], temDetalhe:true }
+};
+var coletaAtual = null;
+function pesquisar(produto) {
+  if (produto === "express" || produto === "completo") {
+    var sec = document.getElementById("calculadora") || document.getElementById("calcSection");
+    if (sec) sec.scrollIntoView({ behavior:"smooth", block:"center" });
+    return;
+  }
+  if (CONF_COLETA[produto]) { abrirModalColeta(produto); return; }
+  var alvo = document.getElementById("form-" + produto);
+  if (alvo) {
+    alvo.scrollIntoView({ behavior:"smooth", block:"center" });
+    alvo.style.transition = "box-shadow .5s";
+    alvo.style.boxShadow = "0 0 0 3px var(--gold)";
+    setTimeout(function(){ alvo.style.boxShadow = ""; }, 2000);
+    return;
+  }
+  var calc = document.getElementById("calculadora") || document.getElementById("calcSection");
+  if (calc) calc.scrollIntoView({ behavior:"smooth" });
+}
+
+/* ===== CARDS_TRAD — Cards dos 8 produtos (12 idiomas) =====*/
+var CARDS_TRAD = {
+  pt:{ nome_pet:"Nome do Pet", nome_pet_desc:"A energia do nome do seu animal de estimação.",
+       nickname:"Nickname Digital", nickname_desc:"A vibração do seu nickname nas redes.",
+       nome_dominio:"Nome do Domínio", nome_dominio_desc:"A energia do nome do seu domínio.",
+       nome_canal:"Nome do Canal", nome_canal_desc:"A energia do nome do seu canal.",
+       nome_equipe:"Nome da Equipe", nome_equipe_desc:"A vibração do nome da sua equipe.",
+       nome_ong:"Nome de ONG", nome_ong_desc:"A energia do nome da sua organização.",
+       nome_projeto:"Nome do Projeto", nome_projeto_desc:"A energia do nome do seu projeto.",
+       nome_evento:"Nome do Evento", nome_evento_desc:"A vibração do nome do seu evento.",
+       buscar:"Buscar" },
+  en:{ nome_pet:"Pet Name", nome_pet_desc:"The energy of your pet's name.",
+       nickname:"Digital Nickname", nickname_desc:"The vibration of your nickname online.",
+       nome_dominio:"Domain Name", nome_dominio_desc:"The energy of your domain name.",
+       nome_canal:"Channel Name", nome_canal_desc:"The energy of your channel name.",
+       nome_equipe:"Team Name", nome_equipe_desc:"The vibration of your team's name.",
+       nome_ong:"NGO Name", nome_ong_desc:"The energy of your organization's name.",
+       nome_projeto:"Project Name", nome_projeto_desc:"The energy of your project name.",
+       nome_evento:"Event Name", nome_evento_desc:"The vibration of your event's name.",
+       buscar:"Search" },
+  es:{ nome_pet:"Nombre de la Mascota", nome_pet_desc:"La energía del nombre de tu mascota.",
+       nickname:"Apodo Digital", nickname_desc:"La vibración de tu apodo en redes.",
+       nome_dominio:"Nombre del Dominio", nome_dominio_desc:"La energía del nombre de tu dominio.",
+       nome_canal:"Nombre del Canal", nome_canal_desc:"La energía del nombre de tu canal.",
+       nome_equipe:"Nombre del Equipo", nome_equipe_desc:"La vibración del nombre de tu equipo.",
+       nome_ong:"Nombre de la ONG", nome_ong_desc:"La energía del nombre de tu organización.",
+       nome_projeto:"Nombre del Proyecto", nome_projeto_desc:"La energía del nombre de tu proyecto.",
+       nome_evento:"Nombre del Evento", nome_evento_desc:"La vibración del nombre de tu evento.",
+       buscar:"Buscar" },
+  fr:{ nome_pet:"Nom de l'animal", nome_pet_desc:"L'énergie du nom de votre animal.",
+       nickname:"Surnom numérique", nickname_desc:"La vibration de votre surnom en ligne.",
+       nome_dominio:"Nom de domaine", nome_dominio_desc:"L'énergie du nom de votre domaine.",
+       nome_canal:"Nom de la chaîne", nome_canal_desc:"L'énergie du nom de votre chaîne.",
+       nome_equipe:"Nom de l'équipe", nome_equipe_desc:"La vibration du nom de votre équipe.",
+       nome_ong:"Nom de l'ONG", nome_ong_desc:"L'énergie du nom de votre organisation.",
+       nome_projeto:"Nom du projet", nome_projeto_desc:"L'énergie du nom de votre projet.",
+       nome_evento:"Nom de l'événement", nome_evento_desc:"La vibration du nom de votre événement.",
+       buscar:"Rechercher" },
+  it:{ nome_pet:"Nome dell'animale", nome_pet_desc:"L'energia del nome del tuo animale.",
+       nickname:"Soprannome digitale", nickname_desc:"La vibrazione del tuo soprannome online.",
+       nome_dominio:"Nome del dominio", nome_dominio_desc:"L'energia del nome del tuo dominio.",
+       nome_canal:"Nome del canale", nome_canal_desc:"L'energia del nome del tuo canale.",
+       nome_equipe:"Nome del team", nome_equipe_desc:"La vibrazione del nome del tuo team.",
+       nome_ong:"Nome dell'ONG", nome_ong_desc:"L'energia del nome della tua organizzazione.",
+       nome_projeto:"Nome del progetto", nome_projeto_desc:"L'energia del nome del tuo progetto.",
+       nome_evento:"Nome dell'evento", nome_evento_desc:"La vibrazione del nome del tuo evento.",
+       buscar:"Cerca" },
+  de:{ nome_pet:"Haustiername", nome_pet_desc:"Die Energie des Namens Ihres Haustiers.",
+       nickname:"Digitaler Spitzname", nickname_desc:"Die Schwingung Ihres Spitznamens online.",
+       nome_dominio:"Domainname", nome_dominio_desc:"Die Energie Ihres Domainnamens.",
+       nome_canal:"Kanalname", nome_canal_desc:"Die Energie Ihres Kanalnamens.",
+       nome_equipe:"Teamname", nome_equipe_desc:"Die Schwingung des Namens Ihres Teams.",
+       nome_ong:"NGO-Name", nome_ong_desc:"Die Energie des Namens Ihrer Organisation.",
+       nome_projeto:"Projektname", nome_projeto_desc:"Die Energie Ihres Projektnamens.",
+       nome_evento:"Veranstaltungsname", nome_evento_desc:"Die Schwingung des Namens Ihrer Veranstaltung.",
+       buscar:"Suchen" },
+  ru:{ nome_pet:"Имя питомца", nome_pet_desc:"Энергия имени вашего питомца.",
+       nickname:"Цифровой никнейм", nickname_desc:"Вибрация вашего никнейма в сети.",
+       nome_dominio:"Доменное имя", nome_dominio_desc:"Энергия вашего доменного имени.",
+       nome_canal:"Название канала", nome_canal_desc:"Энергия названия вашего канала.",
+       nome_equipe:"Название команды", nome_equipe_desc:"Вибрация названия вашей команды.",
+       nome_ong:"Название НПО", nome_ong_desc:"Энергия названия вашей организации.",
+       nome_projeto:"Название проекта", nome_projeto_desc:"Энергия названия вашего проекта.",
+       nome_evento:"Название события", nome_evento_desc:"Вибрация названия вашего события.",
+       buscar:"Поиск" },
+  zh:{ nome_pet:"宠物名称", nome_pet_desc:"您的宠物名字的能量。",
+       nickname:"数字昵称", nickname_desc:"您的网络昵称的振动。",
+       nome_dominio:"域名", nome_dominio_desc:"您的域名的能量。",
+       nome_canal:"频道名称", nome_canal_desc:"您的频道名称的能量。",
+       nome_equipe:"团队名称", nome_equipe_desc:"您的团队名称的振动。",
+       nome_ong:"非政府组织名称", nome_ong_desc:"您的组织名称的能量。",
+       nome_projeto:"项目名称", nome_projeto_desc:"您的项目名称的能量。",
+       nome_evento:"活动名称", nome_evento_desc:"您的活动名称的振动。",
+       buscar:"搜索" },
+  ja:{ nome_pet:"ペット名", nome_pet_desc:"ペットの名前のエネルギー。",
+       nickname:"デジタルニックネーム", nickname_desc:"オンラインのニックネームの振動。",
+       nome_dominio:"ドメイン名", nome_dominio_desc:"ドメイン名のエネルギー。",
+       nome_canal:"チャンネル名", nome_canal_desc:"チャンネル名のエネルギー。",
+       nome_equipe:"チーム名", nome_equipe_desc:"チーム名の振動。",
+       nome_ong:"NGO名", nome_ong_desc:"組織名のエネルギー。",
+       nome_projeto:"プロジェクト名", nome_projeto_desc:"プロジェクト名のエネルギー。",
+       nome_evento:"イベント名", nome_evento_desc:"イベント名の振動。",
+       buscar:"検索" },
+  ar:{ nome_pet:"اسم الحيوان الأليف", nome_pet_desc:"طاقة اسم حيوانك الأليف.",
+       nickname:"الاسم المستعار الرقمي", nickname_desc:"اهتزاز اسمك المستعار على الإنترنت.",
+       nome_dominio:"اسم النطاق", nome_dominio_desc:"طاقة اسم النطاق الخاص بك.",
+       nome_canal:"اسم القناة", nome_canal_desc:"طاقة اسم قناتك.",
+       nome_equipe:"اسم الفريق", nome_equipe_desc:"اهتزاز اسم فريقك.",
+       nome_ong:"اسم المنظمة", nome_ong_desc:"طاقة اسم مؤسستك.",
+       nome_projeto:"اسم المشروع", nome_projeto_desc:"طاقة اسم مشروعك.",
+       nome_evento:"اسم الفعالية", nome_evento_desc:"اهتزاز اسم فعاليتك.",
+       buscar:"بحث" },
+  he:{ nome_pet:"שם חיית המחמד", nome_pet_desc:"האנרגיה של שם חיית המחמד שלך.",
+       nickname:"כינוי דיגיטלי", nickname_desc:"הרטט של הכינוי שלך ברשת.",
+       nome_dominio:"שם הדומיין", nome_dominio_desc:"האנרגיה של שם הדומיין שלך.",
+       nome_canal:"שם הערוץ", nome_canal_desc:"האנרגיה של שם הערוץ שלך.",
+       nome_equipe:"שם הצוות", nome_equipe_desc:"הרטט של שם הצוות שלך.",
+       nome_ong:"שם הארגון", nome_ong_desc:"האנרגיה של שם הארגון שלך.",
+       nome_projeto:"שם הפרויקט", nome_projeto_desc:"האנרגיה של שם הפרויקט שלך.",
+       nome_evento:"שם האירוע", nome_evento_desc:"הרטט של שם האירוע שלך.",
+       buscar:"חיפוש" },
+  hi:{ nome_pet:"पालतू जानवर का नाम", nome_pet_desc:"आपके पालतू जानवर के नाम की ऊर्जा।",
+       nickname:"डिजिटल उपनाम", nickname_desc:"आपके ऑनलाइन उपनाम की कंपन।",
+       nome_dominio:"डोमेन का नाम", nome_dominio_desc:"आपके डोमेन नाम की ऊर्जा।",
+       nome_canal:"चैनल का नाम", nome_canal_desc:"आपके चैनल नाम की ऊर्जा।",
+       nome_equipe:"टीम का नाम", nome_equipe_desc:"आपकी टीम के नाम की कंपन।",
+       nome_ong:"एनजीओ का नाम", nome_ong_desc:"आपके संगठन के नाम की ऊर्जा।",
+       nome_projeto:"परियोजना का नाम", nome_projeto_desc:"आपकी परियोजना के नाम की ऊर्जा।",
+       nome_evento:"कार्यक्रम का नाम", nome_evento_desc:"आपके कार्यक्रम के नाम की कंपन।",
+       buscar:"खोज" }
+};
+/* =====  MONTAR_TRAD — Montar Sob Medida (12 idiomas) =====*/
+var MONTAR_TRAD = {
+  pt:{ titulo:"Montar Sob Medida", subtitulo:"Escolha os produtos e a energia desejada.",
+       produto:"Produto", energia:"Energia", quantidade:"Quantidade", preco:"Preço",
+       adicionar:"Adicionar", remover:"Remover", finalizar:"Finalizar",
+       bruto:"Valor Bruto", desconto:"Desconto Aplicado", total:"Total",
+       vazio:"Seu carrinho está vazio" },
+  en:{ titulo:"Build Custom", subtitulo:"Choose the products and desired energy.",
+       produto:"Product", energia:"Energy", quantidade:"Quantity", preco:"Price",
+       adicionar:"Add", remover:"Remove", finalizar:"Checkout",
+       bruto:"Gross Amount", desconto:"Applied Discount", total:"Total",
+       vazio:"Your cart is empty" },
+  es:{ titulo:"Montar a Medida", subtitulo:"Elige los productos y la energía deseada.",
+       produto:"Producto", energia:"Energía", quantidade:"Cantidad", preco:"Precio",
+       adicionar:"Añadir", remover:"Eliminar", finalizar:"Finalizar",
+       bruto:"Importe Bruto", desconto:"Descuento Aplicado", total:"Total",
+       vazio:"Tu carrito está vacío" },
+  fr:{ titulo:"Composer sur Mesure", subtitulo:"Choisissez les produits et l'énergie souhaitée.",
+       produto:"Produit", energia:"Énergie", quantidade:"Quantité", preco:"Prix",
+       adicionar:"Ajouter", remover:"Retirer", finalizar:"Finaliser",
+       bruto:"Montant Brut", desconto:"Remise Appliquée", total:"Total",
+       vazio:"Votre panier est vide" },
+  it:{ titulo:"Componi su Misura", subtitulo:"Scegli i prodotti e l'energia desiderata.",
+       produto:"Prodotto", energia:"Energia", quantidade:"Quantità", preco:"Prezzo",
+       adicionar:"Aggiungi", remover:"Rimuovi", finalizar:"Finalizza",
+       bruto:"Importo Lordo", desconto:"Sconto Applicato", total:"Totale",
+       vazio:"Il tuo carrello è vuoto" },
+  de:{ titulo:"Individuell Zusammenstellen", subtitulo:"Wählen Sie die Produkte und die gewünschte Energie.",
+       produto:"Produkt", energia:"Energie", quantidade:"Menge", preco:"Preis",
+       adicionar:"Hinzufügen", remover:"Entfernen", finalizar:"Abschließen",
+       bruto:"Bruttobetrag", desconto:"Angewendeter Rabatt", total:"Gesamt",
+       vazio:"Ihr Warenkorb ist leer" },
+  ru:{ titulo:"Собрать на Заказ", subtitulo:"Выберите продукты и желаемую энергию.",
+       produto:"Продукт", energia:"Энергия", quantidade:"Количество", preco:"Цена",
+       adicionar:"Добавить", remover:"Удалить", finalizar:"Оформить",
+       bruto:"Валовая сумма", desconto:"Примененная скидка", total:"Итого",
+       vazio:"Ваша корзина пуста" },
+  zh:{ titulo:"定制组合", subtitulo:"选择产品和所需能量。",
+       produto:"产品", energia:"能量", quantidade:"数量", preco:"价格",
+       adicionar:"添加", remover:"移除", finalizar:"结算",
+       bruto:"总额", desconto:"已应用折扣", total:"总计",
+       vazio:"您的购物车是空的" },
+  ja:{ titulo:"カスタム作成", subtitulo:"製品と希望のエネルギーを選択してください。",
+       produto:"製品", energia:"エネルギー", quantidade:"数量", preco:"価格",
+       adicionar:"追加", remover:"削除", finalizar:"確定",
+       bruto:"総額", desconto:"適用割引", total:"合計",
+       vazio:"カートは空です" },
+  ar:{ titulo:"تخصيص حسب الطلب", subtitulo:"اختر المنتجات والطاقة المطلوبة.",
+       produto:"المنتج", energia:"الطاقة", quantidade:"الكمية", preco:"السعر",
+       adicionar:"إضافة", remover:"إزالة", finalizar:"إتمام",
+       bruto:"المبلغ الإجمالي", desconto:"الخصم المطبق", total:"الإجمالي",
+       vazio:"سلة التسوق فارغة" },
+  he:{ titulo:"הרכבה אישית", subtitulo:"בחרו את המוצרים ואת האנרגיה הרצויה.",
+       produto:"מוצר", energia:"אנרגיה", quantidade:"כמות", preco:"מחיר",
+       adicionar:"הוסף", remover:"הסר", finalizar:"סיים",
+       bruto:"סכום ברוטו", desconto:"הנחה מיושמת", total:"סה״כ",
+       vazio:"העגלה שלך ריקה" },
+  hi:{ titulo:"कस्टम बनाएं", subtitulo:"उत्पाद और वांछित ऊर्जा चुनें।",
+       produto:"उत्पाद", energia:"ऊर्जा", quantidade:"मात्रा", preco:"मूल्य",
+       adicionar:"जोड़ें", remover:"हटाएं", finalizar:"समाप्त करें",
+       bruto:"सकल राशि", desconto:"लागू छूट", total:"कुल",
+       vazio:"आपकी टोकरी खाली है" }
+};
+/* =====  ENERGIA_TRAD — Nomes das 9 energias (12 idiomas) =====*/
+var ENERGIA_TRAD = {
+  pt:{ e1:"Líder", e2:"Diplomata", e3:"Criatividade", e4:"Estrutura", e5:"Liberdade", e6:"Harmonia", e7:"Espiritualidade", e8:"Poder", e9:"Humanitarismo" },
+  en:{ e1:"Leader", e2:"Diplomat", e3:"Creativity", e4:"Structure", e5:"Freedom", e6:"Harmony", e7:"Spirituality", e8:"Power", e9:"Humanitarianism" },
+  es:{ e1:"Líder", e2:"Diplomático", e3:"Creatividad", e4:"Estructura", e5:"Libertad", e6:"Armonía", e7:"Espiritualidad", e8:"Poder", e9:"Humanitarismo" },
+  fr:{ e1:"Leader", e2:"Diplomate", e3:"Créativité", e4:"Structure", e5:"Liberté", e6:"Harmonie", e7:"Spiritualité", e8:"Pouvoir", e9:"Humanitarisme" },
+  it:{ e1:"Leader", e2:"Diplomatico", e3:"Creatività", e4:"Struttura", e5:"Libertà", e6:"Armonia", e7:"Spiritualità", e8:"Potere", e9:"Umanitarismo" },
+  de:{ e1:"Führer", e2:"Diplomat", e3:"Kreativität", e4:"Struktur", e5:"Freiheit", e6:"Harmonie", e7:"Spiritualität", e8:"Macht", e9:"Humanitarismus" },
+  ru:{ e1:"Лидер", e2:"Дипломат", e3:"Творчество", e4:"Структура", e5:"Свобода", e6:"Гармония", e7:"Духовность", e8:"Власть", e9:"Гуманизм" },
+  zh:{ e1:"领导者", e2:"外交官", e3:"创造力", e4:"结构", e5:"自由", e6:"和谐", e7:"灵性", e8:"权力", e9:"人道主义" },
+  ja:{ e1:"リーダー", e2:"外交官", e3:"創造性", e4:"構造", e5:"自由", e6:"調和", e7:"精神性", e8:"力", e9:"人道主義" },
+  ar:{ e1:"قائد", e2:"دبلوماسي", e3:"إبداع", e4:"بنية", e5:"حرية", e6:"انسجام", e7:"روحانية", e8:"قوة", e9:"إنسانية" },
+  he:{ e1:"מנהיג", e2:"דיפלומט", e3:"יצירתיות", e4:"מבנה", e5:"חופש", e6:"הרמוניה", e7:"רוחניות", e8:"כוח", e9:"הומניטריות" },
+  hi:{ e1:"नेता", e2:"राजनयिक", e3:"रचनात्मकता", e4:"संरचना", e5:"स्वतंत्रता", e6:"सद्भाव", e7:"आध्यात्मिकता", e8:"शक्ति", e9:"मानवतावाद" }
+};
+
+/* =====  MODAL DO DADO ESPECÍFICO (múltiplos passos) =====*/
+var DADO_LABEL = {
+  pt:{nome_pet:"Nome do Pet",nickname:"Nickname Digital",nome_dominio:"Nome do Domínio",nome_canal:"Nome do Canal",nome_equipe:"Nome da Equipe",nome_ong:"Nome da ONG",nome_projeto:"Nome do Projeto",nome_evento:"Nome do Evento"},
+  en:{nome_pet:"Pet Name",nickname:"Digital Nickname",nome_dominio:"Domain Name",nome_canal:"Channel Name",nome_equipe:"Team Name",nome_ong:"NGO Name",nome_projeto:"Project Name",nome_evento:"Event Name"},
+  es:{nome_pet:"Nombre de Mascota",nickname:"Nickname Digital",nome_dominio:"Nombre de Dominio",nome_canal:"Nombre de Canal",nome_equipe:"Nombre del Equipo",nome_ong:"Nombre de la ONG",nome_projeto:"Nombre del Proyecto",nome_evento:"Nombre del Evento"},
+  it:{nome_pet:"Nome dell'Animale",nickname:"Nickname Digitale",nome_dominio:"Nome del Dominio",nome_canal:"Nome del Canale",nome_equipe:"Nome del Team",nome_ong:"Nome dell'ONG",nome_projeto:"Nome del Progetto",nome_evento:"Nome dell'Evento"},
+  fr:{nome_pet:"Nom de l'Animal",nickname:"Pseudo Digital",nome_dominio:"Nom de Domaine",nome_canal:"Nom de Chaîne",nome_equipe:"Nom de l'Équipe",nome_ong:"Nom de l'ONG",nome_projeto:"Nom du Projet",nome_evento:"Nom de l'Événement"},
+  de:{nome_pet:"Haustiername",nickname:"Digitaler Nickname",nome_dominio:"Domainname",nome_canal:"Kanalname",nome_equipe:"Teamname",nome_ong:"NGO-Name",nome_projeto:"Projektname",nome_evento:"Veranstaltungsname"},
+  ja:{nome_pet:"ペットの名前",nickname:"デジタルニックネーム",nome_dominio:"ドメイン名",nome_canal:"チャンネル名",nome_equipe:"チーム名",nome_ong:"NGO名",nome_projeto:"プロジェクト名",nome_evento:"イベント名"},
+  zh:{nome_pet:"宠物名字",nickname:"数字昵称",nome_dominio:"域名",nome_canal:"频道名称",nome_equipe:"团队名称",nome_ong:"NGO名称",nome_projeto:"项目名称",nome_evento:"活动名称"},
+  ru:{nome_pet:"Имя питомца",nickname:"Цифровой никнейм",nome_dominio:"Имя домена",nome_canal:"Название канала",nome_equipe:"Название команды",nome_ong:"Название НКО",nome_projeto:"Название проекта",nome_evento:"Название события"},
+  hi:{nome_pet:"पालतू नाम",nickname:"डिजिटल उपनाम",nome_dominio:"डोमेन नाम",nome_canal:"चैनल नाम",nome_equipe:"टीम नाम",nome_ong:"एनजीओ नाम",nome_projeto:"परियोजना नाम",nome_evento:"इवेंट नाम"},
+  he:{nome_pet:"שם חיית המחמד",nickname:"כינוי דיגיטלי",nome_dominio:"שם דומיין",nome_canal:"שם הערוץ",nome_equipe:"שם הצוות",nome_ong:"שם העמותה",nome_projeto:"שם הפרויקט",nome_evento:"שם האירוע"},
+  ar:{nome_pet:"اسم الحيوان الأليف",nickname:"اللقب الرقمي",nome_dominio:"اسم النطاق",nome_canal:"اسم القناة",nome_equipe:"اسم الفريق",nome_ong:"اسم المنظمة",nome_projeto:"اسم المشروع",nome_evento:"اسم الفعالية"}
+};
+/* =====  DADOS DE TIPO POR PRODUTO (para o modal de múltiplos passos) =====*/
+var DADO_TIPOS = {
+  nome_pet: { label:"Tipo de Pet", opcoes:["Gato","Cão","Pássaro","Réptil","Outro"] },
+  nickname: { label:"Tipo de Perfil", opcoes:["Gamer","Criador","Profissional","Artista","Outro"] },
+  nome_dominio: { label:"Tipo de Site", opcoes:["Blog","Loja","Portfólio","Empresa","Outro"] },
+  nome_canal: { label:"Tipo de Canal", opcoes:["YouTube","Podcast","Twitch","TikTok","Outro"] },
+  nome_equipe: { label:"Tipo de Equipe", opcoes:["Esportiva","Empresarial","Projeto","Banda","Outro"] },
+  nome_ong: { label:"Tipo de Instituição", opcoes:["ONG","Associação","Instituto","Fundação","Outro"] },
+  nome_projeto: { label:"Tipo de Projeto", opcoes:["Pessoal","Empresarial","Social","Cultural","Outro"] },
+  nome_evento: { label:"Tipo de Evento", opcoes:["Congresso","Curso","Festa","Palestra","Outro"] }
+};
+/* ============================================================*/
+// FORMULÁRIOS DE COLETA — 8 produtos (versão ÚNICA e limpa)
+/* ============================================================*/
+var OPCOES_FALLBACK = {
+  loja:"Loja", empresa:"Empresa", blog:"Blog", portfolio:"Portfólio",
+  comercio:"Comércio", industria:"Indústria", servicos:"Serviços", pessoal:"Pessoal/Individual",
+  cao:"Cão", gato:"Gato", passaro:"Pássaro", reptil:"Réptil",
+  show:"Show", congresso:"Congresso", festa:"Festa", curso:"Curso", palestra:"Palestra",
+  musica:"Música", esporte:"Esporte", cultura:"Cultura", politica:"Política", beleza:"Beleza",
+  social:"Social", cultural:"Cultural", esportiva:"Esportiva", banda:"Banda",
+  youtube:"YouTube", podcast:"Podcast", tiktok:"TikTok", twitch:"Twitch", noticias:"Notícias",
+  gamer:"Gamer", profissional:"Profissional", criador:"Criador", artista:"Artista",
+  ong:"ONG", instituto:"Instituto", associacao:"Associação", fundacao:"Fundação"
+};
+
+
 function tradOpcao(chave) {
   var lang = getLang();
   var t = OPCOES_TRAD[lang] || OPCOES_TRAD.pt;
