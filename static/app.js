@@ -1,6 +1,24 @@
 // ===== A1ELOS GLOBAL NUMEROLOGY - APP.JS (VERSÃO CONSOLIDADA) =====
 // ================================================================
- // ===== MONTAR SELETOR DE IDIOMAS (12 bandeiras) =====
+
+// ===== MAPA PDFs INVESTIDORES (nível GLOBAL) =====
+var INV_PDFS = {
+  pt: "Apresentação Empresarial para Investidores e Parceiros.pdf",
+  en: "Formal Business Presentation for Investors & Strategic Partners.pdf",
+  es: "Presentación Empresarial para Inversores y Socios.pdf",
+  fr: "Présentation d'Entreprise — Investisseurs & Partenaires Stratégique.pdf",
+  it: "Presentazione Aziendale per Investidore e Partner.pdf",
+  de: "Unternehmenspräsentation für Investoren und Partner.pdf"
+};
+function atualizarLinkInvestidores(){
+  var btn = document.getElementById("invDownloadBtn");
+  if (!btn) return;
+  var l = (typeof getLang === "function") ? getLang() : "pt";
+  var arquivo = INV_PDFS[l] || INV_PDFS.pt;
+  btn.href = "/static/investidores/" + encodeURIComponent(arquivo);
+}
+
+// ===== MONTAR SELETOR DE IDIOMAS (12 bandeiras) =====
 function montarSeletorIdioma() {
   var container = document.getElementById('langSelector');
   if (!container) return;
@@ -17,15 +35,17 @@ function montarSeletorIdioma() {
     b.title = l.id.toUpperCase();
     b.innerHTML = l.b;
     b.onclick = function() {
-    setLanguage(l.id);
-    if (typeof montarTudo === "function") montarTudo();          // ← usa montarTudo
-    else if (typeof traduzirTudo === "function") traduzirTudo();
-    var ativos = container.querySelectorAll('.lang-btn');
-    for (var i = 0; i < ativos.length; i++) ativos[i].classList.remove('active');
-    b.classList.add('active');
-};
+      setLanguage(l.id);
+      if (typeof montarTudo === "function") montarTudo();
+      else if (typeof traduzirTudo === "function") traduzirTudo();
+      atualizarLinkInvestidores();   // ← CHAMA a função global
+      var ativos = container.querySelectorAll('.lang-btn');
+      for (var i = 0; i < ativos.length; i++) ativos[i].classList.remove('active');
+      b.classList.add('active');
+    };
     container.appendChild(b);
   });
+}
 }
 function pagarVida(){var n=document.getElementById('vidaNome').value.trim(),b=document.getElementById('vidaNasc').value;if(!n||!b){alert(t_preencha());return;}location.href='/criar-checkout?produto=vida&nome='+encodeURIComponent(n)+'&nascimento='+encodeURIComponent(b)+'&lang='+getLang();}
 function pagarIa(){var n=document.getElementById('iaNome').value.trim(),e=document.getElementById('iaEnergia').value;if(!n||!e){alert(t_preencha());return;}location.href='/criar-checkout?produto=ia&nome='+encodeURIComponent(n)+'&energia='+encodeURIComponent(e)+'&lang='+getLang();}
