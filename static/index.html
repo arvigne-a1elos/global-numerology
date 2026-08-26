@@ -12,14 +12,13 @@
     <div class="lang-wrapper">
         <div class="lang-container" id="langSelector"></div>
     </div>
-    </section>
+    
     <!-- BANNER TOPO (2 lado a lado) -->
 <div class="a1-zona" id="zonaTopo">
   <div class="a1-banner" id="bannerTopoA"></div>
   <div class="a1-banner" id="bannerTopoB"></div>
 </div>
 
-    </section>
 <nav class="sections" style="position:relative;top:0;width:100%;z-index:9990;background:rgba(10,10,10,0.9);border-bottom:1px solid #222;padding:8px 0;display:flex;justify-content:center;gap:18px;flex-wrap:wrap">
     <a href="#calculadora" data-i18n="nav_map">Mapa</a>
     <a href="#produtos" data-i18n="nav_prod">Produtos</a>
@@ -38,6 +37,7 @@
         <div>
             <button class="btn" data-i18n="hero_btn" onclick="pesquisar('express')">✦ GERAR MEU MAPA</button>
             <a href="#produtos" class="btn btn-outline" data-i18n="hero_btn2">VER PRODUTOS</a>
+        </div>    
      </section>
         <!-- CALCULADORA GRATUITA (5 números) -->
 <section id="calculadora">
@@ -87,28 +87,8 @@
         </div>
     </section>
 
-}<!-- PRODUTOS E SERVIÇOS (23) -->
-    <section id="produtos">
-        <div class="section-header">
-            <h2 data-i18n="section_products_title">Produtos e Serviços</h2>
-            <p data-i18n="section_products_subtitle">Escolha o produto ideal para sua análise numerológica</p>
-        </div>
-        <div class="cards-grid" id="produtosGrid">
-            <!-- 1. Mapa Express -->
-            <div class="product-card" data-prod="express">
-                <div class="icon">🔮</div>
-                <h3 class="prod-nome" data-i18n="p_express">Mapa Express</h3>
-                <div class="price prod-preco">R$ 8</div>
-             <p class="desc" data-i18n="desc_express">1 página com os 5 números principais e seu significado resumido. Ideal para uma visão rápida.</p>
-             <ul class="features">
-              <li>✅ Caminho da Vida</li>
-              <li>✅ Expressão, Alma, Personalidade</li>
-              <li>✅ Destino</li>
-              <li>📲 PDF + QRCode</li>
-             </ul>
-                <button class="btn btn-full" onclick="pesquisar('express')" data-i18n="pesquisar_btn">pesquisar</button>
-            </div>
-            
+    <div id="areaProdutos"><!-- produtos.html é carregado aqui --></div>
+    
     <!-- COMO FUNCIONA -->
     <section id="how">
         <div class="section-header">
@@ -290,8 +270,7 @@
             <button class="btn btn-full" onclick="ativarBonusInserido()" data-i18n="bi_btn">🎁 Ativar Código</button>
             <p id="biStatus" class="hint" style="text-align:center;margin-top:12px;color:var(--gold)"></p>
         </div>
-    </section>
-
+    
     <!-- BÔNUS COLETIVO / EMPRESARIAL -->
     <section id="corporativo">
         <h2 class="section-title" data-i18n="bc_title">🏢 Bônus Coletivo / Empresarial</h2>
@@ -321,7 +300,6 @@
                 </div>
             </div>
         </div>
-        </section>
         <!-- TABELA SOB MEDIDA -->
         <div class="form-container" style="max-width:900px">
             <h3 style="color:var(--gold);text-align:center;margin-bottom:10px" data-i18n="bc_custom_title">Montar Sob Medida</h3>
@@ -415,16 +393,13 @@
   <div class="a1-banner" id="bannerBaseA"></div>
   <div class="a1-banner" id="bannerBaseB"></div>
 </div>
-    </section>
+    
 <script src="/static/translations.js"></script>
 <script src="/static/banners.js"></script>
 <script src="/static/produtos.js"></script>    
 <script src="/static/app.js"></script>
 
-  <footer>
-    <p data-i18n="footer_text">© 2026 A1ELOS Assessoria e Consultoria. Todos os direitos reservados.</p>
-  </footer>
-    <!-- ===== MODAL DE COLETA (formulários de pesquisa — 8 produtos) ===== -->
+      <!-- ===== MODAL DE COLETA (formulários de pesquisa — 8 produtos) ===== -->
 <div id="modalColeta" class="modal-overlay" style="display:none">
   <div class="modal-box">
     <button type="button" id="coletaFechar" class="modal-fechar">✕</button>
@@ -462,7 +437,7 @@
     </div>
   </div>
 </div>
-    </section>
+    
     <!-- CAIXA DE MENSAGENS (sugestões e reclamações) -->
 <section id="mensagens">
     <div class="form-container" style="max-width:700px">
@@ -474,5 +449,8 @@
         <p id="msgStatus" style="text-align:center;margin-top:12px;color:var(--gold)"></p>
     </div>
 </section>
+  <footer>
+    <p data-i18n="footer_text">© 2026 A1ELOS Assessoria e Consultoria. Todos os direitos reservados.</p>
+  </footer>
 </body>
 </html>    
