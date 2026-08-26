@@ -272,6 +272,18 @@ function toggleForm(formId) {
   if (escondido) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
+/* ===== CARREGADOR DE PARTIALS ===== */
+function carregarPartials() {
+  fetch('/static/partials/produtos.html')
+    .then(function(r){ if(!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
+    .then(function(html){
+      var alvo = document.getElementById('areaProdutos');
+      if (alvo) alvo.innerHTML = html;
+      montarTudo();
+    })
+    .catch(function(e){ console.warn('[partials] produtos.html:', e); });
+}
+
 // ===== MONTAR TUDO (consolidado e blindado) =====
 function montarTudo() {
   if (typeof montarTabelaBC === "function") {
@@ -296,7 +308,7 @@ function init() {
   var defaultLang = savedLang || (translations[browserLang] ? browserLang : 'pt');
   montarSeletorIdioma();
   setLanguage(defaultLang);
-  montarTudo();
+  carregarPartials();   // ← injeta os cards e depois chama montarTudo()
 }
 
 // ===== INICIALIZAÇÃO AUTOMÁTICA GARANTIDA (única via de disparo) =====
