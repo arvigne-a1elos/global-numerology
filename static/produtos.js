@@ -671,6 +671,9 @@ document.querySelectorAll('.product-card[data-prod]').forEach(function(card) {
   var mapa = { servico: t.bc_servico || "Serviço", preco: t.bc_preco || "Preço", qtd: t.bc_qtd || "Quantidade" };
   if (mapa[k]) el.innerText = mapa[k];
 });
+  if (typeof atualizarLinkInvestidores === "function") {
+    atualizarLinkInvestidores();
+ }   
     } finally {
     _traduzindo = false;     
   }
