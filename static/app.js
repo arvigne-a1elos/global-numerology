@@ -20,7 +20,6 @@ function montarSeletorIdioma() {
       setLanguage(l.id);
       if (typeof montarTudo === "function") montarTudo();
       else if (typeof traduzirTudo === "function") traduzirTudo();
-      atualizarLinkInvestidores();   // ← CHAMA a função global
       var ativos = container.querySelectorAll('.lang-btn');
       for (var i = 0; i < ativos.length; i++) ativos[i].classList.remove('active');
       b.classList.add('active');
