@@ -365,10 +365,14 @@ function montarTudo() {
 function init() {
   var savedLang = localStorage.getItem('lang');
   var browserLang = navigator.language.split('-')[0];
-  var defaultLang = savedLang || (translations[browserLang] ? browserLang : 'pt');
+  var defaultLang = savedLang || (typeof translations !== 'undefined' && translations[browserLang] ? browserLang : 'pt');  
   montarSeletorIdioma();
   setLanguage(defaultLang);
-  carregarPartials();   // ← injeta os cards e depois chama montarTudo()
+  if (typeof carregarPartials === 'function') {
+    carregarPartials();
+  } else if (typeof montarTudo === 'function') {
+    montarTudo();
+  }
 }
 // ===== INICIALIZAÇÃO AUTOMÁTICA GARANTIDA (única via de disparo) =====
 function iniciarSeguro() {
