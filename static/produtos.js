@@ -379,6 +379,10 @@ document.addEventListener("DOMContentLoaded", function(){
   var ok = document.getElementById("coletaConfirmar"); if (ok) ok.onclick = confirmarColeta;
   var ov = document.getElementById("modalColeta");
   if (ov) ov.addEventListener("click", function(e){ if (e.target === ov) fecharModalColeta(); });
+  function fecharModalColeta(){
+  var modal = document.getElementById("modalColeta");
+  if (modal) modal.style.display = "none";
+}
 });
 
 /* ===== BÔNUS COLETIVO / EMPRESARIAL (23 produtos) =====*/
