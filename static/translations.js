@@ -254,6 +254,11 @@ const translations = {
         calc_alma: "Alma",
         calc_personalidade: "Personalidade",
         calc_destino: "Destino",
+        investidores_titulo: "Investidores e Parceiros",
+        investidores_subtitulo: "Baixe a apresentação empresarial",
+        inv_card_titulo: "📄 Apresentação Empresarial",
+        inv_card_texto: "Apresentação para Investidores e Parceiros", 
+        download: "Baixar PDF",   
         pay_vida:"🔒 Pagar — Resultado em PDF + QRCode", pay_ia:"🔒 Pagar — Resultado em PDF + QRCode", pay_imovel:"🔒 Pagar — Resultado em PDF + QRCode", pay_calendario:"🔒 Pagar — Resultado em PDF + QRCode", pay_artistico:"🔒 Pagar — Resultado em PDF + QRCode", pay_bebe:"🔒 Pagar — Resultado em PDF + QRCode", pay_assinatura:"🔒 Pagar — Resultado em PDF + QRCode", pay_negocio:"🔒 Pagar — Resultado em PDF + QRCode", pay_casal:"🔒 Pagar — Resultado em PDF + QRCode", pay_familia:"🔒 Pagar — Resultado em PDF + QRCode", f_mes:"Mês", ph_ex_numero:"Ex: 123", ph_nome_artistico:"Seu nome artístico", ph_sobrenome:"Sobrenome", ph_sua_assinatura:"Sua assinatura", ph_nome_negocio:"Nome do negócio", ph_membros:"Nome de cada membro, um por linha",
         nomes5: { caminho: "Caminho da Vida", destino: "Destino", alma: "Alma", personalidade: "Personalidade", realizacao: "Realização" }, 
        sig: {
@@ -262,12 +267,7 @@ const translations = {
         sig_alma: "O que o seu coração mais deseja e o que alimenta sua essência.",
         sig_personalidade: "Como os outros enxergam você e a impressão que você causa.",
         sig_destino: "Onde suas escolhas e seu potencial podem te levar no futuro.",
-        investidores_titulo: "Investidores e Parceiros",
-        investidores_subtitulo: "Baixe a apresentação empresarial",
-        inv_card_titulo: "📄 Apresentação Empresarial",
-        inv_card_texto: "Apresentação para Investidores e Parceiros", 
-        download: "Baixar PDF",   
-       }
+        }
     },
     en: {
         hero_title: "NUMEROLOGICAL MAP",
@@ -474,7 +474,11 @@ const translations = {
         calc_realizacao: "Expression",
         calc_alma: "Soul",
         calc_personalidade: "Personality",
-        calc_destino: "Destiny",
+        calc_destino: "Destiny",investidores_titulo: "Investors and Partners",
+        investidores_subtitulo: "Download the business presentation",
+        inv_card_titulo: "📄 Business Presentation",
+        inv_card_texto: "Presentation for Investors and Partners",
+        download: "Download PDF",   
         pay_vida:"🔒 Pay — Result in PDF + QRCode", pay_ia:"🔒 Pay — Result in PDF + QRCode", pay_imovel:"🔒 Pay — Result in PDF + QRCode", pay_calendario:"🔒 Pay — Result in PDF + QRCode", pay_artistico:"🔒 Pay — Result in PDF + QRCode", pay_bebe:"🔒 Pay — Result in PDF + QRCode", pay_assinatura:"🔒 Pay — Result in PDF + QRCode", pay_negocio:"🔒 Pay — Result in PDF + QRCode", pay_casal:"🔒 Pay — Result in PDF + QRCode", pay_familia:"🔒 Pay — Result in PDF + QRCode", f_mes:"Month", ph_ex_numero:"E.g.: 123", ph_nome_artistico:"Your stage name", ph_sobrenome:"Surname", ph_sua_assinatura:"Your signature", ph_nome_negocio:"Business name", ph_membros:"Each member's name, one per line",
         nomes5: { caminho: "Life Path", destino: "Destiny", alma: "Soul", personalidade: "Personality", realizacao: "Realization"   },        
        sig: {
@@ -483,12 +487,7 @@ const translations = {
         sig_alma: "What your heart desires most and what feeds your essence.",
         sig_personalidade: "How others see you and the impression you make.",
         sig_destino: "Where your choices and your potential can take you in the future.",
-        investidores_titulo: "Investors and Partners",
-        investidores_subtitulo: "Download the business presentation",
-        inv_card_titulo: "📄 Business Presentation",
-        inv_card_texto: "Presentation for Investors and Partners",
-        download: "Download PDF",   
-       }
+        }
     },
     es: { 
         hero_title: "MAPA NUMEROLÓGICO",
@@ -696,6 +695,11 @@ const translations = {
         calc_alma: "Alma",
         calc_personalidade: "Personalidad",
         calc_destino: "Destino",
+        investidores_titulo: "Inversores y Socios",
+        investidores_subtitulo: "Descargue la presentación empresarial",
+        inv_card_titulo: "📄 Presentación Empresarial",
+        inv_card_texto: "Presentación para Inversores y Socios", 
+        download: "Descargar PDF",   
         pay_vida:"🔒 Pagar — Resultado en PDF + QRCode", pay_ia:"🔒 Pagar — Resultado en PDF + QRCode", pay_imovel:"🔒 Pagar — Resultado en PDF + QRCode", pay_calendario:"🔒 Pagar — Resultado en PDF + QRCode", pay_artistico:"🔒 Pagar — Resultado en PDF + QRCode", pay_bebe:"🔒 Pagar — Resultado en PDF + QRCode", pay_assinatura:"🔒 Pagar — Resultado en PDF + QRCode", pay_negocio:"🔒 Pagar — Resultado en PDF + QRCode", pay_casal:"🔒 Pagar — Resultado en PDF + QRCode", pay_familia:"🔒 Pagar — Resultado en PDF + QRCode", f_mes:"Mes", ph_ex_numero:"Ej.: 123", ph_nome_artistico:"Tu nombre artístico", ph_sobrenome:"Apellido", ph_sua_assinatura:"Tu firma", ph_nome_negocio:"Nombre del negocio", ph_membros:"Nombre de cada miembro, uno por línea",
         nomes5: { caminho: "Camino de Vida", destino: "Destino", alma: "Alma", personalidade: "Personalidad", realizacao: "Realización" },
        sig: {
@@ -704,12 +708,7 @@ const translations = {
         sig_alma: "Lo que tu corazón más desea y lo que alimenta tu esencia.",
         sig_personalidade: "Cómo te ven los demás y la impresión que causas.",
         sig_destino: "A dónde pueden llevarte tus elecciones y tu potencial en el futuro.",
-        investidores_titulo: "Inversores y Socios",
-        investidores_subtitulo: "Descargue la presentación empresarial",
-        inv_card_titulo: "📄 Presentación Empresarial",
-        inv_card_texto: "Presentación para Inversores y Socios", 
-        download: "Descargar PDF",   
-       }
+        }
     },
     it: { 
         hero_title: "MAPA NUMEROLOGICO",
@@ -925,12 +924,7 @@ const translations = {
         sig_alma: "Ciò che il tuo cuore desidera di più e ciò che nutre la tua essenza.",
         sig_personalidade: "Come gli altri ti vedono e l'impressione che susciti.",
         sig_destino: "Dove le tue scelte e il tuo potenziale possono portarti in futuro.",
-        investidores_titulo: "Investitori e Partner",
-        investidores_subtitulo: "Scarica la presentazione aziendale",
-        inv_card_titulo: "📄 Presentazione Aziendale",
-        inv_card_texto: "Presentazione per Investitori e Partner", 
-        download: "Scarica PDF",   
-       }   
+        }   
     },
     fr: {
         hero_title: "CARTE NUMÉROLOGIQUE",
@@ -1138,6 +1132,11 @@ const translations = {
         calc_alma: "Âme",
         calc_personalidade: "Personnalité",
         calc_destino: "Destin",
+        investidores_titulo: "Investisseurs et Partenaires",
+        investidores_subtitulo: "Téléchargez la présentation d'entreprise",
+        inv_card_titulo: "📄 Présentation d'Entreprise",
+        inv_card_texto: "Présentation pour Investisseurs et Partenaires",
+        download: "Télécharger le PDF",   
         pay_vida:"🔒 Payer — Résultat en PDF + QRCode", pay_ia:"🔒 Payer — Résultat en PDF + QRCode", pay_imovel:"🔒 Payer — Résultat en PDF + QRCode", pay_calendario:"🔒 Payer — Résultat en PDF + QRCode", pay_artistico:"🔒 Payer — Résultat en PDF + QRCode", pay_bebe:"🔒 Payer — Résultat en PDF + QRCode", pay_assinatura:"🔒 Payer — Résultat en PDF + QRCode", pay_negocio:"🔒 Payer — Résultat en PDF + QRCode", pay_casal:"🔒 Payer — Résultat en PDF + QRCode", pay_familia:"🔒 Payer — Résultat en PDF + QRCode", f_mes:"Mois", ph_ex_numero:"Ex. : 123", ph_nome_artistico:"Votre nom de scène", ph_sobrenome:"Nom de famille", ph_sua_assinatura:"Votre signature", ph_nome_negocio:"Nom de l'entreprise", ph_membros:"Nom de chaque membre, un par ligne",
         nomes5: { caminho: "Chemin de Vie", destino: "Destin", alma: "Âme", personalidade: "Personnalité", realizacao: "Réalisation"  },
        sig: {
@@ -1146,12 +1145,7 @@ const translations = {
         sig_alma: "Ce que votre cœur désire le plus et ce qui nourrit votre essence.",
         sig_personalidade: "Comment les autres vous voient et l'impression que vous laissez.",
         sig_destino: "Où vos choix et votre potentiel peuvent vous mener à l'avenir.",
-        investidores_titulo: "Investisseurs et Partenaires",
-        investidores_subtitulo: "Téléchargez la présentation d'entreprise",
-        inv_card_titulo: "📄 Présentation d'Entreprise",
-        inv_card_texto: "Présentation pour Investisseurs et Partenaires",
-        download: "Télécharger le PDF",   
-       }    
+        }    
     },
     de: {
         hero_title: "NUMEROLOGISCHE KARTE",
@@ -1359,6 +1353,11 @@ const translations = {
         calc_alma: "Seele",
         calc_personalidade: "Persönlichkeit",
         calc_destino: "Schicksal",
+        investidores_titulo: "Investoren und Partner",
+        investidores_subtitulo: "Laden Sie die Unternehmenspräsentation herunter",
+        inv_card_titulo: "📄 Unternehmenspräsentation",
+        inv_card_texto: "Präsentation für Investoren und Partner",
+        download: "PDF herunterladen",   
         pay_vida:"🔒 Bezahlen — Ergebnis als PDF + QRCode", pay_ia:"🔒 Bezahlen — Ergebnis als PDF + QRCode", pay_imovel:"🔒 Bezahlen — Ergebnis als PDF + QRCode", pay_calendario:"🔒 Bezahlen — Ergebnis als PDF + QRCode", pay_artistico:"🔒 Bezahlen — Ergebnis als PDF + QRCode", pay_bebe:"🔒 Bezahlen — Ergebnis als PDF + QRCode", pay_assinatura:"🔒 Bezahlen — Ergebnis als PDF + QRCode", pay_negocio:"🔒 Bezahlen — Ergebnis als PDF + QRCode", pay_casal:"🔒 Bezahlen — Ergebnis als PDF + QRCode", pay_familia:"🔒 Bezahlen — Ergebnis als PDF + QRCode", f_mes:"Monat", ph_ex_numero:"z. B.: 123", ph_nome_artistico:"Ihr Künstlername", ph_sobrenome:"Nachname", ph_sua_assinatura:"Ihre Unterschrift", ph_nome_negocio:"Geschäftsname", ph_membros:"Name jedes Mitglieds, eine Zeile pro Name",
         nomes5: { caminho: "Lebensweg", destino: "Schicksal", alma: "Seele", personalidade: "Persönlichkeit", realizacao: "Verwirklichung" },
        sig: {
@@ -1367,12 +1366,7 @@ const translations = {
         sig_alma: "Was dein Herz sich am meisten wünscht und was deine Essenz nährt.",
         sig_personalidade: "Wie andere dich sehen und welchen Eindruck du hinterlässt.",
         sig_destino: "Wohin deine Entscheidungen und dein Potenzial dich in der Zukunft führen können.",
-        investidores_titulo: "Investoren und Partner",
-        investidores_subtitulo: "Laden Sie die Unternehmenspräsentation herunter",
-        inv_card_titulo: "📄 Unternehmenspräsentation",
-        inv_card_texto: "Präsentation für Investoren und Partner",
-        download: "PDF herunterladen",   
-       }    
+        }    
     },
     ja: {
         hero_title: "数秘術マップ",
@@ -1580,6 +1574,10 @@ const translations = {
         calc_alma: "魂",
         calc_personalidade: "性格",
         calc_destino: "運命",
+         investidores_titulo: "投資家とパートナー",
+        investidores_subtitulo: "会社案内をダウンロード",
+        inv_card_titulo: "📄 会社案内",
+        inv_card_texto: "投資家とパートナーのためのプレゼンテーション",
         pay_vida:"🔒 支払う — PDF + QRコードで結果", pay_ia:"🔒 支払う — PDF + QRコードで結果", pay_imovel:"🔒 支払う — PDF + QRコードで結果", pay_calendario:"🔒 支払う — PDF + QRコードで結果", pay_artistico:"🔒 支払う — PDF + QRコードで結果", pay_bebe:"🔒 支払う — PDF + QRコードで結果", pay_assinatura:"🔒 支払う — PDF + QRコードで結果", pay_negocio:"🔒 支払う — PDF + QRコードで結果", pay_casal:"🔒 支払う — PDF + QRコードで結果", pay_familia:"🔒 支払う — PDF + QRコードで結果", f_mes:"月", ph_ex_numero:"例: 123", ph_nome_artistico:"芸名", ph_sobrenome:"姓", ph_sua_assinatura:"あなたの署名", ph_nome_negocio:"ビジネス名", ph_membros:"各メンバーの名前（1行に1つ）",
         nomes5: { caminho: "ライフパス", destino: "運命", alma: "魂", personalidade: "性格", realizacao: "実現" },
        sig: {
@@ -1588,11 +1586,7 @@ const translations = {
         sig_alma: "あなたの心が最も望むものと、あなたの本質を育むもの。",
         sig_personalidade: "他の人があなたをどう見るか、そしてあなたが与える印象。",
         sig_destino: "あなたの選択と可能性が未来に導く場所。",
-        investidores_titulo: "投資家とパートナー",
-        investidores_subtitulo: "会社案内をダウンロード",
-        inv_card_titulo: "📄 会社案内",
-        inv_card_texto: "投資家とパートナーのためのプレゼンテーション",
-        download: "PDFをダウンロード",   
+       download: "PDFをダウンロード",   
        }        
     },
     zh: {
@@ -1801,6 +1795,11 @@ const translations = {
         calc_alma: "灵魂",
         calc_personalidade: "个性",
         calc_destino: "命运",
+        investidores_titulo: "投资者与合作伙伴",
+        investidores_subtitulo: "下载企业介绍",
+        inv_card_titulo: "📄 企业介绍",
+        inv_card_texto: "面向投资者和合作伙伴的介绍", 
+        download: "下载PDF",   
         pay_vida:"🔒 支付 — PDF + 二维码结果", pay_ia:"🔒 支付 — PDF + 二维码结果", pay_imovel:"🔒 支付 — PDF + 二维码结果", pay_calendario:"🔒 支付 — PDF + 二维码结果", pay_artistico:"🔒 支付 — PDF + 二维码结果", pay_bebe:"🔒 支付 — PDF + 二维码结果", pay_assinatura:"🔒 支付 — PDF + 二维码结果", pay_negocio:"🔒 支付 — PDF + 二维码结果", pay_casal:"🔒 支付 — PDF + 二维码结果", pay_familia:"🔒 支付 — PDF + 二维码结果", f_mes:"月份", ph_ex_numero:"例如：123", ph_nome_artistico:"艺名", ph_sobrenome:"姓氏", ph_sua_assinatura:"您的签名", ph_nome_negocio:"企业名称", ph_membros:"每位成员的名字，每行一个",
         nomes5: { caminho: "生命路径", destino: "命运", alma: "灵魂", personalidade: "个性", realizacao: "实现" },
        sig: {
@@ -1809,12 +1808,7 @@ const translations = {
         sig_alma: "你内心最渴望的东西，以及滋养你本质的东西。",
         sig_personalidade: "别人如何看待你，以及你留下的印象。",
         sig_destino: "你的选择和潜力能在未来带你走向何方。",
-        investidores_titulo: "投资者与合作伙伴",
-        investidores_subtitulo: "下载企业介绍",
-        inv_card_titulo: "📄 企业介绍",
-        inv_card_texto: "面向投资者和合作伙伴的介绍", 
-        download: "下载PDF",   
-       }    
+        }    
     },
     ru: {
         hero_title: "НУМЕРОЛОГИЧЕСКАЯ КАРТА",
@@ -2025,6 +2019,10 @@ const translations = {
         calc_alma: "Душа",
         calc_personalidade: "Личность",
         calc_destino: "Судьба",
+        investidores_subtitulo: "Скачайте презентацию компании",
+        inv_card_titulo: "📄 Презентация компании",
+        inv_card_texto: "Презентация для инвесторов и партнёров", 
+        download: "Скачать PDF",   
         pay_vida:"🔒 Оплатить — Результат в PDF + QRCode", pay_ia:"🔒 Оплатить — Результат в PDF + QRCode", pay_imovel:"🔒 Оплатить — Результат в PDF + QRCode", pay_calendario:"🔒 Оплатить — Результат в PDF + QRCode", pay_artistico:"🔒 Оплатить — Результат в PDF + QRCode", pay_bebe:"🔒 Оплатить — Результат в PDF + QRCode", pay_assinatura:"🔒 Оплатить — Результат в PDF + QRCode", pay_negocio:"🔒 Оплатить — Результат в PDF + QRCode", pay_casal:"🔒 Оплатить — Результат в PDF + QRCode", pay_familia:"🔒 Оплатить — Результат в PDF + QRCode", f_mes:"Месяц", ph_ex_numero:"Напр.: 123", ph_nome_artistico:"Сценическое имя", ph_sobrenome:"Фамилия", ph_sua_assinatura:"Ваша подпись", ph_nome_negocio:"Название бизнеса", ph_membros:"Имя каждого члена, по одному в строке",
         nomes5: { caminho: "Путь Жизни", destino: "Судьба", alma: "Душа", personalidade: "Личность", realizacao: "Реализация" },
        sig: {
@@ -2033,11 +2031,7 @@ const translations = {
         sig_alma: "Чего больше всего желает ваше сердце и что питает вашу сущность.",
         sig_personalidade: "Как другие видят вас и какое впечатление вы производите.",
         sig_destino: "Куда ваши выборы и ваш потенциал могут привести вас в будущем.",
-        investidores_subtitulo: "Скачайте презентацию компании",
-        inv_card_titulo: "📄 Презентация компании",
-        inv_card_texto: "Презентация для инвесторов и партнёров", 
-        download: "Скачать PDF",   
-       }    
+        }    
     },
     hi: {
         hero_title: "अंकशास्त्र मानचित्र",
@@ -2245,6 +2239,11 @@ const translations = {
         calc_alma: "आत्मा",
         calc_personalidade: "व्यक्तित्व",
         calc_destino: "भाग्य",
+        investidores_titulo: "निवेशक और साझेदार",
+        investidores_subtitulo: "कंपनी प्रस्तुति डाउनलोड करें",
+        inv_card_titulo: "📄 कंपनी प्रस्तुति",
+        inv_card_texto: "निवेशकों और साझेदारों के लिए प्रस्तुति", 
+        download: "PDF डाउनलोड करें",  
         pay_vida:"🔒 भुगतान करें — PDF + QRCode परिणाम", pay_ia:"🔒 भुगतान करें — PDF + QRCode परिणाम", pay_imovel:"🔒 भुगतान करें — PDF + QRCode परिणाम", pay_calendario:"🔒 भुगतान करें — PDF + QRCode परिणाम", pay_artistico:"🔒 भुगतान करें — PDF + QRCode परिणाम", pay_bebe:"🔒 भुगतान करें — PDF + QRCode परिणाम", pay_assinatura:"🔒 भुगतान करें — PDF + QRCode परिणाम", pay_negocio:"🔒 भुगतान करें — PDF + QRCode परिणाम", pay_casal:"🔒 भुगतान करें — PDF + QRCode परिणाम", pay_familia:"🔒 भुगतान करें — PDF + QRCode परिणाम", f_mes:"महीना", ph_ex_numero:"जैसे: 123", ph_nome_artistico:"आपका कलात्मक नाम", ph_sobrenome:"उपनाम", ph_sua_assinatura:"आपके हस्ताक्षर", ph_nome_negocio:"व्यवसाय का नाम", ph_membros:"प्रत्येक सदस्य का नाम, एक पंक्ति में एक",
         nomes5: { caminho: "जीवन पथ", destino: "भाग्य", alma: "आत्मा", personalidade: "व्यक्तित्व", realizacao: "उपलब्धि" },
        sig: {
@@ -2253,11 +2252,6 @@ const translations = {
         sig_alma: "आपका दिल सबसे अधिक क्या चाहता है और आपके सार का पोषण क्या करता है।",
         sig_personalidade: "दूसरे आपको कैसे देखते हैं और आप क्या प्रभाव छोड़ते हैं।",
         sig_destino: "आपकी पसंद और आपकी क्षमता भविष्य में आपको कहाँ ले जा सकती है।",
-        investidores_titulo: "निवेशक और साझेदार",
-        investidores_subtitulo: "कंपनी प्रस्तुति डाउनलोड करें",
-        inv_card_titulo: "📄 कंपनी प्रस्तुति",
-        inv_card_texto: "निवेशकों और साझेदारों के लिए प्रस्तुति", 
-        download: "PDF डाउनलोड करें",  
        }    
     },
     he: {
@@ -2466,6 +2460,11 @@ const translations = {
         calc_alma: "נשמה",
         calc_personalidade: "אישיות",
         calc_destino: "גורל",
+        investidores_titulo: "משקיעים ושותפים",
+        investidores_subtitulo: "הורד את מצגת החברה",
+        inv_card_titulo: "📄 מצגת החברה",
+        inv_card_texto: "מצגת למשקיעים ושותפים",
+        download: "הורד PDF", 
         pay_vida:"🔒 שלם — תוצאה ב-PDF + QRCode", pay_ia:"🔒 שלם — תוצאה ב-PDF + QRCode", pay_imovel:"🔒 שלם — תוצאה ב-PDF + QRCode", pay_calendario:"🔒 שלם — תוצאה ב-PDF + QRCode", pay_artistico:"🔒 שלם — תוצאה ב-PDF + QRCode", pay_bebe:"🔒 שלם — תוצאה ב-PDF + QRCode", pay_assinatura:"🔒 שלם — תוצאה ב-PDF + QRCode", pay_negocio:"🔒 שלם — תוצאה ב-PDF + QRCode", pay_casal:"🔒 שלם — תוצאה ב-PDF + QRCode", pay_familia:"🔒 שלם — תוצאה ב-PDF + QRCode", f_mes:"חודש", ph_ex_numero:"לדוגמה: 123", ph_nome_artistico:"שם הבמה שלך", ph_sobrenome:"שם משפחה", ph_sua_assinatura:"החתימה שלך", ph_nome_negocio:"שם העסק", ph_membros:"שם כל חבר, אחד בכל שורה",
         nomes5: { caminho: "נתיב החיים", destino: "גורל", alma: "נשמה", personalidade: "אישיות", realizacao: "הגשמה" },
        sig: {
@@ -2474,12 +2473,7 @@ const translations = {
         sig_alma: "מה הלב שלך הכי רוצה ומה מזין את המהות שלך.",
         sig_personalidade: "איך אחרים רואים אותך ומה הרושם שאתה משאיר.",
         sig_destino: "לאן הבחירות שלך והפוטנציאל שלך יכולים להוביל אותך בעתיד.",
-        investidores_titulo: "משקיעים ושותפים",
-        investidores_subtitulo: "הורד את מצגת החברה",
-        inv_card_titulo: "📄 מצגת החברה",
-        inv_card_texto: "מצגת למשקיעים ושותפים",
-        download: "הורד PDF", 
-       }    
+        }    
     },
     ar: {
         hero_title: "خريطة الأعداد",
@@ -2687,6 +2681,11 @@ const translations = {
         calc_alma: "الروح",
         calc_personalidade: "الشخصية",
         calc_destino: "القدر",
+        investidores_titulo: "المستثمرون والشركاء",
+        investidores_subtitulo: "حمّل العرض التقديمي للشركة",
+        inv_card_titulo: "📄 العرض التقديمي للشركة",
+        inv_card_texto: "عرض تقديمي للمستثمرين والشركاء",
+        download: "تحميل PDF",  
         pay_vida:"🔒 ادفع — النتيجة في PDF + رمز QR", pay_ia:"🔒 ادفع — النتيجة في PDF + رمز QR", pay_imovel:"🔒 ادفع — النتيجة في PDF + رمز QR", pay_calendario:"🔒 ادفع — النتيجة في PDF + رمز QR", pay_artistico:"🔒 ادفع — النتيجة في PDF + رمز QR", pay_bebe:"🔒 ادفع — النتيجة في PDF + رمز QR", pay_assinatura:"🔒 ادفع — النتيجة في PDF + رمز QR", pay_negocio:"🔒 ادفع — النتيجة في PDF + رمز QR", pay_casal:"🔒 ادفع — النتيجة في PDF + رمز QR", pay_familia:"🔒 ادفع — النتيجة في PDF + رمز QR", f_mes:"الشهر", ph_ex_numero:"مثال: 123", ph_nome_artistico:"اسمك الفني", ph_sobrenome:"اسم العائلة", ph_sua_assinatura:"توقيعك", ph_nome_negocio:"اسم النشاط التجاري", ph_membros:"اسم كل عضو، واحد في كل سطر",
         nomes5: { caminho: "مسار الحياة", destino: "القدر", alma: "الروح", personalidade: "الشخصية", realizacao: "الإنجاز" },
        sig: {
@@ -2695,12 +2694,7 @@ const translations = {
         sig_alma: "ما الذي يرغب فيه قلبك أكثر وما الذي يغذي جوهرك.",
         sig_personalidade: "كيف يراك الآخرون والانطباع الذي تتركه.",
         sig_destino: "أين يمكن أن تقودك خياراتك وإمكاناتك في المستقبل.", 
-        investidores_titulo: "المستثمرون والشركاء",
-        investidores_subtitulo: "حمّل العرض التقديمي للشركة",
-        inv_card_titulo: "📄 العرض التقديمي للشركة",
-        inv_card_texto: "عرض تقديمي للمستثمرين والشركاء",
-        download: "تحميل PDF",  
-       }    
+        }    
       },  
     };
 
