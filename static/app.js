@@ -323,22 +323,43 @@ function carregarPartials() {
     })
     .catch(function(e){ console.warn('[partials] produtos.html:', e); });
 }
-// ===== MONTAR TUDO (consolidado e blindado) =====
+// ===== MONTAR TUDO (consolidado, blindado e com diagnóstico) =====
 function montarTudo() {
-  if (typeof montarTabelaBC === "function") {
-    console.log("[A1ELOS] montarTabelaBC() EXECUTANDO");
-    montarTabelaBC();
-  } else {
-    console.warn("[A1ELOS] montarTabelaBC NÃO encontrada");
+  try {
+    if (typeof montarTabelaBC === "function") {
+      console.log("[A1ELOS] montarTabelaBC() EXECUTANDO");
+      montarTabelaBC();
+      console.log("[A1ELOS] montarTabelaBC() CONCLUÍDA");
+    } else {
+      console.warn("[A1ELOS] montarTabelaBC NÃO encontrada");
+    }
+  } catch (e) {
+    console.error("[A1ELOS] ERRO em montarTabelaBC:", e);
   }
-  if (typeof montarEnergias === "function") {
-    console.log("[A1ELOS] montarEnergias() EXECUTANDO");
-    montarEnergias();
-  } else {
-    console.warn("[A1ELOS] montarEnergias NÃO encontrada");
+
+  try {
+    if (typeof montarEnergias === "function") {
+      console.log("[A1ELOS] montarEnergias() EXECUTANDO");
+      montarEnergias();
+      console.log("[A1ELOS] montarEnergias() CONCLUÍDA");
+    } else {
+      console.warn("[A1ELOS] montarEnergias NÃO encontrada");
+    }
+  } catch (e) {
+    console.error("[A1ELOS] ERRO em montarEnergias:", e);
   }
-  // Re-traduz TUDO agora que as seções existem (BC + energias + cards)
-  if (typeof traduzirTudo === "function") traduzirTudo();
+
+  try {
+    if (typeof traduzirTudo === "function") {
+      console.log("[A1ELOS] traduzirTudo() EXECUTANDO");
+      traduzirTudo();
+      console.log("[A1ELOS] traduzirTudo() CONCLUÍDA");
+    } else {
+      console.warn("[A1ELOS] traduzirTudo NÃO encontrada");
+    }
+  } catch (e) {
+    console.error("[A1ELOS] ERRO em traduzirTudo:", e);
+  }
 }
 // ===== INICIALIZAÇÃO =====
 function init() {
