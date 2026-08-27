@@ -58,13 +58,12 @@ window.pagarUrna = window.pagarUrna || function(){
 
 window.pagarEleitoral = window.pagarEleitoral || function(){
   var existente = (document.getElementById('eleiExistente') ? document.getElementById('eleiExistente').value : '').trim();
-...
-+ '&numero_existente=' + encodeURIComponent(existente) 
   var nome = (document.getElementById('eleiNome') ? document.getElementById('eleiNome').value : '').trim();
   var cargo = (document.getElementById('eleiCargo') ? document.getElementById('eleiCargo').value : '').trim();
   var sigla = (document.getElementById('eleiSigla') ? document.getElementById('eleiSigla').value : '').trim();
   if (!nome || !sigla) { alert(t_preencha()); return; }
   location.href = '/criar-checkout?produto=eleitoral&nome_completo=' + encodeURIComponent(nome)
+    + '&numero_existente=' + encodeURIComponent(existente)
     + '&cargo=' + encodeURIComponent(cargo)
     + '&numero=' + encodeURIComponent(sigla)
     + '&lang=' + getLang();
