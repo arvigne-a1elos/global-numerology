@@ -1578,6 +1578,7 @@ const translations = {
         investidores_subtitulo: "会社案内をダウンロード",
         inv_card_titulo: "📄 会社案内",
         inv_card_texto: "投資家とパートナーのためのプレゼンテーション",
+        download: "PDFをダウンロード",
         pay_vida:"🔒 支払う — PDF + QRコードで結果", pay_ia:"🔒 支払う — PDF + QRコードで結果", pay_imovel:"🔒 支払う — PDF + QRコードで結果", pay_calendario:"🔒 支払う — PDF + QRコードで結果", pay_artistico:"🔒 支払う — PDF + QRコードで結果", pay_bebe:"🔒 支払う — PDF + QRコードで結果", pay_assinatura:"🔒 支払う — PDF + QRコードで結果", pay_negocio:"🔒 支払う — PDF + QRコードで結果", pay_casal:"🔒 支払う — PDF + QRコードで結果", pay_familia:"🔒 支払う — PDF + QRコードで結果", f_mes:"月", ph_ex_numero:"例: 123", ph_nome_artistico:"芸名", ph_sobrenome:"姓", ph_sua_assinatura:"あなたの署名", ph_nome_negocio:"ビジネス名", ph_membros:"各メンバーの名前（1行に1つ）",
         nomes5: { caminho: "ライフパス", destino: "運命", alma: "魂", personalidade: "性格", realizacao: "実現" },
        sig: {
@@ -1586,8 +1587,7 @@ const translations = {
         sig_alma: "あなたの心が最も望むものと、あなたの本質を育むもの。",
         sig_personalidade: "他の人があなたをどう見るか、そしてあなたが与える印象。",
         sig_destino: "あなたの選択と可能性が未来に導く場所。",
-       download: "PDFをダウンロード",   
-       }        
+        }        
     },
     zh: {
         hero_title: "数字命理图",
