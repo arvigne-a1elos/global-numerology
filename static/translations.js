@@ -271,6 +271,11 @@ const translations = {
         inv_fr_desc: "Apresentação Empresarial — Investidores e Parceiros Estratégicos",
         inv_it_desc: "Apresentação Empresarial para Investidores e Parceiros",
         inv_de_desc: "Apresentação Empresarial para Investidores e Parceiros",
+        investidores_titulo: "Investidores e Parceiros",
+        investidores_subtitulo: "Baixe a apresentação empresarial",
+        inv_card_titulo: "📄 Apresentação Empresarial",
+        inv_card_texto: "Apresentação para Investidores e Parceiros", 
+        download: "Baixar PDF",   
        }
     },
     en: {
@@ -495,7 +500,12 @@ const translations = {
         inv_es_desc: "Business Presentation for Investors and Partners",
         inv_fr_desc: "Business Presentation — Investors & Strategic Partners",
         inv_it_desc: "Business Presentation for Investors and Partners",
-        inv_de_desc: "Business Presentation for Investors and Partners",   
+        inv_de_desc: "Business Presentation for Investors and Partners", 
+        investidores_titulo: "Investors and Partners",
+        investidores_subtitulo: "Download the business presentation",
+        inv_card_titulo: "📄 Business Presentation",
+        inv_card_texto: "Presentation for Investors and Partners",
+        download: "Download PDF",   
        }
     },
     es: { 
@@ -720,7 +730,12 @@ const translations = {
         inv_es_desc: "Presentación Empresarial para Inversores y Socios",
         inv_fr_desc: "Presentación Empresarial — Inversores y Socios Estratégicos",
         inv_it_desc: "Presentación Empresarial para Inversores y Socios",
-        inv_de_desc: "Presentación Empresarial para Inversores y Socios",   
+        inv_de_desc: "Presentación Empresarial para Inversores y Socios",
+        investidores_titulo: "Inversores y Socios",
+        investidores_subtitulo: "Descargue la presentación empresarial",
+        inv_card_titulo: "📄 Presentación Empresarial",
+        inv_card_texto: "Presentación para Inversores y Socios", 
+        download: "Descargar PDF",   
        }
     },
     it: { 
@@ -945,7 +960,12 @@ const translations = {
         inv_es_desc: "Presentazione Aziendale per Investitori e Soci",
         inv_fr_desc: "Presentazione Aziendale — Investitori e Partner Strategici",
         inv_it_desc: "Presentazione Aziendale per Investitori e Partner",
-        inv_de_desc: "Presentazione Aziendale per Investitori e Partner",   
+        inv_de_desc: "Presentazione Aziendale per Investitori e Partner",
+        investidores_titulo: "Investitori e Partner",
+        investidores_subtitulo: "Scarica la presentazione aziendale",
+        inv_card_titulo: "📄 Presentazione Aziendale",
+        inv_card_texto: "Presentazione per Investitori e Partner", 
+        download: "Scarica PDF",   
        }   
     },
     fr: {
@@ -1170,7 +1190,12 @@ const translations = {
         inv_es_desc: "Présentation d'Entreprise pour Investisseurs et Associés",
         inv_fr_desc: "Présentation d'Entreprise — Investisseurs & Partenaires Stratégiques",
         inv_it_desc: "Présentation d'Entreprise pour Investisseurs et Partenaires",
-        inv_de_desc: "Présentation d'Entreprise pour Investisseurs et Partenaires",   
+        inv_de_desc: "Présentation d'Entreprise pour Investisseurs et Partenaires", 
+        investidores_titulo: "Investisseurs et Partenaires",
+        investidores_subtitulo: "Téléchargez la présentation d'entreprise",
+        inv_card_titulo: "📄 Présentation d'Entreprise",
+        inv_card_texto: "Présentation pour Investisseurs et Partenaires",
+        download: "Télécharger le PDF",   
        }    
     },
     de: {
@@ -1395,7 +1420,12 @@ const translations = {
         inv_es_desc: "Unternehmenspräsentation für Investoren und Partner",
         inv_fr_desc: "Unternehmenspräsentation — Investoren und strategische Partner",
         inv_it_desc: "Unternehmenspräsentation für Investoren und Partner",
-        inv_de_desc: "Unternehmenspräsentation für Investoren und Partner",   
+        inv_de_desc: "Unternehmenspräsentation für Investoren und Partner",
+        investidores_titulo: "Investoren und Partner",
+        investidores_subtitulo: "Laden Sie die Unternehmenspräsentation herunter",
+        inv_card_titulo: "📄 Unternehmenspräsentation",
+        inv_card_texto: "Präsentation für Investoren und Partner",
+        download: "PDF herunterladen",   
        }    
     },
     ja: {
@@ -1620,7 +1650,12 @@ const translations = {
         inv_es_desc: "投資家とパートナーのための企業プレゼンテーション",
         inv_fr_desc: "企業プレゼンテーション — 投資家と戦略的パートナー",
         inv_it_desc: "投資家とパートナーのための企業プレゼンテーション",
-        inv_de_desc: "投資家とパートナーのための企業プレゼンテーション",   
+        inv_de_desc: "投資家とパートナーのための企業プレゼンテーション", 
+        investidores_titulo: "投資家とパートナー",
+        investidores_subtitulo: "会社案内をダウンロード",
+        inv_card_titulo: "📄 会社案内",
+        inv_card_texto: "投資家とパートナーのためのプレゼンテーション",
+        download: "PDFをダウンロード",   
        }        
     },
     zh: {
@@ -1845,7 +1880,12 @@ const translations = {
         inv_es_desc: "面向投资者和合作伙伴的企业介绍",
         inv_fr_desc: "企业介绍 — 投资者与战略合作伙伴",
         inv_it_desc: "面向投资者和合作伙伴的企业介绍",
-        inv_de_desc: "面向投资者和合作伙伴的企业介绍",   
+        inv_de_desc: "面向投资者和合作伙伴的企业介绍", 
+        investidores_titulo: "投资者与合作伙伴",
+        investidores_subtitulo: "下载企业介绍",
+        inv_card_titulo: "📄 企业介绍",
+        inv_card_texto: "面向投资者和合作伙伴的介绍", 
+        download: "下载PDF",   
        }    
     },
     ru: {
@@ -2070,7 +2110,12 @@ const translations = {
         inv_es_desc: "Деловая презентация для инвесторов и партнёров",
         inv_fr_desc: "Презентация компании — инвесторы и стратегические партнёры",
         inv_it_desc: "Деловая презентация для инвесторов и партнёров",
-        inv_de_desc: "Деловая презентация для инвесторов и партнёров",   
+        inv_de_desc: "Деловая презентация для инвесторов и партнёров", 
+        investidores_titulo: "Инвесторы и партнёры",
+        investidores_subtitulo: "Скачайте презентацию компании",
+        inv_card_titulo: "📄 Презентация компании",
+        inv_card_texto: "Презентация для инвесторов и партнёров", 
+        download: "Скачать PDF",   
        }    
     },
     hi: {
@@ -2295,7 +2340,12 @@ const translations = {
         inv_es_desc: "निवेशकों और साझेदारों के लिए व्यावसायिक प्रस्तुति",
         inv_fr_desc: "व्यावसायिक प्रस्तुति — निवेशक और रणनीतिक साझेदार",
         inv_it_desc: "निवेशकों और साझेदारों के लिए व्यावसायिक प्रस्तुति",
-        inv_de_desc: "निवेशकों और साझेदारों के लिए व्यावसायिक प्रस्तुति",   
+        inv_de_desc: "निवेशकों और साझेदारों के लिए व्यावसायिक प्रस्तुति", 
+        investidores_titulo: "निवेशक और साझेदार",
+        investidores_subtitulo: "कंपनी प्रस्तुति डाउनलोड करें",
+        inv_card_titulo: "📄 कंपनी प्रस्तुति",
+        inv_card_texto: "निवेशकों और साझेदारों के लिए प्रस्तुति", 
+        download: "PDF डाउनलोड करें",  
        }    
     },
     he: {
@@ -2520,7 +2570,12 @@ const translations = {
         inv_es_desc: "מצגת עסקית למשקיעים ושותפים",
         inv_fr_desc: "מצגת עסקית — משקיעים ושותפים אסטרטגיים",
         inv_it_desc: "מצגת עסקית למשקיעים ושותפים",
-        inv_de_desc: "מצגת עסקית למשקיעים ושותפים",   
+        inv_de_desc: "מצגת עסקית למשקיעים ושותפים",
+        investidores_titulo: "משקיעים ושותפים",
+        investidores_subtitulo: "הורד את מצגת החברה",
+        inv_card_titulo: "📄 מצגת החברה",
+        inv_card_texto: "מצגת למשקיעים ושותפים",
+        download: "הורד PDF", 
        }    
     },
     ar: {
@@ -2745,7 +2800,12 @@ const translations = {
         inv_es_desc: "عرض تقديمي للشركة للمستثمرين والشركاء",
         inv_fr_desc: "عرض تقديمي للشركة — المستثمرون والشركاء الاستراتيجيون",
         inv_it_desc: "عرض تقديمي للشركة للمستثمرين والشركاء",
-        inv_de_desc: "عرض تقديمي للشركة للمستثمرين والشركاء",   
+        inv_de_desc: "عرض تقديمي للشركة للمستثمرين والشركاء",  
+        investidores_titulo: "المستثمرون والشركاء",
+        investidores_subtitulo: "حمّل العرض التقديمي للشركة",
+        inv_card_titulo: "📄 العرض التقديمي للشركة",
+        inv_card_texto: "عرض تقديمي للمستثمرين والشركاء",
+        download: "تحميل PDF",  
        }    
       },  
     };
