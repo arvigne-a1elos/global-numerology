@@ -31,6 +31,7 @@ import dateutil.parser as dp
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from apresentacao_textos import APRESENTACAO_TEXTOS
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 STRIPE_KEY = os.getenv("STRIPE_SECRET_KEY", "")
