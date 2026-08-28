@@ -448,6 +448,35 @@ def get_apresentacao_slides(lang: str = "pt"):
         media_type="application/vnd.openxmlformats-officedocument.presentationml.presentation",
         filename=f"Apresentacao-Slides-{lang}.pptx")
 
+@app.get("/api/apresentacao")
+def get_apresentacao(lang: str = "pt"):
+    if lang not in APRESENTACAO_TEXTOS:
+        lang = "pt"
+    t = APRESENTACAO_TEXTOS[lang]
+    path = f"/tmp/Apresentacao-{lang}.pdf"
+    doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
+                            topMargin=50, bottomMargin=40)
+    e = []
+    e.append(Paragraph(t["titulo"], estilo(20, True, GOLD, TA_CENTER, 0, 4)))
+    e.append(Paragraph(t["subtitulo"], estilo(12, False, GRAY, TA_CENTER, 0, 6)))
+    e.append(Paragraph(t["confidencial"], estilo(8, False, GRAY, TA_CENTER, 0, 12)))
+    for sec_t, sec_p in [("sobre_t","sobre_p"), ("mercado_t","mercado_p"),
+                         ("port_t","port_p"), ("alcance_t","alcance_p"),
+                         ("modelo_t","modelo_p"), ("midia_t","midia_p"),
+                         ("b2b_t","b2b_p"), ("proj_t","proj_p"), ("seed_t","seed_p")]:
+        e.append(Paragraph(t[sec_t], estilo(14, True, GOLD, TA_LEFT, 10, 4)))
+        if isinstance(t[sec_p], list):
+            for p in t[sec_p]:
+                e.append(Paragraph(p, estilo(10, False, DARK, TA_LEFT, 0, 3)))
+        else:
+            e.append(Paragraph(t[sec_p], estilo(10, False, DARK, TA_LEFT, 0, 3)))
+    e.append(Spacer(1, 12))
+    e.append(Paragraph(t["frase"], estilo(11, True, GOLD, TA_CENTER, 10, 4)))
+    e.append(Paragraph(t["contato"], estilo(9, False, GRAY, TA_CENTER, 0, 2)))
+    e.append(Paragraph(t["rodape"], estilo(8, False, GRAY, TA_CENTER, 0, 2)))
+    doc.build(e)
+    return FileResponse(path, media_type="application/pdf", filename=f"Apresentacao-{lang}.pdf")
+
 # ===== MODELOS PYDANTIC =====
 class PayReq(BaseModel):
     nome: str
