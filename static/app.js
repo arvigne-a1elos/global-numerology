@@ -360,7 +360,16 @@ function montarTudo() {
   } catch (e) {
     console.error("[A1ELOS] ERRO em traduzirTudo:", e);
   }
-}
+  if (typeof atualizarLinksApresentacao === 'function') {
+  atualizarLinksApresentacao();
+}  
+}  
+function atualizarLinksApresentacao() {
+    var btnAp = document.getElementById('btnApresentacao');
+    if (btnAp && typeof getLang === 'function') btnAp.href = '/api/apresentacao?lang=' + getLang();
+    var btnSlides = document.getElementById('btnApresentacaoSlides');
+    if (btnSlides && typeof getLang === 'function') btnSlides.href = '/api/apresentacao-slides?lang=' + getLang();
+  }  
 // ===== INICIALIZAÇÃO =====
 function init() {
   var savedLang = localStorage.getItem('lang');
