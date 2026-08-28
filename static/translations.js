@@ -1592,7 +1592,7 @@ const translations = {
         calc_alma: "魂",
         calc_personalidade: "性格",
         calc_destino: "運命",
-         investidores_titulo: "投資家とパートナー",
+        investidores_titulo: "投資家とパートナー",
         investidores_subtitulo: "会社案内をダウンロード",
         inv_card_titulo: "📄 会社案内",
         inv_card_texto: "投資家とパートナーのためのプレゼンテーション",
