@@ -93,7 +93,7 @@ APRESENTACAO_TEXTOS = {
     }
 }
 
-        "en": {
+    "en": {
         "subtitulo": "The science of numbers applied to your success",
         "titulo": "Business Presentation for Investors and Partners",
         "confidencial": "CONFIDENTIAL DOCUMENT · DUNS 942242668 · August 27, 2026",
