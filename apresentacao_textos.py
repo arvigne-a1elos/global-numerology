@@ -91,7 +91,6 @@ APRESENTACAO_TEXTOS = {
         "contato": "Contato: a1elos.consultoria@gmail.com",
         "rodape": "© 2026 A1ELOS Assessoria e Consultoria — DUNS 942242668. Todos os direitos reservados."
     }
-}
 
     "en": {
         "subtitulo": "The science of numbers applied to your success",
