@@ -32,8 +32,10 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from apresentacao_textos import APRESENTACAO_TEXTOS
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
 STRIPE_KEY = os.getenv("STRIPE_SECRET_KEY", "")
 STRIPE_PUB = os.getenv("STRIPE_PUBLISHABLE_KEY", "")
 FROM_EMAIL = os.getenv("FROM_EMAIL", "noreply@a1elos.com.br")
@@ -41,8 +43,10 @@ FROM_NAME = "A1ELOS Numerologia Global"
 BASE_URL = os.getenv("BASE_URL", os.getenv("SITE_URL", "https://global-numerology.onrender.com"))
 DB_URL = os.getenv("DATABASE_URL", "sqlite:///./numerologia.db")
 ADMIN_EMAIL = "arvigne@gmail.com"
+
 if STRIPE_KEY:
     stripe.api_key = STRIPE_KEY
+
 # ===== BANCO DE DADOS =====
 engine_kwargs = {}
 if DB_URL.startswith("sqlite"):
@@ -50,6 +54,7 @@ if DB_URL.startswith("sqlite"):
 engine = create_engine(DB_URL, **engine_kwargs)
 Base = declarative_base()
 SessionLocal = sessionmaker(bind=engine)
+
 class Calc(Base):
     __tablename__ = "calculations"
     id = Column(String, primary_key=True)
@@ -62,6 +67,7 @@ class Calc(Base):
     personality = Column(Integer)
     destiny = Column(Integer)
     created_at = Column(DateTime, default=datetime.utcnow)
+
 class Order(Base):
     __tablename__ = "orders"
     id = Column(String, primary_key=True)
@@ -71,17 +77,37 @@ class Order(Base):
     status = Column(String, default="pending")
     payment_id = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
+
 try:
     Base.metadata.create_all(bind=engine)
 except Exception as e:
     logger.error(f"DB init adiado: {e}")
+
+# ===== FONTES PARA IDIOMAS CJK (japonês e chinês) =====
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.cidfonts import UnicodeCIDFont
+
+try:
+    pdfmetrics.registerFont(UnicodeCIDFont('STSong-Light'))   # chinês (zh)
+    pdfmetrics.registerFont(UnicodeCIDFont('HeiseiMin-W3'))   # japonês (ja)
+    logger.info("Fontes CJK registradas com sucesso")
+except Exception as e:
+    logger.warning("Falha ao registrar fontes CJK: %s", e)
+
+FONTE_POR_IDIOMA = {
+    'ja': 'HeiseiMin-W3',
+    'zh': 'STSong-Light',
+}
+
 # ===== APP =====
 app = FastAPI(title="Global Numerology")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True,
                    allow_methods=["*"], allow_headers=["*"])
+
 STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
 if os.path.isdir(STATIC_DIR):
     app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+
 # ===== 12 IDIOMAS E MOEDAS =====
 IDIOMAS = ["pt", "en", "es", "it", "fr", "de", "ja", "zh", "ru", "hi", "he", "ar"]
 MOEDA = {
@@ -92,6 +118,7 @@ SIMBOLO = {
     "pt": "R$", "en": "US$", "es": "€", "it": "€", "fr": "€", "de": "€",
     "ja": "¥", "zh": "¥", "ru": "₽", "hi": "₹", "he": "₪", "ar": "﷼"
 }
+
 # ===== FAIXAS DE PREÇO (23 produtos) =====
 PRODUTO_FAIXA = {
     "express": 0, "vida": 0, "completo": 1, "ia": 1,
@@ -115,8 +142,10 @@ VALORES = {
     "he": [500, 1300, 1900, 2600, 3300, 7300],
     "ar": [600, 1300, 1900, 2600, 3300, 7300]
 }
+
 def preco_local(produto, lang):
     return VALORES[lang][PRODUTO_FAIXA[produto]]
+
 # ===== NOMES DOS 23 PRODUTOS (12 IDIOMAS) =====
 PRODUTOS = {
     "pt": {"express": "Mapa Express", "vida": "Qual Vida/Ano", "completo": "Mapa Completo",
@@ -228,6 +257,7 @@ PRODUTOS = {
         "nome_canal": "اسم القناة", "nome_equipe": "اسم الفريق", "nome_ong": "اسم منظمة أو جمعية أو معهد أو مؤسسة",
         "nome_projeto": "اسم المشروع", "nome_evento": "اسم الفعالية"}
 }
+
 # ===== PRICE IDS STRIPE (23 produtos, 12 idiomas) =====
 PRICE_IDS = {
     "pt": {"express": "price_1TxocVBMLa84bVJ0EL0kb9Dn", "completo": "price_1TxohlBMLa84bVJ0jVj9307b",
@@ -351,6 +381,7 @@ PRICE_IDS = {
            "nome_equipe": "PRICE_ID_AR_NOME_EQUIPE", "nome_ong": "PRICE_ID_AR_NOME_ONG",
            "nome_projeto": "PRICE_ID_AR_NOME_PROJETO", "nome_evento": "PRICE_ID_AR_NOME_EVENTO"}
 }
+
 PRODUTO_TARGET = {
     "express": "calculadora", "vida": "produtos", "completo": "calculadora",
     "ia": "produtos", "urna": "form-urna", "eleitoral": "form-eleitoral",
@@ -372,8 +403,14 @@ GOLD_HEX = RGBColor(0xB8, 0x86, 0x0B)
 DARK_HEX = RGBColor(0x22, 0x22, 0x22)
 GRAY_HEX = RGBColor(0x88, 0x88, 0x88)
 
+FONTE_SLIDES = {
+    'ja': 'Yu Gothic',
+    'zh': 'Microsoft YaHei',
+    'ru': 'Arial',
+}
+
 def _slide_texto(slide, left, top, width, height, texto, tam=14,
-                 negrito=False, cor=DARK_HEX, alinh=PP_ALIGN.LEFT):
+                 negrito=False, cor=DARK_HEX, alinh=PP_ALIGN.LEFT, fonte='Helvetica'):
     box = slide.shapes.add_textbox(Inches(left), Inches(top), Inches(width), Inches(height))
     tf = box.text_frame
     tf.word_wrap = True
@@ -382,11 +419,12 @@ def _slide_texto(slide, left, top, width, height, texto, tam=14,
     p.font.size = Pt(tam)
     p.font.bold = negrito
     p.font.color.rgb = cor
+    p.font.name = fonte
     p.alignment = alinh
     return box
 
 def _slide_titulo(prs, t):
-    s = prs.slides.add_slide(prs.slide_layouts[6])          # layout em branco
+    s = prs.slides.add_slide(prs.slide_layouts[6])
     _slide_texto(s, 1.0, 2.0, 8.0, 1.0, "A1ELOS GLOBAL NUMEROLOGY", 18, True, GOLD_HEX, PP_ALIGN.CENTER)
     _slide_texto(s, 1.0, 3.0, 8.0, 0.7, t["subtitulo"], 13, False, GRAY_HEX, PP_ALIGN.CENTER)
     _slide_texto(s, 1.0, 3.8, 8.0, 1.4, t["titulo"], 28, True, DARK_HEX, PP_ALIGN.CENTER)
@@ -416,6 +454,7 @@ def _slide_conteudo(prs, titulo, corpo, tabela=None, colunas=None):
 
 def gerar_pptx_apresentacao(lang="pt"):
     t = APRESENTACAO_TEXTOS.get(lang, APRESENTACAO_TEXTOS["pt"])
+    fonte_slides = FONTE_SLIDES.get(lang, 'Helvetica')
     prs = Presentation()
     prs.slide_width = Inches(10)
     prs.slide_height = Inches(5.625)
@@ -453,27 +492,28 @@ def get_apresentacao(lang: str = "pt"):
     if lang not in APRESENTACAO_TEXTOS:
         lang = "pt"
     t = APRESENTACAO_TEXTOS[lang]
+    fonte = FONTE_POR_IDIOMA.get(lang)
     path = f"/tmp/Apresentacao-{lang}.pdf"
     doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
                             topMargin=50, bottomMargin=40)
     e = []
-    e.append(Paragraph(t["titulo"], estilo(20, True, GOLD, TA_CENTER, 0, 4)))
-    e.append(Paragraph(t["subtitulo"], estilo(12, False, GRAY, TA_CENTER, 0, 6)))
-    e.append(Paragraph(t["confidencial"], estilo(8, False, GRAY, TA_CENTER, 0, 12)))
+    e.append(Paragraph(t["titulo"], estilo(20, True, GOLD, TA_CENTER, 0, 4, fonte=fonte)))
+    e.append(Paragraph(t["subtitulo"], estilo(12, False, GRAY, TA_CENTER, 0, 6, fonte=fonte)))
+    e.append(Paragraph(t["confidencial"], estilo(8, False, GRAY, TA_CENTER, 0, 12, fonte=fonte)))
     for sec_t, sec_p in [("sobre_t","sobre_p"), ("mercado_t","mercado_p"),
                          ("port_t","port_p"), ("alcance_t","alcance_p"),
                          ("modelo_t","modelo_p"), ("midia_t","midia_p"),
                          ("b2b_t","b2b_p"), ("proj_t","proj_p"), ("seed_t","seed_p")]:
-        e.append(Paragraph(t[sec_t], estilo(14, True, GOLD, TA_LEFT, 10, 4)))
+        e.append(Paragraph(t[sec_t], estilo(14, True, GOLD, TA_LEFT, 10, 4, fonte=fonte)))
         if isinstance(t[sec_p], list):
             for p in t[sec_p]:
-                e.append(Paragraph(p, estilo(10, False, DARK, TA_LEFT, 0, 3)))
+                e.append(Paragraph(p, estilo(10, False, DARK, TA_LEFT, 0, 3, fonte=fonte)))
         else:
-            e.append(Paragraph(t[sec_p], estilo(10, False, DARK, TA_LEFT, 0, 3)))
+            e.append(Paragraph(t[sec_p], estilo(10, False, DARK, TA_LEFT, 0, 3, fonte=fonte)))
     e.append(Spacer(1, 12))
-    e.append(Paragraph(t["frase"], estilo(11, True, GOLD, TA_CENTER, 10, 4)))
-    e.append(Paragraph(t["contato"], estilo(9, False, GRAY, TA_CENTER, 0, 2)))
-    e.append(Paragraph(t["rodape"], estilo(8, False, GRAY, TA_CENTER, 0, 2)))
+    e.append(Paragraph(t["frase"], estilo(11, True, GOLD, TA_CENTER, 10, 4, fonte=fonte)))
+    e.append(Paragraph(t["contato"], estilo(9, False, GRAY, TA_CENTER, 0, 2, fonte=fonte)))
+    e.append(Paragraph(t["rodape"], estilo(8, False, GRAY, TA_CENTER, 0, 2, fonte=fonte)))
     doc.build(e)
     return FileResponse(path, media_type="application/pdf", filename=f"Apresentacao-{lang}.pdf")
 
@@ -483,6 +523,7 @@ class PayReq(BaseModel):
     nascimento: str
     email: Optional[str] = ""
     lang: str = "pt"
+
 class UrnaPayReq(BaseModel):
     nome_completo: str
     nome_urna: str
@@ -494,22 +535,27 @@ class UrnaPayReq(BaseModel):
     nome3: str = ""
     nome4: str = ""
     nome5: str = ""
+
 class EleitoralPayReq(BaseModel):
     nome_completo: str
     numero: str
     email: Optional[str] = ""
     lang: str = "pt"
     cargo: str = "vereador"
+
 class SugestaoReq(BaseModel):
     nome: str
     email: Optional[str] = ""
     mensagem: str
+
 class BonusReq(BaseModel):
     nome: str
     email: Optional[str] = ""
     motivo: str
+
 class AtivarBonusReq(BaseModel):
     codigo: str
+
 # ===== CONSTANTES DE ESTILO (PDFs) =====
 GOLD = colors.HexColor("#B8860B")
 LGRAY = colors.HexColor("#f0f0f0")
@@ -518,9 +564,12 @@ GRAY = colors.HexColor("#888")
 FONTE = "Helvetica"
 FN = "Helvetica-Bold"
 
-def estilo(tam, bold, cor, alinh=TA_LEFT, antes=0, depois=0):
-    return ParagraphStyle("estilo", fontName=FN if bold else FONTE, fontSize=tam,
-                          textColor=cor, alignment=alinh, spaceBefore=antes, spaceAfter=depois)
+def estilo(tam, bold, cor, alinh=TA_LEFT, antes=0, depois=0, fonte=None):
+    fn = fonte or (FN if bold else FONTE)
+    return ParagraphStyle("estilo", fontName=fn, fontSize=tam,
+                          textColor=cor, alignment=alinh,
+                          spaceBefore=antes, spaceAfter=depois,
+                          leading=tam * 1.4)
 
 CARGO_INFO = {
     "vereador": {"label": "Vereador"},
@@ -528,11 +577,13 @@ CARGO_INFO = {
     "dep_federal": {"label": "Deputado Federal"},
     "senador": {"label": "Senador"},
 }
+
 ENERGIAS = {
     1: "Lideranca", 2: "Cooperacao", 3: "Criatividade",
     4: "Trabalho", 5: "Liberdade", 6: "Familia",
     7: "Sabedoria", 8: "Poder e Prosperidade (IDEAL)", 9: "Humanitarismo",
 }
+
 # ===== GERADOR DE PDF (usa gerador_pdf.py se existir; senão fallback interno) =====
 def _gerar_pdf_local(prod, data, lang, nome, bd, dado=""):
     path = f"/tmp/p_{prod}_{uuid.uuid4().hex[:8]}.pdf"
@@ -566,6 +617,7 @@ def _gerar_pdf_local(prod, data, lang, nome, bd, dado=""):
     e.append(Paragraph("(c) A1ELOS", estilo(7, False, GRAY, TA_CENTER)))
     doc.build(e)
     return path
+
 def _pagina_sucesso_local(pdf_path, nome, prod_nome, lang="pt"):
     b64 = ""
     if pdf_path and os.path.exists(pdf_path):
@@ -580,6 +632,7 @@ def _pagina_sucesso_local(pdf_path, nome, prod_nome, lang="pt"):
             f'font-family:sans-serif"><h1 style="color:#C9A94E">✅ Confirmado!</h1>'
             f'<p>Ola <b>{nome}</b>, seu {prod_nome} foi gerado.</p>{btn}'
             f'<a href="/" style="color:#C9A94E">Voltar</a></body></html>')
+
 def _entregar_arquivo_local(tipo, nome, lang="pt"):
     try:
         pf = _gerar_pdf_local(tipo, {"life_path": 1, "expression": 1, "soul_urge": 1,
@@ -588,12 +641,14 @@ def _entregar_arquivo_local(tipo, nome, lang="pt"):
     except Exception as e:
         logger.error(f"Falha entrega: {e}")
         return {"pdf": None, "url": "", "pdf_ok": False}
+
 try:
     from gerador_pdf import gerar_pdf, pagina_sucesso, _entregar_arquivo
 except Exception:
     gerar_pdf = _gerar_pdf_local
     pagina_sucesso = _pagina_sucesso_local
     _entregar_arquivo = _entregar_arquivo_local
+
 # ===== EMAIL SIMPLES =====
 def _enviar_email_simples(destinatario, assunto, corpo):
     try:
@@ -610,6 +665,7 @@ def _enviar_email_simples(destinatario, assunto, corpo):
     except Exception as e:
         logger.error(f"SMTP: {e}")
         return False
+
 # ===== CRIACAO DE SESSAO STRIPE =====
 def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=None):
     if lang not in PRICE_IDS or produto not in PRICE_IDS[lang]:
@@ -652,9 +708,10 @@ def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=No
     except Exception as e:
         logger.error(f"Stripe: {e}")
         raise HTTPException(500, "Erro ao criar pagamento")
-        
+
 # ===== ROTA GENERICA /pay/{produto} =====
 _ALIAS_PRODUTO = {"complete": "completo"}
+
 @app.post("/pay/{produto}")
 def pay_produto(produto: str, req: PayReq):
     if not STRIPE_KEY:
@@ -662,6 +719,7 @@ def pay_produto(produto: str, req: PayReq):
     produto = _ALIAS_PRODUTO.get(produto, produto)
     lang = req.lang or "pt"
     return _criar_sessao(produto, lang, req.email, req.nome, req.nascimento)
+
 # ===== CHECKOUT NOME DE URNA =====
 @app.post("/pay/urna")
 def pay_urna(req: UrnaPayReq):
@@ -673,11 +731,8 @@ def pay_urna(req: UrnaPayReq):
     if not nomes:
         raise HTTPException(400, "Pelo menos 1 nome")
     meta = {"tipo": "urna", "lang": req.lang or "pt", "nome_completo": req.nome_completo,
-            "cargo": req.cargo, "email": req.email, "nome": req.nome_completo}
-    for i, n in enumerate(nomes, 1):
-        meta[f"nome{i}"] = n
-    return _criar_sessao("urna", req.lang or "pt", req.email, req.nome_completo, "", meta)
-# ===== CHECKOUT NUMERO ELEITORAL =====
+            "cargo": req.cargo, "email": req
+    # ===== CHECKOUT NUMERO ELEITORAL =====
 @app.post("/pay/eleitoral")
 def pay_eleitoral(req: EleitoralPayReq):
     if not STRIPE_KEY:
@@ -688,6 +743,7 @@ def pay_eleitoral(req: EleitoralPayReq):
             "cargo": req.cargo, "email": req.email, "numero_existente": "",
             "nome_completo": req.nome_completo}
     return _criar_sessao("eleitoral", req.lang or "pt", req.email, req.nome_completo, "", meta)
+
 # ===== CHECKOUT COLETIVO (desconto progressivo) =====
 @app.get("/criar-checkout-coletivo")
 async def criar_checkout_coletivo(lang: str = "pt", items: str = "[]"):
@@ -726,7 +782,8 @@ async def criar_checkout_coletivo(lang: str = "pt", items: str = "[]"):
         success_url=f"{BASE_URL}/api/pay/success?session_id={{CHECKOUT_SESSION_ID}}",
         cancel_url=f"{BASE_URL}/api/pay/cancel")
     return RedirectResponse(url=session.url)
-# ===== ROTA /criar-checkout (usada pelo site) — INDENTACAO CORRIGIDA =====
+
+# ===== ROTA /criar-checkout (usada pelo site) =====
 @app.get("/criar-checkout")
 async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
                                 qtd: int = 0, total: float = 0, itens: str = "",
@@ -744,21 +801,22 @@ async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
         raise HTTPException(400, "Produto invalido")
     meta = {}
     if produto == "urna":
-       meta = {"nome_completo": nome_completo, "cargo": cargo, "nome": nome_completo,
-         "nome1": nome1, "nome2": nome2, "nome3": nome3,
-         "nome4": nome4, "nome5": nome5}
+        meta = {"nome_completo": nome_completo, "cargo": cargo, "nome": nome_completo,
+                "nome1": nome1, "nome2": nome2, "nome3": nome3,
+                "nome4": nome4, "nome5": nome5}
     elif produto == "eleitoral":
-       numero_existente = ""        
-       meta = {"sigla": numero, "cargo": cargo,
-         "nome_completo": nome_completo, "numero_existente": numero_existente}
+        numero_existente = ""
+        meta = {"sigla": numero, "cargo": cargo,
+                "nome_completo": nome_completo, "numero_existente": numero_existente}
     else:
-      meta = {"energia": energia, "dado": dado, "tipo": tipo}
+        meta = {"energia": energia, "dado": dado, "tipo": tipo}
     s = _criar_sessao(produto, lang, email, nome, nascimento, meta)
     return RedirectResponse(url=s["url"])
+
 # ===== SUCESSO POS-PAGAMENTO =====
-# Produtos que coletam "dado" (nome digitado) em vez de nome+nascimento
 DADO_PRODUTOS = {"nome_pet", "nickname", "nome_dominio", "nome_canal",
                  "nome_equipe", "nome_ong", "nome_projeto", "nome_evento"}
+
 @app.get("/api/pay/success")
 def pay_success(request: Request):
     sid = request.query_params.get("session_id", "")
@@ -769,7 +827,7 @@ def pay_success(request: Request):
         meta = getattr(s, "metadata", {}) or {}
         if hasattr(meta, "to_dict"):
             meta = meta.to_dict()
-        nome = meta.get("nome", "Cliente")             
+        nome = meta.get("nome", "Cliente")
         email = meta.get("email", "") or getattr(s, "customer_email", "") or ""
         bd = meta.get("birth", "")
         prod = meta.get("tipo", "express")
@@ -805,6 +863,7 @@ def pay_success(request: Request):
     except Exception as e:
         logger.error(f"Success: {e}")
         return HTMLResponse("ERRO")
+
 @app.get("/api/pay/urna-success")
 def pay_urna_success(request: Request):
     sid = request.query_params.get("session_id", "")
@@ -832,6 +891,7 @@ def pay_urna_success(request: Request):
         return HTMLResponse(html)
     except Exception:
         return HTMLResponse("ERRO")
+
 @app.get("/api/pay/eleitoral-success")
 def pay_eleitoral_success(request: Request):
     sid = request.query_params.get("session_id", "")
@@ -867,9 +927,11 @@ def pay_eleitoral_success(request: Request):
         return HTMLResponse(html)
     except Exception:
         return HTMLResponse("ERRO")
+
 @app.get("/api/pay/cancel")
 def pay_cancel():
     return HTMLResponse("<h1>Cancelado</h1><a href='/'>Voltar</a>")
+
 # ===== CALCULO GRATIS =====
 @app.post("/calculate")
 def calculate(req: PayReq):
@@ -1004,90 +1066,4 @@ async def ativar_bonus(req: AtivarBonusReq):
     return {"ok": True, "target": target, "produto": info.get("produto")}
 
 @app.post("/gerar-codigos-coletivo")
-async def gerar_codigos_coletivo(req: Request):
-    corpo = await req.json()
-    itens = corpo.get("itens", [])
-    gerados = _gerar_codigos_para_itens(itens)
-    return {"ok": True, "total": len(gerados), "codigos": gerados}
-
-# ===== CAIXA DE SUGESTOES + BONUS =====
-@app.post("/sugestao")
-async def receber_sugestao(req: SugestaoReq):
-    try:
-        with open("sugestoes.json", "a") as f:
-            f.write(json.dumps({"nome": req.nome, "mensagem": req.mensagem,
-                                "data": datetime.now().isoformat()}, ensure_ascii=False) + "\n")
-    except Exception as e:
-        logger.error(f"Erro sugestao: {e}")
-    try:
-        _enviar_email_simples(ADMIN_EMAIL, "Nova sugestao/reclamacao - A1ELOS",
-                              f"Sugestao de {req.nome} ({req.email}):\n\n{req.mensagem}")
-    except Exception as e:
-        logger.error(f"Erro email sugestao: {e}")
-    return {"ok": True}
-
-@app.post("/bonus")
-async def solicitar_bonus(req: BonusReq):
-    try:
-        with open("bonus_solicitacoes.json", "a") as f:
-            f.write(json.dumps({"nome": req.nome, "motivo": req.motivo,
-                                "data": datetime.now().isoformat()}, ensure_ascii=False) + "\n")
-    except Exception as e:
-        logger.error(f"Erro bonus: {e}")
-    try:
-        _enviar_email_simples(ADMIN_EMAIL, "Solicitacao de BONUS - A1ELOS",
-                              f"Cliente: {req.nome}\nEmail: {req.email}\nMotivo: {req.motivo}")
-    except Exception as e:
-        logger.error(f"Erro email bonus: {e}")
-    return {"ok": True}
-
-# ===== SISTEMA DE PUBLICIDADE GEOLOCALIZADA =====
-ARQ_BANNERS = "banners.json"
-PAIS_CONTINENTE = {
-    "BR":"SA","AR":"SA","CL":"SA","CO":"SA","PE":"SA","UY":"SA","PY":"SA","BO":"SA","EC":"SA","VE":"SA",
-    "US":"NA","CA":"NA","MX":"NA",
-    "PT":"EU","ES":"EU","FR":"EU","DE":"EU","IT":"EU","GB":"EU","RU":"EU","NL":"EU","BE":"EU","CH":"EU","AT":"EU","IE":"EU",
-    "CN":"AS","JP":"AS","IN":"AS","KR":"AS","SA":"AS","AE":"AS","IL":"AS","TR":"AS","ID":"AS","PK":"AS","BD":"AS",
-    "EG":"AF","NG":"AF","ZA":"AF","KE":"AF","MA":"AF",
-    "AU":"OC","NZ":"OC"
-}
-
-def _carregar_banners():
-    try:
-        with open(ARQ_BANNERS, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except FileNotFoundError:
-        return []
-
-def _salvar_banners(banners):
-    with open(ARQ_BANNERS, "w", encoding="utf-8") as f:
-        json.dump(banners, f, ensure_ascii=False, indent=2)
-
-@app.get("/api/banner")
-async def get_banner(posicao: str = "topo", pais: str = "BR"):
-    banners = _carregar_banners()
-    if not banners:
-        return {"ok": False, "banner": None}
-    continente = PAIS_CONTINENTE.get(pais.upper(), "")
-    hoje = date.today().isoformat()
-    for b in banners:
-        if not b.get("ativo") or b.get("posicao") != posicao:
-            continue
-        if b.get("tipo") == "temporario":
-            if b.get("data_fim") and hoje > b["data_fim"]:
-                continue
-            if b.get("data_inicio") and hoje < b["data_inicio"]:
-                continue
-        if b.get("escopo") == "pais" and b.get("pais") == pais.upper():
-            return {"ok": True, "banner": b}
-        if b.get("escopo") == "continente" and b.get("continente") == continente:
-            return {"ok": True, "banner": b}
-        if b.get("escopo") == "mundo":
-            return {"ok": True, "banner": b}
-    return {"ok": False, "banner": None}
-
-# ===== INICIALIZACAO =====
-if __name__ == "__main__":
-    import uvicorn
-    port = int(os.getenv("PORT", "10000"))
-    uvicorn.run(app, host="0.0.0.0", port=port)
+async def gerar
