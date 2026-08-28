@@ -330,14 +330,27 @@
     <h2 class="section-title" data-i18n="investidores_titulo">Investidores e Parceiros</h2>
     <p class="section-subtitle" data-i18n="investidores_subtitulo">Baixe a apresentação empresarial</p>
     <div class="cards-grid">
+
+      <!-- Card 1: Documento (PDF) -->
       <div class="card">
         <div class="card-body">
           <h3 class="card-title" data-i18n="inv_card_titulo">📄 Apresentação Empresarial</h3>
           <p class="card-text" data-i18n="inv_card_texto">Apresentação para Investidores e Parceiros</p>
-          <a href="/static/Apresentacao.pdf"
-   target="_blank" class="btn btn-full btn-outline" data-i18n="download">Baixar PDF</a>
+          <a id="btnApresentacao" href="/api/apresentacao?lang=pt"
+             target="_blank" class="btn btn-full btn-outline" data-i18n="download">Baixar PDF</a>
         </div>
       </div>
+
+      <!-- Card 2: Slides (PPTX) -->
+      <div class="card">
+        <div class="card-body">
+          <h3 class="card-title" data-i18n="apres_card_titulo">Apresentação (Slides)</h3>
+          <p class="card-text" data-i18n="apres_card_texto">Slides visuais para reuniões e projeção</p>
+          <a id="btnApresentacaoSlides" href="/api/apresentacao-slides?lang=pt"
+             target="_blank" class="btn btn-full btn-outline" data-i18n="download_slides">Baixar PPTX</a>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
