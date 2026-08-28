@@ -394,15 +394,15 @@ def _slide_titulo(prs, t):
 
 def _slide_conteudo(prs, titulo, corpo, tabela=None, colunas=None):
     s = prs.slides.add_slide(prs.slide_layouts[6])
-    _slide_texto(s, 0.6, 0.4, 8.8, 0.8, titulo, 24, True, GOLD_HEX)
+    _slide_texto(s, 0.6, 0.4, 8.8, 0.8, titulo, 22, True, GOLD_HEX)
     y = 1.4
     if isinstance(corpo, list):
         for p in corpo:
-            _slide_texto(s, 0.8, y, 8.4, 0.6, p, 12)
-            y += 0.55
+            _slide_texto(s, 0.8, y, 8.4, 0.9, p, 11)
+            y += 0.62
     elif corpo:
-        _slide_texto(s, 0.8, y, 8.4, 0.9, corpo, 12)
-        y += 0.9
+        _slide_texto(s, 0.8, y, 8.4, 1.2, corpo, 11)
+        y += 1.2
     if tabela and colunas:
         shape = s.shapes.add_table(len(tabela) + 1, len(colunas),
                                    Inches(0.8), Inches(y),
@@ -748,7 +748,7 @@ async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
                 "nome1": nome1, "nome2": nome2, "nome3": nome3,
                 "nome4": nome4, "nome5": nome5}
     elif produto == "eleitoral":
-        numero_existente: str = "",   # ← novo parâmetro
+        numero_existente: = "" 
         meta = {"sigla": numero, "cargo": cargo,
             "nome_completo": nome_completo, "numero_existente": numero_existente}
     else:
