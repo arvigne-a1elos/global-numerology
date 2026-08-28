@@ -90,7 +90,7 @@ APRESENTACAO_TEXTOS = {
         "frase": "\"Os números nunca mentem — e apontam para uma oportunidade extraordinária.\"",
         "contato": "Contato: a1elos.consultoria@gmail.com",
         "rodape": "© 2026 A1ELOS Assessoria e Consultoria — DUNS 942242668. Todos os direitos reservados."
-    }
+    },
     "en": {
         "subtitulo": "The science of numbers applied to your success",
         "titulo": "Business Presentation for Investors and Partners",
@@ -177,7 +177,7 @@ APRESENTACAO_TEXTOS = {
         "frase": "\"Numbers never lie — and they point to an extraordinary opportunity.\"",
         "contato": "Contact: a1elos.consultoria@gmail.com",
         "rodape": "© 2026 A1ELOS Assessoria e Consultoria — DUNS 942242668. All rights reserved."
-    }
+    },
     "es": {
         "subtitulo": "La ciencia de los números aplicada a tu éxito",
         "titulo": "Presentación Empresarial para Inversores y Socios",
@@ -264,7 +264,7 @@ APRESENTACAO_TEXTOS = {
         "frase": "\"Los números nunca mienten — y apuntan a una oportunidad extraordinaria.\"",
         "contato": "Contacto: a1elos.consultoria@gmail.com",
         "rodape": "© 2026 A1ELOS Assessoria e Consultoria — DUNS 942242668. Todos los derechos reservados."
-    }
+    },
     "it": {
         "subtitulo": "La scienza dei numeri applicata al tuo successo",
         "titulo": "Presentazione Aziendale per Investitori e Partner",
@@ -351,7 +351,7 @@ APRESENTACAO_TEXTOS = {
         "frase": "\"I numeri non mentono mai — e indicano un'opportunità straordinaria.\"",
         "contato": "Contatto: a1elos.consultoria@gmail.com",
         "rodape": "© 2026 A1ELOS Assessoria e Consultoria — DUNS 942242668. Tutti i diritti riservati."
-    }
+    },
     "fr": {
         "subtitulo": "La science des nombres appliquée à votre réussite",
         "titulo": "Présentation Commerciale pour Investisseurs et Partenaires",
@@ -438,7 +438,7 @@ APRESENTACAO_TEXTOS = {
         "frase": "\"Les nombres ne mentent jamais — et ils pointent vers une opportunité extraordinaire.\"",
         "contato": "Contact : a1elos.consultoria@gmail.com",
         "rodape": "© 2026 A1ELOS Assessoria e Consultoria — DUNS 942242668. Tous droits réservés."
-    }
+    },
     "de": {
         "subtitulo": "Die Wissenschaft der Zahlen, angewendet auf Ihren Erfolg",
         "titulo": "Unternehmenspräsentation für Investoren und Partner",
@@ -525,7 +525,7 @@ APRESENTACAO_TEXTOS = {
         "frase": "\"Zahlen lügen nie — und sie weisen auf eine außergewöhnliche Gelegenheit hin.\"",
         "contato": "Kontakt: a1elos.consultoria@gmail.com",
         "rodape": "© 2026 A1ELOS Assessoria e Consultoria — DUNS 942242668. Alle Rechte vorbehalten."
-    }
+    },
     "ja": {
         "subtitulo": "数字の科学をあなたの成功に",
         "titulo": "投資家・パートナー向け会社案内",
@@ -699,7 +699,7 @@ APRESENTACAO_TEXTOS = {
         "frase": "“数字从不说谎——它们指向一个非凡的机遇。”",
         "contato": "联系方式：a1elos.consultoria@gmail.com",
         "rodape": "© 2026 A1ELOS Assessoria e Consultoria — DUNS 942242668。版权所有。"
-    }
+    },
     "ru": {
         "subtitulo": "Наука чисел, применённая к вашему успеху",
         "titulo": "Бизнес-презентация для инвесторов и партнёров",
@@ -873,8 +873,7 @@ APRESENTACAO_TEXTOS = {
         "frase": "\"संख्याएँ कभी झूठ नहीं बोलतीं — और वे एक असाधारण अवसर की ओर इशारा करती हैं।\"",
         "contato": "संपर्क: a1elos.consultoria@gmail.com",
         "rodape": "© 2026 A1ELOS Assessoria e Consultoria — DUNS 942242668. सर्वाधिकार सुरक्षित।"
-    }
-
+    },
     "he": {
         "subtitulo": "מדע המספרים מיושם להצלחתך",
         "titulo": "מצגת עסקית למשקיעים ושותפים",
