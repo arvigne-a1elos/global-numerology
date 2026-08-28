@@ -90,13 +90,16 @@ from reportlab.pdfbase.cidfonts import UnicodeCIDFont
 try:
     pdfmetrics.registerFont(UnicodeCIDFont('STSong-Light'))   # chinês (zh)
     pdfmetrics.registerFont(UnicodeCIDFont('HeiseiMin-W3'))   # japonês (ja)
-    logger.info("Fontes CJK registradas com sucesso")
+    pdfmetrics.registerFont(TTFont('DejaVu', 'fonts/DejaVuSans.ttf'))   # russo (ru)
+    logger.info("Fontes CJK + DejaVu registradas com sucesso")
 except Exception as e:
-    logger.warning("Falha ao registrar fontes CJK: %s", e)
+    logger.warning("Falha ao registrar fontes: %s", e)
+from reportlab.pdfbase.ttfonts import TTFont
 
 FONTE_POR_IDIOMA = {
     'ja': 'HeiseiMin-W3',
     'zh': 'STSong-Light',
+    'ru': 'DejaVu',  
 }
 
 # ===== APP =====
