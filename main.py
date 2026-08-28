@@ -360,6 +360,93 @@ PRODUTO_TARGET = {
     "nome_canal": "calculadora", "nome_equipe": "calculadora", "nome_ong": "calculadora",
     "nome_projeto": "calculadora", "nome_evento": "calculadora"
 }
+
+# ===== APRESENTAÇÃO DE SLIDES POR IDIOMA (PPTX dinâmico) =====
+from pptx import Presentation
+from pptx.util import Inches, Pt
+from pptx.dml.color import RGBColor
+from pptx.enum.text import PP_ALIGN
+
+GOLD_HEX = RGBColor(0xB8, 0x86, 0x0B)
+DARK_HEX = RGBColor(0x22, 0x22, 0x22)
+GRAY_HEX = RGBColor(0x88, 0x88, 0x88)
+
+def _slide_texto(slide, left, top, width, height, texto, tam=14,
+                 negrito=False, cor=DARK_HEX, alinh=PP_ALIGN.LEFT):
+    box = slide.shapes.add_textbox(Inches(left), Inches(top), Inches(width), Inches(height))
+    tf = box.text_frame
+    tf.word_wrap = True
+    p = tf.paragraphs[0]
+    p.text = texto
+    p.font.size = Pt(tam)
+    p.font.bold = negrito
+    p.font.color.rgb = cor
+    p.alignment = alinh
+    return box
+
+def _slide_titulo(prs, t):
+    s = prs.slides.add_slide(prs.slide_layouts[6])          # layout em branco
+    _slide_texto(s, 1.0, 2.0, 8.0, 1.0, "A1ELOS GLOBAL NUMEROLOGY", 18, True, GOLD_HEX, PP_ALIGN.CENTER)
+    _slide_texto(s, 1.0, 3.0, 8.0, 0.7, t["subtitulo"], 13, False, GRAY_HEX, PP_ALIGN.CENTER)
+    _slide_texto(s, 1.0, 3.8, 8.0, 1.4, t["titulo"], 28, True, DARK_HEX, PP_ALIGN.CENTER)
+    _slide_texto(s, 1.0, 5.6, 8.0, 0.6, t["confidencial"], 9, True, GRAY_HEX, PP_ALIGN.CENTER)
+
+def _slide_conteudo(prs, titulo, corpo, tabela=None, colunas=None):
+    s = prs.slides.add_slide(prs.slide_layouts[6])
+    _slide_texto(s, 0.6, 0.4, 8.8, 0.8, titulo, 24, True, GOLD_HEX)
+    y = 1.4
+    if isinstance(corpo, list):
+        for p in corpo:
+            _slide_texto(s, 0.8, y, 8.4, 0.6, p, 12)
+            y += 0.55
+    elif corpo:
+        _slide_texto(s, 0.8, y, 8.4, 0.9, corpo, 12)
+        y += 0.9
+    if tabela and colunas:
+        shape = s.shapes.add_table(len(tabela) + 1, len(colunas),
+                                   Inches(0.8), Inches(y),
+                                   Inches(8.4), Inches(0.4 * (len(tabela) + 1)))
+        tbl = shape.table
+        for j, c in enumerate(colunas):
+            tbl.cell(0, j).text = c
+        for i, linha in enumerate(tabela, start=1):
+            for j, v in enumerate(linha):
+                tbl.cell(i, j).text = str(v)
+
+def gerar_pptx_apresentacao(lang="pt"):
+    t = APRESENTACAO_TEXTOS.get(lang, APRESENTACAO_TEXTOS["pt"])
+    prs = Presentation()
+    prs.slide_width = Inches(10)
+    prs.slide_height = Inches(5.625)
+    _slide_titulo(prs, t)
+    _slide_conteudo(prs, t["sobre_t"], t["sobre_p"])
+    _slide_conteudo(prs, t["mercado_t"], t["mercado_p"])
+    _slide_conteudo(prs, t["port_t"], t["port_p"], t["port_linhas"], t["port_colunas"])
+    _slide_conteudo(prs, t["alcance_t"], t["alcance_p"])
+    _slide_conteudo(prs, t["modelo_t"], t["modelo_p"])
+    _slide_conteudo(prs, t["midia_t"], t["midia_p"])
+    _slide_conteudo(prs, t["midia_a_t"], "", t["midia_a_linhas"], t["midia_a_colunas"])
+    _slide_conteudo(prs, t["midia_b_t"], "", t["midia_b_linhas"], t["midia_b_colunas"])
+    _slide_conteudo(prs, t["b2b_t"], [t["b2b_p"]] + t["b2b_linhas"])
+    _slide_conteudo(prs, t["proj_t"], [t["proj_p"]] + t["proj_linhas"])
+    _slide_conteudo(prs, t["seed_t"], [t["seed_p"]] + t["seed_linhas"])
+    _slide_conteudo(prs, "", [t["frase"], t["contato"], t["rodape"]])
+    path = f"/tmp/Apresentacao-Slides-{lang}.pptx"
+    prs.save(path)
+    return path
+
+@app.get("/api/apresentacao-slides")
+def get_apresentacao_slides(lang: str = "pt"):
+    if lang not in APRESENTACAO_TEXTOS:
+        lang = "pt"
+    path = gerar_pptx_apresentacao(lang)
+    if not os.path.exists(path):
+        raise HTTPException(500, "Falha ao gerar os slides")
+    return FileResponse(
+        path,
+        media_type="application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        filename=f"Apresentacao-Slides-{lang}.pptx")
+
 # ===== MODELOS PYDANTIC =====
 class PayReq(BaseModel):
     nome: str
@@ -535,6 +622,7 @@ def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=No
     except Exception as e:
         logger.error(f"Stripe: {e}")
         raise HTTPException(500, "Erro ao criar pagamento")
+        
 # ===== ROTA GENERICA /pay/{produto} =====
 _ALIAS_PRODUTO = {"complete": "completo"}
 @app.post("/pay/{produto}")
