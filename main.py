@@ -83,23 +83,23 @@ try:
 except Exception as e:
     logger.error(f"DB init adiado: {e}")
 
-# ===== FONTES PARA IDIOMAS CJK (japonês e chinês) =====
+# ===== FONTES PARA IDIOMAS (CJK + Cirílico) =====
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.cidfonts import UnicodeCIDFont
+from reportlab.pdfbase.ttfonts import TTFont   # ← movido para cá (antes do try)
 
 try:
-    pdfmetrics.registerFont(UnicodeCIDFont('STSong-Light'))   # chinês (zh)
-    pdfmetrics.registerFont(UnicodeCIDFont('HeiseiMin-W3'))   # japonês (ja)
-    pdfmetrics.registerFont(TTFont('DejaVu', 'fonts/DejaVuSans.ttf'))   # russo (ru)
+    pdfmetrics.registerFont(UnicodeCIDFont('STSong-Light'))                  # chinês (zh)
+    pdfmetrics.registerFont(UnicodeCIDFont('HeiseiMin-W3'))                  # japonês (ja)
+    pdfmetrics.registerFont(TTFont('DejaVu', 'fonts/DejaVuSans.ttf'))        # russo (ru)
     logger.info("Fontes CJK + DejaVu registradas com sucesso")
 except Exception as e:
     logger.warning("Falha ao registrar fontes: %s", e)
-from reportlab.pdfbase.ttfonts import TTFont
 
 FONTE_POR_IDIOMA = {
     'ja': 'HeiseiMin-W3',
     'zh': 'STSong-Light',
-    'ru': 'DejaVu',  
+    'ru': 'DejaVu',
 }
 
 # ===== APP =====
@@ -410,6 +410,9 @@ FONTE_SLIDES = {
     'ja': 'Yu Gothic',
     'zh': 'Microsoft YaHei',
     'ru': 'Arial',
+    'hi': 'Noto Sans Devanagari',
+    'he': 'Noto Sans Hebrew',
+    'ar': 'Noto Sans Arabic',
 }
 
 def _slide_texto(slide, left, top, width, height, texto, tam=14,
