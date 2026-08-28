@@ -684,7 +684,7 @@ def pay_eleitoral(req: EleitoralPayReq):
         raise HTTPException(503, "Stripe nao configurado")
     if not req.numero or len(req.numero) < 2:
         raise HTTPException(400, "Numero obrigatorio")
-   meta = {"tipo": "eleitoral", "lang": req.lang or "pt", "sigla": req.numero,
+    meta = {"tipo": "eleitoral", "lang": req.lang or "pt", "sigla": req.numero,
             "cargo": req.cargo, "email": req.email, "numero_existente": "",
             "nome_completo": req.nome_completo}
     return _criar_sessao("eleitoral", req.lang or "pt", req.email, req.nome_completo, "", meta)
@@ -747,8 +747,8 @@ async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
         meta = {"nome_completo": nome_completo, "cargo": cargo, "nome": nome_completo,
                 "nome1": nome1, "nome2": nome2, "nome3": nome3,
                 "nome4": nome4, "nome5": nome5}
-    elif produto == "eleitoral":
-        numero_existente = ""
+     elif produto == "eleitoral":
+        numero_existente = ""        
         meta = {"sigla": numero, "cargo": cargo,
                 "nome_completo": nome_completo, "numero_existente": numero_existente}
     else:
