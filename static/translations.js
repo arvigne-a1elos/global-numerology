@@ -3188,6 +3188,9 @@ function setLanguage(lang) {
     document.documentElement.setAttribute('lang', lang);
     document.documentElement.setAttribute('dir', (lang === 'ar' || lang === 'he') ? 'rtl' : 'ltr');
     if (typeof traduzirTudo === 'function') traduzirTudo();
+    if (typeof atualizarLinksApresentacao === 'function') {
+  atualizarLinksApresentacao();
+}
 }
 function traduzir() {
     var lang = getLang();
@@ -3229,6 +3232,18 @@ function traduzirFeatures() {
         }
     });
 }
+
+function atualizarLinksApresentacao() {
+  var btnAp = document.getElementById('btnApresentacao');
+  if (btnAp && typeof getLang === 'function') {
+    btnAp.href = '/api/apresentacao?lang=' + getLang();
+  }
+  var btnSlides = document.getElementById('btnApresentacaoSlides');
+  if (btnSlides && typeof getLang === 'function') {
+    btnSlides.href = '/api/apresentacao-slides?lang=' + getLang();
+  }
+}
+
 var ENERGIA_TITULOS = {
   "pt": {"1":"Liderança","2":"Cooperação","3":"Criatividade","4":"Estrutura","5":"Liberdade","6":"Harmonia","7":"Espiritualidade","8":"Poder","9":"Humanitarismo"},
   "en": {"1":"Leadership","2":"Cooperation","3":"Creativity","4":"Structure","5":"Freedom","6":"Harmony","7":"Spirituality","8":"Power","9":"Humanitarianism"},
