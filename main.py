@@ -684,7 +684,7 @@ def pay_eleitoral(req: EleitoralPayReq):
         raise HTTPException(503, "Stripe nao configurado")
     if not req.numero or len(req.numero) < 2:
         raise HTTPException(400, "Numero obrigatorio")
-    meta = {"tipo": "eleitoral", "lang": req.lang or "pt", "sigla": req.numero,
+   meta = {"tipo": "eleitoral", "lang": req.lang or "pt", "sigla": req.numero,
             "cargo": req.cargo, "email": req.email, "numero_existente": "",
             "nome_completo": req.nome_completo}
     return _criar_sessao("eleitoral", req.lang or "pt", req.email, req.nome_completo, "", meta)
