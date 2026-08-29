@@ -113,7 +113,7 @@ STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
 if os.path.isdir(STATIC_DIR):
     app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
-# ===== 12 IDIOMAS E MOEDAS =====
+# ===== 14 IDIOMAS E MOEDAS =====
 IDIOMAS = ["pt", "en", "es", "it", "fr", "de", "ja", "zh", "ru", "id", "tr", "vi", "he", "ar"]
 MOEDA = {
     "pt": "brl", "en": "usd", "es": "eur", "it": "eur", "fr": "eur", "de": "eur",
@@ -132,6 +132,7 @@ PRODUTO_FAIXA = {
     "urna": 2, "eleitoral": 2, "imovel": 2, "calendario": 2,
     "artistico": 3, "bebe": 3, "assinatura": 3,
     "negocio": 4, "casal": 4, "familia": 5,
+    "coletivo": 5,                       # ← ADICIONADO (Bonus Coletivo/Korporat)
     "nome_pet": 0, "nickname": 0, "nome_dominio": 0, "nome_canal": 0,
     "nome_equipe": 0, "nome_ong": 0, "nome_projeto": 0, "nome_evento": 0
 }
@@ -153,9 +154,10 @@ VALORES = {
 }
 
 def preco_local(produto, lang):
+    lang = lang if lang in VALORES else "en"
     return VALORES[lang][PRODUTO_FAIXA[produto]]
 
-# ===== NOMES DOS 23 PRODUTOS (12 IDIOMAS) =====
+# ===== NOMES DOS 23 PRODUTOS (14 IDIOMAS) =====
 PRODUTOS = {
     "pt": {"express": "Mapa Express", "vida": "Qual Vida/Ano", "completo": "Mapa Completo",
         "ia": "Pesquisa IA de Nomes", "urna": "Validacao Nome de Urna", "eleitoral": "Numero Eleitoral",
@@ -238,15 +240,6 @@ PRODUTOS = {
         "nome_pet": "Имя питомца", "nickname": "Цифровой никнейм", "nome_dominio": "Имя домена",
         "nome_canal": "Название канала", "nome_equipe": "Название команды", "nome_ong": "Название НКО, ассоциации, института или фонда",
         "nome_projeto": "Название проекта", "nome_evento": "Название события"},
-    "hi": {"express": "त्वरित मानचित्र", "vida": "जीवन चरण और वर्ष", "completo": "पूर्ण मानचित्र",
-        "ia": "AI नाम खोज", "urna": "मतपत्र नाम सत्यापन", "eleitoral": "निर्वाचन संख्या",
-        "imovel": "संपत्ति संख्या", "calendario": "मासिक ऊर्जा कैलेंडर",
-        "artistico": "कलात्मक नाम सत्यापन", "bebe": "शिशु नाम योजना",
-        "assinatura": "हस्ताक्षर सत्यापन", "negocio": "व्यवसाय/उत्पाद नाम",
-        "casal": "युगल मानचित्र", "familia": "प्रीमियम परिवार मानचित्र", "coletivo": "कॉर्पोरेट बोनस",
-        "nome_pet": "पालतू नाम", "nickname": "डिजिटल उपनाम", "nome_dominio": "डोमेन नाम",
-        "nome_canal": "चैनल नाम", "nome_equipe": "टीम नाम", "nome_ong": "एनजीओ, संघ, संस्थान या फाउंडेशन का नाम",
-        "nome_projeto": "परियोजना नाम", "nome_evento": "कार्यक्रम नाम"},
     "he": {"express": "מפה מהירה", "vida": "שלב חיים ושנה", "completo": "מפה מלאה",
         "ia": "חיפוש שמות AI", "urna": "אימות שם פתק", "eleitoral": "מספר בחירות",
         "imovel": "מספר נכס", "calendario": "לוח אנרגיה חודשי",
@@ -264,8 +257,35 @@ PRODUTOS = {
         "casal": "خريطة الزوجين", "familia": "خريطة العائلة المميزة", "coletivo": "مكافأة الشركات",
         "nome_pet": "اسم الحيوان الأليف", "nickname": "اللقب الرقمي", "nome_dominio": "اسم النطاق",
         "nome_canal": "اسم القناة", "nome_equipe": "اسم الفريق", "nome_ong": "اسم منظمة أو جمعية أو معهد أو مؤسسة",
-        "nome_projeto": "اسم المشروع", "nome_evento": "اسم الفعالية"}
-}
+        "nome_projeto": "اسم المشروع", "nome_evento": "اسم الفعالية"},
+    "id": {"express": "Peta Ekspres", "vida": "Fase Kehidupan & Tahun", "completo": "Peta Lengkap",
+        "ia": "Pencarian Nama AI", "urna": "Validasi Nama Surat Suara", "eleitoral": "Nomor Elektoral",
+        "imovel": "Nomor Properti", "calendario": "Kalender Energi Bulanan",
+        "artistico": "Validasi Nama Artistik", "bebe": "Perencanaan Nama Bayi",
+        "assinatura": "Validasi Tanda Tangan", "negocio": "Nama untuk Bisnis/Produk",
+        "casal": "Peta Pasangan", "familia": "Peta Keluarga Premium", "coletivo": "Bonus Kolektif/Perusahaan",
+        "nome_pet": "Nama Hewan Peliharaan", "nickname": "Nama Panggilan Digital", "nome_dominio": "Nama Domain",
+        "nome_canal": "Nama Kanal", "nome_equipe": "Nama Tim", "nome_ong": "Nama LSM, Asosiasi, Lembaga atau Yayasan",
+        "nome_projeto": "Nama Proyek", "nome_evento": "Nama Acara"},     
+    "tr": {"express": "Ekspres Harita", "vida": "Yaşam Evresi ve Yıl", "completo": "Tam Harita",
+        "ia": "AI İsim Arama", "urna": "Oy Pusulası İsim Doğrulama", "eleitoral": "Seçim Numarası",
+        "imovel": "Mülk Numarası", "calendario": "Aylık Enerji Takvimi",
+        "artistico": "Sahne Adı Doğrulama", "bebe": "Bebek İsmi Planlama",
+        "assinatura": "İmza Doğrulama", "negocio": "İşletme/Ürün Adı",
+        "casal": "Çift Haritası", "familia": "Premium Aile Haritası", "coletivo": "Kurumsal Bonus",
+        "nome_pet": "Evcil Hayvan Adı", "nickname": "Dijital Takma Ad", "nome_dominio": "Alan Adı",
+        "nome_canal": "Kanal Adı", "nome_equipe": "Ekip Adı", "nome_ong": "STK, Dernek, Enstitü veya Vakıf Adı",
+        "nome_projeto": "Proje Adı", "nome_evento": "Etkinlik Adı"},     
+    "vi": {"express": "Bản Đồ Nhanh", "vida": "Giai Đoạn Cuộc Đời & Năm", "completo": "Bản Đồ Đầy Đủ",
+        "ia": "Tìm Kiếm Tên AI", "urna": "Xác Minh Tên Phiếu Bầu", "eleitoral": "Số Bầu Cử",
+        "imovel": "Số Bất Động Sản", "calendario": "Lịch Năng Lượng Hàng Tháng",
+        "artistico": "Xác Minh Nghệ Danh", "bebe": "Lên Kế Hoạch Tên Cho Bé",
+        "assinatura": "Xác Minh Chữ Ký", "negocio": "Tên Cho Doanh Nghiệp/Sản Phẩm",
+        "casal": "Bản Đồ Cặp Đôi", "familia": "Bản Đồ Gia Đình Cao Cấp", "coletivo": "Thưởng Tập Thể/Doanh Nghiệp",
+        "nome_pet": "Tên Thú Cưng", "nickname": "Biệt Danh Kỹ Thuật Số", "nome_dominio": "Tên Miền",
+        "nome_canal": "Tên Kênh", "nome_equipe": "Tên Đội Nhóm", "nome_ong": "Tên Tổ Chức, Hiệp Hội, Viện hoặc Quỹ",
+        "nome_projeto": "Tên Dự Án", "nome_evento": "Tên Sự Kiện"}     
+    }
 
 # ===== PRICE IDS STRIPE (23 produtos, 12 idiomas) =====
 PRICE_IDS = {
@@ -359,16 +379,6 @@ PRICE_IDS = {
            "nome_dominio": "PRICE_ID_RU_NOME_DOMINIO", "nome_canal": "PRICE_ID_RU_NOME_CANAL",
            "nome_equipe": "PRICE_ID_RU_NOME_EQUIPE", "nome_ong": "PRICE_ID_RU_NOME_ONG",
            "nome_projeto": "PRICE_ID_RU_NOME_PROJETO", "nome_evento": "PRICE_ID_RU_NOME_EVENTO"},
-    "hi": {"express": "PRICE_ID_HI_EXPRESS", "completo": "PRICE_ID_HI_COMPLETO",
-           "urna": "PRICE_ID_HI_URNA", "eleitoral": "PRICE_ID_HI_ELEITORAL",
-           "vida": "PRICE_ID_HI_VIDA", "ia": "PRICE_ID_HI_IA", "imovel": "PRICE_ID_HI_IMOVEL",
-           "calendario": "PRICE_ID_HI_CALENDARIO", "artistico": "PRICE_ID_HI_ARTISTICO",
-           "bebe": "PRICE_ID_HI_BEBE", "assinatura": "PRICE_ID_HI_ASSINATURA",
-           "negocio": "PRICE_ID_HI_NEGOCIO", "casal": "PRICE_ID_HI_CASAL", "familia": "PRICE_ID_HI_FAMILIA",
-           "nome_pet": "PRICE_ID_HI_NOME_PET", "nickname": "PRICE_ID_HI_NICKNAME",
-           "nome_dominio": "PRICE_ID_HI_NOME_DOMINIO", "nome_canal": "PRICE_ID_HI_NOME_CANAL",
-           "nome_equipe": "PRICE_ID_HI_NOME_EQUIPE", "nome_ong": "PRICE_ID_HI_NOME_ONG",
-           "nome_projeto": "PRICE_ID_HI_NOME_PROJETO", "nome_evento": "PRICE_ID_HI_NOME_EVENTO"},
     "he": {"express": "price_1TyIKeBMLa84bVJ0W02dbXOt", "completo": "price_1TyIO0BMLa84bVJ08P0j9THk",
            "urna": "price_1TyIPbBMLa84bVJ08GnGksRk", "eleitoral": "price_1TyISQBMLa84bVJ0sb7xjIyV",
            "vida": "PRICE_ID_HE_VIDA", "ia": "PRICE_ID_HE_IA", "imovel": "PRICE_ID_HE_IMOVEL",
@@ -388,7 +398,37 @@ PRICE_IDS = {
            "nome_pet": "PRICE_ID_AR_NOME_PET", "nickname": "PRICE_ID_AR_NICKNAME",
            "nome_dominio": "PRICE_ID_AR_NOME_DOMINIO", "nome_canal": "PRICE_ID_AR_NOME_CANAL",
            "nome_equipe": "PRICE_ID_AR_NOME_EQUIPE", "nome_ong": "PRICE_ID_AR_NOME_ONG",
-           "nome_projeto": "PRICE_ID_AR_NOME_PROJETO", "nome_evento": "PRICE_ID_AR_NOME_EVENTO"}
+           "nome_projeto": "PRICE_ID_AR_NOME_PROJETO", "nome_evento": "PRICE_ID_AR_NOME_EVENTO"},
+    "id": {"express": "PRICE_ID_ID_EXPRESS", "completo": "PRICE_ID_ID_COMPLETO",
+           "urna": "PRICE_ID_ID_URNA", "eleitoral": "PRICE_ID_ID_ELEITORAL",
+           "vida": "PRICE_ID_ID_VIDA", "ia": "PRICE_ID_ID_IA", "imovel": "PRICE_ID_ID_IMOVEL",
+           "calendario": "PRICE_ID_ID_CALENDARIO", "artistico": "PRICE_ID_ID_ARTISTICO",
+           "bebe": "PRICE_ID_ID_BEBE", "assinatura": "PRICE_ID_ID_ASSINATURA",
+           "negocio": "PRICE_ID_ID_NEGOCIO", "casal": "PRICE_ID_ID_CASAL", "familia": "PRICE_ID_ID_FAMILIA",
+           "nome_pet": "PRICE_ID_ID_NOME_PET", "nickname": "PRICE_ID_ID_NICKNAME",
+           "nome_dominio": "PRICE_ID_ID_NOME_DOMINIO", "nome_canal": "PRICE_ID_ID_NOME_CANAL",
+           "nome_equipe": "PRICE_ID_ID_NOME_EQUIPE", "nome_ong": "PRICE_ID_ID_NOME_ONG",
+           "nome_projeto": "PRICE_ID_ID_NOME_PROJETO", "nome_evento": "PRICE_ID_ID_NOME_EVENTO"},
+    "tr": {"express": "PRICE_ID_TR_EXPRESS", "completo": "PRICE_ID_TR_COMPLETO",
+           "urna": "PRICE_ID_TR_URNA", "eleitoral": "PRICE_ID_TR_ELEITORAL",
+           "vida": "PRICE_ID_TR_VIDA", "ia": "PRICE_ID_TR_IA", "imovel": "PRICE_ID_TR_IMOVEL",
+           "calendario": "PRICE_ID_TR_CALENDARIO", "artistico": "PRICE_ID_TR_ARTISTICO",
+           "bebe": "PRICE_ID_TR_BEBE", "assinatura": "PRICE_ID_TR_ASSINATURA",
+           "negocio": "PRICE_ID_TR_NEGOCIO", "casal": "PRICE_ID_TR_CASAL", "familia": "PRICE_ID_TR_FAMILIA",
+           "nome_pet": "PRICE_ID_TR_NOME_PET", "nickname": "PRICE_ID_TR_NICKNAME",
+           "nome_dominio": "PRICE_ID_TR_NOME_DOMINIO", "nome_canal": "PRICE_ID_TR_NOME_CANAL",
+           "nome_equipe": "PRICE_ID_TR_NOME_EQUIPE", "nome_ong": "PRICE_ID_TR_NOME_ONG",
+           "nome_projeto": "PRICE_ID_TR_NOME_PROJETO", "nome_evento": "PRICE_ID_TR_NOME_EVENTO"},
+    "vi": {"express": "PRICE_ID_VI_EXPRESS", "completo": "PRICE_ID_VI_COMPLETO",
+           "urna": "PRICE_ID_VI_URNA", "eleitoral": "PRICE_ID_VI_ELEITORAL",
+           "vida": "PRICE_ID_VI_VIDA", "ia": "PRICE_ID_VI_IA", "imovel": "PRICE_ID_VI_IMOVEL",
+           "calendario": "PRICE_ID_VI_CALENDARIO", "artistico": "PRICE_ID_VI_ARTISTICO",
+           "bebe": "PRICE_ID_VI_BEBE", "assinatura": "PRICE_ID_VI_ASSINATURA",
+           "negocio": "PRICE_ID_VI_NEGOCIO", "casal": "PRICE_ID_VI_CASAL", "familia": "PRICE_ID_VI_FAMILIA",
+           "nome_pet": "PRICE_ID_VI_NOME_PET", "nickname": "PRICE_ID_VI_NICKNAME",
+           "nome_dominio": "PRICE_ID_VI_NOME_DOMINIO", "nome_canal": "PRICE_ID_VI_NOME_CANAL",
+           "nome_equipe": "PRICE_ID_VI_NOME_EQUIPE", "nome_ong": "PRICE_ID_VI_NOME_ONG",
+           "nome_projeto": "PRICE_ID_VI_NOME_PROJETO", "nome_evento": "PRICE_ID_VI_NOME_EVENTO"} 
 }
 
 PRODUTO_TARGET = {
@@ -966,6 +1006,14 @@ def calculate(req: PayReq):
         raise HTTPException(500, "Erro")
     finally:
         db.close()
+               
+def preco_display(lang, faixa=0):
+    """Preço da faixa (0-5) formatado com centavos, em moeda local."""
+    v = VALORES.get(lang, VALORES["en"])[faixa]
+    s = SIMBOLO.get(lang, SIMBOLO["en"])
+    if lang in ["pt", "en", "es", "it", "fr", "de", "he", "ar"]:
+        return f"{s} {v/100:.2f}".replace(".", ",")   # R$ 8,00 · US$ 1,50 · € 7,00
+    return f"{s} {v:,}".replace(",", ".")             # Rp 24.000 · ₺ 51 · ₫ 125.000
 
 @app.post("/calculate/urna")
 def calc_urna(req: UrnaPayReq):
