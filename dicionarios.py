@@ -403,7 +403,24 @@ PDF_TEXTS = {
            "ciclos": "دورة 1 (0-{a}) | دورة 2 ({b}-{c}) | دورة 3 ({d}+)", "desafios": "التحديات: {x} | {y} | الرئيسي {z}", "ano_pessoal": "السنة الشخصية {ano}: {v}",
            "grade": "الشبكة: موجودة {p} | ناقصة {c}", "baixar": "تحميل PDF", "confirmado": "تم التأكيد!", "gerado": "مرحباً {nome}، تم إنشاء {prod} الخاص بك.",
            "voltar": "رجوع", "qr_titulo": "تعذر إنشاء ملف PDF الخاص بك.", "qr_instrucao": "امسح رمز QR أدناه للوصول إلى مستندك.", "entrega": "مستند سري - التسليم عبر PDF/QRCode."},
-    
+     "id": {"t_express": "PETA EKSPRES", "t_completo": "PETA LENGKAP", "t_urna": "VALIDASI NAMA SURAT SUARA", "t_eleitoral": "NOMOR PEMILIHAN",
+           "numero": "Nomor", "valor": "Nilai", "caminho": "Jalan Hidup", "expressao": "Ekspresi", "motivacao": "Dorongan Jiwa", "personalidade": "Kepribadian", "destino": "Takdir",
+           "cargo": "Jabatan", "sugestoes": "Saran:", "op8": "Opsi dengan Energi 8 - IDEAL:", "op_alt": "Opsi Alternatif:", "num_existente": "Nomor yang ada",
+           "ciclos": "Siklus 1 (0-{a}) | Siklus 2 ({b}-{c}) | Siklus 3 ({d}+)", "desafios": "Tantangan: {x} | {y} | Utama {z}", "ano_pessoal": "Tahun Pribadi {ano}: {v}",
+           "grade": "Kisi: Ada {p} | Kurang {c}", "baixar": "UNDUH PDF", "confirmado": "Dikonfirmasi!", "gerado": "Halo {nome}, {prod} Anda telah dibuat.",
+           "voltar": "Kembali", "qr_titulo": "PDF Anda tidak dapat dibuat.", "qr_instrucao": "Pindai kode QR di bawah untuk mengakses dokumen Anda.", "entrega": "Dokumen rahasia - pengiriman via PDF/QRCode."},
+     "tr": {"t_express": "EKSPRES HARITA", "t_completo": "TAM HARITA", "t_urna": "OY PUSLASINA ADI DOĞRULAMA", "t_eleitoral": "SEÇİM NUMARASI",
+           "numero": "Sayı", "valor": "Değer", "caminho": "Yaşam Yolu", "expressao": "İfade", "motivacao": "Ruh Arzusu", "personalidade": "Kişilik", "destino": "Kader",
+           "cargo": "Görev", "sugestoes": "Öneriler:", "op8": "Enerji 8'li Seçenekler - İDEAL:", "op_alt": "Alternatif Seçenekler:", "num_existente": "Mevcut numara",
+           "ciclos": "Döngü 1 (0-{a}) | Döngü 2 ({b}-{c}) | Döngü 3 ({d}+)", "desafios": "Zorluklar: {x} | {y} | Ana {z}", "ano_pessoal": "Kişisel Yıl {ano}: {v}",
+           "grade": "Izgara: Mevcut {p} | Eksik {c}", "baixar": "PDF İNDİR", "confirmado": "Onaylandı!", "gerado": "Merhaba {nome}, {prod} oluşturuldu.",
+           "voltar": "Geri", "qr_titulo": "PDF'niz oluşturulamadı.", "qr_instrucao": "Belize erişmek için aşağıdaki QR kodunu tarayın.", "entrega": "Gizli belge - PDF/QRCode ile teslim."},
+     "vi": {"t_express": "BẢN ĐỒ NHANH", "t_completo": "BẢN ĐỒ ĐẦY ĐỦ", "t_urna": "XÁC MINH TÊN PHIẾU BẦU", "t_eleitoral": "SỐ BẦU CỬ",
+           "numero": "Số", "valor": "Giá trị", "caminho": "Đường đời", "expressao": "Biểu hiện", "motivacao": "Khao khát tâm", "personalidade": "Tính cách", "destino": "Số phận",
+           "cargo": "Chức vụ", "sugestoes": "Gợi ý:", "op8": "Tùy chọn Năng lượng 8 - LÝ TƯỞNG:", "op_alt": "Tùy chọn Thay thế:", "num_existente": "Số hiện có",
+           "ciclos": "Chu kỳ 1 (0-{a}) | Chu kỳ 2 ({b}-{c}) | Chu kỳ 3 ({d}+)", "desafios": "Thách thức: {x} | {y} | Chính {z}", "ano_pessoal": "Năm Cá nhân {ano}: {v}",
+           "grade": "Lưới: Có {p} | Thiếu {c}", "baixar": "TẢI PDF", "confirmado": "Đã xác nhận!", "gerado": "Xin chào {nome}, {prod} của bạn đã được tạo.",
+           "voltar": "Quay lại", "qr_titulo": "Không thể tạo PDF của bạn.", "qr_instrucao": "Quét mã QR bên dưới để truy cập tài liệu của bạn.", "entrega": "Tài liệu bí mật - giao qua PDF/QRCode."}
 }
 # ===== SEÇÕES DOS PDFS (12 IDIOMAS) =====
 PDF_SECOES = {
@@ -434,15 +451,21 @@ PDF_SECOES = {
     "ru": {"numeros_principais": "Ваши главные числа", "caminho_ciclos": "Путь жизни и циклы",
            "desafios_realizacoes": "Вызовы и достижения", "como_calculamos": "Как мы считаем?",
            "por_que_energia_8": "Почему энергия 8?", "energia_8_ideal": "Энергия 8 — ИДЕАЛ:", "alternativas": "Альтернативы:"},
-    "hi": {"numeros_principais": "आपके मुख्य अंक", "caminho_ciclos": "जीवन पथ और चक्र",
-           "desafios_realizacoes": "चुनौतियाँ और उपलब्धियाँ", "como_calculamos": "हम कैसे गणना करते हैं?",
-           "por_que_energia_8": "ऊर्जा 8 क्यों?", "energia_8_ideal": "ऊर्जा 8 — आदर्श:", "alternativas": "विकल्प:"},
     "he": {"numeros_principais": "המספרים העיקריים שלך", "caminho_ciclos": "נתיב החיים ומחזורים",
            "desafios_realizacoes": "אתגרים והישגים", "como_calculamos": "איך אנחנו מחשבים?",
            "por_que_energia_8": "למה אנרגיה 8?", "energia_8_ideal": "אנרגיה 8 — אידיאלי:", "alternativas": "חלופות:"},
     "ar": {"numeros_principais": "أرقامك الرئيسية", "caminho_ciclos": "مسار الحياة والدورات",
            "desafios_realizacoes": "التحديات والإنجازات", "como_calculamos": "كيف نحسب؟",
-           "por_que_energia_8": "لماذا الطاقة 8؟", "energia_8_ideal": "الطاقة 8 — مثالي:", "alternativas": "بدائل:"}
+           "por_que_energia_8": "لماذا الطاقة 8؟", "energia_8_ideal": "الطاقة 8 — مثالي:", "alternativas": "بدائل:"},
+    "id": {"numeros_principais": "Angka Utama Anda", "caminho_ciclos": "Jalan Hidup dan Siklus",
+           "desafios_realizacoes": "Tantangan dan Pencapaian", "como_calculamos": "Bagaimana kami menghitung?",
+           "por_que_energia_8": "Mengapa energi 8?", "energia_8_ideal": "Energi 8 — IDEAL:", "alternativas": "Alternatif:"},
+    "tr": {"numeros_principais": "Ana Numaralarınız", "caminho_ciclos": "Yaşam Yolu ve Döngüler",
+           "desafios_realizacoes": "Zorluklar ve Başarılar", "como_calculamos": "Nasıl hep hesaplıyoruz?",
+           "por_que_energia_8": "Neden enerji 8?", "energia_8_ideal": "Enerji 8 — İDEAL:", "alternativas": "Alternatifler:"},
+    "vi": {"numeros_principais": "Các Số Chính của Bạn", "caminho_ciclos": "Đường đời và Chu kỳ",
+           "desafios_realizacoes": "Thách thức và Thành đạt", "como_calculamos": "Chúng tôi tính như thế nào?",
+           "por_que_energia_8": "Tại sao là năng lượng 8?", "energia_8_ideal": "Năng lượng 8 — LÝ TƯỞNG:", "alternativas": "Phương án thay thế:"}
 }
 
 # ===== BOAS-VINDAS, PERIODOS E CABEÇALHOS DE REALIZAÇÕES (12 IDIOMAS) =====
@@ -456,9 +479,11 @@ BOAS_VINDAS = {
     "ja": "ようこそ！このレポートは、あなたの本質を形作るエネルギーを明らかにします。数字の叡智があなたの道を照らしますように。",
     "zh": "欢迎！这份报告揭示了塑造您本质的能量。愿数字的智慧照亮您的道路。",
     "ru": "Добро пожаловать! Этот отчёт раскрывает энергии, формирующие вашу сущность. Пусть мудрость чисел осветит ваш путь.",
-    "hi": "स्वागत है! यह रिपोर्ट उन ऊर्जाओं को प्रकट करती है जो आपके सार को आकार देती हैं। अंकों की बुद्धि आपके मार्ग को रोशन करे।",
     "he": "ברוכים הבאים! דוח זה חושף את האנרגיות המעצבות את מהותכם. שתיאיר חכמת המספרים את דרככם.",
-    "ar": "مرحباً بك! يكشف هذا التقرير الطاقات التي تشكل جوهرك. لتنير حكمة الأرقام طريقك."
+    "ar": "مرحباً بك! يكشف هذا التقرير الطاقات التي تشكل جوهرك. لتنير حكمة الأرقام طريقك.",
+    "id": "Selamat datang! Laporan ini mengungkap energi yang membentuk esensi Anda. Semoga kebijaksanaan angka mencerahkan jalan Anda.",
+    "tr": "Hoş geldiniz! Bu rapor özünüzü şekillendiren enerjileri ortaya koyar. Sayıların bilgeliği yolunuzu aydınlatsın.",
+    "vi": "Chào bạn! Báo cáo này tiết lộ những năng lượng định hình bản chất của bạn. Cầu trí tuệ của các con số soi sáng con đường của bạn."
 }
 PERIODOS = {
     "pt": ("0 a 28/36 anos", "28/36 a 54/63 anos", "54/63 anos em diante"),
@@ -470,15 +495,18 @@ PERIODOS = {
     "ja": ("0〜28/36歳", "28/36〜54/63歳", "54/63歳以上"),
     "zh": ("0至28/36岁", "28/36至54/63岁", "54/63岁以上"),
     "ru": ("0-28/36 лет", "28/36-54/63 лет", "54/63 лет и старше"),
-    "hi": ("0-28/36 वर्ष", "28/36-54/63 वर्ष", "54/63 वर्ष और अधिक"),
     "he": ("0-28/36 שנים", "28/36-54/63 שנים", "54/63 ומעלה"),
-    "ar": ("0-28/36 سنة", "28/36-54/63 سنة", "54/63 سنة فأكثر")
+    "ar": ("0-28/36 سنة", "28/36-54/63 سنة", "54/63 سنة فأكثر"),
+    "id": ("0-28/36 tahun", "28/36-54/63 tahun", "54/63 tahun ke atas"),
+    "tr": ("0-28/36 yıl", "28/36-54/63 yıl", "54/63 yıl ve üzeri"),
+    "vi": ("0-28/36 tuổi", "28/36-54/63 tuổi", "54/63 tuổi trở lên")
 }
 REALIZ_HEAD = {
     "pt": ("Fase", "Período"), "en": ("Phase", "Period"), "es": ("Fase", "Período"),
     "it": ("Fase", "Periodo"), "fr": ("Phase", "Période"), "de": ("Phase", "Zeitraum"),
     "ja": ("段階", "期間"), "zh": ("阶段", "时期"), "ru": ("Этап", "Период"),
-    "hi": ("चरण", "अवधि"), "he": ("שלב", "תקופה"), "ar": ("المرحلة", "الفترة")
+    "he": ("שלב", "תקופה"), "ar": ("المرحلة", "الفترة"), "id": ("Fase", "Periode"),
+    "tr": ("Aşama", "Dönem"), "vi": ("Giai đoạn", "Thời kỳ")
 }
 
 # ===== AMOR_TXT — DISTINÇÃO 5 E 6 NO AMOR (12 IDIOMAS) =====
@@ -494,9 +522,11 @@ AMOR_TXT = {
         "ja": "恋愛において5は情熱と官能性：激しい魅力、誘惑、そして自由な愛の欲求。",
         "zh": "在爱情中，5是激情与感官：强烈的吸引、诱惑以及对情感自由的渴望。",
         "ru": "В любви 5 — это страсть и чувственность: сильное влечение, соблазн и стремление к свободе чувств.",
-        "hi": "प्रेम में 5 जुनून और कामुकता है: तीव्र आकर्षण, प्रलोभन और भावनात्मक स्वतंत्रता की इच्छा।",
         "he": "באהבה, 5 הוא תשוקה וחושניות: משיכה עוצמתית, פיתוי ורצון לחופש רגשי.",
-        "ar": "في الحب، 5 هو شغف وحسية: انجذاب شديد وإغراء ورغبة في الحرية العاطفية."
+        "ar": "في الحب، 5 هو شغف وحسية: انجذاب شديد وإغراء ورغبة في الحرية العاطفية.",
+        "id": "Dalam cinta, 5 adalah gairah dan sensualitas: daya tarik yang kuat, godaan, dan keinginan akan kebebasan afektif.",
+        "tr": "Aşkta 5, tutku ve şehvettir: yoğun çekim, baştan çıkarma ve duygusal özgürlük arzusu.",
+        "vi": "Trong tình yêu, 5 là đam mê và gợi cảm: sự hấp dẫn mãnh liệt, quyến rũ và khao khát tự do tình cảm."
     },
     6: {
         "pt": "No amor, o 6 é amor humano e solidário: cuidado, compaixão, família e responsabilidade afetiva.",
@@ -508,13 +538,15 @@ AMOR_TXT = {
         "ja": "恋愛において6は人間的で連帯する愛：思いやり、慈愛、家族、そして感情的な責任。",
         "zh": "在爱情中，6是人文与团结之爱：关怀、同情、家庭与情感责任。",
         "ru": "В любви 6 — это человеческая и солидарная любовь: забота, сострадание, семья и эмоциональная ответственность.",
-        "hi": "प्रेम में 6 मानवीय और एकजुट प्रेम है: देखभाल, करुणा, परिवार और भावनात्मक जिम्मेदारी।",
         "he": "באהבה, 6 הוא אהבה אנושית ומלאת סולידריות: אכפתיות, חמלה, משפחה ואחריות רגשית.",
-        "ar": "في الحب، 6 هو حب إنساني وتضامني: رعاية ورحمة وأسرة ومسؤولية عاطفية."
+        "ar": "في الحب، 6 هو حب إنساني وتضامني: رعاية ورحمة وأسرة ومسؤولية عاطفية.",
+        "id": "Dalam cinta, 6 adalah cinta manusiawi dan solidaritas: kepedulian, kasih sayang, keluarga, dan tanggung jawab afetif.",
+        "tr": "Aşkta 6, insani ve dayanışmacı sevgidir: şefkat, merhamet, aile ve duygusal sorumluluk.",
+        "vi": "Trong tình yêu, 6 là tình yêu nhân văn và đoàn kết: sự quan tâm, lòng trắc ẩn, gia đình và trách nhiệm tình cảm."
     }
 }
 
-# ===== ENERGIAS_TXT — DESCRIÇÕES DAS ENERGIAS 1 A 9 (12 IDIOMAS) =====
+# ===== ENERGIAS_TXT — DESCRIÇÕES DAS ENERGIAS 1 A 9 (14 IDIOMAS) =====
 # Cards da seção "Energias de Pesquisa" + alimenta PDFs. 5 e 6 trazem a distinção do amor.
 ENERGIAS_TXT = {
     1: {
@@ -527,9 +559,11 @@ ENERGIAS_TXT = {
         "ja": "リーダーシップ：勇気、開拓者精神、ひらめき。",
         "zh": "领导力：勇气、开拓精神与灵感。",
         "ru": "Лидерство: смелость, первопроходчество и вдохновение.",
-        "hi": "नेतृत्व: साहस, अग्रणी भावना और प्रेरणा।",
         "he": "מנהיגות: אומץ, חלוציות והשראה.",
-        "ar": "القيادة: شجاعة وريادة وإلهام."
+        "ar": "القيادة: شجاعة وريادة وإلهام.",
+        "id": "Kepemimpinan: keberanian, jiwa perintis, dan inspirasi.",
+        "tr": "Liderlik: cesaret, öncülük ve ilham.",
+        "vi": "Lãnh đạo: lòng dũng cảm, tinh thần tiên phong và cảm hứng."
     },
     2: {
         "pt": "Cooperação: diplomacia, sensibilidade e união.",
@@ -541,9 +575,11 @@ ENERGIAS_TXT = {
         "ja": "協力：外交、感受性、団結。",
         "zh": "合作：外交、敏感与团结。",
         "ru": "Сотрудничество: дипломатия, чуткость и единство.",
-        "hi": "सहयोग: कूटनीति, संवेदनशीलता और एकता।",
         "he": "שיתוף פעולה: דיפלומטיה, רגישות ואחדות.",
-        "ar": "التعاون: دبلوماسية وحساسية واتحاد."
+        "ar": "التعاون: دبلوماسية وحساسية واتحاد.",
+        "id": "Kerja Sama: diplomasi, kepekaan, dan persatuan.",
+        "tr": "İşbirliği: diplomasi, hassasiyet ve birlik.",
+        "vi": "Hợp tác: ngoại giao, nhạy cảm và đoàn kết."
     },
     3: {
         "pt": "Criatividade: expressão, comunicação e otimismo.",
@@ -555,9 +591,11 @@ ENERGIAS_TXT = {
         "ja": "創造性：表現、コミュニケーション、楽観。",
         "zh": "创造力：表达、沟通与乐观。",
         "ru": "Творчество: выражение, общение и оптимизм.",
-        "hi": "रचनात्मकता: अभिव्यक्ति, संचार और आशावाद।",
         "he": "יצירתיות: ביטוי, תקשורת ואופטימיות.",
-        "ar": "الإبداع: تعبير وتواصل وتفاؤل."
+        "ar": "الإبداع: تعبير وتواصل وتفاؤل.",
+        "id": "Kreativitas: ekspresi, komunikasi, dan optimisme.",
+        "tr": "Yaratıcılık: ifade, iletişim ve iyimserlik.",
+        "vi": "Sáng tạo: biểu đạt, giao tiếp và lạc quan."
     },
     4: {
         "pt": "Estrutura: organização, disciplina e segurança.",
@@ -569,9 +607,11 @@ ENERGIAS_TXT = {
         "ja": "構造：組織、規律、安全。",
         "zh": "结构：组织、纪律与安全。",
         "ru": "Структура: организация, дисциплина и безопасность.",
-        "hi": "संरचना: संगठन, अनुशासन और सुरक्षा।",
         "he": "מבנה: ארגון, משמעת וביטחון.",
-        "ar": "البنية: تنظيم وانضباط وأمان."
+        "ar": "البنية: تنظيم وانضباط وأمان.",
+        "id": "Struktur: organisasi, disiplin, dan keamanan.",
+        "tr": "Yapı: organizasyon, disiplin ve güvenlik.",
+        "vi": "Cấu trúc: tổ chức, kỷ luật và an toàn."   
     },
     5: {
         "pt": "Liberdade: aventura, adaptabilidade e versatilidade. O 5 fala do amor romântico/paixão.",
@@ -583,9 +623,11 @@ ENERGIAS_TXT = {
         "ja": "自由：冒険、適応力、多才。5はロマンチックな愛・情熱を語ります。",
         "zh": "自由：冒险、适应与多才。5代表浪漫/激情之爱。",
         "ru": "Свобода: приключения, адаптивность и универсальность. 5 говорит о романтической/страстной любви.",
-        "hi": "स्वतंत्रता: रोमांच, अनुकूलन और बहुमुखी। 5 रोमांटिक/भावुक प्रेम की बात करता है।",
         "he": "חופש: הרפתקאות, יכולת הסתגלות ורב-גוניות. 5 מדבר על אהבה רומנטית/תשוקה.",
-        "ar": "الحرية: مغامرة وتكيف وتعدد مواهب. 5 يتحدث عن الحب الرومانسي/الشغف."
+        "ar": "الحرية: مغامرة وتكيف وتعدد مواهب. 5 يتحدث عن الحب الرومانسي/الشغف.",
+        "id": "Kebebasan: petualangan, kemampuan beradaptasi, dan keserbagunaan. 5 berbicara tentang cinta romantis/gairah.",
+        "tr": "Özgürlük: macera, uyum sağlama ve çok yönlülük. 5, romantik/tutkulu aşktan söz eder.",
+        "vi": "Tự do: phiêu lưu, khả năng thích nghi và linh hoạt. Số 5 nói về tình yêu lãng mạn/đam mê."
     },
     6: {
         "pt": "Harmonia: amor humano, compaixão e responsabilidade. O 6 fala do amor espiritual/humanitário.",
@@ -597,9 +639,11 @@ ENERGIAS_TXT = {
         "ja": "調和：人間愛、慈愛、責任。6は精神的な愛・人道を語ります。",
         "zh": "和谐：人文之爱、同情与责任。6代表精神/人道之爱。",
         "ru": "Гармония: человеческая любовь, сострадание и ответственность. 6 говорит о духовной/гуманитарной любви.",
-        "hi": "सामंजस्य: मानवीय प्रेम, करुणा और जिम्मेदारी। 6 आध्यात्मिक/मानवतावादी प्रेम की बात करता है।",
         "he": "הרמוניה: אהבה אנושית, חמלה ואחריות. 6 מדבר על אהבה רוחנית/הומניטרית.",
-        "ar": "الانسجام: حب إنساني ورحمة ومسؤولية. 6 يتحدث عن الحب الروحي/الإنساني."
+        "ar": "الانسجام: حب إنساني ورحمة ومسؤولية. 6 يتحدث عن الحب الروحي/الإنساني.",
+        "id": "Harmoni: cinta manusiawi, kasih sayang, dan tanggung jawab. 6 berbicara tentang cinta spiritual/kemanusiaan.",
+        "tr": "Uyum: insani sevgi, şefkat ve sorumluluk. 6, manevi/insani aşktan söz eder.",
+        "vi": "Hòa hợp: tình yêu nhân văn, lòng trắc ẩn và trách nhiệm. Số 6 nói về tình yêu tâm linh/nhân đạo."
     },
     7: {
         "pt": "Espiritualidade: introspecção, sabedoria e profundidade.",
@@ -611,9 +655,11 @@ ENERGIAS_TXT = {
         "ja": "精神性：内省、知恵、深み。",
         "zh": "灵性：内省、智慧与深度。",
         "ru": "Духовность: самоанализ, мудрость и глубина.",
-        "hi": "आध्यात्मिकता: आत्मनिरीक्षण, ज्ञान और गहराई।",
         "he": "רוחניות: התבוננות פנימית, חוכמה ועומק.",
-        "ar": "الروحانية: استبطان وحكمة وعمق."
+        "ar": "الروحانية: استبطان وحكمة وعمق.",
+        "id": "Spiritualitas: introspeksi, kebijaksanaan, dan kedalaman.",
+        "tr": "Maneviyat: içe dönüş, bilgelik ve derinlik.",
+        "vi": "Tâm linh: nội tâm, trí tuệ và chiều sâu." 
     },
     8: {
         "pt": "Poder: realização, autoridade e prosperidade.",
@@ -625,9 +671,11 @@ ENERGIAS_TXT = {
         "ja": "力：達成、権威、豊かさ。",
         "zh": "力量：成就、权威与丰盛。",
         "ru": "Сила: достижение, власть и процветание.",
-        "hi": "शक्ति: उपलब्धि, अधिकार और समृद्धि।",
         "he": "כוח: הישג, סמכות ושפע.",
-        "ar": "القوة: إنجاز وسلطة وازدهار."
+        "ar": "القوة: إنجاز وسلطة وازدهار.",
+        "id": "Kekuatan: pencapaian, otoritas, dan kemakmuran.",
+        "tr": "Güç: başarı, otorite ve refah.",
+        "vi": "Sức mạnh: thành tựu, quyền uy và thịnh vượng."
     },
     9: {
         "pt": "Humanitarismo: compaixão, conclusão e serviço ao todo.",
@@ -639,9 +687,11 @@ ENERGIAS_TXT = {
         "ja": "人道主義：思いやり、完結、全体への奉仕。",
         "zh": "人道主义：同情、圆满与服务整体。",
         "ru": "Гуманизм: сострадание, завершение и служение целому.",
-        "hi": "मानवतावाद: करुणा, पूर्णता और समग्र की सेवा।",
         "he": "הומניטריות: חמלה, השלמה ושירות לכלל.",
-        "ar": "الإنسانية: رحمة وإنجاز وخدمة الكل."
+        "ar": "الإنسانية: رحمة وإنجاز وخدمة الكل.",
+        "id": "Humanitarianisme: kasih sayang, penyelesaian, dan pelayanan kepada keseluruhan.",
+        "tr": "İnsaniyet: şefkat, tamamlama ve bütüne hizmet.",
+        "vi": "Nhân đạo: lòng trắc ẩn, hoàn thành và phục vụ tổng thể."
     }
 }
 
