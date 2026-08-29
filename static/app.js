@@ -1,23 +1,32 @@
 // ===== A1ELOS GLOBAL NUMEROLOGY - APP.JS (VERSÃO CONSOLIDADA) =====
 // ================================================================
 // ===== MONTAR SELETOR DE IDIOMAS (14 bandeiras) =====
-var PRECO_BASE = {
-  pt:[8,17,26,35,44,98], en:[20,44,71,89,116,251], es:[11,26,35,53,62,134],
-  it:[11,26,35,53,62,134], fr:[11,26,35,53,62,134], de:[11,26,35,53,62,134],
-  ja:[1400,3000,4600,6200,7700,17000], zh:[26,53,71,98,125,260],
-  ru:[440,800,1250,1700,2150,4400], id:[11000,23000,36000,48000,60000,134000],
-  tr:[58,123,188,254,319,710], vi:[25000,53000,81000,109000,137000,305000],
-  he:[44,98,143,197,242,530], ar:[35,71,107,143,170,377]
-};
-var SIMB = {pt:'R$',en:'US$',es:'€',it:'€',fr:'€',de:'€',ja:'¥',zh:'¥',ru:'₽',id:'Rp',tr:'₺',vi:'₫',he:'₪',ar:'﷼'};
-var PRECO_DISPLAY = {};
-Object.keys(PRECO_BASE).forEach(function(l){
-  var zero = (l==='ja'||l==='vi');
-  PRECO_DISPLAY[l] = PRECO_BASE[l].map(function(v){
-    var txt = zero ? String(v) : v.toFixed(2).replace('.', ',');
-    return SIMB[l]+' '+txt;
+function montarSeletorIdioma() {
+  var container = document.getElementById('langSelector');
+  if (!container) return;
+  if (container.children.length > 0) return;
+  var lista = [
+    {id:'pt', b:'🇧🇷'},{id:'en', b:'🇺🇸'},{id:'es', b:'🇪🇸'},{id:'it', b:'🇮🇹'},
+    {id:'fr', b:'🇫🇷'},{id:'de', b:'🇩🇪'},{id:'ja', b:'🇯🇵'},{id:'zh', b:'🇨🇳'},
+    {id:'ru', b:'🇷🇺'},{id:'id', b:'🇮🇩'},{id:'tr', b:'🇹🇷'},{id:'vi', b:'🇻🇳'},
+    {id:'he', b:'🇮🇱'},{id:'ar', b:'🇸🇦'}
+  ];
+  var atual = getLang();
+  lista.forEach(function(l) {
+    var b = document.createElement('button');
+    b.className = 'lang-btn' + (l.id === atual ? ' active' : '');
+    b.title = l.id.toUpperCase();
+    b.innerHTML = l.b;
+    b.onclick = function() {
+      setLanguage(l.id);
+      if (typeof montarTudo === "function") montarTudo();
+      else if (typeof traduzirTudo === "function") traduzirTudo();
+      var ativos = container.querySelectorAll('.lang-btn');
+      for (var i = 0; i < ativos.length; i++) ativos[i].classList.remove('active');
+      b.classList.add('active');
+    };
+    container.appendChild(b);
   });
-});
 }
 function pagarVida(){var n=document.getElementById('vidaNome').value.trim(),b=document.getElementById('vidaNasc').value;if(!n||!b){alert(t_preencha());return;}location.href='/criar-checkout?produto=vida&nome='+encodeURIComponent(n)+'&nascimento='+encodeURIComponent(b)+'&lang='+getLang();}
 function pagarIa(){var n=document.getElementById('iaNome').value.trim(),e=document.getElementById('iaEnergia').value;if(!n||!e){alert(t_preencha());return;}location.href='/criar-checkout?produto=ia&nome='+encodeURIComponent(n)+'&energia='+encodeURIComponent(e)+'&lang='+getLang();}
@@ -30,7 +39,6 @@ function pagarNegocio(){var n=document.getElementById('negocioNome').value.trim(
 function pagarCasal(){var n1=document.getElementById('casalNome1').value.trim(),n2=document.getElementById('casalNome2').value.trim();if(!n1||!n2){alert(t_preencha());return;}location.href='/criar-checkout?produto=casal&dado='+encodeURIComponent(n1+' & '+n2)+'&lang='+getLang();}
 function pagarFamilia(){var n=document.getElementById('familiaMembros').value.trim();if(!n){alert(t_preencha());return;}location.href='/criar-checkout?produto=familia&dado='+encodeURIComponent(n)+'&lang='+getLang();}
 function t_preencha(){var t=translations[getLang()]||translations.pt;return t.preencha_dado||'Preencha os dados solicitados.';}
-
 window.pagarUrna = window.pagarUrna || function(){
   var nomeCompleto = (document.getElementById('urnaNome') ? document.getElementById('urnaNome').value : '').trim();
   var cargo = (document.getElementById('urnaCargo') ? document.getElementById('urnaCargo').value : '').trim();
@@ -46,7 +54,6 @@ window.pagarUrna = window.pagarUrna || function(){
     + '&nome3=' + encodeURIComponent(n3) + '&nome4=' + encodeURIComponent(n4)
     + '&nome5=' + encodeURIComponent(n5) + '&lang=' + getLang();
 };
-
 window.pagarEleitoral = window.pagarEleitoral || function(){
   var existente = (document.getElementById('eleiExistente') ? document.getElementById('eleiExistente').value : '').trim();
   var nome = (document.getElementById('eleiNome') ? document.getElementById('eleiNome').value : '').trim();
@@ -64,12 +71,10 @@ var DADO_APLICA = ["nome_pet","nickname","nome_dominio","nome_canal","nome_equip
 function comprar(produto) {
   var lang = getLang();
   var t = translations[lang] || translations.pt;
-  // Produtos que precisam de dado específico → abre modal
   if (DADO_APLICA.indexOf(produto) !== -1) {
     abrirModalDado(produto, lang);
     return;
   }
-  // Demais produtos → fluxo atual (nome + nascimento)
   var nome = (document.getElementById("calcNome") ? document.getElementById("calcNome").value : "").trim();
   var nasc = (document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim();
   if (!nome || !nasc) {
@@ -80,7 +85,6 @@ function comprar(produto) {
   }
   window.location.href = '/criar-checkout?lang=' + lang + '&produto=' + produto
     + '&nome=' + encodeURIComponent(nome) + '&nascimento=' + encodeURIComponent(nasc);
-
 }
 function selecionarOpcao(container, btn) {
   container.querySelectorAll(".coleta-opcao").forEach(function(b){ b.classList.remove("ativo"); });
@@ -111,7 +115,7 @@ function fecharModalColeta() {
 function abrirModalDado(produto, lang) {
   var t = translations[lang] || translations.pt;
   var label = (DADO_LABEL[lang] && DADO_LABEL[lang][produto]) ? DADO_LABEL[lang][produto] : DADO_LABEL.pt[produto];
-  var titulo = (PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang][produto]) ? PRODUTOS_TRAD[lang][produto] : produto;  // ← DEFINIR
+  var titulo = (PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang][produto]) ? PRODUTOS_TRAD[lang][produto] : produto;
   var overlay = document.getElementById("modalDado");
   if (!overlay) {
     overlay = document.createElement("div");
@@ -120,11 +124,8 @@ function abrirModalDado(produto, lang) {
     overlay.innerHTML = '<div class="modal-box">'
       + '<h3 id="modalDadoTitulo"></h3>'
       + '<p id="modalDadoLabel"></p>'
-      // Passo 1: tipo
       + '<div id="modalPassoTipo"><p id="modalTipoLabel" style="color:#ccc;margin-bottom:8px"></p><div id="modalTipoOpcoes" class="modal-grid"></div></div>'
-      // Passo 2: energia (1-9)
       + '<div id="modalPassoEnergia" style="display:none"><p id="modalEnergiaLabel" style="color:#ccc;margin-bottom:8px"></p><div id="modalEnergiaOpcoes" class="modal-grid"></div></div>'
-      // Passo 3: nome
       + '<div id="modalPassoNome" style="display:none"><p id="modalNomeLabel" style="color:#ccc;margin-bottom:8px"></p><input id="modalDadoInput" type="text" class="modal-input"></div>'
       + '<div class="modal-actions">'
       + '<button id="modalDadoOk" class="btn">' + (t.confirmar || "Confirmar") + '</button>'
@@ -134,11 +135,9 @@ function abrirModalDado(produto, lang) {
     overlay.addEventListener("click", function(e){ if (e.target === overlay) fecharModalDado(); });
     document.getElementById("modalDadoCancel").onclick = fecharModalDado;
   }
-  // ✅ FIX: reatribui o onclick a CADA abertura (evita capturar o 1º produto)
   document.getElementById("modalDadoOk").onclick = function(){ confirmarModalDado(produto, lang); };
   document.getElementById("modalDadoTitulo").textContent = titulo;
   document.getElementById("modalDadoLabel").textContent = label;
-   // Monta passos
   window._modalDado = { produto: produto, lang: lang, tipo: "", energia: "" };
   montarPassoTipo(produto, lang);
   overlay.classList.add("active");
@@ -264,14 +263,13 @@ function irParaCompra(produto, lang, energia) {
   if (!lang) lang = getLang();
   var qs = 'lang=' + encodeURIComponent(lang) + '&produto=' + encodeURIComponent(produto);
   if (energia) qs += '&energia=' + encodeURIComponent(energia);
-  // aproveita nome/data da calculadora se já preenchidos
   var nome = (document.getElementById("calcNome") ? document.getElementById("calcNome").value : "").trim();
   var nasc = (document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim();
   if (nome) qs += '&nome=' + encodeURIComponent(nome);
   if (nasc) qs += '&nascimento=' + encodeURIComponent(nasc);
   window.location.href = '/criar-checkout?' + qs;
 }
-// ===== TOGGLE FORM (mostra/oculta um formulário) — usada pelos botões "Iniciar Validação" etc. =====
+// ===== TOGGLE FORM (mostra/oculta um formulário) =====
 function toggleForm(formId) {
   var el = document.getElementById(formId);
   if (!el) return;
@@ -279,7 +277,7 @@ function toggleForm(formId) {
   el.style.display = escondido ? 'block' : 'none';
   if (escondido) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
-// ===== ENVIAR MENSAGEM / ATIVAR BÔNUS (adicionadas — padrão do arquivo) =====
+// ===== ENVIAR MENSAGEM / ATIVAR BÔNUS =====
 window.enviarMensagem = window.enviarMensagem || function(){
   var nome = (document.getElementById('msgNome') ? document.getElementById('msgNome').value : '').trim();
   var texto = (document.getElementById('msgTexto') ? document.getElementById('msgTexto').value : '').trim();
@@ -329,7 +327,6 @@ function montarTudo() {
   } catch (e) {
     console.error("[A1ELOS] ERRO em montarTabelaBC:", e);
   }
-
   try {
     if (typeof montarEnergias === "function") {
       console.log("[A1ELOS] montarEnergias() EXECUTANDO");
@@ -341,7 +338,6 @@ function montarTudo() {
   } catch (e) {
     console.error("[A1ELOS] ERRO em montarEnergias:", e);
   }
-
   try {
     if (typeof traduzirTudo === "function") {
       console.log("[A1ELOS] traduzirTudo() EXECUTANDO");
@@ -354,20 +350,20 @@ function montarTudo() {
     console.error("[A1ELOS] ERRO em traduzirTudo:", e);
   }
   if (typeof atualizarLinksApresentacao === 'function') {
-  atualizarLinksApresentacao();
-}  
-}  
+    atualizarLinksApresentacao();
+  }
+}
 function atualizarLinksApresentacao() {
-    var btnAp = document.getElementById('btnApresentacao');
-    if (btnAp && typeof getLang === 'function') btnAp.href = '/api/apresentacao?lang=' + getLang();
-    var btnSlides = document.getElementById('btnApresentacaoSlides');
-    if (btnSlides && typeof getLang === 'function') btnSlides.href = '/api/apresentacao-slides?lang=' + getLang();
-  }  
+  var btnAp = document.getElementById('btnApresentacao');
+  if (btnAp && typeof getLang === 'function') btnAp.href = '/api/apresentacao?lang=' + getLang();
+  var btnSlides = document.getElementById('btnApresentacaoSlides');
+  if (btnSlides && typeof getLang === 'function') btnSlides.href = '/api/apresentacao-slides?lang=' + getLang();
+}
 // ===== INICIALIZAÇÃO =====
 function init() {
   var savedLang = localStorage.getItem('lang');
   var browserLang = navigator.language.split('-')[0];
-  var defaultLang = savedLang || (typeof translations !== 'undefined' && translations[browserLang] ? browserLang : 'pt');  
+  var defaultLang = savedLang || (typeof translations !== 'undefined' && translations[browserLang] ? browserLang : 'pt');
   montarSeletorIdioma();
   setLanguage(defaultLang);
   if (typeof carregarPartials === 'function') {
@@ -376,7 +372,7 @@ function init() {
     montarTudo();
   }
 }
-// ===== INICIALIZAÇÃO AUTOMÁTICA GARANTIDA (única via de disparo) =====
+// ===== INICIALIZAÇÃO AUTOMÁTICA GARANTIDA =====
 function iniciarSeguro() {
   try {
     init();
