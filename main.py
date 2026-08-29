@@ -100,6 +100,8 @@ FONTE_POR_IDIOMA = {
     'ja': 'HeiseiMin-W3',
     'zh': 'STSong-Light',
     'ru': 'DejaVu',
+    'tr': 'DejaVu',   # turco: ç ğ ı ö ş ü (Helvetica padrão não cobre ş e ğ)
+    'vi': 'DejaVu',   # vietnamita: diacríticos combinados
 }
 
 # ===== APP =====
@@ -112,14 +114,16 @@ if os.path.isdir(STATIC_DIR):
     app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 # ===== 12 IDIOMAS E MOEDAS =====
-IDIOMAS = ["pt", "en", "es", "it", "fr", "de", "ja", "zh", "ru", "hi", "he", "ar"]
+IDIOMAS = ["pt", "en", "es", "it", "fr", "de", "ja", "zh", "ru", "id", "tr", "vi", "he", "ar"]
 MOEDA = {
     "pt": "brl", "en": "usd", "es": "eur", "it": "eur", "fr": "eur", "de": "eur",
-    "ja": "jpy", "zh": "cny", "ru": "rub", "hi": "inr", "he": "ils", "ar": "sar"
+    "ja": "jpy", "zh": "cny", "ru": "rub", "id": "idr", "tr": "try", "vi": "vnd",
+    "he": "ils", "ar": "sar"
 }
 SIMBOLO = {
     "pt": "R$", "en": "US$", "es": "€", "it": "€", "fr": "€", "de": "€",
-    "ja": "¥", "zh": "¥", "ru": "₽", "hi": "₹", "he": "₪", "ar": "﷼"
+    "ja": "¥", "zh": "¥", "ru": "₽", "id": "Rp", "tr": "₺", "vi": "₫",
+    "he": "₪", "ar": "﷼"
 }
 
 # ===== FAIXAS DE PREÇO (23 produtos) =====
@@ -141,7 +145,9 @@ VALORES = {
     "ja": [250, 550, 800, 1100, 1400, 3200],
     "zh": [1200, 2500, 4000, 5500, 7000, 16000],
     "ru": [13000, 28000, 43000, 58000, 73000, 160000],
-    "hi": [12000, 28000, 43000, 58000, 73000, 160000],
+    "id": [2400000, 5500000, 7900000, 11000000, 14200000, 31500000],
+    "tr": [5100, 12000, 17000, 24000, 30500, 68000],
+    "vi": [3800000, 8900000, 12700000, 17800000, 22900000, 50800000],
     "he": [500, 1300, 1900, 2600, 3300, 7300],
     "ar": [600, 1300, 1900, 2600, 3300, 7300]
 }
@@ -410,9 +416,9 @@ FONTE_SLIDES = {
     'ja': 'Yu Gothic',
     'zh': 'Microsoft YaHei',
     'ru': 'Arial',
-    'hi': 'Noto Sans Devanagari',
-    'he': 'Noto Sans Hebrew',
-    'ar': 'Noto Sans Arabic',
+    'id': 'Arial',
+    'tr': 'Arial',
+    'vi': 'Arial',
 }
 
 def _slide_texto(slide, left, top, width, height, texto, tam=14,
@@ -682,7 +688,7 @@ def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=No
     if meta_extra:
         meta.update(meta_extra)
     pay_types = ["card", "boleto"] if MOEDA.get(lang, "brl") == "brl" else ["card"]
-    locale = lang if lang in ["pt", "en", "es", "fr", "de", "it", "ja", "zh"] else "auto"
+    locale = lang if lang in ["pt", "en", "es", "fr", "de", "it", "ja", "zh", "id", "tr", "vi"] else "auto"
     if produto == "urna":
         success_url = f"{BASE_URL}/api/pay/urna-success?session_id={{CHECKOUT_SESSION_ID}}"
     elif produto == "eleitoral":
@@ -778,7 +784,7 @@ async def criar_checkout_coletivo(lang: str = "pt", items: str = "[]"):
     if not line_items:
         raise HTTPException(400, "Itens invalidos")
     pay_types = ["card", "boleto"] if MOEDA.get(lang, "brl") == "brl" else ["card"]
-    locale = lang if lang in ["pt", "en", "es", "fr", "de", "it", "ja", "zh"] else "auto"
+    locale = lang if lang in ["pt", "en", "es", "fr", "de", "it", "ja", "zh", "id", "tr", "vi"] else "auto"
     session = stripe.checkout.Session.create(
         mode="payment", payment_method_types=pay_types,
         line_items=line_items,
