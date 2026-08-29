@@ -89,6 +89,120 @@ function comprar(produto) {
   }
   window.location.href = '/criar-checkout?lang=' + lang + '&produto=' + produto
     + '&nome=' + encodeURIComponent(nome) + '&nascimento=' + encodeURIComponent(nasc);
+
+  function abrirModalColeta(produto) {
+  var lang = getLang();
+  var t = translations[lang] || translations.pt;
+  var conf = CONF_COLETA[produto];
+  var overlay = document.getElementById("modalColeta");
+  if (!overlay) return;
+  coletaAtual = produto;
+  document.getElementById("coletaTitulo").textContent =
+  (PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang][produto]) || produto;
+  document.getElementById("coletaLabelTipo").textContent = t[conf.labelTipo] || t.f_tipo || "Tipo";
+  var wrap = document.getElementById("coletaOpcoesTipo");
+  wrap.innerHTML = "";
+  conf.tipos.forEach(function(ch){
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "btn btn-outline coleta-opcao";
+    b.setAttribute("data-valor", ch); b.textContent = tradOpcao(ch);
+    b.onclick = function(){ selecionarOpcao(wrap, b); };
+    wrap.appendChild(b);
+  });
+  var bOutro = document.createElement("button");
+  bOutro.type = "button"; bOutro.className = "btn btn-outline coleta-opcao";
+  bOutro.setAttribute("data-valor", "__outro__"); bOutro.textContent = t.f_outro || "OUTRO/QUAL?";
+  bOutro.onclick = function(){
+    selecionarOpcao(wrap, bOutro);
+    document.getElementById("coletaOutroWrap").style.display = "block";
+  };
+  wrap.appendChild(bOutro);
+  document.getElementById("coletaOutroWrap").style.display = "none";
+  document.getElementById("coletaOutroTexto").value = "";
+  montarGradeEnergia("coletaEnergia");
+  if (window._energiaPresel) {
+  var btns = document.querySelectorAll("#coletaEnergia .energia-num");
+  for (var bi = 0; bi < btns.length; bi++) {
+  if (btns[bi].textContent === String(window._energiaPresel)) { btns[bi].classList.add("ativo"); }
+}
+  window._energiaPresel = null;
+}
+  var areaWrap = document.getElementById("coletaAreaWrap");
+  if (conf.temArea) {
+    areaWrap.style.display = "block";
+    document.getElementById("coletaLabelArea").textContent = t.f_area || "Área Desejada";
+    var aw = document.getElementById("coletaOpcoesArea");
+    aw.innerHTML = "";
+    conf.areas.forEach(function(ch){
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "btn btn-outline coleta-opcao";
+      b.setAttribute("data-valor", ch); b.textContent = tradOpcao(ch);
+      b.onclick = function(){ selecionarOpcao(aw, b); };
+      aw.appendChild(b);
+    });
+    var bAOutro = document.createElement("button");
+    bAOutro.type = "button"; bAOutro.className = "btn btn-outline coleta-opcao";
+    bAOutro.setAttribute("data-valor", "__outro__"); bAOutro.textContent = t.f_outro || "OUTRO/QUAL?";
+    bAOutro.onclick = function(){
+      selecionarOpcao(aw, bAOutro);
+      document.getElementById("coletaAreaOutroWrap").style.display = "block";
+    };
+    aw.appendChild(bAOutro);
+    document.getElementById("coletaAreaOutroWrap").style.display = "none";
+    document.getElementById("coletaAreaOutroTexto").value = "";
+  } else {
+    areaWrap.style.display = "none";
+  }
+  var detWrap = document.getElementById("coletaDetalheWrap");
+  if (conf.temDetalhe) {
+    detWrap.style.display = "block";
+    document.getElementById("coletaLabelDetalhe").textContent = t.f_detalhe || "Detalhe / Particularidade";
+    document.getElementById("coletaDetalheTexto").value = "";
+  } else {
+    detWrap.style.display = "none";
+  }
+  overlay.style.display = "flex";
+  if (typeof traduzirTudo === "function") traduzirTudo();
+}
+function confirmarColeta() {
+  if (!coletaAtual) return;
+  var lang = getLang();
+  var t = translations[lang] || translations.pt;
+  var conf = CONF_COLETA[coletaAtual];
+  var tipoEl = document.querySelector("#coletaOpcoesTipo .coleta-opcao.ativo");
+  var tipo = tipoEl ? tipoEl.getAttribute("data-valor") : "";
+  if (tipo === "__outro__") tipo = document.getElementById("coletaOutroTexto").value.trim();
+  var enEl = document.querySelector("#coletaEnergia .energia-num.ativo");
+  var energia = enEl ? enEl.textContent : "";
+  var area = "";
+  if (conf.temArea) {
+    var areaEl = document.querySelector("#coletaOpcoesArea .coleta-opcao.ativo");
+    area = areaEl ? areaEl.getAttribute("data-valor") : "";
+    if (area === "__outro__") area = document.getElementById("coletaAreaOutroTexto").value.trim();
+  }
+  var detalhe = conf.temDetalhe ? document.getElementById("coletaDetalheTexto").value.trim() : "";
+  if (!tipo || !energia) { alert(t.preencha_dado || "Preencha os dados solicitados."); return; }
+  var qs = "lang=" + encodeURIComponent(lang)
+         + "&produto=" + encodeURIComponent(coletaAtual)
+         + "&tipo=" + encodeURIComponent(tipo)
+         + "&energia=" + encodeURIComponent(energia);
+  if (area) qs += "&area=" + encodeURIComponent(area);
+  if (detalhe) qs += "&detalhe=" + encodeURIComponent(detalhe);
+  fecharModalColeta();
+  window.location.href = "/criar-checkout?" + qs;
+}
+document.addEventListener("DOMContentLoaded", function(){
+  var f = document.getElementById("coletaFechar");   if (f) f.onclick = fecharModalColeta;
+  var c = document.getElementById("coletaCancelar"); if (c) c.onclick = fecharModalColeta;
+  var ok = document.getElementById("coletaConfirmar"); if (ok) ok.onclick = confirmarColeta;
+  var ov = document.getElementById("modalColeta");
+  if (ov) ov.addEventListener("click", function(e){ if (e.target === ov) fecharModalColeta(); });
+  function fecharModalColeta(){
+  var modal = document.getElementById("modalColeta");
+  if (modal) modal.style.display = "none";
+}
+});
+  
 }
 function selecionarOpcao(container, btn) {
   container.querySelectorAll(".coleta-opcao").forEach(function(b){ b.classList.remove("ativo"); });
