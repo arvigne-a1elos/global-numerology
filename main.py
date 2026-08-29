@@ -136,21 +136,23 @@ PRODUTO_FAIXA = {
     "nome_pet": 0, "nickname": 0, "nome_dominio": 0, "nome_canal": 0,
     "nome_equipe": 0, "nome_ong": 0, "nome_projeto": 0, "nome_evento": 0
 }
+# ===== VALORES (unidades menores p/ Stripe) — tabela final aprovada =====
+# Moedas de 2 casas = inteiro × 100 (centavos). JPY e VND = inteiro (0 casas).
 VALORES = {
     "pt": [800, 1700, 2600, 3500, 4400, 9800],
-    "en": [150, 350, 500, 700, 900, 2000],
-    "es": [150, 350, 500, 700, 900, 2000],
-    "it": [150, 350, 500, 700, 900, 2000],
-    "fr": [150, 350, 500, 700, 900, 2000],
-    "de": [150, 350, 500, 700, 900, 2000],
-    "ja": [250, 550, 800, 1100, 1400, 3000],
-    "zh": [12, 25, 40, 55, 70, 150],
-    "ru": [130, 280, 430, 580, 730, 1600],
-    "id": [24000, 56000, 80000, 112000, 144000, 320000],
-    "tr": [51, 119, 170, 238, 306, 680],
-    "vi": [38000, 88000, 125000, 175000, 225000, 500000],
-    "he": [500, 1300, 1900, 2600, 3300, 7300],
-    "ar": [600, 1300, 1900, 2600, 3300, 7300],
+    "en": [2000, 4400, 7100, 8900, 11600, 25100],
+    "es": [1100, 2600, 3500, 5300, 6200, 13400],
+    "it": [1100, 2600, 3500, 5300, 6200, 13400],
+    "fr": [1100, 2600, 3500, 5300, 6200, 13400],
+    "de": [1100, 2600, 3500, 5300, 6200, 13400],
+    "ja": [1400, 3000, 4600, 6200, 7700, 17000],        # JPY 0 casas
+    "zh": [2600, 5300, 7100, 9800, 12500, 26000],
+    "ru": [44000, 80000, 125000, 170000, 215000, 440000],
+    "id": [1100000, 2300000, 3600000, 4800000, 6000000, 13400000],
+    "tr": [5800, 12300, 18800, 25400, 31900, 71000],
+    "vi": [25000, 53000, 81000, 109000, 137000, 305000],  # VND 0 casas
+    "he": [4400, 9800, 14300, 19700, 24200, 53000],
+    "ar": [3500, 7100, 10700, 14300, 17000, 37700],
 }
 
 def preco_local(produto, lang):
@@ -1009,14 +1011,17 @@ def calculate(req: PayReq):
         raise HTTPException(500, "Erro")
     finally:
         db.close()
-               
+
+ZERO_DECIMAL = {"ja", "vi"}  # moedas sem centavos no Stripe
+
 def preco_display(lang, faixa=0):
-    """Preço da faixa (0-5) formatado com centavos, em moeda local."""
-    v = VALORES.get(lang, VALORES["en"])[faixa]
+    lang = lang if lang in VALORES else "en"
+    raw = VALORES[lang][faixa]
     s = SIMBOLO.get(lang, SIMBOLO["en"])
-    if lang in ["pt", "en", "es", "it", "fr", "de", "he", "ar"]:
-        return f"{s} {v/100:.2f}".replace(".", ",")   # R$ 8,00 · US$ 1,50 · € 7,00
-    return f"{s} {v:,}".replace(",", ".")             # Rp 24.000 · ₺ 51 · ₫ 125.000
+    if lang in ZERO_DECIMAL:
+        return f"{s} {raw:,}".replace(",", ".")          # ¥ 1.400 · ₫ 25.000
+    val = raw / 100
+    return f"{s} {val:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")  # US$ 20,00 · € 11,00
 
 @app.post("/calculate/urna")
 def calc_urna(req: UrnaPayReq):
