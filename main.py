@@ -782,6 +782,7 @@ def pay_urna(req: UrnaPayReq):
     if len(req.nome_completo.strip()) < 3:
         raise HTTPException(400, "Nome obrigatorio")
         nomes = [n.strip() for n in [req.nome1, req.nome2, req.nome3, req.nome4, req.nome5] if n.strip()]
+        nomes = [n.strip() for n in [req.nome1, req.nome2, req.nome3, req.nome4, req.nome5] if n.strip()]
     if not nomes:
         raise HTTPException(400, "Pelo menos 1 nome")
     meta = {"tipo": "urna", "lang": req.lang or "pt", "nome_completo": req.nome_completo,
