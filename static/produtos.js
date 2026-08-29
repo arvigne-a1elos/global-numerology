@@ -1,6 +1,12 @@
-/* ===== PRECO_BASE / SIMB / PRECO_DISPLAY (GLOBAL — protegido contra duplicação) ===== */
-if (typeof PRECO_DISPLAY === 'undefined') {
-  var PRECO_BASE = {
+// ===== A1ELOS GLOBAL NUMEROLOGY - PRODUTOS.JS (REESCRITA BLINDADA) =====
+// Instrução: substitua TODO o conteúdo atual do produtos.js por este arquivo.
+
+/* ===== PREÇOS GLOBAIS — À PROVA DE DUPLICAÇÃO =====
+   Sem var/let/const para PRECO_*: só atribuição a window.
+   Assim NUNCA ocorre "Identifier has already been declared",
+   mesmo que outro arquivo declare PRECO_DISPLAY. */
+if (typeof window.PRECO_DISPLAY === 'undefined' || !window.PRECO_DISPLAY) {
+  window.PRECO_BASE = {
     pt:[8,17,26,35,44,98], en:[20,44,71,89,116,251], es:[11,26,35,53,62,134],
     it:[11,26,35,53,62,134], fr:[11,26,35,53,62,134], de:[11,26,35,53,62,134],
     ja:[1400,3000,4600,6200,7700,17000], zh:[26,53,71,98,125,260],
@@ -8,17 +14,21 @@ if (typeof PRECO_DISPLAY === 'undefined') {
     tr:[58,123,188,254,319,710], vi:[25000,53000,81000,109000,137000,305000],
     he:[44,98,143,197,242,530], ar:[35,71,107,143,170,377]
   };
-  var SIMB = {pt:'R$',en:'US$',es:'€',it:'€',fr:'€',de:'€',ja:'¥',zh:'¥',ru:'₽',id:'Rp',tr:'₺',vi:'₫',he:'₪',ar:'﷼'};
-  var PRECO_DISPLAY = {};
-  Object.keys(PRECO_BASE).forEach(function(l){
+  window.SIMB = {pt:'R$',en:'US$',es:'€',it:'€',fr:'€',de:'€',ja:'¥',zh:'¥',ru:'₽',id:'Rp',tr:'₺',vi:'₫',he:'₪',ar:'﷼'};
+  window.PRECO_DISPLAY = {};
+  Object.keys(window.PRECO_BASE).forEach(function(l){
     var zero = (l==='ja'||l==='vi');
-    PRECO_DISPLAY[l] = PRECO_BASE[l].map(function(v){
+    window.PRECO_DISPLAY[l] = window.PRECO_BASE[l].map(function(v){
       var txt = zero ? String(v) : v.toFixed(2).replace('.', ',');
-      return SIMB[l]+' '+txt;
+      return window.SIMB[l]+' '+txt;
     });
   });
 }
 
+var _traduzindo = false;
+var BC_QUANTIDADES = {};
+
+/* ===== CONF_COLETA — configuração do modal de coleta (8 produtos) ===== */
 var CONF_COLETA = {
   nome_canal:   { labelTipo:"f_tipo_canal",   tipos:["youtube","podcast","tiktok","twitch"],        temArea:true,  areas:["esporte","noticias","politica","beleza"], temDetalhe:false },
   nickname:     { labelTipo:"f_tipo_nickname", tipos:["gamer","profissional","criador","artista"],  temArea:false, areas:[], temDetalhe:false },
@@ -30,29 +40,35 @@ var CONF_COLETA = {
   nome_pet:     { labelTipo:"f_tipo_pet",      tipos:["cao","gato","passaro","reptil"],             temArea:false, areas:[], temDetalhe:true }
 };
 
-  function pesquisar(produto) {
-  if (produto === "express" || produto === "completo") {
-    var sec = document.getElementById("calculadora") || document.getElementById("calcSection");
-    if (sec) sec.scrollIntoView({ behavior:"smooth", block:"center" });
-    return;
-  }
-  if (CONF_COLETA[produto]) {
-  if (typeof comprar === "function") { comprar(produto); return; }
-  return;
-}
-  var alvo = document.getElementById("form-" + produto);
-  if (alvo) {
-    alvo.scrollIntoView({ behavior:"smooth", block:"center" });
-    alvo.style.transition = "box-shadow .5s";
-    alvo.style.boxShadow = "0 0 0 3px var(--gold)";
-    setTimeout(function(){ alvo.style.boxShadow = ""; }, 2000);
-    return;
-  }
-  var calc = document.getElementById("calculadora") || document.getElementById("calcSection");
-  if (calc) calc.scrollIntoView({ behavior:"smooth" });
-}
+/* ===== PRODUTOS_TRAD — nomes dos 23 produtos (14 idiomas) ===== */
+var PRODUTOS_TRAD = {
+ pt:{express:"Mapa Express",vida:"Qual Vida/Ano",completo:"Mapa Completo",ia:"Pesquisa IA de Nomes",urna:"Validação Nome de Urna",eleitoral:"Número Eleitoral",imovel:"Número do Imóvel",calendario:"Calendário Mensal Energético",artistico:"Validação Nome Artístico",bebe:"Planejamento Nome de Bebê",assinatura:"Validação de Assinaturas",negocio:"Nome para Negócio/Produto",casal:"Mapa do Casal",familia:"Mapa Família Premium",coletivo:"Bônus Coletivo/Empresarial",nome_pet:"Nome do Pet",nickname:"Nickname Digital",nome_dominio:"Nome do Domínio",nome_canal:"Nome do Canal",nome_equipe:"Nome da Equipe",nome_ong:"Nome de ONG, Associação, Instituto ou Fundação",nome_projeto:"Nome do Projeto",nome_evento:"Nome do Evento"},
+ en:{express:"Express Map",vida:"Life Phase & Year",completo:"Complete Map",ia:"AI Name Search",urna:"Ballot Name Validation",eleitoral:"Electoral Number",imovel:"Property Number",calendario:"Monthly Energy Calendar",artistico:"Artistic Name Validation",bebe:"Baby Name Planning",assinatura:"Signature Validation",negocio:"Business & Product Name",casal:"Couple Map",familia:"Premium Family Map",coletivo:"Corporate Bonus",nome_pet:"Pet Name",nickname:"Digital Nickname",nome_dominio:"Domain Name",nome_canal:"Channel Name",nome_equipe:"Team Name",nome_ong:"NGO, Association, Institute or Foundation Name",nome_projeto:"Project Name",nome_evento:"Event Name"},
+ es:{express:"Mapa Exprés",vida:"Ciclo de Vida y Año",completo:"Mapa Completo",ia:"Búsqueda IA de Nombres",urna:"Validación Nombre de Urna",eleitoral:"Número Electoral",imovel:"Número de la Propiedad",calendario:"Calendario Mensual Energético",artistico:"Validación Nombre Artístico",bebe:"Planificación Nombre de Bebé",assinatura:"Validación de Firmas",negocio:"Nombre para Negocio/Producto",casal:"Mapa de Pareja",familia:"Mapa Familiar Premium",coletivo:"Bono Corporativo",nome_pet:"Nombre de la Mascota",nickname:"Apodo Digital",nome_dominio:"Nombre de Dominio",nome_canal:"Nombre del Canal",nome_equipe:"Nombre del Equipo",nome_ong:"Nombre de ONG, Asociacion, Instituto o Fundacion",nome_projeto:"Nombre del Proyecto",nome_evento:"Nombre del Evento"},
+ it:{express:"Mappa Espressa",vida:"Fase di Vita e Anno",completo:"Mappa Completa",ia:"Ricerca IA Nomi",urna:"Validazione Nome della Scheda",eleitoral:"Numero Elettorale",imovel:"Numero dell'Immobile",calendario:"Calendario Mensile Energetico",artistico:"Validazione Nome d'Arte",bebe:"Pianificazione Nome del Bambino",assinatura:"Validazione delle Firme",negocio:"Nome per Business/Prodotto",casal:"Mappa di Coppia",familia:"Mappa Famiglia Premium",coletivo:"Bonus Aziendale",nome_pet:"Nome dell'Animale",nickname:"Nickname Digitale",nome_dominio:"Nome del Dominio",nome_canal:"Nome del Canale",nome_equipe:"Nome del Team",nome_ong:"Nome di ONG, Associazione, Istituto o Fondazione",nome_projeto:"Nome del Progetto",nome_evento:"Nome dell'Evento"},
+ fr:{express:"Carte Express",vida:"Phase de Vie et Année",completo:"Carte Complète",ia:"Recherche IA de Noms",urna:"Validation Nom du Bulletin",eleitoral:"Numéro Électoral",imovel:"Numéro du Bien",calendario:"Calendrier Mensuel Énergétique",artistico:"Validation Nom de Scène",bebe:"Planification Prénom de Bébé",assinatura:"Validation des Signatures",negocio:"Nom pour Entreprise/Produit",casal:"Carte du Couple",familia:"Carte Famille Premium",coletivo:"Bonus d'Entreprise",nome_pet:"Nom de l'Animal",nickname:"Pseudo Numerique",nome_dominio:"Nom de Domaine",nome_canal:"Nom de la Chaine",nome_equipe:"Nom de l'Equipe",nome_ong:"Nom d'ONG, Association, Institut ou Fondation",nome_projeto:"Nom du Projet",nome_evento:"Nom de l'Evenement"},
+ de:{express:"Express-Karte",vida:"Lebensphase & Jahr",completo:"Vollständige Karte",ia:"KI-Namenssuche",urna:"Stimmzettelname-Validierung",eleitoral:"Wahlnummer",imovel:"Immobiliennummer",calendario:"Monatlicher Energiekalender",artistico:"Künstlername-Validierung",bebe:"Babynamen-Planung",assinatura:"Unterschrifts-Validierung",negocio:"Name für Unternehmen/Produkt",casal:"Paar-Karte",familia:"Premium-Familien-Karte",coletivo:"Unternehmensbonus",nome_pet:"Haustiername",nickname:"Digitaler Spitzname",nome_dominio:"Domainname",nome_canal:"Kanalname",nome_equipe:"Teamname",nome_ong:"Name von NGO, Verein, Institut oder Stiftung",nome_projeto:"Projektname",nome_evento:"Veranstaltungsname"},
+ ja:{express:"エクスプレスマップ",vida:"ライフステージと年",completo:"完全マップ",ia:"AI名前検索",urna:"投票用紙名の検証",eleitoral:"選挙番号",imovel:"不動産番号",calendario:"月間エネルギーカレンダー",artistico:"芸名の検証",bebe:"赤ちゃんの名前計画",assinatura:"署名の検証",negocio:"ビジネス・商品名",casal:"カップルマップ",familia:"プレミアム家族マップ",coletivo:"法人ボーナス",nome_pet:"ペットの名前",nickname:"デジタルニックネーム",nome_dominio:"ドメイン名",nome_canal:"チャンネル名",nome_equipe:"チーム名",nome_ong:"NGO・協会・研究所・財団の名前",nome_projeto:"プロジェクト名",nome_evento:"イベント名"},
+ zh:{express:"快速地图",vida:"生命阶段与年份",completo:"完整地图",ia:"AI名字搜索",urna:"选票名称验证",eleitoral:"选举号码",imovel:"房产号码",calendario:"每月能量日历",artistico:"艺名验证",bebe:"宝宝取名规划",assinatura:"签名验证",negocio:"企业/产品名称",casal:"情侣地图",familia:"高级家庭地图",coletivo:"企业奖励",nome_pet:"宠物名字",nickname:"数字昵称",nome_dominio:"域名",nome_canal:"频道名称",nome_equipe:"团队名称",nome_ong:"非政府组织、协会、研究所或基金会名称",nome_projeto:"项目名称",nome_evento:"活动名称"},
+ ru:{express:"Экспресс-карта",vida:"Жизненный этап и год",completo:"Полная карта",ia:"ИИ-поиск имён",urna:"Проверка названия бюллетеня",eleitoral:"Избирательный номер",imovel:"Номер недвижимости",calendario:"Ежемесячный энергетический календарь",artistico:"Проверка сценического имени",bebe:"Планирование имени ребёнка",assinatura:"Проверка подписей",negocio:"Название для бизнеса/продукта",casal:"Карта пары",familia:"Премиальная семейная карта",coletivo:"Корпоративный бонус",nome_pet:"Имя питомца",nickname:"Цифровой никнейм",nome_dominio:"Имя домена",nome_canal:"Название канала",nome_equipe:"Название команды",nome_ong:"Название НКО, ассоциации, института или фонда",nome_projeto:"Название проекта",nome_evento:"Название события"},
+ id:{express:"Peta Ekspres",vida:"Fase Kehidupan & Tahun",completo:"Peta Lengkap",ia:"Pencarian Nama AI",urna:"Validasi Nama Surat Suara",eleitoral:"Nomor Elektoral",imovel:"Nomor Properti",calendario:"Kalender Energi Bulanan",artistico:"Validasi Nama Artistik",bebe:"Perencanaan Nama Bayi",assinatura:"Validasi Tanda Tangan",negocio:"Nama untuk Bisnis/Produk",casal:"Peta Pasangan",familia:"Peta Keluarga Premium",coletivo:"Bonus Kolektif/Perusahaan",nome_pet:"Nama Hewan Peliharaan",nickname:"Nama Panggilan Digital",nome_dominio:"Nama Domain",nome_canal:"Nama Kanal",nome_equipe:"Nama Tim",nome_ong:"Nama LSM, Asosiasi, Lembaga atau Yayasan",nome_projeto:"Nama Proyek",nome_evento:"Nama Acara"},
+ tr:{express:"Ekspres Harita",vida:"Yaşam Evresi ve Yıl",completo:"Tam Harita",ia:"AI İsim Arama",urna:"Oy Pusulası İsim Doğrulama",eleitoral:"Seçim Numarası",imovel:"Mülk Numarası",calendario:"Aylık Enerji Takvimi",artistico:"Sahne Adı Doğrulama",bebe:"Bebek İsmi Planlama",assinatura:"İmza Doğrulama",negocio:"İşletme/Ürün Adı",casal:"Çift Haritası",familia:"Premium Aile Haritası",coletivo:"Kurumsal Bonus",nome_pet:"Evcil Hayvan Adı",nickname:"Dijital Takma Ad",nome_dominio:"Alan Adı",nome_canal:"Kanal Adı",nome_equipe:"Ekip Adı",nome_ong:"STK, Dernek, Enstitü veya Vakıf Adı",nome_projeto:"Proje Adı",nome_evento:"Etkinlik Adı"},
+ vi:{express:"Bản Đồ Nhanh",vida:"Giai Đoạn Cuộc Đời & Năm",completo:"Bản Đồ Đầy Đủ",ia:"Tìm Kiếm Tên AI",urna:"Xác Minh Tên Phiếu Bầu",eleitoral:"Số Bầu Cử",imovel:"Số Bất Động Sản",calendario:"Lịch Năng Lượng Hàng Tháng",artistico:"Xác Minh Nghệ Danh",bebe:"Lên Kế Hoạch Tên Cho Bé",assinatura:"Xác Minh Chữ Ký",negocio:"Tên Cho Doanh Nghiệp/Sản Phẩm",casal:"Bản Đồ Cặp Đôi",familia:"Bản Đồ Gia Đình Cao Cấp",coletivo:"Thưởng Tập Thể/Doanh Nghiệp",nome_pet:"Tên Thú Cưng",nickname:"Biệt Danh Kỹ Thuật Số",nome_dominio:"Tên Miền",nome_canal:"Tên Kênh",nome_equipe:"Tên Đội Nhóm",nome_ong:"Tên Tổ Chức, Hiệp Hội, Viện hoặc Quỹ",nome_projeto:"Tên Dự Án",nome_evento:"Tên Sự Kiện"},
+ he:{express:"מפה מהירה",vida:"שלב חיים ושנה",completo:"מפה מלאה",ia:"חיפוש שמות AI",urna:"אימות שם פתק",eleitoral:"מספר בחירות",imovel:"מספר נכס",calendario:"לוח אנרגיה חודשי",artistico:"אימות שם במה",bebe:"תכנון שם לתינוק",assinatura:"אימות חתימות",negocio:"שם לעסק/מוצר",casal:"מפת זוג",familia:"מפת משפחה פרימיום",coletivo:"בונוס ארגוני",nome_pet:"שם חיית המחמד",nickname:"כינוי דיגיטלי",nome_dominio:"שם דומיין",nome_canal:"שם הערוץ",nome_equipe:"שם הצוות",nome_ong:"שם עמותה, ארגון, מכון או קרן",nome_projeto:"שם הפרויקט",nome_evento:"שם האירוע"},
+ ar:{express:"خريطة سريعة",vida:"مرحلة الحياة والسنة",completo:"خريطة كاملة",ia:"بحث الأسماء بالذكاء الاصطناعي",urna:"التحقق من اسم الاقتراع",eleitoral:"الرقم الانتخابي",imovel:"رقم العقار",calendario:"التقويم الشهري للطاقة",artistico:"التحقق من الاسم الفني",bebe:"تخطيط اسم الطفل",assinatura:"التحقق من التوقيعات",negocio:"اسم للأعمال/المنتج",casal:"خريطة الزوجين",familia:"خريطة العائلة المميزة",coletivo:"مكافأة الشركات",nome_pet:"اسم الحيوان الأليف",nickname:"اللقب الرقمي",nome_dominio:"اسم النطاق",nome_canal:"اسم القناة",nome_equipe:"اسم الفريق",nome_ong:"اسم منظمة أو جمعية أو معهد أو مؤسسة",nome_projeto:"اسم المشروع",nome_evento:"اسم الفعالية"}
+};
 
-/* ===== CARDS_TRAD — Cards dos 8 produtos (14 idiomas) =====*/
+/* ===== PRODUTO_FAIXA — faixa de preço (0 a 5) por produto ===== */
+var PRODUTO_FAIXA = {
+  express:0, vida:0, nome_pet:0, nickname:0, nome_dominio:0, nome_canal:0, nome_equipe:0, nome_ong:0, nome_projeto:0, nome_evento:0,
+  completo:1, ia:1, urna:2, eleitoral:2, imovel:2, calendario:2,
+  artistico:3, bebe:3, assinatura:3, negocio:4, casal:4, familia:5, coletivo:5
+};
+
+/* ===== FEAT_TRAD (guarda segura — opcional) ===== */
+var FEAT_TRAD = {};
+
+/* ===== CARDS_TRAD — Cards dos 8 produtos (14 idiomas) ===== */
 var CARDS_TRAD = {
   pt:{ nome_pet:"Nome do Pet", nome_pet_desc:"A energia do nome do seu animal de estimação.",
        nickname:"Nickname Digital", nickname_desc:"A vibração do seu nickname nas redes.",
@@ -179,9 +195,10 @@ var CARDS_TRAD = {
        nome_ong:"Tên Tổ Chức", nome_ong_desc:"Năng lượng của tên tổ chức của bạn.",
        nome_projeto:"Tên Dự Án", nome_projeto_desc:"Năng lượng của tên dự án của bạn.",
        nome_evento:"Tên Sự Kiện", nome_evento_desc:"Rung động của tên sự kiện của bạn.",
-       buscar:"Tìm Kiếm" },
+       buscar:"Tìm Kiếm" }
 };
-/* =====  MONTAR_TRAD — Montar Sob Medida (14 idiomas) =====*/
+
+/* ===== MONTAR_TRAD — Montar Sob Medida (14 idiomas) ===== */
 var MONTAR_TRAD = {
   pt:{ titulo:"Montar Sob Medida", subtitulo:"Escolha os produtos e a energia desejada.",
        produto:"Produto", energia:"Energia", quantidade:"Quantidade", preco:"Preço",
@@ -254,7 +271,8 @@ var MONTAR_TRAD = {
        bruto:"Tổng Thô", desconto:"Giảm Giá Áp Dụng", total:"Tổng",
        vazio:"Giỏ hàng của bạn trống" }
 };
-/* =====  ENERGIA_TRAD — Nomes das 9 energias (14 idiomas) =====*/
+
+/* ===== ENERGIA_TRAD — nomes das 9 energias (14 idiomas) ===== */
 var ENERGIA_TRAD = {
   pt:{ e1:"Líder", e2:"Diplomata", e3:"Criatividade", e4:"Estrutura", e5:"Liberdade", e6:"Harmonia", e7:"Espiritualidade", e8:"Poder", e9:"Humanitarismo" },
   en:{ e1:"Leader", e2:"Diplomat", e3:"Creativity", e4:"Structure", e5:"Freedom", e6:"Harmony", e7:"Spirituality", e8:"Power", e9:"Humanitarianism" },
@@ -272,7 +290,15 @@ var ENERGIA_TRAD = {
   vi:{ e1:"Lãnh đạo", e2:"Nhà ngoại giao", e3:"Sáng tạo", e4:"Cấu trúc", e5:"Tự do", e6:"Hòa hợp", e7:"Tâm linh", e8:"Sức mạnh", e9:"Nhân đạo" }
 };
 
-/* =====  MODAL DO DADO ESPECÍFICO (múltiplos passos) =====*/
+/* ENERGIA_TITULOS deriva do ENERGIA_TRAD (mesmos nomes) */
+var ENERGIA_TITULOS = {};
+Object.keys(ENERGIA_TRAD).forEach(function(l){ ENERGIA_TITULOS[l] = ENERGIA_TRAD[l]; });
+
+/* ENERGIAS_DESC / ENERGIAS_BTN — guardas seguras */
+var ENERGIAS_DESC = {};
+var ENERGIAS_BTN = { pt:"Pesquisar", en:"Search", es:"Buscar", fr:"Rechercher", it:"Cerca", de:"Suchen", ru:"Поиск", zh:"搜索", ja:"検索", ar:"بحث", he:"חיפוש", id:"Cari", tr:"Ara", vi:"Tìm Kiếm" };
+
+/* ===== DADO_LABEL — rótulos do modal (14 idiomas) ===== */
 var DADO_LABEL = {
   pt:{nome_pet:"Nome do Pet",nickname:"Nickname Digital",nome_dominio:"Nome do Domínio",nome_canal:"Nome do Canal",nome_equipe:"Nome da Equipe",nome_ong:"Nome da ONG",nome_projeto:"Nome do Projeto",nome_evento:"Nome do Evento"},
   en:{nome_pet:"Pet Name",nickname:"Digital Nickname",nome_dominio:"Domain Name",nome_canal:"Channel Name",nome_equipe:"Team Name",nome_ong:"NGO Name",nome_projeto:"Project Name",nome_evento:"Event Name"},
@@ -289,7 +315,8 @@ var DADO_LABEL = {
   tr:{nome_pet:"Evcil Hayvan Adı",nickname:"Dijital Takma Ad",nome_dominio:"Alan Adı",nome_canal:"Kanal Adı",nome_equipe:"Ekip Adı",nome_ong:"STK Adı",nome_projeto:"Proje Adı",nome_evento:"Etkinlik Adı"},
   vi:{nome_pet:"Tên Thú Cưng",nickname:"Biệt Danh Kỹ Thuật Số",nome_dominio:"Tên Miền",nome_canal:"Tên Kênh",nome_equipe:"Tên Đội Nhóm",nome_ong:"Tên Tổ Chức",nome_projeto:"Tên Dự Án",nome_evento:"Tên Sự Kiện"}
 };
-/* =====  DADOS DE TIPO POR PRODUTO (para o modal de múltiplos passos) =====*/
+
+/* ===== DADO_TIPOS — tipos por produto (modal) ===== */
 var DADO_TIPOS = {
   nome_pet: { label:"Tipo de Pet", opcoes:["Gato","Cão","Pássaro","Réptil","Outro"] },
   nickname: { label:"Tipo de Perfil", opcoes:["Gamer","Criador","Profissional","Artista","Outro"] },
@@ -300,9 +327,8 @@ var DADO_TIPOS = {
   nome_projeto: { label:"Tipo de Projeto", opcoes:["Pessoal","Empresarial","Social","Cultural","Outro"] },
   nome_evento: { label:"Tipo de Evento", opcoes:["Congresso","Curso","Festa","Palestra","Outro"] }
 };
-/* ============================================================*/
-// FORMULÁRIOS DE COLETA — 8 produtos (versão ÚNICA e limpa)
-/* ============================================================*/
+
+/* ===== OPCOES_FALLBACK — rótulos padrão (pt) ===== */
 var OPCOES_FALLBACK = {
   loja:"Loja", empresa:"Empresa", blog:"Blog", portfolio:"Portfólio",
   comercio:"Comércio", industria:"Indústria", servicos:"Serviços", pessoal:"Pessoal/Individual",
@@ -315,35 +341,51 @@ var OPCOES_FALLBACK = {
   ong:"ONG", instituto:"Instituto", associacao:"Associação", fundacao:"Fundação"
 };
 
+/* ===== OPCOES_TRAD — rótulos das opções (14 idiomas) ===== */
+var OPCOES_TRAD = {
+  pt:{ youtube:"YouTube", podcast:"Podcast", tiktok:"TikTok", twitch:"Twitch", gamer:"Gamer", profissional:"Profissional", criador:"Criador", artista:"Artista", ong:"ONG", instituto:"Instituto", associacao:"Associação", fundacao:"Fundação", show:"Show", congresso:"Congresso", festa:"Festa", curso:"Curso", palestra:"Palestra", pessoal:"Pessoal", social:"Social", empresarial:"Empresarial", cultural:"Cultural", esportiva:"Esportiva", banda:"Banda", loja:"Loja", empresa:"Empresa", blog:"Blog", portfolio:"Portfólio", cao:"Cão", gato:"Gato", passaro:"Pássaro", reptil:"Réptil", projeto:"Projeto", esporte:"Esporte", noticias:"Notícias", politica:"Política", beleza:"Beleza", musica:"Música", cultura:"Cultura", comercio:"Comércio", industria:"Indústria", servicos:"Serviços", outro:"OUTRO/QUAL?" },
+  en:{ youtube:"YouTube", podcast:"Podcast", tiktok:"TikTok", twitch:"Twitch", gamer:"Gamer", profissional:"Professional", criador:"Creator", artista:"Artist", ong:"NGO", instituto:"Institute", associacao:"Association", fundacao:"Foundation", show:"Show", congresso:"Congress", festa:"Party", curso:"Course", palestra:"Talk", pessoal:"Personal", social:"Social", empresarial:"Business", cultural:"Cultural", esportiva:"Sports", banda:"Band", loja:"Store", empresa:"Company", blog:"Blog", portfolio:"Portfolio", cao:"Dog", gato:"Cat", passaro:"Bird", reptil:"Reptile", projeto:"Project", esporte:"Sports", noticias:"News", politica:"Politics", beleza:"Beauty", musica:"Music", cultura:"Culture", comercio:"Commerce", industria:"Industry", servicos:"Services", outro:"OTHER/WHAT?" },
+  es:{ youtube:"YouTube", podcast:"Podcast", tiktok:"TikTok", twitch:"Twitch", gamer:"Gamer", profissional:"Profesional", criador:"Creador", artista:"Artista", ong:"ONG", instituto:"Instituto", associacao:"Asociación", fundacao:"Fundación", show:"Show", congresso:"Congreso", festa:"Fiesta", curso:"Curso", palestra:"Charla", pessoal:"Personal", social:"Social", empresarial:"Empresarial", cultural:"Cultural", esportiva:"Deportiva", banda:"Banda", loja:"Tienda", empresa:"Empresa", blog:"Blog", portfolio:"Portafolio", cao:"Perro", gato:"Gato", passaro:"Pájaro", reptil:"Reptil", projeto:"Proyecto", esporte:"Deporte", noticias:"Noticias", politica:"Política", beleza:"Belleza", musica:"Música", cultura:"Cultura", comercio:"Comercio", industria:"Industria", servicos:"Servicios", outro:"OTRO/¿CUÁL?" },
+  fr:{ youtube:"YouTube", podcast:"Podcast", tiktok:"TikTok", twitch:"Twitch", gamer:"Gamer", profissional:"Professionnel", criador:"Créateur", artista:"Artiste", ong:"ONG", instituto:"Institut", associacao:"Association", fundacao:"Fondation", show:"Show", congresso:"Congrès", festa:"Fête", curso:"Cours", palestra:"Conférence", pessoal:"Personnel", social:"Social", empresarial:"Commercial", cultural:"Culturel", esportiva:"Sportive", banda:"Groupe", loja:"Boutique", empresa:"Entreprise", blog:"Blog", portfolio:"Portfolio", cao:"Chien", gato:"Chat", passaro:"Oiseau", reptil:"Reptile", projeto:"Projet", esporte:"Sport", noticias:"Actualités", politica:"Politique", beleza:"Beauté", musica:"Musique", cultura:"Culture", comercio:"Commerce", industria:"Industrie", servicos:"Services", outro:"AUTRE/QUOI?" },
+  it:{ youtube:"YouTube", podcast:"Podcast", tiktok:"TikTok", twitch:"Twitch", gamer:"Gamer", profissional:"Professionale", criador:"Creatore", artista:"Artista", ong:"ONG", instituto:"Istituto", associacao:"Associazione", fundacao:"Fondazione", show:"Show", congresso:"Congresso", festa:"Festa", curso:"Corso", palestra:"Conferenza", pessoal:"Personale", social:"Sociale", empresarial:"Aziendale", cultural:"Culturale", esportiva:"Sportiva", banda:"Band", loja:"Negozio", empresa:"Azienda", blog:"Blog", portfolio:"Portfolio", cao:"Cane", gato:"Gatto", passaro:"Uccello", reptil:"Rettile", projeto:"Progetto", esporte:"Sport", noticias:"Notizie", politica:"Politica", beleza:"Bellezza", musica:"Musica", cultura:"Cultura", comercio:"Commercio", industria:"Industria", servicos:"Servizi", outro:"ALTRO/COSA?" },
+  de:{ youtube:"YouTube", podcast:"Podcast", tiktok:"TikTok", twitch:"Twitch", gamer:"Gamer", profissional:"Professionell", criador:"Ersteller", artista:"Künstler", ong:"NGO", instituto:"Institut", associacao:"Verein", fundacao:"Stiftung", show:"Show", congresso:"Kongress", festa:"Party", curso:"Kurs", palestra:"Vortrag", pessoal:"Persönlich", social:"Sozial", empresarial:"Geschäftlich", cultural:"Kulturell", esportiva:"Sportlich", banda:"Band", loja:"Geschäft", empresa:"Unternehmen", blog:"Blog", portfolio:"Portfolio", cao:"Hund", gato:"Katze", passaro:"Vogel", reptil:"Reptil", projeto:"Projekt", esporte:"Sport", noticias:"Nachrichten", politica:"Politik", beleza:"Schönheit", musica:"Musik", cultura:"Kultur", comercio:"Handel", industria:"Industrie", servicos:"Dienstleistungen", outro:"ANDERE/WAS?" },
+  ru:{ youtube:"YouTube", podcast:"Подкаст", tiktok:"TikTok", twitch:"Twitch", gamer:"Геймер", profissional:"Профессиональный", criador:"Создатель", artista:"Артист", ong:"НПО", instituto:"Институт", associacao:"Ассоциация", fundacao:"Фонд", show:"Шоу", congresso:"Конгресс", festa:"Вечеринка", curso:"Курс", palestra:"Лекция", pessoal:"Личный", social:"Социальный", empresarial:"Деловой", cultural:"Культурный", esportiva:"Спортивная", banda:"Группа", loja:"Магазин", empresa:"Компания", blog:"Блог", portfolio:"Портфолио", cao:"Собака", gato:"Кошка", passaro:"Птица", reptil:"Рептилия", projeto:"Проект", esporte:"Спорт", noticias:"Новости", politica:"Политика", beleza:"Красота", musica:"Музыка", cultura:"Культура", comercio:"Торговля", industria:"Промышленность", servicos:"Услуги", outro:"ДРУГОЕ/КАКОЕ?" },
+  zh:{ youtube:"YouTube", podcast:"播客", tiktok:"TikTok", twitch:"Twitch", gamer:"玩家", profissional:"专业", criador:"创作者", artista:"艺术家", ong:"非政府组织", instituto:"研究所", associacao:"协会", fundacao:"基金会", show:"演出", congresso:"大会", festa:"派对", curso:"课程", palestra:"讲座", pessoal:"个人", social:"社交", empresarial:"商业", cultural:"文化", esportiva:"体育", banda:"乐队", loja:"商店", empresa:"公司", blog:"博客", portfolio:"作品集", cao:"狗", gato:"猫", passaro:"鸟", reptil:"爬行动物", projeto:"项目", esporte:"体育", noticias:"新闻", politica:"政治", beleza:"美容", musica:"音乐", cultura:"文化", comercio:"商业", industria:"工业", servicos:"服务", outro:"其他/什么?" },
+  ja:{ youtube:"YouTube", podcast:"ポッドキャスト", tiktok:"TikTok", twitch:"Twitch", gamer:"ゲーマー", profissional:"プロフェッショナル", criador:"クリエイター", artista:"アーティスト", ong:"NGO", instituto:"研究所", associacao:"協会", fundacao:"財団", show:"ショー", congresso:"会議", festa:"パーティー", curso:"コース", palestra:"講演", pessoal:"個人", social:"ソーシャル", empresarial:"ビジネス", cultural:"文化的", esportiva:"スポーツ", banda:"バンド", loja:"店", empresa:"会社", blog:"ブログ", portfolio:"ポートフォリオ", cao:"犬", gato:"猫", passaro:"鳥", reptil:"爬虫類", projeto:"プロジェクト", esporte:"スポーツ", noticias:"ニュース", politica:"政治", beleza:"美容", musica:"音楽", cultura:"文化", comercio:"商業", industria:"産業", servicos:"サービス", outro:"その他/何?" },
+  ar:{ youtube:"يوتيوب", podcast:"بودكاست", tiktok:"تيك توك", twitch:"تويتش", gamer:"لاعب", profissional:"محترف", criador:"منشئ", artista:"فنان", ong:"منظمة", instituto:"معهد", associacao:"جمعية", fundacao:"مؤسسة", show:"عرض", congresso:"مؤتمر", festa:"حفلة", curso:"دورة", palestra:"محاضرة", pessoal:"شخصي", social:"اجتماعي", empresarial:"تجاري", cultural:"ثقافي", esportiva:"رياضية", banda:"فرقة", loja:"متجر", empresa:"شركة", blog:"مدونة", portfolio:"أعمال", cao:"كلب", gato:"قطة", passaro:"طائر", reptil:"زاحف", projeto:"مشروع", esporte:"رياضة", noticias:"أخبار", politica:"سياسة", beleza:"جمال", musica:"موسيقى", cultura:"ثقافة", comercio:"تجارة", industria:"صناعة", servicos:"خدمات", outro:"آخر/ماذا؟" },
+  he:{ youtube:"יוטיוב", podcast:"פודקאסט", tiktok:"טיקטוק", twitch:"טוויץ'", gamer:"גיימר", profissional:"מקצועי", criador:"יוצר", artista:"אמן", ong:"ארגון", instituto:"מכון", associacao:"עמותה", fundacao:"קרן", show:"מופע", congresso:"קונגרס", festa:"מסיבה", curso:"קורס", palestra:"הרצאה", pessoal:"אישי", social:"חברתי", empresarial:"עסקי", cultural:"תרבותי", esportiva:"ספורטיבית", banda:"להקה", loja:"חנות", empresa:"חברה", blog:"בלוג", portfolio:"תיק עבודות", cao:"כלב", gato:"חתול", passaro:"ציפור", reptil:"זוחל", projeto:"פרויקט", esporte:"ספורט", noticias:"חדשות", politica:"פוליטיקה", beleza:"יופי", musica:"מוזיקה", cultura:"תרבות", comercio:"מסחר", industria:"תעשייה", servicos:"שירותים", outro:"אחר/מה?" },
+  id:{ youtube:"YouTube", podcast:"Podcast", tiktok:"TikTok", twitch:"Twitch", gamer:"Gamer", profissional:"Profesional", criador:"Pencipta", artista:"Artis", ong:"LSM", instituto:"Lembaga", associacao:"Asosiasi", fundacao:"Yayasan", show:"Pertunjukan", congresso:"Kongres", festa:"Pesta", curso:"Kursus", palestra:"Ceramah", pessoal:"Pribadi", social:"Sosial", empresarial:"Bisnis", cultural:"Budaya", esportiva:"Olahraga", banda:"Band", loja:"Toko", empresa:"Perusahaan", blog:"Blog", portfolio:"Portofolio", cao:"Anjing", gato:"Kucing", passaro:"Burung", reptil:"Reptil", projeto:"Proyek", esporte:"Olahraga", noticias:"Berita", politica:"Politik", beleza:"Kecantikan", musica:"Musik", cultura:"Budaya", comercio:"Perdagangan", industria:"Industri", servicos:"Layanan", outro:"LAINNYA/APA?" },
+  tr:{ youtube:"YouTube", podcast:"Podcast", tiktok:"TikTok", twitch:"Twitch", gamer:"Oyuncu", profissional:"Profesyonel", criador:"İçerik Üreticisi", artista:"Sanatçı", ong:"STK", instituto:"Enstitü", associacao:"Dernek", fundacao:"Vakıf", show:"Gösteri", congresso:"Kongre", festa:"Parti", curso:"Kurs", palestra:"Konferans", pessoal:"Kişisel", social:"Sosyal", empresarial:"İş", cultural:"Kültürel", esportiva:"Spor", banda:"Müzik Grubu", loja:"Mağaza", empresa:"Şirket", blog:"Blog", portfolio:"Portfolyo", cao:"Köpek", gato:"Kedi", passaro:"Kuş", reptil:"Sürüngen", projeto:"Proje", esporte:"Spor", noticias:"Haberler", politica:"Siyaset", beleza:"Güzellik", musica:"Müzik", cultura:"Kültür", comercio:"Ticaret", industria:"Endüstri", servicos:"Hizmetler", outro:"DİĞER/NE?" },
+  vi:{ youtube:"YouTube", podcast:"Podcast", tiktok:"TikTok", twitch:"Twitch", gamer:"Game thủ", profissional:"Chuyên nghiệp", criador:"Người sáng tạo", artista:"Nghệ sĩ", ong:"Tổ chức phi chính phủ", instituto:"Viện", associacao:"Hiệp hội", fundacao:"Quỹ", show:"Buổi diễn", congresso:"Đại hội", festa:"Tiệc", curso:"Khóa học", palestra:"Bài giảng", pessoal:"Cá nhân", social:"Xã hội", empresarial:"Kinh doanh", cultural:"Văn hóa", esportiva:"Thể thao", banda:"Ban nhạc", loja:"Cửa hàng", empresa:"Công ty", blog:"Blog", portfolio:"Hồ sơ năng lực", cao:"Chó", gato:"Mèo", passaro:"Chim", reptil:"Bò sát", projeto:"Dự án", esporte:"Thể thao", noticias:"Tin tức", politica:"Chính trị", beleza:"Làm đẹp", musica:"Âm nhạc", cultura:"Văn hóa", comercio:"Thương mại", industria:"Công nghiệp", servicos:"Dịch vụ", outro:"KHÁC/GÌ?" }
+};
+
+/* ===== TRADUÇÕES SIMPLES (funções auxiliares) ===== */
 function tradOpcao(chave) {
   var lang = getLang();
   var t = OPCOES_TRAD[lang] || OPCOES_TRAD.pt;
-  return t[chave] || OPCOES_FALLBACK[chave] || chave; }
+  return t[chave] || OPCOES_FALLBACK[chave] || chave;
+}
 function tradCard(chave){ var l=getLang(); var t=CARDS_TRAD[l]||CARDS_TRAD.pt; return t[chave]||chave; }
 function tradMontar(chave){ var l=getLang(); var t=MONTAR_TRAD[l]||MONTAR_TRAD.pt; return t[chave]||chave; }
 function tradEnergia(n){ var l=getLang(); var t=ENERGIA_TRAD[l]||ENERGIA_TRAD.pt; return t["e"+n]||"Energia "+n; }
 
-/* ===== BÔNUS COLETIVO / EMPRESARIAL (23 produtos) =====*/
+/* ===== BÔNUS COLETIVO / EMPRESARIAL (23 produtos) ===== */
 var BC_PRODUTOS = [
   ["express","Mapa Express",8,"🔮"],["vida","Qual Vida/Ano",8,"🔢"],["completo","Mapa Completo",17,"📘"],
   ["ia","Pesquisa IA de Nomes",17,"🤖"],["urna","Validação Nome de Urna",26,"🗳️"],["eleitoral","Número Eleitoral",26,"🔢"],
   ["imovel","Número do Imóvel",26,"🏠"],["calendario","Calendário Mensal Energético",26,"📅"],
   ["artistico","Validação Nome Artístico",35,"🎭"],["bebe","Planejamento Nome de Bebê",35,"👶"],["assinatura","Validação de Assinaturas",35,"✍️"],
   ["negocio","Nome para Negócio/Produto",44,"🏪"],["casal","Mapa do Casal",44,"💞"],["familia","Mapa Família Premium",98,"🌟"],
-  // --- 8 produtos novos (faixa R$ 8) ---
   ["nome_pet","Nome do Pet",8,"🐾"],["nickname","Nickname Digital",8,"🎮"],["nome_dominio","Nome do Domínio",8,"🌐"],
   ["nome_canal","Nome do Canal",8,"🎥"],["nome_equipe","Nome da Equipe",8,"🧭"],["nome_ong","Nome de ONG, Associação, Instituto ou Fundação",8,"🏛️"],
   ["nome_projeto","Nome do Projeto",8,"📋"],["nome_evento","Nome do Evento",8,"🎪"]
 ];
 
-/* ===== BÔNUS COLETIVO / EMPRESARIAL (funções resgatadas) =====*/
-var BC_QUANTIDADES = {};
-
+/* ===== TABELA BC ===== */
 function montarTabelaBC() {
   var corpo = document.getElementById("bcTabelaCorpo");
   if (!corpo) return;
   corpo.innerHTML = "";
-  if (!window.BC_PRODUTOS || !BC_PRODUTOS.length) return;
   BC_PRODUTOS.forEach(function(p) {
     var tr = document.createElement("tr");
     tr.setAttribute("data-prod", p[0]);
@@ -353,14 +395,39 @@ function montarTabelaBC() {
     corpo.appendChild(tr);
   });
 }
-
-function pesquisarEnergia(n) {
-  var lang = getLang();
-  abrirMenuEnergia(n, lang);
+function precoUnitarioBC(prodId) {
+  var p = BC_PRODUTOS.find(function(x){ return x[0] === prodId; });
+  return p ? p[2] : 0;
+}
+function atualizarResumoBC() {
+  var t = (typeof translations !== 'undefined' && translations[getLang()]) ? translations[getLang()] : {};
+  var total = 0, qtdTotal = 0;
+  document.querySelectorAll('#bcTabelaCorpo input[data-prod]').forEach(function(inp){
+    var prod = inp.getAttribute('data-prod');
+    var q = parseInt(inp.value, 10) || 0;
+    BC_QUANTIDADES[prod] = q;
+    total += q * precoUnitarioBC(prod);
+    qtdTotal += q;
+  });
+  var pct = (typeof descontoBC === 'function') ? descontoBC(qtdTotal) : 0;
+  var finalV = total - Math.round(total * pct / 100);
+  var el = document.getElementById('bcResumo');
+  if (el) {
+    el.innerHTML = '<strong>' + (t.bc_total || 'Total bruto') + ':</strong> ' + total
+      + ' &nbsp;|&nbsp; ' + (t.bc_discount || 'Desconto') + ': ' + pct + '%'
+      + ' &nbsp;|&nbsp; <strong>' + (t.bc_final || 'Total final') + ':</strong> ' + finalV;
+  }
 }
 
+/* ===== MENU DE ENERGIAS ===== */
 var ENERGIA_PRODUTOS = [["express","🔮"],["completo","📘"],["ia","🤖"],["nome_pet","🐾"],["nickname","🎮"],["nome_dominio","🌐"],["nome_canal","🎥"],["nome_equipe","🧭"],["nome_ong","🏛️"],["nome_projeto","📋"],["nome_evento","🎪"]];
-
+function pesquisarEnergia(n) {
+  abrirMenuEnergia(n, getLang());
+}
+function fecharMenuEnergia() {
+  var o = document.getElementById("menuEnergia");
+  if (o) { o.classList.remove("active"); o.style.display = "none"; }
+}
 function abrirMenuEnergia(n, lang) {
   var t = translations[lang] || translations.pt;
   var titulo = (ENERGIA_TITULOS[lang] && ENERGIA_TITULOS[lang][String(n)]) ? ENERGIA_TITULOS[lang][String(n)] : ("Energia " + n);
@@ -390,46 +457,36 @@ function abrirMenuEnergia(n, lang) {
     b.className = "btn btn-full";
     b.innerHTML = icone + " " + nome;
     b.onclick = function(){
-  fecharMenuEnergia();
-  var t2 = translations[lang] || translations.pt;
-  if (prod === "express" || prod === "completo" || prod === "ia") {
-    var nome = (document.getElementById("calcNome") ? document.getElementById("calcNome").value : "").trim();
-    var nasc = (document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim();
-    if (!nome || !nasc) {
-      alert(t2.preencha_dados || "Preencha nome e data de nascimento primeiro.");
-      var sec = document.getElementById("calculadora") || document.getElementById("calcSection");
-      if (sec) sec.scrollIntoView({ behavior: "smooth" });
-      return;
-    }
-    window.location.href = "/criar-checkout?lang=" + lang + "&produto=" + prod
-      + "&nome=" + encodeURIComponent(nome) + "&nascimento=" + encodeURIComponent(nasc)
-      + "&energia=" + n;
-    return;
-  }
-  window._energiaPresel = n;
-  pesquisar(prod);
-};
- });
+      fecharMenuEnergia();
+      var t2 = translations[lang] || translations.pt;
+      if (prod === "express" || prod === "completo" || prod === "ia") {
+        var nome = (document.getElementById("calcNome") ? document.getElementById("calcNome").value : "").trim();
+        var nasc = (document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim();
+        if (!nome || !nasc) {
+          alert(t2.preencha_dados || "Preencha nome e data de nascimento primeiro.");
+          var sec = document.getElementById("calculadora") || document.getElementById("calcSection");
+          if (sec) sec.scrollIntoView({ behavior: "smooth" });
+          return;
+        }
+        window.location.href = "/criar-checkout?lang=" + lang + "&produto=" + prod
+          + "&nome=" + encodeURIComponent(nome) + "&nascimento=" + encodeURIComponent(nasc)
+          + "&energia=" + n;
+        return;
+      }
+      window._energiaPresel = n;
+      if (typeof pesquisar === "function") { pesquisar(prod); } else { if (typeof comprar === "function") comprar(prod); }
+    };
+    lista.appendChild(b);
+  });
+  overlay.style.display = "flex";
+  overlay.classList.add("active");
 }
-/*===== OPCOES_TRAD — rótulos das opções (14 idiomas) =====*/
-var OPCOES_TRAD = {
-  pt:{ youtube:"YouTube", podcast:"Podcast", tiktok:"TikTok", twitch:"Twitch", gamer:"Gamer", profissional:"Profissional", criador:"Criador", artista:"Artista", ong:"ONG", instituto:"Instituto", associacao:"Associação", fundacao:"Fundação", show:"Show", congresso:"Congresso", festa:"Festa", curso:"Curso", palestra:"Palestra", pessoal:"Pessoal", social:"Social", empresarial:"Empresarial", cultural:"Cultural", esportiva:"Esportiva", banda:"Banda", loja:"Loja", empresa:"Empresa", blog:"Blog", portfolio:"Portfólio", cao:"Cão", gato:"Gato", passaro:"Pássaro", reptil:"Réptil", projeto:"Projeto", esporte:"Esporte", noticias:"Notícias", politica:"Política", beleza:"Beleza", musica:"Música", cultura:"Cultura", comercio:"Comércio", industria:"Indústria", servicos:"Serviços", outro:"OUTRO/QUAL?" },
-  en:{ youtube:"YouTube", podcast:"Podcast", tiktok:"TikTok", twitch:"Twitch", gamer:"Gamer", profissional:"Professional", criador:"Creator", artista:"Artist", ong:"NGO", instituto:"Institute", associacao:"Association", fundacao:"Foundation", show:"Show", congresso:"Congress", festa:"Party", curso:"Course", palestra:"Talk", pessoal:"Personal", social:"Social", empresarial:"Business", cultural:"Cultural", esportiva:"Sports", banda:"Band", loja:"Store", empresa:"Company", blog:"Blog", portfolio:"Portfolio", cao:"Dog", gato:"Cat", passaro:"Bird", reptil:"Reptile", projeto:"Project", esporte:"Sports", noticias:"News", politica:"Politics", beleza:"Beauty", musica:"Music", cultura:"Culture", comercio:"Commerce", industria:"Industry", servicos:"Services", outro:"OTHER/WHAT?" },
-  es:{ youtube:"YouTube", podcast:"Podcast", tiktok:"TikTok", twitch:"Twitch", gamer:"Gamer", profissional:"Profesional", criador:"Creador", artista:"Artista", ong:"ONG", instituto:"Instituto", associacao:"Asociación", fundacao:"Fundación", show:"Show", congresso:"Congreso", festa:"Fiesta", curso:"Curso", palestra:"Charla", pessoal:"Personal", social:"Social", empresarial:"Empresarial", cultural:"Cultural", esportiva:"Deportiva", banda:"Banda", loja:"Tienda", empresa:"Empresa", blog:"Blog", portfolio:"Portafolio", cao:"Perro", gato:"Gato", passaro:"Pájaro", reptil:"Reptil", projeto:"Proyecto", esporte:"Deporte", noticias:"Noticias", politica:"Política", beleza:"Belleza", musica:"Música", cultura:"Cultura", comercio:"Comercio", industria:"Industria", servicos:"Servicios", outro:"OTRO/¿CUÁL?" },
-  fr:{ youtube:"YouTube", podcast:"Podcast", tiktok:"TikTok", twitch:"Twitch", gamer:"Gamer", profissional:"Professionnel", criador:"Créateur", artista:"Artiste", ong:"ONG", instituto:"Institut", associacao:"Association", fundacao:"Fondation", show:"Show", congresso:"Congrès", festa:"Fête", curso:"Cours", palestra:"Conférence", pessoal:"Personnel", social:"Social", empresarial:"Commercial", cultural:"Culturel", esportiva:"Sportive", banda:"Groupe", loja:"Boutique", empresa:"Entreprise", blog:"Blog", portfolio:"Portfolio", cao:"Chien", gato:"Chat", passaro:"Oiseau", reptil:"Reptile", projeto:"Projet", esporte:"Sport", noticias:"Actualités", politica:"Politique", beleza:"Beauté", musica:"Musique", cultura:"Culture", comercio:"Commerce", industria:"Industrie", servicos:"Services", outro:"AUTRE/QUOI?" },
-  it:{ youtube:"YouTube", podcast:"Podcast", tiktok:"TikTok", twitch:"Twitch", gamer:"Gamer", profissional:"Professionale", criador:"Creatore", artista:"Artista", ong:"ONG", instituto:"Istituto", associacao:"Associazione", fundacao:"Fondazione", show:"Show", congresso:"Congresso", festa:"Festa", curso:"Corso", palestra:"Conferenza", pessoal:"Personale", social:"Sociale", empresarial:"Aziendale", cultural:"Culturale", esportiva:"Sportiva", banda:"Band", loja:"Negozio", empresa:"Azienda", blog:"Blog", portfolio:"Portfolio", cao:"Cane", gato:"Gatto", passaro:"Uccello", reptil:"Rettile", projeto:"Progetto", esporte:"Sport", noticias:"Notizie", politica:"Politica", beleza:"Bellezza", musica:"Musica", cultura:"Cultura", comercio:"Commercio", industria:"Industria", servicos:"Servizi", outro:"ALTRO/COSA?" },
-  de:{ youtube:"YouTube", podcast:"Podcast", tiktok:"TikTok", twitch:"Twitch", gamer:"Gamer", profissional:"Professionell", criador:"Ersteller", artista:"Künstler", ong:"NGO", instituto:"Institut", associacao:"Verein", fundacao:"Stiftung", show:"Show", congresso:"Kongress", festa:"Party", curso:"Kurs", palestra:"Vortrag", pessoal:"Persönlich", social:"Sozial", empresarial:"Geschäftlich", cultural:"Kulturell", esportiva:"Sportlich", banda:"Band", loja:"Geschäft", empresa:"Unternehmen", blog:"Blog", portfolio:"Portfolio", cao:"Hund", gato:"Katze", passaro:"Vogel", reptil:"Reptil", projeto:"Projekt", esporte:"Sport", noticias:"Nachrichten", politica:"Politik", beleza:"Schönheit", musica:"Musik", cultura:"Kultur", comercio:"Handel", industria:"Industrie", servicos:"Dienstleistungen", outro:"ANDERE/WAS?" },
-  ru:{ youtube:"YouTube", podcast:"Подкаст", tiktok:"TikTok", twitch:"Twitch", gamer:"Геймер", profissional:"Профессиональный", criador:"Создатель", artista:"Артист", ong:"НПО", instituto:"Институт", associacao:"Ассоциация", fundacao:"Фонд", show:"Шоу", congresso:"Конгресс", festa:"Вечеринка", curso:"Курс", palestra:"Лекция", pessoal:"Личный", social:"Социальный", empresarial:"Деловой", cultural:"Культурный", esportiva:"Спортивная", banda:"Группа", loja:"Магазин", empresa:"Компания", blog:"Блог", portfolio:"Портфолио", cao:"Собака", gato:"Кошка", passaro:"Птица", reptil:"Рептилия", projeto:"Проект", esporte:"Спорт", noticias:"Новости", politica:"Политика", beleza:"Красота", musica:"Музыка", cultura:"Культура", comercio:"Торговля", industria:"Промышленность", servicos:"Услуги", outro:"ДРУГОЕ/КАКОЕ?" },
-  zh:{ youtube:"YouTube", podcast:"播客", tiktok:"TikTok", twitch:"Twitch", gamer:"玩家", profissional:"专业", criador:"创作者", artista:"艺术家", ong:"非政府组织", instituto:"研究所", associacao:"协会", fundacao:"基金会", show:"演出", congresso:"大会", festa:"派对", curso:"课程", palestra:"讲座", pessoal:"个人", social:"社交", empresarial:"商业", cultural:"文化", esportiva:"体育", banda:"乐队", loja:"商店", empresa:"公司", blog:"博客", portfolio:"作品集", cao:"狗", gato:"猫", passaro:"鸟", reptil:"爬行动物", projeto:"项目", esporte:"体育", noticias:"新闻", politica:"政治", beleza:"美容", musica:"音乐", cultura:"文化", comercio:"商业", industria:"工业", servicos:"服务", outro:"其他/什么?" },
-  ja:{ youtube:"YouTube", podcast:"ポッドキャスト", tiktok:"TikTok", twitch:"Twitch", gamer:"ゲーマー", profissional:"プロフェッショナル", criador:"クリエイター", artista:"アーティスト", ong:"NGO", instituto:"研究所", associacao:"協会", fundacao:"財団", show:"ショー", congresso:"会議", festa:"パーティー", curso:"コース", palestra:"講演", pessoal:"個人", social:"ソーシャル", empresarial:"ビジネス", cultural:"文化的", esportiva:"スポーツ", banda:"バンド", loja:"店", empresa:"会社", blog:"ブログ", portfolio:"ポートフォリオ", cao:"犬", gato:"猫", passaro:"鳥", reptil:"爬虫類", projeto:"プロジェクト", esporte:"スポーツ", noticias:"ニュース", politica:"政治", beleza:"美容", musica:"音楽", cultura:"文化", comercio:"商業", industria:"産業", servicos:"サービス", outro:"その他/何?" },
-  ar:{ youtube:"يوتيوب", podcast:"بودكاست", tiktok:"تيك توك", twitch:"تويتش", gamer:"لاعب", profissional:"محترف", criador:"منشئ", artista:"فنان", ong:"منظمة", instituto:"معهد", associacao:"جمعية", fundacao:"مؤسسة", show:"عرض", congresso:"مؤتمر", festa:"حفلة", curso:"دورة", palestra:"محاضرة", pessoal:"شخصي", social:"اجتماعي", empresarial:"تجاري", cultural:"ثقافي", esportiva:"رياضية", banda:"فرقة", loja:"متجر", empresa:"شركة", blog:"مدونة", portfolio:"أعمال", cao:"كلب", gato:"قطة", passaro:"طائر", reptil:"زاحف", projeto:"مشروع", esporte:"رياضة", noticias:"أخبار", politica:"سياسة", beleza:"جمال", musica:"موسيقى", cultura:"ثقافة", comercio:"تجارة", industria:"صناعة", servicos:"خدمات", outro:"آخر/ماذا؟" },
-  he:{ youtube:"יוטיוב", podcast:"פודקאסט", tiktok:"טיקטוק", twitch:"טוויץ'", gamer:"גיימר", profissional:"מקצועי", criador:"יוצר", artista:"אמן", ong:"ארגון", instituto:"מכון", associacao:"עמותה", fundacao:"קרן", show:"מופע", congresso:"קונגרס", festa:"מסיבה", curso:"קורס", palestra:"הרצאה", pessoal:"אישי", social:"חברתי", empresarial:"עסקי", cultural:"תרבותי", esportiva:"ספורטיבית", banda:"להקה", loja:"חנות", empresa:"חברה", blog:"בלוג", portfolio:"תיק עבודות", cao:"כלב", gato:"חתול", passaro:"ציפור", reptil:"זוחל", projeto:"פרויקט", esporte:"ספורט", noticias:"חדשות", politica:"פוליטיקה", beleza:"יופי", musica:"מוזיקה", cultura:"תרבות", comercio:"מסחר", industria:"תעשייה", servicos:"שירותים", outro:"אחר/מה?" },
-  id:{ youtube:"YouTube", podcast:"Podcast", tiktok:"TikTok", twitch:"Twitch", gamer:"Gamer", profissional:"Profesional", criador:"Pencipta", artista:"Artis", ong:"LSM", instituto:"Lembaga", associacao:"Asosiasi", fundacao:"Yayasan", show:"Pertunjukan", congresso:"Kongres", festa:"Pesta", curso:"Kursus", palestra:"Ceramah", pessoal:"Pribadi", social:"Sosial", empresarial:"Bisnis", cultural:"Budaya", esportiva:"Olahraga", banda:"Band", loja:"Toko", empresa:"Perusahaan", blog:"Blog", portfolio:"Portofolio", cao:"Anjing", gato:"Kucing", passaro:"Burung", reptil:"Reptil", projeto:"Proyek", esporte:"Olahraga", noticias:"Berita", politica:"Politik", beleza:"Kecantikan", musica:"Musik", cultura:"Budaya", comercio:"Perdagangan", industria:"Industri", servicos:"Layanan", outro:"LAINNYA/APA?" },
-  tr:{ youtube:"YouTube", podcast:"Podcast", tiktok:"TikTok", twitch:"Twitch", gamer:"Oyuncu", profissional:"Profesyonel", criador:"İçerik Üreticisi", artista:"Sanatçı", ong:"STK", instituto:"Enstitü", associacao:"Dernek", fundacao:"Vakıf", show:"Gösteri", congresso:"Kongre", festa:"Parti", curso:"Kurs", palestra:"Konferans", pessoal:"Kişisel", social:"Sosyal", empresarial:"İş", cultural:"Kültürel", esportiva:"Spor", banda:"Müzik Grubu", loja:"Mağaza", empresa:"Şirket", blog:"Blog", portfolio:"Portfolyo", cao:"Köpek", gato:"Kedi", passaro:"Kuş", reptil:"Sürüngen", projeto:"Proje", esporte:"Spor", noticias:"Haberler", politica:"Siyaset", beleza:"Güzellik", musica:"Müzik", cultura:"Kültür", comercio:"Ticaret", industria:"Endüstri", servicos:"Hizmetler", outro:"DİĞER/NE?" },  
-  vi:{ youtube:"YouTube", podcast:"Podcast", tiktok:"TikTok", twitch:"Twitch", gamer:"Game thủ", profissional:"Chuyên nghiệp", criador:"Người sáng tạo", artista:"Nghệ sĩ", ong:"Tổ chức phi chính phủ", instituto:"Viện", associacao:"Hiệp hội", fundacao:"Quỹ", show:"Buổi diễn", congresso:"Đại hội", festa:"Tiệc", curso:"Khóa học", palestra:"Bài giảng", pessoal:"Cá nhân", social:"Xã hội", empresarial:"Kinh doanh", cultural:"Văn hóa", esportiva:"Thể thao", banda:"Ban nhạc", loja:"Cửa hàng", empresa:"Công ty", blog:"Blog", portfolio:"Hồ sơ năng lực", cao:"Chó", gato:"Mèo", passaro:"Chim", reptil:"Bò sát", projeto:"Dự án", esporte:"Thể thao", noticias:"Tin tức", politica:"Chính trị", beleza:"Làm đẹp", musica:"Âm nhạc", cultura:"Văn hóa", comercio:"Thương mại", industria:"Công nghiệp", servicos:"Dịch vụ", outro:"KHÁC/GÌ?" }
-};
 
-/* ===== SELETOR DE ENERGIA (para produtos da lista de energias) =====*/
+/* ===== SELETOR DE ENERGIA ===== */
+function fecharSeletorEnergia() {
+  var o = document.getElementById("modalEnergiaSel");
+  if (o) o.classList.remove("active");
+}
 function abrirSeletorEnergia(produto, lang) {
   var t = translations[lang] || translations.pt;
   var titulo = (PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang][produto]) ? PRODUTOS_TRAD[lang][produto] : produto;
@@ -451,22 +508,19 @@ function abrirSeletorEnergia(produto, lang) {
   document.getElementById("modalEnergiaSelTitulo").textContent = titulo;
   var lista = document.getElementById("modalEnergiaSelLista");
   lista.innerHTML = "";
-  var titulos = (ENERGIA_TITULOS && ENERGIA_TITULOS[lang]) ? ENERGIA_TITULOS[lang] : ENERGIA_TITULOS["pt"];
+  var titulos = ENERGIA_TITULOS[lang] || ENERGIA_TITULOS["pt"];
   for (var i = 1; i <= 9; i++) {
     var nomeE = titulos[String(i)] || ("Energia " + i);
     var b = document.createElement("button");
     b.className = "btn btn-full";
     b.textContent = i + " - " + nomeE;
-    b.onclick = function(){ fecharSeletorEnergia(); irParaCompra(produto, lang, this.textContent.split(" - ")[0]); };
+    b.onclick = function(){ fecharSeletorEnergia(); if (typeof irParaCompra === "function") irParaCompra(produto, lang, this.textContent.split(" - ")[0]); };
     lista.appendChild(b);
   }
   overlay.classList.add("active");
 }
-function fecharSeletorEnergia() {
-  var o = document.getElementById("modalEnergiaSel");
-  if (o) o.classList.remove("active");
-}
 
+/* ===== PASSOS DO MODAL (energia e nome) ===== */
 function montarPassoEnergia(produto, lang) {
   var t = translations[lang] || translations.pt;
   document.getElementById("modalPassoTipo").style.display = "none";
@@ -480,7 +534,7 @@ function montarPassoEnergia(produto, lang) {
     var b = document.createElement("button");
     b.className = "btn btn-full";
     b.textContent = i + " - " + nomeE;
-    b.onclick = function(){ _modalDado.energia = i; montarPassoNome(produto, lang); };
+    b.onclick = function(){ if (window._modalDado) _modalDado.energia = i; montarPassoNome(produto, lang); };
     box.appendChild(b);
   }
 }
@@ -495,15 +549,16 @@ function montarPassoNome(produto, lang) {
   document.getElementById("modalDadoInput").focus();
 }
 
+/* ===== GRADE DE ENERGIAS (9 cards) ===== */
 function montarEnergias() {
   var lang = getLang();
   var container = document.getElementById("energiasGrid")
     || document.getElementById("energias")
     || document.querySelector(".energias-grid");
   if (!container) return;
-  var titulos = (ENERGIA_TITULOS && ENERGIA_TITULOS[lang]) ? ENERGIA_TITULOS[lang] : ENERGIA_TITULOS["pt"];
-  var descs = (ENERGIAS_DESC && ENERGIAS_DESC[lang]) ? ENERGIAS_DESC[lang] : ENERGIAS_DESC["pt"];
-  var btn = (ENERGIAS_BTN && ENERGIAS_BTN[lang]) ? ENERGIAS_BTN[lang] : "Pesquisar";
+  var titulos = ENERGIA_TITULOS[lang] || ENERGIA_TITULOS["pt"];
+  var descs = ENERGIAS_DESC[lang] || ENERGIAS_DESC["pt"] || {};
+  var btn = ENERGIAS_BTN[lang] || "Pesquisar";
   var html = "";
   for (var i = 1; i <= 9; i++) {
     html += '<div class="energia-card">'
@@ -516,6 +571,7 @@ function montarEnergias() {
   container.innerHTML = html;
 }
 
+/* ===== CONFIRMAR BÔNUS COLETIVO ===== */
 function confirmarBC() {
   var itens = [];
   for (var id in BC_QUANTIDADES) {
@@ -528,9 +584,10 @@ function confirmarBC() {
   if (itens.length === 0) { alert(t.alert_bc_vazio || "Selecione pelo menos 1 serviço."); return; }
   var bruto = itens.reduce(function(a, i) { return a + i.preco * i.qtd; }, 0);
   var qtdTotal = itens.reduce(function(a, i) { return a + i.qtd; }, 0);
-  var pct = descontoBC(qtdTotal);
+  var pct = (typeof descontoBC === "function") ? descontoBC(qtdTotal) : 0;
   var final = bruto - Math.round(bruto * pct / 100);
-  var simbolo = (PRECO_DISPLAY[getLang()] ? PRECO_DISPLAY[getLang()][0].replace(/[0-9.,\s]/g, '').trim() : '') || 'R$';
+  var simbolo = (window.PRECO_DISPLAY && window.PRECO_DISPLAY[getLang()] && window.PRECO_DISPLAY[getLang()][0])
+    ? window.PRECO_DISPLAY[getLang()][0].replace(/[0-9.,\s]/g, '').trim() : 'R$';
   var linhas = itens.map(function(i) {
     return (t.bc_linha || "{nome}: {qtd}x {simbolo} {preco} = {simbolo} {total}")
       .replace('{nome}', i.nome).replace('{qtd}', i.qtd).replace('{simbolo}', simbolo)
@@ -545,6 +602,7 @@ function confirmarBC() {
   window.location.href = '/criar-checkout?lang=' + getLang() + '&produto=coletivo&qtd=' + qtdTotal + '&total=' + final + '&itens=' + encodeURIComponent(JSON.stringify(itens));
 }
 
+/* ===== TRADUZIR TUDO (usa window.PRECO_DISPLAY — sem risco de conflito) ===== */
 function traduzirTudo() {
   if (_traduzindo) return;
   _traduzindo = true;
@@ -568,7 +626,9 @@ function traduzirTudo() {
       var nome = card.querySelector('.prod-nome');
       if (nome && PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang][prod]) nome.innerText = PRODUTOS_TRAD[lang][prod];
       var preco = card.querySelector('.prod-preco');
-      if (preco && PRECO_DISPLAY[lang] && PRODUTO_FAIXA[prod] !== undefined) preco.innerText = PRECO_DISPLAY[lang][PRODUTO_FAIXA[prod]];
+      if (preco && window.PRECO_DISPLAY && window.PRECO_DISPLAY[lang] && PRODUTO_FAIXA[prod] !== undefined) {
+        preco.innerText = window.PRECO_DISPLAY[lang][PRODUTO_FAIXA[prod]];
+      }
       var feats = FEAT_TRAD[lang] && FEAT_TRAD[lang][prod];
       if (feats) card.querySelectorAll('.features li').forEach(function(li, i) {
         if (feats[i]) li.innerText = feats[i];
@@ -583,7 +643,9 @@ function traduzirTudo() {
       var nome = tr.querySelector('.bc-prod-nome');
       if (nome && PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang][prod]) nome.innerText = PRODUTOS_TRAD[lang][prod];
       var preco = tr.querySelector('.bc-prod-preco');
-      if (preco && PRECO_DISPLAY[lang] && PRODUTO_FAIXA[prod] !== undefined) preco.innerText = PRECO_DISPLAY[lang][PRODUTO_FAIXA[prod]];
+      if (preco && window.PRECO_DISPLAY && window.PRECO_DISPLAY[lang] && PRODUTO_FAIXA[prod] !== undefined) {
+        preco.innerText = window.PRECO_DISPLAY[lang][PRODUTO_FAIXA[prod]];
+      }
     });
     document.querySelectorAll('[data-i18n-bc]').forEach(function(el) {
       var k = el.getAttribute('data-i18n-bc');
