@@ -117,19 +117,6 @@ TRAD = {
         "download": "Скачать PDF", "voltar": "Назад", "confirmado": "Платёж подтверждён!", "gerado": "Ваша карта успешно создана.",
         "nenhum": "Нет"
     },
-    "hi": {
-        "express": "त्वरित मानचित्र (₹ 12000)", "completo": "पूर्ण मानचित्र (₹ 28000)", "numero": "संख्या", "valor": "मूल्य",
-        "significado": "अर्थ", "caminho_vida": "जीवन पथ", "expressao": "अभिव्यक्ति", "motivacao": "प्रेरणा",
-        "personalidade": "व्यक्तित्व", "destino": "भाग्य", "seu_perfil": "आपकी अंकशास्त्र प्रोफ़ाइल", "analise": "विस्तृत विश्लेषण",
-        "positivo": "सकारात्मक पहलू", "negativo": "नकारात्मक पहलू", "licao": "जीवन का पाठ", "ciclos": "जीवन चक्र",
-        "formativo": "निर्माण चक्र", "produtivo": "उत्पादक चक्र", "colheita": "फसल चक्र", "desafios": "चुनौतियाँ",
-        "menor1": "छोटी चुनौती 1", "menor2": "छोटी चुनौती 2", "principal": "मुख्य चुनौती", "realizacoes": "उपलब्धियाँ",
-        "juventude": "पहली उपलब्धि (युवावस्था)", "vida_adulta": "दूसरी उपलब्धि (वयस्कता)", "maturidade": "तीसरी उपलब्धि (परिपक्वता)",
-        "legado": "चौथी उपलब्धि (विरासत)", "vibracao": "जन्म स्पंदन", "grade": "ऊर्जा ग्रिड",
-        "presentes": "मौजूद ऊर्जाएँ", "carencias": "ऊर्जा की कमी", "nota_final": "अंतिम स्कोर", "regente": "शासक",
-        "download": "PDF डाउनलोड करें", "voltar": "वापस", "confirmado": "भुगतान पुष्ट हुआ!", "gerado": "आपका मानचित्र सफलतापूर्वक बन गया।",
-        "nenhum": "कोई नहीं"
-    },
     "he": {
         "express": "מפה מהירה (₪ 500)", "completo": "מפה מלאה (₪ 1300)", "numero": "מספר", "valor": "ערך",
         "significado": "משמעות", "caminho_vida": "נתיב החיים", "expressao": "הבעה", "motivacao": "מוטיבציה",
@@ -155,6 +142,45 @@ TRAD = {
         "presentes": "الطاقات الحاضرة", "carencias": "فجوات الطاقة", "nota_final": "النتيجة النهائية", "regente": "الحاكم",
         "download": "تحميل PDF", "voltar": "رجوع", "confirmado": "تم تأكيد الدفع!", "gerado": "تم إنشاء خريطتك بنجاح.",
         "nenhum": "لا شيء"
+    },
+    "id": {
+        "express": "Peta Ekspres (Rp 24.000)", "completo": "Peta Lengkap (Rp 56.000)", "numero": "Nomor", "valor": "Nilai",
+        "significado": "Arti", "caminho_vida": "Jalan Hidup", "expressao": "Ekspresi", "motivacao": "Motivasi",
+        "personalidade": "Kepribadian", "destino": "Takdir", "seu_perfil": "Profil Numerologi Anda", "analise": "Analisis Terperinci",
+        "positivo": "Aspek Positif", "negativo": "Aspek Negatif", "licao": "Pelajaran Hidup", "ciclos": "Siklus Hidup",
+        "formativo": "Siklus Formatif", "produtivo": "Siklus Produktif", "colheita": "Siklus Panen", "desafios": "Tantangan",
+        "menor1": "Tantangan Kecil 1", "menor2": "Tantangan Kecil 2", "principal": "Tantangan Utama", "realizacoes": "Pencapaian",
+        "juventude": "Pencapaian ke-1 (Masa Muda)", "vida_adulta": "Pencapaian ke-2 (Dewasa)", "maturidade": "Pencapaian ke-3 (Kematangan)",
+        "legado": "Pencapaian ke-4 (Warisan)", "vibracao": "Getaran Kelahiran", "grade": "Kisi Energi",
+        "presentes": "Energi yang Hadir", "carencias": "Kekurangan Energi", "nota_final": "Nilai Akhir", "regente": "Penguasa",
+        "download": "Unduh PDF", "voltar": "Kembali", "confirmado": "Pembayaran Dikonfirmasi!", "gerado": "Peta Anda berhasil dibuat.",
+        "nenhum": "Tidak Ada"
+    },
+    "tr": {
+        "express": "Ekspres Harita (₺ 51)", "completo": "Tam Harita (₺ 119)", "numero": "Sayı", "valor": "Değer",
+        "significado": "Anlam", "caminho_vida": "Yaşam Yolu", "expressao": "İfade", "motivacao": "Motivasyon",
+        "personalidade": "Kişilik", "destino": "Kader", "seu_perfil": "Numeroloji Profiliniz", "analise": "Detaylı Analiz",
+        "positivo": "Olumlu Yönler", "negativo": "Olumsuz Yönler", "licao": "Yaşam Dersi", "ciclos": "Yaşam Döngüleri",
+        "formativo": "Biçimlendirici Döngü", "produtivo": "Üretken Döngü", "colheita": "Hasat Döngüsü", "desafios": "Zorluklar",
+        "menor1": "Küçük Zorluk 1", "menor2": "Küçük Zorluk 2", "principal": "Ana Zorluk", "realizacoes": "Başarılar",
+        "juventude": "1. Başarı (Gençlik)", "vida_adulta": "2. Başarı (Yetişkinlik)", "maturidade": "3. Başarı (Olgunluk)",
+        "legado": "4. Başarı (Miras)", "vibracao": "Doğum Titreşimi", "grade": "Enerji Izgarası",
+        "presentes": "Mevcut Enerjiler", "carencias": "Enerji Eksikleri", "nota_final": "Final Notu", "regente": "Yönetici",
+        "download": "PDF İndir", "voltar": "Geri", "confirmado": "Ödeme Onaylandı!", "gerado": "Haritanız başarıyla oluşturuldu.",
+        "nenhum": "Yok"
+    },
+        "vi": {
+        "express": "Bản đồ Nhanh (₫ 38.000)", "completo": "Bản đồ Đầy đủ (₫ 88.000)", "numero": "Số", "valor": "Giá trị",
+        "significado": "Ý nghĩa", "caminho_vida": "Đường đời", "expressao": "Biểu hiện", "motivacao": "Động lực",
+        "personalidade": "Tính cách", "destino": "Số phận", "seu_perfil": "Hồ sơ Thần số học của bạn", "analise": "Phân tích chi tiết",
+        "positivo": "Khía cạnh tích cực", "negativo": "Khía cạnh tiêu cực", "licao": "Bài học cuộc sống", "ciclos": "Chu kỳ cuộc đời",
+        "formativo": "Chu kỳ hình thành", "produtivo": "Chu kỳ sản xuất", "colheita": "Chu kỳ thu hoạch", "desafios": "Thách thức",
+        "menor1": "Thách thức nhỏ 1", "menor2": "Thách thức nhỏ 2", "principal": "Thách thức chính", "realizacoes": "Thành tựu",
+        "juventude": "Thành tựu thứ 1 (Tuổi trẻ)", "vida_adulta": "Thành tựu thứ 2 (Trưởng thành)", "maturidade": "Thành tựu thứ 3 (Chín chắn)",
+        "legado": "Thành tựu thứ 4 (Di sản)", "vibracao": "Rung động sinh", "grade": "Lưới năng lượng",
+        "presentes": "Năng lượng hiện diện", "carencias": "Thiếu hụt năng lượng", "nota_final": "Điểm cuối cùng", "regente": "Người cai quản",
+        "download": "Tải PDF", "voltar": "Quay lại", "confirmado": "Thanh toán đã xác nhận!", "gerado": "Bản đồ của bạn đã được tạo thành công.",
+        "nenhum": "Không có"
     }
 }
 
@@ -262,15 +288,6 @@ PRODUTOS = {
         "nome_pet": "Имя питомца", "nickname": "Цифровой никнейм", "nome_dominio": "Имя домена",
         "nome_canal": "Название канала", "nome_equipe": "Название команды", "nome_ong": "Название НКО, ассоциации, института или фонда",
         "nome_projeto": "Название проекта", "nome_evento": "Название события"},
-    "hi": {"express": "त्वरित मानचित्र", "vida": "जीवन चरण और वर्ष", "completo": "पूर्ण मानचित्र",
-        "ia": "AI नाम खोज", "urna": "मतपत्र नाम सत्यापन", "eleitoral": "निर्वाचन संख्या",
-        "imovel": "संपत्ति संख्या", "calendario": "मासिक ऊर्जा कैलेंडर",
-        "artistico": "कलात्मक नाम सत्यापन", "bebe": "शिशु नाम योजना",
-        "assinatura": "हस्ताक्षर सत्यापन", "negocio": "व्यवसाय/उत्पाद नाम",
-        "casal": "युगल मानचित्र", "familia": "प्रीमियम परिवार मानचित्र", "coletivo": "कॉर्पोरेट बोनस",
-        "nome_pet": "पालतू नाम", "nickname": "डिजिटल उपनाम", "nome_dominio": "डोमेन नाम",
-        "nome_canal": "चैनल नाम", "nome_equipe": "टीम नाम", "nome_ong": "एनजीओ, संघ, संस्थान या फाउंडेशन का नाम",
-        "nome_projeto": "परियोजना नाम", "nome_evento": "कार्यक्रम नाम"},
     "he": {"express": "מפה מהירה", "vida": "שלב חיים ושנה", "completo": "מפה מלאה",
         "ia": "חיפוש שמות AI", "urna": "אימות שם פתק", "eleitoral": "מספר בחירות",
         "imovel": "מספר נכס", "calendario": "לוח אנרגיה חודשי",
@@ -288,10 +305,37 @@ PRODUTOS = {
         "casal": "خريطة الزوجين", "familia": "خريطة العائلة المميزة", "coletivo": "مكافأة الشركات",
         "nome_pet": "اسم الحيوان الأليف", "nickname": "اللقب الرقمي", "nome_dominio": "اسم النطاق",
         "nome_canal": "اسم القناة", "nome_equipe": "اسم الفريق", "nome_ong": "اسم منظمة أو جمعية أو معهد أو مؤسسة",
-        "nome_projeto": "اسم المشروع", "nome_evento": "اسم الفعالية"}
+        "nome_projeto": "اسم المشروع", "nome_evento": "اسم الفعالية"},
+    "id": {"express": "Peta Ekspres", "vida": "Tahap Hidup & Tahun", "completo": "Peta Lengkap",
+        "ia": "Pencarian Nama AI", "urna": "Validasi Nama Surat Suara", "eleitoral": "Nomor Pemilihan",
+        "imovel": "Nomor Properti", "calendario": "Kalender Energi Bulanan",
+        "artistico": "Validasi Nama Artistik", "bebe": "Perencanaan Nama Bayi",
+        "assinatura": "Validasi Tanda Tangan", "negocio": "Nama untuk Bisnis/Produk",
+        "casal": "Peta Pasangan", "familia": "Peta Keluarga Premium", "coletivo": "Bonus Kolektif/Perusahaan",
+        "nome_pet": "Nama Hewan Peliharaan", "nickname": "Nama Panggilan Digital", "nome_dominio": "Nama Domain",
+        "nome_canal": "Nama Saluran", "nome_equipe": "Nama Tim", "nome_ong": "Nama LSM, Asosiasi, Institut atau Yayasan",
+        "nome_projeto": "Nama Proyek", "nome_evento": "Nama Acara"},
+    "tr": {"express": "Ekspres Harita", "vida": "Yaşam Evresi & Yıl", "completo": "Tam Harita",
+        "ia": "AI İsim Arama", "urna": "Oy Pusulası Adı Doğrulama", "eleitoral": "Seçim Numarası",
+        "imovel": "Mülk Numarası", "calendario": "Aylık Enerji Takvimi",
+        "artistico": "Sanat Adı Doğrulama", "bebe": "Bebek Adı Planlama",
+        "assinatura": "İmza Doğrulama", "negocio": "İşletme/Ürün Adı",
+        "casal": "Çift Haritası", "familia": "Premium Aile Haritası", "coletivo": "Kolektif/Kurumsal Bonus",
+        "nome_pet": "Evcil Hayvan Adı", "nickname": "Dijital Takma Ad", "nome_dominio": "Alan Adı",
+        "nome_canal": "Kanal Adı", "nome_equipe": "Takım Adı", "nome_ong": "STK, Dernek, Enstitü veya Vakıf Adı",
+        "nome_projeto": "Proje Adı", "nome_evento": "Etkinlik Adı"},
+    "vi": {"express": "Bản đồ Nhanh", "vida": "Giai đoạn cuộc sống & Năm", "completo": "Bản đồ Đầy đủ",
+        "ia": "Tìm kiếm tên AI", "urna": "Xác minh Tên Phiếu bầu", "eleitoral": "Số Bầu cử",
+        "imovel": "Số Bất động sản", "calendario": "Lịch năng lượng hàng tháng",
+        "artistico": "Xác minh Tên nghệ danh", "bebe": "Lên kế hoạch Tên bé",
+        "assinatura": "Xác minh Chữ ký", "negocio": "Tên cho Doanh nghiệp/Sản phẩm",
+        "casal": "Bản đồ Cặp đôi", "familia": "Bản đồ Gia đình Cao cấp", "coletivo": "Thưởng Tập thể/Doanh nghiệp",
+        "nome_pet": "Tên Thú cưng", "nickname": "Biệt danh Kỹ thuật số", "nome_dominio": "Tên Miền",
+        "nome_canal": "Tên Kênh", "nome_equipe": "Tên Đội nhóm", "nome_ong": "Tên Tổ chức phi chính phủ, Hiệp hội, Viện hoặc Quỹ",
+        "nome_projeto": "Tên Dự án", "nome_evento": "Tên Sự kiện"}
 }
 
-# ===== TEXTOS DOS PDFS (12 IDIOMAS) =====
+# ===== TEXTOS DOS PDFS (14 IDIOMAS) =====
 PDF_TEXTS = {
     "pt": {"t_express": "MAPA EXPRESS", "t_completo": "MAPA COMPLETO", "t_urna": "VALIDACAO DE NOME DE URNA", "t_eleitoral": "NUMERO ELEITORAL",
            "numero": "Numero", "valor": "Valor", "caminho": "Caminho de Vida", "expressao": "Expressao", "motivacao": "Motivacao", "personalidade": "Personalidade", "destino": "Destino",
@@ -347,12 +391,6 @@ PDF_TEXTS = {
            "ciclos": "Цикл 1 (0-{a}) | Цикл 2 ({b}-{c}) | Цикл 3 ({d}+)", "desafios": "Вызовы: {x} | {y} | Главный {z}", "ano_pessoal": "Личный год {ano}: {v}",
            "grade": "Сетка: Есть {p} | Нет {c}", "baixar": "СКАЧАТЬ PDF", "confirmado": "Подтверждено!", "gerado": "Здравствуйте {nome}, ваш {prod} создан.",
            "voltar": "Назад", "qr_titulo": "Не удалось создать PDF.", "qr_instrucao": "Отсканируйте QR-код ниже, чтобы получить доступ к документу.", "entrega": "Конфиденциальный документ - доставка через PDF/QRCode."},
-    "hi": {"t_express": "त्वरित मानचित्र", "t_completo": "पूर्ण मानचित्र", "t_urna": "मतपत्र नाम सत्यापन", "t_eleitoral": "निर्वाचन संख्या",
-           "numero": "अंक", "valor": "मान", "caminho": "जीवन पथ", "expressao": "अभिव्यक्ति", "motivacao": "आत्मा की इच्छा", "personalidade": "व्यक्तित्व", "destino": "भाग्य",
-           "cargo": "पद", "sugestoes": "सुझाव:", "op8": "ऊर्जा 8 विकल्प - आदर्श:", "op_alt": "वैकल्पिक विकल्प:", "num_existente": "मौजूदा संख्या",
-           "ciclos": "चक्र 1 (0-{a}) | चक्र 2 ({b}-{c}) | चक्र 3 ({d}+)", "desafios": "चुनौतियाँ: {x} | {y} | मुख्य {z}", "ano_pessoal": "व्यक्तिगत वर्ष {ano}: {v}",
-           "grade": "ग्रिड: मौजूद {p} | अनुपस्थित {c}", "baixar": "PDF डाउनलोड करें", "confirmado": "पुष्टि हुई!", "gerado": "नमस्ते {nome}, आपका {prod} तैयार है।",
-           "voltar": "वापस", "qr_titulo": "आपका PDF नहीं बन सका।", "qr_instrucao": "नीचे QR कोड स्कैन करके अपने दस्तावेज़ तक पहुँचें।", "entrega": "गोपनीय दस्तावेज़ - PDF/QRCode द्वारा डिलीवरी।"},
     "he": {"t_express": "מפה מהירה", "t_completo": "מפה מלאה", "t_urna": "אימות שם פתק", "t_eleitoral": "מספר בחירות",
            "numero": "מספר", "valor": "ערך", "caminho": "נתיב החיים", "expressao": "ביטוי", "motivacao": "דחף הנשמה", "personalidade": "אישיות", "destino": "גורל",
            "cargo": "תפקיד", "sugestoes": "הצעות:", "op8": "אפשרויות עם אנרגיה 8 - אידיאלי:", "op_alt": "אפשרויות חלופיות:", "num_existente": "מספר קיים",
@@ -364,7 +402,8 @@ PDF_TEXTS = {
            "cargo": "المنصب", "sugestoes": "اقتراحات:", "op8": "خيارات بالطاقة 8 - مثالي:", "op_alt": "خيارات بديلة:", "num_existente": "الرقم الموجود",
            "ciclos": "دورة 1 (0-{a}) | دورة 2 ({b}-{c}) | دورة 3 ({d}+)", "desafios": "التحديات: {x} | {y} | الرئيسي {z}", "ano_pessoal": "السنة الشخصية {ano}: {v}",
            "grade": "الشبكة: موجودة {p} | ناقصة {c}", "baixar": "تحميل PDF", "confirmado": "تم التأكيد!", "gerado": "مرحباً {nome}، تم إنشاء {prod} الخاص بك.",
-           "voltar": "رجوع", "qr_titulo": "تعذر إنشاء ملف PDF الخاص بك.", "qr_instrucao": "امسح رمز QR أدناه للوصول إلى مستندك.", "entrega": "مستند سري - التسليم عبر PDF/QRCode."}
+           "voltar": "رجوع", "qr_titulo": "تعذر إنشاء ملف PDF الخاص بك.", "qr_instrucao": "امسح رمز QR أدناه للوصول إلى مستندك.", "entrega": "مستند سري - التسليم عبر PDF/QRCode."},
+    
 }
 # ===== SEÇÕES DOS PDFS (12 IDIOMAS) =====
 PDF_SECOES = {
