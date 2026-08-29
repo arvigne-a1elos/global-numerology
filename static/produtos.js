@@ -352,32 +352,6 @@ function montarTabelaBC() {
   });
 }
 
-// Preço unitário do produto na moeda do idioma ativo (usa PRECO_BASE + PRODUTO_FAIXA)
-function precoUnitarioBC(prodId) {
-  var lang = getLang();
-  var faixa = PRODUTO_FAIXA[prodId];
-  return (PRECO_BASE[lang] && faixa !== undefined) ? PRECO_BASE[lang][faixa] : 0;
-}
-function atualizarResumoBC() {
-  var bruto = 0, qtdTotal = 0;
-  document.querySelectorAll("#bcTabelaCorpo input[data-prod]").forEach(function(inp) {
-    var q = parseInt(inp.value) || 0;
-    BC_QUANTIDADES[inp.getAttribute("data-prod")] = q;
-    var prod = BC_PRODUTOS.find(function(p) { return p[0] === inp.getAttribute("data-prod"); });
-    if (prod) { bruto += q * precoUnitarioBC(prod[0]); qtdTotal += q; }
-  });
-  var descontoPct = descontoBC(qtdTotal);
-  var desconto = Math.round(bruto * descontoPct / 100);
-  var final = bruto - desconto;
-  var lang = getLang();
-  var bc = BC_TEXTS[lang] || BC_TEXTS.pt;
-  var simbolo = PRECO_DISPLAY[lang][0].replace(/[0-9.,\s]/g, '').trim() || 'R$';
-  document.getElementById("bcTotalBruto").textContent = simbolo + " " + bruto.toLocaleString("pt-BR");
-  document.getElementById("bcDesconto").textContent = simbolo + " " + desconto.toLocaleString("pt-BR") + " (" + descontoPct + "%)";
-  document.getElementById("bcTotalFinal").textContent = simbolo + " " + final.toLocaleString("pt-BR");
-  document.getElementById("bcFaixaInfo").textContent = bc.qtd_total + " " + qtdTotal + " " + bc.codigos;
-}
-
 function pesquisarEnergia(n) {
   var lang = getLang();
   abrirMenuEnergia(n, lang);
