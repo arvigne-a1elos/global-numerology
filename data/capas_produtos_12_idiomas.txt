@@ -6,6 +6,24 @@
 # - DUNS 942242668 e contato: identicos em todos os idiomas
 # GERADO EM 29/08/2026 - texto aprovado
 
+var PRECO_BASE = {
+  pt:[8,17,26,35,44,98], en:[20,44,71,89,116,251], es:[11,26,35,53,62,134],
+  it:[11,26,35,53,62,134], fr:[11,26,35,53,62,134], de:[11,26,35,53,62,134],
+  ja:[1400,3000,4600,6200,7700,17000], zh:[26,53,71,98,125,260],
+  ru:[440,800,1250,1700,2150,4400], id:[11000,23000,36000,48000,60000,134000],
+  tr:[58,123,188,254,319,710], vi:[25000,53000,81000,109000,137000,305000],
+  he:[44,98,143,197,242,530], ar:[35,71,107,143,170,377]
+};
+var SIMB = {pt:'R$',en:'US$',es:'€',it:'€',fr:'€',de:'€',ja:'¥',zh:'¥',ru:'₽',id:'Rp',tr:'₺',vi:'₫',he:'₪',ar:'﷼'};
+var PRECO_DISPLAY = {};
+Object.keys(PRECO_BASE).forEach(function(l){
+  var zero = (l==='ja'||l==='vi');
+  PRECO_DISPLAY[l] = PRECO_BASE[l].map(function(v){
+    var txt = zero ? String(v) : v.toFixed(2).replace('.', ',');
+    return SIMB[l]+' '+txt;
+  });
+});
+
 produto,faixa,pt,en,es,it,fr,de,ja,zh,ru,id,tr,vi,he,ar,preco_brl,preco_usd,preco_eur,preco_jpy,preco_cny,preco_rub,preco_idr,preco_try,preco_vnd,preco_ils,preco_sar
 express,0,Mapa Express,Express Map,Mapa Exprés,Mappa Espressa,Carte Express,Express-Karte,エクスプレスマップ,快速地图,Экспресс-карта,Peta Ekspres,Ekspres Harita,Bản Đồ Nhanh,מפה מהירה,خريطة سريعة,8,20,11,1400,26,440,11000,58,25000,44,35
 vida,0,Qual Vida/Ano,Life Phase & Year,Ciclo de Vida y Año,Fase di Vita e Anno,Phase de Vie et Année,Lebensphase & Jahr,ライフステージと年,生命阶段与年份,Жизненный этап и год,Fase Kehidupan & Tahun,Yaşam Evresi ve Yıl,Giai Đoạn Cuộc Đời & Năm,שלב חיים ושנה,مرحلة الحياة والسنة,8,20,11,1400,26,440,11000,58,25000,44,35
