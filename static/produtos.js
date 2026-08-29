@@ -448,13 +448,19 @@ function montarTabelaBC() {
   });
 }
 
+// Preço unitário do produto na moeda do idioma ativo (usa PRECO_BASE + PRODUTO_FAIXA)
+function precoUnitarioBC(prodId) {
+  var lang = getLang();
+  var faixa = PRODUTO_FAIXA[prodId];
+  return (PRECO_BASE[lang] && faixa !== undefined) ? PRECO_BASE[lang][faixa] : 0;
+}
 function atualizarResumoBC() {
   var bruto = 0, qtdTotal = 0;
   document.querySelectorAll("#bcTabelaCorpo input[data-prod]").forEach(function(inp) {
     var q = parseInt(inp.value) || 0;
     BC_QUANTIDADES[inp.getAttribute("data-prod")] = q;
     var prod = BC_PRODUTOS.find(function(p) { return p[0] === inp.getAttribute("data-prod"); });
-    if (prod) { bruto += q * prod[2]; qtdTotal += q; }
+    if (prod) { bruto += q * precoUnitarioBC(prod[0]); qtdTotal += q; }
   });
   var descontoPct = descontoBC(qtdTotal);
   var desconto = Math.round(bruto * descontoPct / 100);
@@ -635,7 +641,7 @@ function confirmarBC() {
   for (var id in BC_QUANTIDADES) {
     if (BC_QUANTIDADES[id] > 0) {
       var prod = BC_PRODUTOS.find(function(p) { return p[0] === id; });
-      if (prod) itens.push({ id: id, nome: prod[1], preco: prod[2], qtd: BC_QUANTIDADES[id] });
+      if (prod) itens.push({ id: id, nome: prod[1], preco: precoUnitarioBC(id), qtd: BC_QUANTIDADES[id] });
     }
   }
   var t = translations[getLang()] || translations.pt;
@@ -684,8 +690,23 @@ document.querySelectorAll('.product-card[data-prod]').forEach(function(card) {
   var nome = card.querySelector('.prod-nome');
   if (nome && PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang][prod]) nome.innerText = PRODUTOS_TRAD[lang][prod];
 
-  var preco = card.querySelector('.prod-preco');
-  if (preco && PRODUTO_FAIXA[prod] !== undefined && PRECO_DISPLAY[lang]) preco.innerText = PRECO_DISPLAY[lang][PRODUTO_FAIXA[prod]];
+  var PRECO_BASE = {
+  pt:[8,17,26,35,44,98], en:[20,44,71,89,116,251], es:[11,26,35,53,62,134],
+  it:[11,26,35,53,62,134], fr:[11,26,35,53,62,134], de:[11,26,35,53,62,134],
+  ja:[1400,3000,4600,6200,7700,17000], zh:[26,53,71,98,125,260],
+  ru:[440,800,1250,1700,2150,4400], id:[11000,23000,36000,48000,60000,134000],
+  tr:[58,123,188,254,319,710], vi:[25000,53000,81000,109000,137000,305000],
+  he:[44,98,143,197,242,530], ar:[35,71,107,143,170,377]
+};
+var SIMB = {pt:'R$',en:'US$',es:'€',it:'€',fr:'€',de:'€',ja:'¥',zh:'¥',ru:'₽',id:'Rp',tr:'₺',vi:'₫',he:'₪',ar:'﷼'};
+var PRECO_DISPLAY = {};
+Object.keys(PRECO_BASE).forEach(function(l){
+  var zero = (l==='ja'||l==='vi');
+  PRECO_DISPLAY[l] = PRECO_BASE[l].map(function(v){
+    var txt = zero ? String(v) : v.toFixed(2).replace('.', ',');
+    return SIMB[l]+' '+txt;
+  });
+});
 
   var feats = FEAT_TRAD[lang] && FEAT_TRAD[lang][prod];
   if (feats) card.querySelectorAll('.features li').forEach(function(li, i) {
@@ -702,8 +723,23 @@ document.querySelectorAll('.product-card[data-prod]').forEach(function(card) {
     var prod = tr.getAttribute('data-prod');
     var nome = tr.querySelector('.bc-prod-nome');
     if (nome && PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang][prod]) nome.innerText = PRODUTOS_TRAD[lang][prod];
-    var preco = tr.querySelector('.bc-prod-preco');
-    if (preco && PRODUTO_FAIXA[prod] !== undefined && PRECO_DISPLAY[lang]) preco.innerText = PRECO_DISPLAY[lang][PRODUTO_FAIXA[prod]];
+    var PRECO_BASE = {
+  pt:[8,17,26,35,44,98], en:[20,44,71,89,116,251], es:[11,26,35,53,62,134],
+  it:[11,26,35,53,62,134], fr:[11,26,35,53,62,134], de:[11,26,35,53,62,134],
+  ja:[1400,3000,4600,6200,7700,17000], zh:[26,53,71,98,125,260],
+  ru:[440,800,1250,1700,2150,4400], id:[11000,23000,36000,48000,60000,134000],
+  tr:[58,123,188,254,319,710], vi:[25000,53000,81000,109000,137000,305000],
+  he:[44,98,143,197,242,530], ar:[35,71,107,143,170,377]
+};
+var SIMB = {pt:'R$',en:'US$',es:'€',it:'€',fr:'€',de:'€',ja:'¥',zh:'¥',ru:'₽',id:'Rp',tr:'₺',vi:'₫',he:'₪',ar:'﷼'};
+var PRECO_DISPLAY = {};
+Object.keys(PRECO_BASE).forEach(function(l){
+  var zero = (l==='ja'||l==='vi');
+  PRECO_DISPLAY[l] = PRECO_BASE[l].map(function(v){
+    var txt = zero ? String(v) : v.toFixed(2).replace('.', ',');
+    return SIMB[l]+' '+txt;
+  });
+});
   });
  document.querySelectorAll('[data-i18n-bc]').forEach(function(el) {
   var k = el.getAttribute('data-i18n-bc');
