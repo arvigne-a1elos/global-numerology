@@ -31,7 +31,7 @@ function pesquisar(produto) {
   if (calc) calc.scrollIntoView({ behavior:"smooth" });
 }
 
-/* ===== CARDS_TRAD — Cards dos 8 produtos (12 idiomas) =====*/
+/* ===== CARDS_TRAD — Cards dos 8 produtos (14 idiomas) =====*/
 var CARDS_TRAD = {
   pt:{ nome_pet:"Nome do Pet", nome_pet_desc:"A energia do nome do seu animal de estimação.",
        nickname:"Nickname Digital", nickname_desc:"A vibração do seu nickname nas redes.",
@@ -132,7 +132,7 @@ var CARDS_TRAD = {
        nome_projeto:"שם הפרויקט", nome_projeto_desc:"האנרגיה של שם הפרויקט שלך.",
        nome_evento:"שם האירוע", nome_evento_desc:"הרטט של שם האירוע שלך.",
        buscar:"חיפוש" },
-      id:{ nome_pet:"Nama Hewan Peliharaan", nome_pet_desc:"Energi dari nama hewan peliharaan Anda.",
+  id:{ nome_pet:"Nama Hewan Peliharaan", nome_pet_desc:"Energi dari nama hewan peliharaan Anda.",
        nickname:"Nama Panggilan Digital", nickname_desc:"Getaran nama panggilan Anda di media sosial.",
        nome_dominio:"Nama Domain", nome_dominio_desc:"Energi dari nama domain Anda.",
        nome_canal:"Nama Kanal", nome_canal_desc:"Energi dari nama kanal Anda.",
@@ -160,7 +160,7 @@ var CARDS_TRAD = {
        nome_evento:"Tên Sự Kiện", nome_evento_desc:"Rung động của tên sự kiện của bạn.",
        buscar:"Tìm Kiếm" },
 };
-/* =====  MONTAR_TRAD — Montar Sob Medida (12 idiomas) =====*/
+/* =====  MONTAR_TRAD — Montar Sob Medida (14 idiomas) =====*/
 var MONTAR_TRAD = {
   pt:{ titulo:"Montar Sob Medida", subtitulo:"Escolha os produtos e a energia desejada.",
        produto:"Produto", energia:"Energia", quantidade:"Quantidade", preco:"Preço",
@@ -217,13 +217,23 @@ var MONTAR_TRAD = {
        adicionar:"הוסף", remover:"הסר", finalizar:"סיים",
        bruto:"סכום ברוטו", desconto:"הנחה מיושמת", total:"סה״כ",
        vazio:"העגלה שלך ריקה" },
-  hi:{ titulo:"कस्टम बनाएं", subtitulo:"उत्पाद और वांछित ऊर्जा चुनें।",
-       produto:"उत्पाद", energia:"ऊर्जा", quantidade:"मात्रा", preco:"मूल्य",
-       adicionar:"जोड़ें", remover:"हटाएं", finalizar:"समाप्त करें",
-       bruto:"सकल राशि", desconto:"लागू छूट", total:"कुल",
-       vazio:"आपकी टोकरी खाली है" }
+  id:{ titulo:"Rakit Sesuai Keinginan", subtitulo:"Pilih produk dan energi yang diinginkan.",
+       produto:"Produk", energia:"Energi", quantidade:"Jumlah", preco:"Harga",
+       adicionar:"Tambah", remover:"Hapus", finalizar:"Selesaikan",
+       bruto:"Nilai Kotor", desconto:"Diskon Diterapkan", total:"Total",
+       vazio:"Keranjang Anda kosong" },
+  tr:{ titulo:"Özel Oluştur", subtitulo:"İstediğiniz ürünleri ve enerjiyi seçin.",
+       produto:"Ürün", energia:"Enerji", quantidade:"Miktar", preco:"Fiyat",
+       adicionar:"Ekle", remover:"Kaldır", finalizar:"Tamamla",
+       bruto:"Brüt Değer", desconto:"Uygulanan İndirim", total:"Toplam",
+       vazio:"Sepetiniz boş" },
+  vi:{ titulo:"Tạo Theo Yêu Cầu", subtitulo:"Chọn sản phẩm và năng lượng mong muốn.",
+       produto:"Sản Phẩm", energia:"Năng Lượng", quantidade:"Số Lượng", preco:"Giá",
+       adicionar:"Thêm", remover:"Xóa", finalizar:"Hoàn Tất",
+       bruto:"Tổng Thô", desconto:"Giảm Giá Áp Dụng", total:"Tổng",
+       vazio:"Giỏ hàng của bạn trống" }
 };
-/* =====  ENERGIA_TRAD — Nomes das 9 energias (12 idiomas) =====*/
+/* =====  ENERGIA_TRAD — Nomes das 9 energias (14 idiomas) =====*/
 var ENERGIA_TRAD = {
   pt:{ e1:"Líder", e2:"Diplomata", e3:"Criatividade", e4:"Estrutura", e5:"Liberdade", e6:"Harmonia", e7:"Espiritualidade", e8:"Poder", e9:"Humanitarismo" },
   en:{ e1:"Leader", e2:"Diplomat", e3:"Creativity", e4:"Structure", e5:"Freedom", e6:"Harmony", e7:"Spirituality", e8:"Power", e9:"Humanitarianism" },
@@ -236,7 +246,9 @@ var ENERGIA_TRAD = {
   ja:{ e1:"リーダー", e2:"外交官", e3:"創造性", e4:"構造", e5:"自由", e6:"調和", e7:"精神性", e8:"力", e9:"人道主義" },
   ar:{ e1:"قائد", e2:"دبلوماسي", e3:"إبداع", e4:"بنية", e5:"حرية", e6:"انسجام", e7:"روحانية", e8:"قوة", e9:"إنسانية" },
   he:{ e1:"מנהיג", e2:"דיפלומט", e3:"יצירתיות", e4:"מבנה", e5:"חופש", e6:"הרמוניה", e7:"רוחניות", e8:"כוח", e9:"הומניטריות" },
-  hi:{ e1:"नेता", e2:"राजनयिक", e3:"रचनात्मकता", e4:"संरचना", e5:"स्वतंत्रता", e6:"सद्भाव", e7:"आध्यात्मिकता", e8:"शक्ति", e9:"मानवतावाद" }
+  id:{ e1:"Pemimpin", e2:"Diplomat", e3:"Kreativitas", e4:"Struktur", e5:"Kebebasan", e6:"Harmoni", e7:"Spiritualitas", e8:"Kekuatan", e9:"Kemanusiaan" },
+  tr:{ e1:"Lider", e2:"Diplomat", e3:"Yaratıcılık", e4:"Yapı", e5:"Özgürlük", e6:"Uyum", e7:"Maneviyat", e8:"Güç", e9:"İnsaniyet" },
+  vi:{ e1:"Lãnh đạo", e2:"Nhà ngoại giao", e3:"Sáng tạo", e4:"Cấu trúc", e5:"Tự do", e6:"Hòa hợp", e7:"Tâm linh", e8:"Sức mạnh", e9:"Nhân đạo" }
 };
 
 /* =====  MODAL DO DADO ESPECÍFICO (múltiplos passos) =====*/
@@ -250,9 +262,11 @@ var DADO_LABEL = {
   ja:{nome_pet:"ペットの名前",nickname:"デジタルニックネーム",nome_dominio:"ドメイン名",nome_canal:"チャンネル名",nome_equipe:"チーム名",nome_ong:"NGO名",nome_projeto:"プロジェクト名",nome_evento:"イベント名"},
   zh:{nome_pet:"宠物名字",nickname:"数字昵称",nome_dominio:"域名",nome_canal:"频道名称",nome_equipe:"团队名称",nome_ong:"NGO名称",nome_projeto:"项目名称",nome_evento:"活动名称"},
   ru:{nome_pet:"Имя питомца",nickname:"Цифровой никнейм",nome_dominio:"Имя домена",nome_canal:"Название канала",nome_equipe:"Название команды",nome_ong:"Название НКО",nome_projeto:"Название проекта",nome_evento:"Название события"},
-  hi:{nome_pet:"पालतू नाम",nickname:"डिजिटल उपनाम",nome_dominio:"डोमेन नाम",nome_canal:"चैनल नाम",nome_equipe:"टीम नाम",nome_ong:"एनजीओ नाम",nome_projeto:"परियोजना नाम",nome_evento:"इवेंट नाम"},
   he:{nome_pet:"שם חיית המחמד",nickname:"כינוי דיגיטלי",nome_dominio:"שם דומיין",nome_canal:"שם הערוץ",nome_equipe:"שם הצוות",nome_ong:"שם העמותה",nome_projeto:"שם הפרויקט",nome_evento:"שם האירוע"},
-  ar:{nome_pet:"اسم الحيوان الأليف",nickname:"اللقب الرقمي",nome_dominio:"اسم النطاق",nome_canal:"اسم القناة",nome_equipe:"اسم الفريق",nome_ong:"اسم المنظمة",nome_projeto:"اسم المشروع",nome_evento:"اسم الفعالية"}
+  ar:{nome_pet:"اسم الحيوان الأليف",nickname:"اللقب الرقمي",nome_dominio:"اسم النطاق",nome_canal:"اسم القناة",nome_equipe:"اسم الفريق",nome_ong:"اسم المنظمة",nome_projeto:"اسم المشروع",nome_evento:"اسم الفعالية"},
+  id:{nome_pet:"Nama Hewan Peliharaan",nickname:"Nama Panggilan Digital",nome_dominio:"Nama Domain",nome_canal:"Nama Kanal",nome_equipe:"Nama Tim",nome_ong:"Nama LSM",nome_projeto:"Nama Proyek",nome_evento:"Nama Acara"},
+  tr:{nome_pet:"Evcil Hayvan Adı",nickname:"Dijital Takma Ad",nome_dominio:"Alan Adı",nome_canal:"Kanal Adı",nome_equipe:"Ekip Adı",nome_ong:"STK Adı",nome_projeto:"Proje Adı",nome_evento:"Etkinlik Adı"},
+  vi:{nome_pet:"Tên Thú Cưng",nickname:"Biệt Danh Kỹ Thuật Số",nome_dominio:"Tên Miền",nome_canal:"Tên Kênh",nome_equipe:"Tên Đội Nhóm",nome_ong:"Tên Tổ Chức",nome_projeto:"Tên Dự Án",nome_evento:"Tên Sự Kiện"}
 };
 /* =====  DADOS DE TIPO POR PRODUTO (para o modal de múltiplos passos) =====*/
 var DADO_TIPOS = {
@@ -524,7 +538,9 @@ var OPCOES_TRAD = {
   ja:{ youtube:"YouTube", podcast:"ポッドキャスト", tiktok:"TikTok", twitch:"Twitch", gamer:"ゲーマー", profissional:"プロフェッショナル", criador:"クリエイター", artista:"アーティスト", ong:"NGO", instituto:"研究所", associacao:"協会", fundacao:"財団", show:"ショー", congresso:"会議", festa:"パーティー", curso:"コース", palestra:"講演", pessoal:"個人", social:"ソーシャル", empresarial:"ビジネス", cultural:"文化的", esportiva:"スポーツ", banda:"バンド", loja:"店", empresa:"会社", blog:"ブログ", portfolio:"ポートフォリオ", cao:"犬", gato:"猫", passaro:"鳥", reptil:"爬虫類", projeto:"プロジェクト", esporte:"スポーツ", noticias:"ニュース", politica:"政治", beleza:"美容", musica:"音楽", cultura:"文化", comercio:"商業", industria:"産業", servicos:"サービス", outro:"その他/何?" },
   ar:{ youtube:"يوتيوب", podcast:"بودكاست", tiktok:"تيك توك", twitch:"تويتش", gamer:"لاعب", profissional:"محترف", criador:"منشئ", artista:"فنان", ong:"منظمة", instituto:"معهد", associacao:"جمعية", fundacao:"مؤسسة", show:"عرض", congresso:"مؤتمر", festa:"حفلة", curso:"دورة", palestra:"محاضرة", pessoal:"شخصي", social:"اجتماعي", empresarial:"تجاري", cultural:"ثقافي", esportiva:"رياضية", banda:"فرقة", loja:"متجر", empresa:"شركة", blog:"مدونة", portfolio:"أعمال", cao:"كلب", gato:"قطة", passaro:"طائر", reptil:"زاحف", projeto:"مشروع", esporte:"رياضة", noticias:"أخبار", politica:"سياسة", beleza:"جمال", musica:"موسيقى", cultura:"ثقافة", comercio:"تجارة", industria:"صناعة", servicos:"خدمات", outro:"آخر/ماذا؟" },
   he:{ youtube:"יוטיוב", podcast:"פודקאסט", tiktok:"טיקטוק", twitch:"טוויץ'", gamer:"גיימר", profissional:"מקצועי", criador:"יוצר", artista:"אמן", ong:"ארגון", instituto:"מכון", associacao:"עמותה", fundacao:"קרן", show:"מופע", congresso:"קונגרס", festa:"מסיבה", curso:"קורס", palestra:"הרצאה", pessoal:"אישי", social:"חברתי", empresarial:"עסקי", cultural:"תרבותי", esportiva:"ספורטיבית", banda:"להקה", loja:"חנות", empresa:"חברה", blog:"בלוג", portfolio:"תיק עבודות", cao:"כלב", gato:"חתול", passaro:"ציפור", reptil:"זוחל", projeto:"פרויקט", esporte:"ספורט", noticias:"חדשות", politica:"פוליטיקה", beleza:"יופי", musica:"מוזיקה", cultura:"תרבות", comercio:"מסחר", industria:"תעשייה", servicos:"שירותים", outro:"אחר/מה?" },
-  hi:{ youtube:"यूट्यूब", podcast:"पॉडकास्ट", tiktok:"टिकटॉक", twitch:"ट्विच", gamer:"गेमर", profissional:"पेशेवर", criador:"निर्माता", artista:"कलाकार", ong:"एनजीओ", instituto:"संस्थान", associacao:"संघ", fundacao:"फाउंडेशन", show:"शो", congresso:"सम्मेलन", festa:"पार्टी", curso:"पाठ्यक्रम", palestra:"व्याख्यान", pessoal:"व्यक्तिगत", social:"सामाजिक", empresarial:"व्यावसायिक", cultural:"सांस्कृतिक", esportiva:"खेल", banda:"बैंड", loja:"दुकान", empresa:"कंपनी", blog:"ब्लॉग", portfolio:"पोर्टफोलियो", cao:"कुत्ता", gato:"बिल्ली", passaro:"पक्षी", reptil:"सरीसृप", projeto:"परियोजना", esporte:"खेल", noticias:"समाचार", politica:"राजनीति", beleza:"सुंदरता", musica:"संगीत", cultura:"संस्कृति", comercio:"वाणिज्य", industria:"उद्योग", servicos:"सेवाएं", outro:"अन्य/क्या?" }
+  id:{ youtube:"YouTube", podcast:"Podcast", tiktok:"TikTok", twitch:"Twitch", gamer:"Gamer", profissional:"Profesional", criador:"Pencipta", artista:"Artis", ong:"LSM", instituto:"Lembaga", associacao:"Asosiasi", fundacao:"Yayasan", show:"Pertunjukan", congresso:"Kongres", festa:"Pesta", curso:"Kursus", palestra:"Ceramah", pessoal:"Pribadi", social:"Sosial", empresarial:"Bisnis", cultural:"Budaya", esportiva:"Olahraga", banda:"Band", loja:"Toko", empresa:"Perusahaan", blog:"Blog", portfolio:"Portofolio", cao:"Anjing", gato:"Kucing", passaro:"Burung", reptil:"Reptil", projeto:"Proyek", esporte:"Olahraga", noticias:"Berita", politica:"Politik", beleza:"Kecantikan", musica:"Musik", cultura:"Budaya", comercio:"Perdagangan", industria:"Industri", servicos:"Layanan", outro:"LAINNYA/APA?" },
+  tr:{ youtube:"YouTube", podcast:"Podcast", tiktok:"TikTok", twitch:"Twitch", gamer:"Oyuncu", profissional:"Profesyonel", criador:"İçerik Üreticisi", artista:"Sanatçı", ong:"STK", instituto:"Enstitü", associacao:"Dernek", fundacao:"Vakıf", show:"Gösteri", congresso:"Kongre", festa:"Parti", curso:"Kurs", palestra:"Konferans", pessoal:"Kişisel", social:"Sosyal", empresarial:"İş", cultural:"Kültürel", esportiva:"Spor", banda:"Müzik Grubu", loja:"Mağaza", empresa:"Şirket", blog:"Blog", portfolio:"Portfolyo", cao:"Köpek", gato:"Kedi", passaro:"Kuş", reptil:"Sürüngen", projeto:"Proje", esporte:"Spor", noticias:"Haberler", politica:"Siyaset", beleza:"Güzellik", musica:"Müzik", cultura:"Kültür", comercio:"Ticaret", industria:"Endüstri", servicos:"Hizmetler", outro:"DİĞER/NE?" },  
+  vi:{ youtube:"YouTube", podcast:"Podcast", tiktok:"TikTok", twitch:"Twitch", gamer:"Game thủ", profissional:"Chuyên nghiệp", criador:"Người sáng tạo", artista:"Nghệ sĩ", ong:"Tổ chức phi chính phủ", instituto:"Viện", associacao:"Hiệp hội", fundacao:"Quỹ", show:"Buổi diễn", congresso:"Đại hội", festa:"Tiệc", curso:"Khóa học", palestra:"Bài giảng", pessoal:"Cá nhân", social:"Xã hội", empresarial:"Kinh doanh", cultural:"Văn hóa", esportiva:"Thể thao", banda:"Ban nhạc", loja:"Cửa hàng", empresa:"Công ty", blog:"Blog", portfolio:"Hồ sơ năng lực", cao:"Chó", gato:"Mèo", passaro:"Chim", reptil:"Bò sát", projeto:"Dự án", esporte:"Thể thao", noticias:"Tin tức", politica:"Chính trị", beleza:"Làm đẹp", musica:"Âm nhạc", cultura:"Văn hóa", comercio:"Thương mại", industria:"Công nghiệp", servicos:"Dịch vụ", outro:"KHÁC/GÌ?" }
 };
 
 /* ===== SELETOR DE ENERGIA (para produtos da lista de energias) =====*/
