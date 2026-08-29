@@ -850,7 +850,8 @@ async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
                                 numero: str = "", email: str = "",
                                 nome1: str = "", nome2: str = "", nome3: str = "",
                                 nome4: str = "", nome5: str = "",
-                                energia: str = "", dado: str = "", tipo: str = ""):
+                                energia: str = "", dado: str = "", tipo: str = "",
+                                numero_existente: str = "", area: str = "", detalhe: str = ""):
     if not STRIPE_KEY:
         raise HTTPException(503, "Stripe nao configurado")
     if produto == "coletivo":
@@ -863,14 +864,13 @@ async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
                 "nome1": nome1, "nome2": nome2, "nome3": nome3,
                 "nome4": nome4, "nome5": nome5}
     elif produto == "eleitoral":
-        numero_existente = ""
         meta = {"sigla": numero, "cargo": cargo,
                 "nome_completo": nome_completo, "numero_existente": numero_existente}
     else:
-        meta = {"energia": energia, "dado": dado, "tipo": tipo}
+        meta = {"energia": energia, "dado": dado, "tipo": tipo,
+                "area": area, "detalhe": detalhe}
     s = _criar_sessao(produto, lang, email, nome, nascimento, meta)
     return RedirectResponse(url=s["url"])
-
 # ===== SUCESSO POS-PAGAMENTO =====
 DADO_PRODUTOS = {"nome_pet", "nickname", "nome_dominio", "nome_canal",
                  "nome_equipe", "nome_ong", "nome_projeto", "nome_evento"}
