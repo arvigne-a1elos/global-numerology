@@ -1,32 +1,23 @@
 // ===== A1ELOS GLOBAL NUMEROLOGY - APP.JS (VERSÃO CONSOLIDADA) =====
 // ================================================================
 // ===== MONTAR SELETOR DE IDIOMAS (14 bandeiras) =====
-function montarSeletorIdioma() {
-  var container = document.getElementById('langSelector');
-  if (!container) return;
-  if (container.children.length > 0) return;
-  var lista = [
-    {id:'pt', b:'🇧🇷'},{id:'en', b:'🇺🇸'},{id:'es', b:'🇪🇸'},{id:'it', b:'🇮🇹'},
-    {id:'fr', b:'🇫🇷'},{id:'de', b:'🇩🇪'},{id:'ja', b:'🇯🇵'},{id:'zh', b:'🇨🇳'},
-    {id:'ru', b:'🇷🇺'},{id:'id', b:'🇮🇩'},{id:'tr', b:'🇹🇷'},{id:'vi', b:'🇻🇳'},
-    {id:'he', b:'🇮🇱'},{id:'ar', b:'🇸🇦'}
-  ];
-  var atual = getLang();
-  lista.forEach(function(l) {
-    var b = document.createElement('button');
-    b.className = 'lang-btn' + (l.id === atual ? ' active' : '');
-    b.title = l.id.toUpperCase();
-    b.innerHTML = l.b;
-    b.onclick = function() {
-      setLanguage(l.id);
-      if (typeof montarTudo === "function") montarTudo();
-      else if (typeof traduzirTudo === "function") traduzirTudo();
-      var ativos = container.querySelectorAll('.lang-btn');
-      for (var i = 0; i < ativos.length; i++) ativos[i].classList.remove('active');
-      b.classList.add('active');
-    };
-    container.appendChild(b);
+var PRECO_BASE = {
+  pt:[8,17,26,35,44,98], en:[20,44,71,89,116,251], es:[11,26,35,53,62,134],
+  it:[11,26,35,53,62,134], fr:[11,26,35,53,62,134], de:[11,26,35,53,62,134],
+  ja:[1400,3000,4600,6200,7700,17000], zh:[26,53,71,98,125,260],
+  ru:[440,800,1250,1700,2150,4400], id:[11000,23000,36000,48000,60000,134000],
+  tr:[58,123,188,254,319,710], vi:[25000,53000,81000,109000,137000,305000],
+  he:[44,98,143,197,242,530], ar:[35,71,107,143,170,377]
+};
+var SIMB = {pt:'R$',en:'US$',es:'€',it:'€',fr:'€',de:'€',ja:'¥',zh:'¥',ru:'₽',id:'Rp',tr:'₺',vi:'₫',he:'₪',ar:'﷼'};
+var PRECO_DISPLAY = {};
+Object.keys(PRECO_BASE).forEach(function(l){
+  var zero = (l==='ja'||l==='vi');
+  PRECO_DISPLAY[l] = PRECO_BASE[l].map(function(v){
+    var txt = zero ? String(v) : v.toFixed(2).replace('.', ',');
+    return SIMB[l]+' '+txt;
   });
+});
 }
 function pagarVida(){var n=document.getElementById('vidaNome').value.trim(),b=document.getElementById('vidaNasc').value;if(!n||!b){alert(t_preencha());return;}location.href='/criar-checkout?produto=vida&nome='+encodeURIComponent(n)+'&nascimento='+encodeURIComponent(b)+'&lang='+getLang();}
 function pagarIa(){var n=document.getElementById('iaNome').value.trim(),e=document.getElementById('iaEnergia').value;if(!n||!e){alert(t_preencha());return;}location.href='/criar-checkout?produto=ia&nome='+encodeURIComponent(n)+'&energia='+encodeURIComponent(e)+'&lang='+getLang();}
