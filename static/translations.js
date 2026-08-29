@@ -3275,7 +3275,6 @@ const PRECO_DISPLAY = {
 // ===== FEATURES DOS CARDS (12 IDIOMAS) =====
 const FEAT_TRAD = {
     pt: {
-            pt: {
         express:["✅ Caminho da Vida","✅ Expressão, Alma, Personalidade","✅ Destino","📲 PDF + QRCode"],
         vida:["✅ Fase de Vida atual","✅ Ano Pessoal","✅ Tendências do ciclo","📲 PDF + QRCode"],
         completo:["✅ 5 números detalhados","✅ 3 Ciclos de Vida","✅ Desafios e Realizações","✅ Grade de Inclusão","📲 PDF + QRCode"],
@@ -3300,7 +3299,7 @@ const FEAT_TRAD = {
         nome_projeto:["✅ Projeto analisado","✅ Energia da iniciativa","✅ Atração de apoio","📲 PDF + QRCode"],
         nome_evento:["✅ Evento analisado","✅ Energia do público","✅ Engajamento","📲 PDF + QRCode"]
     },
-        en: {
+    en: {
         express:["✅ Life Path","✅ Expression, Soul, Personality","✅ Destiny","📲 PDF + QRCode"],
         vida:["✅ Current Life Phase","✅ Personal Year","✅ Cycle trends","📲 PDF + QRCode"],
         completo:["✅ 5 detailed numbers","✅ 3 Life Cycles","✅ Challenges and Achievements","✅ Inclusion Grid","📲 PDF + QRCode"],
@@ -3325,7 +3324,7 @@ const FEAT_TRAD = {
         nome_projeto:["✅ Project analyzed","✅ Initiative energy","✅ Support attraction","📲 PDF + QRCode"],
         nome_evento:["✅ Event analyzed","✅ Audience energy","✅ Engagement","📲 PDF + QRCode"]
     },
-        es: {
+    es: {
         express:["✅ Camino de Vida","✅ Expresión, Alma, Personalidad","✅ Destino","📲 PDF + Código QR"],
         vida:["✅ Fase de Vida actual","✅ Año Personal","✅ Tendencias del ciclo","📲 PDF + Código QR"],
         completo:["✅ 5 números detallados","✅ 3 Ciclos de Vida","✅ Desafíos y Logros","✅ Cuadrícula de Inclusión","📲 PDF + Código QR"],
@@ -3350,7 +3349,7 @@ const FEAT_TRAD = {
         nome_projeto:["✅ Proyecto analizado","✅ Energía de la iniciativa","✅ Atracción de apoyo","📲 PDF + Código QR"],
         nome_evento:["✅ Evento analizado","✅ Energía del público","✅ Compromiso","📲 PDF + Código QR"]
     },
-        it: {
+    it: {
         express:["✅ Percorso di Vita","✅ Espressione, Anima, Personalità","✅ Destino","📲 PDF + QR Code"],
         vida:["✅ Fase di Vita attuale","✅ Anno Personale","✅ Tendenze del ciclo","📲 PDF + QR Code"],
         completo:["✅ 5 numeri dettagliati","✅ 3 Cicli di Vita","✅ Sfide e Realizzazioni","✅ Griglia di Inclusione","📲 PDF + QR Code"],
@@ -3600,30 +3599,30 @@ const FEAT_TRAD = {
         nome_projeto:["✅ Proje analiz edildi","✅ Girişimin enerjisi","✅ Destek çekme","📲 PDF + QRCode"],
         nome_evento:["✅ Etkinlik analiz edildi","✅ İzleyici enerjisi","✅ Katılım","📲 PDF + QRCode"]
     },
-    tr: {
-        express:["✅ Yaşam Yolu","✅ İfade, Ruh, Kişilik","✅ Kader","📲 PDF + QRCode"],
-        vida:["✅ Mevcut Yaşam Evresi","✅ Kişisel Yıl","✅ Döngü eğilimleri","📲 PDF + QRCode"],
-        completo:["✅ 5 ayrıntılı sayı","✅ 3 Yaşam Döngüsü","✅ Zorluklar ve Başarılar","✅ Dahil Etme Tablosu","📲 PDF + QRCode"],
-        ia:["✅ AI önerileri","✅ İsimlerin enerji analizi","✅ Seçenek karşılaştırması","📲 PDF + QRCode"],
-        urna:["✅ 5 test edilmiş isim","✅ 8 enerjili öneriler","✅ Harf harf hesaplama","🔒 Gizli PDF + QRCode"],
-        eleitoral:["✅ 5 önerilen sayı","✅ 8 enerji önceliği (Güç)","✅ Tam hesaplama","🔒 Gizli PDF + QRCode"],
-        imovel:["✅ Mülk numarası analiz edildi","✅ Ortam enerjisi","✅ Uyum önerileri","📲 PDF + QRCode"],
-        calendario:["✅ Günlük titreşim","✅ Uygun günler","✅ Aylık rehberlik","📲 PDF + QRCode"],
-        artistico:["✅ Test edilmiş isimler","✅ Sahne önerileri","✅ İsmin enerjisi","📲 PDF + QRCode"],
-        bebe:["✅ İsim önerileri","✅ Enerji analizi","✅ Soyadı uyumu","📲 PDF + QRCode"],
-        assinatura:["✅ Mevcut imza analiz edildi","✅ Önerilen varyasyonlar","✅ İmzanın enerjisi","📲 PDF + QRCode"],
-        negocio:["✅ Test edilmiş isimler","✅ İş önerileri","✅ İsmin enerjisi","📲 PDF + QRCode"],
-        casal:["✅ Uyum","✅ Çiftin güçlü yönleri","✅ İlişkinin zorlukları","📲 PDF + QRCode"],
-        familia:["✅ Tüm üyeler","✅ Aile sinerjisi","✅ Üye başına rehberlik","📲 PDF + QRCode"],
-        coletivo:["✅ Hazır planlar","✅ Özel tasarım","✅ Kademeli indirimler","✅ Hediye kodları"],
-        nome_pet:["✅ Evcil hayvan adı analiz edildi","✅ İsmin enerjisi","✅ Aileyle uyum","📲 PDF + QRCode"],
-        nickname:["✅ Takma ad analiz edildi","✅ Dijital enerji","✅ Çevrimiçi varlık güçlendi","📲 PDF + QRCode"],
-        nome_dominio:["✅ Alan adı analiz edildi","✅ Site enerjisi","✅ Ziyaretçi çekme","📲 PDF + QRCode"],
-        nome_canal:["✅ Kanal analiz edildi","✅ İzleyici enerjisi","✅ Büyüme potansiyeli","📲 PDF + QRCode"],
-        nome_equipe:["✅ Ekip analiz edildi","✅ Grup enerjisi","✅ Takım sinerjisi","📲 PDF + QRCode"],
-        nome_ong:["✅ Kurum analiz edildi","✅ Amacın enerjisi","✅ Sosyal etki","📲 PDF + QRCode"],
-        nome_projeto:["✅ Proje analiz edildi","✅ Girişimin enerjisi","✅ Destek çekme","📲 PDF + QRCode"],
-        nome_evento:["✅ Etkinlik analiz edildi","✅ İzleyici enerjisi","✅ Katılım","📲 PDF + QRCode"]
+    vi: {
+        express:["✅ Đường Đời","✅ Biểu cảm, Tâm hồn, Cá tính","✅ Định mệnh","📲 PDF + QRCode"],
+        vida:["✅ Giai đoạn cuộc đời hiện tại","✅ Năm cá nhân","✅ Xu hướng chu kỳ","📲 PDF + QRCode"],
+        completo:["✅ 5 con số chi tiết","✅ 3 Chu kỳ cuộc đời","✅ Thách thức và Thành tựu","✅ Bảng hòa nhập","📲 PDF + QRCode"],
+        ia:["✅ Gợi ý bằng AI","✅ Phân tích năng lượng tên","✅ So sánh lựa chọn","📲 PDF + QRCode"],
+        urna:["✅ 5 tên đã kiểm tra","✅ Gợi ý năng lượng 8","✅ Tính từng chữ cái","🔒 PDF bảo mật + QRCode"],
+        eleitoral:["✅ 5 số được gợi ý","✅ Ưu tiên năng lượng 8 (Sức mạnh)","✅ Tính toán đầy đủ","🔒 PDF bảo mật + QRCode"],
+        imovel:["✅ Số bất động sản được phân tích","✅ Năng lượng môi trường","✅ Gợi ý hài hòa","📲 PDF + QRCode"],
+        calendario:["✅ Rung động hàng ngày","✅ Ngày thuận lợi","✅ Hướng dẫn hàng tháng","📲 PDF + QRCode"],
+        artistico:["✅ Tên đã kiểm tra","✅ Gợi ý sân khấu","✅ Năng lượng tên","📲 PDF + QRCode"],
+        bebe:["✅ Gợi ý tên","✅ Phân tích năng lượng","✅ Tương thích với họ","📲 PDF + QRCode"],
+        assinatura:["✅ Chữ ký hiện tại được phân tích","✅ Các biến thể gợi ý","✅ Năng lượng chữ ký","📲 PDF + QRCode"],
+        negocio:["✅ Tên đã kiểm tra","✅ Gợi ý kinh doanh","✅ Năng lượng tên","📲 PDF + QRCode"],
+        casal:["✅ Tương thích","✅ Điểm mạnh của cặp đôi","✅ Thách thức mối quan hệ","📲 PDF + QRCode"],
+        familia:["✅ Tất cả thành viên","✅ Sức mạnh tổng hợp gia đình","✅ Hướng dẫn từng thành viên","📲 PDF + QRCode"],
+        coletivo:["✅ Gói có sẵn","✅ Theo yêu cầu","✅ Giảm giá lũy tiến","✅ Mã quà tặng"],
+        nome_pet:["✅ Tên thú cưng được phân tích","✅ Năng lượng tên","✅ Hòa hợp với gia đình","📲 PDF + QRCode"],
+        nickname:["✅ Biệt danh được phân tích","✅ Năng lượng kỹ thuật số","✅ Sự hiện diện trực tuyến được tăng cường","📲 PDF + QRCode"],
+        nome_dominio:["✅ Tên miền được phân tích","✅ Năng lượng trang web","✅ Thu hút khách truy cập","📲 PDF + QRCode"],
+        nome_canal:["✅ Kênh được phân tích","✅ Năng lượng khán giả","✅ Tiềm năng phát triển","📲 PDF + QRCode"],
+        nome_equipe:["✅ Đội nhóm được phân tích","✅ Năng lượng nhóm","✅ Sức mạnh tổng hợp đội","📲 PDF + QRCode"],
+        nome_ong:["✅ Tổ chức được phân tích","✅ Năng lượng mục tiêu","✅ Tác động xã hội","📲 PDF + QRCode"],
+        nome_projeto:["✅ Dự án được phân tích","✅ Năng lượng sáng kiến","✅ Thu hút hỗ trợ","📲 PDF + QRCode"],
+        nome_evento:["✅ Sự kiện được phân tích","✅ Năng lượng khán giả","✅ Tương tác","📲 PDF + QRCode"]
     }
 };
 
@@ -3645,7 +3644,7 @@ const DESC_COLETIVO = {
     vi: "Đặt mua quà tặng thần số học cho khách hàng hoặc nhân viên của bạn. Giảm giá từ 10% đến 70%."
 };
 
-// ===== TEXTO DA QUANTIDADE TOTAL (tabela BC, 12 idiomas) =====
+// ===== TEXTO DA QUANTIDADE TOTAL (tabela BC, 14 idiomas) =====
 const BC_TEXTS = {
     pt: { qtd_total: "Quantidade total:", codigos: "códigos" },
     en: { qtd_total: "Total quantity:", codigos: "codes" },
@@ -3656,9 +3655,11 @@ const BC_TEXTS = {
     ja: { qtd_total: "合計数量:", codigos: "コード" },
     zh: { qtd_total: "总数量:", codigos: "个代码" },
     ru: { qtd_total: "Общее количество:", codigos: "кодов" },
-    hi: { qtd_total: "कुल मात्रा:", codigos: "कोड" },
     he: { qtd_total: "כמות כוללת:", codigos: "קודים" },
-    ar: { qtd_total: "الكمية الإجمالية:", codigos: "رمز" }
+    ar: { qtd_total: "الكمية الإجمالية:", codigos: "رمز" },
+    id: { qtd_total: "Jumlah total:", codigos: "kode" },
+    tr: { qtd_total: "Toplam miktar:", codigos: "kod" },
+    vi: { qtd_total: "Tổng số lượng:", codigos: "mã" }
 };
 // ===== FUNCOES DE IDIOMA =====
 function getLang() {
@@ -3735,29 +3736,34 @@ var ENERGIA_TITULOS = {
   "ja": {"1":"リーダーシップ","2":"協力","3":"創造性","4":"構造","5":"自由","6":"調和","7":"精神性","8":"力","9":"人道主義"},
   "zh": {"1":"领导力","2":"合作","3":"创造力","4":"结构","5":"自由","6":"和谐","7":"灵性","8":"力量","9":"人道主义"},
   "ru": {"1":"Лидерство","2":"Сотрудничество","3":"Творчество","4":"Структура","5":"Свобода","6":"Гармония","7":"Духовность","8":"Сила","9":"Гуманизм"},
-  "hi": {"1":"नेतृत्व","2":"सहयोग","3":"रचनात्मकता","4":"संरचना","5":"स्वतंत्रता","6":"सद्भाव","7":"आध्यात्मिकता","8":"शक्ति","9":"मानवतावाद"},
   "he": {"1":"מנהיגות","2":"שיתוף פעולה","3":"יצירתיות","4":"יציבות","5":"חופש","6":"הרמוניה","7":"רוחניות","8":"כוח","9":"הומניטריות"},
-  "ar": {"1":"القيادة","2":"التعاون","3":"الإبداع","4":"الهيكل","5":"الحرية","6":"الانسجام","7":"الروحانية","8":"القوة","9":"الإنسانية"}
+  "ar": {"1":"القيادة","2":"التعاون","3":"الإبداع","4":"الهيكل","5":"الحرية","6":"الانسجام","7":"الروحانية","8":"القوة","9":"الإنسانية"},
+  "id": {"1":"Kepemimpinan","2":"Kerja Sama","3":"Kreativitas","4":"Struktur","5":"Kebebasan","6":"Harmoni","7":"Spiritualitas","8":"Kekuatan","9":"Humanitarianisme"},
+  "tr": {"1":"Liderlik","2":"İşbirliği","3":"Yaratıcılık","4":"Yapı","5":"Özgürlük","6":"Uyum","7":"Maneviyat","8":"Güç","9":"İnsaniyet"},
+  "vi": {"1":"Lãnh đạo","2":"Hợp tác","3":"Sáng tạo","4":"Cấu trúc","5":"Tự do","6":"Hòa hợp","7":"Tâm linh","8":"Sức mạnh","9":"Nhân đạo"}  
 };
 
 var ENERGIAS_BTN = {
   "pt":"Pesquisar","en":"Explore","es":"Explorar","it":"Esplora","fr":"Explorer",
-  "de":"Erkunden","ja":"調べる","zh":"探索","ru":"Исследовать","hi":"खोजें","he":"חקור","ar":"استكشف"
+  "de":"Erkunden","ja":"調べる","zh":"探索","ru":"Исследовать","he":"חקור","ar":"استكشف",
+  "id":"Telusuri","tr":"Araştır","vi":"Tìm khám phá"
 };
 
 var SERVICOS_TRAD = {
-  "pt": [["Mapa Express","R$ 8"],["Mapa Completo","R$ 17"],["Nome de Urna","R$ 26"]],
-  "en": [["Express Map","R$ 8"],["Full Map","R$ 17"],["Ballot Name","R$ 26"]],
-  "es": [["Mapa Express","R$ 8"],["Mapa Completo","R$ 17"],["Nombre de Urna","R$ 26"]],
-  "it": [["Mappa Express","R$ 8"],["Mappa Completa","R$ 17"],["Nome per Urna","R$ 26"]],
-  "fr": [["Carte Express","R$ 8"],["Carte Complète","R$ 17"],["Nom d'Urne","R$ 26"]],
-  "de": [["Express-Karte","R$ 8"],["Vollständige Karte","R$ 17"],["Wahlzettelname","R$ 26"]],
-  "ja": [["エクスプレス地図","R$ 8"],["完全な地図","R$ 17"],["投票用紙の名前","R$ 26"]],
-  "zh": [["快速地图","R$ 8"],["完整地图","R$ 17"],["选票姓名","R$ 26"]],
-  "ru": [["Экспресс-карта","R$ 8"],["Полная карта","R$ 17"],["Имя для бюллетеня","R$ 26"]],
-  "hi": [["एक्सप्रेस मानचित्र","R$ 8"],["पूर्ण मानचित्र","R$ 17"],["मतपत्र नाम","R$ 26"]],
-  "he": [["מפה אקספרס","R$ 8"],["מפה מלאה","R$ 17"],["שם לפתק","R$ 26"]],
-  "ar": [["الخريطة السريعة","R$ 8"],["الخريطة الكاملة","R$ 17"],["اسم الاقتراع","R$ 26"]]
+  "pt": [["Mapa Express","R$ 8,00"],["Mapa Completo","R$ 17,00"],["Nome de Urna","R$ 26,00"],["Número Eleitoral","R$ 26,00"]],
+  "en": [["Express Map","US$ 1,50"],["Full Map","US$ 3,50"],["Ballot Name","US$ 5,00"],["Electoral Number","US$ 5,00"]],
+  "es": [["Mapa Express","€ 1,50"],["Mapa Completo","€ 3,50"],["Nombre de Urna","€ 5,00"],["Número Electoral","€ 5,00"]],
+  "fr": [["Carte Express","€ 1,50"],["Carte Complète","€ 3,50"],["Nom d'Urne","€ 5,00"],["Numéro Électoral","€ 5,00"]],
+  "de": [["Express-Karte","€ 1,50"],["Vollständige Karte","€ 3,50"],["Wahlzettelname","€ 5,00"],["Wahlzahl","€ 5,00"]],
+  "it": [["Mappa Express","€ 1,50"],["Mappa Completa","€ 3,50"],["Nome per Urna","€ 5,00"],["Numero Elettorale","€ 5,00"]],
+  "ja": [["エクスプレス地図","¥ 250"],["完全な地図","¥ 550"],["投票用紙の名前","¥ 800"],["選挙番号","¥ 800"]],
+  "zh": [["快速地图","¥ 12"],["完整地图","¥ 25"],["选票姓名","¥ 40"],["选举号码","¥ 40"]],
+  "ru": [["Экспресс-карта","₽ 130"],["Полная карта","₽ 280"],["Имя для бюллетеня","₽ 430"],["Избирательный номер","₽ 430"]],
+  "he": [["מפה אקספרס","₪ 5,00"],["מפה מלאה","₪ 13,00"],["שם לפתק","₪ 19,00"],["מספר בחירות","₪ 19,00"]],
+  "ar": [["الخريطة السريعة","﷼ 6,00"],["الخريطة الكاملة","﷼ 13,00"],["اسم الاقتراع","﷼ 19,00"],["الرقم الانتخابي","﷼ 19,00"]],
+  "id": [["Peta Ekspres","Rp 24.000"],["Peta Lengkap","Rp 56.000"],["Nama Surat Suara","Rp 80.000"],["Nomor Pemilihan","Rp 80.000"]],
+  "tr": [["Ekspres Harita","₺ 51"],["Tam Harita","₺ 119"],["Oy Pusulası Adı","₺ 170"],["Seçim Numarası","₺ 170"]],
+  "vi": [["Bản đồ Nhanh","₫ 38.000"],["Bản đồ Đầy đủ","₫ 88.000"],["Tên Phiếu bầu","₫ 125.000"],["Số Bầu cử","₫ 125.000"]]
 };
 
 // ===== SHIM DE SEGURANÇA: reconstrói PRODUTOS_TRAD se ausente =====
