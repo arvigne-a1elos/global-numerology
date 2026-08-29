@@ -24,12 +24,12 @@ APRESENTACAO_TEXTOS = {
         "port_p": "Nossa estrutura de produtos é desenhada para uma jornada de consumo fluida, desde produtos de entrada (low-ticket) até soluções premium e corporativas. Todos os relatórios são entregues em formato PDF digital gerado por IA, garantindo custo marginal próximo de zero e alta escalabilidade. Valores idênticos aos exibidos nos cards do site (referência: capas_produtos_12_idiomas.csv, câmbio de ago/2026).",
         "port_colunas": ["Faixa", "Produtos", "Preço (R$)", "Conversão Indicativa (Moedas Globais)"],
         "port_linhas": [
-            ["Entrada", "Mapa Express, Qual Vida/Ano, Nome do Pet, Nickname Digital, Nome do Domínio, Nome do Canal, Nome da Equipe, Nome de ONG/Associação/Instituto/Fundação, Nome do Projeto, Nome do Evento", "R$ 8,00", "US$ 1,55 | € 1,33 | ¥JPY 255 | ¥CNY 10,40 | ₽ 139 | ₹ 140 | ₪ 4,61 | ﷼ 5,68"],
-            ["Intermediário", "Mapa Completo, Pesquisa IA de Nomes", "R$ 17,00", "US$ 3,29 | € 2,83 | ¥JPY 542 | ¥CNY 22,10 | ₽ 296 | ₹ 298 | ₪ 9,79 | ﷼ 12,07"],
-            ["Avançado", "Validação Nome de Urna, Número Eleitoral, Número do Imóvel, Calendário Mensal Energético", "R$ 26,00", "US$ 5,04 | € 4,33 | ¥JPY 829 | ¥CNY 33,80 | ₽ 452 | ₹ 455 | ₪ 14,98 | ﷼ 18,46"],
-            ["Avançado II", "Validação Nome Artístico, Planejamento Nome de Bebê, Validação de Assinaturas", "R$ 35,00", "US$ 6,78 | € 5,83 | ¥JPY 1117 | ¥CNY 45,50 | ₽ 609 | ₹ 613 | ₪ 20,16 | ﷼ 24,85"],
-            ["Premium", "Nome para Negócio/Produto, Mapa do Casal", "R$ 44,00", "US$ 8,53 | € 7,33 | ¥JPY 1404 | ¥CNY 57,20 | ₽ 766 | ₹ 770 | ₪ 25,34 | ﷼ 31,24"],
-            ["Elite", "Mapa Família Premium", "R$ 98,00", "US$ 18,99 | € 16,32 | ¥JPY 3126 | ¥CNY 127,40 | ₽ 1705 | ₹ 1715 | ₪ 56,45 | ﷼ 69,58"],
+            ["Entrada", "Mapa Express, Qual Vida/Ano, Nome do Pet, Nickname Digital, Nome do Domínio, Nome do Canal, Nome da Equipe, Nome de ONG/Associação/Instituto/Fundação, Nome do Projeto, Nome do Evento", "R$ 8,00", "US$ 20,00 | € 11,00 | ¥JPY 1.400 | ¥CNY 26,00 | ₽ 440,00 | Rp 11.000,00 | ₺ 58,00 | ₫ 25.000 | ₪ 44,00 | ر.س 35,00"],
+            ["Intermediário", "Mapa Completo, Pesquisa IA de Nomes", "R$ 17,00", "US$ 44,00 | € 26,00 | ¥JPY 3.000 | ¥CNY 53,00 | ₽ 800,00 | Rp 23.000,00 | ₺ 123,00 | ₫ 53.000 | ₪ 98,00 | ر.س 71,00"],
+            ["Avançado", "Validação Nome de Urna, Número Eleitoral, Número do Imóvel, Calendário Mensal Energético", "R$ 26,00", "US$ 71,00 | € 35,00 | ¥JPY 4.600 | ¥CNY 71,00 | ₽ 1.250,00 | Rp 36.000,00 | ₺ 188,00 | ₫ 81.000 | ₪ 143,00 | ر.س 107,00"],
+            ["Avançado II", "Validação Nome Artístico, Planejamento Nome de Bebê, Validação de Assinaturas", "R$ 35,00", "US$ 89,00 | € 53,00 | ¥JPY 6.200 | ¥CNY 98,00 | ₽ 1.700,00 | Rp 48.000,00 | ₺ 254,00 | ₫ 109.000 | ₪ 197,00 | ر.س 143,00"],
+            ["Premium", "Nome para Negócio/Produto, Mapa do Casal", "R$ 44,00", "US$ 116,00 | € 62,00 | ¥JPY 7.700 | ¥CNY 125,00 | ₽ 2.150,00 | Rp 60.000,00 | ₺ 319,00 | ₫ 137.000 | ₪ 242,00 | ر.س 170,00"],
+            ["Elite", "Mapa Família Premium", "R$ 98,00", "US$ 251,00 | € 134,00 | ¥JPY 17.000 | ¥CNY 260,00 | ₽ 4.400,00 | Rp 134.000,00 | ₺ 710,00 | ₫ 305.000 | ₪ 530,00 | ر.س 377,00"],
             ["B2B", "Bônus Coletivo/Empresarial", "Sob consulta", "Contratos corporativos personalizados com respaldo DUNS"]
         ],
         "alcance_t": "4. ALCANCE GLOBAL E ESTRATÉGIA MONETÁRIA",
@@ -111,13 +111,13 @@ APRESENTACAO_TEXTOS = {
         "port_p": "Our product structure is designed for a fluid consumption journey, from entry products (low-ticket) to premium and corporate solutions. All reports are delivered in AI-generated digital PDF format, ensuring near-zero marginal cost and high scalability. Values identical to those displayed on the website cards (reference: capas_produtos_12_idiomas.csv, exchange rate of Aug/2026).",
         "port_colunas": ["Tier", "Products", "Price (US$)", "Indicative Conversion (Global Currencies)"],
         "port_linhas": [
-            ["Entry", "Express Map, Year Vibration, Pet Name, Digital Nickname, Domain Name, Channel Name, Team Name, NGO/Association Name, Project Name, Event Name", "US$ 1.55", "US$ 1.55 | € 1.33 | ¥JPY 255 | ¥CNY 10.40 | ₽ 139 | ₹ 140 | ₪ 4.61 | ﷼ 5.68"],
-            ["Intermediate", "Full Map, AI Name Search", "US$ 3.29", "US$ 3.29 | € 2.83 | ¥JPY 542 | ¥CNY 22.10 | ₽ 296 | ₹ 298 | ₪ 9.79 | ﷼ 12.07"],
-            ["Advanced", "Ballot Name Validation, Electoral Number, Property Number, Monthly Energy Calendar", "US$ 5.04", "US$ 5.04 | € 4.33 | ¥JPY 829 | ¥CNY 33.80 | ₽ 452 | ₹ 455 | ₪ 14.98 | ﷼ 18.46"],
-            ["Advanced II", "Stage Name Validation, Baby Name Planning, Signature Validation", "US$ 6.78", "US$ 6.78 | € 5.83 | ¥JPY 1117 | ¥CNY 45.50 | ₽ 609 | ₹ 613 | ₪ 20.16 | ﷼ 24.85"],
-            ["Premium", "Business/Product Name, Couple Map", "US$ 8.53", "US$ 8.53 | € 7.33 | ¥JPY 1404 | ¥CNY 57.20 | ₽ 766 | ₹ 770 | ₪ 25.34 | ﷼ 31.24"],
-            ["Elite", "Premium Family Map", "US$ 18.99", "US$ 18.99 | € 16.32 | ¥JPY 3126 | ¥CNY 127.40 | ₽ 1705 | ₹ 1715 | ₪ 56.45 | ﷼ 69.58"],
-            ["B2B", "Corporate/Collective Bonus", "Custom", "Customized corporate contracts with DUNS backing"]
+            ["Entry", "Express Map, Life Phase & Year, Pet Name, Digital Nickname, Domain Name, Channel Name, Team Name, NGO/Association/Institute/Foundation Name, Project Name, Event Name", "US$ 20,00", "R$ 8,00 | € 11,00 | ¥JPY 1.400 | ¥CNY 26,00 | ₽ 440,00 | Rp 11.000,00 | ₺ 58,00 | ₫ 25.000 | ₪ 44,00 | ر.س 35,00"],
+            ["Intermediate", "Complete Map, AI Name Search", "US$ 44,00", "R$ 17,00 | € 26,00 | ¥JPY 3.000 | ¥CNY 53,00 | ₽ 800,00 | Rp 23.000,00 | ₺ 123,00 | ₫ 53.000 | ₪ 98,00 | ر.س 71,00"],
+            ["Advanced", "Ballot Name Validation, Electoral Number, Property Number, Monthly Energy Calendar", "US$ 71,00", "R$ 26,00 | € 35,00 | ¥JPY 4.600 | ¥CNY 71,00 | ₽ 1.250,00 | Rp 36.000,00 | ₺ 188,00 | ₫ 81.000 | ₪ 143,00 | ر.س 107,00"],
+            ["Advanced II", "Artistic Name Validation, Baby Name Planning, Signature Validation", "US$ 89,00", "R$ 35,00 | € 53,00 | ¥JPY 6.200 | ¥CNY 98,00 | ₽ 1.700,00 | Rp 48.000,00 | ₺ 254,00 | ₫ 109.000 | ₪ 197,00 | ر.س 143,00"],
+            ["Premium", "Business & Product Name, Couple Map", "US$ 116,00", "R$ 44,00 | € 62,00 | ¥JPY 7.700 | ¥CNY 125,00 | ₽ 2.150,00 | Rp 60.000,00 | ₺ 319,00 | ₫ 137.000 | ₪ 242,00 | ر.س 170,00"],
+            ["Elite", "Premium Family Map", "US$ 251,00", "R$ 98,00 | € 134,00 | ¥JPY 17.000 | ¥CNY 260,00 | ₽ 4.400,00 | Rp 134.000,00 | ₺ 710,00 | ₫ 305.000 | ₪ 530,00 | ر.س 377,00"],
+            ["B2B", "Corporate Bonus", "On request", "Custom corporate contracts backed by DUNS"]
         ],
         "alcance_t": "4. GLOBAL REACH AND MONETARY STRATEGY",
         "alcance_p": [
@@ -198,13 +198,13 @@ APRESENTACAO_TEXTOS = {
         "port_p": "Nuestra estructura de productos está diseñada para un recorrido de consumo fluido, desde productos de entrada (low-ticket) hasta soluciones premium y corporativas. Todos los informes se entregan en formato PDF digital generado por IA, garantizando un coste marginal cercano a cero y alta escalabilidad. Valores idénticos a los mostrados en las tarjetas del sitio web (referencia: capas_produtos_12_idiomas.csv, tipo de cambio de ago/2026).",
         "port_colunas": ["Nivel", "Productos", "Precio (€)", "Conversión Indicativa (Monedas Globales)"],
         "port_linhas": [
-            ["Entrada", "Mapa Express, Vibración del Año, Nombre de Mascota, Apodo Digital, Nombre de Dominio, Nombre del Canal, Nombre del Equipo, Nombre de ONG/Asociación, Nombre del Proyecto, Nombre del Evento", "€ 1,33", "US$ 1,55 | € 1,33 | ¥JPY 255 | ¥CNY 10,40 | ₽ 139 | ₹ 140 | ₪ 4,61 | ﷼ 5,68"],
-            ["Intermedio", "Mapa Completo, Búsqueda IA de Nombres", "€ 2,83", "US$ 3,29 | € 2,83 | ¥JPY 542 | ¥CNY 22,10 | ₽ 296 | ₹ 298 | ₪ 9,79 | ﷼ 12,07"],
-            ["Avanzado", "Validación de Nombre de Urna, Número Electoral, Número de la Propiedad, Calendario Energético Mensual", "€ 4,33", "US$ 5,04 | € 4,33 | ¥JPY 829 | ¥CNY 33,80 | ₽ 452 | ₹ 455 | ₪ 14,98 | ﷼ 18,46"],
-            ["Avanzado II", "Validación de Nombre Artístico, Planificación de Nombre de Bebé, Validación de Firmas", "€ 5,83", "US$ 6,78 | € 5,83 | ¥JPY 1117 | ¥CNY 45,50 | ₽ 609 | ₹ 613 | ₪ 20,16 | ﷼ 24,85"],
-            ["Premium", "Nombre para Negocio/Producto, Mapa de Pareja", "€ 7,33", "US$ 8,53 | € 7,33 | ¥JPY 1404 | ¥CNY 57,20 | ₽ 766 | ₹ 770 | ₪ 25,34 | ﷼ 31,24"],
-            ["Elite", "Mapa Familiar Premium", "€ 16,32", "US$ 18,99 | € 16,32 | ¥JPY 3126 | ¥CNY 127,40 | ₽ 1705 | ₹ 1715 | ₪ 56,45 | ﷼ 69,58"],
-            ["B2B", "Bono Colectivo/Empresarial", "Custom", "Contratos corporativos personalizados con respaldo DUNS"]
+            ["Entrada", "Mapa Exprés, Ciclo de Vida y Año, Nombre de la Mascota, Apodo Digital, Nombre de Dominio, Nombre del Canal, Nombre del Equipo, Nombre de ONG/Asociación/Instituto/Fundación, Nombre del Proyecto, Nombre del Evento", "€ 11,00", "R$ 8,00 | US$ 20,00 | ¥JPY 1.400 | ¥CNY 26,00 | ₽ 440,00 | Rp 11.000,00 | ₺ 58,00 | ₫ 25.000 | ₪ 44,00 | ر.س 35,00"],
+            ["Intermedio", "Mapa Completo, Búsqueda IA de Nombres", "€ 26,00", "R$ 17,00 | US$ 44,00 | ¥JPY 3.000 | ¥CNY 53,00 | ₽ 800,00 | Rp 23.000,00 | ₺ 123,00 | ₫ 53.000 | ₪ 98,00 | ر.س 71,00"],
+            ["Avanzado", "Validación Nombre de Urna, Número Electoral, Número de la Propiedad, Calendario Mensual Energético", "€ 35,00", "R$ 26,00 | US$ 71,00 | ¥JPY 4.600 | ¥CNY 71,00 | ₽ 1.250,00 | Rp 36.000,00 | ₺ 188,00 | ₫ 81.000 | ₪ 143,00 | ر.س 107,00"],
+            ["Avanzado II", "Validación Nombre Artístico, Planificación Nombre de Bebé, Validación de Firmas", "€ 53,00", "R$ 35,00 | US$ 89,00 | ¥JPY 6.200 | ¥CNY 98,00 | ₽ 1.700,00 | Rp 48.000,00 | ₺ 254,00 | ₫ 109.000 | ₪ 197,00 | ر.س 143,00"],
+            ["Premium", "Nombre para Negocio/Producto, Mapa de Pareja", "€ 62,00", "R$ 44,00 | US$ 116,00 | ¥JPY 7.700 | ¥CNY 125,00 | ₽ 2.150,00 | Rp 60.000,00 | ₺ 319,00 | ₫ 137.000 | ₪ 242,00 | ر.س 170,00"],
+            ["Élite", "Mapa Familiar Premium", "€ 134,00", "R$ 98,00 | US$ 251,00 | ¥JPY 17.000 | ¥CNY 260,00 | ₽ 4.400,00 | Rp 134.000,00 | ₺ 710,00 | ₫ 305.000 | ₪ 530,00 | ر.س 377,00"],
+            ["B2B", "Bono Corporativo", "Bajo consulta", "Contratos corporativos personalizados con respaldo DUNS"]
         ],
         "alcance_t": "4. ALCANCE GLOBAL Y ESTRATEGIA MONETARIA",
         "alcance_p": [
@@ -285,13 +285,13 @@ APRESENTACAO_TEXTOS = {
         "port_p": "La nostra struttura di prodotti è progettata per un percorso di consumo fluido, dai prodotti di ingresso (low-ticket) alle soluzioni premium e aziendali. Tutti i report vengono consegnati in formato PDF digitale generato da IA, garantendo un costo marginale vicino allo zero e un'elevata scalabilità. Valori identici a quelli mostrati nelle card del sito (riferimento: capas_produtos_12_idiomas.csv, cambio di ago/2026).",
         "port_colunas": ["Livello", "Prodotti", "Prezzo (€)", "Conversione Indicativa (Valute Globali)"],
         "port_linhas": [
-            ["Ingresso", "Mappa Express, Vibrazione dell'Anno, Nome dell'Animale, Nickname Digitale, Nome di Dominio, Nome del Canale, Nome del Team, Nome di ONG/Associazione, Nome del Progetto, Nome dell'Evento", "€ 1,33", "US$ 1,55 | € 1,33 | ¥JPY 255 | ¥CNY 10,40 | ₽ 139 | ₹ 140 | ₪ 4,61 | ﷼ 5,68"],
-            ["Intermedio", "Mappa Completa, Ricerca IA dei Nomi", "€ 2,83", "US$ 3,29 | € 2,83 | ¥JPY 542 | ¥CNY 22,10 | ₽ 296 | ₹ 298 | ₪ 9,79 | ﷼ 12,07"],
-            ["Avanzato", "Validazione Nome Elettorale, Numero Elettorale, Numero dell'Immobile, Calendario Energetico Mensile", "€ 4,33", "US$ 5,04 | € 4,33 | ¥JPY 829 | ¥CNY 33,80 | ₽ 452 | ₹ 455 | ₪ 14,98 | ﷼ 18,46"],
-            ["Avanzato II", "Validazione Nome d'Arte, Scelta Nome del Bambino, Validazione Firma", "€ 5,83", "US$ 6,78 | € 5,83 | ¥JPY 1117 | ¥CNY 45,50 | ₽ 609 | ₹ 613 | ₪ 20,16 | ﷼ 24,85"],
-            ["Premium", "Nome per Business/Prodotto, Mappa di Coppia", "€ 7,33", "US$ 8,53 | € 7,33 | ¥JPY 1404 | ¥CNY 57,20 | ₽ 766 | ₹ 770 | ₪ 25,34 | ﷼ 31,24"],
-            ["Elite", "Mappa Famiglia Premium", "€ 16,32", "US$ 18,99 | € 16,32 | ¥JPY 3126 | ¥CNY 127,40 | ₽ 1705 | ₹ 1715 | ₪ 56,45 | ﷼ 69,58"],
-            ["B2B", "Bonus Collettivo/Aziendale", "Custom", "Contratti aziendali personalizzati con supporto DUNS"]
+            ["Base", "Mappa Espressa, Fase di Vita e Anno, Nome dell'Animale, Nickname Digitale, Nome del Dominio, Nome del Canale, Nome della Squadra, Nome di ONG/Associazione/Istituto/Fondazione, Nome del Progetto, Nome dell'Evento", "€ 11,00", "R$ 8,00 | US$ 20,00 | ¥JPY 1.400 | ¥CNY 26,00 | ₽ 440,00 | Rp 11.000,00 | ₺ 58,00 | ₫ 25.000 | ₪ 44,00 | ر.س 35,00"],
+            ["Intermedio", "Mappa Completa, Ricerca IA Nomi", "€ 26,00", "R$ 17,00 | US$ 44,00 | ¥JPY 3.000 | ¥CNY 53,00 | ₽ 800,00 | Rp 23.000,00 | ₺ 123,00 | ₫ 53.000 | ₪ 98,00 | ر.س 71,00"],
+            ["Avanzato", "Validazione Nome della Scheda, Numero Elettorale, Numero dell'Immobile, Calendario Mensile Energetico", "€ 35,00", "R$ 26,00 | US$ 71,00 | ¥JPY 4.600 | ¥CNY 71,00 | ₽ 1.250,00 | Rp 36.000,00 | ₺ 188,00 | ₫ 81.000 | ₪ 143,00 | ر.س 107,00"],
+            ["Avanzato II", "Validazione Nome d'Arte, Pianificazione Nome del Bambino, Validazione delle Firme", "€ 53,00", "R$ 35,00 | US$ 89,00 | ¥JPY 6.200 | ¥CNY 98,00 | ₽ 1.700,00 | Rp 48.000,00 | ₺ 254,00 | ₫ 109.000 | ₪ 197,00 | ر.س 143,00"],
+            ["Premium", "Nome per Business/Prodotto, Mappa di Coppia", "€ 62,00", "R$ 44,00 | US$ 116,00 | ¥JPY 7.700 | ¥CNY 125,00 | ₽ 2.150,00 | Rp 60.000,00 | ₺ 319,00 | ₫ 137.000 | ₪ 242,00 | ر.س 170,00"],
+            ["Elite", "Mappa Famiglia Premium", "€ 134,00", "R$ 98,00 | US$ 251,00 | ¥JPY 17.000 | ¥CNY 260,00 | ₽ 4.400,00 | Rp 134.000,00 | ₺ 710,00 | ₫ 305.000 | ₪ 530,00 | ر.س 377,00"],
+            ["B2B", "Bonus Aziendale", "Su richiesta", "Contratti aziendali personalizzati con supporto DUNS"]
         ],
         "alcance_t": "4. PORTATA GLOBALE E STRATEGIA MONETARIA",
         "alcance_p": [
@@ -372,13 +372,13 @@ APRESENTACAO_TEXTOS = {
         "port_p": "Notre structure de produits est conçue pour un parcours de consommation fluide, des produits d'entrée (low-ticket) aux solutions premium et corporate. Tous les rapports sont livrés au format PDF numérique généré par IA, garantissant un coût marginal proche de zéro et une grande évolutivité. Valeurs identiques à celles affichées sur les cartes du site (référence : capas_produtos_12_idiomas.csv, taux de change d'août/2026).",
         "port_colunas": ["Niveau", "Produits", "Prix (€)", "Conversion Indicative (Devises Mondiales)"],
         "port_linhas": [
-            ["Entrée", "Carte Express, Vibration de l'Année, Nom de l'Animal, Pseudo Numérique, Nom de Domaine, Nom de la Chaîne, Nom de l'Équipe, Nom d'ONG/Association, Nom du Projet, Nom de l'Événement", "€ 1,33", "US$ 1,55 | € 1,33 | ¥JPY 255 | ¥CNY 10,40 | ₽ 139 | ₹ 140 | ₪ 4,61 | ﷼ 5,68"],
-            ["Intermédiaire", "Carte Complète, Recherche IA de Noms", "€ 2,83", "US$ 3,29 | € 2,83 | ¥JPY 542 | ¥CNY 22,10 | ₽ 296 | ₹ 298 | ₪ 9,79 | ﷼ 12,07"],
-            ["Avancé", "Validation Nom d'Urne, Numéro Électoral, Numéro du Bien, Calendrier Énergétique Mensuel", "€ 4,33", "US$ 5,04 | € 4,33 | ¥JPY 829 | ¥CNY 33,80 | ₽ 452 | ₹ 455 | ₪ 14,98 | ﷼ 18,46"],
-            ["Avancé II", "Validation Nom d'Artiste, Choix du Prénom de Bébé, Validation de Signature", "€ 5,83", "US$ 6,78 | € 5,83 | ¥JPY 1117 | ¥CNY 45,50 | ₽ 609 | ₹ 613 | ₪ 20,16 | ﷼ 24,85"],
-            ["Premium", "Nom pour Entreprise/Produit, Carte du Couple", "€ 7,33", "US$ 8,53 | € 7,33 | ¥JPY 1404 | ¥CNY 57,20 | ₽ 766 | ₹ 770 | ₪ 25,34 | ﷼ 31,24"],
-            ["Elite", "Carte Famille Premium", "€ 16,32", "US$ 18,99 | € 16,32 | ¥JPY 3126 | ¥CNY 127,40 | ₽ 1705 | ₹ 1715 | ₪ 56,45 | ﷼ 69,58"],
-            ["B2B", "Bonus Collectif/Entreprise", "Custom", "Contrats d'entreprise personnalisés avec soutien DUNS"]
+            ["Entrée", "Carte Express, Phase de Vie et Année, Nom de l'Animal, Pseudo Numérique, Nom de Domaine, Nom de la Chaîne, Nom de l'Équipe, Nom d'ONG/Association/Institut/Fondation, Nom du Projet, Nom de l'Événement", "€ 11,00", "R$ 8,00 | US$ 20,00 | ¥JPY 1.400 | ¥CNY 26,00 | ₽ 440,00 | Rp 11.000,00 | ₺ 58,00 | ₫ 25.000 | ₪ 44,00 | ر.س 35,00"],
+            ["Intermédiaire", "Carte Complète, Recherche IA de Noms", "€ 26,00", "R$ 17,00 | US$ 44,00 | ¥JPY 3.000 | ¥CNY 53,00 | ₽ 800,00 | Rp 23.000,00 | ₺ 123,00 | ₫ 53.000 | ₪ 98,00 | ر.س 71,00"],
+            ["Avancé", "Validation Nom du Bulletin, Numéro Électoral, Numéro du Bien, Calendrier Mensuel Énergétique", "€ 35,00", "R$ 26,00 | US$ 71,00 | ¥JPY 4.600 | ¥CNY 71,00 | ₽ 1.250,00 | Rp 36.000,00 | ₺ 188,00 | ₫ 81.000 | ₪ 143,00 | ر.س 107,00"],
+            ["Avancé II", "Validation Nom de Scène, Planification Prénom de Bébé, Validation des Signatures", "€ 53,00", "R$ 35,00 | US$ 89,00 | ¥JPY 6.200 | ¥CNY 98,00 | ₽ 1.700,00 | Rp 48.000,00 | ₺ 254,00 | ₫ 109.000 | ₪ 197,00 | ر.س 143,00"],
+            ["Premium", "Nom pour Entreprise/Produit, Carte du Couple", "€ 62,00", "R$ 44,00 | US$ 116,00 | ¥JPY 7.700 | ¥CNY 125,00 | ₽ 2.150,00 | Rp 60.000,00 | ₺ 319,00 | ₫ 137.000 | ₪ 242,00 | ر.س 170,00"],
+            ["Élite", "Carte Famille Premium", "€ 134,00", "R$ 98,00 | US$ 251,00 | ¥JPY 17.000 | ¥CNY 260,00 | ₽ 4.400,00 | Rp 134.000,00 | ₺ 710,00 | ₫ 305.000 | ₪ 530,00 | ر.س 377,00"],
+            ["B2B", "Bonus d'Entreprise", "Sur demande", "Contrats d'entreprise personnalisés avec appui DUNS"]
         ],
         "alcance_t": "4. PORTÉE MONDIALE ET STRATÉGIE MONÉTAIRE",
         "alcance_p": [
@@ -459,13 +459,13 @@ APRESENTACAO_TEXTOS = {
         "port_p": "Unsere Produktstruktur ist für eine flüssige Konsumreise konzipiert, von Einstiegsprodukten (Low-Ticket) bis hin zu Premium- und Unternehmenslösungen. Alle Berichte werden als digitales, KI-generiertes PDF geliefert, was nahezu null Grenzkosten und hohe Skalierbarkeit gewährleistet. Werte identisch mit denen auf den Karten der Website (Referenz: capas_produtos_12_idiomas.csv, Wechselkurs Aug/2026).",
         "port_colunas": ["Stufe", "Produkte", "Preis (€)", "Indikative Umrechnung (Globale Währungen)"],
         "port_linhas": [
-            ["Einstieg", "Express-Map, Jahresvibration, Haustiername, Digitaler Nickname, Domain-Name, Kanalname, Teamname, Name für NGO/Verein, Projektname, Veranstaltungsname", "€ 1,33", "US$ 1,55 | € 1,33 | ¥JPY 255 | ¥CNY 10,40 | ₽ 139 | ₹ 140 | ₪ 4,61 | ﷼ 5,68"],
-            ["Mittelstufe", "Vollständige Karte, KI-Namenssuche", "€ 2,83", "US$ 3,29 | € 2,83 | ¥JPY 542 | ¥CNY 22,10 | ₽ 296 | ₹ 298 | ₪ 9,79 | ﷼ 12,07"],
-            ["Fortgeschritten", "Validierung des Wahlzettelnamens, Wahlnummer, Hausnummer, Monatlicher Energiekalender", "€ 4,33", "US$ 5,04 | € 4,33 | ¥JPY 829 | ¥CNY 33,80 | ₽ 452 | ₹ 455 | ₪ 14,98 | ﷼ 18,46"],
-            ["Fortgeschritten II", "Validierung des Künstlernamens, Namensplanung fürs Baby, Unterschriften-Validierung", "€ 5,83", "US$ 6,78 | € 5,83 | ¥JPY 1117 | ¥CNY 45,50 | ₽ 609 | ₹ 613 | ₪ 20,16 | ﷼ 24,85"],
-            ["Premium", "Name für Unternehmen/Produkt, Paar-Karte", "€ 7,33", "US$ 8,53 | € 7,33 | ¥JPY 1404 | ¥CNY 57,20 | ₽ 766 | ₹ 770 | ₪ 25,34 | ﷼ 31,24"],
-            ["Elite", "Premium-Familien-Karte", "€ 16,32", "US$ 18,99 | € 16,32 | ¥JPY 3126 | ¥CNY 127,40 | ₽ 1705 | ₹ 1715 | ₪ 56,45 | ﷼ 69,58"],
-            ["B2B", "Kollektiv-/Firmenbonus", "Custom", "Individuelle Unternehmensverträge mit DUNS-Rückhalt"]
+            ["Einstieg", "Express-Karte, Lebensphase & Jahr, Haustiername, Digitaler Spitzname, Domainname, Kanalname, Teamname, Name von NGO/Verein/Institut/Stiftung, Projektname, Veranstaltungsname", "€ 11,00", "R$ 8,00 | US$ 20,00 | ¥JPY 1.400 | ¥CNY 26,00 | ₽ 440,00 | Rp 11.000,00 | ₺ 58,00 | ₫ 25.000 | ₪ 44,00 | ر.س 35,00"],
+            ["Mittel", "Vollständige Karte, KI-Namenssuche", "€ 26,00", "R$ 17,00 | US$ 44,00 | ¥JPY 3.000 | ¥CNY 53,00 | ₽ 800,00 | Rp 23.000,00 | ₺ 123,00 | ₫ 53.000 | ₪ 98,00 | ر.س 71,00"],
+            ["Fortgeschritten", "Stimmzettelname-Validierung, Wahlnummer, Immobiliennummer, Monatlicher Energiekalender", "€ 35,00", "R$ 26,00 | US$ 71,00 | ¥JPY 4.600 | ¥CNY 71,00 | ₽ 1.250,00 | Rp 36.000,00 | ₺ 188,00 | ₫ 81.000 | ₪ 143,00 | ر.س 107,00"],
+            ["Fortgeschritten II", "Künstlername-Validierung, Babynamen-Planung, Unterschrifts-Validierung", "€ 53,00", "R$ 35,00 | US$ 89,00 | ¥JPY 6.200 | ¥CNY 98,00 | ₽ 1.700,00 | Rp 48.000,00 | ₺ 254,00 | ₫ 109.000 | ₪ 197,00 | ر.س 143,00"],
+            ["Premium", "Name für Unternehmen/Produkt, Paar-Karte", "€ 62,00", "R$ 44,00 | US$ 116,00 | ¥JPY 7.700 | ¥CNY 125,00 | ₽ 2.150,00 | Rp 60.000,00 | ₺ 319,00 | ₫ 137.000 | ₪ 242,00 | ر.س 170,00"],
+            ["Elite", "Premium-Familien-Karte", "€ 134,00", "R$ 98,00 | US$ 251,00 | ¥JPY 17.000 | ¥CNY 260,00 | ₽ 4.400,00 | Rp 134.000,00 | ₺ 710,00 | ₫ 305.000 | ₪ 530,00 | ر.س 377,00"],
+            ["B2B", "Unternehmensbonus", "Auf Anfrage", "Individuelle Firmenverträge mit DUNS-Unterstützung"]
         ],
         "alcance_t": "4. GLOBALE REICHWEITE UND WÄHRUNGSSTRATEGIE",
         "alcance_p": [
@@ -546,13 +546,13 @@ APRESENTACAO_TEXTOS = {
         "port_p": "当社の製品構成は、エントリー製品（ローコスト）からプレミアムおよび法人向けソリューションまで、流動的な消費ジャーニーのために設計されています。すべてのレポートはAI生成のデジタルPDF形式で納品され、限界コストをほぼゼロに抑え、高いスケーラビリティを実現します。価格はウェブサイトのカードに表示されているものと同一です（参照: capas_produtos_12_idiomas.csv、2026年8月の為替レート）。",
         "port_colunas": ["レベル", "製品", "価格 (¥JPY)", "参考換算（グローバル通貨）"],
         "port_linhas": [
-            ["エントリー", "エクスプレスマップ、年間の波動、ペットの名前、デジタルニックネーム、ドメイン名、チャンネル名、チーム名、NPO・団体名、プロジェクト名、イベント名", "¥JPY 255", "US$ 1,55 | € 1,33 | ¥JPY 255 | ¥CNY 10,40 | ₽ 139 | ₹ 140 | ₪ 4,61 | ﷼ 5,68"],
-            ["中級", "フルマップ、AI名前検索", "¥JPY 542", "US$ 3,29 | € 2,83 | ¥JPY 542 | ¥CNY 22,10 | ₽ 296 | ₹ 298 | ₪ 9,79 | ﷼ 12,07"],
-            ["上級", "投票用氏名検証、選挙番号、不動産番号、月間エネルギーカレンダー", "¥JPY 829", "US$ 5,04 | € 4,33 | ¥JPY 829 | ¥CNY 33,80 | ₽ 452 | ₹ 455 | ₪ 14,98 | ﷼ 18,46"],
-            ["上級II", "芸名検証、赤ちゃんの名前計画、署名検証", "¥JPY 1117", "US$ 6,78 | € 5,83 | ¥JPY 1117 | ¥CNY 45,50 | ₽ 609 | ₹ 613 | ₪ 20,16 | ﷼ 24,85"],
-            ["プレミアム", "ビジネス・商品名、カップルマップ", "¥JPY 1404", "US$ 8,53 | € 7,33 | ¥JPY 1404 | ¥CNY 57,20 | ₽ 766 | ₹ 770 | ₪ 25,34 | ﷼ 31,24"],
-            ["エリート", "プレミアム家族マップ", "¥JPY 3126", "US$ 18,99 | € 16,32 | ¥JPY 3126 | ¥CNY 127,40 | ₽ 1705 | ₹ 1715 | ₪ 56,45 | ﷼ 69,58"],
-            ["B2B", "団体・法人ボーナス", "Custom", "DUNSの裏付けを備えたカスタマイズされた法人契約"]
+            ["エントリー", "エクスプレスマップ, ライフステージと年, ペットの名前, デジタルニックネーム, ドメイン名, チャンネル名, チーム名, NGO・協会・研究所・財団の名前, プロジェクト名, イベント名", "¥ 1.400", "R$ 8,00 | US$ 20,00 | € 11,00 | ¥CNY 26,00 | ₽ 440,00 | Rp 11.000,00 | ₺ 58,00 | ₫ 25.000 | ₪ 44,00 | ر.س 35,00"],
+            ["ミドル", "完全マップ, AI名前検索", "¥ 3.000", "R$ 17,00 | US$ 44,00 | € 26,00 | ¥CNY 53,00 | ₽ 800,00 | Rp 23.000,00 | ₺ 123,00 | ₫ 53.000 | ₪ 98,00 | ر.س 71,00"],
+            ["アドバンス", "投票用紙名の検証, 選挙番号, 不動産番号, 月間エネルギーカレンダー", "¥ 4.600", "R$ 26,00 | US$ 71,00 | € 35,00 | ¥CNY 71,00 | ₽ 1.250,00 | Rp 36.000,00 | ₺ 188,00 | ₫ 81.000 | ₪ 143,00 | ر.س 107,00"],
+            ["アドバンスII", "芸名の検証, 赤ちゃんの名前計画, 署名の検証", "¥ 6.200", "R$ 35,00 | US$ 89,00 | € 53,00 | ¥CNY 98,00 | ₽ 1.700,00 | Rp 48.000,00 | ₺ 254,00 | ₫ 109.000 | ₪ 197,00 | ر.س 143,00"],
+            ["プレミアム", "ビジネス・商品名, カップルマップ", "¥ 7.700", "R$ 44,00 | US$ 116,00 | € 62,00 | ¥CNY 125,00 | ₽ 2.150,00 | Rp 60.000,00 | ₺ 319,00 | ₫ 137.000 | ₪ 242,00 | ر.س 170,00"],
+            ["エリート", "プレミアム家族マップ", "¥ 17.000", "R$ 98,00 | US$ 251,00 | € 134,00 | ¥CNY 260,00 | ₽ 4.400,00 | Rp 134.000,00 | ₺ 710,00 | ₫ 305.000 | ₪ 530,00 | ر.س 377,00"],
+            ["B2B", "法人ボーナス", "お問い合わせ", "DUNS保証付きカスタム法人契約"]
         ],
         "alcance_t": "4. グローバルな到達範囲と通貨戦略",
         "alcance_p": [
@@ -633,13 +633,13 @@ APRESENTACAO_TEXTOS = {
         "port_p": "我们的产品结构旨在打造顺畅的消费旅程，从入门产品（低价位）到高级和企业级解决方案。所有报告均以 AI 生成的数字 PDF 格式交付，确保边际成本接近于零并具有高可扩展性。价格与网站卡片上显示的价格完全一致（参考：capas_produtos_12_idiomas.csv，2026年8月汇率）。",
         "port_colunas": ["级别", "产品", "价格 (¥CNY)", "参考换算（全球货币）"],
         "port_linhas": [
-            ["入门", "快速命盘、年度能量、宠物名字、数字昵称、域名、频道名称、团队名称、非政府组织/协会名称、项目名称、活动名称", "¥CNY 10,40", "US$ 1,55 | € 1,33 | ¥JPY 255 | ¥CNY 10,40 | ₽ 139 | ₹ 140 | ₪ 4,61 | ﷼ 5,68"],
-            ["中级", "完整命盘、AI名字搜索", "¥CNY 22,10", "US$ 3,29 | € 2,83 | ¥JPY 542 | ¥CNY 22,10 | ₽ 296 | ₹ 298 | ₪ 9,79 | ﷼ 12,07"],
-            ["高级", "选票姓名验证、选举号码、房产号码、每月能量日历", "¥CNY 33,80", "US$ 5,04 | € 4,33 | ¥JPY 829 | ¥CNY 33,80 | ₽ 452 | ₹ 455 | ₪ 14,98 | ﷼ 18,46"],
-            ["高级II", "艺名验证、宝宝取名规划、签名验证", "¥CNY 45,50", "US$ 6,78 | € 5,83 | ¥JPY 1117 | ¥CNY 45,50 | ₽ 609 | ₹ 613 | ₪ 20,16 | ﷼ 24,85"],
-            ["尊享", "企业/产品名称、情侣命盘", "¥CNY 57,20", "US$ 8,53 | € 7,33 | ¥JPY 1404 | ¥CNY 57,20 | ₽ 766 | ₹ 770 | ₪ 25,34 | ﷼ 31,24"],
-            ["至尊", "家庭命盘高级版", "¥CNY 127,40", "US$ 18,99 | € 16,32 | ¥JPY 3126 | ¥CNY 127,40 | ₽ 1705 | ₹ 1715 | ₪ 56,45 | ﷼ 69,58"],
-            ["B2B", "团体/企业奖金", "Custom", "定制企业合同，DUNS 支持"]
+            ["入门", "快速地图, 生命阶段与年份, 宠物名字, 数字昵称, 域名, 频道名称, 团队名称, 非政府组织、协会、研究所或基金会名称, 项目名称, 活动名称", "¥ 26,00", "R$ 8,00 | US$ 20,00 | € 11,00 | ¥JPY 1.400 | ₽ 440,00 | Rp 11.000,00 | ₺ 58,00 | ₫ 25.000 | ₪ 44,00 | ر.س 35,00"],
+            ["中级", "完整地图, AI名字搜索", "¥ 53,00", "R$ 17,00 | US$ 44,00 | € 26,00 | ¥JPY 3.000 | ₽ 800,00 | Rp 23.000,00 | ₺ 123,00 | ₫ 53.000 | ₪ 98,00 | ر.س 71,00"],
+            ["高级", "选票名称验证, 选举号码, 房产号码, 每月能量日历", "¥ 71,00", "R$ 26,00 | US$ 71,00 | € 35,00 | ¥JPY 4.600 | ₽ 1.250,00 | Rp 36.000,00 | ₺ 188,00 | ₫ 81.000 | ₪ 143,00 | ر.س 107,00"],
+            ["高级II", "艺名验证, 宝宝取名规划, 签名验证", "¥ 98,00", "R$ 35,00 | US$ 89,00 | € 53,00 | ¥JPY 6.200 | ₽ 1.700,00 | Rp 48.000,00 | ₺ 254,00 | ₫ 109.000 | ₪ 197,00 | ر.س 143,00"],
+            ["高级版", "企业/产品名称, 情侣地图", "¥ 125,00", "R$ 44,00 | US$ 116,00 | € 62,00 | ¥JPY 7.700 | ₽ 2.150,00 | Rp 60.000,00 | ₺ 319,00 | ₫ 137.000 | ₪ 242,00 | ر.س 170,00"],
+            ["精英", "高级家庭地图", "¥ 260,00", "R$ 98,00 | US$ 251,00 | € 134,00 | ¥JPY 17.000 | ₽ 4.400,00 | Rp 134.000,00 | ₺ 710,00 | ₫ 305.000 | ₪ 530,00 | ر.س 377,00"],
+            ["B2B", "企业奖励", "咨询", "DUNS背书的定制企业合同"]
         ],
         "alcance_t": "4. 全球覆盖与货币策略",
         "alcance_p": [
@@ -720,13 +720,13 @@ APRESENTACAO_TEXTOS = {
         "port_p": "Наша продуктовая структура разработана для плавного пути потребления — от входных продуктов (низкий чек) до премиальных и корпоративных решений. Все отчёты доставляются в цифровом PDF-формате, созданном ИИ, что обеспечивает почти нулевую предельную стоимость и высокую масштабируемость. Цены идентичны указанным на карточках сайта (источник: capas_produtos_12_idiomas.csv, курс августа 2026 г.).",
         "port_colunas": ["Уровень", "Продукты", "Цена (₽)", "Индикативная конверсия (Мировые валюты)"],
         "port_linhas": [
-            ["Входной", "Экспресс-карта, Вибрация года, Имя питомца, Цифровой ник, Имя домена, Название канала, Название команды, Название НКО/ассоциации, Название проекта, Название мероприятия", "₽ 139", "US$ 1,55 | € 1,33 | ¥JPY 255 | ¥CNY 10,40 | ₽ 139 | ₹ 140 | ₪ 4,61 | ﷼ 5,68"],
-            ["Средний", "Полная карта, ИИ-поиск имён", "₽ 296", "US$ 3,29 | € 2,83 | ¥JPY 542 | ¥CNY 22,10 | ₽ 296 | ₹ 298 | ₪ 9,79 | ﷼ 12,07"],
-            ["Продвинутый", "Проверка имени для урны, Избирательный номер, Номер недвижимости, Ежемесячный энергетический календарь", "₽ 452", "US$ 5,04 | € 4,33 | ¥JPY 829 | ¥CNY 33,80 | ₽ 452 | ₹ 455 | ₪ 14,98 | ﷼ 18,46"],
-            ["Продвинутый II", "Проверка сценического имени, Планирование имени ребёнка, Проверка подписей", "₽ 609", "US$ 6,78 | € 5,83 | ¥JPY 1117 | ¥CNY 45,50 | ₽ 609 | ₹ 613 | ₪ 20,16 | ﷼ 24,85"],
-            ["Премиум", "Имя для бизнеса/продукта, Карта пары", "₽ 766", "US$ 8,53 | € 7,33 | ¥JPY 1404 | ¥CNY 57,20 | ₽ 766 | ₹ 770 | ₪ 25,34 | ﷼ 31,24"],
-            ["Элитный", "Премиум-карта семьи", "₽ 1705", "US$ 18,99 | € 16,32 | ¥JPY 3126 | ¥CNY 127,40 | ₽ 1705 | ₹ 1715 | ₪ 56,45 | ﷼ 69,58"],
-            ["B2B", "Коллективный/корпоративный бонус", "Custom", "Индивидуальные корпоративные контракты с поддержкой DUNS"]
+            ["Вход", "Экспресс-карта, Жизненный этап и год, Имя питомца, Цифровой никнейм, Имя домена, Название канала, Название команды, Название НКО/ассоциации/института/фонда, Название проекта, Название события", "₽ 440,00", "R$ 8,00 | US$ 20,00 | € 11,00 | ¥JPY 1.400 | ¥CNY 26,00 | Rp 11.000,00 | ₺ 58,00 | ₫ 25.000 | ₪ 44,00 | ر.س 35,00"],
+            ["Средний", "Полная карта, ИИ-поиск имён", "₽ 800,00", "R$ 17,00 | US$ 44,00 | € 26,00 | ¥JPY 3.000 | ¥CNY 53,00 | Rp 23.000,00 | ₺ 123,00 | ₫ 53.000 | ₪ 98,00 | ر.س 71,00"],
+            ["Продвинутый", "Проверка названия бюллетеня, Избирательный номер, Номер недвижимости, Ежемесячный энергетический календарь", "₽ 1.250,00", "R$ 26,00 | US$ 71,00 | € 35,00 | ¥JPY 4.600 | ¥CNY 71,00 | Rp 36.000,00 | ₺ 188,00 | ₫ 81.000 | ₪ 143,00 | ر.س 107,00"],
+            ["Продвинутый II", "Проверка сценического имени, Планирование имени ребёнка, Проверка подписей", "₽ 1.700,00", "R$ 35,00 | US$ 89,00 | € 53,00 | ¥JPY 6.200 | ¥CNY 98,00 | Rp 48.000,00 | ₺ 254,00 | ₫ 109.000 | ₪ 197,00 | ر.س 143,00"],
+            ["Премиум", "Название для бизнеса/продукта, Карта пары", "₽ 2.150,00", "R$ 44,00 | US$ 116,00 | € 62,00 | ¥JPY 7.700 | ¥CNY 125,00 | Rp 60.000,00 | ₺ 319,00 | ₫ 137.000 | ₪ 242,00 | ر.س 170,00"],
+            ["Элит", "Премиальная семейная карта", "₽ 4.400,00", "R$ 98,00 | US$ 251,00 | € 134,00 | ¥JPY 17.000 | ¥CNY 260,00 | Rp 134.000,00 | ₺ 710,00 | ₫ 305.000 | ₪ 530,00 | ر.س 377,00"],
+            ["B2B", "Корпоративный бонус", "По запросу", "Индивидуальные корпоративные контракты при поддержке DUNS"]
         ],
         "alcance_t": "4. ГЛОБАЛЬНЫЙ ОХВАТ И ВАЛЮТНАЯ СТРАТЕГИЯ",
         "alcance_p": [
@@ -807,13 +807,13 @@ APRESENTACAO_TEXTOS = {
         "port_p": "מבנה המוצרים שלנו מתוכנ�ן למסע צריכה חלק, ממוצרי כניסה (כרט נמוך) ועד פתרונות פרימיום וארגוניים. כל הדוחות נמסרים בפורמט PDF דיגיטלי שנוצר על ידי AI, מה שמבטיח עלות שולית קרובה לאפס וסקלביליות גבוהה. המחירים זהים לאלה המוצגים בכרטיסי האתר (התייחסות: capas_produtos_12_idiomas.csv, שער חליפין אוגוסט 2026).",
         "port_colunas": ["רמה", "מוצרים", "מחיר (₪)", "המרה אינדיקטיבית (מטבעות גלובליים)"],
         "port_linhas": [
-            ["כניסה", "מפת אקספרס, רטט השנה, שם חיית מחמד, כינוי דיגיטלי, שם דומיין, שם ערוץ, שם צוות, שם עמותה/ארגון, שם פרויקט, שם אירוע", "₪ 4.61", "US$ 1,55 | € 1,33 | ¥JPY 255 | ¥CNY 10,40 | ₽ 139 | ₹ 140 | ₪ 4,61 | ﷼ 5,68"],
-            ["בינוני", "מפה מלאה, חיפוש שמות בינה מלאכותית", "₪ 9.79", "US$ 3,29 | € 2,83 | ¥JPY 542 | ¥CNY 22,10 | ₽ 296 | ₹ 298 | ₪ 9,79 | ﷼ 12,07"],
-            ["מתקדם", "אימות שם קלפי, מספר בחירות, מספר נכס, לוח שנה אנרגטי חודשי", "₪ 14.98", "US$ 5,04 | € 4,33 | ¥JPY 829 | ¥CNY 33,80 | ₽ 452 | ₹ 455 | ₪ 14,98 | ﷼ 18,46"],
-            ["מתקדם II", "אימות שם במה, תכנון שם לתינוק, אימות חתימות", "₪ 20.16", "US$ 6,78 | € 5,83 | ¥JPY 1117 | ¥CNY 45,50 | ₽ 609 | ₹ 613 | ₪ 20,16 | ﷼ 24,85"],
-            ["פרימיום", "שם לעסק/מוצר, מפת זוג", "₪ 25.34", "US$ 8,53 | € 7,33 | ¥JPY 1404 | ¥CNY 57,20 | ₽ 766 | ₹ 770 | ₪ 25,34 | ﷼ 31,24"],
-            ["עלית", "מפת משפחה פרימיום", "₪ 56.45", "US$ 18,99 | € 16,32 | ¥JPY 3126 | ¥CNY 127,40 | ₽ 1705 | ₹ 1715 | ₪ 56,45 | ﷼ 69,58"],
-            ["B2B", "בונוס קבוצתי/ארגוני", "Custom", "חוזים ארגוניים מותאמים אישית עם גיבוי DUNS"]
+            ["כניסה", "מפה מהירה, שלב חיים ושנה, שם חיית המחמד, כינוי דיגיטלי, שם דומיין, שם הערוץ, שם הצוות, שם עמותה/ארגון/מכון/קרן, שם הפרויקט, שם האירוע", "₪ 44,00", "R$ 8,00 | US$ 20,00 | € 11,00 | ¥JPY 1.400 | ¥CNY 26,00 | ₽ 440,00 | Rp 11.000,00 | ₺ 58,00 | ₫ 25.000 | ر.س 35,00"],
+            ["בינוני", "מפה מלאה, חיפוש שמות AI", "₪ 98,00", "R$ 17,00 | US$ 44,00 | € 26,00 | ¥JPY 3.000 | ¥CNY 53,00 | ₽ 800,00 | Rp 23.000,00 | ₺ 123,00 | ₫ 53.000 | ر.س 71,00"],
+            ["מתקדם", "אימות שם פתק, מספר בחירות, מספר נכס, לוח אנרגיה חודשי", "₪ 143,00", "R$ 26,00 | US$ 71,00 | € 35,00 | ¥JPY 4.600 | ¥CNY 71,00 | ₽ 1.250,00 | Rp 36.000,00 | ₺ 188,00 | ₫ 81.000 | ر.س 107,00"],
+            ["מתקדם II", "אימות שם במה, תכנון שם לתינוק, אימות חתימות", "₪ 197,00", "R$ 35,00 | US$ 89,00 | € 53,00 | ¥JPY 6.200 | ¥CNY 98,00 | ₽ 1.700,00 | Rp 48.000,00 | ₺ 254,00 | ₫ 109.000 | ر.س 143,00"],
+            ["פרימיום", "שם לעסק/מוצר, מפת זוג", "₪ 242,00", "R$ 44,00 | US$ 116,00 | € 62,00 | ¥JPY 7.700 | ¥CNY 125,00 | ₽ 2.150,00 | Rp 60.000,00 | ₺ 319,00 | ₫ 137.000 | ر.س 170,00"],
+            ["עילית", "מפת משפחה פרימיום", "₪ 530,00", "R$ 98,00 | US$ 251,00 | € 134,00 | ¥JPY 17.000 | ¥CNY 260,00 | ₽ 4.400,00 | Rp 134.000,00 | ₺ 710,00 | ₫ 305.000 | ر.س 377,00"],
+            ["B2B", "בונוס ארגוני", "לפי בקשה", "חוזים עסקיים מותאמים אישית עם גיבוי DUNS"]
         ],
         "alcance_t": "4. היקף גלובלי ואסטרטגיה מוניטרית",
         "alcance_p": [
@@ -894,13 +894,13 @@ APRESENTACAO_TEXTOS = {
         "port_p": "تم تصميم هيكل منتجاتنا لرحلة استهلاك سلسة، من منتجات الدخول (التذكرة المنخفضة) إلى الحلول المميزة والمؤسسية. يتم تسليم جميع التقارير بتنسيق PDF رقمي مولّد بالذكاء الاصطناعي، مما يضمن تكلفة هامشية قريبة من الصفر وقابلية توسع عالية. الأسعار مطابقة لتلك المعروضة على بطاقات الموقع (المرجع: capas_produtos_12_idiomas.csv، سعر صرف أغسطس 2026).",
         "port_colunas": ["المستوى", "المنتجات", "السعر (﷼)", "التحويل الإرشادي (العملات العالمية)"],
         "port_linhas": [
-            ["الدخول", "الخريطة السريعة، طاقة السنة، اسم الحيوان الأليف، الاسم المستعار الرقمي، اسم النطاق، اسم القناة، اسم الفريق، اسم المنظمة/الجمعية، اسم المشروع، اسم الفعالية", "﷼ 5.68", "US$ 1,55 | € 1,33 | ¥JPY 255 | ¥CNY 10,40 | ₽ 139 | ₹ 140 | ₪ 4,61 | ﷼ 5,68"],
-            ["متوسط", "الخريطة الكاملة، بحث الأسماء بالذكاء الاصطناعي", "﷼ 12.07", "US$ 3,29 | € 2,83 | ¥JPY 542 | ¥CNY 22,10 | ₽ 296 | ₹ 298 | ₪ 9,79 | ﷼ 12,07"],
-            ["متقدم", "التحقق من اسم الاقتراع، الرقم الانتخابي، رقم العقار، التقويم الطاقي الشهري", "﷼ 18.46", "US$ 5,04 | € 4,33 | ¥JPY 829 | ¥CNY 33,80 | ₽ 452 | ₹ 455 | ₪ 14,98 | ﷼ 18,46"],
-            ["متقدم II", "التحقق من الاسم الفني، تخطيط اسم المولود، التحقق من التوقيعات", "﷼ 24.85", "US$ 6,78 | € 5,83 | ¥JPY 1117 | ¥CNY 45,50 | ₽ 609 | ₹ 613 | ₪ 20,16 | ﷼ 24,85"],
-            ["مميز", "اسم للنشاط التجاري/المنتج، خريطة الزوجين", "﷼ 31.24", "US$ 8,53 | € 7,33 | ¥JPY 1404 | ¥CNY 57,20 | ₽ 766 | ₹ 770 | ₪ 25,34 | ﷼ 31,24"],
-            ["النخبة", "خريطة العائلة المميزة", "﷼ 69.58", "US$ 18,99 | € 16,32 | ¥JPY 3126 | ¥CNY 127,40 | ₽ 1705 | ₹ 1715 | ₪ 56,45 | ﷼ 69,58"],
-            ["B2B", "مكافأة جماعية/مؤسسية", "Custom", "عقود مؤسسية مخصصة بدعم DUNS"]
+            ["أساسي", "خريطة سريعة, مرحلة الحياة والسنة, اسم الحيوان الأليف, اللقب الرقمي, اسم النطاق, اسم القناة, اسم الفريق, اسم منظمة/جمعية/معهد/مؤسسة, اسم المشروع, اسم الفعالية", "ر.س 35,00", "R$ 8,00 | US$ 20,00 | € 11,00 | ¥JPY 1.400 | ¥CNY 26,00 | ₽ 440,00 | Rp 11.000,00 | ₺ 58,00 | ₫ 25.000 | ₪ 44,00"],
+            ["متوسط", "خريطة كاملة, بحث الأسماء بالذكاء الاصطناعي", "ر.س 71,00", "R$ 17,00 | US$ 44,00 | € 26,00 | ¥JPY 3.000 | ¥CNY 53,00 | ₽ 800,00 | Rp 23.000,00 | ₺ 123,00 | ₫ 53.000 | ₪ 98,00"],
+            ["متقدم", "التحقق من اسم الاقتراع, الرقم الانتخابي, رقم العقار, التقويم الشهري للطاقة", "ر.س 107,00", "R$ 26,00 | US$ 71,00 | € 35,00 | ¥JPY 4.600 | ¥CNY 71,00 | ₽ 1.250,00 | Rp 36.000,00 | ₺ 188,00 | ₫ 81.000 | ₪ 143,00"],
+            ["متقدم II", "التحقق من الاسم الفني, تخطيط اسم الطفل, التحقق من التوقيعات", "ر.س 143,00", "R$ 35,00 | US$ 89,00 | € 53,00 | ¥JPY 6.200 | ¥CNY 98,00 | ₽ 1.700,00 | Rp 48.000,00 | ₺ 254,00 | ₫ 109.000 | ₪ 197,00"],
+            ["بريميوم", "اسم للأعمال/المنتج, خريطة الزوجين", "ر.س 170,00", "R$ 44,00 | US$ 116,00 | € 62,00 | ¥JPY 7.700 | ¥CNY 125,00 | ₽ 2.150,00 | Rp 60.000,00 | ₺ 319,00 | ₫ 137.000 | ₪ 242,00"],
+            ["النخبة", "خريطة العائلة المميزة", "ر.س 377,00", "R$ 98,00 | US$ 251,00 | € 134,00 | ¥JPY 17.000 | ¥CNY 260,00 | ₽ 4.400,00 | Rp 134.000,00 | ₺ 710,00 | ₫ 305.000 | ₪ 530,00"],
+            ["B2B", "مكافأة الشركات", "عند الطلب", "عقود مؤسسية مخصصة بدعم DUNS"]
         ],
         "alcance_t": "4. الانتشار العالمي والاستراتيجية النقدية",
         "alcance_p": [
@@ -974,9 +974,15 @@ APRESENTACAO_TEXTOS = {
         "port_t": "3. PORTOFOLIO",
         "port_p": ["23 produk: Peta Ekspres, Peta Lengkap, Validasi Nama Surat Suara, Nomor Elektoral, Nama Bisnis, Peta Pasangan, Peta Keluarga Premium, dan lainnya."],
         "port_colunas": ["Produk", "Deskripsi", "Harga"],
-        "port_linhas": [["Peta Ekspres", "Analisis cepat", "mulai Rp 24.000"],
-                       ["Peta Lengkap", "Analisis mendalam", "mulai Rp 56.000"],
-                       ["Peta Pasangan", "Kecocokan dua nama", "mulai Rp 80.000"]],
+        "port_linhas": [
+            ["Pemula", "Peta Ekspres, Fase Kehidupan & Tahun, Nama Hewan Peliharaan, Nama Panggilan Digital, Nama Domain, Nama Kanal, Nama Tim, Nama LSM/Asosiasi/Lembaga/Yayasan, Nama Proyek, Nama Acara", "Rp 11.000,00", "R$ 8,00 | US$ 20,00 | € 11,00 | ¥JPY 1.400 | ¥CNY 26,00 | ₽ 440,00 | ₺ 58,00 | ₫ 25.000 | ₪ 44,00 | ر.س 35,00"],
+            ["Menengah", "Peta Lengkap, Pencarian Nama AI", "Rp 23.000,00", "R$ 17,00 | US$ 44,00 | € 26,00 | ¥JPY 3.000 | ¥CNY 53,00 | ₽ 800,00 | ₺ 123,00 | ₫ 53.000 | ₪ 98,00 | ر.س 71,00"],
+            ["Lanjutan", "Validasi Nama Surat Suara, Nomor Elektoral, Nomor Properti, Kalender Energi Bulanan", "Rp 36.000,00", "R$ 26,00 | US$ 71,00 | € 35,00 | ¥JPY 4.600 | ¥CNY 71,00 | ₽ 1.250,00 | ₺ 188,00 | ₫ 81.000 | ₪ 143,00 | ر.س 107,00"],
+            ["Lanjutan II", "Validasi Nama Artistik, Perencanaan Nama Bayi, Validasi Tanda Tangan", "Rp 48.000,00", "R$ 35,00 | US$ 89,00 | € 53,00 | ¥JPY 6.200 | ¥CNY 98,00 | ₽ 1.700,00 | ₺ 254,00 | ₫ 109.000 | ₪ 197,00 | ر.س 143,00"],
+            ["Premium", "Nama untuk Bisnis/Produk, Peta Pasangan", "Rp 60.000,00", "R$ 44,00 | US$ 116,00 | € 62,00 | ¥JPY 7.700 | ¥CNY 125,00 | ₽ 2.150,00 | ₺ 319,00 | ₫ 137.000 | ₪ 242,00 | ر.س 170,00"],
+            ["Elit", "Peta Keluarga Premium", "Rp 134.000,00", "R$ 98,00 | US$ 251,00 | € 134,00 | ¥JPY 17.000 | ¥CNY 260,00 | ₽ 4.400,00 | ₺ 710,00 | ₫ 305.000 | ₪ 530,00 | ر.س 377,00"],
+            ["B2B", "Bonus Kolektif/Perusahaan", "Sesuai permintaan", "Kontrak korporat khusus dengan dukungan DUNS"]
+        ],
         "alcance_t": "4. JANGKAUAN",
         "alcance_p": ["Operasi global dalam 14 bahasa dengan pembayaran dalam mata uang lokal.",
                   "Distribusi digital instan melalui PDF dan presentasi."],
@@ -1017,9 +1023,15 @@ APRESENTACAO_TEXTOS = {
         "port_t": "3. PORTFÖY",
         "port_p": ["23 ürün: Ekspres Harita, Tam Harita, Oy Pusulası İsim Doğrulama, Seçim Numarası, İşletme Adı, Çift Haritası, Premium Aile Haritası ve daha fazlası."],
         "port_colunas": ["Ürün", "Açıklama", "Fiyat"],
-        "port_linhas": [["Ekspres Harita", "Hızlı analiz", "₺51'den başlayan"],
-                       ["Tam Harita", "Derin analiz", "₺119'dan başlayan"],
-                       ["Çift Haritası", "İki isim uyumu", "₺170'ten başlayan"]],
+        "port_linhas": [
+            ["Başlangıç", "Ekspres Harita, Yaşam Evresi ve Yıl, Evcil Hayvan Adı, Dijital Takma Ad, Alan Adı, Kanal Adı, Ekip Adı, STK/Dernek/Enstitü/Vakıf Adı, Proje Adı, Etkinlik Adı", "₺ 58,00", "R$ 8,00 | US$ 20,00 | € 11,00 | ¥JPY 1.400 | ¥CNY 26,00 | ₽ 440,00 | Rp 11.000,00 | ₫ 25.000 | ₪ 44,00 | ر.س 35,00"],
+            ["Orta", "Tam Harita, AI İsim Arama", "₺ 123,00", "R$ 17,00 | US$ 44,00 | € 26,00 | ¥JPY 3.000 | ¥CNY 53,00 | ₽ 800,00 | Rp 23.000,00 | ₫ 53.000 | ₪ 98,00 | ر.س 71,00"],
+            ["İleri", "Oy Pusulası İsim Doğrulama, Seçim Numarası, Mülk Numarası, Aylık Enerji Takvimi", "₺ 188,00", "R$ 26,00 | US$ 71,00 | € 35,00 | ¥JPY 4.600 | ¥CNY 71,00 | ₽ 1.250,00 | Rp 36.000,00 | ₫ 81.000 | ₪ 143,00 | ر.س 107,00"],
+            ["İleri II", "Sahne Adı Doğrulama, Bebek İsmi Planlama, İmza Doğrulama", "₺ 254,00", "R$ 35,00 | US$ 89,00 | € 53,00 | ¥JPY 6.200 | ¥CNY 98,00 | ₽ 1.700,00 | Rp 48.000,00 | ₫ 109.000 | ₪ 197,00 | ر.س 143,00"],
+            ["Premium", "İşletme/Ürün Adı, Çift Haritası", "₺ 319,00", "R$ 44,00 | US$ 116,00 | € 62,00 | ¥JPY 7.700 | ¥CNY 125,00 | ₽ 2.150,00 | Rp 60.000,00 | ₫ 137.000 | ₪ 242,00 | ر.س 170,00"],
+            ["Elite", "Premium Aile Haritası", "₺ 710,00", "R$ 98,00 | US$ 251,00 | € 134,00 | ¥JPY 17.000 | ¥CNY 260,00 | ₽ 4.400,00 | Rp 134.000,00 | ₫ 305.000 | ₪ 530,00 | ر.س 377,00"],
+            ["B2B", "Kurumsal Bonus", "Talep üzerine", "DUNS destekli özel kurumsal sözleşmeler"]
+        ],
         "alcance_t": "4. ERİŞİM",
         "alcance_p": ["14 dilde küresel operasyon ve yerel para birimleriyle ödeme.",
                   "PDF ve sunumlarla anında dijital dağıtım."],
@@ -1060,9 +1072,15 @@ APRESENTACAO_TEXTOS = {
         "port_t": "3. DANH MỤC",
         "port_p": ["23 sản phẩm: Bản Đồ Nhanh, Bản Đồ Đầy Đủ, Xác Minh Tên Phiếu Bầu, Số Bầu Cử, Tên Doanh Nghiệp, Bản Đồ Cặp Đôi, Bản Đồ Gia Đình Cao Cấp và nhiều hơn nữa."],
         "port_colunas": ["Sản phẩm", "Mô tả", "Giá"],
-        "port_linhas": [["Bản Đồ Nhanh", "Phân tích nhanh", "từ 38.000 ₫"],
-                       ["Bản Đồ Đầy Đủ", "Phân tích sâu", "từ 88.000 ₫"],
-                       ["Bản Đồ Cặp Đôi", "Hợp hai tên", "từ 125.000 ₫"]],
+        "port_linhas": [
+            ["Cơ bản", "Bản Đồ Nhanh, Giai Đoạn Cuộc Đời & Năm, Tên Thú Cưng, Biệt Danh Kỹ Thuật Số, Tên Miền, Tên Kênh, Tên Đội Nhóm, Tên Tổ Chức/Hiệp Hội/Viện/Quỹ, Tên Dự Án, Tên Sự Kiện", "₫ 25.000", "R$ 8,00 | US$ 20,00 | € 11,00 | ¥JPY 1.400 | ¥CNY 26,00 | ₽ 440,00 | Rp 11.000,00 | ₺ 58,00 | ₪ 44,00 | ر.س 35,00"],
+            ["Trung cấp", "Bản Đồ Đầy Đủ, Tìm Kiếm Tên AI", "₫ 53.000", "R$ 17,00 | US$ 44,00 | € 26,00 | ¥JPY 3.000 | ¥CNY 53,00 | ₽ 800,00 | Rp 23.000,00 | ₺ 123,00 | ₪ 98,00 | ر.س 71,00"],
+            ["Nâng cao", "Xác Minh Tên Phiếu Bầu, Số Bầu Cử, Số Bất Động Sản, Lịch Năng Lượng Hàng Tháng", "₫ 81.000", "R$ 26,00 | US$ 71,00 | € 35,00 | ¥JPY 4.600 | ¥CNY 71,00 | ₽ 1.250,00 | Rp 36.000,00 | ₺ 188,00 | ₪ 143,00 | ر.س 107,00"],
+            ["Nâng cao II", "Xác Minh Nghệ Danh, Lên Kế Hoạch Tên Cho Bé, Xác Minh Chữ Ký", "₫ 109.000", "R$ 35,00 | US$ 89,00 | € 53,00 | ¥JPY 6.200 | ¥CNY 98,00 | ₽ 1.700,00 | Rp 48.000,00 | ₺ 254,00 | ₪ 197,00 | ر.س 143,00"],
+            ["Cao cấp", "Tên Cho Doanh Nghiệp/Sản Phẩm, Bản Đồ Cặp Đôi", "₫ 137.000", "R$ 44,00 | US$ 116,00 | € 62,00 | ¥JPY 7.700 | ¥CNY 125,00 | ₽ 2.150,00 | Rp 60.000,00 | ₺ 319,00 | ₪ 242,00 | ر.س 170,00"],
+            ["Elite", "Bản Đồ Gia Đình Cao Cấp", "₫ 305.000", "R$ 98,00 | US$ 251,00 | € 134,00 | ¥JPY 17.000 | ¥CNY 260,00 | ₽ 4.400,00 | Rp 134.000,00 | ₺ 710,00 | ₪ 530,00 | ر.س 377,00"],
+            ["B2B", "Thưởng Tập Thể/Doanh Nghiệp", "Theo yêu cầu", "Hợp đồng doanh nghiệp tùy chỉnh với sự bảo chứng DUNS"]
+        ],
         "alcance_t": "4. PHẠM VI",
         "alcance_p": ["Hoạt động toàn cầu bằng 14 ngôn ngữ với thanh toán bằng tiền tệ địa phương.",
                   "Phân phối kỹ thuật số tức thì qua PDF và bài thuyết trình."],
