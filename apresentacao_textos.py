@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # apresentacao_textos.py - Dicionario-fonte da Apresentacao Empresarial
-# REFERÊNCIA DE PREÇOS: capas_produtos_12_idiomas.csv (cards do site)
+# REFERÊNCIA DE PREÇOS: capas_produtos_14_idiomas.csv (cards do site)
 # BLOCO ATUAL: pt
 
 APRESENTACAO_TEXTOS = {
