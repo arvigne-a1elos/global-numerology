@@ -569,57 +569,55 @@ function confirmarBC() {
   window.location.href = '/criar-checkout?lang=' + getLang() + '&produto=coletivo&qtd=' + qtdTotal + '&total=' + final + '&itens=' + encodeURIComponent(JSON.stringify(itens));
 }
 
-/* ===== TRADUZ TUDO =====*/
-var _traduzindo = false;
 function traduzirTudo() {
-  if (_traduzindo) return;   // ← trava: se já está traduzindo, não re-entra
+  if (_traduzindo) return;
   _traduzindo = true;
-  try {  
-  var lang = getLang();
-  var t = translations[lang] || translations.pt;
-  document.querySelectorAll('[data-i18n]').forEach(function(el) {
-    var k = el.getAttribute('data-i18n');
-    if (t[k]) el.innerText = t[k];
-  });
+  try {
+    var lang = getLang();
+    var t = translations[lang] || translations.pt;
+    document.querySelectorAll('[data-i18n]').forEach(function(el) {
+      var k = el.getAttribute('data-i18n');
+      if (t[k]) el.innerText = t[k];
+    });
     if (typeof renderizarNumeros === 'function' && typeof ultimosNumeros !== 'undefined' && ultimosNumeros && ultimosNumeros.length) {
-  renderizarNumeros();
-  }  
-  document.querySelectorAll('[data-i18n-ph]').forEach(function(el) {
-    var k = el.getAttribute('data-i18n-ph');
-    var v = t[k] || t.calc_nome;
-    if (v) el.placeholder = v;
-  });
-document.querySelectorAll('.product-card[data-prod]').forEach(function(card) {
-  var prod = card.getAttribute('data-prod');
-  var nome = card.querySelector('.prod-nome');
-  if (nome && PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang][prod]) nome.innerText = PRODUTOS_TRAD[lang][prod];
-  });
-
-  var feats = FEAT_TRAD[lang] && FEAT_TRAD[lang][prod];
-  if (feats) card.querySelectorAll('.features li').forEach(function(li, i) {
-    if (feats[i]) li.innerText = feats[i];
-  });   // ← fecha o forEach das features
-
-  // ✅ NOVO: traduz a descrição (dentro do loop do card)
-  var desc = card.querySelector('.desc');
-  if (desc && PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang]['desc_' + prod]) {
-    desc.innerText = PRODUTOS_TRAD[lang]['desc_' + prod];
+      renderizarNumeros();
+    }
+    document.querySelectorAll('[data-i18n-ph]').forEach(function(el) {
+      var k = el.getAttribute('data-i18n-ph');
+      var v = t[k] || t.calc_nome;
+      if (v) el.placeholder = v;
+    });
+    document.querySelectorAll('.product-card[data-prod]').forEach(function(card) {
+      var prod = card.getAttribute('data-prod');
+      var nome = card.querySelector('.prod-nome');
+      if (nome && PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang][prod]) nome.innerText = PRODUTOS_TRAD[lang][prod];
+      var preco = card.querySelector('.prod-preco');
+      if (preco && PRECO_DISPLAY[lang] && PRODUTO_FAIXA[prod] !== undefined) preco.innerText = PRECO_DISPLAY[lang][PRODUTO_FAIXA[prod]];
+      var feats = FEAT_TRAD[lang] && FEAT_TRAD[lang][prod];
+      if (feats) card.querySelectorAll('.features li').forEach(function(li, i) {
+        if (feats[i]) li.innerText = feats[i];
+      });
+      var desc = card.querySelector('.desc');
+      if (desc && PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang]['desc_' + prod]) {
+        desc.innerText = PRODUTOS_TRAD[lang]['desc_' + prod];
+      }
+    });
+    document.querySelectorAll('#bcTabelaCorpo tr[data-prod]').forEach(function(tr) {
+      var prod = tr.getAttribute('data-prod');
+      var nome = tr.querySelector('.bc-prod-nome');
+      if (nome && PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang][prod]) nome.innerText = PRODUTOS_TRAD[lang][prod];
+      var preco = tr.querySelector('.bc-prod-preco');
+      if (preco && PRECO_DISPLAY[lang] && PRODUTO_FAIXA[prod] !== undefined) preco.innerText = PRECO_DISPLAY[lang][PRODUTO_FAIXA[prod]];
+    });
+    document.querySelectorAll('[data-i18n-bc]').forEach(function(el) {
+      var k = el.getAttribute('data-i18n-bc');
+      var mapa = { servico: t.bc_servico || "Serviço", preco: t.bc_preco || "Preço", qtd: t.bc_qtd || "Quantidade" };
+      if (mapa[k]) el.innerText = mapa[k];
+    });
+    if (typeof atualizarLinkInvestidores === "function") {
+      atualizarLinkInvestidores();
+    }
+  } finally {
+    _traduzindo = false;
   }
-});   // ← fecha o forEach dos cards
-  document.querySelectorAll('#bcTabelaCorpo tr[data-prod]').forEach(function(tr) {
-    var prod = tr.getAttribute('data-prod');
-    var nome = tr.querySelector('.bc-prod-nome');
-    if (nome && PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang][prod]) nome.innerText = PRODUTOS_TRAD[lang][prod];
-});
- document.querySelectorAll('[data-i18n-bc]').forEach(function(el) {
-  var k = el.getAttribute('data-i18n-bc');
-  var mapa = { servico: t.bc_servico || "Serviço", preco: t.bc_preco || "Preço", qtd: t.bc_qtd || "Quantidade" };
-  if (mapa[k]) el.innerText = mapa[k];
- });
-  if (typeof atualizarLinkInvestidores === "function") {
-    atualizarLinkInvestidores();
- }   
-    } finally {
-    _traduzindo = false;     
-  }
- }
+}
