@@ -8,8 +8,8 @@ var CONF_COLETA = {
   nome_dominio: { labelTipo:"f_tipo_site",     tipos:["loja","empresa","blog","portfolio"],         temArea:true,  areas:["comercio","industria","servicos","pessoal"], temDetalhe:false },
   nome_pet:     { labelTipo:"f_tipo_pet",      tipos:["cao","gato","passaro","reptil"],             temArea:false, areas:[], temDetalhe:true }
 };
-var coletaAtual = null;
-function pesquisar(produto) {
+
+  function pesquisar(produto) {
   if (produto === "express" || produto === "completo") {
     var sec = document.getElementById("calculadora") || document.getElementById("calcSection");
     if (sec) sec.scrollIntoView({ behavior:"smooth", block:"center" });
@@ -17,7 +17,7 @@ function pesquisar(produto) {
   }
   if (CONF_COLETA[produto]) {
   if (typeof comprar === "function") { comprar(produto); return; }
-  abrirModalColeta(produto); return;
+  return;
 }
   var alvo = document.getElementById("form-" + produto);
   if (alvo) {
@@ -294,7 +294,6 @@ var OPCOES_FALLBACK = {
   ong:"ONG", instituto:"Instituto", associacao:"Associação", fundacao:"Fundação"
 };
 
-
 function tradOpcao(chave) {
   var lang = getLang();
   var t = OPCOES_TRAD[lang] || OPCOES_TRAD.pt;
@@ -302,45 +301,6 @@ function tradOpcao(chave) {
 function tradCard(chave){ var l=getLang(); var t=CARDS_TRAD[l]||CARDS_TRAD.pt; return t[chave]||chave; }
 function tradMontar(chave){ var l=getLang(); var t=MONTAR_TRAD[l]||MONTAR_TRAD.pt; return t[chave]||chave; }
 function tradEnergia(n){ var l=getLang(); var t=ENERGIA_TRAD[l]||ENERGIA_TRAD.pt; return t["e"+n]||"Energia "+n; }
-
-function confirmarColeta() {
-  if (!coletaAtual) return;
-  var lang = getLang();
-  var t = translations[lang] || translations.pt;
-  var conf = CONF_COLETA[coletaAtual];
-  var tipoEl = document.querySelector("#coletaOpcoesTipo .coleta-opcao.ativo");
-  var tipo = tipoEl ? tipoEl.getAttribute("data-valor") : "";
-  if (tipo === "__outro__") tipo = document.getElementById("coletaOutroTexto").value.trim();
-  var enEl = document.querySelector("#coletaEnergia .energia-num.ativo");
-  var energia = enEl ? enEl.textContent : "";
-  var area = "";
-  if (conf.temArea) {
-    var areaEl = document.querySelector("#coletaOpcoesArea .coleta-opcao.ativo");
-    area = areaEl ? areaEl.getAttribute("data-valor") : "";
-    if (area === "__outro__") area = document.getElementById("coletaAreaOutroTexto").value.trim();
-  }
-  var detalhe = conf.temDetalhe ? document.getElementById("coletaDetalheTexto").value.trim() : "";
-  if (!tipo || !energia) { alert(t.preencha_dado || "Preencha os dados solicitados."); return; }
-  var qs = "lang=" + encodeURIComponent(lang)
-         + "&produto=" + encodeURIComponent(coletaAtual)
-         + "&tipo=" + encodeURIComponent(tipo)
-         + "&energia=" + encodeURIComponent(energia);
-  if (area) qs += "&area=" + encodeURIComponent(area);
-  if (detalhe) qs += "&detalhe=" + encodeURIComponent(detalhe);
-  fecharModalColeta();
-  window.location.href = "/criar-checkout?" + qs;
-}
-document.addEventListener("DOMContentLoaded", function(){
-  var f = document.getElementById("coletaFechar");   if (f) f.onclick = fecharModalColeta;
-  var c = document.getElementById("coletaCancelar"); if (c) c.onclick = fecharModalColeta;
-  var ok = document.getElementById("coletaConfirmar"); if (ok) ok.onclick = confirmarColeta;
-  var ov = document.getElementById("modalColeta");
-  if (ov) ov.addEventListener("click", function(e){ if (e.target === ov) fecharModalColeta(); });
-  function fecharModalColeta(){
-  var modal = document.getElementById("modalColeta");
-  if (modal) modal.style.display = "none";
-}
-});
 
 /* ===== BÔNUS COLETIVO / EMPRESARIAL (23 produtos) =====*/
 var BC_PRODUTOS = [
