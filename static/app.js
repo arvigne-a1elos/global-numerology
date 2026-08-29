@@ -1,6 +1,6 @@
 // ===== A1ELOS GLOBAL NUMEROLOGY - APP.JS (VERSÃO CONSOLIDADA) =====
 // ================================================================
-// ===== MONTAR SELETOR DE IDIOMAS (12 bandeiras) =====
+// ===== MONTAR SELETOR DE IDIOMAS (14 bandeiras) =====
 function montarSeletorIdioma() {
   var container = document.getElementById('langSelector');
   if (!container) return;
@@ -8,7 +8,8 @@ function montarSeletorIdioma() {
   var lista = [
     {id:'pt', b:'🇧🇷'},{id:'en', b:'🇺🇸'},{id:'es', b:'🇪🇸'},{id:'it', b:'🇮🇹'},
     {id:'fr', b:'🇫🇷'},{id:'de', b:'🇩🇪'},{id:'ja', b:'🇯🇵'},{id:'zh', b:'🇨🇳'},
-    {id:'ru', b:'🇷🇺'},{id:'hi', b:'🇮🇳'},{id:'he', b:'🇮🇱'},{id:'ar', b:'🇸🇦'}
+    {id:'ru', b:'🇷🇺'},{id:'id', b:'🇮🇩'},{id:'tr', b:'🇹🇷'},{id:'vi', b:'🇻🇳'},
+    {id:'he', b:'🇮🇱'},{id:'ar', b:'🇸🇦'}
   ];
   var atual = getLang();
   lista.forEach(function(l) {
