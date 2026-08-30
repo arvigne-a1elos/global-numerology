@@ -426,6 +426,7 @@ function init() {
   var browserLang = navigator.language.split('-')[0];
   var defaultLang = savedLang || (typeof translations !== 'undefined' && translations[browserLang] ? browserLang : 'pt');
   montarSeletorIdioma();
+  montarSeletorData();
   setLanguage(defaultLang);
   if (typeof carregarPartials === 'function') {
     carregarPartials();   // carregarPartials já chama montarTudo() ao final
