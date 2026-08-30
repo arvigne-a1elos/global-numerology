@@ -445,3 +445,66 @@ if (document.readyState === "loading") {
 } else {
   iniciarSeguro();
 }
+
+var MESES_TRAD = {
+  pt:["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"],
+  en:["January","February","March","April","May","June","July","August","September","October","November","December"],
+  es:["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"],
+  it:["Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"],
+  fr:["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"],
+  de:["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"],
+  ru:["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"],
+  zh:["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"],
+  ja:["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"],
+  ar:["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"],
+  he:["ינואר","פברואר","מרץ","אפריל","מאי","יוני","יולי","אוגוסט","ספטמבר","אוקטובר","נובמבר","דצמבר"],
+  id:["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"],
+  tr:["Ocak","Şubat","Mart","Nisan","Mayıs","Haziran","Temmuz","Ağustos","Eylül","Ekim","Kasım","Aralık"],
+  vi:["Tháng 1","Tháng 2","Tháng 3","Tháng 4","Tháng 5","Tháng 6","Tháng 7","Tháng 8","Tháng 9","Tháng 10","Tháng 11","Tháng 12"]
+};
+function getLang() { return (typeof localStorage !== 'undefined' && localStorage.getItem('lang')) || 'pt'; }
+function montarSeletorData() {
+  var dia = document.getElementById("calcDia");
+  var mes = document.getElementById("calcMes");
+  var ano = document.getElementById("calcAno");
+  if (!dia || !mes || !ano) return;
+  if (dia.options.length > 0) { atualizarMesesData(); return; }
+  for (var d = 1; d <= 31; d++) {
+    var o = document.createElement("option");
+    o.value = (d < 10 ? "0" : "") + d;
+    o.textContent = d;
+    dia.appendChild(o);
+  }
+  var anoAtual = new Date().getFullYear();
+  for (var a = anoAtual; a >= 1900; a--) {
+    var oa = document.createElement("option");
+    oa.value = a;
+    oa.textContent = a;
+    ano.appendChild(oa);
+  }
+  atualizarMesesData();
+  dia.onchange = mes.onchange = ano.onchange = montarValorData;
+}
+function atualizarMesesData() {
+  var mes = document.getElementById("calcMes");
+  if (!mes) return;
+  var lang = getLang();
+  var nomes = MESES_TRAD[lang] || MESES_TRAD.pt;
+  var atual = mes.value;
+  mes.innerHTML = "";
+  for (var i = 0; i < 12; i++) {
+    var o = document.createElement("option");
+    o.value = (i + 1 < 10 ? "0" : "") + (i + 1);
+    o.textContent = nomes[i];
+    mes.appendChild(o);
+  }
+  if (atual) mes.value = atual;
+  montarValorData();
+}
+function montarValorData() {
+  var d = document.getElementById("calcDia").value;
+  var m = document.getElementById("calcMes").value;
+  var a = document.getElementById("calcAno").value;
+  var hidden = document.getElementById("calcNasc");
+  if (hidden && d && m && a) hidden.value = a + "-" + m + "-" + d;
+}
