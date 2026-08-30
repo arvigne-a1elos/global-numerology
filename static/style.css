@@ -18,20 +18,21 @@ nav.sections a:hover{color:var(--gold)}
 [dir="rtl"] { text-align: right; }
 .lang-wrapper {
     position: relative; top: 0; left: 0; right: 0; z-index: 9999; width: 100%;
-    background: rgba(10,10,10,0.95); padding: 10px 0; display: flex;
-    justify-content: center; overflow-x: auto; margin: 0;
+    background: rgba(10,10,10,0.95); padding: 10px 0; margin: 0;
+    display: flex; justify-content: center; overflow-x: auto;
+    scrollbar-width: thin;
 }
-.lang-container { display: flex; gap: 6px; flex-wrap: nowrap; padding: 0 10px; align-items: center; }
+.lang-container {
+    display: flex; gap: 8px; flex-wrap: nowrap; padding: 0 10px;
+    align-items: center; justify-content: center; margin: 0 auto;
+}
 .lang-btn {
-    white-space: nowrap; padding: 6px 12px; border: 1px solid var(--gold);
-    border-radius: 20px; background: transparent; color: #fff; font-size: 12px;
+    white-space: nowrap; padding: 6px 14px;
+    border: 1px solid var(--gold); border-radius: 8px;
+    background: transparent; color: #fff; font-size: 12px;
     cursor: pointer; line-height: 1;
-}
-.lang-btn:hover, .lang-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(201,169,78,0.1); }
-.hero {
-    min-height: 100vh; display: flex; flex-direction: column; align-items: center;
-    justify-content: center; text-align: center; padding: 120px 20px 60px;
-    background: radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 100%);
+    display: inline-flex; align-items: center; justify-content: center;
+    flex: 0 0 auto;
 }
 .logo-img {
     width: 140px; height: 140px; margin-bottom: 30px; border-radius: 50%;
