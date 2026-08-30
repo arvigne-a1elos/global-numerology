@@ -871,4 +871,5 @@ function traduzirTudo() {
   } finally {
     window._traduzindo = false;
   }
+  if (typeof atualizarMesesData === "function") atualizarMesesData();
 }
