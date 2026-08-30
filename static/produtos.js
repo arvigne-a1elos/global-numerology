@@ -828,6 +828,7 @@ function traduzirTudo() {
     if (typeof renderizarNumeros === 'function' && typeof ultimosNumeros !== 'undefined' && ultimosNumeros && ultimosNumeros.length) {
     if (typeof atualizarMesesData === "function") atualizarMesesData(); 
     if (typeof montarTabelaBC === "function") montarTabelaBC();  
+    if (typeof montarEnergias === "function") montarEnergias();  
       renderizarNumeros();
     }
     document.querySelectorAll('[data-i18n-ph]').forEach(function(el) {
