@@ -46,7 +46,12 @@
         <p class="section-sub" data-i18n="calc_sub">Descubra os 5 números que regem sua vida — grátis, sem explicações.</p>
         <div class="form-group">
     <label for="calcNasc" data-i18n="calc_nasc">Data de Nascimento</label>
-    <input type="date" id="calcNasc">
+    <div class="data-seletor">
+        <select id="calcDia" class="data-select"></select>
+        <select id="calcMes" class="data-select"></select>
+        <select id="calcAno" class="data-select"></select>
+        <input type="hidden" id="calcNasc">
+    </div>
 </div>
         <button class="btn btn-full" onclick="calcularMapa()" data-i18n="calc_btn">✨ Calcular Agora</button>
 <div class="calc-atalhos" style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:16px">
