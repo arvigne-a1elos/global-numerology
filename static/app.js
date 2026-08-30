@@ -18,13 +18,11 @@ function montarSeletorIdioma() {
     b.title = l.id.toUpperCase();
     b.innerHTML = l.b;
     b.onclick = function() {
-      setLanguage(l.id);
-      if (typeof montarTudo === "function") montarTudo();
-      else if (typeof traduzirTudo === "function") traduzirTudo();
-      var ativos = container.querySelectorAll('.lang-btn');
-      for (var i = 0; i < ativos.length; i++) ativos[i].classList.remove('active');
-      b.classList.add('active');
-    };
+  setLanguage(l.id);
+  var ativos = container.querySelectorAll('.lang-btn');
+  for (var i = 0; i < ativos.length; i++) ativos[i].classList.remove('active');
+  b.classList.add('active');
+};
     container.appendChild(b);
   });
 }
@@ -425,10 +423,17 @@ function init() {
   var savedLang = localStorage.getItem('lang');
   var browserLang = navigator.language.split('-')[0];
   var defaultLang = savedLang || (typeof translations !== 'undefined' && translations[browserLang] ? browserLang : 'pt');
+
   montarSeletorIdioma();
-  setLanguage(defaultLang);
+
+  // Define o idioma SEM disparar renderização dupla:
+  if (typeof setLanguage === 'function') {
+    setLanguage(defaultLang);
+  }
+
+  // UMA única via de renderização:
   if (typeof carregarPartials === 'function') {
-    carregarPartials();  // carregarPartials chama montarTudo() UMA vez no final
+    carregarPartials();   // carregarPartials chama montarTudo() UMA vez no final
   } else if (typeof montarTudo === 'function') {
     montarTudo();
   }
