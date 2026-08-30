@@ -424,15 +424,8 @@ function init() {
   var savedLang = localStorage.getItem('lang');
   var browserLang = navigator.language.split('-')[0];
   var defaultLang = savedLang || (typeof translations !== 'undefined' && translations[browserLang] ? browserLang : 'pt');
-
   montarSeletorIdioma();
-
-  // Define o idioma SEM disparar renderização dupla:
-  if (typeof setLanguage === 'function') {
-    setLanguage(defaultLang);
-  }
-
-  // UMA única via de renderização:
+  setLanguage(defaultLang);
   if (typeof carregarPartials === 'function') {
     carregarPartials();   // carregarPartials chama montarTudo() UMA vez no final
   } else if (typeof montarTudo === 'function') {
