@@ -37,7 +37,7 @@ nav.sections a:hover{color:var(--gold)}
     flex: 0 0 auto;
 }
 .logo-img {
-    width: 140px; height: 140px; margin-bottom: 30px; border-radius: 50%;
+    width: 210px; height: 210px; margin-bottom: 30px; border-radius: 50%;
     box-shadow: 0 0 30px rgba(201,169,78,0.2);
 }
 h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem,8vw,4.5rem); color: var(--gold); margin-bottom: 10px; letter-spacing: 2px; }
