@@ -35,6 +35,14 @@ nav.sections a:hover{color:var(--gold)}
     cursor: pointer; line-height: 1;
     display: inline-flex; align-items: center; justify-content: center;
     flex: 0 0 auto;
+
+.data-seletor { display: flex; gap: 10px; }
+.data-select {
+    flex: 1; padding: 12px 15px; background: #181818;
+    border: 1px solid #333; border-radius: 8px; color: #fff; font-size: 1rem;
+}
+.data-select:focus { outline: none; border-color: var(--gold); }
+    
 }
 .logo-img {
     width: 210px; height: 210px; margin-bottom: 30px; border-radius: 50%;
