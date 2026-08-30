@@ -39,6 +39,29 @@ window.CONF_COLETA = window.CONF_COLETA || {
   nome_pet:     { labelTipo:"f_tipo_pet",      tipos:["cao","gato","passaro","reptil"],             temArea:false, areas:[], temDetalhe:true }
 };
 
+/* ===== PESQUISAR (scroll/abertura por produto — 8 novos produtos) ===== */
+function pesquisar(produto) {
+  if (produto === "express" || produto === "completo") {
+    var sec = document.getElementById("calculadora") || document.getElementById("calcSection");
+    if (sec) sec.scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
+  }
+  if (window.CONF_COLETA && window.CONF_COLETA[produto]) {
+    if (typeof comprar === "function") { comprar(produto); return; }
+    return;
+  }
+  var alvo = document.getElementById("form-" + produto);
+  if (alvo) {
+    alvo.scrollIntoView({ behavior: "smooth", block: "center" });
+    alvo.style.transition = "box-shadow .5s";
+    alvo.style.boxShadow = "0 0 0 3px var(--gold)";
+    setTimeout(function(){ alvo.style.boxShadow = ""; }, 2000);
+    return;
+  }
+  var calc = document.getElementById("calculadora") || document.getElementById("calcSection");
+  if (calc) calc.scrollIntoView({ behavior: "smooth" });
+}
+
 /* ===== PRODUTOS_TRAD (23 produtos, 14 idiomas) ===== */
 window.PRODUTOS_TRAD = window.PRODUTOS_TRAD || {
  pt:{express:"Mapa Express",vida:"Qual Vida/Ano",completo:"Mapa Completo",ia:"Pesquisa IA de Nomes",urna:"Validação Nome de Urna",eleitoral:"Número Eleitoral",imovel:"Número do Imóvel",calendario:"Calendário Mensal Energético",artistico:"Validação Nome Artístico",bebe:"Planejamento Nome de Bebê",assinatura:"Validação de Assinaturas",negocio:"Nome para Negócio/Produto",casal:"Mapa do Casal",familia:"Mapa Família Premium",coletivo:"Bônus Coletivo/Empresarial",nome_pet:"Nome do Pet",nickname:"Nickname Digital",nome_dominio:"Nome do Domínio",nome_canal:"Nome do Canal",nome_equipe:"Nome da Equipe",nome_ong:"Nome de ONG, Associação, Instituto ou Fundação",nome_projeto:"Nome do Projeto",nome_evento:"Nome do Evento"},
