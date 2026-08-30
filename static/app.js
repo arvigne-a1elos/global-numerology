@@ -367,7 +367,7 @@ function init() {
   montarSeletorIdioma();
   setLanguage(defaultLang);
   if (typeof carregarPartials === 'function') {
-    carregarPartials();
+    carregarPartials();   // carregarPartials já chama montarTudo() ao final
   } else if (typeof montarTudo === 'function') {
     montarTudo();
   }
