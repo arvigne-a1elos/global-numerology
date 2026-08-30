@@ -106,137 +106,53 @@ footer { padding: 60px 20px; text-align: center; border-top: 1px solid #222; col
 .numero-gratis { display: flex; justify-content: space-between; align-items: center; gap: 12px; background: #151515; border: 1px solid #333; border-radius: 10px; padding: 10px 16px; margin: 8px 0; }
 .numero-nome { color: #ccc; font-size: 0.95rem; }
 .numero-valor { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--gold); font-weight: 700; min-width: 32px; text-align: center; }
+
 /* ===== MODAIS (dado específico + menu de energia) ===== */
 .modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.75);
+  position: fixed; inset: 0;
+  background: rgba(0, 0, 0, 0.85);
   z-index: 99999;
   display: none;
   align-items: center;
   justify-content: center;
   padding: 16px;
 }
-.modal-overlay.active {
-  display: flex;
-}
+.modal-overlay.active { display: flex; }
 .modal-box {
-  background: #111;
-  border: 2px solid var(--gold, #C9A94E);
-  border-radius: 12px;
-  padding: 24px;
-  max-width: 460px;
+  background: #0f0f0f;
+  border: 1px solid var(--gold);
+  border-radius: 16px;
+  padding: 28px;
+  max-width: 480px;
   width: 100%;
   max-height: 85vh;
   overflow-y: auto;
-  color: #fff;
-  text-align: center;
-}
-.modal-box h3 {
-  color: var(--gold, #C9A94E);
-  margin-bottom: 8px;
-  font-size: 1.15rem;
-}
-.modal-box p {
-  color: #ccc;
-  margin-bottom: 14px;
-  font-size: 0.95rem;
-}
-.modal-input {
-  width: 100%;
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #333;
-  background: #1a1a1a;
-  color: #fff;
-  margin-bottom: 14px;
-  text-align: center;
-  font-size: 1rem;
   box-sizing: border-box;
+  position: relative;
+  color: #fff;
+  text-align: center;
 }
-.modal-actions {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-.modal-actions .btn {
-  flex: 1;
-  min-width: 120px;
-  margin: 0;
-}
-.modal-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 10px;
-  margin-bottom: 16px;
-}
-.modal-grid .btn {
-  margin: 0;
-  padding: 10px;
-  font-size: 0.85rem;
-}
+.modal-box h3 { color: var(--gold); margin: 0 0 18px; font-size: 1.3rem; font-weight: 700; }
+.modal-box p { color: #ccc; margin-bottom: 14px; font-size: 0.95rem; }
+.modal-input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #1a1a1a; color: #fff; margin-bottom: 14px; text-align: center; font-size: 1rem; box-sizing: border-box; }
+.modal-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 24px; }
+.modal-actions .btn { flex: 1; min-width: 120px; margin: 0; padding: 10px 24px; border-radius: 10px; font-size: .95rem; font-weight: 600; }
+.modal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-bottom: 16px; }
+.modal-grid .btn { margin: 0; padding: 10px; font-size: 0.85rem; }
 /* RTL: alinha modais à direita para árabe/hebraico */
-[dir="rtl"] .modal-box,
-[dir="rtl"] .modal-box p,
-[dir="rtl"] .modal-input {
-  text-align: right;
-}
-/* ===== MODAL DE COLETA — ESTÉTICA DO DESENHO ===== */
-.modal-overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;
-  display:flex;align-items:center;justify-content:center;padding:16px;
-}
-.modal-box{
-  background:#0f0f0f;border:1px solid var(--gold);border-radius:16px;
-  padding:28px;max-width:480px;width:100%;box-sizing:border-box;
-  position:relative;
-}
-.coleta-titulo{color:var(--gold);text-align:center;margin:0 0 18px;font-size:1.3rem;font-weight:700}
-.coleta-col{margin-top:16px}
-.coleta-label{color:var(--gold);font-weight:700;margin-bottom:10px;font-size:.95rem}
-
-/* ===== GRADE DE ENERGIA: CÍRCULOS MENORES, NÚMEROS MAIORES ===== */
-.energia-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);   /* grade 3x3 */
-  gap:12px;                              /* respiro uniforme */
-  width:100%;
-  box-sizing:border-box;
-}
-.energia-num{
-  width:56px;            /* TAMANHO FIXO do círculo (reduza para 48px se quiser menor) */
-  height:56px;
-  border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.8rem;      /* números grandes */
-  font-weight:700;
-  color:#fff;
-  background:transparent;border:2px solid var(--gold);
-  cursor:pointer;transition:all .2s;margin:0;
-  line-height:1;
-}
-.energia-num:hover{background:rgba(201,169,78,.15)}
-.energia-num.ativo{background:var(--gold);color:#000;border-color:var(--gold)}
-
+[dir="rtl"] .modal-box, [dir="rtl"] .modal-box p, [dir="rtl"] .modal-input { text-align: right; }
+/* Estética do modal de coleta */
+.coleta-titulo { color: var(--gold); text-align: center; margin: 0 0 18px; font-size: 1.3rem; font-weight: 700; }
+.coleta-col { margin-top: 16px; }
+.coleta-label { color: var(--gold); font-weight: 700; margin-bottom: 10px; font-size: .95rem; }
+.modal-fechar { position: absolute; top: 10px; right: 14px; background: transparent; border: none; color: #888; font-size: 1.2rem; cursor: pointer; }
+/* Grade de energia do modal de coleta (círculos 3x3) */
+.energia-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; box-sizing: border-box; }
+.energia-grid .energia-num { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 700; color: #fff; background: transparent; border: 2px solid var(--gold); cursor: pointer; transition: all .2s; margin: 0 auto; line-height: 1; }
+.energia-grid .energia-num:hover { background: rgba(201,169,78,.15); }
+.energia-grid .energia-num.ativo { background: var(--gold); color: #000; border-color: var(--gold); }
 /* Opções de tipo: pílulas uniformes */
-.coleta-opcoes{display:flex;flex-wrap:wrap;gap:8px}
-.coleta-opcao{
-  padding:8px 16px;border-radius:24px;cursor:pointer;
-  background:transparent;border:2px solid var(--gold);color:#fff;
-  font-size:.9rem;transition:all .2s;
-}
-.coleta-opcao.ativo{background:var(--gold);color:#000;border-color:var(--gold)}
-
-/* Campos de entrada: borda uniforme com os botões */
-.coleta-input{
-  width:100%;padding:10px 12px;border-radius:10px;
-  border:2px solid var(--gold);background:#111;color:#fff;
-  box-sizing:border-box;font-size:.95rem;
-}
-
-/* Botões de ação: proporcionais, alinhados */
-.modal-actions{display:flex;gap:12px;justify-content:flex-end;margin-top:24px}
-.modal-actions .btn{padding:10px 24px;border-radius:10px;font-size:.95rem;font-weight:600}
-
-.a1-zona { grid-column: 1 / -1; width: 100%; }
+.coleta-opcoes { display: flex; flex-wrap: wrap; gap: 8px; }
+.coleta-opcao { padding: 8px 16px; border-radius: 24px; cursor: pointer; background: transparent; border: 2px solid var(--gold); color: #fff; font-size: .9rem; transition: all .2s; }
+.coleta-opcao.ativo { background: var(--gold); color: #000; border-color: var(--gold); }
+.coleta-input { width: 100%; padding: 10px 12px; border-radius: 10px; border: 2px solid var(--gold); background: #111; color: #fff; box-sizing: border-box; font-size: .95rem; }
