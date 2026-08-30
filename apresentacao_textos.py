@@ -1,1111 +1,935 @@
 # -*- coding: utf-8 -*-
-# apresentacao_textos.py - Dicionario-fonte da Apresentacao Empresarial
-# REFERÊNCIA DE PREÇOS: capas_produtos_14_idiomas.csv (cards do site)
-# BLOCO ATUAL: pt
+# ============================================================
+# apresentacao_textos.py
+# Gerador de Apresentação Empresarial A1ELOS
+# Formatos: TEXTO (documento) e SLIDES (deck)
+# 14 idiomas: pt, en, es, it, fr, de, ru, zh, ja, ar, he, id, tr, vi
+# Substitui a versão anterior. 30/08/2026
+# ============================================================
 
-APRESENTACAO_TEXTOS = {
+import os
+import logging
+from datetime import date
+
+from reportlab.lib.pagesizes import A4, landscape
+from reportlab.lib.units import mm
+from reportlab.lib.colors import HexColor, white, black
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_JUSTIFY
+from reportlab.pdfgen import canvas
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.pdfbase.cidfonts import UnicodeCIDFont
+from reportlab.platypus import (
+    SimpleDocTemplate, Paragraph, Spacer, Image, Table, TableStyle,
+    PageBreak, KeepTogether
+)
+from reportlab.lib.utils import ImageReader
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# ------------------------------------------------------------
+# 1. CONFIGURAÇÃO DE CAMINHOS
+# ------------------------------------------------------------
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_DIR = os.path.join(BASE_DIR, "static")
+
+# Imagens usadas em TODOS os idiomas (mesmas em todos)
+LOGO_PATH = os.path.join(STATIC_DIR, "Logo.png")
+WATERMARK_PATH = os.path.join(STATIC_DIR, "watermark.png")  # marca d'água (Vitruviano dourado)
+
+# Se a marca d'água não existir, usa o logo como fallback
+if not os.path.exists(WATERMARK_PATH):
+    WATERMARK_PATH = LOGO_PATH
+
+# ------------------------------------------------------------
+# 2. CORES DA MARCA (azul + preto/dourado)
+# ------------------------------------------------------------
+COR_AZUL = HexColor("#1E3A8A")
+COR_AZUL_MEDIO = HexColor("#3B82F6")
+COR_PRETO = HexColor("#1A1A1A")
+COR_DOURADO = HexColor("#C9A94E")
+COR_CINZA = HexColor("#555555")
+COR_CINZA_CLARO = HexColor("#9E9E9E")
+
+# ------------------------------------------------------------
+# 3. FONTES (com fallback seguro para não travar)
+# ------------------------------------------------------------
+def _registrar_fontes():
+    """Registra fontes TTF se existirem; senão usa fontes padrão."""
+    fontes = {}
+    # Latin + Cirílico (ru) + suporte amplo
+    dejavu = os.path.join(STATIC_DIR, "DejaVuSans.ttf")
+    dejavu_bold = os.path.join(STATIC_DIR, "DejaVuSans-Bold.ttf")
+    if os.path.exists(dejavu):
+        pdfmetrics.registerFont(TTFont("DejaVu", dejavu))
+        fontes["normal"] = "DejaVu"
+    else:
+        fontes["normal"] = "Helvetica"
+    if os.path.exists(dejavu_bold):
+        pdfmetrics.registerFont(TTFont("DejaVu-Bold", dejavu_bold))
+        fontes["bold"] = "DejaVu-Bold"
+    else:
+        fontes["bold"] = "Helvetica-Bold"
+
+    # CJK (zh, ja) — fontes CID embutidas do ReportLab
+    try:
+        pdfmetrics.registerFont(UnicodeCIDFont("STSong-Light"))  # chinês
+        fontes["zh"] = "STSong-Light"
+    except Exception:
+        fontes["zh"] = fontes["normal"]
+    try:
+        pdfmetrics.registerFont(UnicodeCIDFont("HeiseiMin-W3"))  # japonês
+        fontes["ja"] = "HeiseiMin-W3"
+    except Exception:
+        fontes["ja"] = fontes["normal"]
+
+    return fontes
+
+FONTES = _registrar_fontes()
+# ------------------------------------------------------------
+# 4. CONTEÚDO POR IDIOMA
+# Estrutura: cada idioma tem título, subtítulo, seções e KPIs.
+# ------------------------------------------------------------
+CONTEUDO = {
     "pt": {
+        "titulo": "A1ELOS Global Numerology",
         "subtitulo": "A ciência dos números aplicada ao seu sucesso",
-        "titulo": "Apresentação Empresarial para Investidores e Parceiros",
-        "confidencial": "DOCUMENTO CONFIDENCIAL · DUNS 942242668 · 27 de agosto de 2026",
-        "sobre_t": "1. SOBRE A A1ELOS",
-        "sobre_p": [
-            "A A1ELOS Global Numerology é uma holding de tecnologia e conhecimento de vanguarda, dedicada à numerologia de alta performance. Operamos uma plataforma global que integra a tradição milenar dos números com algoritmos avançados de Inteligência Artificial, oferecendo precisão analítica sem precedentes para o autoconhecimento e a tomada de decisão estratégica.",
-            "Com um portfólio consolidado de 23 produtos e serviços disponíveis em 12 idiomas, a A1ELOS alcança um mercado endereçável de aproximadamente 5,4 bilhões de falantes, o que representa cerca de 67% da população mundial. Nossa credibilidade é chancelada pelo DUNS Number 942242668 (Dun & Bradstreet), registro reconhecido em mais de 190 países que habilita homologações B2B complexas, contratos corporativos de grande escala, joint ventures internacionais e credenciamento nas principais plataformas globais de tecnologia e finanças."
-        ],
-        "mercado_t": "2. O MERCADO (DADOS ATUALIZADOS 2026)",
-        "mercado_p": [
-            "O segmento de espiritualidade digital, astrologia e numerologia vive uma fase de expansão acelerada, impulsionada pela busca global por propósito e ferramentas de autoconhecimento acessíveis via dispositivos móveis. A A1ELOS está posicionada no cruzamento exato entre o bem-estar subjetivo e a tecnologia de dados.",
-            "• Mercado Global de Astrologia e Numerologia: avaliado entre US$ 14,3 e US$ 14,8 bilhões no biênio 2024/2026, com projeções robustas de atingir US$ 27 bilhões até 2035 (CAGR de ~6% a.a.).",
-            "• Aplicativos de Espiritualidade: o mercado de apps atingiu US$ 5,69 bilhões em 2026, com previsão de dobrar para US$ 11,71 bilhões até 2030 (CAGR de ~19,8%).",
-            "• Mercado Norte-Americano: o setor online nos EUA projeta crescimento de 12% ao ano, saltando de US$ 1,36 bilhão (2025) para US$ 2,76 bilhões (2031)."
-        ],
-        "port_t": "3. PORTFÓLIO — 23 PRODUTOS E SERVIÇOS",
-        "port_p": "Nossa estrutura de produtos é desenhada para uma jornada de consumo fluida, desde produtos de entrada (low-ticket) até soluções premium e corporativas. Todos os relatórios são entregues em formato PDF digital gerado por IA, garantindo custo marginal próximo de zero e alta escalabilidade. Valores idênticos aos exibidos nos cards do site (referência: capas_produtos_12_idiomas.csv, câmbio de ago/2026).",
-        "port_colunas": ["Faixa", "Produtos", "Preço (R$)", "Conversão Indicativa (Moedas Globais)"],
-        "port_linhas": [
-            ["Entrada", "Mapa Express, Qual Vida/Ano, Nome do Pet, Nickname Digital, Nome do Domínio, Nome do Canal, Nome da Equipe, Nome de ONG/Associação/Instituto/Fundação, Nome do Projeto, Nome do Evento", "R$ 8,00", "US$ 20,00 | € 11,00 | ¥JPY 1.400 | ¥CNY 26,00 | ₽ 440,00 | Rp 11.000,00 | ₺ 58,00 | ₫ 25.000 | ₪ 44,00 | ر.س 35,00"],
-            ["Intermediário", "Mapa Completo, Pesquisa IA de Nomes", "R$ 17,00", "US$ 44,00 | € 26,00 | ¥JPY 3.000 | ¥CNY 53,00 | ₽ 800,00 | Rp 23.000,00 | ₺ 123,00 | ₫ 53.000 | ₪ 98,00 | ر.س 71,00"],
-            ["Avançado", "Validação Nome de Urna, Número Eleitoral, Número do Imóvel, Calendário Mensal Energético", "R$ 26,00", "US$ 71,00 | € 35,00 | ¥JPY 4.600 | ¥CNY 71,00 | ₽ 1.250,00 | Rp 36.000,00 | ₺ 188,00 | ₫ 81.000 | ₪ 143,00 | ر.س 107,00"],
-            ["Avançado II", "Validação Nome Artístico, Planejamento Nome de Bebê, Validação de Assinaturas", "R$ 35,00", "US$ 89,00 | € 53,00 | ¥JPY 6.200 | ¥CNY 98,00 | ₽ 1.700,00 | Rp 48.000,00 | ₺ 254,00 | ₫ 109.000 | ₪ 197,00 | ر.س 143,00"],
-            ["Premium", "Nome para Negócio/Produto, Mapa do Casal", "R$ 44,00", "US$ 116,00 | € 62,00 | ¥JPY 7.700 | ¥CNY 125,00 | ₽ 2.150,00 | Rp 60.000,00 | ₺ 319,00 | ₫ 137.000 | ₪ 242,00 | ر.س 170,00"],
-            ["Elite", "Mapa Família Premium", "R$ 98,00", "US$ 251,00 | € 134,00 | ¥JPY 17.000 | ¥CNY 260,00 | ₽ 4.400,00 | Rp 134.000,00 | ₺ 710,00 | ₫ 305.000 | ₪ 530,00 | ر.س 377,00"],
-            ["B2B", "Bônus Coletivo/Empresarial", "Sob consulta", "Contratos corporativos personalizados com respaldo DUNS"]
-        ],
-        "alcance_t": "4. ALCANCE GLOBAL E ESTRATÉGIA MONETÁRIA",
-        "alcance_p": [
-            "A A1ELOS opera em 12 idiomas estratégicos, permitindo a penetração em mercados de alta renda e grandes massas populacionais. Cada idioma adicionado não é apenas uma tradução, mas a abertura de um novo corredor financeiro.",
-            "• Moedas de Operação: R$ (BRL), US$ (USD), € (EUR), ¥ (JPY), ¥ (CNY), ₽ (RUB), ₹ (INR), ₪ (ILS), ﷼ (SAR).",
-            "• Mercados-Chave: USD (EUA e transações globais), EUR (Zona do Euro), SAR (Países do Golfo — alta margem), CNY/INR (gigantes asiáticos com ~2,8 bilhões de consumidores somados).",
-            "• PIX Internacional: aproveitamos a infraestrutura de pagamentos globais sem fronteiras, facilitando transações em tempo real em países como Chile, Argentina, EUA, Portugal, Espanha e França, através de acordos de reciprocidade bancária internacional."
-        ],
-        "modelo_t": "5. MODELO DE NEGÓCIO — FRENTES DE RECEITA",
-        "modelo_p": [
-            "Nossa monetização é estruturada em três pilares complementares que garantem resiliência e fluxo de caixa diversificado:",
-            "1. B2C (Business to Consumer): venda direta de relatórios personalizados com ticket médio consolidado de R$ 30,00.",
-            "2. B2B (Business to Business): venda de pacotes de códigos (Bônus Coletivo) para empresas, com descontos progressivos de 10% a 70%, ideal para RH, consultorias e programas de benefícios.",
-            "3. Publicidade Geolocalizada e Linguística: sistema de banners (728x90 e 320x100) com rotação inteligente a cada 8 segundos, permitindo que anunciantes comprem audiência por localização ou por idioma."
-        ],
-        "midia_t": "6. MÍDIA E PUBLICIDADE — SEGMENTAÇÃO POR IDIOMA",
-        "midia_p": "A grande inovação da A1ELOS em 2026 é o modelo de precificação que separa o Alcance Regional do Alcance Internacional. Nota estratégica: a propaganda contratada não altera a tradução do site — o que muda é o alcance da exibição. Preço reduzido implica em alcance regional (idioma específico); preço integral implica em alcance global (todos os idiomas).",
-        "midia_a_t": "Tabela A — Segmentação Geográfica (Tradicional)",
-        "midia_a_colunas": ["Abrangência", "Mensal Fixo (R$)", "Campanha Temporária (R$)"],
-        "midia_a_linhas": [
-            ["País Específico", "R$ 800,00", "R$ 500,00"],
-            ["Continente", "R$ 1.800,00", "R$ 1.200,00"],
-            ["Mundo (Global)", "R$ 3.500,00", "R$ 2.500,00"],
-            ["Patrocínio Exclusivo", "R$ 6.000,00", "R$ 4.500,00"]
-        ],
-        "midia_b_t": "Tabela B — Segmentação por Idioma (Regional x Internacional)",
-        "midia_b_colunas": ["Modalidade", "Descrição", "Investimento Sugerido"],
-        "midia_b_linhas": [
-            ["Idioma Único (Regional)", "Exibição restrita a um idioma (ex.: apenas Árabe)", "A partir de R$ 400,00/mês"],
-            ["Bloco de Idiomas (2-5)", "Exibição em clusters linguísticos selecionados", "A partir de R$ 900,00/mês"],
-            ["Todos os Idiomas (Internacional)", "Exibição em toda a rede global da plataforma", "R$ 3.500,00/mês"]
-        ],
-        "b2b_t": "7. PACOTES EMPRESARIAIS B2B",
-        "b2b_p": "Utilizando o respaldo do DUNS 942242668, oferecemos planos estruturados para o mercado corporativo com descontos agressivos para escala:",
-        "b2b_linhas": [
-            "• Plano Básico (50 códigos): 10% de desconto.",
-            "• Plano Intermediário (100 códigos): 30% de desconto.",
-            "• Plano Premium (200 códigos): 50% de desconto.",
-            "• Escala Industrial (1.000+ códigos): 70% de desconto."
-        ],
-        "proj_t": "8. PROJEÇÕES FINANCEIRAS E VISÃO DE FUTURO",
-        "proj_p": "Com uma taxa de conversão estimada entre 1% e 1,5% sobre o tráfego qualificado, as projeções da A1ELOS refletem o potencial de escala digital:",
-        "proj_linhas": [
-            "• Ano 1: R$ 33 mil a R$ 130 mil (orgânico); até R$ 1 milhão com tração de tráfego pago.",
-            "• Ano 5: R$ 500 mil a R$ 1,5 milhão.",
-            "• Ano 10: R$ 3 milhões a R$ 8 milhões.",
-            "• Ano 20: R$ 15 milhões a R$ 40 milhões."
-        ],
-        "seed_t": "9. OPORTUNIDADES DE INVESTIMENTO (RODADA SEED)",
-        "seed_p": "Estamos abrindo uma rodada de captação Seed para acelerar a dominação de mercado nos idiomas de alta margem (SAR e USD):",
-        "seed_linhas": [
-            "• Captação Alvo: R$ 3,5 milhões.",
-            "• Valuation Pré-Money: R$ 14 milhões.",
-            "• Equity Disponível: até 20%.",
-            "• Alocação de Recursos: 45% Tecnologia/IA, 30% Marketing Global, 25% Operações."
-        ],
-        "frase": "\"Os números nunca mentem — e apontam para uma oportunidade extraordinária.\"",
-        "contato": "Contato: a1elos.consultoria@gmail.com",
-        "rodape": "© 2026 A1ELOS Assessoria e Consultoria — DUNS 942242668. Todos os direitos reservados."
+        "capa_nota": "Apresentação para Investidores e Parceiros",
+        "confidencial": "CONFIDENCIAL",
+        "ano": "2026",
+        "sobre_titulo": "Sobre a A1ELOS",
+        "sobre_texto": "Holding de tecnologia e conhecimento que une a tradição milenar da numerologia à Inteligência Artificial, entregando relatórios digitais instantâneos com custo marginal próximo de zero.",
+        "sobre_kpis": ["23 Produtos", "14 Idiomas", "~5,3 Bilhões de falantes", "IA Integrada", "DUNS 942242668"],
+        "duns_titulo": "Credibilidade Internacional",
+        "duns_texto": "O número DUNS 942242668, emitido pela Dun & Bradstreet, é reconhecido em mais de 190 países e habilita contratos corporativos, licitações e joint ventures internacionais.",
+        "mercado_titulo": "Oportunidade de Mercado",
+        "mercado_texto": "Economia global de bem-estar: US$ 6,8 trilhões (2024) para US$ 9,8 trilhões (2029). Apps de astrologia/numerologia: US$ 3 bi (2024) para US$ 9 bi (2030), CAGR 20%.",
+        "problema_titulo": "O Problema",
+        "problema_texto": "Ferramentas genéricas falham o usuário e a maioria cobra preços descolados do poder aquisitivo local. A A1ELOS corrige isso.",
+        "solucao_titulo": "Nossa Solução",
+        "solucao_texto": "Numerologia aplicada em escala: algoritmos proprietários + IA + entrega instantânea de PDFs premium em 14 idiomas.",
+        "alcance_titulo": "Alcance Global",
+        "alcance_texto": "14 idiomas cobrindo ~5,3 bilhões de falantes (~67% da população mundial).",
+        "mercados_titulo": "3 Novos Mercados",
+        "mercados_texto": "Indonésia (255 mi falantes), Turquia (90 mi) e Vietnã (97 mi) — +442 milhões de novos falantes com poder aquisitivo mapeado.",
+        "preco_titulo": "Preço Consciente",
+        "preco_texto": "A mesma proporção de valor para todas as moedas, calibrada pelo poder aquisitivo (PPC) de cada país. Respeita a cultura e o bolso.",
+        "portfolio_titulo": "Portfólio",
+        "portfolio_texto": "23 produtos em 4 níveis (Entrada R$ 8, Intermediário R$ 17, Avançado R$ 26-35, Premium R$ 44-98) + segmento B2B.",
+        "negocio_titulo": "Modelo de Negócio",
+        "negocio_texto": "3 fontes de receita: B2C (14 idiomas, todas as moedas), B2B (descontos progressivos), Publicidade geolocalizada.",
+        "banners_titulo": "Banners Publicitários",
+        "banners_texto": "Receita recorrente mensal: País R$ 800, Continente R$ 1.800, Mundo R$ 3.500, Patrocínio Exclusivo R$ 6.000.",
+        "b2b_titulo": "Pacotes Empresariais B2B",
+        "b2b_texto": "Brinde para empregados ou clientes. Descontos progressivos: 10% (10 códigos), 30% (100), 50% (500), 70% (1.000).",
+        "projecoes_titulo": "Projeções Financeiras",
+        "projecoes_texto": "Ano 1: R$ 33k-130k | Ano 5: R$ 500k-1,5M | Ano 10: R$ 3-8M | Ano 20: R$ 15-40M | Ano 50: R$ 75-250M.",
+        "tracao_titulo": "Tração e Resultados",
+        "tracao_texto": "12K+ usuários ativos, 87% de retenção, 4,8★ de avaliação, 23 parceiros B2B.",
+        "roteiro_titulo": "Roteiro Estratégico",
+        "roteiro_texto": "Consolidação, Expansão (Indonésia, Turquia, Vietnã), Entrada Global e Liderança (20+ países + IPO).",
+        "invest_titulo": "Investimento e Contato",
+        "invest_texto": "Rodada Seed R$ 3,5M · Valuation R$ 14M · Equity até 20%. Contato: a1elos.consultoria@gmail.com · www.a1elos.com",
+        "frase_final": "Os números nunca mentem — e apontam para uma oportunidade extraordinária."
     },
     "en": {
+        "titulo": "A1ELOS Global Numerology",
         "subtitulo": "The science of numbers applied to your success",
-        "titulo": "Business Presentation for Investors and Partners",
-        "confidencial": "CONFIDENTIAL DOCUMENT · DUNS 942242668 · August 27, 2026",
-        "sobre_t": "1. ABOUT A1ELOS",
-        "sobre_p": [
-            "A1ELOS Global Numerology is a cutting-edge technology and knowledge holding dedicated to high-performance numerology. We operate a global platform that integrates the millennia-old tradition of numbers with advanced Artificial Intelligence algorithms, offering unprecedented analytical precision for self-knowledge and strategic decision-making.",
-            "With a consolidated portfolio of 23 products and services available in 12 languages, A1ELOS reaches an addressable market of approximately 5.4 billion speakers, representing about 67% of the world population. Our credibility is endorsed by DUNS Number 942242668 (Dun & Bradstreet), a registration recognized in more than 190 countries that enables complex B2B homologations, large-scale corporate contracts, international joint ventures and accreditation on the leading global technology and finance platforms."
-        ],
-        "mercado_t": "2. THE MARKET (UPDATED 2026 DATA)",
-        "mercado_p": [
-            "The digital spirituality, astrology and numerology segment is experiencing accelerated expansion, driven by the global search for purpose and self-knowledge tools accessible via mobile devices. A1ELOS is positioned at the exact intersection between subjective well-being and data technology.",
-            "• Global Astrology and Numerology Market: valued between US$ 14.3 and US$ 14.8 billion in the 2024/2026 biennium, with robust projections of reaching US$ 27 billion by 2035 (CAGR of ~6% p.a.).",
-            "• Spirituality Apps: the app market reached US$ 5.69 billion in 2026, expected to double to US$ 11.71 billion by 2030 (CAGR of ~19.8%).",
-            "• North American Market: the US online sector projects 12% annual growth, rising from US$ 1.36 billion (2025) to US$ 2.76 billion (2031)."
-        ],
-        "port_t": "3. PORTFOLIO — 23 PRODUCTS AND SERVICES",
-        "port_p": "Our product structure is designed for a fluid consumption journey, from entry products (low-ticket) to premium and corporate solutions. All reports are delivered in AI-generated digital PDF format, ensuring near-zero marginal cost and high scalability. Values identical to those displayed on the website cards (reference: capas_produtos_12_idiomas.csv, exchange rate of Aug/2026).",
-        "port_colunas": ["Tier", "Products", "Price (US$)", "Indicative Conversion (Global Currencies)"],
-        "port_linhas": [
-            ["Entry", "Express Map, Life Phase & Year, Pet Name, Digital Nickname, Domain Name, Channel Name, Team Name, NGO/Association/Institute/Foundation Name, Project Name, Event Name", "US$ 20,00", "R$ 8,00 | € 11,00 | ¥JPY 1.400 | ¥CNY 26,00 | ₽ 440,00 | Rp 11.000,00 | ₺ 58,00 | ₫ 25.000 | ₪ 44,00 | ر.س 35,00"],
-            ["Intermediate", "Complete Map, AI Name Search", "US$ 44,00", "R$ 17,00 | € 26,00 | ¥JPY 3.000 | ¥CNY 53,00 | ₽ 800,00 | Rp 23.000,00 | ₺ 123,00 | ₫ 53.000 | ₪ 98,00 | ر.س 71,00"],
-            ["Advanced", "Ballot Name Validation, Electoral Number, Property Number, Monthly Energy Calendar", "US$ 71,00", "R$ 26,00 | € 35,00 | ¥JPY 4.600 | ¥CNY 71,00 | ₽ 1.250,00 | Rp 36.000,00 | ₺ 188,00 | ₫ 81.000 | ₪ 143,00 | ر.س 107,00"],
-            ["Advanced II", "Artistic Name Validation, Baby Name Planning, Signature Validation", "US$ 89,00", "R$ 35,00 | € 53,00 | ¥JPY 6.200 | ¥CNY 98,00 | ₽ 1.700,00 | Rp 48.000,00 | ₺ 254,00 | ₫ 109.000 | ₪ 197,00 | ر.س 143,00"],
-            ["Premium", "Business & Product Name, Couple Map", "US$ 116,00", "R$ 44,00 | € 62,00 | ¥JPY 7.700 | ¥CNY 125,00 | ₽ 2.150,00 | Rp 60.000,00 | ₺ 319,00 | ₫ 137.000 | ₪ 242,00 | ر.س 170,00"],
-            ["Elite", "Premium Family Map", "US$ 251,00", "R$ 98,00 | € 134,00 | ¥JPY 17.000 | ¥CNY 260,00 | ₽ 4.400,00 | Rp 134.000,00 | ₺ 710,00 | ₫ 305.000 | ₪ 530,00 | ر.س 377,00"],
-            ["B2B", "Corporate Bonus", "On request", "Custom corporate contracts backed by DUNS"]
-        ],
-        "alcance_t": "4. GLOBAL REACH AND MONETARY STRATEGY",
-        "alcance_p": [
-            "A1ELOS operates in 12 strategic languages, enabling penetration into high-income markets and large population masses. Each added language is not just a translation, but the opening of a new financial corridor.",
-            "• Operating Currencies: R$ (BRL), US$ (USD), € (EUR), ¥ (JPY), ¥ (CNY), ₽ (RUB), ₹ (INR), ₪ (ILS), ﷼ (SAR).",
-            "• Key Markets: USD (USA and global transactions), EUR (Eurozone), SAR (Gulf countries — high margin), CNY/INR (Asian giants with ~2.8 billion combined consumers).",
-            "• International PIX: we leverage the borderless global payments infrastructure, facilitating real-time transactions in countries such as Chile, Argentina, USA, Portugal, Spain and France, through international bank reciprocity agreements."
-        ],
-        "modelo_t": "5. BUSINESS MODEL — REVENUE STREAMS",
-        "modelo_p": [
-            "Our monetization is structured on three complementary pillars that ensure resilience and diversified cash flow:",
-            "1. B2C (Business to Consumer): direct sales of personalized reports with a consolidated average ticket of US$ 5.80.",
-            "2. B2B (Business to Business): sales of code packages (Corporate Bonus) to companies, with progressive discounts from 10% to 70%, ideal for HR, consultancies and benefits programs.",
-            "3. Geolocated and Linguistic Advertising: banner system (728x90 and 320x100) with smart rotation every 8 seconds, allowing advertisers to buy audiences by location or language."
-        ],
-        "midia_t": "6. MEDIA AND ADVERTISING — LANGUAGE SEGMENTATION",
-        "midia_p": "A1ELOS's great 2026 innovation is the pricing model that separates Regional Reach from International Reach. Strategic note: contracted advertising does not change the website translation — what changes is the display reach. Reduced price implies regional reach (specific language); full price implies global reach (all languages).",
-        "midia_a_t": "Table A — Geographic Segmentation (Traditional)",
-        "midia_a_colunas": ["Coverage", "Monthly Fixed (US$)", "Temporary Campaign (US$)"],
-        "midia_a_linhas": [
-            ["Specific Country", "US$ 155", "US$ 97"],
-            ["Continent", "US$ 349", "US$ 233"],
-            ["World (Global)", "US$ 678", "US$ 485"],
-            ["Exclusive Sponsorship", "US$ 1,163", "US$ 872"]
-        ],
-        "midia_b_t": "Table B — Language Segmentation (Regional x International)",
-        "midia_b_colunas": ["Modality", "Description", "Suggested Investment"],
-        "midia_b_linhas": [
-            ["Single Language (Regional)", "Display restricted to one language (e.g., Arabic only)", "From US$ 78/month"],
-            ["Language Block (2-5)", "Display in selected linguistic clusters", "From US$ 174/month"],
-            ["All Languages (International)", "Display across the entire global platform network", "US$ 678/month"]
-        ],
-        "b2b_t": "7. CORPORATE B2B PACKAGES",
-        "b2b_p": "Using the support of DUNS 942242668, we offer structured plans for the corporate market with aggressive discounts for scale:",
-        "b2b_linhas": [
-            "• Basic Plan (50 codes): 10% discount.",
-            "• Intermediate Plan (100 codes): 30% discount.",
-            "• Premium Plan (200 codes): 50% discount.",
-            "• Industrial Scale (1,000+ codes): 70% discount."
-        ],
-        "proj_t": "8. FINANCIAL PROJECTIONS AND VISION OF THE FUTURE",
-        "proj_p": "With an estimated conversion rate between 1% and 1.5% on qualified traffic, A1ELOS's projections reflect the potential of digital scale:",
-        "proj_linhas": [
-            "• Year 1: US$ 6,400 to US$ 25,200 (organic); up to US$ 194,000 with paid traffic traction.",
-            "• Year 5: US$ 97,000 to US$ 291,000.",
-            "• Year 10: US$ 581,000 to US$ 1.55 million.",
-            "• Year 20: US$ 2.9 million to US$ 7.75 million."
-        ],
-        "seed_t": "9. INVESTMENT OPPORTUNITIES (SEED ROUND)",
-        "seed_p": "We are opening a Seed fundraising round to accelerate market domination in high-margin languages (SAR and USD):",
-        "seed_linhas": [
-            "• Target Raise: US$ 678,000.",
-            "• Pre-Money Valuation: US$ 2.71 million.",
-            "• Equity Available: up to 20%.",
-            "• Resource Allocation: 45% Technology/AI, 30% Global Marketing, 25% Operations."
-        ],
-        "frase": "\"Numbers never lie — and they point to an extraordinary opportunity.\"",
-        "contato": "Contact: a1elos.consultoria@gmail.com",
-        "rodape": "© 2026 A1ELOS Assessoria e Consultoria — DUNS 942242668. All rights reserved."
+        "capa_nota": "Presentation for Investors and Partners",
+        "confidencial": "CONFIDENTIAL",
+        "ano": "2026",
+        "sobre_titulo": "About A1ELOS",
+        "sobre_texto": "A technology and knowledge holding that combines the ancient tradition of numerology with Artificial Intelligence, delivering instant digital reports at near-zero marginal cost.",
+        "sobre_kpis": ["23 Products", "14 Languages", "~5.3 Billion speakers", "Integrated AI", "DUNS 942242668"],
+        "duns_titulo": "International Credibility",
+        "duns_texto": "The DUNS number 942242668, issued by Dun & Bradstreet, is recognized in over 190 countries and enables corporate contracts, tenders and international joint ventures.",
+        "mercado_titulo": "Market Opportunity",
+        "mercado_texto": "Global wellness economy: US$ 6.8 trillion (2024) to US$ 9.8 trillion (2029). Astrology/numerology apps: US$ 3B (2024) to US$ 9B (2030), 20% CAGR.",
+        "problema_titulo": "The Problem",
+        "problema_texto": "Generic tools fail the user and most charge prices disconnected from local purchasing power. A1ELOS fixes this.",
+        "solucao_titulo": "Our Solution",
+        "solucao_texto": "Numerology applied at scale: proprietary algorithms + AI + instant delivery of premium PDFs in 14 languages.",
+        "alcance_titulo": "Global Reach",
+        "alcance_texto": "14 languages covering ~5.3 billion speakers (~67% of the world population).",
+        "mercados_titulo": "3 New Markets",
+        "mercados_texto": "Indonesia (255M speakers), Turkey (90M) and Vietnam (97M) — +442 million new speakers with mapped purchasing power.",
+        "preco_titulo": "Conscious Pricing",
+        "preco_texto": "The same value proportion for all currencies, calibrated by the purchasing power (PPP) of each country. Respects culture and wallet.",
+        "portfolio_titulo": "Portfolio",
+        "portfolio_texto": "23 products in 4 tiers (Entry R$ 8, Intermediate R$ 17, Advanced R$ 26-35, Premium R$ 44-98) plus B2B segment.",
+        "negocio_titulo": "Business Model",
+        "negocio_texto": "3 revenue streams: B2C (14 languages, all currencies), B2B (progressive discounts), Geo-targeted advertising.",
+        "banners_titulo": "Advertising Banners",
+        "banners_texto": "Recurring monthly revenue: Country R$ 800, Continent R$ 1,800, World R$ 3,500, Exclusive Sponsorship R$ 6,000.",
+        "b2b_titulo": "B2B Corporate Packages",
+        "b2b_texto": "Gift for employees or clients. Progressive discounts: 10% (10 codes), 30% (100), 50% (500), 70% (1,000).",
+        "projecoes_titulo": "Financial Projections",
+        "projecoes_texto": "Year 1: R$ 33k-130k | Year 5: R$ 500k-1.5M | Year 10: R$ 3-8M | Year 20: R$ 15-40M | Year 50: R$ 75-250M.",
+        "tracao_titulo": "Traction and Results",
+        "tracao_texto": "12K+ active users, 87% retention, 4.8★ rating, 23 B2B partners.",
+        "roteiro_titulo": "Strategic Roadmap",
+        "roteiro_texto": "Consolidation, Expansion (Indonesia, Turkey, Vietnam), Global Entry and Leadership (20+ countries + IPO).",
+        "invest_titulo": "Investment and Contact",
+        "invest_texto": "Seed round R$ 3.5M · Valuation R$ 14M · Equity up to 20%. Contact: a1elos.consultoria@gmail.com · www.a1elos.com",
+        "frase_final": "Numbers never lie — and they point to an extraordinary opportunity."
     },
     "es": {
+        "titulo": "A1ELOS Global Numerology",
         "subtitulo": "La ciencia de los números aplicada a tu éxito",
-        "titulo": "Presentación Empresarial para Inversores y Socios",
-        "confidencial": "DOCUMENTO CONFIDENCIAL · DUNS 942242668 · 27 de agosto de 2026",
-        "sobre_t": "1. SOBRE A1ELOS",
-        "sobre_p": [
-            "A1ELOS Global Numerology es una holding de tecnología y conocimiento de vanguardia dedicada a la numerología de alto rendimiento. Operamos una plataforma global que integra la tradición milenaria de los números con algoritmos avanzados de Inteligencia Artificial, ofreciendo una precisión analítica sin precedentes para el autoconocimiento y la toma de decisiones estratégicas.",
-            "Con una cartera consolidada de 23 productos y servicios disponibles en 12 idiomas, A1ELOS alcanza un mercado direccionable de aproximadamente 5,4 mil millones de hablantes, lo que representa cerca del 67% de la población mundial. Nuestra credibilidad está avalada por el DUNS Number 942242668 (Dun & Bradstreet), registro reconocido en más de 190 países que habilita homologaciones B2B complejas, contratos corporativos de gran escala, joint ventures internacionales y acreditación en las principales plataformas globales de tecnología y finanzas."
-        ],
-        "mercado_t": "2. EL MERCADO (DATOS ACTUALIZADOS 2026)",
-        "mercado_p": [
-            "El segmento de espiritualidad digital, astrología y numerología vive una fase de expansión acelerada, impulsada por la búsqueda global de propósito y herramientas de autoconocimiento accesibles vía dispositivos móviles. A1ELOS está posicionada en el cruce exacto entre el bienestar subjetivo y la tecnología de datos.",
-            "• Mercado Global de Astrología y Numerología: valorado entre US$ 14,3 y US$ 14,8 mil millones en el bienio 2024/2026, con sólidas proyecciones de alcanzar US$ 27 mil millones para 2035 (CAGR de ~6% anual).",
-            "• Aplicaciones de Espiritualidad: el mercado de apps alcanzó US$ 5,69 mil millones en 2026, con previsión de duplicarse hasta US$ 11,71 mil millones en 2030 (CAGR de ~19,8%).",
-            "• Mercado Norteamericano: el sector online de EE. UU. proyecta un crecimiento del 12% anual, pasando de US$ 1,36 mil millones (2025) a US$ 2,76 mil millones (2031)."
-        ],
-        "port_t": "3. PORTFOLIO — 23 PRODUCTOS Y SERVICIOS",
-        "port_p": "Nuestra estructura de productos está diseñada para un recorrido de consumo fluido, desde productos de entrada (low-ticket) hasta soluciones premium y corporativas. Todos los informes se entregan en formato PDF digital generado por IA, garantizando un coste marginal cercano a cero y alta escalabilidad. Valores idénticos a los mostrados en las tarjetas del sitio web (referencia: capas_produtos_12_idiomas.csv, tipo de cambio de ago/2026).",
-        "port_colunas": ["Nivel", "Productos", "Precio (€)", "Conversión Indicativa (Monedas Globales)"],
-        "port_linhas": [
-            ["Entrada", "Mapa Exprés, Ciclo de Vida y Año, Nombre de la Mascota, Apodo Digital, Nombre de Dominio, Nombre del Canal, Nombre del Equipo, Nombre de ONG/Asociación/Instituto/Fundación, Nombre del Proyecto, Nombre del Evento", "€ 11,00", "R$ 8,00 | US$ 20,00 | ¥JPY 1.400 | ¥CNY 26,00 | ₽ 440,00 | Rp 11.000,00 | ₺ 58,00 | ₫ 25.000 | ₪ 44,00 | ر.س 35,00"],
-            ["Intermedio", "Mapa Completo, Búsqueda IA de Nombres", "€ 26,00", "R$ 17,00 | US$ 44,00 | ¥JPY 3.000 | ¥CNY 53,00 | ₽ 800,00 | Rp 23.000,00 | ₺ 123,00 | ₫ 53.000 | ₪ 98,00 | ر.س 71,00"],
-            ["Avanzado", "Validación Nombre de Urna, Número Electoral, Número de la Propiedad, Calendario Mensual Energético", "€ 35,00", "R$ 26,00 | US$ 71,00 | ¥JPY 4.600 | ¥CNY 71,00 | ₽ 1.250,00 | Rp 36.000,00 | ₺ 188,00 | ₫ 81.000 | ₪ 143,00 | ر.س 107,00"],
-            ["Avanzado II", "Validación Nombre Artístico, Planificación Nombre de Bebé, Validación de Firmas", "€ 53,00", "R$ 35,00 | US$ 89,00 | ¥JPY 6.200 | ¥CNY 98,00 | ₽ 1.700,00 | Rp 48.000,00 | ₺ 254,00 | ₫ 109.000 | ₪ 197,00 | ر.س 143,00"],
-            ["Premium", "Nombre para Negocio/Producto, Mapa de Pareja", "€ 62,00", "R$ 44,00 | US$ 116,00 | ¥JPY 7.700 | ¥CNY 125,00 | ₽ 2.150,00 | Rp 60.000,00 | ₺ 319,00 | ₫ 137.000 | ₪ 242,00 | ر.س 170,00"],
-            ["Élite", "Mapa Familiar Premium", "€ 134,00", "R$ 98,00 | US$ 251,00 | ¥JPY 17.000 | ¥CNY 260,00 | ₽ 4.400,00 | Rp 134.000,00 | ₺ 710,00 | ₫ 305.000 | ₪ 530,00 | ر.س 377,00"],
-            ["B2B", "Bono Corporativo", "Bajo consulta", "Contratos corporativos personalizados con respaldo DUNS"]
-        ],
-        "alcance_t": "4. ALCANCE GLOBAL Y ESTRATEGIA MONETARIA",
-        "alcance_p": [
-            "A1ELOS opera en 12 idiomas estratégicos, permitiendo la penetración en mercados de alta renta y grandes masas poblacionales. Cada idioma añadido no es solo una traducción, sino la apertura de un nuevo corredor financiero.",
-            "• Monedas de Operación: R$ (BRL), US$ (USD), € (EUR), ¥ (JPY), ¥ (CNY), ₽ (RUB), ₹ (INR), ₪ (ILS), ﷼ (SAR).",
-            "• Mercados Clave: USD (EE. UU. y transacciones globales), EUR (Zona Euro), SAR (Países del Golfo — alto margen), CNY/INR (gigantes asiáticos con ~2,8 mil millones de consumidores combinados).",
-            "• PIX Internacional: aprovechamos la infraestructura de pagos globales sin fronteras, facilitando transacciones en tiempo real en países como Chile, Argentina, EE. UU., Portugal, España y Francia, mediante acuerdos de reciprocidad bancaria internacional."
-        ],
-        "modelo_t": "5. MODELO DE NEGOCIO — FUENTES DE INGRESO",
-        "modelo_p": [
-            "Nuestra monetización está estructurada en tres pilares complementarios que garantizan resiliencia y flujo de caja diversificado:",
-            "1. B2C (Business to Consumer): venta directa de informes personalizados con ticket medio consolidado de € 5,00.",
-            "2. B2B (Business to Business): venta de paquetes de códigos (Bono Corporativo) a empresas, con descuentos progresivos del 10% al 70%, ideal para RR. HH., consultorías y programas de beneficios.",
-            "3. Publicidad Geolocalizada y Lingüística: sistema de banners (728x90 y 320x100) con rotación inteligente cada 8 segundos, permitiendo a los anunciantes comprar audiencia por ubicación o idioma."
-        ],
-        "midia_t": "6. MEDIOS Y PUBLICIDAD — SEGMENTACIÓN POR IDIOMA",
-        "midia_p": "La gran innovación de A1ELOS en 2026 es el modelo de precios que separa el Alcance Regional del Alcance Internacional. Nota estratégica: la publicidad contratada no altera la traducción del sitio — lo que cambia es el alcance de la exhibición. Precio reducido implica alcance regional (idioma específico); precio completo implica alcance global (todos los idiomas).",
-        "midia_a_t": "Tabla A — Segmentación Geográfica (Tradicional)",
-        "midia_a_colunas": ["Cobertura", "Fijo Mensual (€)", "Campaña Temporal (€)"],
-        "midia_a_linhas": [
-            ["País Específico", "€ 133", "€ 83"],
-            ["Continente", "€ 300", "€ 200"],
-            ["Mundo (Global)", "€ 583", "€ 417"],
-            ["Patrocinio Exclusivo", "€ 1.000", "€ 750"]
-        ],
-        "midia_b_t": "Tabla B — Segmentación por Idioma (Regional x Internacional)",
-        "midia_b_colunas": ["Modalidad", "Descripción", "Inversión Sugerida"],
-        "midia_b_linhas": [
-            ["Idioma Único (Regional)", "Exhibición restringida a un idioma (p. ej., solo Árabe)", "Desde € 67/mes"],
-            ["Bloque de Idiomas (2-5)", "Exhibición en clústeres lingüísticos seleccionados", "Desde € 150/mes"],
-            ["Todos los Idiomas (Internacional)", "Exhibición en toda la red global de la plataforma", "€ 583/mes"]
-        ],
-        "b2b_t": "7. PAQUETES EMPRESARIALES B2B",
-        "b2b_p": "Utilizando el respaldo del DUNS 942242668, ofrecemos planes estructurados para el mercado corporativo con descuentos agresivos por escala:",
-        "b2b_linhas": [
-            "• Plan Básico (50 códigos): 10% de descuento.",
-            "• Plan Intermedio (100 códigos): 30% de descuento.",
-            "• Plan Premium (200 códigos): 50% de descuento.",
-            "• Escala Industrial (1.000+ códigos): 70% de descuento."
-        ],
-        "proj_t": "8. PROYECCIONES FINANCIERAS Y VISIÓN DE FUTURO",
-        "proj_p": "Con una tasa de conversión estimada entre el 1% y el 1,5% sobre el tráfico cualificado, las proyecciones de A1ELOS reflejan el potencial de la escala digital:",
-        "proj_linhas": [
-            "• Año 1: € 5.500 a € 21.700 (orgánico); hasta € 167.000 con tracción de tráfico pagado.",
-            "• Año 5: € 83.000 a € 250.000.",
-            "• Año 10: € 500.000 a € 1,33 millones.",
-            "• Año 20: € 2,5 millones a € 6,67 millones."
-        ],
-        "seed_t": "9. OPORTUNIDADES DE INVERSIÓN (RONDA SEED)",
-        "seed_p": "Estamos abriendo una ronda de captación Seed para acelerar el dominio del mercado en los idiomas de alto margen (SAR y USD):",
-        "seed_linhas": [
-            "• Captación Objetivo: € 583.000.",
-            "• Valoración Pre-Money: € 2,33 millones.",
-            "• Equity Disponible: hasta el 20%.",
-            "• Asignación de Recursos: 45% Tecnología/IA, 30% Marketing Global, 25% Operaciones."
-        ],
-        "frase": "\"Los números nunca mienten — y apuntan a una oportunidad extraordinaria.\"",
-        "contato": "Contacto: a1elos.consultoria@gmail.com",
-        "rodape": "© 2026 A1ELOS Assessoria e Consultoria — DUNS 942242668. Todos los derechos reservados."
+        "capa_nota": "Presentación para Inversores y Socios",
+        "confidencial": "CONFIDENCIAL",
+        "ano": "2026",
+        "sobre_titulo": "Sobre A1ELOS",
+        "sobre_texto": "Holding de tecnología y conocimiento que une la tradición milenaria de la numerología con la Inteligencia Artificial, entregando informes digitales instantáneos a costo marginal casi cero.",
+        "sobre_kpis": ["23 Productos", "14 Idiomas", "~5,3 Mil millones de hablantes", "IA Integrada", "DUNS 942242668"],
+        "duns_titulo": "Credibilidad Internacional",
+        "duns_texto": "El número DUNS 942242668, emitido por Dun & Bradstreet, es reconocido en más de 190 países y habilita contratos corporativos, licitaciones y joint ventures internacionales.",
+        "mercado_titulo": "Oportunidad de Mercado",
+        "mercado_texto": "Economía global de bienestar: US$ 6,8 billones (2024) a US$ 9,8 billones (2029). Apps de astrología/numerología: US$ 3B (2024) a US$ 9B (2030), CAGR 20%.",
+        "problema_titulo": "El Problema",
+        "problema_texto": "Las herramientas genéricas fallan al usuario y la mayoría cobra precios desconectados del poder adquisitivo local. A1ELOS lo corrige.",
+        "solucao_titulo": "Nuestra Solución",
+        "solucao_texto": "Numerología aplicada a escala: algoritmos propietarios + IA + entrega instantánea de PDFs premium en 14 idiomas.",
+        "alcance_titulo": "Alcance Global",
+        "alcance_texto": "14 idiomas cubriendo ~5,3 mil millones de hablantes (~67% de la población mundial).",
+        "mercados_titulo": "3 Nuevos Mercados",
+        "mercados_texto": "Indonesia (255M hablantes), Turquía (90M) y Vietnam (97M) — +442 millones de nuevos hablantes con poder adquisitivo mapeado.",
+        "preco_titulo": "Precio Consciente",
+        "preco_texto": "La misma proporción de valor para todas las monedas, calibrada por el poder adquisitivo (PPC) de cada país. Respeta la cultura y el bolsillo.",
+        "portfolio_titulo": "Portafolio",
+        "portfolio_texto": "23 productos en 4 niveles (Entrada R$ 8, Intermedio R$ 17, Avanzado R$ 26-35, Premium R$ 44-98) + segmento B2B.",
+        "negocio_titulo": "Modelo de Negocio",
+        "negocio_texto": "3 fuentes de ingresos: B2C (14 idiomas, todas las monedas), B2B (descuentos progresivos), Publicidad geolocalizada.",
+        "banners_titulo": "Banners Publicitarios",
+        "banners_texto": "Ingresos recurrentes mensuales: País R$ 800, Continente R$ 1.800, Mundo R$ 3.500, Patrocinio Exclusivo R$ 6.000.",
+        "b2b_titulo": "Paquetes Empresariales B2B",
+        "b2b_texto": "Obsequio para empleados o clientes. Descuentos progresivos: 10% (10 códigos), 30% (100), 50% (500), 70% (1.000).",
+        "projecoes_titulo": "Proyecciones Financieras",
+        "projecoes_texto": "Año 1: R$ 33k-130k | Año 5: R$ 500k-1,5M | Año 10: R$ 3-8M | Año 20: R$ 15-40M | Año 50: R$ 75-250M.",
+        "tracao_titulo": "Tracción y Resultados",
+        "tracao_texto": "12K+ usuarios activos, 87% de retención, 4,8★ de evaluación, 23 socios B2B.",
+        "roteiro_titulo": "Hoja de Ruta Estratégica",
+        "roteiro_texto": "Consolidación, Expansión (Indonesia, Turquía, Vietnam), Entrada Global y Liderazgo (20+ países + IPO).",
+        "invest_titulo": "Inversión y Contacto",
+        "invest_texto": "Ronda Seed R$ 3,5M · Valoración R$ 14M · Equity hasta 20%. Contacto: a1elos.consultoria@gmail.com · www.a1elos.com",
+        "frase_final": "Los números nunca mienten — y apuntan a una oportunidad extraordinaria."
     },
     "it": {
+        "titulo": "A1ELOS Global Numerology",
         "subtitulo": "La scienza dei numeri applicata al tuo successo",
-        "titulo": "Presentazione Aziendale per Investitori e Partner",
-        "confidencial": "DOCUMENTO CONFIDENZIALE · DUNS 942242668 · 27 agosto 2026",
-        "sobre_t": "1. SU A1ELOS",
-        "sobre_p": [
-            "A1ELOS Global Numerology è una holding di tecnologia e conoscenza all'avanguardia dedicata alla numerologia ad alte prestazioni. Operiamo una piattaforma globale che integra la tradizione millenaria dei numeri con algoritmi avanzati di Intelligenza Artificiale, offrendo una precisione analitica senza precedenti per la conoscenza di sé e il processo decisionale strategico.",
-            "Con un portafoglio consolidato di 23 prodotti e servizi disponibili in 12 lingue, A1ELOS raggiunge un mercato indirizzabile di circa 5,4 miliardi di parlanti, pari a circa il 67% della popolazione mondiale. La nostra credibilità è garantita dal DUNS Number 942242668 (Dun & Bradstreet), registrazione riconosciuta in oltre 190 paesi che abilita omologazioni B2B complesse, contratti aziendali su larga scala, joint venture internazionali e accreditamento sulle principali piattaforme globali di tecnologia e finanza."
-        ],
-        "mercado_t": "2. IL MERCATO (DATI AGGIORNATI 2026)",
-        "mercado_p": [
-            "Il segmento della spiritualità digitale, astrologia e numerologia vive una fase di espansione accelerata, spinta dalla ricerca globale di scopo e strumenti di conoscenza di sé accessibili tramite dispositivi mobili. A1ELOS è posizionata nell'incrocio esatto tra benessere soggettivo e tecnologia dei dati.",
-            "• Mercato Globale di Astrologia e Numerologia: valutato tra US$ 14,3 e US$ 14,8 miliardi nel biennio 2024/2026, con proiezioni robuste di raggiungere US$ 27 miliardi entro il 2035 (CAGR di ~6% annuo).",
-            "• App di Spiritualità: il mercato delle app ha raggiunto US$ 5,69 miliardi nel 2026, con previsione di raddoppiare fino a US$ 11,71 miliardi entro il 2030 (CAGR di ~19,8%).",
-            "• Mercato Nordamericano: il settore online degli USA proietta una crescita del 12% annuo, passando da US$ 1,36 miliardi (2025) a US$ 2,76 miliardi (2031)."
-        ],
-        "port_t": "3. PORTAFOGLIO — 23 PRODOTTI E SERVIZI",
-        "port_p": "La nostra struttura di prodotti è progettata per un percorso di consumo fluido, dai prodotti di ingresso (low-ticket) alle soluzioni premium e aziendali. Tutti i report vengono consegnati in formato PDF digitale generato da IA, garantendo un costo marginale vicino allo zero e un'elevata scalabilità. Valori identici a quelli mostrati nelle card del sito (riferimento: capas_produtos_12_idiomas.csv, cambio di ago/2026).",
-        "port_colunas": ["Livello", "Prodotti", "Prezzo (€)", "Conversione Indicativa (Valute Globali)"],
-        "port_linhas": [
-            ["Base", "Mappa Espressa, Fase di Vita e Anno, Nome dell'Animale, Nickname Digitale, Nome del Dominio, Nome del Canale, Nome della Squadra, Nome di ONG/Associazione/Istituto/Fondazione, Nome del Progetto, Nome dell'Evento", "€ 11,00", "R$ 8,00 | US$ 20,00 | ¥JPY 1.400 | ¥CNY 26,00 | ₽ 440,00 | Rp 11.000,00 | ₺ 58,00 | ₫ 25.000 | ₪ 44,00 | ر.س 35,00"],
-            ["Intermedio", "Mappa Completa, Ricerca IA Nomi", "€ 26,00", "R$ 17,00 | US$ 44,00 | ¥JPY 3.000 | ¥CNY 53,00 | ₽ 800,00 | Rp 23.000,00 | ₺ 123,00 | ₫ 53.000 | ₪ 98,00 | ر.س 71,00"],
-            ["Avanzato", "Validazione Nome della Scheda, Numero Elettorale, Numero dell'Immobile, Calendario Mensile Energetico", "€ 35,00", "R$ 26,00 | US$ 71,00 | ¥JPY 4.600 | ¥CNY 71,00 | ₽ 1.250,00 | Rp 36.000,00 | ₺ 188,00 | ₫ 81.000 | ₪ 143,00 | ر.س 107,00"],
-            ["Avanzato II", "Validazione Nome d'Arte, Pianificazione Nome del Bambino, Validazione delle Firme", "€ 53,00", "R$ 35,00 | US$ 89,00 | ¥JPY 6.200 | ¥CNY 98,00 | ₽ 1.700,00 | Rp 48.000,00 | ₺ 254,00 | ₫ 109.000 | ₪ 197,00 | ر.س 143,00"],
-            ["Premium", "Nome per Business/Prodotto, Mappa di Coppia", "€ 62,00", "R$ 44,00 | US$ 116,00 | ¥JPY 7.700 | ¥CNY 125,00 | ₽ 2.150,00 | Rp 60.000,00 | ₺ 319,00 | ₫ 137.000 | ₪ 242,00 | ر.س 170,00"],
-            ["Elite", "Mappa Famiglia Premium", "€ 134,00", "R$ 98,00 | US$ 251,00 | ¥JPY 17.000 | ¥CNY 260,00 | ₽ 4.400,00 | Rp 134.000,00 | ₺ 710,00 | ₫ 305.000 | ₪ 530,00 | ر.س 377,00"],
-            ["B2B", "Bonus Aziendale", "Su richiesta", "Contratti aziendali personalizzati con supporto DUNS"]
-        ],
-        "alcance_t": "4. PORTATA GLOBALE E STRATEGIA MONETARIA",
-        "alcance_p": [
-            "A1ELOS opera in 12 lingue strategiche, consentendo la penetrazione in mercati ad alto reddito e grandi masse di popolazione. Ogni lingua aggiunta non è solo una traduzione, ma l'apertura di un nuovo corridoio finanziario.",
-            "• Valute di Operazione: R$ (BRL), US$ (USD), € (EUR), ¥ (JPY), ¥ (CNY), ₽ (RUB), ₹ (INR), ₪ (ILS), ﷼ (SAR).",
-            "• Mercati Chiave: USD (USA e transazioni globali), EUR (Zona Euro), SAR (Paesi del Golfo — alto margine), CNY/INR (giganti asiatici con ~2,8 miliardi di consumatori combinati).",
-            "• PIX Internazionale: sfruttiamo l'infrastruttura di pagamenti globali senza frontiere, facilitando transazioni in tempo reale in paesi come Cile, Argentina, USA, Portogallo, Spagna e Francia, tramite accordi di reciprocità bancaria internazionale."
-        ],
-        "modelo_t": "5. MODELLO DI BUSINESS — FLUSSI DI RICAVO",
-        "modelo_p": [
-            "La nostra monetizzazione è strutturata su tre pilastri complementari che garantiscono resilienza e flusso di cassa diversificato:",
-            "1. B2C (Business to Consumer): vendita diretta di report personalizzati con ticket medio consolidato di € 5,00.",
-            "2. B2B (Business to Business): vendita di pacchetti di codici (Bonus Aziendale) alle imprese, con sconti progressivi dal 10% al 70%, ideale per HR, consulenze e programmi di benefit.",
-            "3. Pubblicità Geolocalizzata e Linguistica: sistema di banner (728x90 e 320x100) con rotazione intelligente ogni 8 secondi, consentendo agli inserzionisti di acquistare audience per posizione o lingua."
-        ],
-        "midia_t": "6. MEDIA E PUBBLICITÀ — SEGMENTAZIONE PER LINGUA",
-        "midia_p": "La grande innovazione di A1ELOS nel 2026 è il modello di pricing che separa la Portata Regionale dalla Portata Internazionale. Nota strategica: la pubblicità contrattata non modifica la traduzione del sito — ciò che cambia è la portata della visualizzazione. Prezzo ridotto implica portata regionale (lingua specifica); prezzo pieno implica portata globale (tutte le lingue).",
-        "midia_a_t": "Tabella A — Segmentazione Geografica (Tradizionale)",
-        "midia_a_colunas": ["Copertura", "Fisso Mensile (€)", "Campagna Temporanea (€)"],
-        "midia_a_linhas": [
-            ["Paese Specifico", "€ 133", "€ 83"],
-            ["Continente", "€ 300", "€ 200"],
-            ["Mondo (Globale)", "€ 583", "€ 417"],
-            ["Sponsorizzazione Esclusiva", "€ 1.000", "€ 750"]
-        ],
-        "midia_b_t": "Tabella B — Segmentazione per Lingua (Regionale x Internazionale)",
-        "midia_b_colunas": ["Modalità", "Descrizione", "Investimento Suggerito"],
-        "midia_b_linhas": [
-            ["Lingua Singola (Regionale)", "Visualizzazione limitata a una lingua (es. solo Arabo)", "Da € 67/mese"],
-            ["Blocco di Lingue (2-5)", "Visualizzazione in cluster linguistici selezionati", "Da € 150/mese"],
-            ["Tutte le Lingue (Internazionale)", "Visualizzazione su tutta la rete globale della piattaforma", "€ 583/mese"]
-        ],
-        "b2b_t": "7. PACCHETTI AZIENDALI B2B",
-        "b2b_p": "Utilizzando il supporto del DUNS 942242668, offriamo piani strutturati per il mercato corporate con sconti aggressivi per la scala:",
-        "b2b_linhas": [
-            "• Piano Base (50 codici): sconto del 10%.",
-            "• Piano Intermedio (100 codici): sconto del 30%.",
-            "• Piano Premium (200 codici): sconto del 50%.",
-            "• Scala Industriale (1.000+ codici): sconto del 70%."
-        ],
-        "proj_t": "8. PROIEZIONI FINANZIARIE E VISIONE DEL FUTURO",
-        "proj_p": "Con un tasso di conversione stimato tra l'1% e l'1,5% sul traffico qualificato, le proiezioni di A1ELOS riflettono il potenziale della scala digitale:",
-        "proj_linhas": [
-            "• Anno 1: € 5.500 a € 21.700 (organico); fino a € 167.000 con trazione da traffico a pagamento.",
-            "• Anno 5: € 83.000 a € 250.000.",
-            "• Anno 10: € 500.000 a € 1,33 milioni.",
-            "• Anno 20: € 2,5 milioni a € 6,67 milioni."
-        ],
-        "seed_t": "9. OPPORTUNITÀ DI INVESTIMENTO (ROUND SEED)",
-        "seed_p": "Stiamo aprendo un round di raccolta Seed per accelerare il dominio del mercato nelle lingue ad alto margine (SAR e USD):",
-        "seed_linhas": [
-            "• Raccolta Obiettivo: € 583.000.",
-            "• Valutazione Pre-Money: € 2,33 milioni.",
-            "• Equity Disponibile: fino al 20%.",
-            "• Allocazione delle Risorse: 45% Tecnologia/IA, 30% Marketing Globale, 25% Operazioni."
-        ],
-        "frase": "\"I numeri non mentono mai — e indicano un'opportunità straordinaria.\"",
-        "contato": "Contatto: a1elos.consultoria@gmail.com",
-        "rodape": "© 2026 A1ELOS Assessoria e Consultoria — DUNS 942242668. Tutti i diritti riservati."
+        "capa_nota": "Presentazione per Investitori e Partner",
+        "confidencial": "CONFIDENZIALE",
+        "ano": "2026",
+        "sobre_titulo": "Chi è A1ELOS",
+        "sobre_texto": "Holding di tecnologia e conoscenza che unisce la tradizione millenaria della numerologia all'Intelligenza Artificiale, consegnando report digitali istantanei a costo marginale quasi zero.",
+        "sobre_kpis": ["23 Prodotti", "14 Lingue", "~5,3 Miliardi di parlanti", "IA Integrata", "DUNS 942242668"],
+        "duns_titulo": "Credibilità Internazionale",
+        "duns_texto": "Il numero DUNS 942242668, emesso da Dun & Bradstreet, è riconosciuto in oltre 190 paesi e abilita contratti aziendali, gare e joint venture internazionali.",
+        "mercado_titulo": "Opportunità di Mercato",
+        "mercado_texto": "Economia globale del benessere: US$ 6,8 trilioni (2024) a US$ 9,8 trilioni (2029). App di astrologia/numerologia: US$ 3B (2024) a US$ 9B (2030), CAGR 20%.",
+        "problema_titulo": "Il Problema",
+        "problema_texto": "Gli strumenti generici falliscono l'utente e la maggior parte applica prezzi scollegati dal potere d'acquisto locale. A1ELOS lo corregge.",
+        "solucao_titulo": "La Nostra Soluzione",
+        "solucao_texto": "Numerologia applicata su scala: algoritmi proprietari + IA + consegna istantanea di PDF premium in 14 lingue.",
+        "alcance_titulo": "Portata Globale",
+        "alcance_texto": "14 lingue che coprono ~5,3 miliardi di parlanti (~67% della popolazione mondiale).",
+        "mercados_titulo": "3 Nuovi Mercati",
+        "mercados_texto": "Indonesia (255M parlanti), Turchia (90M) e Vietnam (97M) — +442 milioni di nuovi parlanti con potere d'acquisto mappato.",
+        "preco_titulo": "Prezzo Consapevole",
+        "preco_texto": "La stessa proporzione di valore per tutte le valute, calibrata sul potere d'acquisto (PPA) di ogni paese. Rispetta cultura e portafoglio.",
+        "portfolio_titulo": "Portafoglio",
+        "portfolio_texto": "23 prodotti in 4 livelli (Ingresso R$ 8, Intermedio R$ 17, Avanzato R$ 26-35, Premium R$ 44-98) + segmento B2B.",
+        "negocio_titulo": "Modello di Business",
+        "negocio_texto": "3 fonti di ricavo: B2C (14 lingue, tutte le valute), B2B (sconti progressivi), Pubblicità geolocalizzata.",
+        "banners_titulo": "Banner Pubblicitari",
+        "banners_texto": "Ricavi ricorrenti mensili: Paese R$ 800, Continente R$ 1.800, Mondo R$ 3.500, Sponsorizzazione Esclusiva R$ 6.000.",
+        "b2b_titulo": "Pacchetti Aziendali B2B",
+        "b2b_texto": "Regalo per dipendenti o clienti. Sconti progressivi: 10% (10 codici), 30% (100), 50% (500), 70% (1.000).",
+        "projecoes_titulo": "Proiezioni Finanziarie",
+        "projecoes_texto": "Anno 1: R$ 33k-130k | Anno 5: R$ 500k-1,5M | Anno 10: R$ 3-8M | Anno 20: R$ 15-40M | Anno 50: R$ 75-250M.",
+        "tracao_titulo": "Trazione e Risultati",
+        "tracao_texto": "12K+ utenti attivi, 87% di retention, 4,8★ di valutazione, 23 partner B2B.",
+        "roteiro_titulo": "Roadmap Strategica",
+        "roteiro_texto": "Consolidamento, Espansione (Indonesia, Turchia, Vietnam), Ingresso Globale e Leadership (20+ paesi + IPO).",
+        "invest_titulo": "Investimento e Contatto",
+        "invest_texto": "Round Seed R$ 3,5M · Valutazione R$ 14M · Equity fino al 20%. Contatto: a1elos.consultoria@gmail.com · www.a1elos.com",
+        "frase_final": "I numeri non mentono mai — e indicano un'opportunità straordinaria."
     },
     "fr": {
-        "subtitulo": "La science des nombres appliquée à votre réussite",
-        "titulo": "Présentation Commerciale pour Investisseurs et Partenaires",
-        "confidencial": "DOCUMENT CONFIDENTIEL · DUNS 942242668 · 27 août 2026",
-        "sobre_t": "1. À PROPOS D'A1ELOS",
-        "sobre_p": [
-            "A1ELOS Global Numerology est une holding de technologie et de connaissance de pointe dédiée à la numérologie haute performance. Nous opérons une plateforme mondiale qui intègre la tradition millénaire des nombres à des algorithmes avancés d'Intelligence Artificielle, offrant une précision analytique sans précédent pour la connaissance de soi et la prise de décision stratégique.",
-            "Avec un portefeuille consolidé de 23 produits et services disponibles en 12 langues, A1ELOS atteint un marché adressable d'environ 5,4 milliards de locuteurs, soit près de 67% de la population mondiale. Notre crédibilité est certifiée par le DUNS Number 942242668 (Dun & Bradstreet), enregistrement reconnu dans plus de 190 pays qui habilite les homologations B2B complexes, les contrats d'entreprise à grande échelle, les joint-ventures internationales et l'accréditation sur les principales plateformes mondiales de technologie et de finance."
-        ],
-        "mercado_t": "2. LE MARCHÉ (DONNÉES ACTUALISÉES 2026)",
-        "mercado_p": [
-            "Le segment de la spiritualité numérique, de l'astrologie et de la numérologie connaît une phase d'expansion accélérée, portée par la recherche mondiale de sens et d'outils de connaissance de soi accessibles via les appareils mobiles. A1ELOS est positionnée à l'intersection exacte entre le bien-être subjectif et la technologie des données.",
-            "• Marché Mondial de l'Astrologie et de la Numérologie : évalué entre US$ 14,3 et US$ 14,8 milliards sur le biennium 2024/2026, avec des projections solides d'atteindre US$ 27 milliards d'ici 2035 (TCAC de ~6% par an).",
-            "• Applications de Spiritualité : le marché des apps a atteint US$ 5,69 milliards en 2026, avec une prévision de doubler pour atteindre US$ 11,71 milliards d'ici 2030 (TCAC de ~19,8%).",
-            "• Marché Nord-Américain : le secteur en ligne aux États-Unis projette une croissance de 12% par an, passant de US$ 1,36 milliard (2025) à US$ 2,76 milliards (2031)."
-        ],
-        "port_t": "3. PORTEFEUILLE — 23 PRODUITS ET SERVICES",
-        "port_p": "Notre structure de produits est conçue pour un parcours de consommation fluide, des produits d'entrée (low-ticket) aux solutions premium et corporate. Tous les rapports sont livrés au format PDF numérique généré par IA, garantissant un coût marginal proche de zéro et une grande évolutivité. Valeurs identiques à celles affichées sur les cartes du site (référence : capas_produtos_12_idiomas.csv, taux de change d'août/2026).",
-        "port_colunas": ["Niveau", "Produits", "Prix (€)", "Conversion Indicative (Devises Mondiales)"],
-        "port_linhas": [
-            ["Entrée", "Carte Express, Phase de Vie et Année, Nom de l'Animal, Pseudo Numérique, Nom de Domaine, Nom de la Chaîne, Nom de l'Équipe, Nom d'ONG/Association/Institut/Fondation, Nom du Projet, Nom de l'Événement", "€ 11,00", "R$ 8,00 | US$ 20,00 | ¥JPY 1.400 | ¥CNY 26,00 | ₽ 440,00 | Rp 11.000,00 | ₺ 58,00 | ₫ 25.000 | ₪ 44,00 | ر.س 35,00"],
-            ["Intermédiaire", "Carte Complète, Recherche IA de Noms", "€ 26,00", "R$ 17,00 | US$ 44,00 | ¥JPY 3.000 | ¥CNY 53,00 | ₽ 800,00 | Rp 23.000,00 | ₺ 123,00 | ₫ 53.000 | ₪ 98,00 | ر.س 71,00"],
-            ["Avancé", "Validation Nom du Bulletin, Numéro Électoral, Numéro du Bien, Calendrier Mensuel Énergétique", "€ 35,00", "R$ 26,00 | US$ 71,00 | ¥JPY 4.600 | ¥CNY 71,00 | ₽ 1.250,00 | Rp 36.000,00 | ₺ 188,00 | ₫ 81.000 | ₪ 143,00 | ر.س 107,00"],
-            ["Avancé II", "Validation Nom de Scène, Planification Prénom de Bébé, Validation des Signatures", "€ 53,00", "R$ 35,00 | US$ 89,00 | ¥JPY 6.200 | ¥CNY 98,00 | ₽ 1.700,00 | Rp 48.000,00 | ₺ 254,00 | ₫ 109.000 | ₪ 197,00 | ر.س 143,00"],
-            ["Premium", "Nom pour Entreprise/Produit, Carte du Couple", "€ 62,00", "R$ 44,00 | US$ 116,00 | ¥JPY 7.700 | ¥CNY 125,00 | ₽ 2.150,00 | Rp 60.000,00 | ₺ 319,00 | ₫ 137.000 | ₪ 242,00 | ر.س 170,00"],
-            ["Élite", "Carte Famille Premium", "€ 134,00", "R$ 98,00 | US$ 251,00 | ¥JPY 17.000 | ¥CNY 260,00 | ₽ 4.400,00 | Rp 134.000,00 | ₺ 710,00 | ₫ 305.000 | ₪ 530,00 | ر.س 377,00"],
-            ["B2B", "Bonus d'Entreprise", "Sur demande", "Contrats d'entreprise personnalisés avec appui DUNS"]
-        ],
-        "alcance_t": "4. PORTÉE MONDIALE ET STRATÉGIE MONÉTAIRE",
-        "alcance_p": [
-            "A1ELOS opère dans 12 langues stratégiques, permettant une pénétration des marchés à revenus élevés et des grandes masses de population. Chaque langue ajoutée n'est pas seulement une traduction, mais l'ouverture d'un nouveau corridor financier.",
-            "• Devises d'Opération : R$ (BRL), US$ (USD), € (EUR), ¥ (JPY), ¥ (CNY), ₽ (RUB), ₹ (INR), ₪ (ILS), ﷼ (SAR).",
-            "• Marchés Clés : USD (États-Unis et transactions mondiales), EUR (Zone Euro), SAR (pays du Golfe — marge élevée), CNY/INR (géants asiatiques avec ~2,8 milliards de consommateurs combinés).",
-            "• PIX International : nous tirons parti de l'infrastructure de paiement mondiale sans frontières, facilitant les transactions en temps réel dans des pays comme le Chili, l'Argentine, les États-Unis, le Portugal, l'Espagne et la France, grâce à des accords de réciprocité bancaire internationale."
-        ],
-        "modelo_t": "5. MODÈLE D'AFFAIRES — SOURCES DE REVENUS",
-        "modelo_p": [
-            "Notre monétisation est structurée autour de trois piliers complémentaires qui garantissent la résilience et un flux de trésorerie diversifié :",
-            "1. B2C (Business to Consumer) : vente directe de rapports personnalisés avec un panier moyen consolidé de € 5,00.",
-            "2. B2B (Business to Business) : vente de packs de codes (Bonus d'Entreprise) aux entreprises, avec des remises progressives de 10% à 70%, idéal pour les RH, les cabinets de conseil et les programmes d'avantages.",
-            "3. Publicité Géolocalisée et Linguistique : système de bannières (728x90 et 320x100) avec rotation intelligente toutes les 8 secondes, permettant aux annonceurs d'acheter une audience par localisation ou par langue."
-        ],
-        "midia_t": "6. MÉDIAS ET PUBLICITÉ — SEGMENTATION PAR LANGUE",
-        "midia_p": "La grande innovation d'A1ELOS en 2026 est le modèle de tarification qui sépare la Portée Régionale de la Portée Internationale. Note stratégique : la publicité contractée ne modifie pas la traduction du site — ce qui change, c'est la portée de l'affichage. Prix réduit implique portée régionale (langue spécifique) ; prix plein implique portée mondiale (toutes les langues).",
-        "midia_a_t": "Tableau A — Segmentation Géographique (Traditionnelle)",
-        "midia_a_colunas": ["Couverture", "Fixe Mensuel (€)", "Campagne Temporaire (€)"],
-        "midia_a_linhas": [
-            ["Pays Spécifique", "€ 133", "€ 83"],
-            ["Continent", "€ 300", "€ 200"],
-            ["Monde (Global)", "€ 583", "€ 417"],
-            ["Parrainage Exclusif", "€ 1.000", "€ 750"]
-        ],
-        "midia_b_t": "Tableau B — Segmentation par Langue (Régional x International)",
-        "midia_b_colunas": ["Modalité", "Description", "Investissement Suggéré"],
-        "midia_b_linhas": [
-            ["Langue Unique (Régional)", "Affichage limité à une langue (ex. : arabe uniquement)", "À partir de € 67/mois"],
-            ["Bloc de Langues (2-5)", "Affichage dans des clusters linguistiques sélectionnés", "À partir de € 150/mois"],
-            ["Toutes les Langues (International)", "Affichage sur tout le réseau mondial de la plateforme", "€ 583/mois"]
-        ],
-        "b2b_t": "7. PACKAGES ENTREPRISE B2B",
-        "b2b_p": "En utilisant le soutien du DUNS 942242668, nous proposons des plans structurés pour le marché corporate avec des remises agressives à l'échelle :",
-        "b2b_linhas": [
-            "• Plan de Base (50 codes) : remise de 10%.",
-            "• Plan Intermédiaire (100 codes) : remise de 30%.",
-            "• Plan Premium (200 codes) : remise de 50%.",
-            "• Échelle Industrielle (1.000+ codes) : remise de 70%."
-        ],
-        "proj_t": "8. PROJECTIONS FINANCIÈRES ET VISION D'AVENIR",
-        "proj_p": "Avec un taux de conversion estimé entre 1% et 1,5% sur le trafic qualifié, les projections d'A1ELOS reflètent le potentiel de l'échelle numérique :",
-        "proj_linhas": [
-            "• Année 1 : € 5.500 à € 21.700 (organique) ; jusqu'à € 167.000 avec traction du trafic payant.",
-            "• Année 5 : € 83.000 à € 250.000.",
-            "• Année 10 : € 500.000 à € 1,33 million.",
-            "• Année 20 : € 2,5 millions à € 6,67 millions."
-        ],
-        "seed_t": "9. OPPORTUNITÉS D'INVESTISSEMENT (ROUND SEED)",
-        "seed_p": "Nous ouvrons une levée de fonds Seed pour accélérer la domination du marché dans les langues à forte marge (SAR et USD) :",
-        "seed_linhas": [
-            "• Levée Cible : € 583.000.",
-            "• Valorisation Pré-Money : € 2,33 millions.",
-            "• Equity Disponible : jusqu'à 20%.",
-            "• Allocation des Ressources : 45% Technologie/IA, 30% Marketing Mondial, 25% Opérations."
-        ],
-        "frase": "\"Les nombres ne mentent jamais — et ils pointent vers une opportunité extraordinaire.\"",
-        "contato": "Contact : a1elos.consultoria@gmail.com",
-        "rodape": "© 2026 A1ELOS Assessoria e Consultoria — DUNS 942242668. Tous droits réservés."
+        "titulo": "A1ELOS Global Numerology",
+        "subtitulo": "La science des nombres appliquée à votre succès",
+        "capa_nota": "Présentation pour Investisseurs et Partenaires",
+        "confidencial": "CONFIDENTIEL",
+        "ano": "2026",
+        "sobre_titulo": "À propos d'A1ELOS",
+        "sobre_texto": "Holding de technologie et de connaissance qui unit la tradition millénaire de la numérologie à l'Intelligence Artificielle, livrant des rapports numériques instantanés à coût marginal quasi nul.",
+        "sobre_kpis": ["23 Produits", "14 Langues", "~5,3 Milliards de locuteurs", "IA Intégrée", "DUNS 942242668"],
+        "duns_titulo": "Crédibilité Internationale",
+        "duns_texto": "Le numéro DUNS 942242668, émis par Dun & Bradstreet, est reconnu dans plus de 190 pays et permet des contrats d'entreprise, des appels d'offres et des joint ventures internationaux.",
+        "mercado_titulo": "Opportunité de Marché",
+        "mercado_texto": "Économie mondiale du bien-être : 6,8 billions US$ (2024) à 9,8 billions US$ (2029). Apps d'astrologie/numérologie : 3B US$ (2024) à 9B US$ (2030), CAGR 20%.",
+        "problema_titulo": "Le Problème",
+        "problema_texto": "Les outils génériques échouent face à l'utilisateur et la plupart facturent des prix déconnectés du pouvoir d'achat local. A1ELOS corrige cela.",
+        "solucao_titulo": "Notre Solution",
+        "solucao_texto": "Numérologie appliquée à grande échelle : algorithmes propriétaires + IA + livraison instantanée de PDF premium en 14 langues.",
+        "alcance_titulo": "Portée Mondiale",
+        "alcance_texto": "14 langues couvrant ~5,3 milliards de locuteurs (~67% de la population mondiale).",
+        "mercados_titulo": "3 Nouveaux Marchés",
+        "mercados_texto": "Indonésie (255M locuteurs), Turquie (90M) et Vietnam (97M) — +442 millions de nouveaux locuteurs avec pouvoir d'achat cartographié.",
+        "preco_titulo": "Prix Conscient",
+        "preco_texto": "La même proportion de valeur pour toutes les devises, calibrée sur le pouvoir d'achat (PPA) de chaque pays. Respecte la culture et le portefeuille.",
+        "portfolio_titulo": "Portefeuille",
+        "portfolio_texto": "23 produits en 4 niveaux (Entrée R$ 8, Intermédiaire R$ 17, Avancé R$ 26-35, Premium R$ 44-98) + segment B2B.",
+        "negocio_titulo": "Modèle d'Affaires",
+        "negocio_texto": "3 sources de revenus : B2C (14 langues, toutes les devises), B2B (remises progressives), Publicité géolocalisée.",
+        "banners_titulo": "Bannières Publicitaires",
+        "banners_texto": "Revenus récurrents mensuels : Pays R$ 800, Continent R$ 1.800, Monde R$ 3.500, Parrainage Exclusif R$ 6.000.",
+        "b2b_titulo": "Forfaits Entreprises B2B",
+        "b2b_texto": "Cadeau pour employés ou clients. Remises progressives : 10% (10 codes), 30% (100), 50% (500), 70% (1.000).",
+        "projecoes_titulo": "Projections Financières",
+        "projecoes_texto": "Année 1 : R$ 33k-130k | Année 5 : R$ 500k-1,5M | Année 10 : R$ 3-8M | Année 20 : R$ 15-40M | Année 50 : R$ 75-250M.",
+        "tracao_titulo": "Traction et Résultats",
+        "tracao_texto": "12K+ utilisateurs actifs, 87% de rétention, 4,8★ de note, 23 partenaires B2B.",
+        "roteiro_titulo": "Feuille de Route Stratégique",
+        "roteiro_texto": "Consolidation, Expansion (Indonésie, Turquie, Vietnam), Entrée Mondiale et Leadership (20+ pays + IPO).",
+        "invest_titulo": "Investissement et Contact",
+        "invest_texto": "Round Seed R$ 3,5M · Valorisation R$ 14M · Equity jusqu'à 20%. Contact : a1elos.consultoria@gmail.com · www.a1elos.com",
+        "frase_final": "Les nombres ne mentent jamais — et ils pointent vers une opportunité extraordinaire."
     },
     "de": {
+        "titulo": "A1ELOS Global Numerology",
         "subtitulo": "Die Wissenschaft der Zahlen, angewendet auf Ihren Erfolg",
-        "titulo": "Unternehmenspräsentation für Investoren und Partner",
-        "confidencial": "VERTRAULICHES DOKUMENT · DUNS 942242668 · 27. August 2026",
-        "sobre_t": "1. ÜBER A1ELOS",
-        "sobre_p": [
-            "A1ELOS Global Numerology ist eine Holding für Spitzentechnologie und Wissen, die sich der Hochleistungs-Numerologie widmet. Wir betreiben eine globale Plattform, die die jahrtausendealte Tradition der Zahlen mit fortschrittlichen Algorithmen der Künstlichen Intelligenz verbindet und eine beispiellose analytische Präzision für Selbsterkenntnis und strategische Entscheidungsfindung bietet.",
-            "Mit einem konsolidierten Portfolio von 23 Produkten und Dienstleistungen in 12 Sprachen erreicht A1ELOS einen adressierbaren Markt von rund 5,4 Milliarden Sprechern, was etwa 67% der Weltbevölkerung entspricht. Unsere Glaubwürdigkeit wird durch die DUNS Number 942242668 (Dun & Bradstreet) bestätigt, eine in über 190 Ländern anerkannte Registrierung, die komplexe B2B-Homologationen, große Unternehmensverträge, internationale Joint Ventures und die Akkreditierung auf den wichtigsten globalen Technologie- und Finanzplattformen ermöglicht."
-        ],
-        "mercado_t": "2. DER MARKT (AKTUALISIERTE DATEN 2026)",
-        "mercado_p": [
-            "Das Segment der digitalen Spiritualität, Astrologie und Numerologie erlebt eine Phase beschleunigter Expansion, angetrieben durch die globale Suche nach Sinn und Werkzeugen zur Selbsterkenntnis, die über mobile Geräte zugänglich sind. A1ELOS ist an der exakten Schnittstelle zwischen subjektivem Wohlbefinden und Datentechnologie positioniert.",
-            "• Globaler Markt für Astrologie und Numerologie: im Biennium 2024/2026 auf zwischen US$ 14,3 und US$ 14,8 Milliarden geschätzt, mit robusten Prognosen, bis 2035 US$ 27 Milliarden zu erreichen (CAGR von ~6% p. a.).",
-            "• Spiritualitäts-Apps: Der App-Markt erreichte 2026 US$ 5,69 Milliarden, mit der Prognose, sich bis 2030 auf US$ 11,71 Milliarden zu verdoppeln (CAGR von ~19,8%).",
-            "• Nordamerikanischer Markt: Der Online-Sektor in den USA projiziert ein Wachstum von 12% pro Jahr, von US$ 1,36 Milliarden (2025) auf US$ 2,76 Milliarden (2031)."
-        ],
-        "port_t": "3. PORTFOLIO — 23 PRODUKTE UND DIENSTLEISTUNGEN",
-        "port_p": "Unsere Produktstruktur ist für eine flüssige Konsumreise konzipiert, von Einstiegsprodukten (Low-Ticket) bis hin zu Premium- und Unternehmenslösungen. Alle Berichte werden als digitales, KI-generiertes PDF geliefert, was nahezu null Grenzkosten und hohe Skalierbarkeit gewährleistet. Werte identisch mit denen auf den Karten der Website (Referenz: capas_produtos_12_idiomas.csv, Wechselkurs Aug/2026).",
-        "port_colunas": ["Stufe", "Produkte", "Preis (€)", "Indikative Umrechnung (Globale Währungen)"],
-        "port_linhas": [
-            ["Einstieg", "Express-Karte, Lebensphase & Jahr, Haustiername, Digitaler Spitzname, Domainname, Kanalname, Teamname, Name von NGO/Verein/Institut/Stiftung, Projektname, Veranstaltungsname", "€ 11,00", "R$ 8,00 | US$ 20,00 | ¥JPY 1.400 | ¥CNY 26,00 | ₽ 440,00 | Rp 11.000,00 | ₺ 58,00 | ₫ 25.000 | ₪ 44,00 | ر.س 35,00"],
-            ["Mittel", "Vollständige Karte, KI-Namenssuche", "€ 26,00", "R$ 17,00 | US$ 44,00 | ¥JPY 3.000 | ¥CNY 53,00 | ₽ 800,00 | Rp 23.000,00 | ₺ 123,00 | ₫ 53.000 | ₪ 98,00 | ر.س 71,00"],
-            ["Fortgeschritten", "Stimmzettelname-Validierung, Wahlnummer, Immobiliennummer, Monatlicher Energiekalender", "€ 35,00", "R$ 26,00 | US$ 71,00 | ¥JPY 4.600 | ¥CNY 71,00 | ₽ 1.250,00 | Rp 36.000,00 | ₺ 188,00 | ₫ 81.000 | ₪ 143,00 | ر.س 107,00"],
-            ["Fortgeschritten II", "Künstlername-Validierung, Babynamen-Planung, Unterschrifts-Validierung", "€ 53,00", "R$ 35,00 | US$ 89,00 | ¥JPY 6.200 | ¥CNY 98,00 | ₽ 1.700,00 | Rp 48.000,00 | ₺ 254,00 | ₫ 109.000 | ₪ 197,00 | ر.س 143,00"],
-            ["Premium", "Name für Unternehmen/Produkt, Paar-Karte", "€ 62,00", "R$ 44,00 | US$ 116,00 | ¥JPY 7.700 | ¥CNY 125,00 | ₽ 2.150,00 | Rp 60.000,00 | ₺ 319,00 | ₫ 137.000 | ₪ 242,00 | ر.س 170,00"],
-            ["Elite", "Premium-Familien-Karte", "€ 134,00", "R$ 98,00 | US$ 251,00 | ¥JPY 17.000 | ¥CNY 260,00 | ₽ 4.400,00 | Rp 134.000,00 | ₺ 710,00 | ₫ 305.000 | ₪ 530,00 | ر.س 377,00"],
-            ["B2B", "Unternehmensbonus", "Auf Anfrage", "Individuelle Firmenverträge mit DUNS-Unterstützung"]
-        ],
-        "alcance_t": "4. GLOBALE REICHWEITE UND WÄHRUNGSSTRATEGIE",
-        "alcance_p": [
-            "A1ELOS ist in 12 strategischen Sprachen tätig, was das Eindringen in Märkte mit hohem Einkommen und große Bevölkerungsmassen ermöglicht. Jede hinzugefügte Sprache ist nicht nur eine Übersetzung, sondern die Eröffnung eines neuen Finanzkorridors.",
-            "• Betriebswährungen: R$ (BRL), US$ (USD), € (EUR), ¥ (JPY), ¥ (CNY), ₽ (RUB), ₹ (INR), ₪ (ILS), ﷼ (SAR).",
-            "• Schlüsselmärkte: USD (USA und globale Transaktionen), EUR (Eurozone), SAR (Golfstaaten — hohe Marge), CNY/INR (asiatische Giganten mit ~2,8 Milliarden kombinierten Verbrauchern).",
-            "• Internationales PIX: Wir nutzen die grenzenlose globale Zahlungsinfrastruktur und erleichtern Echtzeittransaktionen in Ländern wie Chile, Argentinien, USA, Portugal, Spanien und Frankreich durch internationale Bankenreziprozitätsabkommen."
-        ],
-        "modelo_t": "5. GESCHÄFTSMODELL — EINNAHMEQUELLEN",
-        "modelo_p": [
-            "Unsere Monetarisierung ist auf drei komplementären Säulen aufgebaut, die Resilienz und diversifizierten Cashflow gewährleisten:",
-            "1. B2C (Business to Consumer): Direktverkauf personalisierter Berichte mit einem konsolidierten Durchschnittsticket von € 5,00.",
-            "2. B2B (Business to Business): Verkauf von Codepaketen (Unternehmensbonus) an Unternehmen mit progressiven Rabatten von 10% bis 70%, ideal für HR, Beratungen und Benefits-Programme.",
-            "3. Geolokalisierte und sprachliche Werbung: Bannersystem (728x90 und 320x100) mit intelligenter Rotation alle 8 Sekunden, das Werbetreibenden den Kauf von Zielgruppen nach Standort oder Sprache ermöglicht."
-        ],
-        "midia_t": "6. MEDIEN UND WERBUNG — SEGMENTIERUNG NACH SPRACHE",
-        "midia_p": "Die große Innovation von A1ELOS im Jahr 2026 ist das Preismodell, das regionale Reichweite von internationaler Reichweite trennt. Strategischer Hinweis: Vertraglich gebuchte Werbung ändert die Übersetzung der Website nicht — was sich ändert, ist die Anzeigereichweite. Reduzierter Preis bedeutet regionale Reichweite (spezifische Sprache); voller Preis bedeutet globale Reichweite (alle Sprachen).",
-        "midia_a_t": "Tabelle A — Geografische Segmentierung (Traditionell)",
-        "midia_a_colunas": ["Abdeckung", "Monatlich Fest (€)", "Temporäre Kampagne (€)"],
-        "midia_a_linhas": [
-            ["Bestimmtes Land", "€ 133", "€ 83"],
-            ["Kontinent", "€ 300", "€ 200"],
-            ["Welt (Global)", "€ 583", "€ 417"],
-            ["Exklusives Sponsoring", "€ 1.000", "€ 750"]
-        ],
-        "midia_b_t": "Tabelle B — Segmentierung nach Sprache (Regional x International)",
-        "midia_b_colunas": ["Modalität", "Beschreibung", "Empfohlene Investition"],
-        "midia_b_linhas": [
-            ["Einzelne Sprache (Regional)", "Anzeige auf eine Sprache beschränkt (z. B. nur Arabisch)", "Ab € 67/Monat"],
-            ["Sprachblock (2-5)", "Anzeige in ausgewählten Sprachclustern", "Ab € 150/Monat"],
-            ["Alle Sprachen (International)", "Anzeige im gesamten globalen Netzwerk der Plattform", "€ 583/Monat"]
-        ],
-        "b2b_t": "7. UNTERNEHMENSPAKETE B2B",
-        "b2b_p": "Mit der Unterstützung des DUNS 942242668 bieten wir strukturierte Pläne für den Firmenkundenmarkt mit aggressiven Rabatten für Skalierung:",
-        "b2b_linhas": [
-            "• Basisplan (50 Codes): 10% Rabatt.",
-            "• Mittelstufenplan (100 Codes): 30% Rabatt.",
-            "• Premium-Plan (200 Codes): 50% Rabatt.",
-            "• Industrieller Maßstab (1.000+ Codes): 70% Rabatt."
-        ],
-        "proj_t": "8. FINANZPROGNOSEN UND ZUKUNFTSVISION",
-        "proj_p": "Mit einer geschätzten Conversion-Rate zwischen 1% und 1,5% auf qualifizierten Traffic spiegeln die Prognosen von A1ELOS das Potenzial der digitalen Skalierung wider:",
-        "proj_linhas": [
-            "• Jahr 1: € 5.500 bis € 21.700 (organisch); bis € 167.000 mit bezahltem Traffic-Antrieb.",
-            "• Jahr 5: € 83.000 bis € 250.000.",
-            "• Jahr 10: € 500.000 bis € 1,33 Millionen.",
-            "• Jahr 20: € 2,5 Millionen bis € 6,67 Millionen."
-        ],
-        "seed_t": "9. INVESTITIONSMÖGLICHKEITEN (SEED-RUNDE)",
-        "seed_p": "Wir eröffnen eine Seed-Finanzierungsrunde, um die Marktdominanz in margenstarken Sprachen (SAR und USD) zu beschleunigen:",
-        "seed_linhas": [
-            "• Zielkapital: € 583.000.",
-            "• Pre-Money-Bewertung: € 2,33 Millionen.",
-            "• Verfügbares Eigenkapital: bis zu 20%.",
-            "• Ressourcenallokation: 45% Technologie/KI, 30% Globales Marketing, 25% Betrieb."
-        ],
-        "frase": "\"Zahlen lügen nie — und sie weisen auf eine außergewöhnliche Gelegenheit hin.\"",
-        "contato": "Kontakt: a1elos.consultoria@gmail.com",
-        "rodape": "© 2026 A1ELOS Assessoria e Consultoria — DUNS 942242668. Alle Rechte vorbehalten."
+        "capa_nota": "Präsentation für Investoren und Partner",
+        "confidencial": "VERTRAULICH",
+        "ano": "2026",
+        "sobre_titulo": "Über A1ELOS",
+        "sobre_texto": "Ein Technologie- und Wissensunternehmen, das die jahrtausendealte Tradition der Numerologie mit Künstlicher Intelligenz verbindet und digitale Berichte zu nahezu null Grenzkosten liefert.",
+        "sobre_kpis": ["23 Produkte", "14 Sprachen", "~5,3 Milliarden Sprecher", "Integrierte KI", "DUNS 942242668"],
+        "duns_titulo": "Internationale Glaubwürdigkeit",
+        "duns_texto": "Die DUNS-Nummer 942242668, ausgestellt von Dun & Bradstreet, ist in über 190 Ländern anerkannt und ermöglicht Unternehmensverträge, Ausschreibungen und internationale Joint Ventures.",
+        "mercado_titulo": "Marktchance",
+        "mercado_texto": "Globale Wellness-Wirtschaft: 6,8 Billionen US$ (2024) auf 9,8 Billionen US$ (2029). Astrologie/Numerologie-Apps: 3 Mrd. US$ (2024) auf 9 Mrd. US$ (2030), CAGR 20%.",
+        "problema_titulo": "Das Problem",
+        "problema_texto": "Generische Tools versagen beim Nutzer und die meisten verlangen Preise ohne Bezug zur lokalen Kaufkraft. A1ELOS behebt das.",
+        "solucao_titulo": "Unsere Lösung",
+        "solucao_texto": "Numerologie in großem Maßstab: proprietäre Algorithmen + KI + sofortige Lieferung von Premium-PDFs in 14 Sprachen.",
+        "alcance_titulo": "Globale Reichweite",
+        "alcance_texto": "14 Sprachen, die ~5,3 Milliarden Sprecher abdecken (~67% der Weltbevölkerung).",
+        "mercados_titulo": "3 Neue Märkte",
+        "mercados_texto": "Indonesien (255M Sprecher), Türkei (90M) und Vietnam (97M) — +442 Millionen neue Sprecher mit kartierter Kaufkraft.",
+        "preco_titulo": "Bewusste Preisgestaltung",
+        "preco_texto": "Das gleiche Wertverhältnis für alle Währungen, kalibriert auf die Kaufkraft (KKP) jedes Landes. Respektiert Kultur und Geldbeutel.",
+        "portfolio_titulo": "Portfolio",
+        "portfolio_texto": "23 Produkte in 4 Stufen (Einstieg R$ 8, Mittel R$ 17, Fortgeschritten R$ 26-35, Premium R$ 44-98) + B2B-Segment.",
+        "negocio_titulo": "Geschäftsmodell",
+        "negocio_texto": "3 Einnahmequellen: B2C (14 Sprachen, alle Währungen), B2B (gestaffelte Rabatte), Geolokalisierte Werbung.",
+        "banners_titulo": "Werbe-Banner",
+        "banners_texto": "Wiederkehrende Monatseinnahmen: Land R$ 800, Kontinent R$ 1.800, Welt R$ 3.500, Exklusiv-Sponsoring R$ 6.000.",
+        "b2b_titulo": "B2B-Unternehmenspakete",
+        "b2b_texto": "Geschenk für Mitarbeiter oder Kunden. Gestaffelte Rabatte: 10% (10 Codes), 30% (100), 50% (500), 70% (1.000).",
+        "projecoes_titulo": "Finanzprognosen",
+        "projecoes_texto": "Jahr 1: R$ 33k-130k | Jahr 5: R$ 500k-1,5M | Jahr 10: R$ 3-8M | Jahr 20: R$ 15-40M | Jahr 50: R$ 75-250M.",
+        "tracao_titulo": "Traction und Ergebnisse",
+        "tracao_texto": "12K+ aktive Nutzer, 87% Retention, 4,8★ Bewertung, 23 B2B-Partner.",
+        "roteiro_titulo": "Strategische Roadmap",
+        "roteiro_texto": "Konsolidierung, Expansion (Indonesien, Türkei, Vietnam), Globaler Eintritt und Führung (20+ Länder + IPO).",
+        "invest_titulo": "Investition und Kontakt",
+        "invest_texto": "Seed-Runde R$ 3,5M · Bewertung R$ 14M · Equity bis 20%. Kontakt: a1elos.consultoria@gmail.com · www.a1elos.com",
+        "frase_final": "Zahlen lügen nie — und sie zeigen auf eine außergewöhnliche Gelegenheit."
     },
-    "ja": {
-        "subtitulo": "数字の科学をあなたの成功に",
-        "titulo": "投資家・パートナー向け会社案内",
-        "confidencial": "機密文書 · DUNS 942242668 · 2026年8月27日",
-        "sobre_t": "1. A1ELOSについて",
-        "sobre_p": [
-            "A1ELOS Global Numerologyは、ハイパフォーマンス・ヌメロロジーに特化した最先端のテクノロジーと知識のホールディングです。私たちは、数千年にわたる数字の伝統と高度な人工知能アルゴリズムを統合したグローバルプラットフォームを運営し、自己認識と戦略的意思決定のために前例のない分析的精度を提供しています。",
-            "12言語で利用可能な23の製品・サービスからなる確立されたポートフォリオにより、A1ELOSは約54億人の話者というアドレス可能な市場（世界人口の約67%）に到達します。当社の信頼性は、DUNS番号942242668（Dun & Bradstreet）によって裏付けられています。これは190以上の国で認められた登録であり、複雑なB2B認証、大規模な企業契約、国際合弁事業、そして主要なグローバルテクノロジー・金融プラットフォームでの認定を可能にします。"
-        ],
-        "mercado_t": "2. 市場（2026年最新データ）",
-        "mercado_p": [
-            "デジタルスピリチュアリティ、占星術、ヌメロロジーの分野は、モバイル端末でアクセスできる目的意識と自己認識ツールへの世界的な関心に牽引され、急速な拡大期にあります。A1ELOSは、主観的ウェルビーイングとデータテクノロジーのまさに交差点に位置しています。",
-            "• 占星術・ヌメロロジーの世界市場：2024/2026年の2年間でUS$ 143億〜148億と評価され、2035年までにUS$ 270億に達するという堅調な見通し（CAGR 約6%/年）。",
-            "• スピリチュアリティアプリ：アプリ市場は2026年にUS$ 56.9億に達し、2030年までにUS$ 117.1億に倍増する見込み（CAGR 約19.8%）。",
-            "• 北米市場：米国のオンライン分野は年12%の成長を見込み、US$ 13.6億（2025年）からUS$ 27.6億（2031年）へ拡大します。"
-        ],
-        "port_t": "3. ポートフォリオ — 23の製品・サービス",
-        "port_p": "当社の製品構成は、エントリー製品（ローコスト）からプレミアムおよび法人向けソリューションまで、流動的な消費ジャーニーのために設計されています。すべてのレポートはAI生成のデジタルPDF形式で納品され、限界コストをほぼゼロに抑え、高いスケーラビリティを実現します。価格はウェブサイトのカードに表示されているものと同一です（参照: capas_produtos_12_idiomas.csv、2026年8月の為替レート）。",
-        "port_colunas": ["レベル", "製品", "価格 (¥JPY)", "参考換算（グローバル通貨）"],
-        "port_linhas": [
-            ["エントリー", "エクスプレスマップ, ライフステージと年, ペットの名前, デジタルニックネーム, ドメイン名, チャンネル名, チーム名, NGO・協会・研究所・財団の名前, プロジェクト名, イベント名", "¥ 1.400", "R$ 8,00 | US$ 20,00 | € 11,00 | ¥CNY 26,00 | ₽ 440,00 | Rp 11.000,00 | ₺ 58,00 | ₫ 25.000 | ₪ 44,00 | ر.س 35,00"],
-            ["ミドル", "完全マップ, AI名前検索", "¥ 3.000", "R$ 17,00 | US$ 44,00 | € 26,00 | ¥CNY 53,00 | ₽ 800,00 | Rp 23.000,00 | ₺ 123,00 | ₫ 53.000 | ₪ 98,00 | ر.س 71,00"],
-            ["アドバンス", "投票用紙名の検証, 選挙番号, 不動産番号, 月間エネルギーカレンダー", "¥ 4.600", "R$ 26,00 | US$ 71,00 | € 35,00 | ¥CNY 71,00 | ₽ 1.250,00 | Rp 36.000,00 | ₺ 188,00 | ₫ 81.000 | ₪ 143,00 | ر.س 107,00"],
-            ["アドバンスII", "芸名の検証, 赤ちゃんの名前計画, 署名の検証", "¥ 6.200", "R$ 35,00 | US$ 89,00 | € 53,00 | ¥CNY 98,00 | ₽ 1.700,00 | Rp 48.000,00 | ₺ 254,00 | ₫ 109.000 | ₪ 197,00 | ر.س 143,00"],
-            ["プレミアム", "ビジネス・商品名, カップルマップ", "¥ 7.700", "R$ 44,00 | US$ 116,00 | € 62,00 | ¥CNY 125,00 | ₽ 2.150,00 | Rp 60.000,00 | ₺ 319,00 | ₫ 137.000 | ₪ 242,00 | ر.س 170,00"],
-            ["エリート", "プレミアム家族マップ", "¥ 17.000", "R$ 98,00 | US$ 251,00 | € 134,00 | ¥CNY 260,00 | ₽ 4.400,00 | Rp 134.000,00 | ₺ 710,00 | ₫ 305.000 | ₪ 530,00 | ر.س 377,00"],
-            ["B2B", "法人ボーナス", "お問い合わせ", "DUNS保証付きカスタム法人契約"]
-        ],
-        "alcance_t": "4. グローバルな到達範囲と通貨戦略",
-        "alcance_p": [
-            "A1ELOSは12の戦略言語で事業を展開し、高所得市場と大規模な人口市場への浸透を可能にしています。言語を追加することは単なる翻訳ではなく、新たな金融回廊の開設です。",
-            "• 取扱通貨: R$ (BRL)、US$ (USD)、€ (EUR)、¥ (JPY)、¥ (CNY)、₽ (RUB)、₹ (INR)、₪ (ILS)、﷼ (SAR)。",
-            "• 主要市場: USD（米国およびグローバル取引）、EUR（ユーロ圏）、SAR（湾岸諸国 — 高マージン）、CNY/INR（合計約28億人の消費者を抱えるアジアの巨人）。",
-            "• 国際PIX: 国境のないグローバル決済インフラを活用し、国際銀行相互協定を通じて、チリ、アルゼンチン、米国、ポルトガル、スペイン、フランスなどの国々でのリアルタイム取引を促進します。"
-        ],
-        "modelo_t": "5. ビジネスモデル — 収益源",
-        "modelo_p": [
-            "当社のマネタイズは、回復力と多様なキャッシュフローを保証する3つの補完的な柱で構成されています:",
-            "1. B2C（Business to Consumer）: 統合平均チケット¥JPY 938のパーソナライズレポートの直接販売。",
-            "2. B2B（Business to Business）: 企業向けコードパッケージ（法人ボーナス）の販売。10%〜70%の段階的割引で、人事、コンサルティング、福利厚生プログラムに最適です。",
-            "3. 位置情報・言語別広告: 8秒ごとにスマートに切り替わるバナーシステム（728x90および320x100）により、広告主は場所や言語でオーディエンスを購入できます。"
-        ],
-        "midia_t": "6. メディアと広告 — 言語別セグメンテーション",
-        "midia_p": "2026年のA1ELOSの大きな革新は、地域リーチと国際リーチを分離する価格モデルです。戦略的注記: 契約された広告はサイトの翻訳を変更しません — 変わるのは表示リーチです。低価格は地域リーチ（特定言語）を意味し、フル価格はグローバルリーチ（全言語）を意味します。",
-        "midia_a_t": "表A — 地理的セグメンテーション（従来型）",
-        "midia_a_colunas": ["対象範囲", "月額固定 (¥JPY)", "期間限定キャンペーン (¥JPY)"],
-        "midia_a_linhas": [
-            ["特定国", "¥JPY 25.000", "¥JPY 15.625"],
-            ["大陸", "¥JPY 56.250", "¥JPY 37.500"],
-            ["世界（グローバル）", "¥JPY 109.375", "¥JPY 78.125"],
-            ["独占スポンサーシップ", "¥JPY 187.500", "¥JPY 140.625"]
-        ],
-        "midia_b_t": "表B — 言語別セグメンテーション（地域 x 国際）",
-        "midia_b_colunas": ["モダリティ", "説明", "推奨投資額"],
-        "midia_b_linhas": [
-            ["単一言語（地域）", "1つの言語のみに表示（例: アラビア語のみ）", "月額¥JPY 12.500〜"],
-            ["言語ブロック（2〜5）", "選択された言語クラスターに表示", "月額¥JPY 28.125〜"],
-            ["全言語（国際）", "プラットフォームのグローバルネットワーク全体に表示", "月額¥JPY 109.375"]
-        ],
-        "b2b_t": "7. 法人向けB2Bパッケージ",
-        "b2b_p": "DUNS 942242668の裏付けを活用し、スケールに応じた積極的な割引で法人市場向けの構造化プランを提供します:",
-        "b2b_linhas": [
-            "• ベーシックプラン（50コード）: 10%割引。",
-            "• ミドルプラン（100コード）: 30%割引。",
-            "• プレミアムプラン（200コード）: 50%割引。",
-            "• 産業規模（1,000コード以上）: 70%割引。"
-        ],
-        "proj_t": "8. 財務見通しと将来ビジョン",
-        "proj_p": "見込み顧客トラフィックに対する推定コンバージョン率1%〜1.5%で、A1ELOSの見通しはデジタルスケールの可能性を反映しています:",
-        "proj_linhas": [
-            "• 1年目: ¥JPY 1.031.250〜¥JPY 4.062.500（オーガニック）; 有料トラフィックで最大¥JPY 31.250.000。",
-            "• 5年目: ¥JPY 15.625.000〜¥JPY 46.875.000。",
-            "• 10年目: ¥JPY 93.750.000〜¥JPY 250.000.000。",
-            "• 20年目: ¥JPY 468.750.000〜¥JPY 1.250.000.000。"
-        ],
-        "seed_t": "9. 投資機会（シードラウンド）",
-        "seed_p": "高マージンの言語（SARおよびUSD）で市場支配を加速するため、シード調達ラウンドを開設しています:",
-        "seed_linhas": [
-            "• 目標調達額: ¥JPY 109.375.000。",
-            "• プレマネー評価額: ¥JPY 437.500.000。",
-            "• 利用可能な株式: 最大20%。",
-            "• リソース配分: 45% テクノロジー/AI、30% グローバルマーケティング、25% オペレーション。"
-        ],
-        "frase": "「数字は決して嘘をつかない — そして、並外れた機会を指し示している。」",
-        "contato": "連絡先: a1elos.consultoria@gmail.com",
-        "rodape": "© 2026 A1ELOS Assessoria e Consultoria — DUNS 942242668. 全著作権所有。"
+        "ru": {
+        "titulo": "A1ELOS Global Numerology",
+        "subtitulo": "Наука чисел, применённая к вашему успеху",
+        "capa_nota": "Презентация для инвесторов и партнёров",
+        "confidencial": "КОНФИДЕНЦИАЛЬНО",
+        "ano": "2026",
+        "sobre_titulo": "О компании A1ELOS",
+        "sobre_texto": "Технологический и интеллектуальный холдинг, объединяющий многовековую традицию нумерологии с искусственным интеллектом и доставляющий мгновенные цифровые отчёты с почти нулевой себестоимостью.",
+        "sobre_kpis": ["23 продукта", "14 языков", "~5,3 млрд носителей", "Интегрированный ИИ", "DUNS 942242668"],
+        "duns_titulo": "Международная надёжность",
+        "duns_texto": "Номер DUNS 942242668, выданный Dun & Bradstreet, признан более чем в 190 странах и позволяет заключать корпоративные контракты, участвовать в тендерах и международных совместных предприятиях.",
+        "mercado_titulo": "Рыночная возможность",
+        "mercado_texto": "Мировая экономика благополучия: 6,8 трлн долл. (2024) до 9,8 трлн долл. (2029). Приложения астрологии/нумерологии: 3 млрд (2024) до 9 млрд (2030), CAGR 20%.",
+        "problema_titulo": "Проблема",
+        "problema_texto": "Универсальные инструменты не оправдывают ожиданий, а большинство устанавливает цены, не учитывающие местную покупательную способность. A1ELOS исправляет это.",
+        "solucao_titulo": "Наше решение",
+        "solucao_texto": "Нумерология в масштабе: собственные алгоритмы + ИИ + мгновенная доставка премиальных PDF на 14 языках.",
+        "alcance_titulo": "Глобальный охват",
+        "alcance_texto": "14 языков, охватывающих ~5,3 млрд носителей (~67% населения мира).",
+        "mercados_titulo": "3 новых рынка",
+        "mercados_texto": "Индонезия (255 млн), Турция (90 млн) и Вьетнам (97 млн) — +442 млн новых носителей с учётом покупательной способности.",
+        "preco_titulo": "Осознанное ценообразование",
+        "preco_texto": "Одинаковая пропорция ценности для всех валют, откалиброванная по покупательной способности (ППС) каждой страны. Уважает культуру и кошелёк.",
+        "portfolio_titulo": "Портфель",
+        "portfolio_texto": "23 продукта в 4 уровнях (Вход R$ 8, Средний R$ 17, Продвинутый R$ 26-35, Премиум R$ 44-98) + сегмент B2B.",
+        "negocio_titulo": "Бизнес-модель",
+        "negocio_texto": "3 источника дохода: B2C (14 языков, все валюты), B2B (прогрессивные скидки), Геолокализованная реклама.",
+        "banners_titulo": "Рекламные баннеры",
+        "banners_texto": "Регулярный ежемесячный доход: Страна R$ 800, Континент R$ 1.800, Мир R$ 3.500, Эксклюзивное спонсорство R$ 6.000.",
+        "b2b_titulo": "Корпоративные пакеты B2B",
+        "b2b_texto": "Подарок для сотрудников или клиентов. Прогрессивные скидки: 10% (10 кодов), 30% (100), 50% (500), 70% (1.000).",
+        "projecoes_titulo": "Финансовые прогнозы",
+        "projecoes_texto": "Год 1: R$ 33k-130k | Год 5: R$ 500k-1,5M | Год 10: R$ 3-8M | Год 20: R$ 15-40M | Год 50: R$ 75-250M.",
+        "tracao_titulo": "Тяга и результаты",
+        "tracao_texto": "12K+ активных пользователей, 87% удержания, 4,8★ рейтинг, 23 партнёра B2B.",
+        "roteiro_titulo": "Стратегическая дорожная карта",
+        "roteiro_texto": "Консолидация, Расширение (Индонезия, Турция, Вьетнам), Глобальный вход и Лидерство (20+ стран + IPO).",
+        "invest_titulo": "Инвестиции и контакты",
+        "invest_texto": "Посевной раунд R$ 3,5M · Оценка R$ 14M · Доля до 20%. Контакт: a1elos.consultoria@gmail.com · www.a1elos.com",
+        "frase_final": "Числа никогда не лгут — и указывают на необычайную возможность."
     },
     "zh": {
-        "subtitulo": "数字科学，助力您的成功",
-        "titulo": "面向投资者和合作伙伴的企业介绍",
-        "confidencial": "机密文件 · DUNS 942242668 · 2026年8月27日",
-        "sobre_t": "1. 关于 A1ELOS",
-        "sobre_p": [
-            "A1ELOS Global Numerology 是一家致力于高性能数字命理学的尖端技术与知识控股公司。我们运营一个全球平台，将数字的千年传统与先进的人工智能算法相结合，为自我认知和战略决策提供前所未有的分析精度。",
-            "凭借 23 种产品和服务（支持 12 种语言）的成熟产品组合，A1ELOS 可触达约 54 亿使用者的潜在市场，约占世界人口的 67%。我们的信誉由 DUNS 编号 942242668（Dun & Bradstreet）背书，该注册在 190 多个国家得到认可，可为复杂的 B2B 认证、大规模企业合同、国际合资企业以及在全球领先的科技和金融平台上的认证提供支持。"
-        ],
-        "mercado_t": "2. 市场（2026年最新数据）",
-        "mercado_p": [
-            "数字灵性、占星和数字命理领域正经历加速扩张阶段，这得益于全球对人生目标以及可通过移动设备获取的自我认知工具的追求。A1ELOS 正位于主观幸福感与数据技术的精确交汇点。",
-            "• 全球占星与数字命理市场：2024/2026 两年期估值在 US$ 143 亿至 148 亿之间，有望在 2035 年前达到 US$ 270 亿（年复合增长率约 6%）。",
-            "• 灵性应用：应用市场在 2026 年达到 US$ 56.9 亿，预计到 2030 年翻一番至 US$ 117.1 亿（年复合增长率约 19.8%）。",
-            "• 北美市场：美国在线行业预计年增长 12%，从 2025 年的 US$ 13.6 亿增长至 2031 年的 US$ 27.6 亿。"
-        ],
-        "port_t": "3. 产品组合 — 23 种产品与服务",
-        "port_p": "我们的产品结构旨在打造顺畅的消费旅程，从入门产品（低价位）到高级和企业级解决方案。所有报告均以 AI 生成的数字 PDF 格式交付，确保边际成本接近于零并具有高可扩展性。价格与网站卡片上显示的价格完全一致（参考：capas_produtos_12_idiomas.csv，2026年8月汇率）。",
-        "port_colunas": ["级别", "产品", "价格 (¥CNY)", "参考换算（全球货币）"],
-        "port_linhas": [
-            ["入门", "快速地图, 生命阶段与年份, 宠物名字, 数字昵称, 域名, 频道名称, 团队名称, 非政府组织、协会、研究所或基金会名称, 项目名称, 活动名称", "¥ 26,00", "R$ 8,00 | US$ 20,00 | € 11,00 | ¥JPY 1.400 | ₽ 440,00 | Rp 11.000,00 | ₺ 58,00 | ₫ 25.000 | ₪ 44,00 | ر.س 35,00"],
-            ["中级", "完整地图, AI名字搜索", "¥ 53,00", "R$ 17,00 | US$ 44,00 | € 26,00 | ¥JPY 3.000 | ₽ 800,00 | Rp 23.000,00 | ₺ 123,00 | ₫ 53.000 | ₪ 98,00 | ر.س 71,00"],
-            ["高级", "选票名称验证, 选举号码, 房产号码, 每月能量日历", "¥ 71,00", "R$ 26,00 | US$ 71,00 | € 35,00 | ¥JPY 4.600 | ₽ 1.250,00 | Rp 36.000,00 | ₺ 188,00 | ₫ 81.000 | ₪ 143,00 | ر.س 107,00"],
-            ["高级II", "艺名验证, 宝宝取名规划, 签名验证", "¥ 98,00", "R$ 35,00 | US$ 89,00 | € 53,00 | ¥JPY 6.200 | ₽ 1.700,00 | Rp 48.000,00 | ₺ 254,00 | ₫ 109.000 | ₪ 197,00 | ر.س 143,00"],
-            ["高级版", "企业/产品名称, 情侣地图", "¥ 125,00", "R$ 44,00 | US$ 116,00 | € 62,00 | ¥JPY 7.700 | ₽ 2.150,00 | Rp 60.000,00 | ₺ 319,00 | ₫ 137.000 | ₪ 242,00 | ر.س 170,00"],
-            ["精英", "高级家庭地图", "¥ 260,00", "R$ 98,00 | US$ 251,00 | € 134,00 | ¥JPY 17.000 | ₽ 4.400,00 | Rp 134.000,00 | ₺ 710,00 | ₫ 305.000 | ₪ 530,00 | ر.س 377,00"],
-            ["B2B", "企业奖励", "咨询", "DUNS背书的定制企业合同"]
-        ],
-        "alcance_t": "4. 全球覆盖与货币策略",
-        "alcance_p": [
-            "A1ELOS 以 12 种战略语言运营，可深入高收入市场和庞大人口市场。每增加一种语言不仅是翻译，更是开启一条新的金融通道。",
-            "• 运营货币：R$ (BRL)、US$ (USD)、€ (EUR)、¥ (JPY)、¥ (CNY)、₽ (RUB)、₹ (INR)、₪ (ILS)、﷼ (SAR)。",
-            "• 关键市场：USD（美国及全球交易）、EUR（欧元区）、SAR（海湾国家 — 高利润率）、CNY/INR（合计约 28 亿消费者的亚洲巨头）。",
-            "• 国际 PIX：我们利用无国界的全球支付基础设施，通过国际银行互惠协议，促进智利、阿根廷、美国、葡萄牙、西班牙和法国等国的实时交易。"
-        ],
-        "modelo_t": "5. 商业模式 — 收入来源",
-        "modelo_p": [
-            "我们的变现模式建立在三大互补支柱之上，确保韧性和多元化的现金流：",
-            "1. B2C（企业对消费者）：直接销售个性化报告，综合平均客单价为 ¥CNY 39。",
-            "2. B2B（企业对企业）：向企业销售代码包（企业奖励），享受 10% 至 70% 的阶梯折扣，非常适合人力资源、咨询和福利计划。",
-            "3. 地理定位与语言定向广告：横幅系统（728x90 和 320x100），每 8 秒智能轮播，让广告主可按位置或语言购买受众。"
-        ],
-        "midia_t": "6. 媒体与广告 — 按语言细分",
-        "midia_p": "A1ELOS 在 2026 年的重大创新是区分区域覆盖与国际覆盖的定价模式。战略说明：签约广告不会改变网站的翻译 — 改变的是展示覆盖范围。低价意味着区域覆盖（特定语言）；全价意味着全球覆盖（所有语言）。",
-        "midia_a_t": "表A — 地理细分（传统）",
-        "midia_a_colunas": ["覆盖范围", "月固定费 (¥CNY)", "临时活动 (¥CNY)"],
-        "midia_a_linhas": [
-            ["特定国家", "¥CNY 1.039", "¥CNY 649"],
-            ["大洲", "¥CNY 2.338", "¥CNY 1.558"],
-            ["全球", "¥CNY 4.545", "¥CNY 3.247"],
-            ["独家赞助", "¥CNY 7.792", "¥CNY 5.844"]
-        ],
-        "midia_b_t": "表B — 按语言细分（区域 x 国际）",
-        "midia_b_colunas": ["模式", "说明", "建议投资额"],
-        "midia_b_linhas": [
-            ["单一语言（区域）", "仅限一种语言展示（例如：仅阿拉伯语）", "每月 ¥CNY 519 起"],
-            ["语言组合（2-5）", "在选定的语言群组中展示", "每月 ¥CNY 1.169 起"],
-            ["所有语言（国际）", "在平台全球网络范围内展示", "每月 ¥CNY 4.545"]
-        ],
-        "b2b_t": "7. 企业 B2B 套餐",
-        "b2b_p": "凭借 DUNS 942242668 的支持，我们为企业市场提供结构化方案，并随规模提供极具竞争力的折扣：",
-        "b2b_linhas": [
-            "• 基础套餐（50 个代码）：10% 折扣。",
-            "• 中级套餐（100 个代码）：30% 折扣。",
-            "• 高级套餐（200 个代码）：50% 折扣。",
-            "• 工业规模（1,000+ 个代码）：70% 折扣。"
-        ],
-        "proj_t": "8. 财务预测与未来愿景",
-        "proj_p": "基于合格流量 1% 至 1.5% 的预估转化率，A1ELOS 的预测体现了数字规模化的潜力：",
-        "proj_linhas": [
-            "• 第1年：¥CNY 42.857 至 ¥CNY 168.831（自然增长）；付费流量带动下最高可达 ¥CNY 1.298.701。",
-            "• 第5年：¥CNY 649.351 至 ¥CNY 1.948.052。",
-            "• 第10年：¥CNY 3.896.104 至 ¥CNY 10.389.610。",
-            "• 第20年：¥CNY 19.480.519 至 ¥CNY 51.948.052。"
-        ],
-        "seed_t": "9. 投资机会（种子轮）",
-        "seed_p": "我们正在启动一轮种子融资，以加速在高利润率语言市场（SAR 和 USD）的主导地位：",
-        "seed_linhas": [
-            "• 目标融资额：¥CNY 4.545.455。",
-            "• 投前估值：¥CNY 18.181.818。",
-            "• 可出让股权：最高 20%。",
-            "• 资源分配：45% 技术/AI、30% 全球营销、25% 运营。"
-        ],
-        "frase": "“数字从不说谎——它们指向一个非凡的机遇。”",
-        "contato": "联系方式：a1elos.consultoria@gmail.com",
-        "rodape": "© 2026 A1ELOS Assessoria e Consultoria — DUNS 942242668。版权所有。"
+        "titulo": "A1ELOS 全球数字命理学",
+        "subtitulo": "数字科学，成就您的成功",
+        "capa_nota": "投资者与合作伙伴演示",
+        "confidencial": "机密",
+        "ano": "2026",
+        "sobre_titulo": "关于 A1ELOS",
+        "sobre_texto": "一家技术与知识控股公司，将数字命理学的千年传统与人工智能相结合，以接近零的边际成本交付即时数字报告。",
+        "sobre_kpis": ["23 种产品", "14 种语言", "约53亿使用者", "集成AI", "DUNS 942242668"],
+        "duns_titulo": "国际信誉",
+        "duns_texto": "由邓白氏（Dun & Bradstreet）颁发的 DUNS 编号 942242668 在190多个国家得到认可，可开展企业合同、国际招标和合资企业。",
+        "mercado_titulo": "市场机遇",
+        "mercado_texto": "全球健康经济：6.8万亿美元（2024年）增至9.8万亿美元（2029年）。占星/数字命理应用：30亿美元（2024年）增至90亿美元（2030年），年复合增长率20%。",
+        "problema_titulo": "问题",
+        "problema_texto": "通用工具无法满足用户需求，多数收费脱离当地购买力。A1ELOS 解决了这一点。",
+        "solucao_titulo": "我们的解决方案",
+        "solucao_texto": "大规模应用数字命理学：专有算法 + AI + 以14种语言即时交付高级PDF。",
+        "alcance_titulo": "全球覆盖",
+        "alcance_texto": "14种语言覆盖约53亿使用者（约占世界人口的67%）。",
+        "mercados_titulo": "3个新市场",
+        "mercados_texto": "印度尼西亚（2.55亿使用者）、土耳其（9000万）和越南（9700万）——新增4.42亿使用者，购买力已测绘。",
+        "preco_titulo": "理性定价",
+        "preco_texto": "所有货币保持相同的价值比例，根据各国购买力（PPP）校准。尊重文化和钱包。",
+        "portfolio_titulo": "产品组合",
+        "portfolio_texto": "23种产品，4个层级（入门 R$ 8，中级 R$ 17，高级 R$ 26-35，尊享 R$ 44-98）+ B2B 板块。",
+        "negocio_titulo": "商业模式",
+        "negocio_texto": "3个收入来源：B2C（14种语言，所有货币）、B2B（阶梯折扣）、地域定向广告。",
+        "banners_titulo": "广告横幅",
+        "banners_texto": "每月经常性收入：国家 R$ 800，大洲 R$ 1,800，全球 R$ 3,500，独家赞助 R$ 6,000。",
+        "b2b_titulo": "B2B 企业套餐",
+        "b2b_texto": "员工或客户礼品。阶梯折扣：10%（10个代码），30%（100个），50%（500个），70%（1,000个）。",
+        "projecoes_titulo": "财务预测",
+        "projecoes_texto": "第1年：R$ 33k-130k | 第5年：R$ 500k-150万 | 第10年：R$ 300万-800万 | 第20年：R$ 1500万-4000万 | 第50年：R$ 7500万-2.5亿。",
+        "tracao_titulo": "牵引力与成果",
+        "tracao_texto": "12,000+ 活跃用户，87% 留存率，4.8★ 评分，23个 B2B 合作伙伴。",
+        "roteiro_titulo": "战略路线图",
+        "roteiro_texto": "整合、扩张（印度尼西亚、土耳其、越南）、全球进入和领导地位（20+ 国家 + IPO）。",
+        "invest_titulo": "投资与联系",
+        "invest_texto": "种子轮 R$ 350万 · 估值 R$ 1400万 · 股权最高20%。联系：a1elos.consultoria@gmail.com · www.a1elos.com",
+        "frase_final": "数字从不说谎——它们指向一个非凡的机遇。"
     },
-    "ru": {
-        "subtitulo": "Наука чисел, применённая к вашему успеху",
-        "titulo": "Бизнес-презентация для инвесторов и партнёров",
-        "confidencial": "КОНФИДЕНЦИАЛЬНЫЙ ДОКУМЕНТ · DUNS 942242668 · 27 августа 2026 г.",
-        "sobre_t": "1. О КОМПАНИИ A1ELOS",
-        "sobre_p": [
-            "A1ELOS Global Numerology — передовой технологический и интеллектуальный холдинг, специализирующийся на высокоэффективной нумерологии. Мы управляем глобальной платформой, объединяющей тысячелетнюю традицию чисел с передовыми алгоритмами искусственного интеллекта и обеспечивающей беспрецедентную аналитическую точность для самопознания и принятия стратегических решений.",
-            "Имея сформированный портфель из 23 продуктов и услуг, доступных на 12 языках, A1ELOS охватывает адресуемый рынок примерно в 5,4 млрд говорящих, что составляет около 67% населения мира. Наша надёжность подтверждена номером DUNS 942242668 (Dun & Bradstreet) — регистрацией, признанной более чем в 190 странах, которая обеспечивает сложные B2B-сертификации, крупномасштабные корпоративные контракты, международные совместные предприятия и аккредитацию на ведущих мировых технологических и финансовых платформах."
-        ],
-        "mercado_t": "2. РЫНОК (АКТУАЛИЗИРОВАННЫЕ ДАННЫЕ 2026)",
-        "mercado_p": [
-            "Сегмент цифровой духовности, астрологии и нумерологии переживает фазу ускоренного роста, движимого глобальным поиском смысла и инструментов самопознания, доступных через мобильные устройства. A1ELOS находится на точном пересечении субъективного благополучия и технологий обработки данных.",
-            "• Глобальный рынок астрологии и нумерологии: оценивается в US$ 14,3–14,8 млрд в 2024/2026 гг., с прогнозами достижения US$ 27 млрд к 2035 году (CAGR ~6% в год).",
-            "• Приложения для духовности: рынок приложений достиг US$ 5,69 млрд в 2026 году, с прогнозом удвоения до US$ 11,71 млрд к 2030 году (CAGR ~19,8%).",
-            "• Североамериканский рынок: онлайн-сектор США прогнозирует рост на 12% в год — с US$ 1,36 млрд (2025) до US$ 2,76 млрд (2031)."
-        ],
-        "port_t": "3. ПОРТФЕЛЬ — 23 ПРОДУКТА И УСЛУГИ",
-        "port_p": "Наша продуктовая структура разработана для плавного пути потребления — от входных продуктов (низкий чек) до премиальных и корпоративных решений. Все отчёты доставляются в цифровом PDF-формате, созданном ИИ, что обеспечивает почти нулевую предельную стоимость и высокую масштабируемость. Цены идентичны указанным на карточках сайта (источник: capas_produtos_12_idiomas.csv, курс августа 2026 г.).",
-        "port_colunas": ["Уровень", "Продукты", "Цена (₽)", "Индикативная конверсия (Мировые валюты)"],
-        "port_linhas": [
-            ["Вход", "Экспресс-карта, Жизненный этап и год, Имя питомца, Цифровой никнейм, Имя домена, Название канала, Название команды, Название НКО/ассоциации/института/фонда, Название проекта, Название события", "₽ 440,00", "R$ 8,00 | US$ 20,00 | € 11,00 | ¥JPY 1.400 | ¥CNY 26,00 | Rp 11.000,00 | ₺ 58,00 | ₫ 25.000 | ₪ 44,00 | ر.س 35,00"],
-            ["Средний", "Полная карта, ИИ-поиск имён", "₽ 800,00", "R$ 17,00 | US$ 44,00 | € 26,00 | ¥JPY 3.000 | ¥CNY 53,00 | Rp 23.000,00 | ₺ 123,00 | ₫ 53.000 | ₪ 98,00 | ر.س 71,00"],
-            ["Продвинутый", "Проверка названия бюллетеня, Избирательный номер, Номер недвижимости, Ежемесячный энергетический календарь", "₽ 1.250,00", "R$ 26,00 | US$ 71,00 | € 35,00 | ¥JPY 4.600 | ¥CNY 71,00 | Rp 36.000,00 | ₺ 188,00 | ₫ 81.000 | ₪ 143,00 | ر.س 107,00"],
-            ["Продвинутый II", "Проверка сценического имени, Планирование имени ребёнка, Проверка подписей", "₽ 1.700,00", "R$ 35,00 | US$ 89,00 | € 53,00 | ¥JPY 6.200 | ¥CNY 98,00 | Rp 48.000,00 | ₺ 254,00 | ₫ 109.000 | ₪ 197,00 | ر.س 143,00"],
-            ["Премиум", "Название для бизнеса/продукта, Карта пары", "₽ 2.150,00", "R$ 44,00 | US$ 116,00 | € 62,00 | ¥JPY 7.700 | ¥CNY 125,00 | Rp 60.000,00 | ₺ 319,00 | ₫ 137.000 | ₪ 242,00 | ر.س 170,00"],
-            ["Элит", "Премиальная семейная карта", "₽ 4.400,00", "R$ 98,00 | US$ 251,00 | € 134,00 | ¥JPY 17.000 | ¥CNY 260,00 | Rp 134.000,00 | ₺ 710,00 | ₫ 305.000 | ₪ 530,00 | ر.س 377,00"],
-            ["B2B", "Корпоративный бонус", "По запросу", "Индивидуальные корпоративные контракты при поддержке DUNS"]
-        ],
-        "alcance_t": "4. ГЛОБАЛЬНЫЙ ОХВАТ И ВАЛЮТНАЯ СТРАТЕГИЯ",
-        "alcance_p": [
-            "A1ELOS работает на 12 стратегических языках, что обеспечивает проникновение на рынки с высокими доходами и в крупные демографические группы. Каждый добавленный язык — это не просто перевод, а открытие нового финансового коридора.",
-            "• Рабочие валюты: R$ (BRL), US$ (USD), € (EUR), ¥ (JPY), ¥ (CNY), ₽ (RUB), ₹ (INR), ₪ (ILS), ﷼ (SAR).",
-            "• Ключевые рынки: USD (США и глобальные транзакции), EUR (еврозона), SAR (страны Персидского залива — высокая маржа), CNY/INR (азиатские гиганты с ~2,8 млрд совокупных потребителей).",
-            "• Международный PIX: мы используем безграничную глобальную платёжную инфраструктуру, обеспечивая транзакции в реальном времени в таких странах, как Чили, Аргентина, США, Португалия, Испания и Франция, через соглашения о банковской взаимности."
-        ],
-        "modelo_t": "5. БИЗНЕС-МОДЕЛЬ — ИСТОЧНИКИ ДОХОДА",
-        "modelo_p": [
-            "Наша монетизация построена на трёх взаимодополняющих столпах, обеспечивающих устойчивость и диверсифицированный денежный поток:",
-            "1. B2C (Business to Consumer): прямые продажи персонализированных отчётов со средним чеком ₽ 526.",
-            "2. B2B (Business to Business): продажа пакетов кодов (корпоративный бонус) компаниям с прогрессивными скидками от 10% до 70% — идеально для HR, консалтинга и программ лояльности.",
-            "3. Геолокализованная и языковая реклама: баннерная система (728x90 и 320x100) с умной ротацией каждые 8 секунд, позволяющая рекламодателям покупать аудиторию по местоположению или языку."
-        ],
-        "midia_t": "6. МЕДИА И РЕКЛАМА — СЕГМЕНТАЦИЯ ПО ЯЗЫКУ",
-        "midia_p": "Крупная инновация A1ELOS в 2026 году — модель ценообразования, разделяющая региональный охват и международный охват. Стратегическое примечание: контрактная реклама не изменяет перевод сайта — меняется только охват показа. Сниженная цена означает региональный охват (конкретный язык); полная цена — глобальный охват (все языки).",
-        "midia_a_t": "Таблица A — Географическая сегментация (Традиционная)",
-        "midia_a_colunas": ["Охват", "Фикс. в месяц (₽)", "Временная кампания (₽)"],
-        "midia_a_linhas": [
-            ["Конкретная страна", "₽ 14.035", "₽ 8.772"],
-            ["Континент", "₽ 31.579", "₽ 21.053"],
-            ["Мир (Глобальный)", "₽ 61.404", "₽ 43.860"],
-            ["Эксклюзивное спонсорство", "₽ 105.263", "₽ 78.947"]
-        ],
-        "midia_b_t": "Таблица B — Сегментация по языку (Региональная x Международная)",
-        "midia_b_colunas": ["Модальность", "Описание", "Рекомендуемые инвестиции"],
-        "midia_b_linhas": [
-            ["Один язык (Региональный)", "Показ ограничен одним языком (например, только арабским)", "От ₽ 7.018/мес"],
-            ["Языковой блок (2–5)", "Показ в выбранных языковых кластерах", "От ₽ 15.789/мес"],
-            ["Все языки (Международный)", "Показ по всей глобальной сети платформы", "₽ 61.404/мес"]
-        ],
-        "b2b_t": "7. КОРПОРАТИВНЫЕ ПАКЕТЫ B2B",
-        "b2b_p": "Используя поддержку DUNS 942242668, мы предлагаем структурированные планы для корпоративного рынка с агрессивными скидками за масштаб:",
-        "b2b_linhas": [
-            "• Базовый план (50 кодов): скидка 10%.",
-            "• Промежуточный план (100 кодов): скидка 30%.",
-            "• Премиум-план (200 кодов): скидка 50%.",
-            "• Промышленный масштаб (1 000+ кодов): скидка 70%."
-        ],
-        "proj_t": "8. ФИНАНСОВЫЕ ПРОГНОЗЫ И ВИДЕНИЕ БУДУЩЕГО",
-        "proj_p": "При оценочной конверсии 1%–1,5% на квалифицированный трафик прогнозы A1ELOS отражают потенциал цифрового масштабирования:",
-        "proj_linhas": [
-            "• Год 1: ₽ 579.000 – ₽ 2.280.000 (органика); до ₽ 17.540.000 с платным трафиком.",
-            "• Год 5: ₽ 8.770.000 – ₽ 26.300.000.",
-            "• Год 10: ₽ 52.600.000 – ₽ 140.300.000.",
-            "• Год 20: ₽ 263.200.000 – ₽ 701.800.000."
-        ],
-        "seed_t": "9. ИНВЕСТИЦИОННЫЕ ВОЗМОЖНОСТИ (СИД-РАУНД)",
-        "seed_p": "Мы открываем сид-раунд для ускорения доминирования на высокомаржинальных языковых рынках (SAR и USD):",
-        "seed_linhas": [
-            "• Целевой сбор: ₽ 61.400.000.",
-            "• Оценка до инвестиций (Pre-Money): ₽ 245.600.000.",
-            "• Доступный капитал: до 20%.",
-            "• Распределение ресурсов: 45% технологии/ИИ, 30% глобальный маркетинг, 25% операции."
-        ],
-        "frase": "\"Числа никогда не лгут — и указывают на исключительную возможность.\"",
-        "contato": "Контакт: a1elos.consultoria@gmail.com",
-        "rodape": "© 2026 A1ELOS Assessoria e Consultoria — DUNS 942242668. Все права защищены."
-    },
-    "he": {
-        "subtitulo": "מדע המספרים מיושם להצלחתך",
-        "titulo": "מצגת עסקית למשקיעים ושותפים",
-        "confidencial": "מסמך סודי · DUNS 942242668 · 27 באוגוסט 2026",
-        "sobre_t": "1. על A1ELOS",
-        "sobre_p": [
-            "A1ELOS Global Numerology היא חברת החזקות טכנולוגיה וידע מתקדמת המוקדשת לנומרולוגיה בביצים גבוהים. אנו מפעילים פלטפורמה גלובלית המשלבת את המסורת בת אלפי השנים של המספרים עם אלגוריתמים מתקדמים של בינה מלאכותית, ומספקת דיוק אנליטי חסר תקדים לידיעה עצמית ולקבלת החלטות אסטרטגיות.",
-            "עם תיק מגובש של 23 מוצרים ושירותים הזמינים ב-12 שפות, A1ELOS מגיעה לשוק בר-הפנייה של כ-5.4 מיליארד דוברים, שהם כ-67% מאוכלוסיית העולם. האמינות שלנו מגובה במספר DUNS 942242668 (Dun & Bradstreet), רישום המוכר ביותר מ-190 מדינות המאפשר הסמ�ויות B2B מורכבות, חוזים ארגוניים בקנה מידה גדול, מיזמים משותפים בינלאומיים והסמכה בפלטפורמות הטכנולוגיה והפיננסים המובילות בעולם."
-        ],
-        "mercado_t": "2. השוק (נתונים מעודכנים 2026)",
-        "mercado_p": [
-            "תחום הרוחניות הדיגיטלית, האסטרולוגיה והנומרולוגיה נמצא בשלב של התרחבות מואצת, המונע על ידי החיפוש הגלובלי אחר משמעות וכלי ידיעה עצמית הנגישים דרך מכשירים ניידים. A1ELOS ממוקמת בצומת המדויק בין רווחה סובייקטיבית לטכנולוגיית נתונים.",
-            "• שוק האסטרולוגיה והנומרולוגיה העולמי: מוערך בין US$ 14.3 ל-US$ 14.8 מיליארד בשנים 2024/2026, עם תחזיות חזקות להגיע ל-US$ 27 מיליארד עד 2035 (CAGR של ~6% לשנה).",
-            "• אפליקציות רוחניות: שוק האפליקציות הגיע ל-US$ 5.69 מיליארד ב-2026, עם צפי להכפיל את עצמו ל-US$ 11.71 מיליארד עד 2030 (CAGR של ~19.8%).",
-            "• השוק הצפון-אמריקאי: המגזר המקוון בארה\"ב צופה צמיחה של 12% בשנה, מ-US$ 1.36 מיליארד (2025) ל-US$ 2.76 מיליארד (2031)."
-        ],
-        "port_t": "3. תיק — 23 מוצרים ושירותים",
-        "port_p": "מבנה המוצרים שלנו מתוכנ�ן למסע צריכה חלק, ממוצרי כניסה (כרט נמוך) ועד פתרונות פרימיום וארגוניים. כל הדוחות נמסרים בפורמט PDF דיגיטלי שנוצר על ידי AI, מה שמבטיח עלות שולית קרובה לאפס וסקלביליות גבוהה. המחירים זהים לאלה המוצגים בכרטיסי האתר (התייחסות: capas_produtos_12_idiomas.csv, שער חליפין אוגוסט 2026).",
-        "port_colunas": ["רמה", "מוצרים", "מחיר (₪)", "המרה אינדיקטיבית (מטבעות גלובליים)"],
-        "port_linhas": [
-            ["כניסה", "מפה מהירה, שלב חיים ושנה, שם חיית המחמד, כינוי דיגיטלי, שם דומיין, שם הערוץ, שם הצוות, שם עמותה/ארגון/מכון/קרן, שם הפרויקט, שם האירוע", "₪ 44,00", "R$ 8,00 | US$ 20,00 | € 11,00 | ¥JPY 1.400 | ¥CNY 26,00 | ₽ 440,00 | Rp 11.000,00 | ₺ 58,00 | ₫ 25.000 | ر.س 35,00"],
-            ["בינוני", "מפה מלאה, חיפוש שמות AI", "₪ 98,00", "R$ 17,00 | US$ 44,00 | € 26,00 | ¥JPY 3.000 | ¥CNY 53,00 | ₽ 800,00 | Rp 23.000,00 | ₺ 123,00 | ₫ 53.000 | ر.س 71,00"],
-            ["מתקדם", "אימות שם פתק, מספר בחירות, מספר נכס, לוח אנרגיה חודשי", "₪ 143,00", "R$ 26,00 | US$ 71,00 | € 35,00 | ¥JPY 4.600 | ¥CNY 71,00 | ₽ 1.250,00 | Rp 36.000,00 | ₺ 188,00 | ₫ 81.000 | ر.س 107,00"],
-            ["מתקדם II", "אימות שם במה, תכנון שם לתינוק, אימות חתימות", "₪ 197,00", "R$ 35,00 | US$ 89,00 | € 53,00 | ¥JPY 6.200 | ¥CNY 98,00 | ₽ 1.700,00 | Rp 48.000,00 | ₺ 254,00 | ₫ 109.000 | ر.س 143,00"],
-            ["פרימיום", "שם לעסק/מוצר, מפת זוג", "₪ 242,00", "R$ 44,00 | US$ 116,00 | € 62,00 | ¥JPY 7.700 | ¥CNY 125,00 | ₽ 2.150,00 | Rp 60.000,00 | ₺ 319,00 | ₫ 137.000 | ر.س 170,00"],
-            ["עילית", "מפת משפחה פרימיום", "₪ 530,00", "R$ 98,00 | US$ 251,00 | € 134,00 | ¥JPY 17.000 | ¥CNY 260,00 | ₽ 4.400,00 | Rp 134.000,00 | ₺ 710,00 | ₫ 305.000 | ر.س 377,00"],
-            ["B2B", "בונוס ארגוני", "לפי בקשה", "חוזים עסקיים מותאמים אישית עם גיבוי DUNS"]
-        ],
-        "alcance_t": "4. היקף גלובלי ואסטרטגיה מוניטרית",
-        "alcance_p": [
-            "A1ELOS פועלת ב-12 שפות אסטרטגיות, המאפשרות חדירה לשווקים בעלי הכנסה גבוהה ולמסות אוכלוסייה גדולות. כל שפה שנוספת אינה רק תרגום, אלא פתיחת מסדרון פיננסי חדש.",
-            "• מטבעות פעולה: R$ (BRL), US$ (USD), € (EUR), ¥ (JPY), ¥ (CNY), ₽ (RUB), ₹ (INR), ₪ (ILS), ﷼ (SAR).",
-            "• שווקים מרכזיים: USD (ארה\"ב ועסקאות גלובליות), EUR (גוש האירו), SAR (מדינות המפרץ — מרווח גבוה), CNY/INR (ענקיות אסיה עם ~2.8 מיליארד צרכנים משולבים).",
-            "• PIX בינלאומי: אנו מנצלים את תשתית התשלומים הגלובלית חסרת הגבולות, ומאפשרים עסקאות בזמן אמת במדינות כמו צ'ילה, ארגנטינה, ארה\"ב, פורטוגל, ספרד וצרפת, באמצעות הסכמי הדדיות בנקאית בינלאומית."
-        ],
-        "modelo_t": "5. מודל עסקי — מקורות הכנסה",
-        "modelo_p": [
-            "המונטיזציה שלנו בנויה על שלושה עמודי תווך משלימים המבטיחים חוסן ותזרים מזומנים מגוון:",
-            "1. B2C (Business to Consumer): מכירה ישירה של דוחות מותאמים אישית עם כרט ממוצע מאוחד של ₪ 21.58.",
-            "2. B2B (Business to Business): מכירת חבילות קוד (בונוס ארגוני) לחברות, עם הנחות פרוגרסיביות של 10% עד 70%, אידיאלי למשאבי אנוש, ייעוץ ותוכניות הטבות.",
-            "3. פרסום גיאוגרפי ולשוני: מערכת באנרים (728x90 ו-320x100) עם רוטציה חכמה כל 8 שניות, המאפשרת למפרסמים לקנות קהל לפי מיקום או שפה."
-        ],
-        "midia_t": "6. מדיה ופרסום — פילוח לפי שפה",
-        "midia_p": "החידוש הגדול של A1ELOS ב-2026 הוא מודל התמחור המפריד בין היקף אזורי להיקף בינלאומי. הערה אסטרטגית: פרסום חוזי אינו משנה את תרגום האתר — מה שמשתנה הוא היקף התצוגה. מחיר מופחת משמעו היקף אזורי (שפה ספציפית); מחיר מלא משמעו היקף גלובלי (כל השפות).",
-        "midia_a_t": "טבלה A — פילוח גיאוגרפי (מסורתי)",
-        "midia_a_colunas": ["כיסוי", "קבוע חודשי (₪)", "קמפיין זמני (₪)"],
-        "midia_a_linhas": [
-            ["מדינה ספציפית", "₪ 576", "₪ 360"],
-            ["יבשת", "₪ 1.295", "₪ 863"],
-            ["עולם (גלובלי)", "₪ 2.518", "₪ 1.799"],
-            ["חסות בלעדית", "₪ 4.317", "₪ 3.237"]
-        ],
-        "midia_b_t": "טבלה B — פילוח לפי שפה (אזורי x בינלאומי)",
-        "midia_b_colunas": ["מודאליות", "תיאור", "השקעה מוצעת"],
-        "midia_b_linhas": [
-            ["שפה אחת (אזורי)", "תצוגה מוגבלת לשפה אחת (למשל: ערבית בלבד)", "מ-₪ 288/חודש"],
-            ["בלוק שפות (2-5)", "תצוגה באשכולות שפה נבחרים", "מ-₪ 648/חודש"],
-            ["כל השפות (בינלאומי)", "תצוגה בכל הרשת הגלובלית של הפלטפורמה", "₪ 2.518/חודש"]
-        ],
-        "b2b_t": "7. חבילות B2B ארגוניות",
-        "b2b_p": "באמצעות התמיכה של DUNS 942242668, אנו מציעים תוכניות מובנות לשוק הארגוני עם הנחות אגרסיביות לקנה מידה:",
-        "b2b_linhas": [
-            "• תוכנית בסיסית (50 קודים): 10% הנחה.",
-            "• תוכנית בינונית (100 קודים): 30% הנחה.",
-            "• תוכנית פרימיום (200 קודים): 50% הנחה.",
-            "• קנה מידה תעשייתי (1,000+ קודים): 70% הנחה."
-        ],
-        "proj_t": "8. תחזיות פיננסיות וחזון עתידי",
-        "proj_p": "עם שיעור המרה מוערך של 1% עד 1.5% על תנועה מוסמכת, התחזיות של A1ELOS משקפות את הפוטנציאל של קנה המידה הדיגיטלי:",
-        "proj_linhas": [
-            "• שנה 1: ₪ 23.700 עד ₪ 93.500 (אורגני); עד ₪ 719.000 עם תנועה בתשלום.",
-            "• שנה 5: ₪ 360.000 עד ₪ 1.079.000.",
-            "• שנה 10: ₪ 2.158.000 עד ₪ 5.755.000.",
-            "• שנה 20: ₪ 10.790.000 עד ₪ 28.780.000."
-        ],
-        "seed_t": "9. הזדמנויות השקעה (סבב סיד)",
-        "seed_p": "אנו פותחים סבב גיוס סיד כדי להאיץ את השליטה בשוק בשפות בעלות מרווח גבוה (SAR ו-USD):",
-        "seed_linhas": [
-            "• יעד גיוס: ₪ 2.518.000.",
-            "• הערכת שווי לפני הכסף: ₪ 10.070.000.",
-            "• הון זמין: עד 20%.",
-            "• הקצאת משאבים: 45% טכנולוגיה/AI, 30% שיווק גלובלי, 25% תפעול."
-        ],
-        "frase": "\"המספרים אף פעם לא משקרים — והם מצביעים על הזדמנות יוצאת דופן.\"",
-        "contato": "יצירת קשר: a1elos.consultoria@gmail.com",
-        "rodape": "© 2026 A1ELOS Assessoria e Consultoria — DUNS 942242668. כל הזכויות שמורות."
+    "ja": {
+        "titulo": "A1ELOS グローバル数秘術",
+        "subtitulo": "数字の科学をあなたの成功に",
+        "capa_nota": "投資家・パートナー向けプレゼンテーション",
+        "confidencial": "機密",
+        "ano": "2026",
+        "sobre_titulo": "A1ELOSについて",
+        "sobre_texto": "数秘術の千年にわたる伝統と人工知能を融合し、限界費用ほぼゼロで即時のデジタルレポートを提供するテクノロジー・ナレッジホールディングです。",
+        "sobre_kpis": ["23製品", "14言語", "約53億人の話者", "統合AI", "DUNS 942242668"],
+        "duns_titulo": "国際的な信頼性",
+        "duns_texto": "Dun & Bradstreetが発行するDUNS番号942242668は190か国以上で認められ、企業契約、国際入札、合弁事業を可能にします。",
+        "mercado_titulo": "市場機会",
+        "mercado_texto": "世界のウェルネス経済：6.8兆ドル（2024年）から9.8兆ドル（2029年）。占星術・数秘術アプリ：30億ドル（2024年）から90億ドル（2030年）、CAGR 20%。",
+        "problema_titulo": "課題",
+        "problema_texto": "汎用ツールはユーザーを失望させ、多くは現地の購買力を無視した価格を設定しています。A1ELOSはこれを解決します。",
+        "solucao_titulo": "私たちのソリューション",
+        "solucao_texto": "数秘術の大規模応用：独自アルゴリズム + AI + 14言語でのプレミアムPDFの即時提供。",
+        "alcance_titulo": "グローバルな到達範囲",
+        "alcance_texto": "14言語で約53億人の話者（世界人口の約67%）をカバー。",
+        "mercados_titulo": "3つの新市場",
+        "mercados_texto": "インドネシア（2.55億人）、トルコ（9000万人）、ベトナム（9700万人）——購買力をマッピングした新規話者4.42億人。",
+        "preco_titulo": "意識的な価格設定",
+        "preco_texto": "すべての通貨で同じ価値の割合を、各国の購買力（PPP）に合わせて調整。文化と財布を尊重します。",
+        "portfolio_titulo": "ポートフォリオ",
+        "portfolio_texto": "23製品を4段階（エントリー R$ 8、ミドル R$ 17、アドバンス R$ 26-35、プレミアム R$ 44-98）+ B2Bセグメント。",
+        "negocio_titulo": "ビジネスモデル",
+        "negocio_texto": "3つの収益源：B2C（14言語、全通貨）、B2B（段階的割引）、地域ターゲット広告。",
+        "banners_titulo": "広告バナー",
+        "banners_texto": "毎月の経常収益：国 R$ 800、大陸 R$ 1,800、世界 R$ 3,500、独占スポンサー R$ 6,000。",
+        "b2b_titulo": "B2B法人パッケージ",
+        "b2b_texto": "従業員や顧客へのギフト。段階的割引：10%（10コード）、30%（100）、50%（500）、70%（1,000）。",
+        "projecoes_titulo": "財務予測",
+        "projecoes_texto": "1年目：R$ 33k-130k | 5年目：R$ 50万-150万 | 10年目：R$ 300万-800万 | 20年目：R$ 1500万-4000万 | 50年目：R$ 7500万-2.5億。",
+        "tracao_titulo": "実績と成果",
+        "tracao_texto": "12,000+ アクティブユーザー、87% リテンション、4.8★ 評価、23のB2Bパートナー。",
+        "roteiro_titulo": "戦略ロードマップ",
+        "roteiro_texto": "統合、拡大（インドネシア、トルコ、ベトナム）、グローバル参入、リーダーシップ（20か国以上 + IPO）。",
+        "invest_titulo": "投資と連絡先",
+        "invest_texto": "シードラウンド R$ 350万 · 評価額 R$ 1400万 · 株式最大20%。連絡先：a1elos.consultoria@gmail.com · www.a1elos.com",
+        "frase_final": "数字は決して嘘をつかない——そして非凡な機会を指し示しています。"
     },
     "ar": {
+        "titulo": "A1ELOS علم الأعداد العالمي",
         "subtitulo": "علم الأرقام المطبق على نجاحك",
-        "titulo": "العرض التقديمي التجاري للمستثمرين والشركاء",
-        "confidencial": "وثيقة سرية · DUNS 942242668 · 27 أغسطس 2026",
-        "sobre_t": "1. عن A1ELOS",
-        "sobre_p": [
-            "A1ELOS Global Numerology هي شركة قابضة متطورة في مجال التكنولوجيا والمعرفة مكرسة لعلم الأرقام عالي الأداء. ندير منصة عالمية تدمج التقاليد العريقة للأرقام مع خوارزميات متقدمة للذكاء الاصطناعي، مما يوفر دقة تحليلية غير مسبوقة لمعرفة الذات واتخاذ القرارات الاستراتيجية.",
-            "بفضل محفظة راسخة تضم 23 منتجًا وخدمة متاحة بـ 12 لغة، تصل A1ELOS إلى سوق قابل للاستهداف يضم حوالي 5.4 مليار متحدث، أي ما يعادل نحو 67% من سكان العالم. مصداقيتنا معتمدة من رقم DUNS 942242668 (Dun & Bradstreet)، وهو تسجيل معترف به في أكثر من 190 دولة يتيح اعتمادات B2B المعقدة والعقود المؤسسية واسعة النطاق والمشاريع المشتركة الدولية والاعتماد على منصات التكنولوجيا والتمويل العالمية الرائدة."
-        ],
-        "mercado_t": "2. السوق (بيانات محدثة 2026)",
-        "mercado_p": [
-            "يشهد قطاع الروحانية الرقمية وعلم التنجيم وعلم الأرقام مرحلة توسع متسارع، مدفوعًا بالبحث العالمي عن الهدف وأدوات معرفة الذات المتاحة عبر الأجهزة المحمولة. تقع A1ELOS عند التقاطع الدقيق بين الرفاهية الذاتية وتكنولوجيا البيانات.",
-            "• السوق العالمي لعلم التنجيم والأرقام: قُدر بين US$ 14.3 وUS$ 14.8 مليار في فترة 2024/2026، مع توقعات قوية بالوصول إلى US$ 27 مليار بحلول 2035 (معدل نمو سنوي مركب ~6%).",
-            "• تطبيقات الروحانية: وصل سوق التطبيقات إلى US$ 5.69 مليار في 2026، مع توقع مضاعفته إلى US$ 11.71 مليار بحلول 2030 (معدل نمو سنوي مركب ~19.8%).",
-            "• السوق الأمريكية الشمالية: يتوقع القطاع عبر الإنترنت في الولايات المتحدة نموًا بنسبة 12% سنويًا، من US$ 1.36 مليار (2025) إلى US$ 2.76 مليار (2031)."
-        ],
-        "port_t": "3. المحفظة — 23 منتجًا وخدمة",
-        "port_p": "تم تصميم هيكل منتجاتنا لرحلة استهلاك سلسة، من منتجات الدخول (التذكرة المنخفضة) إلى الحلول المميزة والمؤسسية. يتم تسليم جميع التقارير بتنسيق PDF رقمي مولّد بالذكاء الاصطناعي، مما يضمن تكلفة هامشية قريبة من الصفر وقابلية توسع عالية. الأسعار مطابقة لتلك المعروضة على بطاقات الموقع (المرجع: capas_produtos_12_idiomas.csv، سعر صرف أغسطس 2026).",
-        "port_colunas": ["المستوى", "المنتجات", "السعر (﷼)", "التحويل الإرشادي (العملات العالمية)"],
-        "port_linhas": [
-            ["أساسي", "خريطة سريعة, مرحلة الحياة والسنة, اسم الحيوان الأليف, اللقب الرقمي, اسم النطاق, اسم القناة, اسم الفريق, اسم منظمة/جمعية/معهد/مؤسسة, اسم المشروع, اسم الفعالية", "ر.س 35,00", "R$ 8,00 | US$ 20,00 | € 11,00 | ¥JPY 1.400 | ¥CNY 26,00 | ₽ 440,00 | Rp 11.000,00 | ₺ 58,00 | ₫ 25.000 | ₪ 44,00"],
-            ["متوسط", "خريطة كاملة, بحث الأسماء بالذكاء الاصطناعي", "ر.س 71,00", "R$ 17,00 | US$ 44,00 | € 26,00 | ¥JPY 3.000 | ¥CNY 53,00 | ₽ 800,00 | Rp 23.000,00 | ₺ 123,00 | ₫ 53.000 | ₪ 98,00"],
-            ["متقدم", "التحقق من اسم الاقتراع, الرقم الانتخابي, رقم العقار, التقويم الشهري للطاقة", "ر.س 107,00", "R$ 26,00 | US$ 71,00 | € 35,00 | ¥JPY 4.600 | ¥CNY 71,00 | ₽ 1.250,00 | Rp 36.000,00 | ₺ 188,00 | ₫ 81.000 | ₪ 143,00"],
-            ["متقدم II", "التحقق من الاسم الفني, تخطيط اسم الطفل, التحقق من التوقيعات", "ر.س 143,00", "R$ 35,00 | US$ 89,00 | € 53,00 | ¥JPY 6.200 | ¥CNY 98,00 | ₽ 1.700,00 | Rp 48.000,00 | ₺ 254,00 | ₫ 109.000 | ₪ 197,00"],
-            ["بريميوم", "اسم للأعمال/المنتج, خريطة الزوجين", "ر.س 170,00", "R$ 44,00 | US$ 116,00 | € 62,00 | ¥JPY 7.700 | ¥CNY 125,00 | ₽ 2.150,00 | Rp 60.000,00 | ₺ 319,00 | ₫ 137.000 | ₪ 242,00"],
-            ["النخبة", "خريطة العائلة المميزة", "ر.س 377,00", "R$ 98,00 | US$ 251,00 | € 134,00 | ¥JPY 17.000 | ¥CNY 260,00 | ₽ 4.400,00 | Rp 134.000,00 | ₺ 710,00 | ₫ 305.000 | ₪ 530,00"],
-            ["B2B", "مكافأة الشركات", "عند الطلب", "عقود مؤسسية مخصصة بدعم DUNS"]
-        ],
-        "alcance_t": "4. الانتشار العالمي والاستراتيجية النقدية",
-        "alcance_p": [
-            "تعمل A1ELOS بـ 12 لغة استراتيجية، مما يتيح اختراق الأسواق ذات الدخل المرتفع والكتل السكانية الكبيرة. كل لغة مضافة ليست مجرد ترجمة، بل فتح ممر مالي جديد.",
-            "• عملات التشغيل: R$ (BRL)، US$ (USD)، € (EUR)، ¥ (JPY)، ¥ (CNY)، ₽ (RUB)، ₹ (INR)، ₪ (ILS)، ﷼ (SAR).",
-            "• الأسواق الرئيسية: USD (الولايات المتحدة والمعاملات العالمية)، EUR (منطقة اليورو)، SAR (دول الخليج — هامش مرتفع)، CNY/INR (عملاقا آسيا مع ~2.8 مليار مستهلك مجتمعين).",
-            "• PIX الدولي: نستفيد من البنية التحتية العالمية للمدفوعات بلا حدود، مما يسهل المعاملات في الوقت الفعلي في دول مثل تشيلي والأرجنتين والولايات المتحدة والبرتغال وإسبانيا وفرنسا، عبر اتفاقيات المعاملة بالمثل المصرفية الدولية."
-        ],
-        "modelo_t": "5. نموذج العمل — مصادر الإيرادات",
-        "modelo_p": [
-            "يستند تحقيق الدخل لدينا إلى ثلاثة ركائز متكاملة تضمن المرونة وتنوع التدفق النقدي:",
-            "1. B2C (Business to Consumer): بيع مباشر للتقارير المخصصة بمتوسط تذكرة موحد قدره ﷼ 21.90.",
-            "2. B2B (Business to Business): بيع حزم الأكواد (المكافأة المؤسسية) للشركات، بخصومات تصاعدية من 10% إلى 70%، مثالي للموارد البشرية والاستشارات وبرامج المزايا.",
-            "3. الإعلانات الجغرافية واللغوية: نظام لافتات (728x90 و320x100) مع تدوير ذكي كل 8 ثوانٍ، مما يسمح للمعلنين بشراء الجمهور حسب الموقع أو اللغة."
-        ],
-        "midia_t": "6. الإعلام والإعلان — التقسيم حسب اللغة",
-        "midia_p": "الابتكار الكبير لـ A1ELOS في 2026 هو نموذج التسعير الذي يفصل الانتشار الإقليمي عن الانتشار الدولي. ملاحظة استراتيجية: الإعلان المتعاقد عليه لا يغير ترجمة الموقع — ما يتغير هو نطاق العرض. السعر المخفض يعني انتشارًا إقليميًا (لغة محددة)؛ السعر الكامل يعني انتشارًا عالميًا (جميع اللغات).",
-        "midia_a_t": "الجدول أ — التقسيم الجغرافي (التقليدي)",
-        "midia_a_colunas": ["التغطية", "ثابت شهري (﷼)", "حملة مؤقتة (﷼)"],
-        "midia_a_linhas": [
-            ["دولة محددة", "﷼ 584", "﷼ 365"],
-            ["قارة", "﷼ 1.314", "﷼ 876"],
-            ["العالم (عالمي)", "﷼ 2.555", "﷼ 1.825"],
-            ["رعاية حصرية", "﷼ 4.380", "﷼ 3.285"]
-        ],
-        "midia_b_t": "الجدول ب — التقسيم حسب اللغة (إقليمي × دولي)",
-        "midia_b_colunas": ["الطريقة", "الوصف", "الاستثمار المقترح"],
-        "midia_b_linhas": [
-            ["لغة واحدة (إقليمي)", "عرض مقصور على لغة واحدة (مثل: العربية فقط)", "من ﷼ 292/شهر"],
-            ["كتلة لغات (2-5)", "عرض في مجموعات لغوية مختارة", "من ﷼ 657/شهر"],
-            ["جميع اللغات (دولي)", "عرض عبر الشبكة العالمية الكاملة للمنصة", "﷼ 2.555/شهر"]
-        ],
-        "b2b_t": "7. حزم B2B المؤسسية",
-        "b2b_p": "باستخدام دعم DUNS 942242668، نقدم خططًا منظمة للسوق المؤسسي بخصومات تنافسية حسب الحجم:",
-        "b2b_linhas": [
-            "• الخطة الأساسية (50 كودًا): خصم 10%.",
-            "• الخطة المتوسطة (100 كود): خصم 30%.",
-            "• الخطة المميزة (200 كود): خصم 50%.",
-            "• النطاق الصناعي (1,000+ كود): خصم 70%."
-        ],
-        "proj_t": "8. التوقعات المالية ورؤية المستقبل",
-        "proj_p": "مع معدل تحويل مقدر بين 1% و1.5% على حركة المرور المؤهلة، تعكس توقعات A1ELOS إمكانات النطاق الرقمي:",
-        "proj_linhas": [
-            "• السنة 1: ﷼ 24.100 إلى ﷼ 94.900 (عضوي)؛ حتى ﷼ 730.000 مع حركة مرور مدفوعة.",
-            "• السنة 5: ﷼ 365.000 إلى ﷼ 1.095.000.",
-            "• السنة 10: ﷼ 2.190.000 إلى ﷼ 5.839.000.",
-            "• السنة 20: ﷼ 10.950.000 إلى ﷼ 29.200.000."
-        ],
-        "seed_t": "9. فرص الاستثمار (جولة التأسيس)",
-        "seed_p": "نفتح جولة تمويل تأسيسي لتسريع الهيمنة على السوق في اللغات ذات الهامش المرتفع (SAR وUSD):",
-        "seed_linhas": [
-            "• هدف جمع التمويل: ﷼ 2.555.000.",
-            "• التقييم قبل التمويل: ﷼ 10.220.000.",
-            "• الحصة المتاحة: حتى 20%.",
-            "• تخصيص الموارد: 45% تكنولوجيا/ذكاء اصطناعي، 30% تسويق عالمي، 25% عمليات."
-        ],
-        "frase": "\"الأرقام لا تكذب أبدًا — وهي تشير إلى فرصة استثنائية.\"",
-        "contato": "التواصل: a1elos.consultoria@gmail.com",
-        "rodape": "© 2026 A1ELOS Assessoria e Consultoria — DUNS 942242668. جميع الحقوق محفوظة."
+        "capa_nota": "عرض تقديمي للمستثمرين والشركاء",
+        "confidencial": "سري",
+        "ano": "2026",
+        "sobre_titulo": "عن A1ELOS",
+        "sobre_texto": "شركة قابضة للتقنية والمعرفة تجمع بين التقاليد العريقة لعلم الأعداد والذكاء الاصطناعي، وتقدم تقارير رقمية فورية بتكلفة هامشية شبه معدومة.",
+        "sobre_kpis": ["23 منتجاً", "14 لغة", "~5.3 مليار متحدث", "ذكاء اصطناعي مدمج", "DUNS 942242668"],
+        "duns_titulo": "المصداقية الدولية",
+        "duns_texto": "رقم DUNS 942242668 الصادر عن Dun & Bradstreet معترف به في أكثر من 190 دولة، ويتيح العقود المؤسسية والمناقصات والمشاريع المشتركة الدولية.",
+        "mercado_titulo": "فرصة السوق",
+        "mercado_texto": "الاقتصاد العالمي للعافية: 6.8 تريليون دولار (2024) إلى 9.8 تريليون (2029). تطبيقات علم الأعداد/التنجيم: 3 مليارات (2024) إلى 9 مليارات (2030)، نمو سنوي 20%.",
+        "problema_titulo": "المشكلة",
+        "problema_texto": "الأدوات العامة تخذل المستخدم، ومعظمها يفرض أسعاراً لا تراعي القوة الشرائية المحلية. A1ELOS يصحح ذلك.",
+        "solucao_titulo": "حلنا",
+        "solucao_texto": "علم الأعداد على نطاق واسع: خوارزميات خاصة + ذكاء اصطناعي + تسليم فوري لملفات PDF متميزة بـ14 لغة.",
+        "alcance_titulo": "الانتشار العالمي",
+        "alcance_texto": "14 لغة تغطي ~5.3 مليار متحدث (~67% من سكان العالم).",
+        "mercados_titulo": "3 أسواق جديدة",
+        "mercados_texto": "إندونيسيا (255 مليون متحدث)، تركيا (90 مليون) وفيتنام (97 مليون) — +442 مليون متحدث جديد مع قوة شرائية محسوبة.",
+        "preco_titulo": "تسعير واعٍ",
+        "preco_texto": "نفس نسبة القيمة لجميع العملات، معايرة حسب القوة الشرائية (PPP) لكل بلد. يحترم الثقافة والميزانية.",
+        "portfolio_titulo": "المحفظة",
+        "portfolio_texto": "23 منتجاً في 4 مستويات (دخول R$ 8، متوسط R$ 17، متقدم R$ 26-35، متميز R$ 44-98) + قطاع B2B.",
+        "negocio_titulo": "نموذج الأعمال",
+        "negocio_texto": "3 مصادر إيرادات: B2C (14 لغة، كل العملات)، B2B (خصومات تصاعدية)، إعلانات جغرافية مستهدفة.",
+        "banners_titulo": "اللافتات الإعلانية",
+        "banners_texto": "إيرادات شهرية متكررة: دولة R$ 800، قارة R$ 1,800، عالم R$ 3,500، رعاية حصرية R$ 6,000.",
+        "b2b_titulo": "باقات الشركات B2B",
+        "b2b_texto": "هدية للموظفين أو العملاء. خصومات تصاعدية: 10% (10 رموز)، 30% (100)، 50% (500)، 70% (1,000).",
+        "projecoes_titulo": "التوقعات المالية",
+        "projecoes_texto": "السنة 1: R$ 33k-130k | السنة 5: R$ 500k-1.5M | السنة 10: R$ 3-8M | السنة 20: R$ 15-40M | السنة 50: R$ 75-250M.",
+        "tracao_titulo": "الزخم والنتائج",
+        "tracao_texto": "+12 ألف مستخدم نشط، 87% احتفاظ، تقييم 4.8★، 23 شريكاً B2B.",
+        "roteiro_titulo": "خارطة الطريق الاستراتيجية",
+        "roteiro_texto": "توحيد، توسع (إندونيسيا، تركيا، فيتنام)، دخول عالمي وقيادة (+20 دولة + اكتتاب).",
+        "invest_titulo": "الاستثمار والتواصل",
+        "invest_texto": "جولة أولية R$ 3.5M · تقييم R$ 14M · حصة حتى 20%. التواصل: a1elos.consultoria@gmail.com · www.a1elos.com",
+        "frase_final": "الأرقام لا تكذب أبداً — وهي تشير إلى فرصة استثنائية."
     },
-    "id": {
-        "titulo": "A1ELOS Global Numerology — Presentasi untuk Investor dan Mitra",
-        "subtitulo": "Platform Numerologi Global dengan 23 Produk dan 14 Bahasa",
-        "confidencial": "DOKUMEN RAHASIA — PENGGUNAAN TERBATAS",
-        "sobre_t": "1. TENTANG A1ELOS",
-        "sobre_p": ["A1ELOS Global Numerology adalah platform digital yang menggabungkan numerologi, analisis nama, dan wawasan pribadi untuk pasar global.",
-                "Kami melayani klien di berbagai budaya dengan 23 produk dan 14 bahasa, dengan entregi digital otomatis."],
-        "mercado_t": "2. PASAR",
-        "mercado_p": ["Pasar global untuk layanan esoterik, numerologi, dan pengembangan diri terus tumbuh dengan digitalisasi.",
-                  "Pembayaran digital multimoeda memungkinkan monetisasi lintas negara dengan biaya rendah."],
-        "port_t": "3. PORTOFOLIO",
-        "port_p": ["23 produk: Peta Ekspres, Peta Lengkap, Validasi Nama Surat Suara, Nomor Elektoral, Nama Bisnis, Peta Pasangan, Peta Keluarga Premium, dan lainnya."],
-        "port_colunas": ["Produk", "Deskripsi", "Harga"],
-        "port_linhas": [
-            ["Pemula", "Peta Ekspres, Fase Kehidupan & Tahun, Nama Hewan Peliharaan, Nama Panggilan Digital, Nama Domain, Nama Kanal, Nama Tim, Nama LSM/Asosiasi/Lembaga/Yayasan, Nama Proyek, Nama Acara", "Rp 11.000,00", "R$ 8,00 | US$ 20,00 | € 11,00 | ¥JPY 1.400 | ¥CNY 26,00 | ₽ 440,00 | ₺ 58,00 | ₫ 25.000 | ₪ 44,00 | ر.س 35,00"],
-            ["Menengah", "Peta Lengkap, Pencarian Nama AI", "Rp 23.000,00", "R$ 17,00 | US$ 44,00 | € 26,00 | ¥JPY 3.000 | ¥CNY 53,00 | ₽ 800,00 | ₺ 123,00 | ₫ 53.000 | ₪ 98,00 | ر.س 71,00"],
-            ["Lanjutan", "Validasi Nama Surat Suara, Nomor Elektoral, Nomor Properti, Kalender Energi Bulanan", "Rp 36.000,00", "R$ 26,00 | US$ 71,00 | € 35,00 | ¥JPY 4.600 | ¥CNY 71,00 | ₽ 1.250,00 | ₺ 188,00 | ₫ 81.000 | ₪ 143,00 | ر.س 107,00"],
-            ["Lanjutan II", "Validasi Nama Artistik, Perencanaan Nama Bayi, Validasi Tanda Tangan", "Rp 48.000,00", "R$ 35,00 | US$ 89,00 | € 53,00 | ¥JPY 6.200 | ¥CNY 98,00 | ₽ 1.700,00 | ₺ 254,00 | ₫ 109.000 | ₪ 197,00 | ر.س 143,00"],
-            ["Premium", "Nama untuk Bisnis/Produk, Peta Pasangan", "Rp 60.000,00", "R$ 44,00 | US$ 116,00 | € 62,00 | ¥JPY 7.700 | ¥CNY 125,00 | ₽ 2.150,00 | ₺ 319,00 | ₫ 137.000 | ₪ 242,00 | ر.س 170,00"],
-            ["Elit", "Peta Keluarga Premium", "Rp 134.000,00", "R$ 98,00 | US$ 251,00 | € 134,00 | ¥JPY 17.000 | ¥CNY 260,00 | ₽ 4.400,00 | ₺ 710,00 | ₫ 305.000 | ₪ 530,00 | ر.س 377,00"],
-            ["B2B", "Bonus Kolektif/Perusahaan", "Sesuai permintaan", "Kontrak korporat khusus dengan dukungan DUNS"]
-        ],
-        "alcance_t": "4. JANGKAUAN",
-        "alcance_p": ["Operasi global dalam 14 bahasa dengan pembayaran dalam mata uang lokal.",
-                  "Distribusi digital instan melalui PDF dan presentasi."],
-        "modelo_t": "5. MODEL BISNIS",
-        "modelo_p": ["Pendapatan dari produk digital premium, paket B2B, dan kolaborasi institusional.",
-                 "Margin tinggi, pengiriman otomatis, tanpa inventaris."],
-        "midia_t": "6. MEDIA & KAMPANYE",
-        "midia_p": ["Kampanye digital multi-bahasa, konten edukatif, dan parcerias de influência."],
-        "midia_a_t": "Media Digital",
-        "midia_a_colunas": ["Kanal", "Format"],
-        "midia_a_linhas": [["Situs web", "SEO + konten"], ["Media sosial", "Video pendek"], ["E-mail", "Newsletter"]],
-        "midia_b_t": "Media Tradisional",
-        "midia_b_colunas": ["Kanal", "Format"],
-        "midia_b_linhas": [["TV/Radio", "Entrevistas"], ["Impressa", "Colunas"]],
-        "b2b_t": "7. B2B & KORPORAT",
-        "b2b_p": "Paket khusus untuk perusahaan, asosiasi, dan institusi.",
-        "b2b_linhas": ["Paket Korporat", "Penamaan produk dan merek", "Bonus Kolektif"],
-        "proj_t": "8. PROYEKSI",
-        "proj_p": "Pertumbuhan bertahap dengan ekspansi bahasa dan kemitraan.",
-        "proj_linhas": ["Tahun 1: konsolidasi bahasa inti", "Tahun 2: kemitraan B2B", "Tahun 3: skala global"],
-        "seed_t": "9. PUTARAN SEED",
-        "seed_p": "Kami mencari mitra investasi untuk mempercepat ekspansi.",
-        "seed_linhas": ["Penggunaan: teknologi dan bahasa baru", "Meta: pertumbuhan di Asia dan Timur Tengah"],
-        "frase": "Temukan angka yang memandu jalan Anda.",
-        "contato": "Hubungi: contato@a1elos.com.br | www.a1elos.com",
-        "rodape": "© 2026 A1ELOS Global Numerology. Semua hak dilindungi."
+    "he": {
+        "titulo": "A1ELOS נומרולוגיה גלובלית",
+        "subtitulo": "מדע המספרים מיושם להצלחתך",
+        "capa_nota": "מצגת למשקיעים ושותפים",
+        "confidencial": "סודי",
+        "ano": "2026",
+        "sobre_titulo": "אודות A1ELOS",
+        "sobre_texto": "חברת החזקות לטכנולוגיה וידע המשלבת את המסורת העתיקה של הנומרולוגיה עם בינה מלאכותית, ומספקת דוחות דיגיטליים מיידיים בעלות שולית כמעט אפסית.",
+        "sobre_kpis": ["23 מוצרים", "14 שפות", "~5.3 מיליארד דוברים", "בינה מלאכותית משולבת", "DUNS 942242668"],
+        "duns_titulo": "אמינות בינלאומית",
+        "duns_texto": "מספר DUNS 942242668 שהונפק על ידי Dun & Bradstreet מוכר ביותר מ-190 מדינות ומאפשר חוזים עסקיים, מכרזים ומיזמים משותפים בינלאומיים.",
+        "mercado_titulo": "הזדמנות שוק",
+        "mercado_texto": "כלכלת הבריאות העולמית: 6.8 טריליון דולר (2024) ל-9.8 טריליון (2029). אפליקציות אסטרולוגיה/נומרולוגיה: 3 מיליארד (2024) ל-9 מיליארד (2030), צמיחה שנתית 20%.",
+        "problema_titulo": "הבעיה",
+        "problema_texto": "כלים גנריים מאכזבים את המשתמש, ורובם גובים מחירים שאינם מתחשבים בכוח הקנייה המקומי. A1ELOS מתקן זאת.",
+        "solucao_titulo": "הפתרון שלנו",
+        "solucao_texto": "נומרולוגיה בקנה מידה: אלגוריתמים קנייניים + בינה מלאכותית + אספקה מיידית של PDF יוקרתי ב-14 שפות.",
+        "alcance_titulo": "טווח גלובלי",
+        "alcance_texto": "14 שפות המכסות ~5.3 מיליארד דוברים (~67% מאוכלוסיית העולם).",
+        "mercados_titulo": "3 שווקים חדשים",
+        "mercados_texto": "אינדונזיה (255 מיליון דוברים), טורקיה (90 מיליון) ווייטנאם (97 מיליון) — +442 מיליון דוברים חדשים עם כוח קנייה ממופה.",
+        "preco_titulo": "תמחור מודע",
+        "preco_texto": "אותו יחס ערך לכל המטבעות, מכויל לפי כוח הקנייה (PPP) של כל מדינה. מכבד תרבות וארנק.",
+        "portfolio_titulo": "פורטפוליו",
+        "portfolio_texto": "23 מוצרים ב-4 רמות (כניסה R$ 8, בינוני R$ 17, מתקדם R$ 26-35, פרימיום R$ 44-98) + פלח B2B.",
+        "negocio_titulo": "מודל עסקי",
+        "negocio_texto": "3 מקורות הכנסה: B2C (14 שפות, כל המטבעות), B2B (הנחות מדורגות), פרסום ממוקד גיאוגרפית.",
+        "banners_titulo": "באנרים פרסומיים",
+        "banners_texto": "הכנסה חוזרת חודשית: מדינה R$ 800, יבשת R$ 1,800, עולם R$ 3,500, חסות בלעדית R$ 6,000.",
+        "b2b_titulo": "חבילות עסקיות B2B",
+        "b2b_texto": "מתנה לעובדים או ללקוחות. הנחות מדורגות: 10% (10 קודים), 30% (100), 50% (500), 70% (1,000).",
+        "projecoes_titulo": "תחזיות פיננסיות",
+        "projecoes_texto": "שנה 1: R$ 33k-130k | שנה 5: R$ 500k-1.5M | שנה 10: R$ 3-8M | שנה 20: R$ 15-40M | שנה 50: R$ 75-250M.",
+        "tracao_titulo": "מומנטום ותוצאות",
+        "tracao_texto": "+12 אלף משתמשים פעילים, 87% שימור, דירוג 4.8★, 23 שותפי B2B.",
+        "roteiro_titulo": "מפת דרכים אסטרטגית",
+        "roteiro_texto": "איחוד, התרחבות (אינדונזיה, טורקיה, וייטנאם), כניסה גלובלית ומנהיגות (+20 מדינות + הנפקה).",
+        "invest_titulo": "השקעה ויצירת קשר",
+        "invest_texto": "סבב ראשוני R$ 3.5M · שווי R$ 14M · הון עד 20%. יצירת קשר: a1elos.consultoria@gmail.com · www.a1elos.com",
+        "frase_final": "המספרים אף פעם לא משקרים — והם מצביעים על הזדמנות יוצאת דופן."
+    },
+        "id": {
+        "titulo": "A1ELOS Numerologi Global",
+        "subtitulo": "Ilmu angka yang diterapkan untuk kesuksesan Anda",
+        "capa_nota": "Presentasi untuk Investor dan Mitra",
+        "confidencial": "RAHASIA",
+        "ano": "2026",
+        "sobre_titulo": "Tentang A1ELOS",
+        "sobre_texto": "Holding teknologi dan pengetahuan yang menggabungkan tradisi kuno numerologi dengan Kecerdasan Buatan, menghadirkan laporan digital instan dengan biaya marjinal hampir nol.",
+        "sobre_kpis": ["23 Produk", "14 Bahasa", "~5,3 Miliar penutur", "AI Terintegrasi", "DUNS 942242668"],
+        "duns_titulo": "Kredibilitas Internasional",
+        "duns_texto": "Nomor DUNS 942242668, diterbitkan oleh Dun & Bradstreet, diakui di lebih dari 190 negara dan memungkinkan kontrak korporasi, tender dan joint venture internasional.",
+        "mercado_titulo": "Peluang Pasar",
+        "mercado_texto": "Ekonomi kesehatan global: US$ 6,8 triliun (2024) menjadi US$ 9,8 triliun (2029). Aplikasi astrologi/numerologi: US$ 3 miliar (2024) menjadi US$ 9 miliar (2030), CAGR 20%.",
+        "problema_titulo": "Masalah",
+        "problema_texto": "Alat generik mengecewakan pengguna dan sebagian besar mematok harga yang tidak sesuai daya beli lokal. A1ELOS memperbaikinya.",
+        "solucao_titulo": "Solusi Kami",
+        "solucao_texto": "Numerologi dalam skala besar: algoritma proprietary + AI + pengiriman instan PDF premium dalam 14 bahasa.",
+        "alcance_titulo": "Jangkauan Global",
+        "alcance_texto": "14 bahasa mencakup ~5,3 miliar penutur (~67% populasi dunia).",
+        "mercados_titulo": "3 Pasar Baru",
+        "mercados_texto": "Indonesia (255 juta penutur), Turki (90 juta) dan Vietnam (97 juta) — +442 juta penutur baru dengan daya beli terpetakan.",
+        "preco_titulo": "Harga Sadar",
+        "preco_texto": "Proporsi nilai yang sama untuk semua mata uang, dikalibrasi dengan daya beli (PPP) setiap negara. Menghormati budaya dan kantong.",
+        "portfolio_titulo": "Portofolio",
+        "portfolio_texto": "23 produk dalam 4 tingkat (Masuk R$ 8, Menengah R$ 17, Lanjutan R$ 26-35, Premium R$ 44-98) + segmen B2B.",
+        "negocio_titulo": "Model Bisnis",
+        "negocio_texto": "3 sumber pendapatan: B2C (14 bahasa, semua mata uang), B2B (diskon progresif), Iklan geolokasi.",
+        "banners_titulo": "Banner Iklan",
+        "banners_texto": "Pendapatan bulanan berulang: Negara R$ 800, Benua R$ 1.800, Dunia R$ 3.500, Sponsor Eksklusif R$ 6.000.",
+        "b2b_titulo": "Paket Korporasi B2B",
+        "b2b_texto": "Hadiah untuk karyawan atau klien. Diskon progresif: 10% (10 kode), 30% (100), 50% (500), 70% (1.000).",
+        "projecoes_titulo": "Proyeksi Keuangan",
+        "projecoes_texto": "Tahun 1: R$ 33k-130k | Tahun 5: R$ 500k-1,5M | Tahun 10: R$ 3-8M | Tahun 20: R$ 15-40M | Tahun 50: R$ 75-250M.",
+        "tracao_titulo": "Traction dan Hasil",
+        "tracao_texto": "12K+ pengguna aktif, 87% retensi, rating 4,8★, 23 mitra B2B.",
+        "roteiro_titulo": "Peta Jalan Strategis",
+        "roteiro_texto": "Konsolidasi, Ekspansi (Indonesia, Turki, Vietnam), Masuk Global dan Kepemimpinan (20+ negara + IPO).",
+        "invest_titulo": "Investasi dan Kontak",
+        "invest_texto": "Putaran Seed R$ 3,5M · Valuasi R$ 14M · Ekuitas hingga 20%. Kontak: a1elos.consultoria@gmail.com · www.a1elos.com",
+        "frase_final": "Angka tidak pernah berbohong — dan menunjuk pada peluang luar biasa."
     },
     "tr": {
-        "titulo": "A1ELOS Global Numerology — Yatırımcı ve Ortak Sunumu",
-        "subtitulo": "23 Ürün ve 14 Dil ile Küresel Numeroloji Platformu",
-        "confidencial": "GİZLİ BELGE — SINIRLI KULLANIM",
-        "sobre_t": "1. A1ELOS HAKKINDA",
-        "sobre_p": ["A1ELOS Global Numerology, numeroloji, isim analizi ve kişisel içgörüleri küresel pazara taşıyan dijital bir platformdur.",
-                "23 ürün ve 14 dil ile farklı kültürlerdeki müşterilere otomatik dijital teslimatla hizmet veriyoruz."],
-        "mercado_t": "2. PAZAR",
-        "mercado_p": ["Ezoterik hizmetler, numeroloji ve kişisel gelişim için küresel pazar dijitalleşmeyle büyümeye devam ediyor.",
-                  "Çok para birimli dijital ödemeler, düşük maliyetle sınır ötesi para kazanmayı sağlar."],
-        "port_t": "3. PORTFÖY",
-        "port_p": ["23 ürün: Ekspres Harita, Tam Harita, Oy Pusulası İsim Doğrulama, Seçim Numarası, İşletme Adı, Çift Haritası, Premium Aile Haritası ve daha fazlası."],
-        "port_colunas": ["Ürün", "Açıklama", "Fiyat"],
-        "port_linhas": [
-            ["Başlangıç", "Ekspres Harita, Yaşam Evresi ve Yıl, Evcil Hayvan Adı, Dijital Takma Ad, Alan Adı, Kanal Adı, Ekip Adı, STK/Dernek/Enstitü/Vakıf Adı, Proje Adı, Etkinlik Adı", "₺ 58,00", "R$ 8,00 | US$ 20,00 | € 11,00 | ¥JPY 1.400 | ¥CNY 26,00 | ₽ 440,00 | Rp 11.000,00 | ₫ 25.000 | ₪ 44,00 | ر.س 35,00"],
-            ["Orta", "Tam Harita, AI İsim Arama", "₺ 123,00", "R$ 17,00 | US$ 44,00 | € 26,00 | ¥JPY 3.000 | ¥CNY 53,00 | ₽ 800,00 | Rp 23.000,00 | ₫ 53.000 | ₪ 98,00 | ر.س 71,00"],
-            ["İleri", "Oy Pusulası İsim Doğrulama, Seçim Numarası, Mülk Numarası, Aylık Enerji Takvimi", "₺ 188,00", "R$ 26,00 | US$ 71,00 | € 35,00 | ¥JPY 4.600 | ¥CNY 71,00 | ₽ 1.250,00 | Rp 36.000,00 | ₫ 81.000 | ₪ 143,00 | ر.س 107,00"],
-            ["İleri II", "Sahne Adı Doğrulama, Bebek İsmi Planlama, İmza Doğrulama", "₺ 254,00", "R$ 35,00 | US$ 89,00 | € 53,00 | ¥JPY 6.200 | ¥CNY 98,00 | ₽ 1.700,00 | Rp 48.000,00 | ₫ 109.000 | ₪ 197,00 | ر.س 143,00"],
-            ["Premium", "İşletme/Ürün Adı, Çift Haritası", "₺ 319,00", "R$ 44,00 | US$ 116,00 | € 62,00 | ¥JPY 7.700 | ¥CNY 125,00 | ₽ 2.150,00 | Rp 60.000,00 | ₫ 137.000 | ₪ 242,00 | ر.س 170,00"],
-            ["Elite", "Premium Aile Haritası", "₺ 710,00", "R$ 98,00 | US$ 251,00 | € 134,00 | ¥JPY 17.000 | ¥CNY 260,00 | ₽ 4.400,00 | Rp 134.000,00 | ₫ 305.000 | ₪ 530,00 | ر.س 377,00"],
-            ["B2B", "Kurumsal Bonus", "Talep üzerine", "DUNS destekli özel kurumsal sözleşmeler"]
-        ],
-        "alcance_t": "4. ERİŞİM",
-        "alcance_p": ["14 dilde küresel operasyon ve yerel para birimleriyle ödeme.",
-                  "PDF ve sunumlarla anında dijital dağıtım."],
-        "modelo_t": "5. İŞ MODELİ",
-        "modelo_p": ["Premium dijital ürünler, B2B paketleri ve kurumsal iş birliklerinden gelir.",
-                 "Yüksek marj, otomatik teslimat, envanter yok."],
-        "midia_t": "6. MEDYA & KAMPANYA",
-        "midia_p": ["Çok dilli dijital kampanyalar, eğitici içerik ve etkileyici ortaklıkları."],
-        "midia_a_t": "Dijital Medya",
-        "midia_a_colunas": ["Kanal", "Format"],
-        "midia_a_linhas": [["Web sitesi", "SEO + içerik"], ["Sosyal medya", "Kısa videolar"], ["E-posta", "Bülten"]],
-        "midia_b_t": "Geleneksel Medya",
-        "midia_b_colunas": ["Kanal", "Format"],
-        "midia_b_linhas": [["TV/Radyo", "Röportajlar"], ["Basılı", "Köşe yazıları"]],
-        "b2b_t": "7. B2B & KURUMSAL",
-        "b2b_p": "Şirketler, dernekler ve kurumlar için özel paketler.",
-        "b2b_linhas": ["Kurumsal Paket", "Ürün ve marka adlandırma", "Kolektif Bonus"],
-        "proj_t": "8. PROJEKSİYONLAR",
-        "proj_p": "Dil genişlemesi ve ortaklıklarla kademeli büyüme.",
-        "proj_linhas": ["Yıl 1: çekirdek dillerin konsolidasyonu", "Yıl 2: B2B ortaklıkları", "Yıl 3: küresel ölçek"],
-        "seed_t": "9. TOHUM TURU",
-        "seed_p": "Genişlemeyi hızlandırmak için yatırım ortakları arıyoruz.",
-        "seed_linhas": ["Kullanım: teknoloji ve yeni diller", "Hedef: Asya ve Orta Doğu'da büyüme"],
-        "frase": "Yolunuza yön veren sayıları keşfedin.",
-        "contato": "İletişim: contato@a1elos.com.br | www.a1elos.com",
-        "rodape": "© 2026 A1ELOS Global Numerology. Tüm hakları saklıdır."
+        "titulo": "A1ELOS Küresel Numeroloji",
+        "subtitulo": "Sayıların bilimi başarınıza uygulandı",
+        "capa_nota": "Yatırımcılar ve Ortaklar için Sunum",
+        "confidencial": "GİZLİ",
+        "ano": "2026",
+        "sobre_titulo": "A1ELOS Hakkında",
+        "sobre_texto": "Numerolojinin kadim geleneğini Yapay Zekâ ile birleştiren, neredeyse sıfır marjinal maliyetle anında dijital raporlar sunan bir teknoloji ve bilgi holdingi.",
+        "sobre_kpis": ["23 Ürün", "14 Dil", "~5,3 Milyar konuşmacı", "Entegre YZ", "DUNS 942242668"],
+        "duns_titulo": "Uluslararası Güvenilirlik",
+        "duns_texto": "Dun & Bradstreet tarafından verilen DUNS numarası 942242668, 190'dan fazla ülkede tanınır ve kurumsal sözleşmeler, ihaleler ve uluslararası ortak girişimler sağlar.",
+        "mercado_titulo": "Pazar Fırsatı",
+        "mercado_texto": "Küresel sağlıklı yaşam ekonomisi: 6,8 trilyon ABD$ (2024) ile 9,8 trilyon (2029). Astroloji/numeroloji uygulamaları: 3 milyar (2024) ile 9 milyar (2030), CAGR %20.",
+        "problema_titulo": "Sorun",
+        "problema_texto": "Genel araçlar kullanıcıyı hayal kırıklığına uğratır ve çoğu yerel satın alma gücünden kopuk fiyatlar uygular. A1ELOS bunu düzeltir.",
+        "solucao_titulo": "Çözümümüz",
+        "solucao_texto": "Numeroloji ölçekte uygulanır: özel algoritmalar + YZ + 14 dilde premium PDF'lerin anında teslimi.",
+        "alcance_titulo": "Küresel Erişim",
+        "alcance_texto": "14 dil, ~5,3 milyar konuşmacıyı kapsar (~dünya nüfusunun %67'si).",
+        "mercados_titulo": "3 Yeni Pazar",
+        "mercados_texto": "Endonezya (255 milyon konuşmacı), Türkiye (90 milyon) ve Vietnam (97 milyon) — satın alma gücü haritalanmış +442 milyon yeni konuşmacı.",
+        "preco_titulo": "Bilinçli Fiyatlandırma",
+        "preco_texto": "Tüm para birimleri için aynı değer oranı, her ülkenin satın alma gücüne (PPP) göre ayarlanır. Kültüre ve cüzdana saygı gösterir.",
+        "portfolio_titulo": "Portföy",
+        "portfolio_texto": "4 seviyede 23 ürün (Giriş R$ 8, Orta R$ 17, İleri R$ 26-35, Premium R$ 44-98) + B2B segmenti.",
+        "negocio_titulo": "İş Modeli",
+        "negocio_texto": "3 gelir kaynağı: B2C (14 dil, tüm para birimleri), B2B (kademeli indirimler), Coğrafi hedefli reklam.",
+        "banners_titulo": "Reklam Bannerları",
+        "banners_texto": "Aylık yinelenen gelir: Ülke R$ 800, Kıta R$ 1.800, Dünya R$ 3.500, Özel Sponsorluk R$ 6.000.",
+        "b2b_titulo": "B2B Kurumsal Paketler",
+        "b2b_texto": "Çalışanlar veya müşteriler için hediye. Kademeli indirimler: %10 (10 kod), %30 (100), %50 (500), %70 (1.000).",
+        "projecoes_titulo": "Finansal Projeksiyonlar",
+        "projecoes_texto": "Yıl 1: R$ 33k-130k | Yıl 5: R$ 500k-1,5M | Yıl 10: R$ 3-8M | Yıl 20: R$ 15-40M | Yıl 50: R$ 75-250M.",
+        "tracao_titulo": "Çekiş ve Sonuçlar",
+        "tracao_texto": "12K+ aktif kullanıcı, %87 elde tutma, 4,8★ puan, 23 B2B ortağı.",
+        "roteiro_titulo": "Stratejik Yol Haritası",
+        "roteiro_texto": "Konsolidasyon, Genişleme (Endonezya, Türkiye, Vietnam), Küresel Giriş ve Liderlik (20+ ülke + IPO).",
+        "invest_titulo": "Yatırım ve İletişim",
+        "invest_texto": "Tohum turu R$ 3,5M · Değerleme R$ 14M · %20'ye kadar hisse. İletişim: a1elos.consultoria@gmail.com · www.a1elos.com",
+        "frase_final": "Sayılar asla yalan söylemez — ve olağanüstü bir fırsata işaret eder."
     },
     "vi": {
-        "titulo": "A1ELOS Global Numerology — Bài Thuyết Trình cho Nhà Đầu Tư và Đối Tác",
-        "subtitulo": "Nền Tảng Thần Số Toàn Cầu với 23 Sản Phẩm và 14 Ngôn Ngữ",
-        "confidencial": "TÀI LIỆU MẬT — SỬ DỤNG HẠN CHẾ",
-        "sobre_t": "1. VỀ A1ELOS",
-        "sobre_p": ["A1ELOS Global Numerology là nền tảng kỹ thuật số kết hợp thần số học, phân tích tên và hiểu biết cá nhân cho thị trường toàn cầu.",
-                "Chúng tôi phục vụ khách hàng ở nhiều nền văn hóa với 23 sản phẩm và 14 ngôn ngữ, giao hàng kỹ thuật số tự động."],
-        "mercado_t": "2. THỊ TRƯỜNG",
-        "mercado_p": ["Thị trường toàn cầu cho dịch vụ huyền bí, thần số học và phát triển bản thân tiếp tục tăng trưởng nhờ số hóa.",
-                  "Thanh toán kỹ thuật số đa tiền tệ cho phép kiếm tiền xuyên biên giới với chi phí thấp."],
-        "port_t": "3. DANH MỤC",
-        "port_p": ["23 sản phẩm: Bản Đồ Nhanh, Bản Đồ Đầy Đủ, Xác Minh Tên Phiếu Bầu, Số Bầu Cử, Tên Doanh Nghiệp, Bản Đồ Cặp Đôi, Bản Đồ Gia Đình Cao Cấp và nhiều hơn nữa."],
-        "port_colunas": ["Sản phẩm", "Mô tả", "Giá"],
-        "port_linhas": [
-            ["Cơ bản", "Bản Đồ Nhanh, Giai Đoạn Cuộc Đời & Năm, Tên Thú Cưng, Biệt Danh Kỹ Thuật Số, Tên Miền, Tên Kênh, Tên Đội Nhóm, Tên Tổ Chức/Hiệp Hội/Viện/Quỹ, Tên Dự Án, Tên Sự Kiện", "₫ 25.000", "R$ 8,00 | US$ 20,00 | € 11,00 | ¥JPY 1.400 | ¥CNY 26,00 | ₽ 440,00 | Rp 11.000,00 | ₺ 58,00 | ₪ 44,00 | ر.س 35,00"],
-            ["Trung cấp", "Bản Đồ Đầy Đủ, Tìm Kiếm Tên AI", "₫ 53.000", "R$ 17,00 | US$ 44,00 | € 26,00 | ¥JPY 3.000 | ¥CNY 53,00 | ₽ 800,00 | Rp 23.000,00 | ₺ 123,00 | ₪ 98,00 | ر.س 71,00"],
-            ["Nâng cao", "Xác Minh Tên Phiếu Bầu, Số Bầu Cử, Số Bất Động Sản, Lịch Năng Lượng Hàng Tháng", "₫ 81.000", "R$ 26,00 | US$ 71,00 | € 35,00 | ¥JPY 4.600 | ¥CNY 71,00 | ₽ 1.250,00 | Rp 36.000,00 | ₺ 188,00 | ₪ 143,00 | ر.س 107,00"],
-            ["Nâng cao II", "Xác Minh Nghệ Danh, Lên Kế Hoạch Tên Cho Bé, Xác Minh Chữ Ký", "₫ 109.000", "R$ 35,00 | US$ 89,00 | € 53,00 | ¥JPY 6.200 | ¥CNY 98,00 | ₽ 1.700,00 | Rp 48.000,00 | ₺ 254,00 | ₪ 197,00 | ر.س 143,00"],
-            ["Cao cấp", "Tên Cho Doanh Nghiệp/Sản Phẩm, Bản Đồ Cặp Đôi", "₫ 137.000", "R$ 44,00 | US$ 116,00 | € 62,00 | ¥JPY 7.700 | ¥CNY 125,00 | ₽ 2.150,00 | Rp 60.000,00 | ₺ 319,00 | ₪ 242,00 | ر.س 170,00"],
-            ["Elite", "Bản Đồ Gia Đình Cao Cấp", "₫ 305.000", "R$ 98,00 | US$ 251,00 | € 134,00 | ¥JPY 17.000 | ¥CNY 260,00 | ₽ 4.400,00 | Rp 134.000,00 | ₺ 710,00 | ₪ 530,00 | ر.س 377,00"],
-            ["B2B", "Thưởng Tập Thể/Doanh Nghiệp", "Theo yêu cầu", "Hợp đồng doanh nghiệp tùy chỉnh với sự bảo chứng DUNS"]
-        ],
-        "alcance_t": "4. PHẠM VI",
-        "alcance_p": ["Hoạt động toàn cầu bằng 14 ngôn ngữ với thanh toán bằng tiền tệ địa phương.",
-                  "Phân phối kỹ thuật số tức thì qua PDF và bài thuyết trình."],
-        "modelo_t": "5. MÔ HÌNH KINH DOANH",
-        "modelo_p": ["Doanh thu từ sản phẩm kỹ thuật số cao cấp, gói B2B và hợp tác tổ chức.",
-                 "Biên lợi nhuận cao, giao hàng tự động, không tồn kho."],
-        "midia_t": "6. TRUYỀN THÔNG & CHIẾN DỊCH",
-        "midia_p": ["Chiến dịch kỹ thuật số đa ngôn ngữ, nội dung giáo dục và quan hệ đối tác có ảnh hưởng."],
-        "midia_a_t": "Truyền Thông Kỹ Thuật Số",
-        "midia_a_colunas": ["Kênh", "Định dạng"],
-        "midia_a_linhas": [["Trang web", "SEO + nội dung"], ["Mạng xã hội", "Video ngắn"], ["Email", "Bản tin"]],
-        "midia_b_t": "Truyền Thông Truyền Thống",
-        "midia_b_colunas": ["Kênh", "Định dạng"],
-        "midia_b_linhas": [["TV/Radio", "Phỏng vấn"], ["Báo in", "Chuyên mục"]],
-        "b2b_t": "7. B2B & DOANH NGHIỆP",
-        "b2b_p": "Gói đặc biệt cho công ty, hiệp hội và tổ chức.",
-        "b2b_linhas": ["Gói Doanh Nghiệp", "Đặt tên sản phẩm và thương hiệu", "Thưởng Tập Thể"],
-        "proj_t": "8. DỰ BÁO",
-        "proj_p": "Tăng trưởng từng bước với mở rộng ngôn ngữ và quan hệ đối tác.",
-        "proj_linhas": ["Năm 1: củng cố ngôn ngữ cốt lõi", "Năm 2: quan hệ đối tác B2B", "Năm 3: quy mô toàn cầu"],
-        "seed_t": "9. VÒNG GỌI VỐN SEED",
-        "seed_p": "Chúng tôi tìm kiếm đối tác đầu tư để tăng tốc mở rộng.",
-        "seed_linhas": ["Sử dụng: công nghệ và ngôn ngữ mới", "Mục tiêu: tăng trưởng tại Châu Á và Trung Đông"],
-        "frase": "Khám phá những con số dẫn lối cho bạn.",
-        "contato": "Liên hệ: contato@a1elos.com.br | www.a1elos.com",
-        "rodape": "© 2026 A1ELOS Global Numerology. Mọi quyền được bảo lưu."
+        "titulo": "A1ELOS Thần số học Toàn cầu",
+        "subtitulo": "Khoa học về các con số áp dụng cho thành công của bạn",
+        "capa_nota": "Trình bày cho Nhà đầu tư và Đối tác",
+        "confidencial": "BẢO MẬT",
+        "ano": "2026",
+        "sobre_titulo": "Về A1ELOS",
+        "sobre_texto": "Công ty mẹ về công nghệ và tri thức kết hợp truyền thống lâu đời của thần số học với Trí tuệ Nhân tạo, cung cấp báo cáo kỹ thuật số tức thì với chi phí biên gần bằng không.",
+        "sobre_kpis": ["23 Sản phẩm", "14 Ngôn ngữ", "~5,3 Tỷ người nói", "AI Tích hợp", "DUNS 942242668"],
+        "duns_titulo": "Uy tín Quốc tế",
+        "duns_texto": "Số DUNS 942242668 do Dun & Bradstreet cấp, được công nhận tại hơn 190 quốc gia, cho phép hợp đồng doanh nghiệp, đấu thầu và liên doanh quốc tế.",
+        "mercado_titulo": "Cơ hội Thị trường",
+        "mercado_texto": "Kinh tế sức khỏe toàn cầu: 6,8 nghìn tỷ USD (2024) lên 9,8 nghìn tỷ (2029). Ứng dụng chiêm tinh/thần số: 3 tỷ (2024) lên 9 tỷ (2030), CAGR 20%.",
+        "problema_titulo": "Vấn đề",
+        "problema_texto": "Công cụ chung chung làm thất vọng người dùng và hầu hết định giá tách rời sức mua địa phương. A1ELOS khắc phục điều này.",
+        "solucao_titulo": "Giải pháp của chúng tôi",
+        "solucao_texto": "Thần số học áp dụng ở quy mô lớn: thuật toán độc quyền + AI + giao PDF cao cấp tức thì bằng 14 ngôn ngữ.",
+        "alcance_titulo": "Phạm vi Toàn cầu",
+        "alcance_texto": "14 ngôn ngữ bao phủ ~5,3 tỷ người nói (~67% dân số thế giới).",
+        "mercados_titulo": "3 Thị trường Mới",
+        "mercados_texto": "Indonesia (255 triệu người nói), Thổ Nhĩ Kỳ (90 triệu) và Việt Nam (97 triệu) — +442 triệu người nói mới với sức mua được lập bản đồ.",
+        "preco_titulo": "Định giá Có ý thức",
+        "preco_texto": "Cùng tỷ lệ giá trị cho mọi loại tiền tệ, hiệu chỉnh theo sức mua (PPP) của từng quốc gia. Tôn trọng văn hóa và túi tiền.",
+        "portfolio_titulo": "Danh mục",
+        "portfolio_texto": "23 sản phẩm ở 4 cấp (Cơ bản R$ 8, Trung cấp R$ 17, Nâng cao R$ 26-35, Cao cấp R$ 44-98) + phân khúc B2B.",
+        "negocio_titulo": "Mô hình Kinh doanh",
+        "negocio_texto": "3 nguồn doanh thu: B2C (14 ngôn ngữ, mọi loại tiền tệ), B2B (chiết khấu lũy tiến), Quảng cáo định vị địa lý.",
+        "banners_titulo": "Banner Quảng cáo",
+        "banners_texto": "Doanh thu định kỳ hàng tháng: Quốc gia R$ 800, Châu lục R$ 1.800, Thế giới R$ 3.500, Tài trợ Độc quyền R$ 6.000.",
+        "b2b_titulo": "Gói Doanh nghiệp B2B",
+        "b2b_texto": "Quà tặng cho nhân viên hoặc khách hàng. Chiết khấu lũy tiến: 10% (10 mã), 30% (100), 50% (500), 70% (1.000).",
+        "projecoes_titulo": "Dự báo Tài chính",
+        "projecoes_texto": "Năm 1: R$ 33k-130k | Năm 5: R$ 500k-1,5M | Năm 10: R$ 3-8M | Năm 20: R$ 15-40M | Năm 50: R$ 75-250M.",
+        "tracao_titulo": "Đà tăng trưởng và Kết quả",
+        "tracao_texto": "12K+ người dùng hoạt động, 87% giữ chân, đánh giá 4,8★, 23 đối tác B2B.",
+        "roteiro_titulo": "Lộ trình Chiến lược",
+        "roteiro_texto": "Củng cố, Mở rộng (Indonesia, Thổ Nhĩ Kỳ, Việt Nam), Gia nhập Toàn cầu và Lãnh đạo (20+ quốc gia + IPO).",
+        "invest_titulo": "Đầu tư và Liên hệ",
+        "invest_texto": "Vòng hạt giống R$ 3,5M · Định giá R$ 14M · Vốn cổ phần tối đa 20%. Liên hệ: a1elos.consultoria@gmail.com · www.a1elos.com",
+        "frase_final": "Các con số không bao giờ nói dối — và chúng chỉ ra một cơ hội phi thường."
     }
 }
+# ------------------------------------------------------------
+# 5. FUNÇÕES AUXILIARES
+# ------------------------------------------------------------
+def _fonte(lang):
+    """Escolhe a fonte adequada ao idioma."""
+    if lang in ("zh",):
+        return FONTES.get("zh", FONTES["normal"])
+    if lang in ("ja",):
+        return FONTES.get("ja", FONTES["normal"])
+    return FONTES["normal"]
+
+def _estilos(lang):
+    """Cria estilos de parágrafo para o idioma."""
+    fonte = _fonte(lang)
+    fonte_bold = FONTES["bold"] if lang not in ("zh", "ja") else fonte
+    return {
+        "titulo": ParagraphStyle("titulo", fontName=fonte_bold, fontSize=26,
+                                  leading=32, textColor=COR_PRETO, alignment=TA_CENTER),
+        "subtitulo": ParagraphStyle("subtitulo", fontName=fonte, fontSize=14,
+                                    leading=20, textColor=COR_CINZA, alignment=TA_CENTER),
+        "secao": ParagraphStyle("secao", fontName=fonte_bold, fontSize=16,
+                                leading=22, textColor=COR_AZUL, spaceBefore=14, spaceAfter=6),
+        "corpo": ParagraphStyle("corpo", fontName=fonte, fontSize=11,
+                                leading=16, textColor=COR_PRETO, alignment=TA_JUSTIFY),
+        "kpi": ParagraphStyle("kpi", fontName=fonte_bold, fontSize=12,
+                              leading=16, textColor=COR_DOURADO, alignment=TA_CENTER),
+        "nota": ParagraphStyle("nota", fontName=fonte, fontSize=10,
+                               leading=14, textColor=COR_CINZA_CLARO, alignment=TA_CENTER),
+        "final": ParagraphStyle("final", fontName=fonte_bold, fontSize=13,
+                                leading=18, textColor=COR_DOURADO, alignment=TA_CENTER),
+    }
+
+def _desenhar_marca_dagua(c, largura, altura, lang):
+    """Desenha a marca d'água (logo/imagem) em todas as páginas."""
+    try:
+        if os.path.exists(WATERMARK_PATH):
+            img = ImageReader(WATERMARK_PATH)
+            iw, ih = img.getSize()
+            escala = 0.35
+            w = iw * escala
+            h = ih * escala
+            c.saveState()
+            c.setFillAlpha(0.10)
+            c.drawImage(WATERMARK_PATH, (largura - w) / 2, (altura - h) / 2,
+                        width=w, height=h, preserveAspectRatio=True, mask='auto')
+            c.restoreState()
+    except Exception as e:
+        logger.warning(f"Marca d'água ignorada: {e}")
+
+def _capa(c, largura, altura, lang, formato):
+    """Desenha a página de capa."""
+    c.setFillColor(COR_PRETO)
+    c.rect(0, 0, largura, altura, stroke=0, fill=1)
+    # Logo
+    try:
+        if os.path.exists(LOGO_PATH):
+            img = ImageReader(LOGO_PATH)
+            iw, ih = img.getSize()
+            escala = 0.12 if formato == "texto" else 0.16
+            w = iw * escala
+            h = ih * escala
+            c.drawImage(LOGO_PATH, (largura - w) / 2, altura * 0.60,
+                        width=w, height=h, preserveAspectRatio=True, mask='auto')
+    except Exception as e:
+        logger.warning(f"Logo ignorado: {e}")
+    c.setFillColor(COR_DOURADO)
+    c.setFont(FONTES["bold"], 26)
+    c.drawCentredString(largura / 2, altura * 0.48, CONTEUDO[lang]["titulo"])
+    c.setFont(_fonte(lang), 14)
+    c.setFillColor(white)
+    c.drawCentredString(largura / 2, altura * 0.42, CONTEUDO[lang]["subtitulo"])
+    c.setFont(_fonte(lang), 11)
+    c.setFillColor(COR_CINZA_CLARO)
+    c.drawCentredString(largura / 2, altura * 0.34, CONTEUDO[lang]["capa_nota"])
+    # Selo confidencial
+    c.setFillColor(COR_DOURADO)
+    c.setFont(FONTES["bold"], 10)
+    c.drawCentredString(largura / 2, altura * 0.10,
+                        f"{CONTEUDO[lang]['confidencial']}  ·  {CONTEUDO[lang]['ano']}")
+
+# ------------------------------------------------------------
+# 6. GERADOR DE PDF EM FORMATO TEXTO (documento)
+# ------------------------------------------------------------
+def gerar_pdf_texto(lang="pt", caminho_saida=None):
+    """Gera a apresentação em formato de documento (texto)."""
+    if lang not in CONTEUDO:
+        lang = "pt"
+    if not caminho_saida:
+        caminho_saida = os.path.join(STATIC_DIR, f"apresentacao_{lang}.pdf")
+    c = CONTEUDO[lang]
+    est = _estilos(lang)
+    largura, altura = A4
+
+    doc = SimpleDocTemplate(caminho_saida, pagesize=A4,
+                            leftMargin=25*mm, rightMargin=25*mm,
+                            topMargin=20*mm, bottomMargin=20*mm,
+                            title=f"{c['titulo']} - {c['ano']}",
+                            author="A1ELOS")
+    elementos = []
+    elementos.append(Paragraph(c["titulo"], est["titulo"]))
+    elementos.append(Spacer(1, 6))
+    elementos.append(Paragraph(c["subtitulo"], est["subtitulo"]))
+    elementos.append(Spacer(1, 4))
+    elementos.append(Paragraph(f"{c['capa_nota']} · {c['confidencial']} {c['ano']}", est["nota"]))
+    elementos.append(Spacer(1, 12))
+
+    # Seções
+    secoes = [
+        (c["sobre_titulo"], c["sobre_texto"]),
+        (c["duns_titulo"], c["duns_texto"]),
+        (c["mercado_titulo"], c["mercado_texto"]),
+        (c["problema_titulo"], c["problema_texto"]),
+        (c["solucao_titulo"], c["solucao_texto"]),
+        (c["alcance_titulo"], c["alcance_texto"]),
+        (c["mercados_titulo"], c["mercados_texto"]),
+        (c["preco_titulo"], c["preco_texto"]),
+        (c["portfolio_titulo"], c["portfolio_texto"]),
+        (c["negocio_titulo"], c["negocio_texto"]),
+        (c["banners_titulo"], c["banners_texto"]),
+        (c["b2b_titulo"], c["b2b_texto"]),
+        (c["projecoes_titulo"], c["projecoes_texto"]),
+        (c["tracao_titulo"], c["tracao_texto"]),
+        (c["roteiro_titulo"], c["roteiro_texto"]),
+        (c["invest_titulo"], c["invest_texto"]),
+    ]
+    for titulo, texto in secoes:
+        elementos.append(Paragraph(titulo, est["secao"]))
+        elementos.append(Paragraph(texto, est["corpo"]))
+        elementos.append(Spacer(1, 6))
+
+    # KPIs em tabela
+    kpis = [Paragraph(k, est["kpi"]) for k in c["sobre_kpis"]]
+    tabela_kpi = Table([kpis], colWidths=[largura/5 - 10*mm]*5)
+    tabela_kpi.setStyle(TableStyle([
+        ("ALIGN", (0,0), (-1,-1), "CENTER"),
+        ("VALIGN", (0,0), (-1,-1), "MIDDLE"),
+        ("BOX", (0,0), (-1,-1), 1, COR_DOURADO),
+        ("INNERGRID", (0,0), (-1,-1), 0.5, COR_CINZA_CLARO),
+        ("BACKGROUND", (0,0), (-1,-1), HexColor("#F8F6F0")),
+        ("TOPPADDING", (0,0), (-1,-1), 8),
+        ("BOTTOMPADDING", (0,0), (-1,-1), 8),
+    ]))
+    elementos.append(Spacer(1, 10))
+    elementos.append(tabela_kpi)
+    elementos.append(Spacer(1, 16))
+
+    # Frase final
+    elementos.append(Paragraph(c["frase_final"], est["final"]))
+    elementos.append(Spacer(1, 8))
+    elementos.append(Paragraph(f"{c['titulo']} · DUNS 942242668 · 23 produtos · 14 idiomas",
+                               est["nota"]))
+
+    # Marca d'água em todas as páginas
+    def _fundo(canvas_obj, doc_obj):
+        _desenhar_marca_dagua(canvas_obj, largura, altura, lang)
+    doc.build(elementos, onFirstPage=_fundo, onLaterPages=_fundo)
+    logger.info(f"PDF texto gerado: {caminho_saida}")
+    return caminho_saida
+
+# ------------------------------------------------------------
+# 7. GERADOR DE PDF EM FORMATO SLIDES (deck)
+# ------------------------------------------------------------
+def gerar_pdf_slides(lang="pt", caminho_saida=None):
+    """Gera a apresentação em formato de slides (paisagem)."""
+    if lang not in CONTEUDO:
+        lang = "pt"
+    if not caminho_saida:
+        caminho_saida = os.path.join(STATIC_DIR, f"apresentacao_slides_{lang}.pdf")
+    c = CONTEUDO[lang]
+    est = _estilos(lang)
+    largura, altura = landscape(A4)
+
+    # Slide 1: capa
+    _capa(canvas, largura, altura, lang, "slides")  # placeholder, substituído abaixo
+
+    # Usa canvas direto para controle total do layout
+    from reportlab.pdfgen import canvas as cv
+    doc = cv.Canvas(caminho_saida, pagesize=landscape(A4))
+    _capa(doc, largura, altura, lang, "slides")
+    doc.showPage()
+
+    # Slides de conteúdo (um por seção)
+    secoes = [
+        (c["sobre_titulo"], c["sobre_texto"]),
+        (c["duns_titulo"], c["duns_texto"]),
+        (c["mercado_titulo"], c["mercado_texto"]),
+        (c["problema_titulo"], c["problema_texto"]),
+        (c["solucao_titulo"], c["solucao_texto"]),
+        (c["alcance_titulo"], c["alcance_texto"]),
+        (c["mercados_titulo"], c["mercados_texto"]),
+        (c["preco_titulo"], c["preco_texto"]),
+        (c["portfolio_titulo"], c["portfolio_texto"]),
+        (c["negocio_titulo"], c["negocio_texto"]),
+        (c["banners_titulo"], c["banners_texto"]),
+        (c["b2b_titulo"], c["b2b_texto"]),
+        (c["projecoes_titulo"], c["projecoes_texto"]),
+        (c["tracao_titulo"], c["tracao_texto"]),
+        (c["roteiro_titulo"], c["roteiro_texto"]),
+        (c["invest_titulo"], c["invest_texto"]),
+    ]
+    for titulo, texto in secoes:
+        _desenhar_marca_dagua(doc, largura, altura, lang)
+        # Barra superior azul
+        doc.setFillColor(COR_AZUL)
+        doc.rect(0, altura - 14*mm, largura, 14*mm, stroke=0, fill=1)
+        doc.setFillColor(white)
+        doc.setFont(FONTES["bold"], 20)
+        doc.drawString(15*mm, altura - 10*mm, titulo)
+        # Corpo
+        doc.setFillColor(COR_PRETO)
+        doc.setFont(_fonte(lang), 13)
+        # Quebra de linha simples
+        palavras = texto.split()
+        linhas = []
+        linha_atual = ""
+        largura_max = largura - 30*mm
+        for p in palavras:
+            teste = (linha_atual + " " + p).strip()
+            if doc.stringWidth(teste, _fonte(lang), 13) <= largura_max:
+                linha_atual = teste
+            else:
+                linhas.append(linha_atual)
+                linha_atual = p
+        if linha_atual:
+            linhas.append(linha_atual)
+        y = altura - 30*mm
+        for linha in linhas[:14]:  # limite de 14 linhas por slide
+            doc.drawString(15*mm, y, linha)
+            y -= 8*mm
+        # Rodapé
+        doc.setFillColor(COR_DOURADO)
+        doc.setFont(FONTES["bold"], 9)
+        doc.drawCentredString(largura/2, 10*mm,
+                              f"{c['titulo']} · {c['confidencial']} {c['ano']}")
+        doc.showPage()
+
+    doc.save()
+    logger.info(f"PDF slides gerado: {caminho_saida}")
+    return caminho_saida
+
+# ------------------------------------------------------------
+# 8. ENTRADA PRINCIPAL (compatível com a chamada do main.py)
+# ------------------------------------------------------------
+def gerar_apresentacao(lang="pt", formato="texto"):
+    """Gera a apresentação no formato pedido. Retorna o caminho do arquivo."""
+    if formato == "slides":
+        return gerar_pdf_slides(lang)
+    return gerar_pdf_texto(lang)
+
+def gerar_todas():
+    """Gera para todos os 14 idiomas, nos dois formatos."""
+    idiomas = ["pt", "en", "es", "it", "fr", "de", "ru", "zh", "ja", "ar", "he", "id", "tr", "vi"]
+    for lang in idiomas:
+        gerar_pdf_texto(lang)
+        gerar_pdf_slides(lang)
+    logger.info("Todas as apresentações geradas (14 idiomas × 2 formatos).")
+
+if __name__ == "__main__":
+    import sys
+    if len(sys.argv) > 1:
+        lang = sys.argv[1]
+        formato = sys.argv[2] if len(sys.argv) > 2 else "texto"
+        gerar_apresentacao(lang, formato)
+    else:
+        gerar_todas()
