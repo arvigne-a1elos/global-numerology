@@ -17,8 +17,9 @@ function montarSeletorIdioma() {
     b.className = 'lang-btn' + (l.id === atual ? ' active' : '');
     b.title = l.id.toUpperCase();
     b.innerHTML = l.b;
-    b.onclick = function() {
+   b.onclick = function() {
   setLanguage(l.id);
+  if (typeof traduzirTudo === "function") traduzirTudo();
   var ativos = container.querySelectorAll('.lang-btn');
   for (var i = 0; i < ativos.length; i++) ativos[i].classList.remove('active');
   b.classList.add('active');
