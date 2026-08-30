@@ -419,32 +419,6 @@ function atualizarLinksApresentacao() {
   var btnSlides = document.getElementById('btnApresentacaoSlides');
   if (btnSlides && typeof getLang === 'function') btnSlides.href = '/api/apresentacao-slides?lang=' + getLang();
 }
-// ===== INICIALIZAÇÃO =====
-function init() {
-  var savedLang = localStorage.getItem('lang');
-  var browserLang = navigator.language.split('-')[0];
-  var defaultLang = savedLang || (typeof translations !== 'undefined' && translations[browserLang] ? browserLang : 'pt');
-  montarSeletorIdioma();
-  setLanguage(defaultLang);
-  if (typeof carregarPartials === 'function') {
-    carregarPartials();   // carregarPartials chama montarTudo() UMA vez no final
-  } else if (typeof montarTudo === 'function') {
-    montarTudo();
-  }
-}
-// ===== INICIALIZAÇÃO AUTOMÁTICA GARANTIDA =====
-function iniciarSeguro() {
-  try {
-    init();
-  } catch (e) {
-    console.error("[A1ELOS] init() falhou:", e);
-  }
-}
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", iniciarSeguro);
-} else {
-  iniciarSeguro();
-}
 
 var MESES_TRAD = {
   pt:["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"],
@@ -507,4 +481,32 @@ function montarValorData() {
   var a = document.getElementById("calcAno").value;
   var hidden = document.getElementById("calcNasc");
   if (hidden && d && m && a) hidden.value = a + "-" + m + "-" + d;
+}
+
+// ===== INICIALIZAÇÃO =====
+function init() {
+  var savedLang = localStorage.getItem('lang');
+  var browserLang = navigator.language.split('-')[0];
+  var defaultLang = savedLang || (typeof translations !== 'undefined' && translations[browserLang] ? browserLang : 'pt');
+  montarSeletorIdioma();
+  montarSeletorData();
+  setLanguage(defaultLang);
+  if (typeof carregarPartials === 'function') {
+    carregarPartials();   // carregarPartials chama montarTudo() UMA vez no final
+  } else if (typeof montarTudo === 'function') {
+    montarTudo();
+  }
+}
+// ===== INICIALIZAÇÃO AUTOMÁTICA GARANTIDA =====
+function iniciarSeguro() {
+  try {
+    init();
+  } catch (e) {
+    console.error("[A1ELOS] init() falhou:", e);
+  }
+}
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", iniciarSeguro);
+} else {
+  iniciarSeguro();
 }
