@@ -826,7 +826,8 @@ function traduzirTudo() {
       if (t[k]) el.innerText = t[k];
     });
     if (typeof renderizarNumeros === 'function' && typeof ultimosNumeros !== 'undefined' && ultimosNumeros && ultimosNumeros.length) {
-    if (typeof atualizarMesesData === "function") atualizarMesesData();  
+    if (typeof atualizarMesesData === "function") atualizarMesesData(); 
+    if (typeof montarTabelaBC === "function") montarTabelaBC();  
       renderizarNumeros();
     }
     document.querySelectorAll('[data-i18n-ph]').forEach(function(el) {
