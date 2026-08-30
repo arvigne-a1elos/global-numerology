@@ -22,9 +22,11 @@ nav.sections a:hover{color:var(--gold)}
     display: flex; justify-content: center; overflow-x: auto;
     scrollbar-width: thin;
 }
+#langSelector,
 .lang-container {
     display: flex; gap: 8px; flex-wrap: nowrap; padding: 0 10px;
     align-items: center; justify-content: center; margin: 0 auto;
+    width: fit-content;
 }
 .lang-btn {
     white-space: nowrap; padding: 6px 14px;
