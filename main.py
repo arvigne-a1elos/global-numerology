@@ -841,18 +841,28 @@ async def health():
 async def health_head():
     return Response(status_code=200)
 
-# ===== ROTAS DE APRESENTAÇÃO (texto e slides) =====
+# ===== ROTAS DE APRESENTAÇÃO (texto e slides) — BLINDADAS =====
+from apresentacao_textos import gerar_apresentacao
+
 @app.get("/api/apresentacao")
 async def get_apresentacao(lang: str = "pt"):
-    caminho = gerar_apresentacao(lang, "texto")
-    return FileResponse(caminho, media_type="application/pdf",
-                        filename=f"Apresentacao-{lang}.pdf")
+    try:
+        caminho = gerar_apresentacao(lang, "texto")
+        return FileResponse(caminho, media_type="application/pdf",
+                            filename=f"Apresentacao-{lang}.pdf")
+    except Exception as e:
+        logger.error("ERRO /api/apresentacao: %s", traceback.format_exc())
+        raise HTTPException(500, f"Erro ao gerar PDF: {e}")
 
 @app.get("/api/apresentacao-slides")
 async def get_apresentacao_slides(lang: str = "pt"):
-    caminho = gerar_apresentacao(lang, "slides")
-    return FileResponse(caminho, media_type="application/pdf",
-                        filename=f"Apresentacao-Slides-{lang}.pdf")
+    try:
+        caminho = gerar_apresentacao(lang, "slides")
+        return FileResponse(caminho, media_type="application/pdf",
+                            filename=f"Apresentacao-Slides-{lang}.pdf")
+    except Exception as e:
+        logger.error("ERRO /api/apresentacao-slides: %s", traceback.format_exc())
+        raise HTTPException(500, f"Erro ao gerar slides: {e}")
 
 # ===== ROTA /criar-checkout (usada pelo site) =====
 @app.get("/criar-checkout")
@@ -1042,14 +1052,3 @@ async def gerar_codigos_coletivo(req: BonusReq):
     itens = [{"id": "express", "qtd": 1}]
     gerados = _gerar_codigos_para_itens(itens)
     return {"ok": True, "gerados": gerados, "motivo": req.motivo}
-
-# ===== DIAGNÓSTICO DE GERAÇÃO DE PDF (sem precisar de terminal) =====
-@app.get("/api/testar-apresentacao")
-async def testar_apresentacao(lang: str = "pt", modo: str = "texto"):
-    import traceback
-    try:
-        from apresentacao_textos import gerar_apresentacao
-        caminho = gerar_apresentacao(lang, modo)
-        return {"ok": True, "arquivo": caminho, "existe": os.path.exists(caminho)}
-    except Exception as e:
-        return {"ok": False, "erro": str(e), "traceback": traceback.format_exc()}
