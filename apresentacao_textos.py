@@ -668,6 +668,141 @@ CONTEUDO = {
         "frase_final": "Các con số không bao giờ nói dối — và chúng chỉ ra một cơ hội phi thường."
     }
 }
+
+# ------------------------------------------------------------
+# 4b. DADOS NUMÉRICOS DAS TABELAS (idênticos em todos os idiomas)
+# ------------------------------------------------------------
+LINHAS_IDIOMAS = [
+    ("Inglês", 1528), ("Mandarim", 1184), ("Espanhol", 558),
+    ("Francês", 396), ("Árabe", 335), ("Português", 270),
+    ("Russo", 255), ("Indonésio", 255), ("Alemão", 134),
+    ("Japonês", 123), ("Vietnamita", 97), ("Turco", 90),
+    ("Italiano", 85), ("Hebraico", 9),
+]
+LINHAS_BANNERS = [[800, "500"], [1800, "1.200"], [3500, "2.500"], [6000, "4.500"]]
+LINHAS_B2B = [["10", "10%"], ["100", "30%"], ["500", "50%"], ["1.000", "70%"]]
+HORIZONTES = [1, 3, 5, 10, 20, 30, 40, 50]
+RANGES = [
+    ("33k", "130k"), ("120k", "450k"), ("500k", "1,5M"),
+    ("3M", "8M"), ("15M", "40M"), ("35M", "90M"),
+    ("55M", "150M"), ("75M", "250M"),
+]
+
+TABELAS = {
+    "pt": {"h_idioma": "Idioma", "h_falantes": "Falantes (mi)", "h_seg": "Segmentação",
+           "h_fixo": "Fixo (R$/mês)", "h_temp": "Temporário (R$/mês)", "h_de": "A partir de",
+           "h_desc": "Desconto", "h_hor": "Horizonte", "h_cons": "Conservador (R$)",
+           "h_otim": "Otimista (R$)", "h_ano": "Ano",
+           "seg": ["País", "Continente", "Mundo", "Patrocínio Exclusivo"]},
+    "en": {"h_idioma": "Language", "h_falantes": "Speakers (M)", "h_seg": "Targeting",
+           "h_fixo": "Fixed (R$/mo)", "h_temp": "Temporary (R$/mo)", "h_de": "From",
+           "h_desc": "Discount", "h_hor": "Horizon", "h_cons": "Conservative (R$)",
+           "h_otim": "Optimistic (R$)", "h_ano": "Yr",
+           "seg": ["Country", "Continent", "World", "Exclusive Sponsorship"]},
+    "es": {"h_idioma": "Idioma", "h_falantes": "Hablantes (M)", "h_seg": "Segmentación",
+           "h_fixo": "Fijo (R$/mes)", "h_temp": "Temporal (R$/mes)", "h_de": "A partir de",
+           "h_desc": "Descuento", "h_hor": "Horizonte", "h_cons": "Conservador (R$)",
+           "h_otim": "Optimista (R$)", "h_ano": "Año",
+           "seg": ["País", "Continente", "Mundo", "Patrocinio Exclusivo"]},
+    "it": {"h_idioma": "Lingua", "h_falantes": "Parlanti (M)", "h_seg": "Segmentazione",
+           "h_fixo": "Fisso (R$/mese)", "h_temp": "Temporaneo (R$/mese)", "h_de": "Da",
+           "h_desc": "Sconto", "h_hor": "Orizzonte", "h_cons": "Conservativo (R$)",
+           "h_otim": "Ottimista (R$)", "h_ano": "Anno",
+           "seg": ["Paese", "Continente", "Mondo", "Sponsor Esclusivo"]},
+    "fr": {"h_idioma": "Langue", "h_falantes": "Locuteurs (M)", "h_seg": "Ciblage",
+           "h_fixo": "Fixe (R$/mois)", "h_temp": "Temporaire (R$/mois)", "h_de": "À partir de",
+           "h_desc": "Remise", "h_hor": "Horizon", "h_cons": "Conservateur (R$)",
+           "h_otim": "Optimiste (R$)", "h_ano": "An",
+           "seg": ["Pays", "Continent", "Monde", "Parrainage Exclusif"]},
+    "de": {"h_idioma": "Sprache", "h_falantes": "Sprecher (Mio.)", "h_seg": "Segmentierung",
+           "h_fixo": "Fest (R$/Monat)", "h_temp": "Zeitweilig (R$/Monat)", "h_de": "Ab",
+           "h_desc": "Rabatt", "h_hor": "Horizont", "h_cons": "Konservativ (R$)",
+           "h_otim": "Optimistisch (R$)", "h_ano": "Jahr",
+           "seg": ["Land", "Kontinent", "Welt", "Exklusiv-Sponsoring"]},
+    "ru": {"h_idioma": "Язык", "h_falantes": "Носители (млн)", "h_seg": "Сегментация",
+           "h_fixo": "Фикс. (R$/мес)", "h_temp": "Врем. (R$/мес)", "h_de": "От",
+           "h_desc": "Скидка", "h_hor": "Горизонт", "h_cons": "Консерв. (R$)",
+           "h_otim": "Оптим. (R$)", "h_ano": "Год",
+           "seg": ["Страна", "Континент", "Мир", "Эксклюзивное спонсорство"]},
+    "zh": {"h_idioma": "语言", "h_falantes": "使用者(百万)", "h_seg": "定向",
+           "h_fixo": "固定(R$/月)", "h_temp": "临时(R$/月)", "h_de": "从",
+           "h_desc": "折扣", "h_hor": "期限", "h_cons": "保守(R$)",
+           "h_otim": "乐观(R$)", "h_ano": "年",
+           "seg": ["国家", "大洲", "全球", "独家赞助"]},
+    "ja": {"h_idioma": "言語", "h_falantes": "話者(百万)", "h_seg": "セグメント",
+           "h_fixo": "固定(R$/月)", "h_temp": "臨時(R$/月)", "h_de": "から",
+           "h_desc": "割引", "h_hor": "期間", "h_cons": "保守(R$)",
+           "h_otim": "楽観(R$)", "h_ano": "年",
+           "seg": ["国", "大陸", "世界", "独占スポンサー"]},
+    "ar": {"h_idioma": "اللغة", "h_falantes": "المتحدثون (مليون)", "h_seg": "الاستهداف",
+           "h_fixo": "ثابت (R$/شهر)", "h_temp": "مؤقت (R$/شهر)", "h_de": "من",
+           "h_desc": "خصم", "h_hor": "الأفق", "h_cons": "متحفظ (R$)",
+           "h_otim": "متفائل (R$)", "h_ano": "سنة",
+           "seg": ["دولة", "قارة", "عالم", "رعاية حصرية"]},
+    "he": {"h_idioma": "שפה", "h_falantes": "דוברים (מיליון)", "h_seg": "מיקוד",
+           "h_fixo": "קבוע (R$/חודש)", "h_temp": "זמני (R$/חודש)", "h_de": "החל מ-",
+           "h_desc": "הנחה", "h_hor": "אופק", "h_cons": "שמרני (R$)",
+           "h_otim": "אופטימי (R$)", "h_ano": "שנה",
+           "seg": ["מדינה", "יבשת", "עולם", "חסות בלעדית"]},
+    "id": {"h_idioma": "Bahasa", "h_falantes": "Penutur (juta)", "h_seg": "Segmentasi",
+           "h_fixo": "Tetap (R$/bln)", "h_temp": "Sementara (R$/bln)", "h_de": "Mulai dari",
+           "h_desc": "Diskon", "h_hor": "Cakrawala", "h_cons": "Konservatif (R$)",
+           "h_otim": "Optimis (R$)", "h_ano": "Tahun",
+           "seg": ["Negara", "Benua", "Dunia", "Sponsor Eksklusif"]},
+    "tr": {"h_idioma": "Dil", "h_falantes": "Konuşmacı (milyon)", "h_seg": "Hedefleme",
+           "h_fixo": "Sabit (R$/ay)", "h_temp": "Geçici (R$/ay)", "h_de": "Şuradan",
+           "h_desc": "İndirim", "h_hor": "Ufuk", "h_cons": "Muhafazakâr (R$)",
+           "h_otim": "İyimser (R$)", "h_ano": "Yıl",
+           "seg": ["Ülke", "Kıta", "Dünya", "Özel Sponsorluk"]},
+    "vi": {"h_idioma": "Ngôn ngữ", "h_falantes": "Người nói (triệu)", "h_seg": "Nhắm mục tiêu",
+           "h_fixo": "Cố định (R$/tháng)", "h_temp": "Tạm thời (R$/tháng)", "h_de": "Từ",
+           "h_desc": "Chiết khấu", "h_hor": "Chân trời", "h_cons": "Bảo thủ (R$)",
+           "h_otim": "Lạc quan (R$)", "h_ano": "Năm",
+           "seg": ["Quốc gia", "Châu lục", "Thế giới", "Tài trợ độc quyền"]},
+}
+
+# ------------------------------------------------------------
+# 4c. FUNÇÕES AUXILIARES DE DESENHO (texto e tabelas)
+# ------------------------------------------------------------
+def _texto_wrap(doc, texto, fonte, tam, x, y, largura_max, cor, entrelinha):
+    doc.setFillColor(cor)
+    doc.setFont(fonte, tam)
+    palavras = texto.split()
+    linha = ""
+    for p in palavras:
+        teste = (linha + " " + p).strip()
+        if doc.stringWidth(teste, fonte, tam) <= largura_max:
+            linha = teste
+        else:
+            doc.drawString(x, y, linha)
+            y -= entrelinha
+            linha = p
+    if linha:
+        doc.drawString(x, y, linha)
+        y -= entrelinha
+    return y
+
+def _tabela_pdf(doc, dados, colunas, x, y, largura, fonte=None, tam=9):
+    from reportlab.platypus import Table, TableStyle
+    from reportlab.lib.colors import HexColor, white
+    fonte = fonte or FONTES["normal"]
+    tbl = Table(dados, colWidths=[largura * c for c in colunas])
+    tbl.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (-1, 0), COR_AZUL),
+        ("TEXTCOLOR", (0, 0), (-1, 0), white),
+        ("FONTNAME", (0, 0), (-1, 0), FONTES["bold"]),
+        ("FONTSIZE", (0, 0), (-1, -1), tam),
+        ("TEXTCOLOR", (0, 1), (-1, -1), COR_PRETO),
+        ("GRID", (0, 0), (-1, -1), 0.4, COR_CINZA_CLARO),
+        ("ROWBACKGROUNDS", (0, 1), (-1, -1), [white, HexColor("#F5F7FB")]),
+        ("ALIGN", (1, 0), (-1, -1), "CENTER"),
+        ("TOPPADDING", (0, 0), (-1, -1), 3),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
+    ]))
+    w, h = tbl.wrapOn(doc, largura, 600)
+    tbl.drawOn(doc, x, y - h)
+    return y - h
+
 # ------------------------------------------------------------
 # 5. FUNÇÕES AUXILIARES
 # ------------------------------------------------------------
