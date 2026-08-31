@@ -328,6 +328,41 @@ def _caixa(doc, x, y, w, h, cor_fundo=None, cor_borda=None, raio=0):
         doc.setLineWidth(0.8)
         doc.rect(x, y, w, h, stroke=1, fill=0)
 
+def _bandeira(doc, x, y, w, h, pais):
+    """Desenha uma mini-bandeira com retângulos (id, tr, vn)."""
+    if pais == "id":
+        doc.setFillColor(HexColor("#CE1126"))
+        doc.rect(x, y + h / 2, w, h / 2, stroke=0, fill=1)
+        doc.setFillColor(white)
+        doc.rect(x, y, w, h / 2, stroke=0, fill=1)
+    elif pais == "tr":
+        doc.setFillColor(HexColor("#E30A17"))
+        doc.rect(x, y, w, h, stroke=0, fill=1)
+        doc.setFillColor(white)
+        doc.circle(x + w * 0.42, y + h / 2, h * 0.30, stroke=0, fill=1)
+        doc.setFillColor(HexColor("#E30A17"))
+        doc.circle(x + w * 0.48, y + h / 2, h * 0.26, stroke=0, fill=1)
+    elif pais == "vn":
+        doc.setFillColor(HexColor("#DA251D"))
+        doc.rect(x, y, w, h, stroke=0, fill=1)
+        cx, cy = x + w / 2, y + h / 2
+        r = h * 0.38
+        pts = []
+        for i in range(10):
+            ang = math.pi / 2 + i * math.pi / 5
+            rr = r if i % 2 == 0 else r * 0.45
+            pts.append((cx + rr * math.cos(ang), cy + rr * math.sin(ang)))
+        p = doc.beginPath()
+        p.moveTo(*pts[0])
+        for pt in pts[1:]:
+            p.lineTo(*pt)
+        p.close()
+        doc.setFillColor(HexColor("#FFCD00"))
+        doc.drawPath(p, stroke=0, fill=1)
+    doc.setStrokeColor(HexColor("#888888"))
+    doc.setLineWidth(0.3)
+    doc.rect(x, y, w, h, stroke=1, fill=0)
+
 def _rodape(doc, largura, altura, lang, c, pagina):
     doc.setFillColor(COR_CINZA_CLARO)
     doc.setFont(_fonte(lang), 8)
@@ -640,12 +675,14 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
                     largura - 36 * mm, COR_CINZA, 5 * mm)
     y -= 8 * mm
     col_w = (largura - 36 * mm - 2 * 8 * mm) / 3
+        paises = ["id", "tr", "vn"]
     for i, (tit, itens) in enumerate(c["mercados_cards"]):
         x = 18 * mm + i * (col_w + 8 * mm)
         _caixa(doc, x, y - 70 * mm, col_w, 70 * mm, COR_FUNDO, COR_DOURADO)
+        _bandeira(doc, x + 5 * mm, y - 22 * mm, 11 * mm, 7.5 * mm, paises[i])
         doc.setFillColor(COR_AZUL)
         doc.setFont(_fonte(lang, True), 12)
-        doc.drawString(x + 5 * mm, y - 12 * mm, tit)
+        doc.drawString(x + 19 * mm, y - 12 * mm, tit)
         yy = y - 20 * mm
         for item in itens:
             doc.setFillColor(COR_CINZA)
