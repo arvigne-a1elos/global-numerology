@@ -39,6 +39,10 @@ COR_CINZA_CLARO = HexColor("#9E9E9E")
 COR_FUNDO = HexColor("#F7F5EF")   # bege claro editorial
 COR_VERDE = HexColor("#2E7D32")
 
+CORES_GRAFICO = [COR_AZUL, COR_DOURADO, HexColor("#3B82F6"), HexColor("#2E7D32"),
+                 HexColor("#8E44AD"), HexColor("#E67E22"), HexColor("#C0392B"),
+                 HexColor("#16A085"), HexColor("#F39C12"), HexColor("#7F8C8D")]
+
 # ------------------------------------------------------------
 # FONTES
 # ------------------------------------------------------------
@@ -781,11 +785,9 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
         doc.setFont(_fonte(lang), 9)
         _texto_wrap(doc, sub, _fonte(lang), 9, x + 5 * mm, y - 22 * mm,
                     col_w - 10 * mm, COR_CINZA, 4.5 * mm)
-            _grafico_pizza(doc, 18 * mm, y - 78 * mm, largura - 36 * mm, 68 * mm,
-                   ["B2C", "B2B", "Publicidade"], [60, 25, 15], "Composição da Receita")
-    _rodape(doc, largura, altura, lang, c, pagina)
-    doc.showPage()
-    pagina += 1
+        _rodape(doc, largura, altura, lang, c, pagina)
+        doc.showPage()
+        pagina += 1
 
     # ALCANCE + TABELA IDIOMAS
     _titulo_pagina(doc, largura, altura, lang, c["alcance_titulo"], 7)
@@ -881,7 +883,7 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     doc.showPage()
     pagina += 1
 
-    # NEGÓCIO (3 colunas)
+        # NEGÓCIO (3 colunas)
     _titulo_pagina(doc, largura, altura, lang, c["negocio_titulo"], 11)
     y = altura - 32 * mm
     y = _texto_wrap(doc, c["negocio_texto"], _fonte(lang), 11, 18 * mm, y,
@@ -899,11 +901,9 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
         doc.setFont(_fonte(lang), 9)
         _texto_wrap(doc, sub, _fonte(lang), 9, x + 5 * mm, y - 22 * mm,
                     col_w - 10 * mm, COR_CINZA, 4.5 * mm)
-        _grafico_pizza(doc, 18 * mm, y - 78 * mm, largura - 36 * mm, 68 * mm,
+    _grafico_pizza(doc, 18 * mm, y - 78 * mm, largura - 36 * mm, 68 * mm,
                    ["B2C", "B2B", "Publicidade"], [60, 25, 15], "Composição da Receita")
     _rodape(doc, largura, altura, lang, c, pagina)
-    doc.showPage()
-    pagina += 1
 
     # BANNERS (tabela 4 colunas)
     _titulo_pagina(doc, largura, altura, lang, c["banners_titulo"], 12)
@@ -1303,8 +1303,7 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
     y = _texto_wrap(doc, c["mercados_texto"], _fonte(lang), 11, 18 * mm, y,
                     largura - 36 * mm, COR_CINZA, 5.5 * mm)
     y -= 10 * mm
-    col_w = (largura - 36 * mm - 2 * 10 * mm) / 3
-        col_w = (largura - 36 * mm - 2 * 8 * mm) / 3
+    col_w = (largura - 36 * mm - 2 * 8 * mm) / 3
     paises = ["id", "tr", "vn"]
     for i, (tit, itens) in enumerate(c["mercados_cards"]):
         x = 18 * mm + i * (col_w + 8 * mm)
@@ -1416,9 +1415,6 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
     doc.setFont(_fonte(lang), 9)
     _texto_wrap(doc, c["banners_formatos"], _fonte(lang), 9, 22 * mm, y - 15 * mm,
                 largura - 44 * mm, COR_AZUL, 4 * mm)
-        _grafico_barras(doc, 18 * mm, y - 60 * mm, largura - 36 * mm, 50 * mm,
-                    ["Ano 1", "Ano 5", "Ano 10", "Ano 20", "Ano 50"],
-                    [33, 500, 3000, 15000, 75000], "Projeção Conservadora (R$ mil)")
     rodape(pagina)
     doc.showPage()
     pagina += 1
@@ -1460,6 +1456,9 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
     y -= 10 * mm
     _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
                       c["projecoes_tabela"], [0.3, 0.35, 0.35], 10)
+    _grafico_barras(doc, 18 * mm, y - 60 * mm, largura - 36 * mm, 50 * mm,
+                    ["Ano 1", "Ano 5", "Ano 10", "Ano 20", "Ano 50"],
+                    [33, 500, 3000, 15000, 75000], "Projeção Conservadora (R$ mil)")
     rodape(pagina)
     doc.showPage()
     pagina += 1
