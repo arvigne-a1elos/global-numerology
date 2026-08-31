@@ -1026,3 +1026,14 @@ async def gerar_codigos_coletivo(req: BonusReq):
     itens = [{"id": "express", "qtd": 1}]
     gerados = _gerar_codigos_para_itens(itens)
     return {"ok": True, "gerados": gerados, "motivo": req.motivo}
+
+# ===== DIAGNÓSTICO DE GERAÇÃO DE PDF (sem precisar de terminal) =====
+@app.get("/api/testar-apresentacao")
+async def testar_apresentacao(lang: str = "pt", modo: str = "texto"):
+    import traceback
+    try:
+        from apresentacao_textos import gerar_apresentacao
+        caminho = gerar_apresentacao(lang, modo)
+        return {"ok": True, "arquivo": caminho, "existe": os.path.exists(caminho)}
+    except Exception as e:
+        return {"ok": False, "erro": str(e), "traceback": traceback.format_exc()}
