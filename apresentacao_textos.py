@@ -163,9 +163,9 @@ CONTEUDO = {
         "mercados_titulo": "Os 3 Novos Mercados: +442 Milhões de Falantes",
         "mercados_texto": "A expansão estratégica para Indonésia, Turquia e Vietnã representa um salto qualitativo: mercados com alto crescimento econômico, penetração digital crescente e demanda comprovada por soluções de bem-estar digital acessíveis.",
         "mercados_cards": [
-            ("🇮🇩 Indonésia", ["285 mi habitantes", "80,5% penetração de internet", "~255 mi falantes de Indonésio", "Bem-estar: US$ 51,2 bi (2025) → US$ 72,8 bi (2034)"]),
-            ("🇹🇷 Turquia", ["85,9 mi habitantes", "PIB PPP per capita US$ 37.301", "~90 mi falantes de Turco", "Acima da média mundial (US$ 27.211)"]),
-            ("🇻🇳 Vietnã", ["~100 mi habitantes", "PIB per capita ~US$ 5.066 (+7,4%/ano)", "~97 mi falantes de Vietnamita", "Bem-estar: US$ 303 mi (2025) → US$ 485 mi (2030)"]),
+            ("Indonésia", ["285 mi habitantes", "80,5% penetração de internet", "~255 mi falantes de Indonésio", "Bem-estar: US$ 51,2 bi (2025) → US$ 72,8 bi (2034)"]),
+            ("Turquia", ["85,9 mi habitantes", "PIB PPP per capita US$ 37.301", "~90 mi falantes de Turco", "Acima da média mundial (US$ 27.211)"]),
+            ("Vietnã",  ["~100 mi habitantes", "PIB per capita ~US$ 5.066 (+7,4%/ano)", "~97 mi falantes de Vietnamita", "Bem-estar: US$ 303 mi (2025) → US$ 485 mi (2030)"]),
         ],
         "mercados_rodape": "3 mercados novos = +442 milhões de novos falantes endereçáveis — incorporados à plataforma com precificação culturalmente calibrada.",
 
@@ -393,7 +393,7 @@ def _kpis_grid(doc, largura, altura, lang, kpis, y, colunas=4):
     w = (largura - 2 * margem - (colunas - 1) * gap) / colunas
     h = 30 * mm
     x0 = margem
-    for i, item in enumerate(kpis):
+        for i, item in enumerate(kpis):
         if len(item) == 3:
             num, rot, sub = item
         else:
@@ -401,18 +401,29 @@ def _kpis_grid(doc, largura, altura, lang, kpis, y, colunas=4):
             sub = ""
         x = x0 + i * (w + gap)
         _caixa(doc, x, y - h, w, h, COR_FUNDO, COR_DOURADO)
-        doc.setFillColor(COR_DOURADO)
-        doc.setFont(_fonte(lang, True), 22)
-        doc.drawCentredString(x + w / 2, y - h + 18 * mm, num)
-        doc.setFillColor(COR_PRETO)
-        doc.setFont(_fonte(lang, True), 10)
-        doc.drawCentredString(x + w / 2, y - h + 10 * mm, rot)
-        if sub:
+        if len(item) == 2:
+            # Card de texto (mercado): título pequeno + texto quebrado
+            doc.setFillColor(COR_AZUL)
+            doc.setFont(_fonte(lang, True), 9)
+            _texto_wrap(doc, num, _fonte(lang, True), 9, x + 4 * mm, y - h + 22 * mm,
+                        w - 8 * mm, COR_AZUL, 4 * mm)
             doc.setFillColor(COR_CINZA)
-            doc.setFont(_fonte(lang), 8)
-            _texto_wrap(doc, sub, _fonte(lang), 8, x + 4 * mm, y - h + 5 * mm,
+            doc.setFont(_fonte(lang), 7.5)
+            _texto_wrap(doc, rot, _fonte(lang), 7.5, x + 4 * mm, y - h + 14 * mm,
                         w - 8 * mm, COR_CINZA, 3.5 * mm)
-    return y - h - 6 * mm
+        else:
+            doc.setFillColor(COR_DOURADO)
+            doc.setFont(_fonte(lang, True), 22)
+            doc.drawCentredString(x + w / 2, y - h + 18 * mm, num)
+            doc.setFillColor(COR_PRETO)
+            doc.setFont(_fonte(lang, True), 10)
+            doc.drawCentredString(x + w / 2, y - h + 10 * mm, rot)
+            if sub:
+                doc.setFillColor(COR_CINZA)
+                doc.setFont(_fonte(lang), 8)
+                _texto_wrap(doc, sub, _fonte(lang), 8, x + 4 * mm, y - h + 5 * mm,
+                            w - 8 * mm, COR_CINZA, 3.5 * mm)
+         return y - h - 6 * mm
 
 def _tabela_editorial(doc, x, y, largura, dados, colunas_pct, tam=9):
     tbl = Table(dados, colWidths=[largura * p for p in colunas_pct])
