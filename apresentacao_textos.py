@@ -761,6 +761,217 @@ TABELAS = {
            "seg": ["Quốc gia", "Châu lục", "Thế giới", "Tài trợ độc quyền"]},
 }
 
+# ============================================================
+# BLOCO CORRETIVO — FUNÇÕES AUXILIARES (define só o que faltar)
+# ============================================================
+import os, math, logging
+from reportlab.lib.pagesizes import A4, landscape
+from reportlab.lib.colors import HexColor, white
+from reportlab.lib.units import mm
+from reportlab.platypus import Table, TableStyle
+
+if "logger" not in globals():
+    logging.basicConfig(level=logging.INFO)
+    logger = logging.getLogger(__name__)
+
+if "STATIC_DIR" not in globals():
+    STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
+
+if "COR_AZUL" not in globals():
+    COR_AZUL = HexColor("#1E3A8A")
+    COR_DOURADO = HexColor("#C9A94E")
+    COR_PRETO = HexColor("#1A1A1A")
+    COR_CINZA_CLARO = HexColor("#D9D9D9")
+    FONTES = {"normal": "Helvetica", "bold": "Helvetica-Bold"}
+
+if "_FONTES_EXTRA" not in globals():
+    _FONTES_EXTRA = {}
+
+if "_registrar_cid" not in globals():
+    def _registrar_cid():
+        try:
+            from reportlab.pdfbase import pdfmetrics
+            from reportlab.pdfbase.cidfonts import UnicodeCIDFont
+            for nome in ("STSong-Light", "HeiseiMin-W3", "HYSMyeongJo-Medium"):
+                try:
+                    pdfmetrics.registerFont(UnicodeCIDFont(nome))
+                except Exception:
+                    pass
+        except Exception:
+            pass
+
+if "_registrar_fontes_extra" not in globals():
+    def _registrar_fontes_extra():
+        global _FONTES_EXTRA
+        if _FONTES_EXTRA:
+            return
+        try:
+            from reportlab.pdfbase import pdfmetrics
+            from reportlab.pdfbase.ttfonts import TTFont
+            for nome, arq in [("DejaVu", "DejaVuSans.ttf"),
+                              ("DejaVu-Bold", "DejaVuSans-Bold.ttf"),
+                              ("NotoAr", "NotoSansArabic-Regular.ttf"),
+                              ("NotoHe", "NotoSansHebrew-Regular.ttf")]:
+                caminho = os.path.join(STATIC_DIR, arq)
+                if os.path.exists(caminho):
+                    pdfmetrics.registerFont(TTFont(nome, caminho))
+                    _FONTES_EXTRA[nome] = True
+        except Exception as e:
+            logger.warning("Fontes extras não carregadas: %s", e)
+
+if "_fonte" not in globals():
+    def _fonte(lang, negrito=False):
+        if lang == "zh":
+            return "STSong-Light"
+        if lang == "ja":
+            return "HeiseiMin-W3"
+        if lang in ("ru", "ar", "he", "id", "tr", "vi"):
+            if negrito and _FONTES_EXTRA.get("DejaVu-Bold"):
+                return "DejaVu-Bold"
+            if _FONTES_EXTRA.get("DejaVu"):
+                return "DejaVu"
+        return FONTES["bold" if negrito else "normal"]
+
+if "_chave" not in globals():
+    def _chave(c, *nomes):
+        for n in nomes:
+            if n in c:
+                v = c[n]
+                if isinstance(v, list):
+                    return " ".join(str(x) for x in v)
+                return str(v) if v else ""
+        return ""
+
+if "_achar" not in globals():
+    def _achar(c, chaves):
+        for k in chaves:
+            if k in c:
+                v = c[k]
+                if isinstance(v, list):
+                    return " ".join(str(x) for x in v)
+                return str(v) if v else ""
+        return ""
+
+if "_texto_wrap" not in globals():
+    def _texto_wrap(doc, texto, fonte, tam, x, y, largura_max, cor, entrelinha, cjk=False):
+        doc.setFillColor(cor)
+        doc.setFont(fonte, tam)
+        texto = " ".join(texto.split())
+        if cjk:
+            linha = ""
+            for ch in texto:
+                teste = linha + ch
+                if doc.stringWidth(teste, fonte, tam) <= largura_max:
+                    linha = teste
+                else:
+                    doc.drawString(x, y, linha)
+                    y -= entrelinha
+                    linha = ch
+            if linha:
+                doc.drawString(x, y, linha)
+                y -= entrelinha
+            return y
+        palavras = texto.split()
+        linha = ""
+        for p in palavras:
+            teste = (linha + " " + p).strip()
+            if doc.stringWidth(teste, fonte, tam) <= largura_max:
+                linha = teste
+            else:
+                doc.drawString(x, y, linha)
+                y -= entrelinha
+                linha = p
+        if linha:
+            doc.drawString(x, y, linha)
+            y -= entrelinha
+        return y
+
+if "_tabela_pdf" not in globals():
+    def _tabela_pdf(doc, dados, colunas, x, y, largura, fonte=None, tam=9):
+        fonte = fonte or FONTES["normal"]
+        tbl = Table(dados, colWidths=[largura * c for c in colunas])
+        tbl.setStyle(TableStyle([
+            ("BACKGROUND", (0, 0), (-1, 0), COR_AZUL),
+            ("TEXTCOLOR", (0, 0), (-1, 0), white),
+            ("FONTNAME", (0, 0), (-1, 0), FONTES["bold"]),
+            ("FONTSIZE", (0, 0), (-1, -1), tam),
+            ("TEXTCOLOR", (0, 1), (-1, -1), COR_PRETO),
+            ("GRID", (0, 0), (-1, -1), 0.4, COR_CINZA_CLARO),
+            ("ROWBACKGROUNDS", (0, 1), (-1, -1), [white, HexColor("#F5F7FB")]),
+            ("ALIGN", (1, 0), (-1, -1), "CENTER"),
+            ("TOPPADDING", (0, 0), (-1, -1), 3),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
+        ]))
+        w, h = tbl.wrapOn(doc, largura, 600)
+        tbl.drawOn(doc, x, y - h)
+        return y - h
+
+if "_capa" not in globals():
+    def _capa(doc, largura, altura, lang, modo):
+        c = CONTEUDO.get(lang, CONTEUDO["pt"])
+        doc.saveState()
+        doc.setFillColor(HexColor("#0A0A0A"))
+        doc.rect(0, 0, largura, altura, stroke=0, fill=1)
+        logo = os.path.join(STATIC_DIR, "Logo.png")
+        if os.path.exists(logo):
+            try:
+                from reportlab.lib.utils import ImageReader
+                iw, ih = ImageReader(logo).getSize()
+                lw = min(largura * 0.30, iw)
+                lh = lw * ih / iw
+                doc.drawImage(logo, largura / 2 - lw / 2, altura * 0.60 - lh / 2,
+                              width=lw, height=lh, mask="auto")
+            except Exception as e:
+                logger.warning("Logo não desenhada: %s", e)
+        doc.setFillColor(COR_DOURADO)
+        doc.setFont(_fonte(lang, True), 30 if modo == "texto" else 34)
+        doc.drawCentredString(largura / 2, altura * 0.48, _chave(c, "titulo"))
+        doc.setFillColor(HexColor("#CCCCCC"))
+        doc.setFont(_fonte(lang), 13)
+        doc.drawCentredString(largura / 2, altura * 0.42, _chave(c, "subtitulo"))
+        doc.setStrokeColor(COR_DOURADO)
+        doc.setLineWidth(0.8)
+        doc.line(largura * 0.30, altura * 0.395, largura * 0.70, altura * 0.395)
+        doc.setFillColor(HexColor("#AAAAAA"))
+        doc.setFont(_fonte(lang), 11)
+        doc.drawCentredString(largura / 2, altura * 0.36,
+                              _chave(c, "apresentacao_para", "sub_apresentacao") or
+                              "Apresentação para Investidores e Parceiros Estratégicos")
+        doc.setFillColor(COR_DOURADO)
+        doc.setFont(_fonte(lang, True), 12)
+        doc.drawCentredString(largura / 2, altura * 0.30, "DUNS 942242668")
+        doc.setFillColor(HexColor("#888888"))
+        doc.setFont(_fonte(lang), 9)
+        doc.drawCentredString(largura / 2, altura * 0.08,
+                              f"{_chave(c, 'confidencial') or 'CONFIDENCIAL'}  {_chave(c, 'ano') or '2026'}")
+        doc.restoreState()
+
+if "_desenhar_marca_dagua" not in globals():
+    def _desenhar_marca_dagua(doc, largura, altura, lang):
+        doc.saveState()
+        doc.setStrokeAlpha(0.10)
+        doc.setStrokeColor(COR_DOURADO)
+        centro_x, centro_y = largura * 0.85, altura * 0.20
+        for r in (55, 75, 95):
+            doc.setLineWidth(0.7)
+            doc.circle(centro_x, centro_y, r, stroke=1, fill=0)
+        doc.setFont(_fonte(lang, True), 10)
+        for i in range(1, 10):
+            ang = i * (2 * math.pi / 9)
+            doc.setFillColor(COR_DOURADO)
+            doc.drawCentredString(centro_x + 70 * math.cos(ang),
+                                  centro_y + 70 * math.sin(ang), str(i))
+        doc.restoreState()
+
+if "_rodape" not in globals():
+    def _rodape(doc, largura, altura, lang, c):
+        doc.setFillColor(COR_DOURADO)
+        doc.setFont(_fonte(lang, True), 9)
+        doc.drawCentredString(largura / 2, 12 * mm,
+                              f"A1ELOS Global Numerology · DUNS 942242668 · "
+                              f"{_chave(c, 'confidencial') or 'CONFIDENCIAL'} {_chave(c, 'ano') or '2026'}")
+        doc.drawRightString(largura - 18 * mm, 12 * mm, str(doc.getPageNumber()))
+
 def gerar_pdf_texto(lang="pt", caminho_saida=None):
     """Gera a apresentação em formato de documento (texto) com capa e tabelas."""
     if lang not in CONTEUDO:
