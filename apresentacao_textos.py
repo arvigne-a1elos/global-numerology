@@ -487,6 +487,127 @@ def _tabela_editorial(doc, x, y, largura, dados, colunas_pct, tam=9):
     tbl.drawOn(doc, x, y - h)
     return y - h
 
+def _grafico_barras(doc, x, y, w, h, categorias, valores, titulo, cores=None):
+    """Barras com cor distinta por categoria + legenda (cor -> significado)."""
+    try:
+        n = len(valores)
+        if n == 0:
+            return
+        paleta = cores or CORES_GRAFICO
+        cores_barra = [paleta[i % len(paleta)] for i in range(n)]
+        max_v = max([abs(v) for v in valores] + [1])
+        area_x = x + 20
+        area_y = y + 8
+        area_w = w - 40 - 110          # reserva direita para a legenda
+        area_h = h - 30
+        gap = 6
+        bar_w = max(6, (area_w - gap * (n - 1)) / n)
+        # titulo
+        doc.setFillColor(COR_PRETO)
+        doc.setFont(_fonte("pt", True), 9)
+        doc.drawCentredString(x + w / 2, y + h - 12, titulo)
+        # grade e eixo
+        doc.setStrokeColor(HexColor("#D8DAE0"))
+        doc.setLineWidth(0.5)
+        for g_i in range(5):
+            gy = area_y + (g_i / 4.0) * (area_h - 6)
+            doc.line(area_x, gy, area_x + area_w, gy)
+            doc.setFillColor(COR_CINZA_CLARO)
+            doc.setFont(_fonte("pt"), 6)
+            doc.drawRightString(area_x - 3, gy - 2,
+                                format(int(max_v * g_i / 4.0), ",").replace(",", "."))
+        # barras coloridas
+        for i, v in enumerate(valores):
+            bx = area_x + i * (bar_w + gap)
+            bh = max((v / max_v) * (area_h - 6), 1)
+            doc.setFillColor(cores_barra[i])
+            doc.rect(bx, area_y, bar_w, bh, stroke=0, fill=1)
+            doc.setFillColor(COR_PRETO)
+            doc.setFont(_fonte("pt", True), 6.5)
+            doc.drawCentredString(bx + bar_w / 2, area_y + bh + 2,
+                                  format(int(v), ",").replace(",", "."))
+            # rotulo da categoria (inclinado)
+            doc.saveState()
+            doc.translate(bx + bar_w / 2, area_y - 2)
+            doc.rotate(45)
+            doc.setFillColor(COR_CINZA)
+            doc.setFont(_fonte("pt"), 7)
+            doc.drawCentredString(0, 0, str(categorias[i])[:14])
+            doc.restoreState()
+        # legenda: cor -> significado
+        lx = x + area_w + 28
+        ly = y + h - 22
+        doc.setFillColor(COR_PRETO)
+        doc.setFont(_fonte("pt", True), 8)
+        doc.drawString(lx, ly + 6, "Legenda")
+        for i, c_ in enumerate(cores_barra):
+            doc.setFillColor(c_)
+            doc.rect(lx, ly - i * 13, 8, 8, stroke=0, fill=1)
+            doc.setFillColor(COR_PRETO)
+            doc.setFont(_fonte("pt"), 7)
+            doc.drawString(lx + 12, ly - i * 13, str(categorias[i])[:24])
+    except Exception as e:
+        logger.warning("Grafico barras: %s", e)
+
+def _grafico_pizza(doc, x, y, w, h, rotulos, valores, titulo):
+    """Pizza com cor distinta por fatia + legenda (cor -> significado)."""
+    try:
+        n = len(valores)
+        if n == 0:
+            return
+        total = sum(valores) or 1
+        cores_fatia = [CORES_GRAFICO[i % len(CORES_GRAFICO)] for i in range(n)]
+        cx = x + min(w * 0.30, 150)
+        cy = y + h * 0.44
+        raio = min(w * 0.24, h * 0.38)
+        doc.setStrokeColor(white)
+        doc.setLineWidth(0.9)
+        ang = 90.0  # comeca no topo, sentido horario
+        for i, v in enumerate(valores):
+            ext = -(v / total) * 360.0
+            doc.setFillColor(cores_fatia[i])
+            p = doc.beginPath()
+            p.moveTo(cx, cy)
+            p.arc(cx - raio, cy - raio, cx + raio, cy + raio,
+                  startAng=ang, extent=ext)
+            p.close()
+            doc.drawPath(p, stroke=1, fill=1)
+            # rotulo dentro da fatia (nome curto + %)
+            if abs(ext) >= 10:
+                ang_med = math.radians(ang + ext / 2.0)
+                lx = cx + raio * 0.62 * math.cos(ang_med)
+                ly = cy + raio * 0.62 * math.sin(ang_med)
+                c = cores_fatia[i]
+                lum = 0.299 * c.red + 0.587 * c.green + 0.114 * c.blue
+                doc.setFillColor(white if lum < 0.62 else COR_PRETO)
+                doc.setFont(_fonte("pt", True), 7)
+                doc.drawCentredString(lx, ly, str(rotulos[i])[:12])
+                doc.setFont(_fonte("pt"), 6.5)
+                doc.drawCentredString(lx, ly - 8, "%.0f%%" % (v / total * 100))
+            ang += ext
+        # legenda: cor -> significado (valor + %)
+        lx = x + w * 0.62 + 6
+        ly = y + h - 18
+        doc.setFillColor(COR_PRETO)
+        doc.setFont(_fonte("pt", True), 8)
+        doc.drawString(lx, ly + 6, "Legenda")
+        for i, c_ in enumerate(cores_fatia):
+            doc.setFillColor(c_)
+            doc.rect(lx, ly - i * 14, 9, 9, stroke=0, fill=1)
+            doc.setFillColor(COR_PRETO)
+            doc.setFont(_fonte("pt", True), 7.5)
+            doc.drawString(lx + 13, ly - i * 14 + 1, str(rotulos[i])[:22])
+            doc.setFont(_fonte("pt"), 7)
+            doc.drawString(lx + 13, ly - i * 14 - 6,
+                           "%s  (%.0f%%)" % (format(int(valores[i]), ",").replace(",", "."),
+                                              valores[i] / total * 100 if total else 0))
+        # titulo
+        doc.setFillColor(COR_PRETO)
+        doc.setFont(_fonte("pt", True), 9)
+        doc.drawCentredString(x + w / 2, y + h - 8, titulo)
+    except Exception as e:
+        logger.warning("Grafico pizza: %s", e)
+
 # ------------------------------------------------------------
 # GERADOR TEXTO (documento editorial)
 # ------------------------------------------------------------
@@ -778,6 +899,8 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
         doc.setFont(_fonte(lang), 9)
         _texto_wrap(doc, sub, _fonte(lang), 9, x + 5 * mm, y - 22 * mm,
                     col_w - 10 * mm, COR_CINZA, 4.5 * mm)
+        _grafico_pizza(doc, 18 * mm, y - 78 * mm, largura - 36 * mm, 68 * mm,
+                   ["B2C", "B2B", "Publicidade"], [60, 25, 15], "Composição da Receita")
     _rodape(doc, largura, altura, lang, c, pagina)
     doc.showPage()
     pagina += 1
@@ -837,6 +960,9 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     y -= 8 * mm
     _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
                       c["projecoes_tabela"], [0.3, 0.35, 0.35], 9)
+    _grafico_barras(doc, 18 * mm, y - 60 * mm, largura - 36 * mm, 50 * mm,
+                    ["Ano 1", "Ano 5", "Ano 10", "Ano 20", "Ano 50"],
+                    [33, 500, 3000, 15000, 75000], "Projeção Conservadora (R$ mil)")
     _rodape(doc, largura, altura, lang, c, pagina)
     doc.showPage()
     pagina += 1
@@ -1254,51 +1380,6 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
     doc.showPage()
     pagina += 1
 
-def _grafico_barras(doc, x, y, w, h, categorias, valores, titulo, cor=COR_AZUL):
-    try:
-        from reportlab.graphics import renderPDF
-        from reportlab.graphics.shapes import Drawing
-        from reportlab.graphics.charts.barcharts import VerticalBarChart
-        d = Drawing(w, h)
-        g = VerticalBarChart()
-        g.x = 6; g.y = 6
-        g.width = w - 12; g.height = h - 26
-        g.data = [list(valores)]
-        g.categoryAxis.categoryNames = list(categorias)
-        g.bars[0].fillColor = cor
-        g.barWidth = 14
-        g.valueAxis.valueMin = 0
-        d.add(g)
-        renderPDF.draw(d, doc, x, y)
-        doc.setFillColor(COR_PRETO)
-        doc.setFont(_fonte("pt", True), 9)
-        doc.drawCentredString(x + w / 2, y + h - 12, titulo)
-    except Exception as e:
-        logger.warning("Grafico barras: %s", e)
-
-def _grafico_pizza(doc, x, y, w, h, rotulos, valores, titulo):
-    try:
-        from reportlab.graphics import renderPDF
-        from reportlab.graphics.shapes import Drawing
-        from reportlab.graphics.charts.piecharts import Pie
-        d = Drawing(w, h)
-        p = Pie()
-        p.x = w * 0.22; p.y = h * 0.08
-        p.width = w * 0.56; p.height = h * 0.52
-        p.data = list(valores)
-        p.labels = list(rotulos)
-        p.slices.strokeWidth = 0.5
-        p.slices[0].fillColor = COR_AZUL
-        p.slices[1].fillColor = COR_DOURADO
-        p.slices[2].fillColor = HexColor("#3B82F6")
-        d.add(p)
-        renderPDF.draw(d, doc, x, y)
-        doc.setFillColor(COR_PRETO)
-        doc.setFont(_fonte("pt", True), 9)
-        doc.drawCentredString(x + w / 2, y + h - 12, titulo)
-    except Exception as e:
-        logger.warning("Grafico pizza: %s", e)
-    
     # ===== SLIDE 12 — MODELO DE NEGÓCIO (11) =====
     cab(c["negocio_titulo"], 11)
     y = altura - 32 * mm
