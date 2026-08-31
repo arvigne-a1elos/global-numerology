@@ -641,7 +641,7 @@ _ALIAS_PRODUTO = {"complete": "completo"}
 
 @app.post("/pay/{produto}")
 def pay_produto(produto: str, req: PayReq):
-    if not STRIPE_KEY:
+    if not stripe.api_key:
         raise HTTPException(503, "Stripe nao configurado")
     produto = _ALIAS_PRODUTO.get(produto, produto)
     lang = req.lang or "pt"
