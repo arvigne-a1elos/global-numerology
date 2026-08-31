@@ -1176,7 +1176,7 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
     doc.drawCentredString(18 * mm + col_w / 2, y - 30 * mm, c["duns_numero"])
     doc.setFillColor(white)
     doc.setFont(_fonte(lang), 10)
-    _texto_wrap(doc, c["duns_emitido"], _fonte(lang), 10, 24 * mm, y_min=y - 50 * mm,
+    _texto_wrap(doc, c["duns_emitido"], _fonte(lang), 10, 24 * mm, y - 50 * mm,
                 col_w - 12 * mm, white, 4.5 * mm)
     doc.setFillColor(COR_DOURADO)
     doc.setFont(_fonte(lang, True), 16)
@@ -1292,7 +1292,7 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
                     largura - 36 * mm, COR_CINZA, 6 * mm)
     y -= 10 * mm
     dados = [["Idioma", "Falantes (mi)"]] + LINHAS_IDIOMAS + [["TOTAL", "~5.320"]]
-    _tabela_editorial(doc, 18 * mm, y_min=yy, largura - 36 * mm, dados, [0.6, 0.4], 9)
+    _tabela_editorial(doc, 18 * mm, y=yy, largura - 36 * mm, dados, [0.6, 0.4], 9)
     rodape(pagina)
     doc.showPage()
     pagina += 1
@@ -1300,7 +1300,7 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
     # ===== SLIDE 9 — 3 NOVOS MERCADOS (08) =====
     cab(c["mercados_titulo"], 8)
     y = altura - 32 * mm
-    y = _texto_wrap(doc, c["mercados_texto"], _fonte(lang), 11, 18 * mm, y_min=y,
+    y = _texto_wrap(doc, c["mercados_texto"], _fonte(lang), 11, 18 * mm, y,
                     largura - 36 * mm, COR_CINZA, 5.5 * mm)
     y -= 10 * mm
     col_w = (largura - 36 * mm - 2 * 8 * mm) / 3
@@ -1308,7 +1308,7 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
     for i, (tit, itens) in enumerate(c["mercados_cards"]):
         x = 18 * mm + i * (col_w + 8 * mm)
         _caixa(doc, x, y - 70 * mm, col_w, 70 * mm, COR_FUNDO, COR_DOURADO)
-        _bandeira(doc, x + 5 * mm, y_min=y - 22 * mm, 11 * mm, 7.5 * mm, paises[i])
+        _bandeira(doc, x + 5 * mm, y - 22 * mm, 11 * mm, 7.5 * mm, paises[i])
         doc.setFillColor(COR_AZUL)
         doc.setFont(_fonte(lang, True), 12)
         doc.drawString(x + 20 * mm, y - 14 * mm, tit)
