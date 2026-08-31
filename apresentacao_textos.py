@@ -669,8 +669,34 @@ CONTEUDO = {
     }
 }
 
+# ============================================================
+# BLOCO ÚNICO DEFINITIVO — dados + funções (SEM duplicação)
+# ============================================================
+import os, math, logging
+from reportlab.lib.pagesizes import A4, landscape
+from reportlab.lib.colors import HexColor, white
+from reportlab.lib.units import mm
+from reportlab.platypus import Table, TableStyle
+from reportlab.pdfgen import canvas
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.cidfonts import UnicodeCIDFont
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.lib.utils import ImageReader
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+if "STATIC_DIR" not in globals():
+    STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
+
+COR_AZUL = HexColor("#1E3A8A")
+COR_DOURADO = HexColor("#C9A94E")
+COR_PRETO = HexColor("#1A1A1A")
+COR_CINZA_CLARO = HexColor("#D9D9D9")
+FONTES = {"normal": "Helvetica", "bold": "Helvetica-Bold"}
+_FONTES_EXTRA = {}
+
 # ------------------------------------------------------------
-# 4b. DADOS NUMÉRICOS DAS TABELAS (idênticos em todos os idiomas)
+# DADOS NUMÉRICOS DAS TABELAS
 # ------------------------------------------------------------
 LINHAS_IDIOMAS = [
     ("Inglês", 1528), ("Mandarim", 1184), ("Espanhol", 558),
@@ -687,7 +713,6 @@ RANGES = [
     ("3M", "8M"), ("15M", "40M"), ("35M", "90M"),
     ("55M", "150M"), ("75M", "250M"),
 ]
-
 TABELAS = {
     "pt": {"h_idioma": "Idioma", "h_falantes": "Falantes (mi)", "h_seg": "Segmentação",
            "h_fixo": "Fixo (R$/mês)", "h_temp": "Temporário (R$/mês)", "h_de": "A partir de",
@@ -761,494 +786,33 @@ TABELAS = {
            "seg": ["Quốc gia", "Châu lục", "Thế giới", "Tài trợ độc quyền"]},
 }
 
-# ============================================================
-# BLOCO CORRETIVO — FUNÇÕES AUXILIARES (define só o que faltar)
-# ============================================================
-import os, math, logging
-from reportlab.lib.pagesizes import A4, landscape
-from reportlab.lib.colors import HexColor, white
-from reportlab.lib.units import mm
-from reportlab.platypus import Table, TableStyle
-
-if "logger" not in globals():
-    logging.basicConfig(level=logging.INFO)
-    logger = logging.getLogger(__name__)
-
-if "STATIC_DIR" not in globals():
-    STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
-
-if "COR_AZUL" not in globals():
-    COR_AZUL = HexColor("#1E3A8A")
-    COR_DOURADO = HexColor("#C9A94E")
-    COR_PRETO = HexColor("#1A1A1A")
-    COR_CINZA_CLARO = HexColor("#D9D9D9")
-    FONTES = {"normal": "Helvetica", "bold": "Helvetica-Bold"}
-
-if "_FONTES_EXTRA" not in globals():
-    _FONTES_EXTRA = {}
-
-if "_registrar_cid" not in globals():
-    def _registrar_cid():
-        try:
-            from reportlab.pdfbase import pdfmetrics
-            from reportlab.pdfbase.cidfonts import UnicodeCIDFont
-            for nome in ("STSong-Light", "HeiseiMin-W3", "HYSMyeongJo-Medium"):
-                try:
-                    pdfmetrics.registerFont(UnicodeCIDFont(nome))
-                except Exception:
-                    pass
-        except Exception:
-            pass
-
-if "_registrar_fontes_extra" not in globals():
-    def _registrar_fontes_extra():
-        global _FONTES_EXTRA
-        if _FONTES_EXTRA:
-            return
-        try:
-            from reportlab.pdfbase import pdfmetrics
-            from reportlab.pdfbase.ttfonts import TTFont
-            for nome, arq in [("DejaVu", "DejaVuSans.ttf"),
-                              ("DejaVu-Bold", "DejaVuSans-Bold.ttf"),
-                              ("NotoAr", "NotoSansArabic-Regular.ttf"),
-                              ("NotoHe", "NotoSansHebrew-Regular.ttf")]:
-                caminho = os.path.join(STATIC_DIR, arq)
-                if os.path.exists(caminho):
-                    pdfmetrics.registerFont(TTFont(nome, caminho))
-                    _FONTES_EXTRA[nome] = True
-        except Exception as e:
-            logger.warning("Fontes extras não carregadas: %s", e)
-
-if "_fonte" not in globals():
-    def _fonte(lang, negrito=False):
-        if lang == "zh":
-            return "STSong-Light"
-        if lang == "ja":
-            return "HeiseiMin-W3"
-        if lang in ("ru", "ar", "he", "id", "tr", "vi"):
-            if negrito and _FONTES_EXTRA.get("DejaVu-Bold"):
-                return "DejaVu-Bold"
-            if _FONTES_EXTRA.get("DejaVu"):
-                return "DejaVu"
-        return FONTES["bold" if negrito else "normal"]
-
-if "_chave" not in globals():
-    def _chave(c, *nomes):
-        for n in nomes:
-            if n in c:
-                v = c[n]
-                if isinstance(v, list):
-                    return " ".join(str(x) for x in v)
-                return str(v) if v else ""
-        return ""
-
-if "_achar" not in globals():
-    def _achar(c, chaves):
-        for k in chaves:
-            if k in c:
-                v = c[k]
-                if isinstance(v, list):
-                    return " ".join(str(x) for x in v)
-                return str(v) if v else ""
-        return ""
-
-if "_texto_wrap" not in globals():
-    def _texto_wrap(doc, texto, fonte, tam, x, y, largura_max, cor, entrelinha, cjk=False):
-        doc.setFillColor(cor)
-        doc.setFont(fonte, tam)
-        texto = " ".join(texto.split())
-        if cjk:
-            linha = ""
-            for ch in texto:
-                teste = linha + ch
-                if doc.stringWidth(teste, fonte, tam) <= largura_max:
-                    linha = teste
-                else:
-                    doc.drawString(x, y, linha)
-                    y -= entrelinha
-                    linha = ch
-            if linha:
-                doc.drawString(x, y, linha)
-                y -= entrelinha
-            return y
-        palavras = texto.split()
-        linha = ""
-        for p in palavras:
-            teste = (linha + " " + p).strip()
-            if doc.stringWidth(teste, fonte, tam) <= largura_max:
-                linha = teste
-            else:
-                doc.drawString(x, y, linha)
-                y -= entrelinha
-                linha = p
-        if linha:
-            doc.drawString(x, y, linha)
-            y -= entrelinha
-        return y
-
-if "_tabela_pdf" not in globals():
-    def _tabela_pdf(doc, dados, colunas, x, y, largura, fonte=None, tam=9):
-        fonte = fonte or FONTES["normal"]
-        tbl = Table(dados, colWidths=[largura * c for c in colunas])
-        tbl.setStyle(TableStyle([
-            ("BACKGROUND", (0, 0), (-1, 0), COR_AZUL),
-            ("TEXTCOLOR", (0, 0), (-1, 0), white),
-            ("FONTNAME", (0, 0), (-1, 0), FONTES["bold"]),
-            ("FONTSIZE", (0, 0), (-1, -1), tam),
-            ("TEXTCOLOR", (0, 1), (-1, -1), COR_PRETO),
-            ("GRID", (0, 0), (-1, -1), 0.4, COR_CINZA_CLARO),
-            ("ROWBACKGROUNDS", (0, 1), (-1, -1), [white, HexColor("#F5F7FB")]),
-            ("ALIGN", (1, 0), (-1, -1), "CENTER"),
-            ("TOPPADDING", (0, 0), (-1, -1), 3),
-            ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
-        ]))
-        w, h = tbl.wrapOn(doc, largura, 600)
-        tbl.drawOn(doc, x, y - h)
-        return y - h
-
-if "_capa" not in globals():
-    def _capa(doc, largura, altura, lang, modo):
-        c = CONTEUDO.get(lang, CONTEUDO["pt"])
-        doc.saveState()
-        doc.setFillColor(HexColor("#0A0A0A"))
-        doc.rect(0, 0, largura, altura, stroke=0, fill=1)
-        logo = os.path.join(STATIC_DIR, "Logo.png")
-        if os.path.exists(logo):
-            try:
-                from reportlab.lib.utils import ImageReader
-                iw, ih = ImageReader(logo).getSize()
-                lw = min(largura * 0.30, iw)
-                lh = lw * ih / iw
-                doc.drawImage(logo, largura / 2 - lw / 2, altura * 0.60 - lh / 2,
-                              width=lw, height=lh, mask="auto")
-            except Exception as e:
-                logger.warning("Logo não desenhada: %s", e)
-        doc.setFillColor(COR_DOURADO)
-        doc.setFont(_fonte(lang, True), 30 if modo == "texto" else 34)
-        doc.drawCentredString(largura / 2, altura * 0.48, _chave(c, "titulo"))
-        doc.setFillColor(HexColor("#CCCCCC"))
-        doc.setFont(_fonte(lang), 13)
-        doc.drawCentredString(largura / 2, altura * 0.42, _chave(c, "subtitulo"))
-        doc.setStrokeColor(COR_DOURADO)
-        doc.setLineWidth(0.8)
-        doc.line(largura * 0.30, altura * 0.395, largura * 0.70, altura * 0.395)
-        doc.setFillColor(HexColor("#AAAAAA"))
-        doc.setFont(_fonte(lang), 11)
-        doc.drawCentredString(largura / 2, altura * 0.36,
-                              _chave(c, "apresentacao_para", "sub_apresentacao") or
-                              "Apresentação para Investidores e Parceiros Estratégicos")
-        doc.setFillColor(COR_DOURADO)
-        doc.setFont(_fonte(lang, True), 12)
-        doc.drawCentredString(largura / 2, altura * 0.30, "DUNS 942242668")
-        doc.setFillColor(HexColor("#888888"))
-        doc.setFont(_fonte(lang), 9)
-        doc.drawCentredString(largura / 2, altura * 0.08,
-                              f"{_chave(c, 'confidencial') or 'CONFIDENCIAL'}  {_chave(c, 'ano') or '2026'}")
-        doc.restoreState()
-
-if "_desenhar_marca_dagua" not in globals():
-    def _desenhar_marca_dagua(doc, largura, altura, lang):
-        doc.saveState()
-        doc.setStrokeAlpha(0.10)
-        doc.setStrokeColor(COR_DOURADO)
-        centro_x, centro_y = largura * 0.85, altura * 0.20
-        for r in (55, 75, 95):
-            doc.setLineWidth(0.7)
-            doc.circle(centro_x, centro_y, r, stroke=1, fill=0)
-        doc.setFont(_fonte(lang, True), 10)
-        for i in range(1, 10):
-            ang = i * (2 * math.pi / 9)
-            doc.setFillColor(COR_DOURADO)
-            doc.drawCentredString(centro_x + 70 * math.cos(ang),
-                                  centro_y + 70 * math.sin(ang), str(i))
-        doc.restoreState()
-
-if "_rodape" not in globals():
-    def _rodape(doc, largura, altura, lang, c):
-        doc.setFillColor(COR_DOURADO)
-        doc.setFont(_fonte(lang, True), 9)
-        doc.drawCentredString(largura / 2, 12 * mm,
-                              f"A1ELOS Global Numerology · DUNS 942242668 · "
-                              f"{_chave(c, 'confidencial') or 'CONFIDENCIAL'} {_chave(c, 'ano') or '2026'}")
-        doc.drawRightString(largura - 18 * mm, 12 * mm, str(doc.getPageNumber()))
-
 # ------------------------------------------------------------
-# BLOCO CORRETIVO — montagem das tabelas (_montar_tabela e auxiliares)
+# SEÇÕES (auto-detecta as chaves do CONTEUDO)
 # ------------------------------------------------------------
-def _dados_idiomas(tb):
-    linhas = [[tb["h_idioma"], tb["h_falantes"]]]
-    for nome, n in LINHAS_IDIOMAS:
-        linhas.append([nome, str(n)])
-    linhas.append(["TOTAL", "~5.320"])
-    return linhas, [0.6, 0.4]
-
-def _dados_banners(tb):
-    linhas = [[tb["h_seg"], tb["h_fixo"], tb["h_temp"]]]
-    for i, lab in enumerate(tb["seg"]):
-        fixo, temp = LINHAS_BANNERS[i]
-        linhas.append([lab, f"R$ {fixo}", f"R$ {temp}"])
-    return linhas, [0.5, 0.25, 0.25]
-
-def _dados_b2b(tb):
-    linhas = [[tb["h_de"], tb["h_desc"]]] + LINHAS_B2B
-    return linhas, [0.5, 0.5]
-
-def _dados_projecoes(tb):
-    linhas = [[tb["h_hor"], tb["h_cons"], tb["h_otim"]]]
-    for i, n in enumerate(HORIZONTES):
-        cons, otim = RANGES[i]
-        linhas.append([f"{tb['h_ano']} {n}", f"R$ {cons}", f"R$ {otim}"])
-    return linhas, [0.3, 0.35, 0.35]
-
-def _montar_tabela(doc, tabela, tb, x, y, largura, fonte, tam=9):
-    if tabela == "idiomas":
-        dados, cols = _dados_idiomas(tb)
-    elif tabela == "banners":
-        dados, cols = _dados_banners(tb)
-    elif tabela == "b2b":
-        dados, cols = _dados_b2b(tb)
-    else:
-        dados, cols = _dados_projecoes(tb)
-    return _tabela_pdf(doc, dados, cols, x, y, largura, fonte=fonte, tam=tam)
-
-def gerar_pdf_texto(lang="pt", caminho_saida=None):
-    """Gera a apresentação em formato de documento (texto) com capa e tabelas."""
-    if lang not in CONTEUDO:
-        lang = "pt"
-    if not caminho_saida:
-        caminho_saida = os.path.join(STATIC_DIR, f"apresentacao_{lang}.pdf")
-    c = CONTEUDO[lang]
-    tb = TABELAS.get(lang, TABELAS["pt"])
-    largura, altura = A4
-    doc = canvas.Canvas(caminho_saida, pagesize=A4)
-
-# ============================================================
-# MAPEAMENTO DE SEÇÕES (auto-detecta as chaves do CONTEUDO)
-# ============================================================
 SECOES = [
-    ("sobre", ["sobre_titulo", "sobre_t", "sobre"], ["sobre_texto", "sobre_p"], None),
-    ("duns", ["duns_titulo", "duns_t", "credibilidade_titulo"], ["duns_texto", "duns_p"], None),
+    ("sobre", ["sobre_titulo", "sobre_t"], ["sobre_texto", "sobre_p"], None),
+    ("duns", ["duns_titulo", "duns_t"], ["duns_texto", "duns_p"], None),
     ("mercado", ["mercado_titulo", "mercado_t"], ["mercado_texto", "mercado_p"], None),
     ("problema", ["problema_titulo", "problema_t"], ["problema_texto", "problema_p"], None),
     ("solucao", ["solucao_titulo", "solucao_t"], ["solucao_texto", "solucao_p"], None),
     ("alcance", ["alcance_titulo", "alcance_t"], ["alcance_texto", "alcance_p"], "idiomas"),
     ("mercados", ["mercados_titulo", "mercados_t", "novos_mercados_t"], ["mercados_texto", "mercados_p"], None),
-    ("preco", ["preco_titulo", "preco_t", "precos_t"], ["preco_texto", "preco_p"], None),
-    ("portfolio", ["portfolio_titulo", "port_t", "portfolio_t"], ["portfolio_texto", "port_p", "portfolio_p"], None),
-    ("negocio", ["negocio_titulo", "modelo_t", "negocio_t"], ["negocio_texto", "modelo_p", "negocio_p"], None),
-    ("banners", ["banners_titulo", "midia_t", "banners_t"], ["banners_texto", "midia_p", "banners_p"], "banners"),
+    ("preco", ["preco_titulo", "preco_t"], ["preco_texto", "preco_p"], None),
+    ("portfolio", ["portfolio_titulo", "port_t"], ["portfolio_texto", "port_p", "portfolio_p"], None),
+    ("negocio", ["negocio_titulo", "modelo_t"], ["negocio_texto", "modelo_p", "negocio_p"], None),
+    ("banners", ["banners_titulo", "midia_t"], ["banners_texto", "midia_p", "banners_p"], "banners"),
     ("b2b", ["b2b_titulo", "b2b_t"], ["b2b_texto", "b2b_p"], "b2b"),
-    ("projecoes", ["projecoes_titulo", "proj_t", "projecoes_t"], ["projecoes_texto", "proj_p"], "projecoes"),
+    ("projecoes", ["projecoes_titulo", "proj_t"], ["projecoes_texto", "proj_p"], "projecoes"),
     ("tracao", ["tracao_titulo", "tracao_t"], ["tracao_texto", "tracao_p"], None),
     ("roteiro", ["roteiro_titulo", "roteiro_t"], ["roteiro_texto", "roteiro_p"], None),
-    ("invest", ["invest_titulo", "seed_t", "invest_t"], ["invest_texto", "seed_p", "invest_p"], None),
+    ("invest", ["invest_titulo", "seed_t"], ["invest_texto", "seed_p", "invest_p"], None),
 ]
 
-def _achar(c, chaves):
-    for k in chaves:
-        if k in c:
-            v = c[k]
-            if isinstance(v, list):
-                return " ".join(str(x) for x in v)
-            return str(v) if v else ""
-    return ""
-
-def _desenhar_secao(doc, largura, altura, lang, c, tb, indice, titulo, texto, tabela):
-    _desenhar_marca_dagua(doc, largura, altura, lang)
-    # Faixa azul do topo
-    doc.setFillColor(COR_AZUL)
-    doc.rect(0, altura - 18 * mm, largura, 18 * mm, stroke=0, fill=1)
-    # Número da seção (direita da faixa)
-    doc.setFillColor(HexColor("#FFFFFF"))
-    doc.setFont(_fonte(lang, True), 11)
-    doc.drawRightString(largura - 12 * mm, altura - 12.5 * mm, "%02d" % indice)
-    # Título (com quebra de linha segura dentro da faixa)
-    doc.setFont(_fonte(lang, True), 15 if len(titulo) <= 32 else 13)
-    y_t = _texto_wrap(doc, titulo, _fonte(lang, True),
-                      15 if len(titulo) <= 32 else 13,
-                      18 * mm, altura - 13 * mm, largura - 46 * mm,
-                      HexColor("#FFFFFF"), 7 * mm, cjk=(lang in ("zh", "ja")))
-    # Linha divisória dourada sob a faixa
-    doc.setStrokeColor(COR_DOURADO)
-    doc.setLineWidth(0.8)
-    doc.line(18 * mm, altura - 21 * mm, largura - 18 * mm, altura - 21 * mm)
-    # Corpo do texto
-    y = altura - 34 * mm
-    if texto:
-        y = _texto_wrap(doc, texto, _fonte(lang), 11.5, 18 * mm, y,
-                        largura - 36 * mm, COR_PRETO, 6.2 * mm,
-                        cjk=(lang in ("zh", "ja")))
-    # Tabela da seção (se houver)
-    if tabela:
-        y = _montar_tabela(doc, tabela, tb, 18 * mm, y - 6 * mm,
-                           largura - 36 * mm, _fonte(lang), 9)
-    # Rodapé dourado com página
-    _rodape(doc, largura, altura, lang, c)
-
-def gerar_pdf_texto(lang="pt", caminho_saida=None):
-    _registrar_cid()
-    _registrar_fontes_extra()
-    if lang not in CONTEUDO:
-        lang = "pt"
-    c = CONTEUDO[lang]
-    tb = TABELAS.get(lang, TABELAS["pt"])
-    if not caminho_saida:
-        caminho_saida = os.path.join(STATIC_DIR, f"apresentacao_{lang}.pdf")
-    largura, altura = A4
-    doc = canvas.Canvas(caminho_saida, pagesize=A4)
-    _capa(doc, largura, altura, lang, "texto")
-    doc.showPage()
-    indice = 1
-    for flag, tit_chaves, txt_chaves, tabela in SECOES:
-        titulo = _achar(c, tit_chaves)
-        texto = _achar(c, txt_chaves)
-        if not titulo and not texto:
-            continue
-        _desenhar_secao(doc, largura, altura, lang, c, tb, indice,
-                        titulo or flag.capitalize(), texto, tabela)
-        doc.showPage()
-        indice += 1
-    # Página final
-    _desenhar_marca_dagua(doc, largura, altura, lang)
-    doc.setFillColor(COR_DOURADO)
-    doc.setFont(_fonte(lang, True), 16)
-    frase = _achar(c, ["frase", "frase_final"])
-    if frase:
-        doc.drawCentredString(largura / 2, altura * 0.58, frase)
-    contato = _achar(c, ["contato", "contatos"])
-    if contato:
-        doc.setFillColor(HexColor("#555555"))
-        doc.setFont(_fonte(lang), 10)
-        doc.drawCentredString(largura / 2, altura * 0.52, contato)
-    rodape_f = _achar(c, ["rodape", "rodape_texto"])
-    if rodape_f:
-        doc.setFillColor(HexColor("#888888"))
-        doc.setFont(_fonte(lang), 9)
-        doc.drawCentredString(largura / 2, altura * 0.48, rodape_f)
-    doc.showPage()
-    doc.save()
-    logger.info("PDF texto gerado: %s", caminho_saida)
-    return caminho_saida
-
-def gerar_pdf_slides(lang="pt", caminho_saida=None):
-    _registrar_cid()
-    _registrar_fontes_extra()
-    if lang not in CONTEUDO:
-        lang = "pt"
-    c = CONTEUDO[lang]
-    tb = TABELAS.get(lang, TABELAS["pt"])
-    if not caminho_saida:
-        caminho_saida = os.path.join(STATIC_DIR, f"apresentacao_slides_{lang}.pdf")
-    largura, altura = landscape(A4)
-    doc = canvas.Canvas(caminho_saida, pagesize=landscape(A4))
-    _capa(doc, largura, altura, lang, "slides")
-    doc.showPage()
-    indice = 1
-    for flag, tit_chaves, txt_chaves, tabela in SECOES:
-        titulo = _achar(c, tit_chaves)
-        texto = _achar(c, txt_chaves)
-        if not titulo and not texto:
-            continue
-        _desenhar_marca_dagua(doc, largura, altura, lang)
-        doc.setFillColor(COR_AZUL)
-        doc.rect(0, altura - 22 * mm, largura, 22 * mm, stroke=0, fill=1)
-        doc.setFillColor(HexColor("#FFFFFF"))
-        doc.setFont(_fonte(lang, True), 11)
-        doc.drawRightString(largura - 12 * mm, altura - 15.5 * mm, "%02d" % indice)
-        doc.setFont(_fonte(lang, True), 22 if len(titulo) <= 30 else 17)
-        _texto_wrap(doc, titulo, _fonte(lang, True),
-                    22 if len(titulo) <= 30 else 17,
-                    18 * mm, altura - 15.5 * mm, largura - 52 * mm,
-                    HexColor("#FFFFFF"), 10 * mm, cjk=(lang in ("zh", "ja")))
-        doc.setStrokeColor(COR_DOURADO)
-        doc.setLineWidth(0.8)
-        doc.line(18 * mm, altura - 25 * mm, largura - 18 * mm, altura - 25 * mm)
-        y = altura - 40 * mm
-        if texto:
-            y = _texto_wrap(doc, texto, _fonte(lang), 13, 18 * mm, y,
-                            largura - 36 * mm, COR_PRETO, 7.5 * mm,
-                            cjk=(lang in ("zh", "ja")))
-        if tabela:
-            y = _montar_tabela(doc, tabela, tb, 18 * mm, y - 8 * mm,
-                               largura - 36 * mm, _fonte(lang), 10)
-        _rodape(doc, largura, altura, lang, c)
-        doc.showPage()
-        indice += 1
-    doc.save()
-    logger.info("PDF slides gerado: %s", caminho_saida)
-    return caminho_saida
-
-def gerar_apresentacao(lang="pt", modo="texto"):
-    if modo == "slides":
-        return gerar_pdf_slides(lang)
-    return gerar_pdf_texto(lang)
-
-def gerar_todas():
-    import sys
-    args = [a for a in sys.argv[1:]]
-    if not args:
-        alvos = [(l, m) for l in CONTEUDO for m in ("texto", "slides")]
-    else:
-        lang = args[0]
-        modo = args[1] if len(args) > 1 else "texto"
-        alvos = [(lang, modo)]
-    for l, m in alvos:
-        try:
-            p = gerar_apresentacao(l, m)
-            print("OK", l, m, p)
-        except Exception as e:
-            print("ERRO", l, m, e)
-
-# ============================================================
-# BLOCO CORRETIVO FINAL — FUNÇÕES AUXILIARES + _montar_tabela
-# ============================================================
-import os, math, logging
-from reportlab.lib.pagesizes import A4, landscape
-from reportlab.lib.colors import HexColor, white
-from reportlab.lib.units import mm
-from reportlab.platypus import Table, TableStyle
-
-if "logger" not in globals():
-    logging.basicConfig(level=logging.INFO)
-    logger = logging.getLogger(__name__)
-
-if "STATIC_DIR" not in globals():
-    STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
-
-if "COR_AZUL" not in globals():
-    COR_AZUL = HexColor("#1E3A8A")
-    COR_DOURADO = HexColor("#C9A94E")
-    COR_PRETO = HexColor("#1A1A1A")
-    COR_CINZA_CLARO = HexColor("#D9D9D9")
-    FONTES = {"normal": "Helvetica", "bold": "Helvetica-Bold"}
-if "_FONTES_EXTRA" not in globals():
-    _FONTES_EXTRA = {}
-
-if "LINHAS_IDIOMAS" not in globals():
-    LINHAS_IDIOMAS = [
-        ("Inglês", 1528), ("Mandarim", 1184), ("Espanhol", 558),
-        ("Francês", 396), ("Árabe", 335), ("Português", 270),
-        ("Russo", 255), ("Indonésio", 255), ("Alemão", 134),
-        ("Japonês", 123), ("Vietnamita", 97), ("Turco", 90),
-        ("Italiano", 85), ("Hebraico", 9),
-    ]
-if "LINHAS_BANNERS" not in globals():
-    LINHAS_BANNERS = [[800, "500"], [1800, "1.200"], [3500, "2.500"], [6000, "4.500"]]
-if "LINHAS_B2B" not in globals():
-    LINHAS_B2B = [["10", "10%"], ["100", "30%"], ["500", "50%"], ["1.000", "70%"]]
-if "HORIZONTES" not in globals():
-    HORIZONTES = [1, 3, 5, 10, 20, 30, 40, 50]
-if "RANGES" not in globals():
-    RANGES = [
-        ("33k", "130k"), ("120k", "450k"), ("500k", "1,5M"),
-        ("3M", "8M"), ("15M", "40M"), ("35M", "90M"),
-        ("55M", "150M"), ("75M", "250M"),
-    ]
-
+# ------------------------------------------------------------
+# FONTES
+# ------------------------------------------------------------
 def _registrar_cid():
     try:
-        from reportlab.pdfbase import pdfmetrics
-        from reportlab.pdfbase.cidfonts import UnicodeCIDFont
         for nome in ("STSong-Light", "HeiseiMin-W3", "HYSMyeongJo-Medium"):
             try:
                 pdfmetrics.registerFont(UnicodeCIDFont(nome))
@@ -1262,8 +826,6 @@ def _registrar_fontes_extra():
     if _FONTES_EXTRA:
         return
     try:
-        from reportlab.pdfbase import pdfmetrics
-        from reportlab.pdfbase.ttfonts import TTFont
         for nome, arq in [("DejaVu", "DejaVuSans.ttf"),
                           ("DejaVu-Bold", "DejaVuSans-Bold.ttf"),
                           ("NotoAr", "NotoSansArabic-Regular.ttf"),
@@ -1287,6 +849,9 @@ def _fonte(lang, negrito=False):
             return "DejaVu"
     return FONTES["bold" if negrito else "normal"]
 
+# ------------------------------------------------------------
+# AUXILIARES DE TEXTO E TABELA
+# ------------------------------------------------------------
 def _chave(c, *nomes):
     for n in nomes:
         if n in c:
@@ -1357,6 +922,45 @@ def _tabela_pdf(doc, dados, colunas, x, y, largura, fonte=None, tam=9):
     tbl.drawOn(doc, x, y - h)
     return y - h
 
+def _dados_idiomas(tb):
+    linhas = [[tb["h_idioma"], tb["h_falantes"]]]
+    for nome, n in LINHAS_IDIOMAS:
+        linhas.append([nome, str(n)])
+    linhas.append(["TOTAL", "~5.320"])
+    return linhas, [0.6, 0.4]
+
+def _dados_banners(tb):
+    linhas = [[tb["h_seg"], tb["h_fixo"], tb["h_temp"]]]
+    for i, lab in enumerate(tb["seg"]):
+        fixo, temp = LINHAS_BANNERS[i]
+        linhas.append([lab, f"R$ {fixo}", f"R$ {temp}"])
+    return linhas, [0.5, 0.25, 0.25]
+
+def _dados_b2b(tb):
+    linhas = [[tb["h_de"], tb["h_desc"]]] + LINHAS_B2B
+    return linhas, [0.5, 0.5]
+
+def _dados_projecoes(tb):
+    linhas = [[tb["h_hor"], tb["h_cons"], tb["h_otim"]]]
+    for i, n in enumerate(HORIZONTES):
+        cons, otim = RANGES[i]
+        linhas.append([f"{tb['h_ano']} {n}", f"R$ {cons}", f"R$ {otim}"])
+    return linhas, [0.3, 0.35, 0.35]
+
+def _montar_tabela(doc, tabela, tb, x, y, largura, fonte, tam=9):
+    if tabela == "idiomas":
+        dados, cols = _dados_idiomas(tb)
+    elif tabela == "banners":
+        dados, cols = _dados_banners(tb)
+    elif tabela == "b2b":
+        dados, cols = _dados_b2b(tb)
+    else:
+        dados, cols = _dados_projecoes(tb)
+    return _tabela_pdf(doc, dados, cols, x, y, largura, fonte=fonte, tam=tam)
+
+# ------------------------------------------------------------
+# CAPA, MARCA D'ÁGUA E RODAPÉ
+# ------------------------------------------------------------
 def _capa(doc, largura, altura, lang, modo):
     c = CONTEUDO.get(lang, CONTEUDO["pt"])
     doc.saveState()
@@ -1365,7 +969,6 @@ def _capa(doc, largura, altura, lang, modo):
     logo = os.path.join(STATIC_DIR, "Logo.png")
     if os.path.exists(logo):
         try:
-            from reportlab.lib.utils import ImageReader
             iw, ih = ImageReader(logo).getSize()
             lw = min(largura * 0.30, iw)
             lh = lw * ih / iw
@@ -1420,42 +1023,134 @@ def _rodape(doc, largura, altura, lang, c):
                           f"{_chave(c, 'confidencial') or 'CONFIDENCIAL'} {_chave(c, 'ano') or '2026'}")
     doc.drawRightString(largura - 18 * mm, 12 * mm, str(doc.getPageNumber()))
 
-# --- montagem das tabelas (o que estava faltando no erro) ---
-def _dados_idiomas(tb):
-    linhas = [[tb["h_idioma"], tb["h_falantes"]]]
-    for nome, n in LINHAS_IDIOMAS:
-        linhas.append([nome, str(n)])
-    linhas.append(["TOTAL", "~5.320"])
-    return linhas, [0.6, 0.4]
-
-def _dados_banners(tb):
-    linhas = [[tb["h_seg"], tb["h_fixo"], tb["h_temp"]]]
-    for i, lab in enumerate(tb["seg"]):
-        fixo, temp = LINHAS_BANNERS[i]
-        linhas.append([lab, f"R$ {fixo}", f"R$ {temp}"])
-    return linhas, [0.5, 0.25, 0.25]
-
-def _dados_b2b(tb):
-    linhas = [[tb["h_de"], tb["h_desc"]]] + LINHAS_B2B
-    return linhas, [0.5, 0.5]
-
-def _dados_projecoes(tb):
-    linhas = [[tb["h_hor"], tb["h_cons"], tb["h_otim"]]]
-    for i, n in enumerate(HORIZONTES):
-        cons, otim = RANGES[i]
-        linhas.append([f"{tb['h_ano']} {n}", f"R$ {cons}", f"R$ {otim}"])
-    return linhas, [0.3, 0.35, 0.35]
-
-def _montar_tabela(doc, tabela, tb, x, y, largura, fonte, tam=9):
-    if tabela == "idiomas":
-        dados, cols = _dados_idiomas(tb)
-    elif tabela == "banners":
-        dados, cols = _dados_banners(tb)
-    elif tabela == "b2b":
-        dados, cols = _dados_b2b(tb)
+# ------------------------------------------------------------
+# DESENHO DE SEÇÃO (usada por texto e slides)
+# ------------------------------------------------------------
+def _desenhar_secao(doc, largura, altura, lang, c, tb, indice, titulo, texto, tabela, slides=False):
+    _desenhar_marca_dagua(doc, largura, altura, lang)
+    if slides:
+        barra = 22 * mm
+        corpo_y = altura - 40 * mm
+        tam_tit = 22 if len(titulo) <= 30 else 17
+        tam_corpo = 13
+        ent = 7.5 * mm
+        tab_tam = 10
     else:
-        dados, cols = _dados_projecoes(tb)
-    return _tabela_pdf(doc, dados, cols, x, y, largura, fonte=fonte, tam=tam)
+        barra = 18 * mm
+        corpo_y = altura - 34 * mm
+        tam_tit = 15 if len(titulo) <= 32 else 13
+        tam_corpo = 11.5
+        ent = 6.2 * mm
+        tab_tam = 9
+    doc.setFillColor(COR_AZUL)
+    doc.rect(0, altura - barra, largura, barra, stroke=0, fill=1)
+    doc.setFillColor(white)
+    doc.setFont(_fonte(lang, True), 11)
+    doc.drawRightString(largura - 12 * mm, altura - (barra * 0.7), "%02d" % indice)
+    _texto_wrap(doc, titulo, _fonte(lang, True), tam_tit,
+                18 * mm, altura - (barra * 0.7), largura - 52 * mm,
+                white, 10 * mm, cjk=(lang in ("zh", "ja")))
+    doc.setStrokeColor(COR_DOURADO)
+    doc.setLineWidth(0.8)
+    doc.line(18 * mm, altura - barra - 3 * mm, largura - 18 * mm, altura - barra - 3 * mm)
+    y = corpo_y
+    if texto:
+        y = _texto_wrap(doc, texto, _fonte(lang), tam_corpo, 18 * mm, y,
+                        largura - 36 * mm, COR_PRETO, ent, cjk=(lang in ("zh", "ja")))
+    if tabela:
+        y = _montar_tabela(doc, tabela, tb, 18 * mm, y - 6 * mm,
+                           largura - 36 * mm, _fonte(lang), tab_tam)
+    _rodape(doc, largura, altura, lang, c)
+
+# ------------------------------------------------------------
+# GERADORES
+# ------------------------------------------------------------
+def gerar_pdf_texto(lang="pt", caminho_saida=None):
+    _registrar_cid()
+    _registrar_fontes_extra()
+    if lang not in CONTEUDO:
+        lang = "pt"
+    c = CONTEUDO[lang]
+    tb = TABELAS.get(lang, TABELAS["pt"])
+    if not caminho_saida:
+        caminho_saida = os.path.join(STATIC_DIR, f"apresentacao_{lang}.pdf")
+    largura, altura = A4
+    doc = canvas.Canvas(caminho_saida, pagesize=A4)
+    _capa(doc, largura, altura, lang, "texto")
+    doc.showPage()
+    indice = 1
+    for flag, tit_chaves, txt_chaves, tabela in SECOES:
+        titulo = _achar(c, tit_chaves)
+        texto = _achar(c, txt_chaves)
+        if not titulo and not texto:
+            continue
+        _desenhar_secao(doc, largura, altura, lang, c, tb, indice,
+                        titulo or flag.capitalize(), texto, tabela, slides=False)
+        doc.showPage()
+        indice += 1
+    _desenhar_marca_dagua(doc, largura, altura, lang)
+    doc.setFillColor(COR_DOURADO)
+    doc.setFont(_fonte(lang, True), 16)
+    frase = _achar(c, ["frase_final", "frase"])
+    if frase:
+        doc.drawCentredString(largura / 2, altura * 0.58, frase)
+    contato = _achar(c, ["invest_texto", "contato", "contatos"])
+    if contato:
+        doc.setFillColor(HexColor("#555555"))
+        doc.setFont(_fonte(lang), 10)
+        doc.drawCentredString(largura / 2, altura * 0.52, contato)
+    doc.showPage()
+    doc.save()
+    logger.info("PDF texto gerado: %s", caminho_saida)
+    return caminho_saida
+
+def gerar_pdf_slides(lang="pt", caminho_saida=None):
+    _registrar_cid()
+    _registrar_fontes_extra()
+    if lang not in CONTEUDO:
+        lang = "pt"
+    c = CONTEUDO[lang]
+    tb = TABELAS.get(lang, TABELAS["pt"])
+    if not caminho_saida:
+        caminho_saida = os.path.join(STATIC_DIR, f"apresentacao_slides_{lang}.pdf")
+    largura, altura = landscape(A4)
+    doc = canvas.Canvas(caminho_saida, pagesize=landscape(A4))
+    _capa(doc, largura, altura, lang, "slides")
+    doc.showPage()
+    indice = 1
+    for flag, tit_chaves, txt_chaves, tabela in SECOES:
+        titulo = _achar(c, tit_chaves)
+        texto = _achar(c, txt_chaves)
+        if not titulo and not texto:
+            continue
+        _desenhar_secao(doc, largura, altura, lang, c, tb, indice,
+                        titulo or flag.capitalize(), texto, tabela, slides=True)
+        doc.showPage()
+        indice += 1
+    doc.save()
+    logger.info("PDF slides gerado: %s", caminho_saida)
+    return caminho_saida
+
+def gerar_apresentacao(lang="pt", modo="texto"):
+    if modo == "slides":
+        return gerar_pdf_slides(lang)
+    return gerar_pdf_texto(lang)
+
+def gerar_todas():
+    import sys
+    args = [a for a in sys.argv[1:]]
+    if not args:
+        alvos = [(l, m) for l in CONTEUDO for m in ("texto", "slides")]
+    else:
+        lang = args[0]
+        modo = args[1] if len(args) > 1 else "texto"
+        alvos = [(lang, modo)]
+    for l, m in alvos:
+        try:
+            p = gerar_apresentacao(l, m)
+            print("OK", l, m, p)
+        except Exception as e:
+            print("ERRO", l, m, e)
 
 if __name__ == "__main__":
     gerar_todas()
