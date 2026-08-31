@@ -125,22 +125,6 @@ SIMBOLO = {
     "ja": "¥", "zh": "¥", "ru": "₽", "id": "Rp", "tr": "₺", "vi": "₫",
     "he": "₪", "ar": "﷼"
 }
-# ===== HEALTH CHECK PARA O RENDER (evita o "Timed Out") =====
-@app.get("/", include_in_schema=False)
-async def index():
-    return RedirectResponse(url="/static/index.html")
-
-@app.head("/", include_in_schema=False)
-async def index_head():
-    return Response(status_code=200)
-
-@app.get("/health", include_in_schema=False)
-async def health():
-    return {"status": "ok"}
-
-@app.head("/health", include_in_schema=False)
-async def health_head():
-    return Response(status_code=200)
 
 # ===== FAIXAS DE PREÇO (23 produtos) =====
 PRODUTO_FAIXA = {
@@ -729,40 +713,6 @@ async def criar_checkout_coletivo(lang: str = "pt", items: str = "[]"):
         cancel_url=f"{BASE_URL}/api/pay/cancel")
     return RedirectResponse(url=session.url)
 
-# ===== ROTA /criar-checkout (usada pelo site) =====
-@app.get("/criar-checkout")
-async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
-                                qtd: int = 0, total: float = 0, itens: str = "",
-                                nome: str = "", nascimento: str = "",
-                                nome_completo: str = "", cargo: str = "vereador",
-                                numero: str = "", email: str = "",
-                                nome1: str = "", nome2: str = "", nome3: str = "",
-                                nome4: str = "", nome5: str = "",
-                                energia: str = "", dado: str = "", tipo: str = "",
-                                numero_existente: str = "", area: str = "", detalhe: str = ""):
-    if not STRIPE_KEY:
-        raise HTTPException(503, "Stripe nao configurado")
-    if produto == "coletivo":
-        return await criar_checkout_coletivo(lang=lang, items=itens or "[]")
-    if produto not in PRODUTO_FAIXA:
-        raise HTTPException(400, "Produto invalido")
-    meta = {}
-    if produto == "urna":
-        meta = {"nome_completo": nome_completo, "cargo": cargo, "nome": nome_completo,
-                "nome1": nome1, "nome2": nome2, "nome3": nome3,
-                "nome4": nome4, "nome5": nome5}
-    elif produto == "eleitoral":
-        meta = {"sigla": numero, "cargo": cargo,
-                "nome_completo": nome_completo, "numero_existente": numero_existente}
-    else:
-        meta = {"energia": energia, "dado": dado, "tipo": tipo,
-                "area": area, "detalhe": detalhe}
-    s = _criar_sessao(produto, lang, email, nome, nascimento, meta)
-    return RedirectResponse(url=s["url"])
-# ===== SUCESSO POS-PAGAMENTO =====
-DADO_PRODUTOS = {"nome_pet", "nickname", "nome_dominio", "nome_canal",
-                 "nome_equipe", "nome_ong", "nome_projeto", "nome_evento"}
-
 @app.get("/api/pay/success")
 def pay_success(request: Request):
     sid = request.query_params.get("session_id", "")
@@ -874,10 +824,74 @@ def pay_eleitoral_success(request: Request):
     except Exception:
         return HTMLResponse("ERRO")
 
+# ===== HEALTH CHECK PARA O RENDER (evita o "Timed Out") =====
+@app.get("/", include_in_schema=False)
+async def index():
+    return RedirectResponse(url="/static/index.html")
+
+@app.head("/", include_in_schema=False)
+async def index_head():
+    return Response(status_code=200)
+
+@app.get("/health", include_in_schema=False)
+async def health():
+    return {"status": "ok"}
+
+@app.head("/health", include_in_schema=False)
+async def health_head():
+    return Response(status_code=200)
+
+# ===== ROTAS DE APRESENTAÇÃO (texto e slides) =====
+@app.get("/api/apresentacao")
+async def get_apresentacao(lang: str = "pt"):
+    caminho = gerar_apresentacao(lang, "texto")
+    return FileResponse(caminho, media_type="application/pdf",
+                        filename=f"Apresentacao-{lang}.pdf")
+
+@app.get("/api/apresentacao-slides")
+async def get_apresentacao_slides(lang: str = "pt"):
+    caminho = gerar_apresentacao(lang, "slides")
+    return FileResponse(caminho, media_type="application/pdf",
+                        filename=f"Apresentacao-Slides-{lang}.pdf")
+
+# ===== ROTA /criar-checkout (usada pelo site) =====
+@app.get("/criar-checkout")
+async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
+                                qtd: int = 0, total: float = 0, itens: str = "",
+                                nome: str = "", nascimento: str = "",
+                                nome_completo: str = "", cargo: str = "vereador",
+                                numero: str = "", email: str = "",
+                                nome1: str = "", nome2: str = "", nome3: str = "",
+                                nome4: str = "", nome5: str = "",
+                                energia: str = "", dado: str = "", tipo: str = "",
+                                numero_existente: str = "", area: str = "", detalhe: str = ""):
+    if not stripe.api_key:
+        raise HTTPException(503, "Stripe nao configurado")
+    if produto == "coletivo":
+        return await criar_checkout_coletivo(lang=lang, items=itens or "[]")
+    if produto not in PRODUTO_FAIXA:
+        raise HTTPException(400, "Produto invalido")
+    meta = {}
+    if produto == "urna":
+        meta = {"nome_completo": nome_completo, "cargo": cargo, "nome": nome_completo,
+                "nome1": nome1, "nome2": nome2, "nome3": nome3,
+                "nome4": nome4, "nome5": nome5}
+    elif produto == "eleitoral":
+        meta = {"sigla": numero, "cargo": cargo,
+                "nome_completo": nome_completo, "numero_existente": numero_existente}
+    else:
+        meta = {"energia": energia, "dado": dado, "tipo": tipo,
+                "area": area, "detalhe": detalhe}
+    s = _criar_sessao(produto, lang, email, nome, nascimento, meta)
+    return RedirectResponse(url=s["url"])
+
+# ===== SUCESSO POS-PAGAMENTO =====
+DADO_PRODUTOS = {"nome_pet", "nickname", "nome_dominio", "nome_canal",
+                 "nome_equipe", "nome_ong", "nome_projeto", "nome_evento"}
+
 @app.get("/api/pay/cancel")
 def pay_cancel():
     return HTMLResponse("<h1>Cancelado</h1><a href='/'>Voltar</a>")
-
 # ===== CALCULO GRATIS =====
 @app.post("/calculate")
 def calculate(req: PayReq):
