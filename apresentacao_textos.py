@@ -1199,5 +1199,263 @@ def gerar_todas():
         except Exception as e:
             print("ERRO", l, m, e)
 
+# ============================================================
+# BLOCO CORRETIVO FINAL — FUNÇÕES AUXILIARES + _montar_tabela
+# ============================================================
+import os, math, logging
+from reportlab.lib.pagesizes import A4, landscape
+from reportlab.lib.colors import HexColor, white
+from reportlab.lib.units import mm
+from reportlab.platypus import Table, TableStyle
+
+if "logger" not in globals():
+    logging.basicConfig(level=logging.INFO)
+    logger = logging.getLogger(__name__)
+
+if "STATIC_DIR" not in globals():
+    STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
+
+if "COR_AZUL" not in globals():
+    COR_AZUL = HexColor("#1E3A8A")
+    COR_DOURADO = HexColor("#C9A94E")
+    COR_PRETO = HexColor("#1A1A1A")
+    COR_CINZA_CLARO = HexColor("#D9D9D9")
+    FONTES = {"normal": "Helvetica", "bold": "Helvetica-Bold"}
+if "_FONTES_EXTRA" not in globals():
+    _FONTES_EXTRA = {}
+
+if "LINHAS_IDIOMAS" not in globals():
+    LINHAS_IDIOMAS = [
+        ("Inglês", 1528), ("Mandarim", 1184), ("Espanhol", 558),
+        ("Francês", 396), ("Árabe", 335), ("Português", 270),
+        ("Russo", 255), ("Indonésio", 255), ("Alemão", 134),
+        ("Japonês", 123), ("Vietnamita", 97), ("Turco", 90),
+        ("Italiano", 85), ("Hebraico", 9),
+    ]
+if "LINHAS_BANNERS" not in globals():
+    LINHAS_BANNERS = [[800, "500"], [1800, "1.200"], [3500, "2.500"], [6000, "4.500"]]
+if "LINHAS_B2B" not in globals():
+    LINHAS_B2B = [["10", "10%"], ["100", "30%"], ["500", "50%"], ["1.000", "70%"]]
+if "HORIZONTES" not in globals():
+    HORIZONTES = [1, 3, 5, 10, 20, 30, 40, 50]
+if "RANGES" not in globals():
+    RANGES = [
+        ("33k", "130k"), ("120k", "450k"), ("500k", "1,5M"),
+        ("3M", "8M"), ("15M", "40M"), ("35M", "90M"),
+        ("55M", "150M"), ("75M", "250M"),
+    ]
+
+def _registrar_cid():
+    try:
+        from reportlab.pdfbase import pdfmetrics
+        from reportlab.pdfbase.cidfonts import UnicodeCIDFont
+        for nome in ("STSong-Light", "HeiseiMin-W3", "HYSMyeongJo-Medium"):
+            try:
+                pdfmetrics.registerFont(UnicodeCIDFont(nome))
+            except Exception:
+                pass
+    except Exception:
+        pass
+
+def _registrar_fontes_extra():
+    global _FONTES_EXTRA
+    if _FONTES_EXTRA:
+        return
+    try:
+        from reportlab.pdfbase import pdfmetrics
+        from reportlab.pdfbase.ttfonts import TTFont
+        for nome, arq in [("DejaVu", "DejaVuSans.ttf"),
+                          ("DejaVu-Bold", "DejaVuSans-Bold.ttf"),
+                          ("NotoAr", "NotoSansArabic-Regular.ttf"),
+                          ("NotoHe", "NotoSansHebrew-Regular.ttf")]:
+            caminho = os.path.join(STATIC_DIR, arq)
+            if os.path.exists(caminho):
+                pdfmetrics.registerFont(TTFont(nome, caminho))
+                _FONTES_EXTRA[nome] = True
+    except Exception as e:
+        logger.warning("Fontes extras não carregadas: %s", e)
+
+def _fonte(lang, negrito=False):
+    if lang == "zh":
+        return "STSong-Light"
+    if lang == "ja":
+        return "HeiseiMin-W3"
+    if lang in ("ru", "ar", "he", "id", "tr", "vi"):
+        if negrito and _FONTES_EXTRA.get("DejaVu-Bold"):
+            return "DejaVu-Bold"
+        if _FONTES_EXTRA.get("DejaVu"):
+            return "DejaVu"
+    return FONTES["bold" if negrito else "normal"]
+
+def _chave(c, *nomes):
+    for n in nomes:
+        if n in c:
+            v = c[n]
+            if isinstance(v, list):
+                return " ".join(str(x) for x in v)
+            return str(v) if v else ""
+    return ""
+
+def _achar(c, chaves):
+    for k in chaves:
+        if k in c:
+            v = c[k]
+            if isinstance(v, list):
+                return " ".join(str(x) for x in v)
+            return str(v) if v else ""
+    return ""
+
+def _texto_wrap(doc, texto, fonte, tam, x, y, largura_max, cor, entrelinha, cjk=False):
+    doc.setFillColor(cor)
+    doc.setFont(fonte, tam)
+    texto = " ".join(texto.split())
+    if cjk:
+        linha = ""
+        for ch in texto:
+            teste = linha + ch
+            if doc.stringWidth(teste, fonte, tam) <= largura_max:
+                linha = teste
+            else:
+                doc.drawString(x, y, linha)
+                y -= entrelinha
+                linha = ch
+        if linha:
+            doc.drawString(x, y, linha)
+            y -= entrelinha
+        return y
+    palavras = texto.split()
+    linha = ""
+    for p in palavras:
+        teste = (linha + " " + p).strip()
+        if doc.stringWidth(teste, fonte, tam) <= largura_max:
+            linha = teste
+        else:
+            doc.drawString(x, y, linha)
+            y -= entrelinha
+            linha = p
+    if linha:
+        doc.drawString(x, y, linha)
+        y -= entrelinha
+    return y
+
+def _tabela_pdf(doc, dados, colunas, x, y, largura, fonte=None, tam=9):
+    fonte = fonte or FONTES["normal"]
+    tbl = Table(dados, colWidths=[largura * c for c in colunas])
+    tbl.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (-1, 0), COR_AZUL),
+        ("TEXTCOLOR", (0, 0), (-1, 0), white),
+        ("FONTNAME", (0, 0), (-1, 0), FONTES["bold"]),
+        ("FONTSIZE", (0, 0), (-1, -1), tam),
+        ("TEXTCOLOR", (0, 1), (-1, -1), COR_PRETO),
+        ("GRID", (0, 0), (-1, -1), 0.4, COR_CINZA_CLARO),
+        ("ROWBACKGROUNDS", (0, 1), (-1, -1), [white, HexColor("#F5F7FB")]),
+        ("ALIGN", (1, 0), (-1, -1), "CENTER"),
+        ("TOPPADDING", (0, 0), (-1, -1), 3),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
+    ]))
+    w, h = tbl.wrapOn(doc, largura, 600)
+    tbl.drawOn(doc, x, y - h)
+    return y - h
+
+def _capa(doc, largura, altura, lang, modo):
+    c = CONTEUDO.get(lang, CONTEUDO["pt"])
+    doc.saveState()
+    doc.setFillColor(HexColor("#0A0A0A"))
+    doc.rect(0, 0, largura, altura, stroke=0, fill=1)
+    logo = os.path.join(STATIC_DIR, "Logo.png")
+    if os.path.exists(logo):
+        try:
+            from reportlab.lib.utils import ImageReader
+            iw, ih = ImageReader(logo).getSize()
+            lw = min(largura * 0.30, iw)
+            lh = lw * ih / iw
+            doc.drawImage(logo, largura / 2 - lw / 2, altura * 0.60 - lh / 2,
+                          width=lw, height=lh, mask="auto")
+        except Exception as e:
+            logger.warning("Logo não desenhada: %s", e)
+    doc.setFillColor(COR_DOURADO)
+    doc.setFont(_fonte(lang, True), 30 if modo == "texto" else 34)
+    doc.drawCentredString(largura / 2, altura * 0.48, _chave(c, "titulo"))
+    doc.setFillColor(HexColor("#CCCCCC"))
+    doc.setFont(_fonte(lang), 13)
+    doc.drawCentredString(largura / 2, altura * 0.42, _chave(c, "subtitulo"))
+    doc.setStrokeColor(COR_DOURADO)
+    doc.setLineWidth(0.8)
+    doc.line(largura * 0.30, altura * 0.395, largura * 0.70, altura * 0.395)
+    doc.setFillColor(HexColor("#AAAAAA"))
+    doc.setFont(_fonte(lang), 11)
+    doc.drawCentredString(largura / 2, altura * 0.36,
+                          _chave(c, "capa_nota", "apresentacao_para", "sub_apresentacao") or
+                          "Apresentação para Investidores e Parceiros Estratégicos")
+    doc.setFillColor(COR_DOURADO)
+    doc.setFont(_fonte(lang, True), 12)
+    doc.drawCentredString(largura / 2, altura * 0.30, "DUNS 942242668")
+    doc.setFillColor(HexColor("#888888"))
+    doc.setFont(_fonte(lang), 9)
+    doc.drawCentredString(largura / 2, altura * 0.08,
+                          f"{_chave(c, 'confidencial') or 'CONFIDENCIAL'}  {_chave(c, 'ano') or '2026'}")
+    doc.restoreState()
+
+def _desenhar_marca_dagua(doc, largura, altura, lang):
+    doc.saveState()
+    doc.setStrokeAlpha(0.10)
+    doc.setStrokeColor(COR_DOURADO)
+    centro_x, centro_y = largura * 0.85, altura * 0.20
+    for r in (55, 75, 95):
+        doc.setLineWidth(0.7)
+        doc.circle(centro_x, centro_y, r, stroke=1, fill=0)
+    doc.setFont(_fonte(lang, True), 10)
+    for i in range(1, 10):
+        ang = i * (2 * math.pi / 9)
+        doc.setFillColor(COR_DOURADO)
+        doc.drawCentredString(centro_x + 70 * math.cos(ang),
+                              centro_y + 70 * math.sin(ang), str(i))
+    doc.restoreState()
+
+def _rodape(doc, largura, altura, lang, c):
+    doc.setFillColor(COR_DOURADO)
+    doc.setFont(_fonte(lang, True), 9)
+    doc.drawCentredString(largura / 2, 12 * mm,
+                          f"A1ELOS Global Numerology · DUNS 942242668 · "
+                          f"{_chave(c, 'confidencial') or 'CONFIDENCIAL'} {_chave(c, 'ano') or '2026'}")
+    doc.drawRightString(largura - 18 * mm, 12 * mm, str(doc.getPageNumber()))
+
+# --- montagem das tabelas (o que estava faltando no erro) ---
+def _dados_idiomas(tb):
+    linhas = [[tb["h_idioma"], tb["h_falantes"]]]
+    for nome, n in LINHAS_IDIOMAS:
+        linhas.append([nome, str(n)])
+    linhas.append(["TOTAL", "~5.320"])
+    return linhas, [0.6, 0.4]
+
+def _dados_banners(tb):
+    linhas = [[tb["h_seg"], tb["h_fixo"], tb["h_temp"]]]
+    for i, lab in enumerate(tb["seg"]):
+        fixo, temp = LINHAS_BANNERS[i]
+        linhas.append([lab, f"R$ {fixo}", f"R$ {temp}"])
+    return linhas, [0.5, 0.25, 0.25]
+
+def _dados_b2b(tb):
+    linhas = [[tb["h_de"], tb["h_desc"]]] + LINHAS_B2B
+    return linhas, [0.5, 0.5]
+
+def _dados_projecoes(tb):
+    linhas = [[tb["h_hor"], tb["h_cons"], tb["h_otim"]]]
+    for i, n in enumerate(HORIZONTES):
+        cons, otim = RANGES[i]
+        linhas.append([f"{tb['h_ano']} {n}", f"R$ {cons}", f"R$ {otim}"])
+    return linhas, [0.3, 0.35, 0.35]
+
+def _montar_tabela(doc, tabela, tb, x, y, largura, fonte, tam=9):
+    if tabela == "idiomas":
+        dados, cols = _dados_idiomas(tb)
+    elif tabela == "banners":
+        dados, cols = _dados_banners(tb)
+    elif tabela == "b2b":
+        dados, cols = _dados_b2b(tb)
+    else:
+        dados, cols = _dados_projecoes(tb)
+    return _tabela_pdf(doc, dados, cols, x, y, largura, fonte=fonte, tam=tam)
+
 if __name__ == "__main__":
     gerar_todas()
