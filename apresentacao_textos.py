@@ -393,7 +393,12 @@ def _kpis_grid(doc, largura, altura, lang, kpis, y, colunas=4):
     w = (largura - 2 * margem - (colunas - 1) * gap) / colunas
     h = 30 * mm
     x0 = margem
-    for i, (num, rot, sub) in enumerate(kpis):
+    for i, item in enumerate(kpis):
+        if len(item) == 3:
+            num, rot, sub = item
+        else:
+            num, rot = item
+            sub = ""
         x = x0 + i * (w + gap)
         _caixa(doc, x, y - h, w, h, COR_FUNDO, COR_DOURADO)
         doc.setFillColor(COR_DOURADO)
@@ -402,10 +407,11 @@ def _kpis_grid(doc, largura, altura, lang, kpis, y, colunas=4):
         doc.setFillColor(COR_PRETO)
         doc.setFont(_fonte(lang, True), 10)
         doc.drawCentredString(x + w / 2, y - h + 10 * mm, rot)
-        doc.setFillColor(COR_CINZA)
-        doc.setFont(_fonte(lang), 8)
-        _texto_wrap(doc, sub, _fonte(lang), 8, x + 4 * mm, y - h + 5 * mm,
-                    w - 8 * mm, COR_CINZA, 3.5 * mm)
+        if sub:
+            doc.setFillColor(COR_CINZA)
+            doc.setFont(_fonte(lang), 8)
+            _texto_wrap(doc, sub, _fonte(lang), 8, x + 4 * mm, y - h + 5 * mm,
+                        w - 8 * mm, COR_CINZA, 3.5 * mm)
     return y - h - 6 * mm
 
 def _tabela_editorial(doc, x, y, largura, dados, colunas_pct, tam=9):
