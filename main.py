@@ -32,6 +32,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse, Response
+from apresentacao_textos import gerar_apresentacao
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
