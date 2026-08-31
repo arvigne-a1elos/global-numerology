@@ -983,11 +983,7 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     largura, altura = A4
     doc = canvas.Canvas(caminho_saida, pagesize=A4)
 
-    # Capa (fundo preto + logo + título dourado)
-    _capa(doc, largura, altura, lang, "texto")
-    doc.showPage()
-
-   # ============================================================
+# ============================================================
 # MAPEAMENTO DE SEÇÕES (auto-detecta as chaves do CONTEUDO)
 # ============================================================
 SECOES = [
