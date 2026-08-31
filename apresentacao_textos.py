@@ -774,6 +774,7 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
                     largura - 36 * mm, COR_PRETO, 6 * mm)
     y -= 8 * mm
     col_w = (largura - 36 * mm - 2 * 8 * mm) / 3
+
     for i, (tit, sub) in enumerate(c["solucao_colunas"]):
         x = 18 * mm + i * (col_w + 8 * mm)
         _caixa(doc, x, y - 60 * mm, col_w, 60 * mm, COR_FUNDO, COR_DOURADO)
@@ -785,9 +786,9 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
         doc.setFont(_fonte(lang), 9)
         _texto_wrap(doc, sub, _fonte(lang), 9, x + 5 * mm, y - 22 * mm,
                     col_w - 10 * mm, COR_CINZA, 4.5 * mm)
-        _rodape(doc, largura, altura, lang, c, pagina)
-        doc.showPage()
-        pagina += 1
+    _rodape(doc, largura, altura, lang, c, pagina)
+    doc.showPage()
+    pagina += 1
 
     # ALCANCE + TABELA IDIOMAS
     _titulo_pagina(doc, largura, altura, lang, c["alcance_titulo"], 7)
@@ -901,9 +902,12 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
         doc.setFont(_fonte(lang), 9)
         _texto_wrap(doc, sub, _fonte(lang), 9, x + 5 * mm, y - 22 * mm,
                     col_w - 10 * mm, COR_CINZA, 4.5 * mm)
-    _grafico_pizza(doc, 18 * mm, y - 78 * mm, largura - 36 * mm, 68 * mm,
+        _grafico_pizza(doc, 18 * mm, y - 78 * mm, largura - 36 * mm, 68 * mm,
                    ["B2C", "B2B", "Publicidade"], [60, 25, 15], "Composição da Receita")
-    _rodape(doc, largura, altura, lang, c, pagina)
+        _rodape(doc, largura, altura, lang, c, pagina)
+        doc.showPage()
+        pagina += 1
+    # BANNERS (tabela 4 colunas)
 
     # BANNERS (tabela 4 colunas)
     _titulo_pagina(doc, largura, altura, lang, c["banners_titulo"], 12)
@@ -1222,7 +1226,7 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
                     w - 10 * mm, COR_AZUL, 4 * mm, y_min=y - 18 * mm)
         doc.setFillColor(COR_CINZA)
         doc.setFont(_fonte(lang), 8)
-        _texto_wrap(doc, sub, _fonte(lang), 8, x + 5 * mm, y_min=y - 20 * mm,
+        _texto_wrap(doc, sub, _fonte(lang), 8, x + 5 * mm, y - 20 * mm,
                     w - 10 * mm, COR_CINZA, 3.8 * mm, y_min=y - h + 4 * mm)
     rodape(pagina)
     doc.showPage()
@@ -1292,7 +1296,7 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
                     largura - 36 * mm, COR_CINZA, 6 * mm)
     y -= 10 * mm
     dados = [["Idioma", "Falantes (mi)"]] + LINHAS_IDIOMAS + [["TOTAL", "~5.320"]]
-    _tabela_editorial(doc, 18 * mm, y=yy, largura - 36 * mm, dados, [0.6, 0.4], 9)
+    _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm, dados, [0.6, 0.4], 9)
     rodape(pagina)
     doc.showPage()
     pagina += 1
