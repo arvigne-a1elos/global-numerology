@@ -885,269 +885,436 @@ def _tabela_pdf(doc, dados, colunas, x, y, largura, fonte=None, tam=9):
     w, h = tbl.wrapOn(doc, largura, 600)
     tbl.drawOn(doc, x, y - h)
     return y - h
+# ============================================================
+# FUNÇÕES AUXILIARES + GERADORES FINAIS (qualidade apresentacao.pdf)
+# ============================================================
+import math
+from reportlab.lib.pagesizes import A4, landscape
+from reportlab.lib.colors import HexColor, white
+from reportlab.lib.units import mm
+from reportlab.platypus import Table, TableStyle
 
-# ------------------------------------------------------------
-# 5. FUNÇÕES AUXILIARES
-# ------------------------------------------------------------
-def _fonte(lang):
-    """Escolhe a fonte adequada ao idioma."""
-    if lang in ("zh",):
-        return FONTES.get("zh", FONTES["normal"])
-    if lang in ("ja",):
-        return FONTES.get("ja", FONTES["normal"])
-    return FONTES["normal"]
+STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
 
-def _estilos(lang):
-    """Cria estilos de parágrafo para o idioma."""
-    fonte = _fonte(lang)
-    fonte_bold = FONTES["bold"] if lang not in ("zh", "ja") else fonte
-    return {
-        "titulo": ParagraphStyle("titulo", fontName=fonte_bold, fontSize=26,
-                                  leading=32, textColor=COR_PRETO, alignment=TA_CENTER),
-        "subtitulo": ParagraphStyle("subtitulo", fontName=fonte, fontSize=14,
-                                    leading=20, textColor=COR_CINZA, alignment=TA_CENTER),
-        "secao": ParagraphStyle("secao", fontName=fonte_bold, fontSize=16,
-                                leading=22, textColor=COR_AZUL, spaceBefore=14, spaceAfter=6),
-        "corpo": ParagraphStyle("corpo", fontName=fonte, fontSize=11,
-                                leading=16, textColor=COR_PRETO, alignment=TA_JUSTIFY),
-        "kpi": ParagraphStyle("kpi", fontName=fonte_bold, fontSize=12,
-                              leading=16, textColor=COR_DOURADO, alignment=TA_CENTER),
-        "nota": ParagraphStyle("nota", fontName=fonte, fontSize=10,
-                               leading=14, textColor=COR_CINZA_CLARO, alignment=TA_CENTER),
-        "final": ParagraphStyle("final", fontName=fonte_bold, fontSize=13,
-                                leading=18, textColor=COR_DOURADO, alignment=TA_CENTER),
-    }
+COR_AZUL = HexColor("#1E3A8A")
+COR_DOURADO = HexColor("#C9A94E")
+COR_PRETO = HexColor("#1A1A1A")
+COR_CINZA_CLARO = HexColor("#D9D9D9")
+FONTES = {"normal": "Helvetica", "bold": "Helvetica-Bold"}
+_FONTES_EXTRA = {}
 
-def _desenhar_marca_dagua(c, largura, altura, lang):
-    """Desenha a marca d'água (logo/imagem) em todas as páginas."""
+def _registrar_fontes_extra():
+    global _FONTES_EXTRA
+    if _FONTES_EXTRA:
+        return
     try:
-        if os.path.exists(WATERMARK_PATH):
-            img = ImageReader(WATERMARK_PATH)
-            iw, ih = img.getSize()
-            escala = 0.35
-            w = iw * escala
-            h = ih * escala
-            c.saveState()
-            c.setFillAlpha(0.10)
-            c.drawImage(WATERMARK_PATH, (largura - w) / 2, (altura - h) / 2,
-                        width=w, height=h, preserveAspectRatio=True, mask='auto')
-            c.restoreState()
+        from reportlab.pdfbase import pdfmetrics
+        from reportlab.pdfbase.ttfonts import TTFont
+        for nome, arq in [("DejaVu", "DejaVuSans.ttf"),
+                          ("DejaVu-Bold", "DejaVuSans-Bold.ttf"),
+                          ("NotoAr", "NotoSansArabic-Regular.ttf"),
+                          ("NotoHe", "NotoSansHebrew-Regular.ttf")]:
+            caminho = os.path.join(STATIC_DIR, arq)
+            if os.path.exists(caminho):
+                pdfmetrics.registerFont(TTFont(nome, caminho))
+                _FONTES_EXTRA[nome] = True
     except Exception as e:
-        logger.warning(f"Marca d'água ignorada: {e}")
+        logger.warning("Fontes extras não carregadas: %s", e)
 
-def _capa(c, largura, altura, lang, formato):
-    """Desenha a página de capa."""
-    c.setFillColor(COR_PRETO)
-    c.rect(0, 0, largura, altura, stroke=0, fill=1)
-    # Logo
+def _registrar_cid():
     try:
-        if os.path.exists(LOGO_PATH):
-            img = ImageReader(LOGO_PATH)
-            iw, ih = img.getSize()
-            escala = 0.12 if formato == "texto" else 0.16
-            w = iw * escala
-            h = ih * escala
-            c.drawImage(LOGO_PATH, (largura - w) / 2, altura * 0.60,
-                        width=w, height=h, preserveAspectRatio=True, mask='auto')
-    except Exception as e:
-        logger.warning(f"Logo ignorado: {e}")
-    c.setFillColor(COR_DOURADO)
-    c.setFont(FONTES["bold"], 26)
-    c.drawCentredString(largura / 2, altura * 0.48, CONTEUDO[lang]["titulo"])
-    c.setFont(_fonte(lang), 14)
-    c.setFillColor(white)
-    c.drawCentredString(largura / 2, altura * 0.42, CONTEUDO[lang]["subtitulo"])
-    c.setFont(_fonte(lang), 11)
-    c.setFillColor(COR_CINZA_CLARO)
-    c.drawCentredString(largura / 2, altura * 0.34, CONTEUDO[lang]["capa_nota"])
-    # Selo confidencial
-    c.setFillColor(COR_DOURADO)
-    c.setFont(FONTES["bold"], 10)
-    c.drawCentredString(largura / 2, altura * 0.10,
-                        f"{CONTEUDO[lang]['confidencial']}  ·  {CONTEUDO[lang]['ano']}")
+        from reportlab.pdfbase import pdfmetrics
+        from reportlab.pdfbase.cidfonts import UnicodeCIDFont
+        for nome in ("STSong-Light", "HeiseiMin-W3", "HYSMyeongJo-Medium"):
+            try:
+                pdfmetrics.registerFont(UnicodeCIDFont(nome))
+            except Exception:
+                pass
+    except Exception:
+        pass
 
-# ------------------------------------------------------------
-# 6. GERADOR DE PDF EM FORMATO TEXTO (documento)
-# ------------------------------------------------------------
+def _fonte(lang, negrito=False):
+    if lang == "zh":
+        return "STSong-Light"
+    if lang == "ja":
+        return "HeiseiMin-W3"
+    if lang in ("ru", "ar", "he", "id", "tr", "vi"):
+        if negrito and _FONTES_EXTRA.get("DejaVu-Bold"):
+            return "DejaVu-Bold"
+        if _FONTES_EXTRA.get("DejaVu"):
+            return "DejaVu"
+    return FONTES["bold" if negrito else "normal"]
+
+def _chave(c, *nomes):
+    for n in nomes:
+        if n in c:
+            return c[n]
+    return ""
+
+# --- Dados numéricos das tabelas ---
+LINHAS_IDIOMAS = [
+    ("Inglês", 1528), ("Mandarim", 1184), ("Espanhol", 558),
+    ("Francês", 396), ("Árabe", 335), ("Português", 270),
+    ("Russo", 255), ("Indonésio", 255), ("Alemão", 134),
+    ("Japonês", 123), ("Vietnamita", 97), ("Turco", 90),
+    ("Italiano", 85), ("Hebraico", 9),
+]
+LINHAS_BANNERS = [[800, "500"], [1800, "1.200"], [3500, "2.500"], [6000, "4.500"]]
+LINHAS_B2B = [["10", "10%"], ["100", "30%"], ["500", "50%"], ["1.000", "70%"]]
+HORIZONTES = [1, 3, 5, 10, 20, 30, 40, 50]
+RANGES = [
+    ("33k", "130k"), ("120k", "450k"), ("500k", "1,5M"),
+    ("3M", "8M"), ("15M", "40M"), ("35M", "90M"),
+    ("55M", "150M"), ("75M", "250M"),
+]
+TABELAS = {
+    "pt": {"h_idioma": "Idioma", "h_falantes": "Falantes (mi)", "h_seg": "Segmentação",
+           "h_fixo": "Fixo (R$/mês)", "h_temp": "Temporário (R$/mês)", "h_de": "A partir de",
+           "h_desc": "Desconto", "h_hor": "Horizonte", "h_cons": "Conservador (R$)",
+           "h_otim": "Otimista (R$)", "h_ano": "Ano",
+           "seg": ["País", "Continente", "Mundo", "Patrocínio Exclusivo"]},
+    "en": {"h_idioma": "Language", "h_falantes": "Speakers (M)", "h_seg": "Targeting",
+           "h_fixo": "Fixed (R$/mo)", "h_temp": "Temporary (R$/mo)", "h_de": "From",
+           "h_desc": "Discount", "h_hor": "Horizon", "h_cons": "Conservative (R$)",
+           "h_otim": "Optimistic (R$)", "h_ano": "Yr",
+           "seg": ["Country", "Continent", "World", "Exclusive Sponsorship"]},
+    "es": {"h_idioma": "Idioma", "h_falantes": "Hablantes (M)", "h_seg": "Segmentación",
+           "h_fixo": "Fijo (R$/mes)", "h_temp": "Temporal (R$/mes)", "h_de": "A partir de",
+           "h_desc": "Descuento", "h_hor": "Horizonte", "h_cons": "Conservador (R$)",
+           "h_otim": "Optimista (R$)", "h_ano": "Año",
+           "seg": ["País", "Continente", "Mundo", "Patrocinio Exclusivo"]},
+    "it": {"h_idioma": "Lingua", "h_falantes": "Parlanti (M)", "h_seg": "Segmentazione",
+           "h_fixo": "Fisso (R$/mese)", "h_temp": "Temporaneo (R$/mese)", "h_de": "Da",
+           "h_desc": "Sconto", "h_hor": "Orizzonte", "h_cons": "Conservativo (R$)",
+           "h_otim": "Ottimista (R$)", "h_ano": "Anno",
+           "seg": ["Paese", "Continente", "Mondo", "Sponsor Esclusivo"]},
+    "fr": {"h_idioma": "Langue", "h_falantes": "Locuteurs (M)", "h_seg": "Ciblage",
+           "h_fixo": "Fixe (R$/mois)", "h_temp": "Temporaire (R$/mois)", "h_de": "À partir de",
+           "h_desc": "Remise", "h_hor": "Horizon", "h_cons": "Conservateur (R$)",
+           "h_otim": "Optimiste (R$)", "h_ano": "An",
+           "seg": ["Pays", "Continent", "Monde", "Parrainage Exclusif"]},
+    "de": {"h_idioma": "Sprache", "h_falantes": "Sprecher (Mio.)", "h_seg": "Segmentierung",
+           "h_fixo": "Fest (R$/Monat)", "h_temp": "Zeitweilig (R$/Monat)", "h_de": "Ab",
+           "h_desc": "Rabatt", "h_hor": "Horizont", "h_cons": "Konservativ (R$)",
+           "h_otim": "Optimistisch (R$)", "h_ano": "Jahr",
+           "seg": ["Land", "Kontinent", "Welt", "Exklusiv-Sponsoring"]},
+    "ru": {"h_idioma": "Язык", "h_falantes": "Носители (млн)", "h_seg": "Сегментация",
+           "h_fixo": "Фикс. (R$/мес)", "h_temp": "Врем. (R$/мес)", "h_de": "От",
+           "h_desc": "Скидка", "h_hor": "Горизонт", "h_cons": "Консерв. (R$)",
+           "h_otim": "Оптим. (R$)", "h_ano": "Год",
+           "seg": ["Страна", "Континент", "Мир", "Эксклюзивное спонсорство"]},
+    "zh": {"h_idioma": "语言", "h_falantes": "使用者(百万)", "h_seg": "定向",
+           "h_fixo": "固定(R$/月)", "h_temp": "临时(R$/月)", "h_de": "从",
+           "h_desc": "折扣", "h_hor": "期限", "h_cons": "保守(R$)",
+           "h_otim": "乐观(R$)", "h_ano": "年",
+           "seg": ["国家", "大洲", "全球", "独家赞助"]},
+    "ja": {"h_idioma": "言語", "h_falantes": "話者(百万)", "h_seg": "セグメント",
+           "h_fixo": "固定(R$/月)", "h_temp": "臨時(R$/月)", "h_de": "から",
+           "h_desc": "割引", "h_hor": "期間", "h_cons": "保守(R$)",
+           "h_otim": "楽観(R$)", "h_ano": "年",
+           "seg": ["国", "大陸", "世界", "独占スポンサー"]},
+    "ar": {"h_idioma": "اللغة", "h_falantes": "المتحدثون (مليون)", "h_seg": "الاستهداف",
+           "h_fixo": "ثابت (R$/شهر)", "h_temp": "مؤقت (R$/شهر)", "h_de": "من",
+           "h_desc": "خصم", "h_hor": "الأفق", "h_cons": "متحفظ (R$)",
+           "h_otim": "متفائل (R$)", "h_ano": "سنة",
+           "seg": ["دولة", "قارة", "عالم", "رعاية حصرية"]},
+    "he": {"h_idioma": "שפה", "h_falantes": "דוברים (מיליון)", "h_seg": "מיקוד",
+           "h_fixo": "קבוע (R$/חודש)", "h_temp": "זמני (R$/חודש)", "h_de": "החל מ-",
+           "h_desc": "הנחה", "h_hor": "אופק", "h_cons": "שמרני (R$)",
+           "h_otim": "אופטימי (R$)", "h_ano": "שנה",
+           "seg": ["מדינה", "יבשת", "עולם", "חסות בלעדית"]},
+    "id": {"h_idioma": "Bahasa", "h_falantes": "Penutur (juta)", "h_seg": "Segmentasi",
+           "h_fixo": "Tetap (R$/bln)", "h_temp": "Sementara (R$/bln)", "h_de": "Mulai dari",
+           "h_desc": "Diskon", "h_hor": "Cakrawala", "h_cons": "Konservatif (R$)",
+           "h_otim": "Optimis (R$)", "h_ano": "Tahun",
+           "seg": ["Negara", "Benua", "Dunia", "Sponsor Eksklusif"]},
+    "tr": {"h_idioma": "Dil", "h_falantes": "Konuşmacı (milyon)", "h_seg": "Hedefleme",
+           "h_fixo": "Sabit (R$/ay)", "h_temp": "Geçici (R$/ay)", "h_de": "Şuradan",
+           "h_desc": "İndirim", "h_hor": "Ufuk", "h_cons": "Muhafazakâr (R$)",
+           "h_otim": "İyimser (R$)", "h_ano": "Yıl",
+           "seg": ["Ülke", "Kıta", "Dünya", "Özel Sponsorluk"]},
+    "vi": {"h_idioma": "Ngôn ngữ", "h_falantes": "Người nói (triệu)", "h_seg": "Nhắm mục tiêu",
+           "h_fixo": "Cố định (R$/tháng)", "h_temp": "Tạm thời (R$/tháng)", "h_de": "Từ",
+           "h_desc": "Chiết khấu", "h_hor": "Chân trời", "h_cons": "Bảo thủ (R$)",
+           "h_otim": "Lạc quan (R$)", "h_ano": "Năm",
+           "seg": ["Quốc gia", "Châu lục", "Thế giới", "Tài trợ độc quyền"]},
+}
+
+def _texto_wrap(doc, texto, fonte, tam, x, y, largura_max, cor, entrelinha, cjk=False):
+    doc.setFillColor(cor)
+    doc.setFont(fonte, tam)
+    texto = " ".join(texto.split())
+    if cjk:
+        linha = ""
+        for ch in texto:
+            teste = linha + ch
+            if doc.stringWidth(teste, fonte, tam) <= largura_max:
+                linha = teste
+            else:
+                doc.drawString(x, y, linha)
+                y -= entrelinha
+                linha = ch
+        if linha:
+            doc.drawString(x, y, linha)
+            y -= entrelinha
+        return y
+    palavras = texto.split()
+    linha = ""
+    for p in palavras:
+        teste = (linha + " " + p).strip()
+        if doc.stringWidth(teste, fonte, tam) <= largura_max:
+            linha = teste
+        else:
+            doc.drawString(x, y, linha)
+            y -= entrelinha
+            linha = p
+    if linha:
+        doc.drawString(x, y, linha)
+        y -= entrelinha
+    return y
+
+def _tabela_pdf(doc, dados, colunas, x, y, largura, fonte=None, tam=9):
+    fonte = fonte or FONTES["normal"]
+    tbl = Table(dados, colWidths=[largura * c for c in colunas])
+    tbl.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (-1, 0), COR_AZUL),
+        ("TEXTCOLOR", (0, 0), (-1, 0), white),
+        ("FONTNAME", (0, 0), (-1, 0), FONTES["bold"]),
+        ("FONTSIZE", (0, 0), (-1, -1), tam),
+        ("TEXTCOLOR", (0, 1), (-1, -1), COR_PRETO),
+        ("GRID", (0, 0), (-1, -1), 0.4, COR_CINZA_CLARO),
+        ("ROWBACKGROUNDS", (0, 1), (-1, -1), [white, HexColor("#F5F7FB")]),
+        ("ALIGN", (1, 0), (-1, -1), "CENTER"),
+        ("TOPPADDING", (0, 0), (-1, -1), 3),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
+    ]))
+    w, h = tbl.wrapOn(doc, largura, 600)
+    tbl.drawOn(doc, x, y - h)
+    return y - h
+
+def _capa(doc, largura, altura, lang, modo):
+    c = CONTEUDO.get(lang, CONTEUDO["pt"])
+    doc.saveState()
+    doc.setFillColor(HexColor("#0A0A0A"))
+    doc.rect(0, 0, largura, altura, stroke=0, fill=1)
+    logo = os.path.join(STATIC_DIR, "Logo.png")
+    if os.path.exists(logo):
+        try:
+            from reportlab.lib.utils import ImageReader
+            iw, ih = ImageReader(logo).getSize()
+            lw = min(largura * 0.30, iw)
+            lh = lw * ih / iw
+            doc.drawImage(logo, largura / 2 - lw / 2, altura * 0.60 - lh / 2,
+                          width=lw, height=lh, mask="auto")
+        except Exception as e:
+            logger.warning("Logo não desenhada: %s", e)
+    doc.setFillColor(COR_DOURADO)
+    doc.setFont(_fonte(lang, True), 30 if modo == "texto" else 34)
+    doc.drawCentredString(largura / 2, altura * 0.48, _chave(c, "titulo"))
+    doc.setFillColor(HexColor("#CCCCCC"))
+    doc.setFont(_fonte(lang), 13)
+    doc.drawCentredString(largura / 2, altura * 0.42, _chave(c, "subtitulo"))
+    doc.setStrokeColor(COR_DOURADO)
+    doc.setLineWidth(0.8)
+    doc.line(largura * 0.30, altura * 0.395, largura * 0.70, altura * 0.395)
+    doc.setFillColor(HexColor("#AAAAAA"))
+    doc.setFont(_fonte(lang), 11)
+    doc.drawCentredString(largura / 2, altura * 0.36,
+                          _chave(c, "apresentacao_para", "sub_apresentacao") or
+                          "Apresentação para Investidores e Parceiros Estratégicos")
+    doc.setFillColor(COR_DOURADO)
+    doc.setFont(_fonte(lang, True), 12)
+    doc.drawCentredString(largura / 2, altura * 0.30, "DUNS 942242668")
+    doc.setFillColor(HexColor("#888888"))
+    doc.setFont(_fonte(lang), 9)
+    doc.drawCentredString(largura / 2, altura * 0.08,
+                          f"{_chave(c, 'confidencial') or 'CONFIDENCIAL'}  {_chave(c, 'ano') or '2026'}")
+    doc.restoreState()
+
+def _desenhar_marca_dagua(doc, largura, altura, lang):
+    doc.saveState()
+    doc.setStrokeAlpha(0.10)
+    doc.setStrokeColor(COR_DOURADO)
+    centro_x, centro_y = largura * 0.85, altura * 0.20
+    for r in (55, 75, 95):
+        doc.setLineWidth(0.7)
+        doc.circle(centro_x, centro_y, r, stroke=1, fill=0)
+    doc.setFont(_fonte(lang, True), 10)
+    for i in range(1, 10):
+        ang = i * (2 * math.pi / 9)
+        doc.setFillColor(COR_DOURADO)
+        doc.drawCentredString(centro_x + 70 * math.cos(ang),
+                              centro_y + 70 * math.sin(ang), str(i))
+    doc.restoreState()
+
+SECOES = [
+    ("sobre", "Sobre a A1ELOS", "sobre_t", "sobre_titulo", "sobre_p", "sobre_texto", None),
+    ("duns", "Credibilidade Internacional", "duns_t", "duns_titulo", "duns_p", "duns_texto", None),
+    ("mercado", "Oportunidade de Mercado", "mercado_t", "mercado_titulo", "mercado_p", "mercado_texto", None),
+    ("problema", "O Problema que Resolvemos", "problema_t", "problema_titulo", "problema_p", "problema_texto", None),
+    ("solucao", "Nossa Solução", "solucao_t", "solucao_titulo", "solucao_p", "solucao_texto", None),
+    ("alcance", "Alcance Global", "alcance_t", "alcance_titulo", "alcance_p", "alcance_texto", "idiomas"),
+    ("mercados", "Os 3 Novos Mercados", "mercados_t", "mercados_titulo", "mercados_p", "mercados_texto", None),
+    ("preco", "Filosofia de Preço Consciente", "preco_t", "preco_titulo", "preco_p", "preco_texto", None),
+    ("portfolio", "Portfólio: 23 Produtos", "port_t", "portfolio_titulo", "port_p", "portfolio_texto", None),
+    ("negocio", "Modelo de Negócio", "modelo_t", "negocio_titulo", "modelo_p", "negocio_texto", None),
+    ("banners", "Banners Publicitários", "midia_t", "banners_titulo", "midia_p", "banners_texto", "banners"),
+    ("b2b", "Pacotes Empresariais B2B", "b2b_t", "b2b_titulo", "b2b_p", "b2b_texto", "b2b"),
+    ("projecoes", "Projeções Financeiras", "proj_t", "projecoes_titulo", "proj_p", "projecoes_texto", "projecoes"),
+    ("tracao", "Tração e Resultados", "tracao_t", "tracao_titulo", "tracao_p", "tracao_texto", None),
+    ("roteiro", "Roteiro Estratégico", "roteiro_t", "roteiro_titulo", "roteiro_p", "roteiro_texto", None),
+    ("invest", "Investimento e Contato", "seed_t", "invest_titulo", "seed_p", "invest_texto", None),
+]
+
+def _dados_idiomas(tb):
+    linhas = [[tb["h_idioma"], tb["h_falantes"]]]
+    for nome, n in LINHAS_IDIOMAS:
+        linhas.append([nome, str(n)])
+    linhas.append(["TOTAL", "~5.320"])
+    return linhas, [0.6, 0.4]
+
+def _dados_banners(tb):
+    linhas = [[tb["h_seg"], tb["h_fixo"], tb["h_temp"]]]
+    for i, lab in enumerate(tb["seg"]):
+        fixo, temp = LINHAS_BANNERS[i]
+        linhas.append([lab, f"R$ {fixo}", f"R$ {temp}"])
+    return linhas, [0.5, 0.25, 0.25]
+
+def _dados_b2b(tb):
+    linhas = [[tb["h_de"], tb["h_desc"]]] + LINHAS_B2B
+    return linhas, [0.5, 0.5]
+
+def _dados_projecoes(tb):
+    linhas = [[tb["h_hor"], tb["h_cons"], tb["h_otim"]]]
+    for i, n in enumerate(HORIZONTES):
+        cons, otim = RANGES[i]
+        linhas.append([f"{tb['h_ano']} {n}", f"R$ {cons}", f"R$ {otim}"])
+    return linhas, [0.3, 0.35, 0.35]
+
+def _montar_tabela(doc, tabela, tb, x, y, largura, fonte, tam):
+    if tabela == "idiomas":
+        dados, cols = _dados_idiomas(tb)
+    elif tabela == "banners":
+        dados, cols = _dados_banners(tb)
+    elif tabela == "b2b":
+        dados, cols = _dados_b2b(tb)
+    else:
+        dados, cols = _dados_projecoes(tb)
+    return _tabela_pdf(doc, dados, cols, x, y, largura, fonte=fonte, tam=tam)
+
+def _rodape(doc, largura, altura, lang, c):
+    doc.setFillColor(COR_DOURADO)
+    doc.setFont(_fonte(lang, True), 9)
+    doc.drawCentredString(largura / 2, 12 * mm,
+                          f"A1ELOS Global Numerology · DUNS 942242668 · "
+                          f"{_chave(c, 'confidencial') or 'CONFIDENCIAL'} {_chave(c, 'ano') or '2026'}")
+    doc.drawRightString(largura - 18 * mm, 12 * mm, str(doc.getPageNumber()))
+
 def gerar_pdf_texto(lang="pt", caminho_saida=None):
-    """Gera a apresentação em formato de documento (texto)."""
+    _registrar_cid()
+    _registrar_fontes_extra()
     if lang not in CONTEUDO:
         lang = "pt"
+    c = CONTEUDO[lang]
+    tb = TABELAS.get(lang, TABELAS["pt"])
     if not caminho_saida:
         caminho_saida = os.path.join(STATIC_DIR, f"apresentacao_{lang}.pdf")
-    c = CONTEUDO[lang]
-    est = _estilos(lang)
     largura, altura = A4
-
-    doc = SimpleDocTemplate(caminho_saida, pagesize=A4,
-                            leftMargin=25*mm, rightMargin=25*mm,
-                            topMargin=20*mm, bottomMargin=20*mm,
-                            title=f"{c['titulo']} - {c['ano']}",
-                            author="A1ELOS")
-    elementos = []
-    elementos.append(Paragraph(c["titulo"], est["titulo"]))
-    elementos.append(Spacer(1, 6))
-    elementos.append(Paragraph(c["subtitulo"], est["subtitulo"]))
-    elementos.append(Spacer(1, 4))
-    elementos.append(Paragraph(f"{c['capa_nota']} · {c['confidencial']} {c['ano']}", est["nota"]))
-    elementos.append(Spacer(1, 12))
-
-    # Seções
-    secoes = [
-        (c["sobre_titulo"], c["sobre_texto"]),
-        (c["duns_titulo"], c["duns_texto"]),
-        (c["mercado_titulo"], c["mercado_texto"]),
-        (c["problema_titulo"], c["problema_texto"]),
-        (c["solucao_titulo"], c["solucao_texto"]),
-        (c["alcance_titulo"], c["alcance_texto"]),
-        (c["mercados_titulo"], c["mercados_texto"]),
-        (c["preco_titulo"], c["preco_texto"]),
-        (c["portfolio_titulo"], c["portfolio_texto"]),
-        (c["negocio_titulo"], c["negocio_texto"]),
-        (c["banners_titulo"], c["banners_texto"]),
-        (c["b2b_titulo"], c["b2b_texto"]),
-        (c["projecoes_titulo"], c["projecoes_texto"]),
-        (c["tracao_titulo"], c["tracao_texto"]),
-        (c["roteiro_titulo"], c["roteiro_texto"]),
-        (c["invest_titulo"], c["invest_texto"]),
-    ]
-    for titulo, texto in secoes:
-        elementos.append(Paragraph(titulo, est["secao"]))
-        elementos.append(Paragraph(texto, est["corpo"]))
-        elementos.append(Spacer(1, 6))
-
-    # KPIs em tabela
-    kpis = [Paragraph(k, est["kpi"]) for k in c["sobre_kpis"]]
-    tabela_kpi = Table([kpis], colWidths=[largura/5 - 10*mm]*5)
-    tabela_kpi.setStyle(TableStyle([
-        ("ALIGN", (0,0), (-1,-1), "CENTER"),
-        ("VALIGN", (0,0), (-1,-1), "MIDDLE"),
-        ("BOX", (0,0), (-1,-1), 1, COR_DOURADO),
-        ("INNERGRID", (0,0), (-1,-1), 0.5, COR_CINZA_CLARO),
-        ("BACKGROUND", (0,0), (-1,-1), HexColor("#F8F6F0")),
-        ("TOPPADDING", (0,0), (-1,-1), 8),
-        ("BOTTOMPADDING", (0,0), (-1,-1), 8),
-    ]))
-    elementos.append(Spacer(1, 10))
-    elementos.append(tabela_kpi)
-    elementos.append(Spacer(1, 16))
-
-    # Frase final
-    elementos.append(Paragraph(c["frase_final"], est["final"]))
-    elementos.append(Spacer(1, 8))
-    elementos.append(Paragraph(f"{c['titulo']} · DUNS 942242668 · 23 produtos · 14 idiomas",
-                               est["nota"]))
-
-    # Marca d'água em todas as páginas
-    def _fundo(canvas_obj, doc_obj):
-        _desenhar_marca_dagua(canvas_obj, largura, altura, lang)
-    doc.build(elementos, onFirstPage=_fundo, onLaterPages=_fundo)
-    logger.info(f"PDF texto gerado: {caminho_saida}")
+    doc = canvas.Canvas(caminho_saida, pagesize=A4)
+    _capa(doc, largura, altura, lang, "texto")
+    doc.showPage()
+    for flag, label, old_t, new_t, old_p, new_p, tabela in SECOES:
+        titulo = _chave(c, new_t, old_t) or label
+        texto = _chave(c, new_p, old_p)
+        if not titulo and not texto:
+            continue
+        _desenhar_marca_dagua(doc, largura, altura, lang)
+        doc.setFillColor(COR_AZUL)
+        doc.rect(0, altura - 18 * mm, largura, 18 * mm, stroke=0, fill=1)
+        doc.setFillColor(white)
+        doc.setFont(_fonte(lang, True), 17)
+        doc.drawString(18 * mm, altura - 12.5 * mm, titulo)
+        y = altura - 32 * mm
+        if texto:
+            y = _texto_wrap(doc, texto, _fonte(lang), 11.5, 18 * mm, y,
+                            largura - 36 * mm, COR_PRETO, 6.2 * mm,
+                            cjk=(lang in ("zh", "ja")))
+        if tabela:
+            y = _montar_tabela(doc, tabela, tb, 18 * mm, y - 6 * mm,
+                               largura - 36 * mm, _fonte(lang), 9)
+        _rodape(doc, largura, altura, lang, c)
+        doc.showPage()
+    _desenhar_marca_dagua(doc, largura, altura, lang)
+    doc.setFillColor(COR_DOURADO)
+    doc.setFont(_fonte(lang, True), 16)
+    doc.drawCentredString(largura / 2, altura * 0.58, _chave(c, "frase"))
+    doc.setFillColor(HexColor("#555555"))
+    doc.setFont(_fonte(lang), 10)
+    doc.drawCentredString(largura / 2, altura * 0.52, _chave(c, "contato"))
+    doc.drawCentredString(largura / 2, altura * 0.48, _chave(c, "rodape"))
+    doc.showPage()
+    doc.save()
+    logger.info("PDF texto gerado: %s", caminho_saida)
     return caminho_saida
 
-# ------------------------------------------------------------
-# 7. GERADOR DE PDF EM FORMATO SLIDES (deck)
-# ------------------------------------------------------------
 def gerar_pdf_slides(lang="pt", caminho_saida=None):
-    """Gera a apresentação em formato de slides (paisagem)."""
+    _registrar_cid()
+    _registrar_fontes_extra()
     if lang not in CONTEUDO:
         lang = "pt"
+    c = CONTEUDO[lang]
+    tb = TABELAS.get(lang, TABELAS["pt"])
     if not caminho_saida:
         caminho_saida = os.path.join(STATIC_DIR, f"apresentacao_slides_{lang}.pdf")
-    c = CONTEUDO[lang]
-    est = _estilos(lang)
     largura, altura = landscape(A4)
-
-    # Slide 1: capa
-    _capa(canvas, largura, altura, lang, "slides")  # placeholder, substituído abaixo
-
-    # Usa canvas direto para controle total do layout
-    from reportlab.pdfgen import canvas as cv
-    doc = cv.Canvas(caminho_saida, pagesize=landscape(A4))
+    doc = canvas.Canvas(caminho_saida, pagesize=landscape(A4))
     _capa(doc, largura, altura, lang, "slides")
     doc.showPage()
-
-    # Slides de conteúdo (um por seção)
-    secoes = [
-        (c["sobre_titulo"], c["sobre_texto"]),
-        (c["duns_titulo"], c["duns_texto"]),
-        (c["mercado_titulo"], c["mercado_texto"]),
-        (c["problema_titulo"], c["problema_texto"]),
-        (c["solucao_titulo"], c["solucao_texto"]),
-        (c["alcance_titulo"], c["alcance_texto"]),
-        (c["mercados_titulo"], c["mercados_texto"]),
-        (c["preco_titulo"], c["preco_texto"]),
-        (c["portfolio_titulo"], c["portfolio_texto"]),
-        (c["negocio_titulo"], c["negocio_texto"]),
-        (c["banners_titulo"], c["banners_texto"]),
-        (c["b2b_titulo"], c["b2b_texto"]),
-        (c["projecoes_titulo"], c["projecoes_texto"]),
-        (c["tracao_titulo"], c["tracao_texto"]),
-        (c["roteiro_titulo"], c["roteiro_texto"]),
-        (c["invest_titulo"], c["invest_texto"]),
-    ]
-    for titulo, texto in secoes:
+    for flag, label, old_t, new_t, old_p, new_p, tabela in SECOES:
+        titulo = _chave(c, new_t, old_t) or label
+        texto = _chave(c, new_p, old_p)
+        if not titulo and not texto:
+            continue
         _desenhar_marca_dagua(doc, largura, altura, lang)
-        # Barra superior azul
         doc.setFillColor(COR_AZUL)
-        doc.rect(0, altura - 14*mm, largura, 14*mm, stroke=0, fill=1)
+        doc.rect(0, altura - 22 * mm, largura, 22 * mm, stroke=0, fill=1)
         doc.setFillColor(white)
-        doc.setFont(FONTES["bold"], 20)
-        doc.drawString(15*mm, altura - 10*mm, titulo)
-        # Corpo
-        doc.setFillColor(COR_PRETO)
-        doc.setFont(_fonte(lang), 13)
-        # Quebra de linha simples
-        palavras = texto.split()
-        linhas = []
-        linha_atual = ""
-        largura_max = largura - 30*mm
-        for p in palavras:
-            teste = (linha_atual + " " + p).strip()
-            if doc.stringWidth(teste, _fonte(lang), 13) <= largura_max:
-                linha_atual = teste
-            else:
-                linhas.append(linha_atual)
-                linha_atual = p
-        if linha_atual:
-            linhas.append(linha_atual)
-        y = altura - 30*mm
-        for linha in linhas[:14]:  # limite de 14 linhas por slide
-            doc.drawString(15*mm, y, linha)
-            y -= 8*mm
-        # Rodapé
-        doc.setFillColor(COR_DOURADO)
-        doc.setFont(FONTES["bold"], 9)
-        doc.drawCentredString(largura/2, 10*mm,
-                              f"{c['titulo']} · {c['confidencial']} {c['ano']}")
+        doc.setFont(_fonte(lang, True), 22)
+        doc.drawString(18 * mm, altura - 15.5 * mm, titulo)
+        y = altura - 40 * mm
+        if texto:
+            y = _texto_wrap(doc, texto, _fonte(lang), 13, 18 * mm, y,
+                            largura - 36 * mm, COR_PRETO, 7.5 * mm,
+                            cjk=(lang in ("zh", "ja")))
+        if tabela:
+            y = _montar_tabela(doc, tabela, tb, 18 * mm, y - 8 * mm,
+                               largura - 36 * mm, _fonte(lang), 10)
+        _rodape(doc, largura, altura, lang, c)
         doc.showPage()
-
     doc.save()
-    logger.info(f"PDF slides gerado: {caminho_saida}")
+    logger.info("PDF slides gerado: %s", caminho_saida)
     return caminho_saida
 
-# ------------------------------------------------------------
-# 8. ENTRADA PRINCIPAL (compatível com a chamada do main.py)
-# ------------------------------------------------------------
-def gerar_apresentacao(lang="pt", formato="texto"):
-    """Gera a apresentação no formato pedido. Retorna o caminho do arquivo."""
-    if formato == "slides":
+def gerar_apresentacao(lang="pt", modo="texto"):
+    if modo == "slides":
         return gerar_pdf_slides(lang)
     return gerar_pdf_texto(lang)
 
 def gerar_todas():
-    """Gera para todos os 14 idiomas, nos dois formatos."""
-    idiomas = ["pt", "en", "es", "it", "fr", "de", "ru", "zh", "ja", "ar", "he", "id", "tr", "vi"]
-    for lang in idiomas:
-        gerar_pdf_texto(lang)
-        gerar_pdf_slides(lang)
-    logger.info("Todas as apresentações geradas (14 idiomas × 2 formatos).")
+    import sys
+    args = [a for a in sys.argv[1:]]
+    if not args:
+        alvos = [(l, m) for l in CONTEUDO for m in ("texto", "slides")]
+    else:
+        lang = args[0]
+        modo = args[1] if len(args) > 1 else "texto"
+        alvos = [(lang, modo)]
+    for l, m in alvos:
+        try:
+            p = gerar_apresentacao(l, m)
+            print("OK", l, m, p)
+        except Exception as e:
+            print("ERRO", l, m, e)
 
 if __name__ == "__main__":
-    import sys
-    if len(sys.argv) > 1:
-        lang = sys.argv[1]
-        formato = sys.argv[2] if len(sys.argv) > 2 else "texto"
-        gerar_apresentacao(lang, formato)
-    else:
-        gerar_todas()
+    gerar_todas()
