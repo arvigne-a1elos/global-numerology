@@ -17,13 +17,16 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase.cidfonts import UnicodeCIDFont
 from reportlab.platypus import Table, TableStyle
 from reportlab.lib.utils import ImageReader
+from reportlab.platypus import Table, TableStyle, Paragraph
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_DIR = os.path.join(BASE_DIR, "static")
-LOGO_PATH = os.path.join(STATIC_DIR, "Logo.png")
+LOGO_PATH = os.path.join(STATIC_DIR, "logo.png")
+if not os.path.exists(LOGO_PATH):
+    LOGO_PATH = os.path.join(STATIC_DIR, "Logo.png")
 
 # ------------------------------------------------------------
 # CORES DA MARCA
@@ -260,7 +263,7 @@ CONTEUDO = {
         "roteiro_texto": "A A1ELOS executa um plano em quatro fases progressivas — da consolidação da base atual à liderança global de mercado, com opções claras de saída para investidores.",
         "roteiro_fases": [
             ("Fase 1 · Consolidação", "Fortalecimento da base de usuários nos idiomas já ativos. Otimização de conversão, retenção e LTV. Rodada Seed concluída."),
-            ("Fase 2 · Expansão", "Lançamento oficial nos 3 novos mercados: Indonésia 🇮🇩, Turquia 🇹🇷 e Vietnã 🇻🇳. Aceleração do canal B2B e publicidade geolocalizada."),
+            ("Fase 2 · Expansão", "Lançamento oficial nos 3 novos mercados: Indonésia, Turquia e Vietnã. Aceleração do canal B2B e publicidade geolocalizada."),
             ("Fase 3 · Entrada Global", "Presença ativa em todos os 14 idiomas com campanhas localizadas. Parcerias white-label em 5+ continentes. Série A."),
             ("Fase 4 · Liderança", "20+ países com operações consolidadas. Plataforma SaaS de referência global em numerologia aplicada. IPO ou exit estratégico."),
         ],
@@ -301,7 +304,7 @@ LINHAS_IDIOMAS = [
 # ------------------------------------------------------------
 # AUXILIARES DE DESENHO
 # ------------------------------------------------------------
-def _texto_wrap(doc, texto, fonte, tam, x, y, largura_max, cor, entrelinha):
+def _texto_wrap(doc, texto, fonte, tam, x, y, largura_max, cor, entrelinha, y_min=0):
     doc.setFillColor(cor)
     doc.setFont(fonte, tam)
     palavras = texto.split()
@@ -311,10 +314,12 @@ def _texto_wrap(doc, texto, fonte, tam, x, y, largura_max, cor, entrelinha):
         if doc.stringWidth(teste, fonte, tam) <= largura_max:
             linha = teste
         else:
+            if y - entrelinha < y_min:
+                return y
             doc.drawString(x, y, linha)
             y -= entrelinha
             linha = p
-    if linha:
+    if linha and y - entrelinha >= y_min:
         doc.drawString(x, y, linha)
         y -= entrelinha
     return y
@@ -426,27 +431,25 @@ def _kpis_grid(doc, largura, altura, lang, kpis, y, colunas=4):
     margem = 18 * mm
     gap = 6 * mm
     w = (largura - 2 * margem - (colunas - 1) * gap) / colunas
-    h = 30 * mm
     x0 = margem
+    max_h = 0
     for i, item in enumerate(kpis):
-        if len(item) == 3:
-            num, rot, sub = item
-        else:
-            num, rot = item
-            sub = ""
+        dois = (len(item) == 2)
+        h = 40 * mm if dois else 30 * mm
+        max_h = max(max_h, h)
         x = x0 + i * (w + gap)
         _caixa(doc, x, y - h, w, h, COR_FUNDO, COR_DOURADO)
-        if len(item) == 2:
-            # Card de texto (mercado): título pequeno + texto quebrado
+        if dois:
             doc.setFillColor(COR_AZUL)
             doc.setFont(_fonte(lang, True), 9)
-            _texto_wrap(doc, num, _fonte(lang, True), 9, x + 4 * mm, y - h + 22 * mm,
-                        w - 8 * mm, COR_AZUL, 4 * mm)
+            _texto_wrap(doc, item[0], _fonte(lang, True), 9, x + 4 * mm, y - 10 * mm,
+                        w - 8 * mm, COR_AZUL, 4 * mm, y_min=y - h + 4 * mm)
             doc.setFillColor(COR_CINZA)
             doc.setFont(_fonte(lang), 7.5)
-            _texto_wrap(doc, rot, _fonte(lang), 7.5, x + 4 * mm, y - h + 14 * mm,
-                        w - 8 * mm, COR_CINZA, 3.5 * mm)
+            _texto_wrap(doc, item[1], _fonte(lang), 7.5, x + 4 * mm, y - 16 * mm,
+                        w - 8 * mm, COR_CINZA, 3.5 * mm, y_min=y - h + 4 * mm)
         else:
+            num, rot, sub = item
             doc.setFillColor(COR_DOURADO)
             doc.setFont(_fonte(lang, True), 22)
             doc.drawCentredString(x + w / 2, y - h + 18 * mm, num)
@@ -457,16 +460,21 @@ def _kpis_grid(doc, largura, altura, lang, kpis, y, colunas=4):
                 doc.setFillColor(COR_CINZA)
                 doc.setFont(_fonte(lang), 8)
                 _texto_wrap(doc, sub, _fonte(lang), 8, x + 4 * mm, y - h + 5 * mm,
-                            w - 8 * mm, COR_CINZA, 3.5 * mm)
-    return y - h - 6 * mm
+                            w - 8 * mm, COR_CINZA, 3.5 * mm, y_min=y - h + 2 * mm)
+    return y - max_h - 6 * mm
 def _tabela_editorial(doc, x, y, largura, dados, colunas_pct, tam=9):
-    tbl = Table(dados, colWidths=[largura * p for p in colunas_pct])
+    est = ParagraphStyle("cel", fontName=_fonte("pt"), fontSize=tam,
+                         leading=tam * 1.25, textColor=COR_PRETO)
+    est_head = ParagraphStyle("chead", fontName=_fonte("pt", True), fontSize=tam,
+                              leading=tam * 1.25, textColor=white)
+    corpo = []
+    for r, linha in enumerate(dados):
+        est_c = est_head if r == 0 else est
+        corpo.append([Paragraph(str(cel), est_c) for cel in linha])
+    tbl = Table(corpo, colWidths=[largura * p for p in colunas_pct])
     tbl.setStyle(TableStyle([
         ("BACKGROUND", (0, 0), (-1, 0), COR_AZUL),
         ("TEXTCOLOR", (0, 0), (-1, 0), white),
-        ("FONTNAME", (0, 0), (-1, 0), _fonte("pt", True)),
-        ("FONTSIZE", (0, 0), (-1, -1), tam),
-        ("TEXTCOLOR", (0, 1), (-1, -1), COR_PRETO),
         ("GRID", (0, 0), (-1, -1), 0.4, COR_CINZA_CLARO),
         ("ROWBACKGROUNDS", (0, 1), (-1, -1), [white, COR_FUNDO]),
         ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
@@ -652,6 +660,8 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
         doc.setFont(_fonte(lang), 9)
         _texto_wrap(doc, sub, _fonte(lang), 9, x + 5 * mm, y - 22 * mm,
                     col_w - 10 * mm, COR_CINZA, 4.5 * mm)
+            _grafico_pizza(doc, 18 * mm, y - 78 * mm, largura - 36 * mm, 68 * mm,
+                   ["B2C", "B2B", "Publicidade"], [60, 25, 15], "Composição da Receita")
     _rodape(doc, largura, altura, lang, c, pagina)
     doc.showPage()
     pagina += 1
@@ -699,7 +709,7 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     doc.showPage()
     pagina += 1
 
-    # PREÇO (2 colunas)
+       # PREÇO (2 colunas)
     _titulo_pagina(doc, largura, altura, lang, c["preco_titulo"], 9)
     y = altura - 32 * mm
     col_w = (largura - 36 * mm - 8 * mm) / 2
@@ -719,16 +729,16 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     yy = _texto_wrap(doc, c["preco_dir"], _fonte(lang), 10, xr, yy, col_w,
                      COR_CINZA, 4.5 * mm)
     yy -= 6 * mm
-    for tit, sub in c["preco_pilares"]:
-        _caixa(doc, xr, yy - 20 * mm, col_w, 20 * mm, COR_FUNDO, COR_DOURADO)
+    for tit, sub in c["preco_pilares"]:          # ← NOVO LOOP
+        _caixa(doc, xr, yy - 26 * mm, col_w, 26 * mm, COR_FUNDO, COR_DOURADO)
         doc.setFillColor(COR_AZUL)
         doc.setFont(_fonte(lang, True), 10)
-        doc.drawString(xr + 5 * mm, yy - 14 * mm, tit)
+        doc.drawString(xr + 5 * mm, yy - 18 * mm, tit)
         doc.setFillColor(COR_CINZA)
         doc.setFont(_fonte(lang), 8)
-        _texto_wrap(doc, sub, _fonte(lang), 8, xr + 5 * mm, yy - 10 * mm,
-                    col_w - 10 * mm, COR_CINZA, 3.5 * mm)
-        yy -= 24 * mm
+        _texto_wrap(doc, sub, _fonte(lang), 8, xr + 5 * mm, yy - 13 * mm,
+                    col_w - 10 * mm, COR_CINZA, 3.5 * mm, y_min=yy - 24 * mm)
+        yy -= 30 * mm
     _rodape(doc, largura, altura, lang, c, pagina)
     doc.showPage()
     pagina += 1
@@ -1077,17 +1087,17 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
     n_col = 4
     w = (largura - 2 * margem - (n_col - 1) * gap) / n_col
     h = 40 * mm
-    for i, (tit, sub) in enumerate(cards):
+    for i, (tit, sub) in enumerate(cards):          # ← NOVO LOOP
         x = margem + i * (w + gap)
         _caixa(doc, x, y - h, w, h, COR_FUNDO, COR_DOURADO)
         doc.setFillColor(COR_AZUL)
-        doc.setFont(_fonte(lang, True), 10)
-        _texto_wrap(doc, tit, _fonte(lang, True), 10, x + 5 * mm, y - 12 * mm,
-                    w - 10 * mm, COR_AZUL, 4.5 * mm)
+        doc.setFont(_fonte(lang, True), 9)
+        _texto_wrap(doc, tit, _fonte(lang, True), 9, x + 5 * mm, y - 11 * mm,
+                    w - 10 * mm, COR_AZUL, 4 * mm, y_min=y - 18 * mm)
         doc.setFillColor(COR_CINZA)
-        doc.setFont(_fonte(lang), 8.5)
-        _texto_wrap(doc, sub, _fonte(lang), 8.5, x + 5 * mm, y - 20 * mm,
-                    w - 10 * mm, COR_CINZA, 4 * mm)
+        doc.setFont(_fonte(lang), 8)
+        _texto_wrap(doc, sub, _fonte(lang), 8, x + 5 * mm, y - 20 * mm,
+                    w - 10 * mm, COR_CINZA, 3.8 * mm, y_min=y - h + 4 * mm)
     rodape(pagina)
     doc.showPage()
     pagina += 1
@@ -1168,19 +1178,22 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
                     largura - 36 * mm, COR_CINZA, 5.5 * mm)
     y -= 10 * mm
     col_w = (largura - 36 * mm - 2 * 10 * mm) / 3
+        col_w = (largura - 36 * mm - 2 * 8 * mm) / 3
+    paises = ["id", "tr", "vn"]
     for i, (tit, itens) in enumerate(c["mercados_cards"]):
-        x = 18 * mm + i * (col_w + 10 * mm)
-        _caixa(doc, x, y - 95 * mm, col_w, 95 * mm, COR_FUNDO, COR_DOURADO)
+        x = 18 * mm + i * (col_w + 8 * mm)
+        _caixa(doc, x, y - 70 * mm, col_w, 70 * mm, COR_FUNDO, COR_DOURADO)
+        _bandeira(doc, x + 5 * mm, y - 22 * mm, 11 * mm, 7.5 * mm, paises[i])
         doc.setFillColor(COR_AZUL)
-        doc.setFont(_fonte(lang, True), 13)
-        doc.drawString(x + 6 * mm, y - 14 * mm, tit)
-        yy = y - 24 * mm
+        doc.setFont(_fonte(lang, True), 12)
+        doc.drawString(x + 20 * mm, y - 14 * mm, tit)
+        yy = y - 26 * mm
         for item in itens:
             doc.setFillColor(COR_CINZA)
             doc.setFont(_fonte(lang), 9)
-            yy = _texto_wrap(doc, "•  " + item, _fonte(lang), 9, x + 6 * mm, yy,
-                             col_w - 12 * mm, COR_CINZA, 4.5 * mm)
-    y -= 105 * mm
+            yy = _texto_wrap(doc, "•  " + item, _fonte(lang), 9, x + 5 * mm, yy,
+                             col_w - 10 * mm, COR_CINZA, 4.5 * mm, y_min=y - 66 * mm)
+    y -= 78 * mm
     _caixa(doc, 18 * mm, y - 18 * mm, largura - 36 * mm, 18 * mm, HexColor("#EEF2FA"), COR_AZUL)
     doc.setFillColor(COR_AZUL)
     doc.setFont(_fonte(lang, True), 9)
@@ -1241,6 +1254,51 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
     doc.showPage()
     pagina += 1
 
+def _grafico_barras(doc, x, y, w, h, categorias, valores, titulo, cor=COR_AZUL):
+    try:
+        from reportlab.graphics import renderPDF
+        from reportlab.graphics.shapes import Drawing
+        from reportlab.graphics.charts.barcharts import VerticalBarChart
+        d = Drawing(w, h)
+        g = VerticalBarChart()
+        g.x = 6; g.y = 6
+        g.width = w - 12; g.height = h - 26
+        g.data = [list(valores)]
+        g.categoryAxis.categoryNames = list(categorias)
+        g.bars[0].fillColor = cor
+        g.barWidth = 14
+        g.valueAxis.valueMin = 0
+        d.add(g)
+        renderPDF.draw(d, doc, x, y)
+        doc.setFillColor(COR_PRETO)
+        doc.setFont(_fonte("pt", True), 9)
+        doc.drawCentredString(x + w / 2, y + h - 12, titulo)
+    except Exception as e:
+        logger.warning("Grafico barras: %s", e)
+
+def _grafico_pizza(doc, x, y, w, h, rotulos, valores, titulo):
+    try:
+        from reportlab.graphics import renderPDF
+        from reportlab.graphics.shapes import Drawing
+        from reportlab.graphics.charts.piecharts import Pie
+        d = Drawing(w, h)
+        p = Pie()
+        p.x = w * 0.22; p.y = h * 0.08
+        p.width = w * 0.56; p.height = h * 0.52
+        p.data = list(valores)
+        p.labels = list(rotulos)
+        p.slices.strokeWidth = 0.5
+        p.slices[0].fillColor = COR_AZUL
+        p.slices[1].fillColor = COR_DOURADO
+        p.slices[2].fillColor = HexColor("#3B82F6")
+        d.add(p)
+        renderPDF.draw(d, doc, x, y)
+        doc.setFillColor(COR_PRETO)
+        doc.setFont(_fonte("pt", True), 9)
+        doc.drawCentredString(x + w / 2, y + h - 12, titulo)
+    except Exception as e:
+        logger.warning("Grafico pizza: %s", e)
+    
     # ===== SLIDE 12 — MODELO DE NEGÓCIO (11) =====
     cab(c["negocio_titulo"], 11)
     y = altura - 32 * mm
@@ -1277,6 +1335,9 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
     doc.setFont(_fonte(lang), 9)
     _texto_wrap(doc, c["banners_formatos"], _fonte(lang), 9, 22 * mm, y - 15 * mm,
                 largura - 44 * mm, COR_AZUL, 4 * mm)
+        _grafico_barras(doc, 18 * mm, y - 60 * mm, largura - 36 * mm, 50 * mm,
+                    ["Ano 1", "Ano 5", "Ano 10", "Ano 20", "Ano 50"],
+                    [33, 500, 3000, 15000, 75000], "Projeção Conservadora (R$ mil)")
     rodape(pagina)
     doc.showPage()
     pagina += 1
