@@ -930,21 +930,7 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
                         largura - 30 * mm, COR_PRETO, 7 * mm)
         _rodape(doc, largura, altura, lang, c, i + 1)
         doc.showPage()
-    # Página final
-    doc.setFillColor(COR_PRETO)
-    doc.rect(0, 0, largura, altura, stroke=0, fill=1)
-    doc.setFillColor(COR_DOURADO
-
-            # Rodapé
-        doc.setFillColor(COR_CINZA_CLARO)
-        doc.setFont(_fonte(lang), 8)
-        doc.drawCentredString(largura / 2, 10 * mm,
-                              f"{c['titulo']} · DUNS 942242668 · {c['confidencial']} {c['ano']}")
-        doc.setFillColor(COR_DOURADO)
-        doc.setFont(_fonte(lang, True), 9)
-        doc.drawRightString(largura - 15 * mm, 10 * mm, str(i + 1))
-        doc.showPage()
-    # Página final
+        # Página final
     doc.setFillColor(COR_PRETO)
     doc.rect(0, 0, largura, altura, stroke=0, fill=1)
     doc.setFillColor(COR_DOURADO)
@@ -963,11 +949,11 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
         doc.setFillColor(COR_DOURADO)
         doc.setFont(_fonte(lang, True), 10)
         doc.drawCentredString(x + w / 2, altura * 0.47, item)
+    _rodape(doc, largura, altura, lang, c, i + 1)
     doc.showPage()
     doc.save()
     logger.info("PDF slides editorial gerado: %s", caminho_saida)
     return caminho_saida
-
 # ------------------------------------------------------------
 # ENTRADA PRINCIPAL
 # ------------------------------------------------------------
