@@ -1,819 +1,50 @@
 # -*- coding: utf-8 -*-
 # ============================================================
 # apresentacao_textos.py
-# Gerador de Apresentação Empresarial A1ELOS
-# Formatos: TEXTO (documento) e SLIDES (deck)
-# 14 idiomas: pt, en, es, it, fr, de, ru, zh, ja, ar, he, id, tr, vi
-# Substitui a versão anterior. 30/08/2026
+# Gerador de Apresentação Empresarial A1ELOS — LAYOUT EDITORIAL
+# FASE 1: Português completo (textos expandidos + layout rico)
+# Próximas fases: tradução para os outros 13 idiomas
 # ============================================================
-
-import os
-import logging
-from datetime import date
-
+import os, math, logging
 from reportlab.lib.pagesizes import A4, landscape
 from reportlab.lib.units import mm
 from reportlab.lib.colors import HexColor, white, black
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_JUSTIFY
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase.cidfonts import UnicodeCIDFont
-from reportlab.platypus import (
-    SimpleDocTemplate, Paragraph, Spacer, Image, Table, TableStyle,
-    PageBreak, KeepTogether
-)
+from reportlab.platypus import Table, TableStyle
 from reportlab.lib.utils import ImageReader
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# ------------------------------------------------------------
-# 1. CONFIGURAÇÃO DE CAMINHOS
-# ------------------------------------------------------------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_DIR = os.path.join(BASE_DIR, "static")
-
-# Imagens usadas em TODOS os idiomas (mesmas em todos)
 LOGO_PATH = os.path.join(STATIC_DIR, "Logo.png")
-WATERMARK_PATH = os.path.join(STATIC_DIR, "watermark.png")  # marca d'água (Vitruviano dourado)
-
-# Se a marca d'água não existir, usa o logo como fallback
-if not os.path.exists(WATERMARK_PATH):
-    WATERMARK_PATH = LOGO_PATH
 
 # ------------------------------------------------------------
-# 2. CORES DA MARCA (azul + preto/dourado)
+# CORES DA MARCA
 # ------------------------------------------------------------
 COR_AZUL = HexColor("#1E3A8A")
-COR_AZUL_MEDIO = HexColor("#3B82F6")
-COR_PRETO = HexColor("#1A1A1A")
 COR_DOURADO = HexColor("#C9A94E")
+COR_PRETO = HexColor("#1A1A1A")
 COR_CINZA = HexColor("#555555")
 COR_CINZA_CLARO = HexColor("#9E9E9E")
-
-# ------------------------------------------------------------
-# 3. FONTES (com fallback seguro para não travar)
-# ------------------------------------------------------------
-def _registrar_fontes():
-    """Registra fontes TTF se existirem; senão usa fontes padrão."""
-    fontes = {}
-    # Latin + Cirílico (ru) + suporte amplo
-    dejavu = os.path.join(STATIC_DIR, "DejaVuSans.ttf")
-    dejavu_bold = os.path.join(STATIC_DIR, "DejaVuSans-Bold.ttf")
-    if os.path.exists(dejavu):
-        pdfmetrics.registerFont(TTFont("DejaVu", dejavu))
-        fontes["normal"] = "DejaVu"
-    else:
-        fontes["normal"] = "Helvetica"
-    if os.path.exists(dejavu_bold):
-        pdfmetrics.registerFont(TTFont("DejaVu-Bold", dejavu_bold))
-        fontes["bold"] = "DejaVu-Bold"
-    else:
-        fontes["bold"] = "Helvetica-Bold"
-
-    # CJK (zh, ja) — fontes CID embutidas do ReportLab
-    try:
-        pdfmetrics.registerFont(UnicodeCIDFont("STSong-Light"))  # chinês
-        fontes["zh"] = "STSong-Light"
-    except Exception:
-        fontes["zh"] = fontes["normal"]
-    try:
-        pdfmetrics.registerFont(UnicodeCIDFont("HeiseiMin-W3"))  # japonês
-        fontes["ja"] = "HeiseiMin-W3"
-    except Exception:
-        fontes["ja"] = fontes["normal"]
-
-    return fontes
-
-FONTES = _registrar_fontes()
-# ------------------------------------------------------------
-# 4. CONTEÚDO POR IDIOMA
-# Estrutura: cada idioma tem título, subtítulo, seções e KPIs.
-# ------------------------------------------------------------
-CONTEUDO = {
-    "pt": {
-        "titulo": "A1ELOS Global Numerology",
-        "subtitulo": "A ciência dos números aplicada ao seu sucesso",
-        "capa_nota": "Apresentação para Investidores e Parceiros",
-        "confidencial": "CONFIDENCIAL",
-        "ano": "2026",
-        "sobre_titulo": "Sobre a A1ELOS",
-        "sobre_texto": "Holding de tecnologia e conhecimento que une a tradição milenar da numerologia à Inteligência Artificial, entregando relatórios digitais instantâneos com custo marginal próximo de zero.",
-        "sobre_kpis": ["23 Produtos", "14 Idiomas", "~5,3 Bilhões de falantes", "IA Integrada", "DUNS 942242668"],
-        "duns_titulo": "Credibilidade Internacional",
-        "duns_texto": "O número DUNS 942242668, emitido pela Dun & Bradstreet, é reconhecido em mais de 190 países e habilita contratos corporativos, licitações e joint ventures internacionais.",
-        "mercado_titulo": "Oportunidade de Mercado",
-        "mercado_texto": "Economia global de bem-estar: US$ 6,8 trilhões (2024) para US$ 9,8 trilhões (2029). Apps de astrologia/numerologia: US$ 3 bi (2024) para US$ 9 bi (2030), CAGR 20%.",
-        "problema_titulo": "O Problema",
-        "problema_texto": "Ferramentas genéricas falham o usuário e a maioria cobra preços descolados do poder aquisitivo local. A A1ELOS corrige isso.",
-        "solucao_titulo": "Nossa Solução",
-        "solucao_texto": "Numerologia aplicada em escala: algoritmos proprietários + IA + entrega instantânea de PDFs premium em 14 idiomas.",
-        "alcance_titulo": "Alcance Global",
-        "alcance_texto": "14 idiomas cobrindo ~5,3 bilhões de falantes (~67% da população mundial).",
-        "mercados_titulo": "3 Novos Mercados",
-        "mercados_texto": "Indonésia (255 mi falantes), Turquia (90 mi) e Vietnã (97 mi) — +442 milhões de novos falantes com poder aquisitivo mapeado.",
-        "preco_titulo": "Preço Consciente",
-        "preco_texto": "A mesma proporção de valor para todas as moedas, calibrada pelo poder aquisitivo (PPC) de cada país. Respeita a cultura e o bolso.",
-        "portfolio_titulo": "Portfólio",
-        "portfolio_texto": "23 produtos em 4 níveis (Entrada R$ 8, Intermediário R$ 17, Avançado R$ 26-35, Premium R$ 44-98) + segmento B2B.",
-        "negocio_titulo": "Modelo de Negócio",
-        "negocio_texto": "3 fontes de receita: B2C (14 idiomas, todas as moedas), B2B (descontos progressivos), Publicidade geolocalizada.",
-        "banners_titulo": "Banners Publicitários",
-        "banners_texto": "Receita recorrente mensal: País R$ 800, Continente R$ 1.800, Mundo R$ 3.500, Patrocínio Exclusivo R$ 6.000.",
-        "b2b_titulo": "Pacotes Empresariais B2B",
-        "b2b_texto": "Brinde para empregados ou clientes. Descontos progressivos: 10% (10 códigos), 30% (100), 50% (500), 70% (1.000).",
-        "projecoes_titulo": "Projeções Financeiras",
-        "projecoes_texto": "Ano 1: R$ 33k-130k | Ano 5: R$ 500k-1,5M | Ano 10: R$ 3-8M | Ano 20: R$ 15-40M | Ano 50: R$ 75-250M.",
-        "tracao_titulo": "Tração e Resultados",
-        "tracao_texto": "12K+ usuários ativos, 87% de retenção, 4,8★ de avaliação, 23 parceiros B2B.",
-        "roteiro_titulo": "Roteiro Estratégico",
-        "roteiro_texto": "Consolidação, Expansão (Indonésia, Turquia, Vietnã), Entrada Global e Liderança (20+ países + IPO).",
-        "invest_titulo": "Investimento e Contato",
-        "invest_texto": "Rodada Seed R$ 3,5M · Valuation R$ 14M · Equity até 20%. Contato: a1elos.consultoria@gmail.com · www.a1elos.com",
-        "frase_final": "Os números nunca mentem — e apontam para uma oportunidade extraordinária."
-    },
-    "en": {
-        "titulo": "A1ELOS Global Numerology",
-        "subtitulo": "The science of numbers applied to your success",
-        "capa_nota": "Presentation for Investors and Partners",
-        "confidencial": "CONFIDENTIAL",
-        "ano": "2026",
-        "sobre_titulo": "About A1ELOS",
-        "sobre_texto": "A technology and knowledge holding that combines the ancient tradition of numerology with Artificial Intelligence, delivering instant digital reports at near-zero marginal cost.",
-        "sobre_kpis": ["23 Products", "14 Languages", "~5.3 Billion speakers", "Integrated AI", "DUNS 942242668"],
-        "duns_titulo": "International Credibility",
-        "duns_texto": "The DUNS number 942242668, issued by Dun & Bradstreet, is recognized in over 190 countries and enables corporate contracts, tenders and international joint ventures.",
-        "mercado_titulo": "Market Opportunity",
-        "mercado_texto": "Global wellness economy: US$ 6.8 trillion (2024) to US$ 9.8 trillion (2029). Astrology/numerology apps: US$ 3B (2024) to US$ 9B (2030), 20% CAGR.",
-        "problema_titulo": "The Problem",
-        "problema_texto": "Generic tools fail the user and most charge prices disconnected from local purchasing power. A1ELOS fixes this.",
-        "solucao_titulo": "Our Solution",
-        "solucao_texto": "Numerology applied at scale: proprietary algorithms + AI + instant delivery of premium PDFs in 14 languages.",
-        "alcance_titulo": "Global Reach",
-        "alcance_texto": "14 languages covering ~5.3 billion speakers (~67% of the world population).",
-        "mercados_titulo": "3 New Markets",
-        "mercados_texto": "Indonesia (255M speakers), Turkey (90M) and Vietnam (97M) — +442 million new speakers with mapped purchasing power.",
-        "preco_titulo": "Conscious Pricing",
-        "preco_texto": "The same value proportion for all currencies, calibrated by the purchasing power (PPP) of each country. Respects culture and wallet.",
-        "portfolio_titulo": "Portfolio",
-        "portfolio_texto": "23 products in 4 tiers (Entry R$ 8, Intermediate R$ 17, Advanced R$ 26-35, Premium R$ 44-98) plus B2B segment.",
-        "negocio_titulo": "Business Model",
-        "negocio_texto": "3 revenue streams: B2C (14 languages, all currencies), B2B (progressive discounts), Geo-targeted advertising.",
-        "banners_titulo": "Advertising Banners",
-        "banners_texto": "Recurring monthly revenue: Country R$ 800, Continent R$ 1,800, World R$ 3,500, Exclusive Sponsorship R$ 6,000.",
-        "b2b_titulo": "B2B Corporate Packages",
-        "b2b_texto": "Gift for employees or clients. Progressive discounts: 10% (10 codes), 30% (100), 50% (500), 70% (1,000).",
-        "projecoes_titulo": "Financial Projections",
-        "projecoes_texto": "Year 1: R$ 33k-130k | Year 5: R$ 500k-1.5M | Year 10: R$ 3-8M | Year 20: R$ 15-40M | Year 50: R$ 75-250M.",
-        "tracao_titulo": "Traction and Results",
-        "tracao_texto": "12K+ active users, 87% retention, 4.8★ rating, 23 B2B partners.",
-        "roteiro_titulo": "Strategic Roadmap",
-        "roteiro_texto": "Consolidation, Expansion (Indonesia, Turkey, Vietnam), Global Entry and Leadership (20+ countries + IPO).",
-        "invest_titulo": "Investment and Contact",
-        "invest_texto": "Seed round R$ 3.5M · Valuation R$ 14M · Equity up to 20%. Contact: a1elos.consultoria@gmail.com · www.a1elos.com",
-        "frase_final": "Numbers never lie — and they point to an extraordinary opportunity."
-    },
-    "es": {
-        "titulo": "A1ELOS Global Numerology",
-        "subtitulo": "La ciencia de los números aplicada a tu éxito",
-        "capa_nota": "Presentación para Inversores y Socios",
-        "confidencial": "CONFIDENCIAL",
-        "ano": "2026",
-        "sobre_titulo": "Sobre A1ELOS",
-        "sobre_texto": "Holding de tecnología y conocimiento que une la tradición milenaria de la numerología con la Inteligencia Artificial, entregando informes digitales instantáneos a costo marginal casi cero.",
-        "sobre_kpis": ["23 Productos", "14 Idiomas", "~5,3 Mil millones de hablantes", "IA Integrada", "DUNS 942242668"],
-        "duns_titulo": "Credibilidad Internacional",
-        "duns_texto": "El número DUNS 942242668, emitido por Dun & Bradstreet, es reconocido en más de 190 países y habilita contratos corporativos, licitaciones y joint ventures internacionales.",
-        "mercado_titulo": "Oportunidad de Mercado",
-        "mercado_texto": "Economía global de bienestar: US$ 6,8 billones (2024) a US$ 9,8 billones (2029). Apps de astrología/numerología: US$ 3B (2024) a US$ 9B (2030), CAGR 20%.",
-        "problema_titulo": "El Problema",
-        "problema_texto": "Las herramientas genéricas fallan al usuario y la mayoría cobra precios desconectados del poder adquisitivo local. A1ELOS lo corrige.",
-        "solucao_titulo": "Nuestra Solución",
-        "solucao_texto": "Numerología aplicada a escala: algoritmos propietarios + IA + entrega instantánea de PDFs premium en 14 idiomas.",
-        "alcance_titulo": "Alcance Global",
-        "alcance_texto": "14 idiomas cubriendo ~5,3 mil millones de hablantes (~67% de la población mundial).",
-        "mercados_titulo": "3 Nuevos Mercados",
-        "mercados_texto": "Indonesia (255M hablantes), Turquía (90M) y Vietnam (97M) — +442 millones de nuevos hablantes con poder adquisitivo mapeado.",
-        "preco_titulo": "Precio Consciente",
-        "preco_texto": "La misma proporción de valor para todas las monedas, calibrada por el poder adquisitivo (PPC) de cada país. Respeta la cultura y el bolsillo.",
-        "portfolio_titulo": "Portafolio",
-        "portfolio_texto": "23 productos en 4 niveles (Entrada R$ 8, Intermedio R$ 17, Avanzado R$ 26-35, Premium R$ 44-98) + segmento B2B.",
-        "negocio_titulo": "Modelo de Negocio",
-        "negocio_texto": "3 fuentes de ingresos: B2C (14 idiomas, todas las monedas), B2B (descuentos progresivos), Publicidad geolocalizada.",
-        "banners_titulo": "Banners Publicitarios",
-        "banners_texto": "Ingresos recurrentes mensuales: País R$ 800, Continente R$ 1.800, Mundo R$ 3.500, Patrocinio Exclusivo R$ 6.000.",
-        "b2b_titulo": "Paquetes Empresariales B2B",
-        "b2b_texto": "Obsequio para empleados o clientes. Descuentos progresivos: 10% (10 códigos), 30% (100), 50% (500), 70% (1.000).",
-        "projecoes_titulo": "Proyecciones Financieras",
-        "projecoes_texto": "Año 1: R$ 33k-130k | Año 5: R$ 500k-1,5M | Año 10: R$ 3-8M | Año 20: R$ 15-40M | Año 50: R$ 75-250M.",
-        "tracao_titulo": "Tracción y Resultados",
-        "tracao_texto": "12K+ usuarios activos, 87% de retención, 4,8★ de evaluación, 23 socios B2B.",
-        "roteiro_titulo": "Hoja de Ruta Estratégica",
-        "roteiro_texto": "Consolidación, Expansión (Indonesia, Turquía, Vietnam), Entrada Global y Liderazgo (20+ países + IPO).",
-        "invest_titulo": "Inversión y Contacto",
-        "invest_texto": "Ronda Seed R$ 3,5M · Valoración R$ 14M · Equity hasta 20%. Contacto: a1elos.consultoria@gmail.com · www.a1elos.com",
-        "frase_final": "Los números nunca mienten — y apuntan a una oportunidad extraordinaria."
-    },
-    "it": {
-        "titulo": "A1ELOS Global Numerology",
-        "subtitulo": "La scienza dei numeri applicata al tuo successo",
-        "capa_nota": "Presentazione per Investitori e Partner",
-        "confidencial": "CONFIDENZIALE",
-        "ano": "2026",
-        "sobre_titulo": "Chi è A1ELOS",
-        "sobre_texto": "Holding di tecnologia e conoscenza che unisce la tradizione millenaria della numerologia all'Intelligenza Artificiale, consegnando report digitali istantanei a costo marginale quasi zero.",
-        "sobre_kpis": ["23 Prodotti", "14 Lingue", "~5,3 Miliardi di parlanti", "IA Integrata", "DUNS 942242668"],
-        "duns_titulo": "Credibilità Internazionale",
-        "duns_texto": "Il numero DUNS 942242668, emesso da Dun & Bradstreet, è riconosciuto in oltre 190 paesi e abilita contratti aziendali, gare e joint venture internazionali.",
-        "mercado_titulo": "Opportunità di Mercato",
-        "mercado_texto": "Economia globale del benessere: US$ 6,8 trilioni (2024) a US$ 9,8 trilioni (2029). App di astrologia/numerologia: US$ 3B (2024) a US$ 9B (2030), CAGR 20%.",
-        "problema_titulo": "Il Problema",
-        "problema_texto": "Gli strumenti generici falliscono l'utente e la maggior parte applica prezzi scollegati dal potere d'acquisto locale. A1ELOS lo corregge.",
-        "solucao_titulo": "La Nostra Soluzione",
-        "solucao_texto": "Numerologia applicata su scala: algoritmi proprietari + IA + consegna istantanea di PDF premium in 14 lingue.",
-        "alcance_titulo": "Portata Globale",
-        "alcance_texto": "14 lingue che coprono ~5,3 miliardi di parlanti (~67% della popolazione mondiale).",
-        "mercados_titulo": "3 Nuovi Mercati",
-        "mercados_texto": "Indonesia (255M parlanti), Turchia (90M) e Vietnam (97M) — +442 milioni di nuovi parlanti con potere d'acquisto mappato.",
-        "preco_titulo": "Prezzo Consapevole",
-        "preco_texto": "La stessa proporzione di valore per tutte le valute, calibrata sul potere d'acquisto (PPA) di ogni paese. Rispetta cultura e portafoglio.",
-        "portfolio_titulo": "Portafoglio",
-        "portfolio_texto": "23 prodotti in 4 livelli (Ingresso R$ 8, Intermedio R$ 17, Avanzato R$ 26-35, Premium R$ 44-98) + segmento B2B.",
-        "negocio_titulo": "Modello di Business",
-        "negocio_texto": "3 fonti di ricavo: B2C (14 lingue, tutte le valute), B2B (sconti progressivi), Pubblicità geolocalizzata.",
-        "banners_titulo": "Banner Pubblicitari",
-        "banners_texto": "Ricavi ricorrenti mensili: Paese R$ 800, Continente R$ 1.800, Mondo R$ 3.500, Sponsorizzazione Esclusiva R$ 6.000.",
-        "b2b_titulo": "Pacchetti Aziendali B2B",
-        "b2b_texto": "Regalo per dipendenti o clienti. Sconti progressivi: 10% (10 codici), 30% (100), 50% (500), 70% (1.000).",
-        "projecoes_titulo": "Proiezioni Finanziarie",
-        "projecoes_texto": "Anno 1: R$ 33k-130k | Anno 5: R$ 500k-1,5M | Anno 10: R$ 3-8M | Anno 20: R$ 15-40M | Anno 50: R$ 75-250M.",
-        "tracao_titulo": "Trazione e Risultati",
-        "tracao_texto": "12K+ utenti attivi, 87% di retention, 4,8★ di valutazione, 23 partner B2B.",
-        "roteiro_titulo": "Roadmap Strategica",
-        "roteiro_texto": "Consolidamento, Espansione (Indonesia, Turchia, Vietnam), Ingresso Globale e Leadership (20+ paesi + IPO).",
-        "invest_titulo": "Investimento e Contatto",
-        "invest_texto": "Round Seed R$ 3,5M · Valutazione R$ 14M · Equity fino al 20%. Contatto: a1elos.consultoria@gmail.com · www.a1elos.com",
-        "frase_final": "I numeri non mentono mai — e indicano un'opportunità straordinaria."
-    },
-    "fr": {
-        "titulo": "A1ELOS Global Numerology",
-        "subtitulo": "La science des nombres appliquée à votre succès",
-        "capa_nota": "Présentation pour Investisseurs et Partenaires",
-        "confidencial": "CONFIDENTIEL",
-        "ano": "2026",
-        "sobre_titulo": "À propos d'A1ELOS",
-        "sobre_texto": "Holding de technologie et de connaissance qui unit la tradition millénaire de la numérologie à l'Intelligence Artificielle, livrant des rapports numériques instantanés à coût marginal quasi nul.",
-        "sobre_kpis": ["23 Produits", "14 Langues", "~5,3 Milliards de locuteurs", "IA Intégrée", "DUNS 942242668"],
-        "duns_titulo": "Crédibilité Internationale",
-        "duns_texto": "Le numéro DUNS 942242668, émis par Dun & Bradstreet, est reconnu dans plus de 190 pays et permet des contrats d'entreprise, des appels d'offres et des joint ventures internationaux.",
-        "mercado_titulo": "Opportunité de Marché",
-        "mercado_texto": "Économie mondiale du bien-être : 6,8 billions US$ (2024) à 9,8 billions US$ (2029). Apps d'astrologie/numérologie : 3B US$ (2024) à 9B US$ (2030), CAGR 20%.",
-        "problema_titulo": "Le Problème",
-        "problema_texto": "Les outils génériques échouent face à l'utilisateur et la plupart facturent des prix déconnectés du pouvoir d'achat local. A1ELOS corrige cela.",
-        "solucao_titulo": "Notre Solution",
-        "solucao_texto": "Numérologie appliquée à grande échelle : algorithmes propriétaires + IA + livraison instantanée de PDF premium en 14 langues.",
-        "alcance_titulo": "Portée Mondiale",
-        "alcance_texto": "14 langues couvrant ~5,3 milliards de locuteurs (~67% de la population mondiale).",
-        "mercados_titulo": "3 Nouveaux Marchés",
-        "mercados_texto": "Indonésie (255M locuteurs), Turquie (90M) et Vietnam (97M) — +442 millions de nouveaux locuteurs avec pouvoir d'achat cartographié.",
-        "preco_titulo": "Prix Conscient",
-        "preco_texto": "La même proportion de valeur pour toutes les devises, calibrée sur le pouvoir d'achat (PPA) de chaque pays. Respecte la culture et le portefeuille.",
-        "portfolio_titulo": "Portefeuille",
-        "portfolio_texto": "23 produits en 4 niveaux (Entrée R$ 8, Intermédiaire R$ 17, Avancé R$ 26-35, Premium R$ 44-98) + segment B2B.",
-        "negocio_titulo": "Modèle d'Affaires",
-        "negocio_texto": "3 sources de revenus : B2C (14 langues, toutes les devises), B2B (remises progressives), Publicité géolocalisée.",
-        "banners_titulo": "Bannières Publicitaires",
-        "banners_texto": "Revenus récurrents mensuels : Pays R$ 800, Continent R$ 1.800, Monde R$ 3.500, Parrainage Exclusif R$ 6.000.",
-        "b2b_titulo": "Forfaits Entreprises B2B",
-        "b2b_texto": "Cadeau pour employés ou clients. Remises progressives : 10% (10 codes), 30% (100), 50% (500), 70% (1.000).",
-        "projecoes_titulo": "Projections Financières",
-        "projecoes_texto": "Année 1 : R$ 33k-130k | Année 5 : R$ 500k-1,5M | Année 10 : R$ 3-8M | Année 20 : R$ 15-40M | Année 50 : R$ 75-250M.",
-        "tracao_titulo": "Traction et Résultats",
-        "tracao_texto": "12K+ utilisateurs actifs, 87% de rétention, 4,8★ de note, 23 partenaires B2B.",
-        "roteiro_titulo": "Feuille de Route Stratégique",
-        "roteiro_texto": "Consolidation, Expansion (Indonésie, Turquie, Vietnam), Entrée Mondiale et Leadership (20+ pays + IPO).",
-        "invest_titulo": "Investissement et Contact",
-        "invest_texto": "Round Seed R$ 3,5M · Valorisation R$ 14M · Equity jusqu'à 20%. Contact : a1elos.consultoria@gmail.com · www.a1elos.com",
-        "frase_final": "Les nombres ne mentent jamais — et ils pointent vers une opportunité extraordinaire."
-    },
-    "de": {
-        "titulo": "A1ELOS Global Numerology",
-        "subtitulo": "Die Wissenschaft der Zahlen, angewendet auf Ihren Erfolg",
-        "capa_nota": "Präsentation für Investoren und Partner",
-        "confidencial": "VERTRAULICH",
-        "ano": "2026",
-        "sobre_titulo": "Über A1ELOS",
-        "sobre_texto": "Ein Technologie- und Wissensunternehmen, das die jahrtausendealte Tradition der Numerologie mit Künstlicher Intelligenz verbindet und digitale Berichte zu nahezu null Grenzkosten liefert.",
-        "sobre_kpis": ["23 Produkte", "14 Sprachen", "~5,3 Milliarden Sprecher", "Integrierte KI", "DUNS 942242668"],
-        "duns_titulo": "Internationale Glaubwürdigkeit",
-        "duns_texto": "Die DUNS-Nummer 942242668, ausgestellt von Dun & Bradstreet, ist in über 190 Ländern anerkannt und ermöglicht Unternehmensverträge, Ausschreibungen und internationale Joint Ventures.",
-        "mercado_titulo": "Marktchance",
-        "mercado_texto": "Globale Wellness-Wirtschaft: 6,8 Billionen US$ (2024) auf 9,8 Billionen US$ (2029). Astrologie/Numerologie-Apps: 3 Mrd. US$ (2024) auf 9 Mrd. US$ (2030), CAGR 20%.",
-        "problema_titulo": "Das Problem",
-        "problema_texto": "Generische Tools versagen beim Nutzer und die meisten verlangen Preise ohne Bezug zur lokalen Kaufkraft. A1ELOS behebt das.",
-        "solucao_titulo": "Unsere Lösung",
-        "solucao_texto": "Numerologie in großem Maßstab: proprietäre Algorithmen + KI + sofortige Lieferung von Premium-PDFs in 14 Sprachen.",
-        "alcance_titulo": "Globale Reichweite",
-        "alcance_texto": "14 Sprachen, die ~5,3 Milliarden Sprecher abdecken (~67% der Weltbevölkerung).",
-        "mercados_titulo": "3 Neue Märkte",
-        "mercados_texto": "Indonesien (255M Sprecher), Türkei (90M) und Vietnam (97M) — +442 Millionen neue Sprecher mit kartierter Kaufkraft.",
-        "preco_titulo": "Bewusste Preisgestaltung",
-        "preco_texto": "Das gleiche Wertverhältnis für alle Währungen, kalibriert auf die Kaufkraft (KKP) jedes Landes. Respektiert Kultur und Geldbeutel.",
-        "portfolio_titulo": "Portfolio",
-        "portfolio_texto": "23 Produkte in 4 Stufen (Einstieg R$ 8, Mittel R$ 17, Fortgeschritten R$ 26-35, Premium R$ 44-98) + B2B-Segment.",
-        "negocio_titulo": "Geschäftsmodell",
-        "negocio_texto": "3 Einnahmequellen: B2C (14 Sprachen, alle Währungen), B2B (gestaffelte Rabatte), Geolokalisierte Werbung.",
-        "banners_titulo": "Werbe-Banner",
-        "banners_texto": "Wiederkehrende Monatseinnahmen: Land R$ 800, Kontinent R$ 1.800, Welt R$ 3.500, Exklusiv-Sponsoring R$ 6.000.",
-        "b2b_titulo": "B2B-Unternehmenspakete",
-        "b2b_texto": "Geschenk für Mitarbeiter oder Kunden. Gestaffelte Rabatte: 10% (10 Codes), 30% (100), 50% (500), 70% (1.000).",
-        "projecoes_titulo": "Finanzprognosen",
-        "projecoes_texto": "Jahr 1: R$ 33k-130k | Jahr 5: R$ 500k-1,5M | Jahr 10: R$ 3-8M | Jahr 20: R$ 15-40M | Jahr 50: R$ 75-250M.",
-        "tracao_titulo": "Traction und Ergebnisse",
-        "tracao_texto": "12K+ aktive Nutzer, 87% Retention, 4,8★ Bewertung, 23 B2B-Partner.",
-        "roteiro_titulo": "Strategische Roadmap",
-        "roteiro_texto": "Konsolidierung, Expansion (Indonesien, Türkei, Vietnam), Globaler Eintritt und Führung (20+ Länder + IPO).",
-        "invest_titulo": "Investition und Kontakt",
-        "invest_texto": "Seed-Runde R$ 3,5M · Bewertung R$ 14M · Equity bis 20%. Kontakt: a1elos.consultoria@gmail.com · www.a1elos.com",
-        "frase_final": "Zahlen lügen nie — und sie zeigen auf eine außergewöhnliche Gelegenheit."
-    },
-        "ru": {
-        "titulo": "A1ELOS Global Numerology",
-        "subtitulo": "Наука чисел, применённая к вашему успеху",
-        "capa_nota": "Презентация для инвесторов и партнёров",
-        "confidencial": "КОНФИДЕНЦИАЛЬНО",
-        "ano": "2026",
-        "sobre_titulo": "О компании A1ELOS",
-        "sobre_texto": "Технологический и интеллектуальный холдинг, объединяющий многовековую традицию нумерологии с искусственным интеллектом и доставляющий мгновенные цифровые отчёты с почти нулевой себестоимостью.",
-        "sobre_kpis": ["23 продукта", "14 языков", "~5,3 млрд носителей", "Интегрированный ИИ", "DUNS 942242668"],
-        "duns_titulo": "Международная надёжность",
-        "duns_texto": "Номер DUNS 942242668, выданный Dun & Bradstreet, признан более чем в 190 странах и позволяет заключать корпоративные контракты, участвовать в тендерах и международных совместных предприятиях.",
-        "mercado_titulo": "Рыночная возможность",
-        "mercado_texto": "Мировая экономика благополучия: 6,8 трлн долл. (2024) до 9,8 трлн долл. (2029). Приложения астрологии/нумерологии: 3 млрд (2024) до 9 млрд (2030), CAGR 20%.",
-        "problema_titulo": "Проблема",
-        "problema_texto": "Универсальные инструменты не оправдывают ожиданий, а большинство устанавливает цены, не учитывающие местную покупательную способность. A1ELOS исправляет это.",
-        "solucao_titulo": "Наше решение",
-        "solucao_texto": "Нумерология в масштабе: собственные алгоритмы + ИИ + мгновенная доставка премиальных PDF на 14 языках.",
-        "alcance_titulo": "Глобальный охват",
-        "alcance_texto": "14 языков, охватывающих ~5,3 млрд носителей (~67% населения мира).",
-        "mercados_titulo": "3 новых рынка",
-        "mercados_texto": "Индонезия (255 млн), Турция (90 млн) и Вьетнам (97 млн) — +442 млн новых носителей с учётом покупательной способности.",
-        "preco_titulo": "Осознанное ценообразование",
-        "preco_texto": "Одинаковая пропорция ценности для всех валют, откалиброванная по покупательной способности (ППС) каждой страны. Уважает культуру и кошелёк.",
-        "portfolio_titulo": "Портфель",
-        "portfolio_texto": "23 продукта в 4 уровнях (Вход R$ 8, Средний R$ 17, Продвинутый R$ 26-35, Премиум R$ 44-98) + сегмент B2B.",
-        "negocio_titulo": "Бизнес-модель",
-        "negocio_texto": "3 источника дохода: B2C (14 языков, все валюты), B2B (прогрессивные скидки), Геолокализованная реклама.",
-        "banners_titulo": "Рекламные баннеры",
-        "banners_texto": "Регулярный ежемесячный доход: Страна R$ 800, Континент R$ 1.800, Мир R$ 3.500, Эксклюзивное спонсорство R$ 6.000.",
-        "b2b_titulo": "Корпоративные пакеты B2B",
-        "b2b_texto": "Подарок для сотрудников или клиентов. Прогрессивные скидки: 10% (10 кодов), 30% (100), 50% (500), 70% (1.000).",
-        "projecoes_titulo": "Финансовые прогнозы",
-        "projecoes_texto": "Год 1: R$ 33k-130k | Год 5: R$ 500k-1,5M | Год 10: R$ 3-8M | Год 20: R$ 15-40M | Год 50: R$ 75-250M.",
-        "tracao_titulo": "Тяга и результаты",
-        "tracao_texto": "12K+ активных пользователей, 87% удержания, 4,8★ рейтинг, 23 партнёра B2B.",
-        "roteiro_titulo": "Стратегическая дорожная карта",
-        "roteiro_texto": "Консолидация, Расширение (Индонезия, Турция, Вьетнам), Глобальный вход и Лидерство (20+ стран + IPO).",
-        "invest_titulo": "Инвестиции и контакты",
-        "invest_texto": "Посевной раунд R$ 3,5M · Оценка R$ 14M · Доля до 20%. Контакт: a1elos.consultoria@gmail.com · www.a1elos.com",
-        "frase_final": "Числа никогда не лгут — и указывают на необычайную возможность."
-    },
-    "zh": {
-        "titulo": "A1ELOS 全球数字命理学",
-        "subtitulo": "数字科学，成就您的成功",
-        "capa_nota": "投资者与合作伙伴演示",
-        "confidencial": "机密",
-        "ano": "2026",
-        "sobre_titulo": "关于 A1ELOS",
-        "sobre_texto": "一家技术与知识控股公司，将数字命理学的千年传统与人工智能相结合，以接近零的边际成本交付即时数字报告。",
-        "sobre_kpis": ["23 种产品", "14 种语言", "约53亿使用者", "集成AI", "DUNS 942242668"],
-        "duns_titulo": "国际信誉",
-        "duns_texto": "由邓白氏（Dun & Bradstreet）颁发的 DUNS 编号 942242668 在190多个国家得到认可，可开展企业合同、国际招标和合资企业。",
-        "mercado_titulo": "市场机遇",
-        "mercado_texto": "全球健康经济：6.8万亿美元（2024年）增至9.8万亿美元（2029年）。占星/数字命理应用：30亿美元（2024年）增至90亿美元（2030年），年复合增长率20%。",
-        "problema_titulo": "问题",
-        "problema_texto": "通用工具无法满足用户需求，多数收费脱离当地购买力。A1ELOS 解决了这一点。",
-        "solucao_titulo": "我们的解决方案",
-        "solucao_texto": "大规模应用数字命理学：专有算法 + AI + 以14种语言即时交付高级PDF。",
-        "alcance_titulo": "全球覆盖",
-        "alcance_texto": "14种语言覆盖约53亿使用者（约占世界人口的67%）。",
-        "mercados_titulo": "3个新市场",
-        "mercados_texto": "印度尼西亚（2.55亿使用者）、土耳其（9000万）和越南（9700万）——新增4.42亿使用者，购买力已测绘。",
-        "preco_titulo": "理性定价",
-        "preco_texto": "所有货币保持相同的价值比例，根据各国购买力（PPP）校准。尊重文化和钱包。",
-        "portfolio_titulo": "产品组合",
-        "portfolio_texto": "23种产品，4个层级（入门 R$ 8，中级 R$ 17，高级 R$ 26-35，尊享 R$ 44-98）+ B2B 板块。",
-        "negocio_titulo": "商业模式",
-        "negocio_texto": "3个收入来源：B2C（14种语言，所有货币）、B2B（阶梯折扣）、地域定向广告。",
-        "banners_titulo": "广告横幅",
-        "banners_texto": "每月经常性收入：国家 R$ 800，大洲 R$ 1,800，全球 R$ 3,500，独家赞助 R$ 6,000。",
-        "b2b_titulo": "B2B 企业套餐",
-        "b2b_texto": "员工或客户礼品。阶梯折扣：10%（10个代码），30%（100个），50%（500个），70%（1,000个）。",
-        "projecoes_titulo": "财务预测",
-        "projecoes_texto": "第1年：R$ 33k-130k | 第5年：R$ 500k-150万 | 第10年：R$ 300万-800万 | 第20年：R$ 1500万-4000万 | 第50年：R$ 7500万-2.5亿。",
-        "tracao_titulo": "牵引力与成果",
-        "tracao_texto": "12,000+ 活跃用户，87% 留存率，4.8★ 评分，23个 B2B 合作伙伴。",
-        "roteiro_titulo": "战略路线图",
-        "roteiro_texto": "整合、扩张（印度尼西亚、土耳其、越南）、全球进入和领导地位（20+ 国家 + IPO）。",
-        "invest_titulo": "投资与联系",
-        "invest_texto": "种子轮 R$ 350万 · 估值 R$ 1400万 · 股权最高20%。联系：a1elos.consultoria@gmail.com · www.a1elos.com",
-        "frase_final": "数字从不说谎——它们指向一个非凡的机遇。"
-    },
-    "ja": {
-        "titulo": "A1ELOS グローバル数秘術",
-        "subtitulo": "数字の科学をあなたの成功に",
-        "capa_nota": "投資家・パートナー向けプレゼンテーション",
-        "confidencial": "機密",
-        "ano": "2026",
-        "sobre_titulo": "A1ELOSについて",
-        "sobre_texto": "数秘術の千年にわたる伝統と人工知能を融合し、限界費用ほぼゼロで即時のデジタルレポートを提供するテクノロジー・ナレッジホールディングです。",
-        "sobre_kpis": ["23製品", "14言語", "約53億人の話者", "統合AI", "DUNS 942242668"],
-        "duns_titulo": "国際的な信頼性",
-        "duns_texto": "Dun & Bradstreetが発行するDUNS番号942242668は190か国以上で認められ、企業契約、国際入札、合弁事業を可能にします。",
-        "mercado_titulo": "市場機会",
-        "mercado_texto": "世界のウェルネス経済：6.8兆ドル（2024年）から9.8兆ドル（2029年）。占星術・数秘術アプリ：30億ドル（2024年）から90億ドル（2030年）、CAGR 20%。",
-        "problema_titulo": "課題",
-        "problema_texto": "汎用ツールはユーザーを失望させ、多くは現地の購買力を無視した価格を設定しています。A1ELOSはこれを解決します。",
-        "solucao_titulo": "私たちのソリューション",
-        "solucao_texto": "数秘術の大規模応用：独自アルゴリズム + AI + 14言語でのプレミアムPDFの即時提供。",
-        "alcance_titulo": "グローバルな到達範囲",
-        "alcance_texto": "14言語で約53億人の話者（世界人口の約67%）をカバー。",
-        "mercados_titulo": "3つの新市場",
-        "mercados_texto": "インドネシア（2.55億人）、トルコ（9000万人）、ベトナム（9700万人）——購買力をマッピングした新規話者4.42億人。",
-        "preco_titulo": "意識的な価格設定",
-        "preco_texto": "すべての通貨で同じ価値の割合を、各国の購買力（PPP）に合わせて調整。文化と財布を尊重します。",
-        "portfolio_titulo": "ポートフォリオ",
-        "portfolio_texto": "23製品を4段階（エントリー R$ 8、ミドル R$ 17、アドバンス R$ 26-35、プレミアム R$ 44-98）+ B2Bセグメント。",
-        "negocio_titulo": "ビジネスモデル",
-        "negocio_texto": "3つの収益源：B2C（14言語、全通貨）、B2B（段階的割引）、地域ターゲット広告。",
-        "banners_titulo": "広告バナー",
-        "banners_texto": "毎月の経常収益：国 R$ 800、大陸 R$ 1,800、世界 R$ 3,500、独占スポンサー R$ 6,000。",
-        "b2b_titulo": "B2B法人パッケージ",
-        "b2b_texto": "従業員や顧客へのギフト。段階的割引：10%（10コード）、30%（100）、50%（500）、70%（1,000）。",
-        "projecoes_titulo": "財務予測",
-        "projecoes_texto": "1年目：R$ 33k-130k | 5年目：R$ 50万-150万 | 10年目：R$ 300万-800万 | 20年目：R$ 1500万-4000万 | 50年目：R$ 7500万-2.5億。",
-        "tracao_titulo": "実績と成果",
-        "tracao_texto": "12,000+ アクティブユーザー、87% リテンション、4.8★ 評価、23のB2Bパートナー。",
-        "roteiro_titulo": "戦略ロードマップ",
-        "roteiro_texto": "統合、拡大（インドネシア、トルコ、ベトナム）、グローバル参入、リーダーシップ（20か国以上 + IPO）。",
-        "invest_titulo": "投資と連絡先",
-        "invest_texto": "シードラウンド R$ 350万 · 評価額 R$ 1400万 · 株式最大20%。連絡先：a1elos.consultoria@gmail.com · www.a1elos.com",
-        "frase_final": "数字は決して嘘をつかない——そして非凡な機会を指し示しています。"
-    },
-    "ar": {
-        "titulo": "A1ELOS علم الأعداد العالمي",
-        "subtitulo": "علم الأرقام المطبق على نجاحك",
-        "capa_nota": "عرض تقديمي للمستثمرين والشركاء",
-        "confidencial": "سري",
-        "ano": "2026",
-        "sobre_titulo": "عن A1ELOS",
-        "sobre_texto": "شركة قابضة للتقنية والمعرفة تجمع بين التقاليد العريقة لعلم الأعداد والذكاء الاصطناعي، وتقدم تقارير رقمية فورية بتكلفة هامشية شبه معدومة.",
-        "sobre_kpis": ["23 منتجاً", "14 لغة", "~5.3 مليار متحدث", "ذكاء اصطناعي مدمج", "DUNS 942242668"],
-        "duns_titulo": "المصداقية الدولية",
-        "duns_texto": "رقم DUNS 942242668 الصادر عن Dun & Bradstreet معترف به في أكثر من 190 دولة، ويتيح العقود المؤسسية والمناقصات والمشاريع المشتركة الدولية.",
-        "mercado_titulo": "فرصة السوق",
-        "mercado_texto": "الاقتصاد العالمي للعافية: 6.8 تريليون دولار (2024) إلى 9.8 تريليون (2029). تطبيقات علم الأعداد/التنجيم: 3 مليارات (2024) إلى 9 مليارات (2030)، نمو سنوي 20%.",
-        "problema_titulo": "المشكلة",
-        "problema_texto": "الأدوات العامة تخذل المستخدم، ومعظمها يفرض أسعاراً لا تراعي القوة الشرائية المحلية. A1ELOS يصحح ذلك.",
-        "solucao_titulo": "حلنا",
-        "solucao_texto": "علم الأعداد على نطاق واسع: خوارزميات خاصة + ذكاء اصطناعي + تسليم فوري لملفات PDF متميزة بـ14 لغة.",
-        "alcance_titulo": "الانتشار العالمي",
-        "alcance_texto": "14 لغة تغطي ~5.3 مليار متحدث (~67% من سكان العالم).",
-        "mercados_titulo": "3 أسواق جديدة",
-        "mercados_texto": "إندونيسيا (255 مليون متحدث)، تركيا (90 مليون) وفيتنام (97 مليون) — +442 مليون متحدث جديد مع قوة شرائية محسوبة.",
-        "preco_titulo": "تسعير واعٍ",
-        "preco_texto": "نفس نسبة القيمة لجميع العملات، معايرة حسب القوة الشرائية (PPP) لكل بلد. يحترم الثقافة والميزانية.",
-        "portfolio_titulo": "المحفظة",
-        "portfolio_texto": "23 منتجاً في 4 مستويات (دخول R$ 8، متوسط R$ 17، متقدم R$ 26-35، متميز R$ 44-98) + قطاع B2B.",
-        "negocio_titulo": "نموذج الأعمال",
-        "negocio_texto": "3 مصادر إيرادات: B2C (14 لغة، كل العملات)، B2B (خصومات تصاعدية)، إعلانات جغرافية مستهدفة.",
-        "banners_titulo": "اللافتات الإعلانية",
-        "banners_texto": "إيرادات شهرية متكررة: دولة R$ 800، قارة R$ 1,800، عالم R$ 3,500، رعاية حصرية R$ 6,000.",
-        "b2b_titulo": "باقات الشركات B2B",
-        "b2b_texto": "هدية للموظفين أو العملاء. خصومات تصاعدية: 10% (10 رموز)، 30% (100)، 50% (500)، 70% (1,000).",
-        "projecoes_titulo": "التوقعات المالية",
-        "projecoes_texto": "السنة 1: R$ 33k-130k | السنة 5: R$ 500k-1.5M | السنة 10: R$ 3-8M | السنة 20: R$ 15-40M | السنة 50: R$ 75-250M.",
-        "tracao_titulo": "الزخم والنتائج",
-        "tracao_texto": "+12 ألف مستخدم نشط، 87% احتفاظ، تقييم 4.8★، 23 شريكاً B2B.",
-        "roteiro_titulo": "خارطة الطريق الاستراتيجية",
-        "roteiro_texto": "توحيد، توسع (إندونيسيا، تركيا، فيتنام)، دخول عالمي وقيادة (+20 دولة + اكتتاب).",
-        "invest_titulo": "الاستثمار والتواصل",
-        "invest_texto": "جولة أولية R$ 3.5M · تقييم R$ 14M · حصة حتى 20%. التواصل: a1elos.consultoria@gmail.com · www.a1elos.com",
-        "frase_final": "الأرقام لا تكذب أبداً — وهي تشير إلى فرصة استثنائية."
-    },
-    "he": {
-        "titulo": "A1ELOS נומרולוגיה גלובלית",
-        "subtitulo": "מדע המספרים מיושם להצלחתך",
-        "capa_nota": "מצגת למשקיעים ושותפים",
-        "confidencial": "סודי",
-        "ano": "2026",
-        "sobre_titulo": "אודות A1ELOS",
-        "sobre_texto": "חברת החזקות לטכנולוגיה וידע המשלבת את המסורת העתיקה של הנומרולוגיה עם בינה מלאכותית, ומספקת דוחות דיגיטליים מיידיים בעלות שולית כמעט אפסית.",
-        "sobre_kpis": ["23 מוצרים", "14 שפות", "~5.3 מיליארד דוברים", "בינה מלאכותית משולבת", "DUNS 942242668"],
-        "duns_titulo": "אמינות בינלאומית",
-        "duns_texto": "מספר DUNS 942242668 שהונפק על ידי Dun & Bradstreet מוכר ביותר מ-190 מדינות ומאפשר חוזים עסקיים, מכרזים ומיזמים משותפים בינלאומיים.",
-        "mercado_titulo": "הזדמנות שוק",
-        "mercado_texto": "כלכלת הבריאות העולמית: 6.8 טריליון דולר (2024) ל-9.8 טריליון (2029). אפליקציות אסטרולוגיה/נומרולוגיה: 3 מיליארד (2024) ל-9 מיליארד (2030), צמיחה שנתית 20%.",
-        "problema_titulo": "הבעיה",
-        "problema_texto": "כלים גנריים מאכזבים את המשתמש, ורובם גובים מחירים שאינם מתחשבים בכוח הקנייה המקומי. A1ELOS מתקן זאת.",
-        "solucao_titulo": "הפתרון שלנו",
-        "solucao_texto": "נומרולוגיה בקנה מידה: אלגוריתמים קנייניים + בינה מלאכותית + אספקה מיידית של PDF יוקרתי ב-14 שפות.",
-        "alcance_titulo": "טווח גלובלי",
-        "alcance_texto": "14 שפות המכסות ~5.3 מיליארד דוברים (~67% מאוכלוסיית העולם).",
-        "mercados_titulo": "3 שווקים חדשים",
-        "mercados_texto": "אינדונזיה (255 מיליון דוברים), טורקיה (90 מיליון) ווייטנאם (97 מיליון) — +442 מיליון דוברים חדשים עם כוח קנייה ממופה.",
-        "preco_titulo": "תמחור מודע",
-        "preco_texto": "אותו יחס ערך לכל המטבעות, מכויל לפי כוח הקנייה (PPP) של כל מדינה. מכבד תרבות וארנק.",
-        "portfolio_titulo": "פורטפוליו",
-        "portfolio_texto": "23 מוצרים ב-4 רמות (כניסה R$ 8, בינוני R$ 17, מתקדם R$ 26-35, פרימיום R$ 44-98) + פלח B2B.",
-        "negocio_titulo": "מודל עסקי",
-        "negocio_texto": "3 מקורות הכנסה: B2C (14 שפות, כל המטבעות), B2B (הנחות מדורגות), פרסום ממוקד גיאוגרפית.",
-        "banners_titulo": "באנרים פרסומיים",
-        "banners_texto": "הכנסה חוזרת חודשית: מדינה R$ 800, יבשת R$ 1,800, עולם R$ 3,500, חסות בלעדית R$ 6,000.",
-        "b2b_titulo": "חבילות עסקיות B2B",
-        "b2b_texto": "מתנה לעובדים או ללקוחות. הנחות מדורגות: 10% (10 קודים), 30% (100), 50% (500), 70% (1,000).",
-        "projecoes_titulo": "תחזיות פיננסיות",
-        "projecoes_texto": "שנה 1: R$ 33k-130k | שנה 5: R$ 500k-1.5M | שנה 10: R$ 3-8M | שנה 20: R$ 15-40M | שנה 50: R$ 75-250M.",
-        "tracao_titulo": "מומנטום ותוצאות",
-        "tracao_texto": "+12 אלף משתמשים פעילים, 87% שימור, דירוג 4.8★, 23 שותפי B2B.",
-        "roteiro_titulo": "מפת דרכים אסטרטגית",
-        "roteiro_texto": "איחוד, התרחבות (אינדונזיה, טורקיה, וייטנאם), כניסה גלובלית ומנהיגות (+20 מדינות + הנפקה).",
-        "invest_titulo": "השקעה ויצירת קשר",
-        "invest_texto": "סבב ראשוני R$ 3.5M · שווי R$ 14M · הון עד 20%. יצירת קשר: a1elos.consultoria@gmail.com · www.a1elos.com",
-        "frase_final": "המספרים אף פעם לא משקרים — והם מצביעים על הזדמנות יוצאת דופן."
-    },
-        "id": {
-        "titulo": "A1ELOS Numerologi Global",
-        "subtitulo": "Ilmu angka yang diterapkan untuk kesuksesan Anda",
-        "capa_nota": "Presentasi untuk Investor dan Mitra",
-        "confidencial": "RAHASIA",
-        "ano": "2026",
-        "sobre_titulo": "Tentang A1ELOS",
-        "sobre_texto": "Holding teknologi dan pengetahuan yang menggabungkan tradisi kuno numerologi dengan Kecerdasan Buatan, menghadirkan laporan digital instan dengan biaya marjinal hampir nol.",
-        "sobre_kpis": ["23 Produk", "14 Bahasa", "~5,3 Miliar penutur", "AI Terintegrasi", "DUNS 942242668"],
-        "duns_titulo": "Kredibilitas Internasional",
-        "duns_texto": "Nomor DUNS 942242668, diterbitkan oleh Dun & Bradstreet, diakui di lebih dari 190 negara dan memungkinkan kontrak korporasi, tender dan joint venture internasional.",
-        "mercado_titulo": "Peluang Pasar",
-        "mercado_texto": "Ekonomi kesehatan global: US$ 6,8 triliun (2024) menjadi US$ 9,8 triliun (2029). Aplikasi astrologi/numerologi: US$ 3 miliar (2024) menjadi US$ 9 miliar (2030), CAGR 20%.",
-        "problema_titulo": "Masalah",
-        "problema_texto": "Alat generik mengecewakan pengguna dan sebagian besar mematok harga yang tidak sesuai daya beli lokal. A1ELOS memperbaikinya.",
-        "solucao_titulo": "Solusi Kami",
-        "solucao_texto": "Numerologi dalam skala besar: algoritma proprietary + AI + pengiriman instan PDF premium dalam 14 bahasa.",
-        "alcance_titulo": "Jangkauan Global",
-        "alcance_texto": "14 bahasa mencakup ~5,3 miliar penutur (~67% populasi dunia).",
-        "mercados_titulo": "3 Pasar Baru",
-        "mercados_texto": "Indonesia (255 juta penutur), Turki (90 juta) dan Vietnam (97 juta) — +442 juta penutur baru dengan daya beli terpetakan.",
-        "preco_titulo": "Harga Sadar",
-        "preco_texto": "Proporsi nilai yang sama untuk semua mata uang, dikalibrasi dengan daya beli (PPP) setiap negara. Menghormati budaya dan kantong.",
-        "portfolio_titulo": "Portofolio",
-        "portfolio_texto": "23 produk dalam 4 tingkat (Masuk R$ 8, Menengah R$ 17, Lanjutan R$ 26-35, Premium R$ 44-98) + segmen B2B.",
-        "negocio_titulo": "Model Bisnis",
-        "negocio_texto": "3 sumber pendapatan: B2C (14 bahasa, semua mata uang), B2B (diskon progresif), Iklan geolokasi.",
-        "banners_titulo": "Banner Iklan",
-        "banners_texto": "Pendapatan bulanan berulang: Negara R$ 800, Benua R$ 1.800, Dunia R$ 3.500, Sponsor Eksklusif R$ 6.000.",
-        "b2b_titulo": "Paket Korporasi B2B",
-        "b2b_texto": "Hadiah untuk karyawan atau klien. Diskon progresif: 10% (10 kode), 30% (100), 50% (500), 70% (1.000).",
-        "projecoes_titulo": "Proyeksi Keuangan",
-        "projecoes_texto": "Tahun 1: R$ 33k-130k | Tahun 5: R$ 500k-1,5M | Tahun 10: R$ 3-8M | Tahun 20: R$ 15-40M | Tahun 50: R$ 75-250M.",
-        "tracao_titulo": "Traction dan Hasil",
-        "tracao_texto": "12K+ pengguna aktif, 87% retensi, rating 4,8★, 23 mitra B2B.",
-        "roteiro_titulo": "Peta Jalan Strategis",
-        "roteiro_texto": "Konsolidasi, Ekspansi (Indonesia, Turki, Vietnam), Masuk Global dan Kepemimpinan (20+ negara + IPO).",
-        "invest_titulo": "Investasi dan Kontak",
-        "invest_texto": "Putaran Seed R$ 3,5M · Valuasi R$ 14M · Ekuitas hingga 20%. Kontak: a1elos.consultoria@gmail.com · www.a1elos.com",
-        "frase_final": "Angka tidak pernah berbohong — dan menunjuk pada peluang luar biasa."
-    },
-    "tr": {
-        "titulo": "A1ELOS Küresel Numeroloji",
-        "subtitulo": "Sayıların bilimi başarınıza uygulandı",
-        "capa_nota": "Yatırımcılar ve Ortaklar için Sunum",
-        "confidencial": "GİZLİ",
-        "ano": "2026",
-        "sobre_titulo": "A1ELOS Hakkında",
-        "sobre_texto": "Numerolojinin kadim geleneğini Yapay Zekâ ile birleştiren, neredeyse sıfır marjinal maliyetle anında dijital raporlar sunan bir teknoloji ve bilgi holdingi.",
-        "sobre_kpis": ["23 Ürün", "14 Dil", "~5,3 Milyar konuşmacı", "Entegre YZ", "DUNS 942242668"],
-        "duns_titulo": "Uluslararası Güvenilirlik",
-        "duns_texto": "Dun & Bradstreet tarafından verilen DUNS numarası 942242668, 190'dan fazla ülkede tanınır ve kurumsal sözleşmeler, ihaleler ve uluslararası ortak girişimler sağlar.",
-        "mercado_titulo": "Pazar Fırsatı",
-        "mercado_texto": "Küresel sağlıklı yaşam ekonomisi: 6,8 trilyon ABD$ (2024) ile 9,8 trilyon (2029). Astroloji/numeroloji uygulamaları: 3 milyar (2024) ile 9 milyar (2030), CAGR %20.",
-        "problema_titulo": "Sorun",
-        "problema_texto": "Genel araçlar kullanıcıyı hayal kırıklığına uğratır ve çoğu yerel satın alma gücünden kopuk fiyatlar uygular. A1ELOS bunu düzeltir.",
-        "solucao_titulo": "Çözümümüz",
-        "solucao_texto": "Numeroloji ölçekte uygulanır: özel algoritmalar + YZ + 14 dilde premium PDF'lerin anında teslimi.",
-        "alcance_titulo": "Küresel Erişim",
-        "alcance_texto": "14 dil, ~5,3 milyar konuşmacıyı kapsar (~dünya nüfusunun %67'si).",
-        "mercados_titulo": "3 Yeni Pazar",
-        "mercados_texto": "Endonezya (255 milyon konuşmacı), Türkiye (90 milyon) ve Vietnam (97 milyon) — satın alma gücü haritalanmış +442 milyon yeni konuşmacı.",
-        "preco_titulo": "Bilinçli Fiyatlandırma",
-        "preco_texto": "Tüm para birimleri için aynı değer oranı, her ülkenin satın alma gücüne (PPP) göre ayarlanır. Kültüre ve cüzdana saygı gösterir.",
-        "portfolio_titulo": "Portföy",
-        "portfolio_texto": "4 seviyede 23 ürün (Giriş R$ 8, Orta R$ 17, İleri R$ 26-35, Premium R$ 44-98) + B2B segmenti.",
-        "negocio_titulo": "İş Modeli",
-        "negocio_texto": "3 gelir kaynağı: B2C (14 dil, tüm para birimleri), B2B (kademeli indirimler), Coğrafi hedefli reklam.",
-        "banners_titulo": "Reklam Bannerları",
-        "banners_texto": "Aylık yinelenen gelir: Ülke R$ 800, Kıta R$ 1.800, Dünya R$ 3.500, Özel Sponsorluk R$ 6.000.",
-        "b2b_titulo": "B2B Kurumsal Paketler",
-        "b2b_texto": "Çalışanlar veya müşteriler için hediye. Kademeli indirimler: %10 (10 kod), %30 (100), %50 (500), %70 (1.000).",
-        "projecoes_titulo": "Finansal Projeksiyonlar",
-        "projecoes_texto": "Yıl 1: R$ 33k-130k | Yıl 5: R$ 500k-1,5M | Yıl 10: R$ 3-8M | Yıl 20: R$ 15-40M | Yıl 50: R$ 75-250M.",
-        "tracao_titulo": "Çekiş ve Sonuçlar",
-        "tracao_texto": "12K+ aktif kullanıcı, %87 elde tutma, 4,8★ puan, 23 B2B ortağı.",
-        "roteiro_titulo": "Stratejik Yol Haritası",
-        "roteiro_texto": "Konsolidasyon, Genişleme (Endonezya, Türkiye, Vietnam), Küresel Giriş ve Liderlik (20+ ülke + IPO).",
-        "invest_titulo": "Yatırım ve İletişim",
-        "invest_texto": "Tohum turu R$ 3,5M · Değerleme R$ 14M · %20'ye kadar hisse. İletişim: a1elos.consultoria@gmail.com · www.a1elos.com",
-        "frase_final": "Sayılar asla yalan söylemez — ve olağanüstü bir fırsata işaret eder."
-    },
-    "vi": {
-        "titulo": "A1ELOS Thần số học Toàn cầu",
-        "subtitulo": "Khoa học về các con số áp dụng cho thành công của bạn",
-        "capa_nota": "Trình bày cho Nhà đầu tư và Đối tác",
-        "confidencial": "BẢO MẬT",
-        "ano": "2026",
-        "sobre_titulo": "Về A1ELOS",
-        "sobre_texto": "Công ty mẹ về công nghệ và tri thức kết hợp truyền thống lâu đời của thần số học với Trí tuệ Nhân tạo, cung cấp báo cáo kỹ thuật số tức thì với chi phí biên gần bằng không.",
-        "sobre_kpis": ["23 Sản phẩm", "14 Ngôn ngữ", "~5,3 Tỷ người nói", "AI Tích hợp", "DUNS 942242668"],
-        "duns_titulo": "Uy tín Quốc tế",
-        "duns_texto": "Số DUNS 942242668 do Dun & Bradstreet cấp, được công nhận tại hơn 190 quốc gia, cho phép hợp đồng doanh nghiệp, đấu thầu và liên doanh quốc tế.",
-        "mercado_titulo": "Cơ hội Thị trường",
-        "mercado_texto": "Kinh tế sức khỏe toàn cầu: 6,8 nghìn tỷ USD (2024) lên 9,8 nghìn tỷ (2029). Ứng dụng chiêm tinh/thần số: 3 tỷ (2024) lên 9 tỷ (2030), CAGR 20%.",
-        "problema_titulo": "Vấn đề",
-        "problema_texto": "Công cụ chung chung làm thất vọng người dùng và hầu hết định giá tách rời sức mua địa phương. A1ELOS khắc phục điều này.",
-        "solucao_titulo": "Giải pháp của chúng tôi",
-        "solucao_texto": "Thần số học áp dụng ở quy mô lớn: thuật toán độc quyền + AI + giao PDF cao cấp tức thì bằng 14 ngôn ngữ.",
-        "alcance_titulo": "Phạm vi Toàn cầu",
-        "alcance_texto": "14 ngôn ngữ bao phủ ~5,3 tỷ người nói (~67% dân số thế giới).",
-        "mercados_titulo": "3 Thị trường Mới",
-        "mercados_texto": "Indonesia (255 triệu người nói), Thổ Nhĩ Kỳ (90 triệu) và Việt Nam (97 triệu) — +442 triệu người nói mới với sức mua được lập bản đồ.",
-        "preco_titulo": "Định giá Có ý thức",
-        "preco_texto": "Cùng tỷ lệ giá trị cho mọi loại tiền tệ, hiệu chỉnh theo sức mua (PPP) của từng quốc gia. Tôn trọng văn hóa và túi tiền.",
-        "portfolio_titulo": "Danh mục",
-        "portfolio_texto": "23 sản phẩm ở 4 cấp (Cơ bản R$ 8, Trung cấp R$ 17, Nâng cao R$ 26-35, Cao cấp R$ 44-98) + phân khúc B2B.",
-        "negocio_titulo": "Mô hình Kinh doanh",
-        "negocio_texto": "3 nguồn doanh thu: B2C (14 ngôn ngữ, mọi loại tiền tệ), B2B (chiết khấu lũy tiến), Quảng cáo định vị địa lý.",
-        "banners_titulo": "Banner Quảng cáo",
-        "banners_texto": "Doanh thu định kỳ hàng tháng: Quốc gia R$ 800, Châu lục R$ 1.800, Thế giới R$ 3.500, Tài trợ Độc quyền R$ 6.000.",
-        "b2b_titulo": "Gói Doanh nghiệp B2B",
-        "b2b_texto": "Quà tặng cho nhân viên hoặc khách hàng. Chiết khấu lũy tiến: 10% (10 mã), 30% (100), 50% (500), 70% (1.000).",
-        "projecoes_titulo": "Dự báo Tài chính",
-        "projecoes_texto": "Năm 1: R$ 33k-130k | Năm 5: R$ 500k-1,5M | Năm 10: R$ 3-8M | Năm 20: R$ 15-40M | Năm 50: R$ 75-250M.",
-        "tracao_titulo": "Đà tăng trưởng và Kết quả",
-        "tracao_texto": "12K+ người dùng hoạt động, 87% giữ chân, đánh giá 4,8★, 23 đối tác B2B.",
-        "roteiro_titulo": "Lộ trình Chiến lược",
-        "roteiro_texto": "Củng cố, Mở rộng (Indonesia, Thổ Nhĩ Kỳ, Việt Nam), Gia nhập Toàn cầu và Lãnh đạo (20+ quốc gia + IPO).",
-        "invest_titulo": "Đầu tư và Liên hệ",
-        "invest_texto": "Vòng hạt giống R$ 3,5M · Định giá R$ 14M · Vốn cổ phần tối đa 20%. Liên hệ: a1elos.consultoria@gmail.com · www.a1elos.com",
-        "frase_final": "Các con số không bao giờ nói dối — và chúng chỉ ra một cơ hội phi thường."
-    }
-}
-
-# ============================================================
-# BLOCO ÚNICO DEFINITIVO — dados + funções (SEM duplicação)
-# ============================================================
-import os, math, logging
-from reportlab.lib.pagesizes import A4, landscape
-from reportlab.lib.colors import HexColor, white
-from reportlab.lib.units import mm
-from reportlab.platypus import Table, TableStyle
-from reportlab.pdfgen import canvas
-from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.cidfonts import UnicodeCIDFont
-from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.lib.utils import ImageReader
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-if "STATIC_DIR" not in globals():
-    STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
-
-COR_AZUL = HexColor("#1E3A8A")
-COR_DOURADO = HexColor("#C9A94E")
-COR_PRETO = HexColor("#1A1A1A")
-COR_CINZA_CLARO = HexColor("#D9D9D9")
-FONTES = {"normal": "Helvetica", "bold": "Helvetica-Bold"}
-_FONTES_EXTRA = {}
-
-# ------------------------------------------------------------
-# DADOS NUMÉRICOS DAS TABELAS
-# ------------------------------------------------------------
-LINHAS_IDIOMAS = [
-    ("Inglês", 1528), ("Mandarim", 1184), ("Espanhol", 558),
-    ("Francês", 396), ("Árabe", 335), ("Português", 270),
-    ("Russo", 255), ("Indonésio", 255), ("Alemão", 134),
-    ("Japonês", 123), ("Vietnamita", 97), ("Turco", 90),
-    ("Italiano", 85), ("Hebraico", 9),
-]
-LINHAS_BANNERS = [[800, "500"], [1800, "1.200"], [3500, "2.500"], [6000, "4.500"]]
-LINHAS_B2B = [["10", "10%"], ["100", "30%"], ["500", "50%"], ["1.000", "70%"]]
-HORIZONTES = [1, 3, 5, 10, 20, 30, 40, 50]
-RANGES = [
-    ("33k", "130k"), ("120k", "450k"), ("500k", "1,5M"),
-    ("3M", "8M"), ("15M", "40M"), ("35M", "90M"),
-    ("55M", "150M"), ("75M", "250M"),
-]
-TABELAS = {
-    "pt": {"h_idioma": "Idioma", "h_falantes": "Falantes (mi)", "h_seg": "Segmentação",
-           "h_fixo": "Fixo (R$/mês)", "h_temp": "Temporário (R$/mês)", "h_de": "A partir de",
-           "h_desc": "Desconto", "h_hor": "Horizonte", "h_cons": "Conservador (R$)",
-           "h_otim": "Otimista (R$)", "h_ano": "Ano",
-           "seg": ["País", "Continente", "Mundo", "Patrocínio Exclusivo"]},
-    "en": {"h_idioma": "Language", "h_falantes": "Speakers (M)", "h_seg": "Targeting",
-           "h_fixo": "Fixed (R$/mo)", "h_temp": "Temporary (R$/mo)", "h_de": "From",
-           "h_desc": "Discount", "h_hor": "Horizon", "h_cons": "Conservative (R$)",
-           "h_otim": "Optimistic (R$)", "h_ano": "Yr",
-           "seg": ["Country", "Continent", "World", "Exclusive Sponsorship"]},
-    "es": {"h_idioma": "Idioma", "h_falantes": "Hablantes (M)", "h_seg": "Segmentación",
-           "h_fixo": "Fijo (R$/mes)", "h_temp": "Temporal (R$/mes)", "h_de": "A partir de",
-           "h_desc": "Descuento", "h_hor": "Horizonte", "h_cons": "Conservador (R$)",
-           "h_otim": "Optimista (R$)", "h_ano": "Año",
-           "seg": ["País", "Continente", "Mundo", "Patrocinio Exclusivo"]},
-    "it": {"h_idioma": "Lingua", "h_falantes": "Parlanti (M)", "h_seg": "Segmentazione",
-           "h_fixo": "Fisso (R$/mese)", "h_temp": "Temporaneo (R$/mese)", "h_de": "Da",
-           "h_desc": "Sconto", "h_hor": "Orizzonte", "h_cons": "Conservativo (R$)",
-           "h_otim": "Ottimista (R$)", "h_ano": "Anno",
-           "seg": ["Paese", "Continente", "Mondo", "Sponsor Esclusivo"]},
-    "fr": {"h_idioma": "Langue", "h_falantes": "Locuteurs (M)", "h_seg": "Ciblage",
-           "h_fixo": "Fixe (R$/mois)", "h_temp": "Temporaire (R$/mois)", "h_de": "À partir de",
-           "h_desc": "Remise", "h_hor": "Horizon", "h_cons": "Conservateur (R$)",
-           "h_otim": "Optimiste (R$)", "h_ano": "An",
-           "seg": ["Pays", "Continent", "Monde", "Parrainage Exclusif"]},
-    "de": {"h_idioma": "Sprache", "h_falantes": "Sprecher (Mio.)", "h_seg": "Segmentierung",
-           "h_fixo": "Fest (R$/Monat)", "h_temp": "Zeitweilig (R$/Monat)", "h_de": "Ab",
-           "h_desc": "Rabatt", "h_hor": "Horizont", "h_cons": "Konservativ (R$)",
-           "h_otim": "Optimistisch (R$)", "h_ano": "Jahr",
-           "seg": ["Land", "Kontinent", "Welt", "Exklusiv-Sponsoring"]},
-    "ru": {"h_idioma": "Язык", "h_falantes": "Носители (млн)", "h_seg": "Сегментация",
-           "h_fixo": "Фикс. (R$/мес)", "h_temp": "Врем. (R$/мес)", "h_de": "От",
-           "h_desc": "Скидка", "h_hor": "Горизонт", "h_cons": "Консерв. (R$)",
-           "h_otim": "Оптим. (R$)", "h_ano": "Год",
-           "seg": ["Страна", "Континент", "Мир", "Эксклюзивное спонсорство"]},
-    "zh": {"h_idioma": "语言", "h_falantes": "使用者(百万)", "h_seg": "定向",
-           "h_fixo": "固定(R$/月)", "h_temp": "临时(R$/月)", "h_de": "从",
-           "h_desc": "折扣", "h_hor": "期限", "h_cons": "保守(R$)",
-           "h_otim": "乐观(R$)", "h_ano": "年",
-           "seg": ["国家", "大洲", "全球", "独家赞助"]},
-    "ja": {"h_idioma": "言語", "h_falantes": "話者(百万)", "h_seg": "セグメント",
-           "h_fixo": "固定(R$/月)", "h_temp": "臨時(R$/月)", "h_de": "から",
-           "h_desc": "割引", "h_hor": "期間", "h_cons": "保守(R$)",
-           "h_otim": "楽観(R$)", "h_ano": "年",
-           "seg": ["国", "大陸", "世界", "独占スポンサー"]},
-    "ar": {"h_idioma": "اللغة", "h_falantes": "المتحدثون (مليون)", "h_seg": "الاستهداف",
-           "h_fixo": "ثابت (R$/شهر)", "h_temp": "مؤقت (R$/شهر)", "h_de": "من",
-           "h_desc": "خصم", "h_hor": "الأفق", "h_cons": "متحفظ (R$)",
-           "h_otim": "متفائل (R$)", "h_ano": "سنة",
-           "seg": ["دولة", "قارة", "عالم", "رعاية حصرية"]},
-    "he": {"h_idioma": "שפה", "h_falantes": "דוברים (מיליון)", "h_seg": "מיקוד",
-           "h_fixo": "קבוע (R$/חודש)", "h_temp": "זמני (R$/חודש)", "h_de": "החל מ-",
-           "h_desc": "הנחה", "h_hor": "אופק", "h_cons": "שמרני (R$)",
-           "h_otim": "אופטימי (R$)", "h_ano": "שנה",
-           "seg": ["מדינה", "יבשת", "עולם", "חסות בלעדית"]},
-    "id": {"h_idioma": "Bahasa", "h_falantes": "Penutur (juta)", "h_seg": "Segmentasi",
-           "h_fixo": "Tetap (R$/bln)", "h_temp": "Sementara (R$/bln)", "h_de": "Mulai dari",
-           "h_desc": "Diskon", "h_hor": "Cakrawala", "h_cons": "Konservatif (R$)",
-           "h_otim": "Optimis (R$)", "h_ano": "Tahun",
-           "seg": ["Negara", "Benua", "Dunia", "Sponsor Eksklusif"]},
-    "tr": {"h_idioma": "Dil", "h_falantes": "Konuşmacı (milyon)", "h_seg": "Hedefleme",
-           "h_fixo": "Sabit (R$/ay)", "h_temp": "Geçici (R$/ay)", "h_de": "Şuradan",
-           "h_desc": "İndirim", "h_hor": "Ufuk", "h_cons": "Muhafazakâr (R$)",
-           "h_otim": "İyimser (R$)", "h_ano": "Yıl",
-           "seg": ["Ülke", "Kıta", "Dünya", "Özel Sponsorluk"]},
-    "vi": {"h_idioma": "Ngôn ngữ", "h_falantes": "Người nói (triệu)", "h_seg": "Nhắm mục tiêu",
-           "h_fixo": "Cố định (R$/tháng)", "h_temp": "Tạm thời (R$/tháng)", "h_de": "Từ",
-           "h_desc": "Chiết khấu", "h_hor": "Chân trời", "h_cons": "Bảo thủ (R$)",
-           "h_otim": "Lạc quan (R$)", "h_ano": "Năm",
-           "seg": ["Quốc gia", "Châu lục", "Thế giới", "Tài trợ độc quyền"]},
-}
-
-# ------------------------------------------------------------
-# SEÇÕES (auto-detecta as chaves do CONTEUDO)
-# ------------------------------------------------------------
-SECOES = [
-    ("sobre", ["sobre_titulo", "sobre_t"], ["sobre_texto", "sobre_p"], None),
-    ("duns", ["duns_titulo", "duns_t"], ["duns_texto", "duns_p"], None),
-    ("mercado", ["mercado_titulo", "mercado_t"], ["mercado_texto", "mercado_p"], None),
-    ("problema", ["problema_titulo", "problema_t"], ["problema_texto", "problema_p"], None),
-    ("solucao", ["solucao_titulo", "solucao_t"], ["solucao_texto", "solucao_p"], None),
-    ("alcance", ["alcance_titulo", "alcance_t"], ["alcance_texto", "alcance_p"], "idiomas"),
-    ("mercados", ["mercados_titulo", "mercados_t", "novos_mercados_t"], ["mercados_texto", "mercados_p"], None),
-    ("preco", ["preco_titulo", "preco_t"], ["preco_texto", "preco_p"], None),
-    ("portfolio", ["portfolio_titulo", "port_t"], ["portfolio_texto", "port_p", "portfolio_p"], None),
-    ("negocio", ["negocio_titulo", "modelo_t"], ["negocio_texto", "modelo_p", "negocio_p"], None),
-    ("banners", ["banners_titulo", "midia_t"], ["banners_texto", "midia_p", "banners_p"], "banners"),
-    ("b2b", ["b2b_titulo", "b2b_t"], ["b2b_texto", "b2b_p"], "b2b"),
-    ("projecoes", ["projecoes_titulo", "proj_t"], ["projecoes_texto", "proj_p"], "projecoes"),
-    ("tracao", ["tracao_titulo", "tracao_t"], ["tracao_texto", "tracao_p"], None),
-    ("roteiro", ["roteiro_titulo", "roteiro_t"], ["roteiro_texto", "roteiro_p"], None),
-    ("invest", ["invest_titulo", "seed_t"], ["invest_texto", "seed_p", "invest_p"], None),
-]
+COR_FUNDO = HexColor("#F7F5EF")   # bege claro editorial
+COR_VERDE = HexColor("#2E7D32")
 
 # ------------------------------------------------------------
 # FONTES
 # ------------------------------------------------------------
+FONTES = {"normal": "Helvetica", "bold": "Helvetica-Bold"}
+_FONTES_EXTRA = {}
+
 def _registrar_cid():
     try:
-        for nome in ("STSong-Light", "HeiseiMin-W3", "HYSMyeongJo-Medium"):
+        for nome in ("STSong-Light", "HeiseiMin-W3"):
             try:
                 pdfmetrics.registerFont(UnicodeCIDFont(nome))
             except Exception:
@@ -827,15 +58,13 @@ def _registrar_fontes_extra():
         return
     try:
         for nome, arq in [("DejaVu", "DejaVuSans.ttf"),
-                          ("DejaVu-Bold", "DejaVuSans-Bold.ttf"),
-                          ("NotoAr", "NotoSansArabic-Regular.ttf"),
-                          ("NotoHe", "NotoSansHebrew-Regular.ttf")]:
+                          ("DejaVu-Bold", "DejaVuSans-Bold.ttf")]:
             caminho = os.path.join(STATIC_DIR, arq)
             if os.path.exists(caminho):
                 pdfmetrics.registerFont(TTFont(nome, caminho))
                 _FONTES_EXTRA[nome] = True
     except Exception as e:
-        logger.warning("Fontes extras não carregadas: %s", e)
+        logger.warning("Fontes extras: %s", e)
 
 def _fonte(lang, negrito=False):
     if lang == "zh":
@@ -850,44 +79,231 @@ def _fonte(lang, negrito=False):
     return FONTES["bold" if negrito else "normal"]
 
 # ------------------------------------------------------------
-# AUXILIARES DE TEXTO E TABELA
+# CONTEÚDO — PORTUGUÊS EXPANDIDO (FASE 1)
 # ------------------------------------------------------------
-def _chave(c, *nomes):
-    for n in nomes:
-        if n in c:
-            v = c[n]
-            if isinstance(v, list):
-                return " ".join(str(x) for x in v)
-            return str(v) if v else ""
-    return ""
+CONTEUDO = {
+    "pt": {
+        "titulo": "A1ELOS Global Numerology",
+        "subtitulo": "A ciência dos números aplicada ao seu sucesso",
+        "capa_nota": "Apresentação para Investidores e Parceiros Estratégicos",
+        "confidencial": "CONFIDENCIAL",
+        "ano": "2026",
 
-def _achar(c, chaves):
-    for k in chaves:
-        if k in c:
-            v = c[k]
-            if isinstance(v, list):
-                return " ".join(str(x) for x in v)
-            return str(v) if v else ""
-    return ""
+        # SUMÁRIO EXECUTIVO
+        "sumario_intro": "Esta apresentação está estruturada para guiar investidores e parceiros por todos os aspectos estratégicos da A1ELOS Global Numerology — da tese de mercado ao modelo de receita recorrente.",
+        "sumario_cards": [
+            ("01", "Sobre a A1ELOS", "Holding, portfólio e credencial DUNS"),
+            ("02", "Oportunidade de Mercado", "Economia global de bem-estar US$ 6,8 tri"),
+            ("03", "Solução e Alcance Global", "14 idiomas, ~5,3 bi de falantes"),
+            ("04", "3 Novos Mercados", "Indonésia, Turquia e Vietnã"),
+            ("05", "Portfólio e Preços", "23 produtos calibrados por poder aquisitivo"),
+            ("06", "Receita Recorrente", "Banners publicitários e Pacotes B2B"),
+            ("07", "Projeções e Investimento", "Horizonte de 50 anos · Rodada Seed R$ 3,5M"),
+        ],
 
-def _texto_wrap(doc, texto, fonte, tam, x, y, largura_max, cor, entrelinha, cjk=False):
+        # SOBRE
+        "sobre_titulo": "Sobre a A1ELOS",
+        "sobre_texto": "A A1ELOS é uma holding de tecnologia e conhecimento que une inteligência artificial, numerologia aplicada e estratégia cultural para criar produtos digitais de alto impacto em escala global. Nossa missão: democratizar o autoconhecimento numérico com respeito cultural e respeito ao poder aquisitivo de cada mercado.",
+        "sobre_kpis": [
+            ("23", "Produtos Ativos", "Em 4 níveis de acesso"),
+            ("14", "Idiomas", "~67% da população mundial"),
+            ("5,3B", "Falantes", "Mercado endereçável real"),
+            ("IA", "Integrada", "Motor de personalização"),
+        ],
+        "sobre_duns": "DUNS 942242668 — Certificação Dun & Bradstreet válida em 190+ países, habilitando contratos B2B e joint ventures internacionais.",
+
+        # CREDIBILIDADE
+        "duns_titulo": "Credibilidade Internacional",
+        "duns_texto": "O número DUNS é o passaporte corporativo da A1ELOS no cenário internacional. Ele sinaliza a parceiros, clientes corporativos e investidores que a empresa possui identidade verificável, histórico rastreável e capacidade contratual em qualquer jurisdição.",
+        "duns_numero": "942242668",
+        "duns_emitido": "Emitido pela Dun & Bradstreet — o padrão global de identidade empresarial reconhecido em mais de 190 países.",
+        "duns_paises": "190+ PAÍSES",
+        "duns_beneficios": [
+            ("Contratos B2B", "Habilitação para licitações e fornecedores globais"),
+            ("Joint Ventures", "Parcerias internacionais com due diligence facilitada"),
+            ("Credibilidade Imediata", "Sinal de seriedade para investidores institucionais"),
+        ],
+
+        # MERCADO
+        "mercado_titulo": "Oportunidade de Mercado",
+        "mercado_texto": "Vivemos a convergência perfeita: o bem-estar digital explode globalmente enquanto a numerologia e astrologia migram para apps de alto engajamento. A A1ELOS está posicionada exatamente nessa interseção, com 74% da população mundial já online (~6 bilhões de pessoas).",
+        "mercado_cards": [
+            ("Bem-Estar Global", "US$ 6,8 tri → US$ 9,8 tri até 2029 (+7,6% a.a.)"),
+            ("Apps Astrologia/Numerologia", "US$ 3 bi → US$ 9 bi até 2030 · CAGR 20%"),
+            ("Apps de Bem-Estar", "CAGR 14,9% → US$ 26,2 bi em 2030"),
+            ("Usuários Online", "74% do mundo · ~6 bilhões de pessoas"),
+        ],
+
+        # PROBLEMA
+        "problema_titulo": "O Problema que Resolvemos",
+        "problema_col_esq_titulo": "Falhas do Mercado Atual",
+        "problema_col_esq": [
+            ("Barreira de Idioma", "A esmagadora maioria das ferramentas de numerologia opera apenas em inglês, excluindo bilhões de falantes nativos em outros idiomas."),
+            ("Preços Descolados da Realidade", "Produtos cobrados em dólar para mercados emergentes geram exclusão econômica — o usuário não rejeita o produto, rejeita o preço inacessível."),
+            ("Ausência de Profundidade", "Ferramentas genéricas entregam respostas superficiais sem personalização, sem contexto cultural e sem aplicação prática ao dia a dia."),
+        ],
+        "problema_col_dir_titulo": "O Custo da Exclusão",
+        "problema_col_dir": "Quando uma plataforma ignora idioma e poder aquisitivo, ela voluntariamente abandona o maior mercado do mundo: os 4+ bilhões de pessoas que vivem em economias emergentes e falam línguas não-anglófonas. Esse é o gap que a A1ELOS ocupa com precisão cirúrgica.",
+        "problema_destaque": "Plataformas que ignoram poder aquisitivo local perdem acesso a mais de 60% do mercado endereçável global.",
+
+        # SOLUÇÃO
+        "solucao_titulo": "Nossa Solução: 3 Pilares Estratégicos",
+        "solucao_texto": "A A1ELOS construiu uma plataforma integrada que combina ciência numérica, inteligência artificial e sensibilidade cultural. A solução opera em três frentes complementares, garantindo receita diversificada e alta retenção.",
+        "solucao_colunas": [
+            ("Mapas Pessoais", "Análises numéricas profundas e personalizadas para o usuário final — identidade, missão, ciclos de vida e compatibilidade — entregues em 14 idiomas com IA integrada."),
+            ("Numerologia Empresarial", "Diagnósticos numerológicos aplicados a marcas, CNPJs, datas de fundação e estratégia corporativa. Produto diferenciado de alto valor percebido pelo mercado B2B."),
+            ("White-Label B2B", "Licenciamento da plataforma para empresas parceiras que desejam oferecer numerologia sob sua própria marca — com suporte multilíngue e personalização completa."),
+        ],
+
+        # ALCANCE
+        "alcance_titulo": "Alcance Global: 14 Idiomas · ~5,3 Bilhões de Falantes",
+        "alcance_texto": "A A1ELOS cobre ~67% da população mundial com uma plataforma genuinamente multilíngue. Cada idioma representa um mercado cultural distinto, com precificação calibrada ao poder aquisitivo local.",
+
+        # NOVOS MERCADOS
+        "mercados_titulo": "Os 3 Novos Mercados: +442 Milhões de Falantes",
+        "mercados_texto": "A expansão estratégica para Indonésia, Turquia e Vietnã representa um salto qualitativo: mercados com alto crescimento econômico, penetração digital crescente e demanda comprovada por soluções de bem-estar digital acessíveis.",
+        "mercados_cards": [
+            ("🇮🇩 Indonésia", ["285 mi habitantes", "80,5% penetração de internet", "~255 mi falantes de Indonésio", "Bem-estar: US$ 51,2 bi (2025) → US$ 72,8 bi (2034)"]),
+            ("🇹🇷 Turquia", ["85,9 mi habitantes", "PIB PPP per capita US$ 37.301", "~90 mi falantes de Turco", "Acima da média mundial (US$ 27.211)"]),
+            ("🇻🇳 Vietnã", ["~100 mi habitantes", "PIB per capita ~US$ 5.066 (+7,4%/ano)", "~97 mi falantes de Vietnamita", "Bem-estar: US$ 303 mi (2025) → US$ 485 mi (2030)"]),
+        ],
+        "mercados_rodape": "3 mercados novos = +442 milhões de novos falantes endereçáveis — incorporados à plataforma com precificação culturalmente calibrada.",
+
+        # PREÇO
+        "preco_titulo": "Filosofia de Preço Consciente",
+        "preco_esq": "Respeito cultural + respeito ao poder aquisitivo = mercado endereçável real. Mesma proporção de valor. Preços diferentes. Dignidade igual para todos os mercados.",
+        "preco_dir_titulo": "Como Funciona na Prática",
+        "preco_dir": "A A1ELOS aplica Paridade de Poder de Compra (PPC) como critério central de precificação. O mesmo produto entrega o mesmo valor relativo ao usuário em Lagos, Jacarta, Hanói ou Nova York — o preço é calibrado para que o esforço financeiro seja proporcional à renda local.",
+        "preco_pilares": [
+            ("Calibração por PPC", "Preços ajustados ao índice de poder aquisitivo de cada país"),
+            ("Respeito Cultural", "Idioma, moeda e contexto local integrados ao produto"),
+            ("Conversão Superior", "Preço justo gera mais conversão e maior retenção de longo prazo"),
+        ],
+
+        # PORTFÓLIO
+        "portfolio_titulo": "Portfólio: 23 Produtos em 4 Níveis",
+        "portfolio_texto": "A estrutura em camadas garante que cada perfil de usuário — do curioso ao profissional — encontre uma oferta adequada ao seu nível de engajamento e capacidade financeira.",
+        "portfolio_tabela": [
+            ["Nível", "Produtos", "Faixa de Preço (R$)", "Perfil"],
+            ["Entrada", "Mapa Express, Consulta Rápida", "R$ 8", "Curioso, primeiro contato"],
+            ["Intermediário", "Pesquisa IA, Mapa Completo, Compatibilidade", "R$ 17", "Usuário engajado"],
+            ["Avançado", "Numerologia Empresarial, Ciclos, Missão", "R$ 26–35", "Profissional, empreendedor"],
+            ["Premium", "Diagnóstico Completo, White-Label Pessoal", "R$ 44–98", "Alta renda, uso corporativo"],
+            ["B2B / Corporativo", "Pacotes empresariais, licenças, brindes", "Sob consulta", "Empresas e RH"],
+        ],
+        "portfolio_rodape": "23 produtos cobrem toda a jornada do usuário, do primeiro contato ao cliente recorrente premium — maximizando LTV por idioma e mercado.",
+
+        # NEGÓCIO
+        "negocio_titulo": "Modelo de Negócio: 3 Fontes de Receita",
+        "negocio_texto": "A A1ELOS foi desenhada com receita diversificada e escalável: vendas diretas ao consumidor final em escala global, contratos B2B de alto valor e publicidade geolocalizada recorrente — três motores que se alimentam mutuamente.",
+        "negocio_colunas": [
+            ("B2C — 14 Idiomas", "Venda direta de produtos digitais em todas as moedas, com precificação adaptada por PPC. Escala automática via IA — sem equipe de atendimento proporcional ao crescimento."),
+            ("B2B — Descontos Progressivos", "Pacotes corporativos para RH, employer branding e brindes institucionais. Descontos de 10% a 70% conforme volume. Contratos respaldados pelo DUNS 942242668."),
+            ("Publicidade Geolocalizada", "Banners segmentados por país, continente ou mundial com rotação automatizada. Receita recorrente mensal de alto valor — sem dependência de volume de vendas de produto."),
+        ],
+
+        # BANNERS
+        "banners_titulo": "Banners Publicitários — Receita Recorrente Mensal",
+        "banners_texto": "A plataforma A1ELOS oferece espaços publicitários premium com segmentação precisa por geolocalização — país, continente ou mundial. Com rotação automática a cada 8 segundos e formatos otimizados para desktop e mobile, os banners entregam visibilidade mensurável a anunciantes regionais e internacionais.",
+        "banners_tabela": [
+            ["Segmentação", "Fixo (R$/mês)", "Temporário (R$/mês)", "Perfil de Anunciante"],
+            ["País", "R$ 800", "R$ 500", "PMEs locais, comércio regional"],
+            ["Continente", "R$ 1.800", "R$ 1.200", "Marcas regionais, expansão continental"],
+            ["Mundo", "R$ 3.500", "R$ 2.500", "Empresas globais, apps internacionais"],
+            ["Patrocínio Exclusivo", "R$ 6.000", "R$ 4.500/campanha", "Patrocinadores master, lançamentos"],
+        ],
+        "banners_formatos": "728×90 px — Banner central desktop · 320×100 px — Formato mobile otimizado · 8 segundos — Rotação automática · Geo-alvo — País, continente ou alcance mundial",
+
+        # B2B
+        "b2b_titulo": "Pacotes Empresariais B2B — Alto Valor, Alto Volume",
+        "b2b_texto": "Os Pacotes B2B transformam a A1ELOS em uma ferramenta de employer branding e bem-estar corporativo. Empresas adquirem códigos de acesso em volume para distribuir como brindes a colaboradores ou clientes — respaldadas pelo DUNS 942242668 para contratos corporativos formais.",
+        "b2b_planos": [
+            ("Plano Básico · 50 Códigos", "50× Mapa Express (R$ 8 cada). Ideal para programas de bem-estar de colaboradores e ações de onboarding."),
+            ("Plano Intermediário · 100 Códigos", "50× Express + 50× Pesquisa IA (R$ 17). Perfeito para RH e estratégias de employer branding."),
+            ("Plano Premium · 200 Códigos", "100× Express + 100× Mapa Completo (R$ 17). Máxima profundidade analítica para grandes equipes."),
+        ],
+        "b2b_tabela": [
+            ["A partir de", "Desconto", "Perfil", "Uso Recomendado"],
+            ["10 códigos", "10%", "Pequenas equipes", "Ação pontual de bem-estar"],
+            ["100 códigos", "30%", "PMEs", "Programa de benefícios trimestral"],
+            ["500 códigos", "50%", "Médias empresas", "Brinde anual a colaboradores"],
+            ["1.000 códigos", "70%", "Grandes corporações", "Programa de fidelização de clientes"],
+        ],
+
+        # PROJEÇÕES
+        "projecoes_titulo": "Projeções Financeiras: Horizonte de 50 Anos",
+        "projecoes_texto": "As projeções foram construídas com base em dois cenários — conservador e otimista — refletindo diferentes taxas de penetração de mercado, velocidade de expansão B2B e crescimento orgânico por idioma.",
+        "projecoes_tabela": [
+            ["Horizonte", "Conservador (R$)", "Otimista (R$)"],
+            ["Ano 1", "R$ 33k", "R$ 130k"],
+            ["Ano 3", "R$ 120k", "R$ 450k"],
+            ["Ano 5", "R$ 500k", "R$ 1,5M"],
+            ["Ano 10", "R$ 3M", "R$ 8M"],
+            ["Ano 20", "R$ 15M", "R$ 40M"],
+            ["Ano 30", "R$ 35M", "R$ 90M"],
+            ["Ano 40", "R$ 55M", "R$ 150M"],
+            ["Ano 50", "R$ 75M", "R$ 250M"],
+        ],
+
+        # TRAÇÃO
+        "tracao_titulo": "Tração e Resultados Comprovados",
+        "tracao_texto": "A A1ELOS já opera com métricas de produto que validam o modelo — alta retenção, avaliação premium e uma base crescente de parceiros B2B demonstram que a plataforma entrega valor real ao usuário final e ao mercado corporativo.",
+        "tracao_kpis": [
+            ("12K+", "Usuários Ativos", "Base orgânica em crescimento consistente"),
+            ("87%", "Retenção", "Muito acima da média da indústria (~30%)"),
+            ("4,8★", "Avaliação Média", "Satisfação comprovada do usuário final"),
+            ("23", "Parceiros B2B", "Contratos ativos com empresas e RHs"),
+        ],
+
+        # ROTEIRO
+        "roteiro_titulo": "Roteiro Estratégico",
+        "roteiro_texto": "A A1ELOS executa um plano em quatro fases progressivas — da consolidação da base atual à liderança global de mercado, com opções claras de saída para investidores.",
+        "roteiro_fases": [
+            ("Fase 1 · Consolidação", "Fortalecimento da base de usuários nos idiomas já ativos. Otimização de conversão, retenção e LTV. Rodada Seed concluída."),
+            ("Fase 2 · Expansão", "Lançamento oficial nos 3 novos mercados: Indonésia 🇮🇩, Turquia 🇹🇷 e Vietnã 🇻🇳. Aceleração do canal B2B e publicidade geolocalizada."),
+            ("Fase 3 · Entrada Global", "Presença ativa em todos os 14 idiomas com campanhas localizadas. Parcerias white-label em 5+ continentes. Série A."),
+            ("Fase 4 · Liderança", "20+ países com operações consolidadas. Plataforma SaaS de referência global em numerologia aplicada. IPO ou exit estratégico."),
+        ],
+
+        # INVESTIMENTO
+        "invest_titulo": "Investimento & Contato",
+        "invest_texto": "Estamos prontos para apresentações privadas, due diligence e negociações. Entre em contato pelo canal de sua preferência.",
+        "invest_dados": [
+            ("Rodada Seed", "R$ 3,5 milhões"),
+            ("Valuation Pré-Money", "R$ 14 milhões"),
+            ("Equity Ofertado", "Até 20%"),
+        ],
+        "invest_contato": [
+            ("E-mail Investidores", "a1elos.consultoria@gmail.com"),
+            ("E-mail Geral", "contato@a1elos.com"),
+            ("Website", "www.a1elos.com"),
+            ("DUNS", "942242668 — Dun & Bradstreet"),
+        ],
+        "invest_alocacao": "Alocação do Capital: 45% Tecnologia · 30% Marketing · 25% Operações",
+
+        # FINAL
+        "frase_final": "Os números nunca mentem.",
+        "selo_final": ["DUNS 942242668", "23 PRODUTOS", "14 IDIOMAS", "~5,3 BI FALANTES"],
+    }
+}
+
+# ------------------------------------------------------------
+# DADOS NUMÉRICOS DAS TABELAS
+# ------------------------------------------------------------
+LINHAS_IDIOMAS = [
+    ("Inglês", "1.528"), ("Mandarim", "1.184"), ("Espanhol", "558"),
+    ("Francês", "396"), ("Árabe", "335"), ("Português", "270"),
+    ("Russo", "255"), ("Indonésio", "255"), ("Alemão", "134"),
+    ("Japonês", "123"), ("Vietnamita", "97"), ("Turco", "90"),
+    ("Italiano", "85"), ("Hebraico", "9"),
+]
+
+# ------------------------------------------------------------
+# AUXILIARES DE DESENHO
+# ------------------------------------------------------------
+def _texto_wrap(doc, texto, fonte, tam, x, y, largura_max, cor, entrelinha):
     doc.setFillColor(cor)
     doc.setFont(fonte, tam)
-    texto = " ".join(texto.split())
-    if cjk:
-        linha = ""
-        for ch in texto:
-            teste = linha + ch
-            if doc.stringWidth(teste, fonte, tam) <= largura_max:
-                linha = teste
-            else:
-                doc.drawString(x, y, linha)
-                y -= entrelinha
-                linha = ch
-        if linha:
-            doc.drawString(x, y, linha)
-            y -= entrelinha
-        return y
     palavras = texto.split()
     linha = ""
     for p in palavras:
@@ -903,167 +319,117 @@ def _texto_wrap(doc, texto, fonte, tam, x, y, largura_max, cor, entrelinha, cjk=
         y -= entrelinha
     return y
 
-def _tabela_pdf(doc, dados, colunas, x, y, largura, fonte=None, tam=9):
-    fonte = fonte or FONTES["normal"]
-    tbl = Table(dados, colWidths=[largura * c for c in colunas])
+def _caixa(doc, x, y, w, h, cor_fundo=None, cor_borda=None, raio=0):
+    if cor_fundo:
+        doc.setFillColor(cor_fundo)
+        doc.rect(x, y, w, h, stroke=0, fill=1)
+    if cor_borda:
+        doc.setStrokeColor(cor_borda)
+        doc.setLineWidth(0.8)
+        doc.rect(x, y, w, h, stroke=1, fill=0)
+
+def _rodape(doc, largura, altura, lang, c, pagina):
+    doc.setFillColor(COR_CINZA_CLARO)
+    doc.setFont(_fonte(lang), 8)
+    doc.drawCentredString(largura / 2, 10 * mm,
+                          f"{c['titulo']} · DUNS 942242668 · {c['confidencial']} {c['ano']}")
+    doc.setFillColor(COR_DOURADO)
+    doc.setFont(_fonte(lang, True), 9)
+    doc.drawRightString(largura - 15 * mm, 10 * mm, str(pagina))
+
+# ------------------------------------------------------------
+# CAPA
+# ------------------------------------------------------------
+def _capa(doc, largura, altura, lang, modo):
+    c = CONTEUDO.get(lang, CONTEUDO["pt"])
+    doc.setFillColor(COR_PRETO)
+    doc.rect(0, 0, largura, altura, stroke=0, fill=1)
+    # Logo
+    if os.path.exists(LOGO_PATH):
+        try:
+            iw, ih = ImageReader(LOGO_PATH).getSize()
+            lw = min(largura * 0.28, iw)
+            lh = lw * ih / iw
+            doc.drawImage(LOGO_PATH, (largura - lw) / 2, altura * 0.60,
+                          width=lw, height=lh, mask="auto")
+        except Exception:
+            pass
+    doc.setFillColor(COR_DOURADO)
+    doc.setFont(_fonte(lang, True), 30 if modo == "texto" else 34)
+    doc.drawCentredString(largura / 2, altura * 0.47, c["titulo"])
+    doc.setFillColor(white)
+    doc.setFont(_fonte(lang), 14)
+    doc.drawCentredString(largura / 2, altura * 0.41, c["subtitulo"])
+    doc.setStrokeColor(COR_DOURADO)
+    doc.setLineWidth(0.8)
+    doc.line(largura * 0.30, altura * 0.385, largura * 0.70, altura * 0.385)
+    doc.setFillColor(HexColor("#AAAAAA"))
+    doc.setFont(_fonte(lang), 11)
+    doc.drawCentredString(largura / 2, altura * 0.35, c["capa_nota"])
+    doc.setFillColor(COR_DOURADO)
+    doc.setFont(_fonte(lang, True), 12)
+    doc.drawCentredString(largura / 2, altura * 0.28, "DUNS 942242668")
+    doc.setFillColor(HexColor("#888888"))
+    doc.setFont(_fonte(lang), 9)
+    doc.drawCentredString(largura / 2, altura * 0.08,
+                          f"{c['confidencial']}  {c['ano']}")
+
+# ------------------------------------------------------------
+# PÁGINAS DE CONTEÚDO (layout editorial)
+# ------------------------------------------------------------
+def _titulo_pagina(doc, largura, altura, lang, titulo, indice=None):
+    doc.setFillColor(COR_AZUL)
+    doc.rect(0, altura - 18 * mm, largura, 18 * mm, stroke=0, fill=1)
+    doc.setFillColor(white)
+    doc.setFont(_fonte(lang, True), 16)
+    doc.drawString(18 * mm, altura - 12 * mm, titulo)
+    if indice is not None:
+        doc.setFont(_fonte(lang, True), 11)
+        doc.drawRightString(largura - 18 * mm, altura - 12 * mm, "%02d" % indice)
+
+def _kpis_grid(doc, largura, altura, lang, kpis, y, colunas=4):
+    margem = 18 * mm
+    gap = 6 * mm
+    w = (largura - 2 * margem - (colunas - 1) * gap) / colunas
+    h = 30 * mm
+    x0 = margem
+    for i, (num, rot, sub) in enumerate(kpis):
+        x = x0 + i * (w + gap)
+        _caixa(doc, x, y - h, w, h, COR_FUNDO, COR_DOURADO)
+        doc.setFillColor(COR_DOURADO)
+        doc.setFont(_fonte(lang, True), 22)
+        doc.drawCentredString(x + w / 2, y - h + 18 * mm, num)
+        doc.setFillColor(COR_PRETO)
+        doc.setFont(_fonte(lang, True), 10)
+        doc.drawCentredString(x + w / 2, y - h + 10 * mm, rot)
+        doc.setFillColor(COR_CINZA)
+        doc.setFont(_fonte(lang), 8)
+        _texto_wrap(doc, sub, _fonte(lang), 8, x + 4 * mm, y - h + 5 * mm,
+                    w - 8 * mm, COR_CINZA, 3.5 * mm)
+    return y - h - 6 * mm
+
+def _tabela_editorial(doc, x, y, largura, dados, colunas_pct, tam=9):
+    tbl = Table(dados, colWidths=[largura * p for p in colunas_pct])
     tbl.setStyle(TableStyle([
         ("BACKGROUND", (0, 0), (-1, 0), COR_AZUL),
         ("TEXTCOLOR", (0, 0), (-1, 0), white),
-        ("FONTNAME", (0, 0), (-1, 0), FONTES["bold"]),
+        ("FONTNAME", (0, 0), (-1, 0), _fonte("pt", True)),
         ("FONTSIZE", (0, 0), (-1, -1), tam),
         ("TEXTCOLOR", (0, 1), (-1, -1), COR_PRETO),
         ("GRID", (0, 0), (-1, -1), 0.4, COR_CINZA_CLARO),
-        ("ROWBACKGROUNDS", (0, 1), (-1, -1), [white, HexColor("#F5F7FB")]),
-        ("ALIGN", (1, 0), (-1, -1), "CENTER"),
-        ("TOPPADDING", (0, 0), (-1, -1), 3),
-        ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
+        ("ROWBACKGROUNDS", (0, 1), (-1, -1), [white, COR_FUNDO]),
+        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+        ("TOPPADDING", (0, 0), (-1, -1), 5),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
+        ("LEFTPADDING", (0, 0), (-1, -1), 6),
+        ("RIGHTPADDING", (0, 0), (-1, -1), 6),
     ]))
     w, h = tbl.wrapOn(doc, largura, 600)
     tbl.drawOn(doc, x, y - h)
     return y - h
 
-def _dados_idiomas(tb):
-    linhas = [[tb["h_idioma"], tb["h_falantes"]]]
-    for nome, n in LINHAS_IDIOMAS:
-        linhas.append([nome, str(n)])
-    linhas.append(["TOTAL", "~5.320"])
-    return linhas, [0.6, 0.4]
-
-def _dados_banners(tb):
-    linhas = [[tb["h_seg"], tb["h_fixo"], tb["h_temp"]]]
-    for i, lab in enumerate(tb["seg"]):
-        fixo, temp = LINHAS_BANNERS[i]
-        linhas.append([lab, f"R$ {fixo}", f"R$ {temp}"])
-    return linhas, [0.5, 0.25, 0.25]
-
-def _dados_b2b(tb):
-    linhas = [[tb["h_de"], tb["h_desc"]]] + LINHAS_B2B
-    return linhas, [0.5, 0.5]
-
-def _dados_projecoes(tb):
-    linhas = [[tb["h_hor"], tb["h_cons"], tb["h_otim"]]]
-    for i, n in enumerate(HORIZONTES):
-        cons, otim = RANGES[i]
-        linhas.append([f"{tb['h_ano']} {n}", f"R$ {cons}", f"R$ {otim}"])
-    return linhas, [0.3, 0.35, 0.35]
-
-def _montar_tabela(doc, tabela, tb, x, y, largura, fonte, tam=9):
-    if tabela == "idiomas":
-        dados, cols = _dados_idiomas(tb)
-    elif tabela == "banners":
-        dados, cols = _dados_banners(tb)
-    elif tabela == "b2b":
-        dados, cols = _dados_b2b(tb)
-    else:
-        dados, cols = _dados_projecoes(tb)
-    return _tabela_pdf(doc, dados, cols, x, y, largura, fonte=fonte, tam=tam)
-
 # ------------------------------------------------------------
-# CAPA, MARCA D'ÁGUA E RODAPÉ
-# ------------------------------------------------------------
-def _capa(doc, largura, altura, lang, modo):
-    c = CONTEUDO.get(lang, CONTEUDO["pt"])
-    doc.saveState()
-    doc.setFillColor(HexColor("#0A0A0A"))
-    doc.rect(0, 0, largura, altura, stroke=0, fill=1)
-    logo = os.path.join(STATIC_DIR, "Logo.png")
-    if os.path.exists(logo):
-        try:
-            iw, ih = ImageReader(logo).getSize()
-            lw = min(largura * 0.30, iw)
-            lh = lw * ih / iw
-            doc.drawImage(logo, largura / 2 - lw / 2, altura * 0.60 - lh / 2,
-                          width=lw, height=lh, mask="auto")
-        except Exception as e:
-            logger.warning("Logo não desenhada: %s", e)
-    doc.setFillColor(COR_DOURADO)
-    doc.setFont(_fonte(lang, True), 30 if modo == "texto" else 34)
-    doc.drawCentredString(largura / 2, altura * 0.48, _chave(c, "titulo"))
-    doc.setFillColor(HexColor("#CCCCCC"))
-    doc.setFont(_fonte(lang), 13)
-    doc.drawCentredString(largura / 2, altura * 0.42, _chave(c, "subtitulo"))
-    doc.setStrokeColor(COR_DOURADO)
-    doc.setLineWidth(0.8)
-    doc.line(largura * 0.30, altura * 0.395, largura * 0.70, altura * 0.395)
-    doc.setFillColor(HexColor("#AAAAAA"))
-    doc.setFont(_fonte(lang), 11)
-    doc.drawCentredString(largura / 2, altura * 0.36,
-                          _chave(c, "capa_nota", "apresentacao_para", "sub_apresentacao") or
-                          "Apresentação para Investidores e Parceiros Estratégicos")
-    doc.setFillColor(COR_DOURADO)
-    doc.setFont(_fonte(lang, True), 12)
-    doc.drawCentredString(largura / 2, altura * 0.30, "DUNS 942242668")
-    doc.setFillColor(HexColor("#888888"))
-    doc.setFont(_fonte(lang), 9)
-    doc.drawCentredString(largura / 2, altura * 0.08,
-                          f"{_chave(c, 'confidencial') or 'CONFIDENCIAL'}  {_chave(c, 'ano') or '2026'}")
-    doc.restoreState()
-
-def _desenhar_marca_dagua(doc, largura, altura, lang):
-    doc.saveState()
-    doc.setStrokeAlpha(0.10)
-    doc.setStrokeColor(COR_DOURADO)
-    centro_x, centro_y = largura * 0.85, altura * 0.20
-    for r in (55, 75, 95):
-        doc.setLineWidth(0.7)
-        doc.circle(centro_x, centro_y, r, stroke=1, fill=0)
-    doc.setFont(_fonte(lang, True), 10)
-    for i in range(1, 10):
-        ang = i * (2 * math.pi / 9)
-        doc.setFillColor(COR_DOURADO)
-        doc.drawCentredString(centro_x + 70 * math.cos(ang),
-                              centro_y + 70 * math.sin(ang), str(i))
-    doc.restoreState()
-
-def _rodape(doc, largura, altura, lang, c):
-    doc.setFillColor(COR_DOURADO)
-    doc.setFont(_fonte(lang, True), 9)
-    doc.drawCentredString(largura / 2, 12 * mm,
-                          f"A1ELOS Global Numerology · DUNS 942242668 · "
-                          f"{_chave(c, 'confidencial') or 'CONFIDENCIAL'} {_chave(c, 'ano') or '2026'}")
-    doc.drawRightString(largura - 18 * mm, 12 * mm, str(doc.getPageNumber()))
-
-# ------------------------------------------------------------
-# DESENHO DE SEÇÃO (usada por texto e slides)
-# ------------------------------------------------------------
-def _desenhar_secao(doc, largura, altura, lang, c, tb, indice, titulo, texto, tabela, slides=False):
-    _desenhar_marca_dagua(doc, largura, altura, lang)
-    if slides:
-        barra = 22 * mm
-        corpo_y = altura - 40 * mm
-        tam_tit = 22 if len(titulo) <= 30 else 17
-        tam_corpo = 13
-        ent = 7.5 * mm
-        tab_tam = 10
-    else:
-        barra = 18 * mm
-        corpo_y = altura - 34 * mm
-        tam_tit = 15 if len(titulo) <= 32 else 13
-        tam_corpo = 11.5
-        ent = 6.2 * mm
-        tab_tam = 9
-    doc.setFillColor(COR_AZUL)
-    doc.rect(0, altura - barra, largura, barra, stroke=0, fill=1)
-    doc.setFillColor(white)
-    doc.setFont(_fonte(lang, True), 11)
-    doc.drawRightString(largura - 12 * mm, altura - (barra * 0.7), "%02d" % indice)
-    _texto_wrap(doc, titulo, _fonte(lang, True), tam_tit,
-                18 * mm, altura - (barra * 0.7), largura - 52 * mm,
-                white, 10 * mm, cjk=(lang in ("zh", "ja")))
-    doc.setStrokeColor(COR_DOURADO)
-    doc.setLineWidth(0.8)
-    doc.line(18 * mm, altura - barra - 3 * mm, largura - 18 * mm, altura - barra - 3 * mm)
-    y = corpo_y
-    if texto:
-        y = _texto_wrap(doc, texto, _fonte(lang), tam_corpo, 18 * mm, y,
-                        largura - 36 * mm, COR_PRETO, ent, cjk=(lang in ("zh", "ja")))
-    if tabela:
-        y = _montar_tabela(doc, tabela, tb, 18 * mm, y - 6 * mm,
-                           largura - 36 * mm, _fonte(lang), tab_tam)
-    _rodape(doc, largura, altura, lang, c)
-
-# ------------------------------------------------------------
-# GERADORES
+# GERADOR TEXTO (documento editorial)
 # ------------------------------------------------------------
 def gerar_pdf_texto(lang="pt", caminho_saida=None):
     _registrar_cid()
@@ -1071,66 +437,540 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     if lang not in CONTEUDO:
         lang = "pt"
     c = CONTEUDO[lang]
-    tb = TABELAS.get(lang, TABELAS["pt"])
     if not caminho_saida:
         caminho_saida = os.path.join(STATIC_DIR, f"apresentacao_{lang}.pdf")
     largura, altura = A4
     doc = canvas.Canvas(caminho_saida, pagesize=A4)
+    pagina = 1
+
+    # CAPA
     _capa(doc, largura, altura, lang, "texto")
     doc.showPage()
-    indice = 1
-    for flag, tit_chaves, txt_chaves, tabela in SECOES:
-        titulo = _achar(c, tit_chaves)
-        texto = _achar(c, txt_chaves)
-        if not titulo and not texto:
-            continue
-        _desenhar_secao(doc, largura, altura, lang, c, tb, indice,
-                        titulo or flag.capitalize(), texto, tabela, slides=False)
-        doc.showPage()
-        indice += 1
-    _desenhar_marca_dagua(doc, largura, altura, lang)
-    doc.setFillColor(COR_DOURADO)
-    doc.setFont(_fonte(lang, True), 16)
-    frase = _achar(c, ["frase_final", "frase"])
-    if frase:
-        doc.drawCentredString(largura / 2, altura * 0.58, frase)
-    contato = _achar(c, ["invest_texto", "contato", "contatos"])
-    if contato:
-        doc.setFillColor(HexColor("#555555"))
-        doc.setFont(_fonte(lang), 10)
-        doc.drawCentredString(largura / 2, altura * 0.52, contato)
+    pagina += 1
+
+    # SUMÁRIO EXECUTIVO
+    _titulo_pagina(doc, largura, altura, lang, "Sumário Executivo", 1)
+    y = altura - 32 * mm
+    y = _texto_wrap(doc, c["sumario_intro"], _fonte(lang), 11, 18 * mm, y,
+                    largura - 36 * mm, COR_CINZA, 5 * mm)
+    y -= 8 * mm
+    cards = c["sumario_cards"]
+    margem = 18 * mm
+    gap = 6 * mm
+    w = (largura - 2 * margem - 2 * gap) / 3
+    h = 26 * mm
+    for i, (num, tit, sub) in enumerate(cards):
+        col = i % 3
+        lin = i // 3
+        x = margem + col * (w + gap)
+        yy = y - lin * (h + 6 * mm)
+        _caixa(doc, x, yy - h, w, h, COR_FUNDO, COR_DOURADO)
+        doc.setFillColor(COR_DOURADO)
+        doc.setFont(_fonte(lang, True), 18)
+        doc.drawString(x + 6 * mm, yy - h + 16 * mm, num)
+        doc.setFillColor(COR_PRETO)
+        doc.setFont(_fonte(lang, True), 10)
+        doc.drawString(x + 6 * mm, yy - h + 10 * mm, tit)
+        doc.setFillColor(COR_CINZA)
+        doc.setFont(_fonte(lang), 8)
+        _texto_wrap(doc, sub, _fonte(lang), 8, x + 6 * mm, yy - h + 5 * mm,
+                    w - 12 * mm, COR_CINZA, 3.5 * mm)
+    _rodape(doc, largura, altura, lang, c, pagina)
     doc.showPage()
+    pagina += 1
+
+    # SOBRE + KPIs
+    _titulo_pagina(doc, largura, altura, lang, c["sobre_titulo"], 2)
+    y = altura - 32 * mm
+    y = _texto_wrap(doc, c["sobre_texto"], _fonte(lang), 11.5, 18 * mm, y,
+                    largura - 36 * mm, COR_PRETO, 6 * mm)
+    y -= 6 * mm
+    y = _kpis_grid(doc, largura, altura, lang, c["sobre_kpis"], y, 4)
+    y -= 4 * mm
+    _caixa(doc, 18 * mm, y - 16 * mm, largura - 36 * mm, 16 * mm, HexColor("#EEF2FA"), COR_AZUL)
+    doc.setFillColor(COR_AZUL)
+    doc.setFont(_fonte(lang, True), 9)
+    _texto_wrap(doc, c["sobre_duns"], _fonte(lang, True), 9, 22 * mm, y - 11 * mm,
+                largura - 44 * mm, COR_AZUL, 4 * mm)
+    _rodape(doc, largura, altura, lang, c, pagina)
+    doc.showPage()
+    pagina += 1
+
+    # CREDIBILIDADE (2 colunas)
+    _titulo_pagina(doc, largura, altura, lang, c["duns_titulo"], 3)
+    y = altura - 32 * mm
+    col_w = (largura - 36 * mm - 8 * mm) / 2
+    # Esquerda: DUNS gigante
+    _caixa(doc, 18 * mm, y - 70 * mm, col_w, 70 * mm, COR_PRETO, COR_DOURADO)
+    doc.setFillColor(COR_DOURADO)
+    doc.setFont(_fonte(lang, True), 28)
+    doc.drawCentredString(18 * mm + col_w / 2, y - 30 * mm, c["duns_numero"])
+    doc.setFillColor(white)
+    doc.setFont(_fonte(lang), 10)
+    _texto_wrap(doc, c["duns_emitido"], _fonte(lang), 10, 24 * mm, y - 44 * mm,
+                col_w - 12 * mm, white, 4.5 * mm)
+    doc.setFillColor(COR_DOURADO)
+    doc.setFont(_fonte(lang, True), 14)
+    doc.drawCentredString(18 * mm + col_w / 2, y - 62 * mm, c["duns_paises"])
+    # Direita: benefícios
+    xr = 18 * mm + col_w + 8 * mm
+    doc.setFillColor(COR_PRETO)
+    doc.setFont(_fonte(lang, True), 12)
+    doc.drawString(xr, y - 8 * mm, "Por que o DUNS importa?")
+    yy = y - 16 * mm
+    yy = _texto_wrap(doc, c["duns_texto"], _fonte(lang), 10, xr, yy,
+                     col_w, COR_CINZA, 4.5 * mm)
+    yy -= 6 * mm
+    for tit, sub in c["duns_beneficios"]:
+        _caixa(doc, xr, yy - 20 * mm, col_w, 20 * mm, COR_FUNDO, COR_DOURADO)
+        doc.setFillColor(COR_AZUL)
+        doc.setFont(_fonte(lang, True), 10)
+        doc.drawString(xr + 5 * mm, yy - 14 * mm, tit)
+        doc.setFillColor(COR_CINZA)
+        doc.setFont(_fonte(lang), 8)
+        _texto_wrap(doc, sub, _fonte(lang), 8, xr + 5 * mm, yy - 10 * mm,
+                    col_w - 10 * mm, COR_CINZA, 3.5 * mm)
+        yy -= 24 * mm
+    _rodape(doc, largura, altura, lang, c, pagina)
+    doc.showPage()
+    pagina += 1
+
+    # MERCADO
+    _titulo_pagina(doc, largura, altura, lang, c["mercado_titulo"], 4)
+    y = altura - 32 * mm
+    y = _texto_wrap(doc, c["mercado_texto"], _fonte(lang), 11.5, 18 * mm, y,
+                    largura - 36 * mm, COR_PRETO, 6 * mm)
+    y -= 6 * mm
+    y = _kpis_grid(doc, largura, altura, lang, c["mercado_cards"], y, 4)
+    _rodape(doc, largura, altura, lang, c, pagina)
+    doc.showPage()
+    pagina += 1
+
+    # PROBLEMA (2 colunas)
+    _titulo_pagina(doc, largura, altura, lang, c["problema_titulo"], 5)
+    y = altura - 32 * mm
+    col_w = (largura - 36 * mm - 8 * mm) / 2
+    # Esquerda
+    doc.setFillColor(COR_PRETO)
+    doc.setFont(_fonte(lang, True), 12)
+    doc.drawString(18 * mm, y - 8 * mm, c["problema_col_esq_titulo"])
+    yy = y - 16 * mm
+    for tit, sub in c["problema_col_esq"]:
+        _caixa(doc, 18 * mm, yy - 26 * mm, col_w, 26 * mm, COR_FUNDO, COR_DOURADO)
+        doc.setFillColor(COR_AZUL)
+        doc.setFont(_fonte(lang, True), 10)
+        doc.drawString(22 * mm, yy - 20 * mm, tit)
+        doc.setFillColor(COR_CINZA)
+        doc.setFont(_fonte(lang), 8)
+        _texto_wrap(doc, sub, _fonte(lang), 8, 22 * mm, yy - 15 * mm,
+                    col_w - 8 * mm, COR_CINZA, 3.5 * mm)
+        yy -= 30 * mm
+    # Direita
+    xr = 18 * mm + col_w + 8 * mm
+    doc.setFillColor(COR_PRETO)
+    doc.setFont(_fonte(lang, True), 12)
+    doc.drawString(xr, y - 8 * mm, c["problema_col_dir_titulo"])
+    yy = y - 16 * mm
+    yy = _texto_wrap(doc, c["problema_col_dir"], _fonte(lang), 10, xr, yy,
+                     col_w, COR_CINZA, 4.5 * mm)
+    yy -= 8 * mm
+    _caixa(doc, xr, yy - 34 * mm, col_w, 34 * mm, HexColor("#FFF3E0"), COR_DOURADO)
+    doc.setFillColor(COR_PRETO)
+    doc.setFont(_fonte(lang, True), 10)
+    _texto_wrap(doc, c["problema_destaque"], _fonte(lang, True), 10, xr + 6 * mm,
+                yy - 26 * mm, col_w - 12 * mm, COR_PRETO, 4.5 * mm)
+    _rodape(doc, largura, altura, lang, c, pagina)
+    doc.showPage()
+    pagina += 1
+
+    # SOLUÇÃO (3 colunas)
+    _titulo_pagina(doc, largura, altura, lang, c["solucao_titulo"], 6)
+    y = altura - 32 * mm
+    y = _texto_wrap(doc, c["solucao_texto"], _fonte(lang), 11.5, 18 * mm, y,
+                    largura - 36 * mm, COR_PRETO, 6 * mm)
+    y -= 8 * mm
+    col_w = (largura - 36 * mm - 2 * 8 * mm) / 3
+    for i, (tit, sub) in enumerate(c["solucao_colunas"]):
+        x = 18 * mm + i * (col_w + 8 * mm)
+        _caixa(doc, x, y - 60 * mm, col_w, 60 * mm, COR_FUNDO, COR_DOURADO)
+        doc.setFillColor(COR_AZUL)
+        doc.setFont(_fonte(lang, True), 11)
+        _texto_wrap(doc, tit, _fonte(lang, True), 11, x + 5 * mm, y - 12 * mm,
+                    col_w - 10 * mm, COR_AZUL, 5 * mm)
+        doc.setFillColor(COR_CINZA)
+        doc.setFont(_fonte(lang), 9)
+        _texto_wrap(doc, sub, _fonte(lang), 9, x + 5 * mm, y - 22 * mm,
+                    col_w - 10 * mm, COR_CINZA, 4.5 * mm)
+    _rodape(doc, largura, altura, lang, c, pagina)
+    doc.showPage()
+    pagina += 1
+
+    # ALCANCE + TABELA IDIOMAS
+    _titulo_pagina(doc, largura, altura, lang, c["alcance_titulo"], 7)
+    y = altura - 32 * mm
+    y = _texto_wrap(doc, c["alcance_texto"], _fonte(lang), 11, 18 * mm, y,
+                    largura - 36 * mm, COR_CINZA, 5 * mm)
+    y -= 8 * mm
+    dados = [["Idioma", "Falantes (mi)"]] + LINHAS_IDIOMAS + [["TOTAL", "~5.320"]]
+    y = _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm, dados, [0.6, 0.4], 9)
+    _rodape(doc, largura, altura, lang, c, pagina)
+    doc.showPage()
+    pagina += 1
+
+    # 3 NOVOS MERCADOS (3 colunas com bandeiras)
+    _titulo_pagina(doc, largura, altura, lang, c["mercados_titulo"], 8)
+    y = altura - 32 * mm
+    y = _texto_wrap(doc, c["mercados_texto"], _fonte(lang), 11, 18 * mm, y,
+                    largura - 36 * mm, COR_CINZA, 5 * mm)
+    y -= 8 * mm
+    col_w = (largura - 36 * mm - 2 * 8 * mm) / 3
+    for i, (tit, itens) in enumerate(c["mercados_cards"]):
+        x = 18 * mm + i * (col_w + 8 * mm)
+        _caixa(doc, x, y - 70 * mm, col_w, 70 * mm, COR_FUNDO, COR_DOURADO)
+        doc.setFillColor(COR_AZUL)
+        doc.setFont(_fonte(lang, True), 12)
+        doc.drawString(x + 5 * mm, y - 12 * mm, tit)
+        yy = y - 20 * mm
+        for item in itens:
+            doc.setFillColor(COR_CINZA)
+            doc.setFont(_fonte(lang), 9)
+            yy = _texto_wrap(doc, "•  " + item, _fonte(lang), 9, x + 5 * mm, yy,
+                             col_w - 10 * mm, COR_CINZA, 4.5 * mm)
+    y -= 78 * mm
+    _caixa(doc, 18 * mm, y - 18 * mm, largura - 36 * mm, 18 * mm, HexColor("#EEF2FA"), COR_AZUL)
+    doc.setFillColor(COR_AZUL)
+    doc.setFont(_fonte(lang, True), 9)
+    _texto_wrap(doc, c["mercados_rodape"], _fonte(lang, True), 9, 22 * mm, y - 11 * mm,
+                largura - 44 * mm, COR_AZUL, 4 * mm)
+    _rodape(doc, largura, altura, lang, c, pagina)
+    doc.showPage()
+    pagina += 1
+
+    # PREÇO (2 colunas)
+    _titulo_pagina(doc, largura, altura, lang, c["preco_titulo"], 9)
+    y = altura - 32 * mm
+    col_w = (largura - 36 * mm - 8 * mm) / 2
+    _caixa(doc, 18 * mm, y - 50 * mm, col_w, 50 * mm, COR_PRETO, COR_DOURADO)
+    doc.setFillColor(COR_DOURADO)
+    doc.setFont(_fonte(lang, True), 12)
+    doc.drawString(22 * mm, y - 14 * mm, "Preço Consciente")
+    doc.setFillColor(white)
+    doc.setFont(_fonte(lang), 10)
+    _texto_wrap(doc, c["preco_esq"], _fonte(lang), 10, 22 * mm, y - 22 * mm,
+                col_w - 8 * mm, white, 4.5 * mm)
+    xr = 18 * mm + col_w + 8 * mm
+    doc.setFillColor(COR_PRETO)
+    doc.setFont(_fonte(lang, True), 12)
+    doc.drawString(xr, y - 8 * mm, c["preco_dir_titulo"])
+    yy = y - 16 * mm
+    yy = _texto_wrap(doc, c["preco_dir"], _fonte(lang), 10, xr, yy, col_w,
+                     COR_CINZA, 4.5 * mm)
+    yy -= 6 * mm
+    for tit, sub in c["preco_pilares"]:
+        _caixa(doc, xr, yy - 20 * mm, col_w, 20 * mm, COR_FUNDO, COR_DOURADO)
+        doc.setFillColor(COR_AZUL)
+        doc.setFont(_fonte(lang, True), 10)
+        doc.drawString(xr + 5 * mm, yy - 14 * mm, tit)
+        doc.setFillColor(COR_CINZA)
+        doc.setFont(_fonte(lang), 8)
+        _texto_wrap(doc, sub, _fonte(lang), 8, xr + 5 * mm, yy - 10 * mm,
+                    col_w - 10 * mm, COR_CINZA, 3.5 * mm)
+        yy -= 24 * mm
+    _rodape(doc, largura, altura, lang, c, pagina)
+    doc.showPage()
+    pagina += 1
+
+    # PORTFÓLIO (tabela 4 colunas)
+    _titulo_pagina(doc, largura, altura, lang, c["portfolio_titulo"], 10)
+    y = altura - 32 * mm
+    y = _texto_wrap(doc, c["portfolio_texto"], _fonte(lang), 11, 18 * mm, y,
+                    largura - 36 * mm, COR_CINZA, 5 * mm)
+    y -= 8 * mm
+    y = _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
+                          c["portfolio_tabela"], [0.22, 0.38, 0.18, 0.22], 9)
+    y -= 6 * mm
+    doc.setFillColor(COR_CINZA)
+    doc.setFont(_fonte(lang), 9)
+    _texto_wrap(doc, c["portfolio_rodape"], _fonte(lang), 9, 18 * mm, y,
+                largura - 36 * mm, COR_CINZA, 4 * mm)
+    _rodape(doc, largura, altura, lang, c, pagina)
+    doc.showPage()
+    pagina += 1
+
+    # NEGÓCIO (3 colunas)
+    _titulo_pagina(doc, largura, altura, lang, c["negocio_titulo"], 11)
+    y = altura - 32 * mm
+    y = _texto_wrap(doc, c["negocio_texto"], _fonte(lang), 11, 18 * mm, y,
+                    largura - 36 * mm, COR_CINZA, 5 * mm)
+    y -= 8 * mm
+    col_w = (largura - 36 * mm - 2 * 8 * mm) / 3
+    for i, (tit, sub) in enumerate(c["negocio_colunas"]):
+        x = 18 * mm + i * (col_w + 8 * mm)
+        _caixa(doc, x, y - 60 * mm, col_w, 60 * mm, COR_FUNDO, COR_DOURADO)
+        doc.setFillColor(COR_AZUL)
+        doc.setFont(_fonte(lang, True), 11)
+        _texto_wrap(doc, tit, _fonte(lang, True), 11, x + 5 * mm, y - 12 * mm,
+                    col_w - 10 * mm, COR_AZUL, 5 * mm)
+        doc.setFillColor(COR_CINZA)
+        doc.setFont(_fonte(lang), 9)
+        _texto_wrap(doc, sub, _fonte(lang), 9, x + 5 * mm, y - 22 * mm,
+                    col_w - 10 * mm, COR_CINZA, 4.5 * mm)
+    _rodape(doc, largura, altura, lang, c, pagina)
+    doc.showPage()
+    pagina += 1
+
+    # BANNERS (tabela 4 colunas)
+    _titulo_pagina(doc, largura, altura, lang, c["banners_titulo"], 12)
+    y = altura - 32 * mm
+    y = _texto_wrap(doc, c["banners_texto"], _fonte(lang), 11, 18 * mm, y,
+                    largura - 36 * mm, COR_CINZA, 5 * mm)
+    y -= 8 * mm
+    y = _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
+                          c["banners_tabela"], [0.24, 0.20, 0.24, 0.32], 9)
+    y -= 8 * mm
+    _caixa(doc, 18 * mm, y - 20 * mm, largura - 36 * mm, 20 * mm, HexColor("#EEF2FA"), COR_AZUL)
+    doc.setFillColor(COR_AZUL)
+    doc.setFont(_fonte(lang), 9)
+    _texto_wrap(doc, c["banners_formatos"], _fonte(lang), 9, 22 * mm, y - 12 * mm,
+                largura - 44 * mm, COR_AZUL, 4 * mm)
+    _rodape(doc, largura, altura, lang, c, pagina)
+    doc.showPage()
+    pagina += 1
+
+    # B2B (3 planos + tabela)
+    _titulo_pagina(doc, largura, altura, lang, c["b2b_titulo"], 13)
+    y = altura - 32 * mm
+    y = _texto_wrap(doc, c["b2b_texto"], _fonte(lang), 11, 18 * mm, y,
+                    largura - 36 * mm, COR_CINZA, 5 * mm)
+    y -= 8 * mm
+    col_w = (largura - 36 * mm - 2 * 8 * mm) / 3
+    for i, (tit, sub) in enumerate(c["b2b_planos"]):
+        x = 18 * mm + i * (col_w + 8 * mm)
+        _caixa(doc, x, y - 38 * mm, col_w, 38 * mm, COR_FUNDO, COR_DOURADO)
+        doc.setFillColor(COR_AZUL)
+        doc.setFont(_fonte(lang, True), 10)
+        _texto_wrap(doc, tit, _fonte(lang, True), 10, x + 5 * mm, y - 10 * mm,
+                    col_w - 10 * mm, COR_AZUL, 4.5 * mm)
+        doc.setFillColor(COR_CINZA)
+        doc.setFont(_fonte(lang), 8)
+        _texto_wrap(doc, sub, _fonte(lang), 8, x + 5 * mm, y - 18 * mm,
+                    col_w - 10 * mm, COR_CINZA, 3.8 * mm)
+    y -= 46 * mm
+    doc.setFillColor(COR_PRETO)
+    doc.setFont(_fonte(lang, True), 11)
+    doc.drawString(18 * mm, y - 6 * mm, "Tabela de Descontos Progressivos")
+    y -= 12 * mm
+    _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
+                      c["b2b_tabela"], [0.22, 0.18, 0.28, 0.32], 9)
+    _rodape(doc, largura, altura, lang, c, pagina)
+    doc.showPage()
+    pagina += 1
+
+    # PROJEÇÕES (tabela)
+    _titulo_pagina(doc, largura, altura, lang, c["projecoes_titulo"], 14)
+    y = altura - 32 * mm
+    y = _texto_wrap(doc, c["projecoes_texto"], _fonte(lang), 11, 18 * mm, y,
+                    largura - 36 * mm, COR_CINZA, 5 * mm)
+    y -= 8 * mm
+    _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
+                      c["projecoes_tabela"], [0.3, 0.35, 0.35], 9)
+    _rodape(doc, largura, altura, lang, c, pagina)
+    doc.showPage()
+    pagina += 1
+
+    # TRAÇÃO (KPIs)
+    _titulo_pagina(doc, largura, altura, lang, c["tracao_titulo"], 15)
+    y = altura - 32 * mm
+    y = _texto_wrap(doc, c["tracao_texto"], _fonte(lang), 11, 18 * mm, y,
+                    largura - 36 * mm, COR_CINZA, 5 * mm)
+    y -= 6 * mm
+    _kpis_grid(doc, largura, altura, lang, c["tracao_kpis"], y, 4)
+    _rodape(doc, largura, altura, lang, c, pagina)
+    doc.showPage()
+    pagina += 1
+
+    # ROTEIRO (4 fases em grid)
+    _titulo_pagina(doc, largura, altura, lang, c["roteiro_titulo"], 16)
+    y = altura - 32 * mm
+    y = _texto_wrap(doc, c["roteiro_texto"], _fonte(lang), 11, 18 * mm, y,
+                    largura - 36 * mm, COR_CINZA, 5 * mm)
+    y -= 8 * mm
+    col_w = (largura - 36 * mm - 8 * mm) / 2
+    for i, (tit, sub) in enumerate(c["roteiro_fases"]):
+        col = i % 2
+        lin = i // 2
+        x = 18 * mm + col * (col_w + 8 * mm)
+        yy = y - lin * (44 * mm + 6 * mm)
+        _caixa(doc, x, yy - 44 * mm, col_w, 44 * mm, COR_FUNDO, COR_DOURADO)
+        doc.setFillColor(COR_AZUL)
+        doc.setFont(_fonte(lang, True), 11)
+        doc.drawString(x + 5 * mm, yy - 14 * mm, tit)
+        doc.setFillColor(COR_CINZA)
+        doc.setFont(_fonte(lang), 9)
+        _texto_wrap(doc, sub, _fonte(lang), 9, x + 5 * mm, yy - 22 * mm,
+                    col_w - 10 * mm, COR_CINZA, 4.5 * mm)
+    _rodape(doc, largura, altura, lang, c, pagina)
+    doc.showPage()
+    pagina += 1
+
+    # INVESTIMENTO (2 colunas)
+    _titulo_pagina(doc, largura, altura, lang, c["invest_titulo"], 17)
+    y = altura - 32 * mm
+    y = _texto_wrap(doc, c["invest_texto"], _fonte(lang), 11, 18 * mm, y,
+                    largura - 36 * mm, COR_CINZA, 5 * mm)
+    y -= 8 * mm
+    col_w = (largura - 36 * mm - 8 * mm) / 2
+    # Esquerda: dados de investimento
+    _caixa(doc, 18 * mm, y - 60 * mm, col_w, 60 * mm, COR_PRETO, COR_DOURADO)
+    yy = y - 14 * mm
+    for tit, val in c["invest_dados"]:
+        doc.setFillColor(COR_DOURADO)
+        doc.setFont(_fonte(lang, True), 10)
+        doc.drawString(22 * mm, yy, tit)
+        doc.setFillColor(white)
+        doc.setFont(_fonte(lang, True), 14)
+        doc.drawString(22 * mm, yy - 7 * mm, val)
+        yy -= 18 * mm
+    # Direita: contatos
+    xr = 18 * mm + col_w + 8 * mm
+    doc.setFillColor(COR_PRETO)
+    doc.setFont(_fonte(lang, True), 12)
+    doc.drawString(xr, y - 8 * mm, "Fale Conosco")
+    yy = y - 16 * mm
+    for tit, val in c["invest_contato"]:
+        doc.setFillColor(COR_AZUL)
+        doc.setFont(_fonte(lang, True), 10)
+        doc.drawString(xr, yy, tit)
+        doc.setFillColor(COR_CINZA)
+        doc.setFont(_fonte(lang), 10)
+        doc.drawString(xr, yy - 6 * mm, val)
+        yy -= 14 * mm
+    y -= 70 * mm
+    _caixa(doc, 18 * mm, y - 16 * mm, largura - 36 * mm, 16 * mm, HexColor("#EEF2FA"), COR_AZUL)
+    doc.setFillColor(COR_AZUL)
+    doc.setFont(_fonte(lang, True), 9)
+    doc.drawCentredString(largura / 2, y - 10 * mm, c["invest_alocacao"])
+    _rodape(doc, largura, altura, lang, c, pagina)
+    doc.showPage()
+    pagina += 1
+
+    # PÁGINA FINAL
+    doc.setFillColor(COR_PRETO)
+    doc.rect(0, 0, largura, altura, stroke=0, fill=1)
+    doc.setFillColor(COR_DOURADO)
+    doc.setFont(_fonte(lang, True), 20)
+    doc.drawCentredString(largura / 2, altura * 0.60, c["frase_final"])
+    # Selo
+    selo = c["selo_final"]
+    margem = 18 * mm
+    gap = 6 * mm
+    n = len(selo)
+    w = (largura - 2 * margem - (n - 1) * gap) / n
+    for i, item in enumerate(selo):
+        x = margem + i * (w + gap)
+        _caixa(doc, x, altura * 0.40, w, 20 * mm, None, COR_DOURADO)
+        doc.setFillColor(COR_DOURADO)
+        doc.setFont(_fonte(lang, True), 10)
+        doc.drawCentredString(x + w / 2, altura * 0.47, item)
+    _rodape(doc, largura, altura, lang, c, pagina)
+    doc.showPage()
+
     doc.save()
-    logger.info("PDF texto gerado: %s", caminho_saida)
+    logger.info("PDF texto editorial gerado: %s", caminho_saida)
     return caminho_saida
 
+# ------------------------------------------------------------
+# GERADOR SLIDES (deck)
+# ------------------------------------------------------------
 def gerar_pdf_slides(lang="pt", caminho_saida=None):
     _registrar_cid()
     _registrar_fontes_extra()
     if lang not in CONTEUDO:
         lang = "pt"
     c = CONTEUDO[lang]
-    tb = TABELAS.get(lang, TABELAS["pt"])
     if not caminho_saida:
         caminho_saida = os.path.join(STATIC_DIR, f"apresentacao_slides_{lang}.pdf")
     largura, altura = landscape(A4)
     doc = canvas.Canvas(caminho_saida, pagesize=landscape(A4))
+    pagina = 1
     _capa(doc, largura, altura, lang, "slides")
     doc.showPage()
-    indice = 1
-    for flag, tit_chaves, txt_chaves, tabela in SECOES:
-        titulo = _achar(c, tit_chaves)
-        texto = _achar(c, txt_chaves)
-        if not titulo and not texto:
-            continue
-        _desenhar_secao(doc, largura, altura, lang, c, tb, indice,
-                        titulo or flag.capitalize(), texto, tabela, slides=True)
+    pagina += 1
+    # Slides principais (uma seção por slide)
+    secoes = [
+        ("Sumário Executivo", c["sumario_intro"], None),
+        (c["sobre_titulo"], c["sobre_texto"], None),
+        (c["duns_titulo"], c["duns_texto"], None),
+        (c["mercado_titulo"], c["mercado_texto"], None),
+        (c["problema_titulo"], c["problema_col_dir"], None),
+        (c["solucao_titulo"], c["solucao_texto"], None),
+        (c["alcance_titulo"], c["alcance_texto"], None),
+        (c["mercados_titulo"], c["mercados_texto"], None),
+        (c["preco_titulo"], c["preco_esq"], None),
+        (c["portfolio_titulo"], c["portfolio_texto"], None),
+        (c["negocio_titulo"], c["negocio_texto"], None),
+        (c["banners_titulo"], c["banners_texto"], None),
+        (c["b2b_titulo"], c["b2b_texto"], None),
+        (c["projecoes_titulo"], c["projecoes_texto"], None),
+        (c["tracao_titulo"], c["tracao_texto"], None),
+        (c["roteiro_titulo"], c["roteiro_texto"], None),
+        (c["invest_titulo"], c["invest_texto"], None),
+    ]
+    for i, (tit, texto, _tabela) in enumerate(secoes, 1):
+        doc.setFillColor(COR_AZUL)
+        doc.rect(0, altura - 16 * mm, largura, 16 * mm, stroke=0, fill=1)
+        doc.setFillColor(white)
+        doc.setFont(_fonte(lang, True), 18)
+        doc.drawString(15 * mm, altura - 11 * mm, tit)
+        doc.setFont(_fonte(lang, True), 11)
+        doc.drawRightString(largura - 15 * mm, altura - 11 * mm, "%02d" % i)
+        doc.setFillColor(COR_PRETO)
+        doc.setFont(_fonte(lang), 13)
+        y = _texto_wrap(doc, texto, _fonte(lang), 13, 15 * mm, altura - 34 * mm,
+                        largura - 30 * mm, COR_PRETO, 7 * mm)
+        _rodape(doc, largura, altura, lang, c, i + 1)
         doc.showPage()
-        indice += 1
+    # Página final
+    doc.setFillColor(COR_PRETO)
+    doc.rect(0, 0, largura, altura, stroke=0, fill=1)
+    doc.setFillColor(COR_DOURADO
+
+            # Rodapé
+        doc.setFillColor(COR_CINZA_CLARO)
+        doc.setFont(_fonte(lang), 8)
+        doc.drawCentredString(largura / 2, 10 * mm,
+                              f"{c['titulo']} · DUNS 942242668 · {c['confidencial']} {c['ano']}")
+        doc.setFillColor(COR_DOURADO)
+        doc.setFont(_fonte(lang, True), 9)
+        doc.drawRightString(largura - 15 * mm, 10 * mm, str(i + 1))
+        doc.showPage()
+    # Página final
+    doc.setFillColor(COR_PRETO)
+    doc.rect(0, 0, largura, altura, stroke=0, fill=1)
+    doc.setFillColor(COR_DOURADO)
+    doc.setFont(_fonte(lang, True), 20)
+    doc.drawCentredString(largura / 2, altura * 0.60, c["frase_final"])
+    selo = c["selo_final"]
+    margem = 18 * mm
+    gap = 6 * mm
+    n = len(selo)
+    w = (largura - 2 * margem - (n - 1) * gap) / n
+    for i, item in enumerate(selo):
+        x = margem + i * (w + gap)
+        doc.setStrokeColor(COR_DOURADO)
+        doc.setLineWidth(0.8)
+        doc.rect(x, altura * 0.40, w, 20 * mm, stroke=1, fill=0)
+        doc.setFillColor(COR_DOURADO)
+        doc.setFont(_fonte(lang, True), 10)
+        doc.drawCentredString(x + w / 2, altura * 0.47, item)
+    doc.showPage()
     doc.save()
-    logger.info("PDF slides gerado: %s", caminho_saida)
+    logger.info("PDF slides editorial gerado: %s", caminho_saida)
     return caminho_saida
 
+# ------------------------------------------------------------
+# ENTRADA PRINCIPAL
+# ------------------------------------------------------------
 def gerar_apresentacao(lang="pt", modo="texto"):
     if modo == "slides":
         return gerar_pdf_slides(lang)
