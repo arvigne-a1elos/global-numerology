@@ -675,7 +675,7 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
                     largura - 36 * mm, COR_CINZA, 5 * mm)
     y -= 8 * mm
     col_w = (largura - 36 * mm - 2 * 8 * mm) / 3
-        paises = ["id", "tr", "vn"]
+    paises = ["id", "tr", "vn"]
     for i, (tit, itens) in enumerate(c["mercados_cards"]):
         x = 18 * mm + i * (col_w + 8 * mm)
         _caixa(doc, x, y - 70 * mm, col_w, 70 * mm, COR_FUNDO, COR_DOURADO)
