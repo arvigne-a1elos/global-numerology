@@ -393,7 +393,7 @@ def _kpis_grid(doc, largura, altura, lang, kpis, y, colunas=4):
     w = (largura - 2 * margem - (colunas - 1) * gap) / colunas
     h = 30 * mm
     x0 = margem
-        for i, item in enumerate(kpis):
+    for i, item in enumerate(kpis):
         if len(item) == 3:
             num, rot, sub = item
         else:
@@ -423,8 +423,7 @@ def _kpis_grid(doc, largura, altura, lang, kpis, y, colunas=4):
                 doc.setFont(_fonte(lang), 8)
                 _texto_wrap(doc, sub, _fonte(lang), 8, x + 4 * mm, y - h + 5 * mm,
                             w - 8 * mm, COR_CINZA, 3.5 * mm)
-         return y - h - 6 * mm
-
+    return y - h - 6 * mm
 def _tabela_editorial(doc, x, y, largura, dados, colunas_pct, tam=9):
     tbl = Table(dados, colWidths=[largura * p for p in colunas_pct])
     tbl.setStyle(TableStyle([
