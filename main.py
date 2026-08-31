@@ -125,6 +125,25 @@ SIMBOLO = {
     "he": "₪", "ar": "﷼"
 }
 
+# ===== HEALTH CHECK PARA O RENDER (evita o "Timed Out") =====
+from fastapi.responses import Response
+
+@app.get("/", include_in_schema=False)
+async def index():
+    return RedirectResponse(url="/static/index.html")
+
+@app.head("/", include_in_schema=False)
+async def index_head():
+    return Response(status_code=200)
+
+@app.get("/health", include_in_schema=False)
+async def health():
+    return {"status": "ok"}
+
+@app.head("/health", include_in_schema=False)
+async def health_head():
+    return Response(status_code=200)
+
 # ===== FAIXAS DE PREÇO (23 produtos) =====
 PRODUTO_FAIXA = {
     "express": 0, "vida": 0, "completo": 1, "ia": 1,
@@ -442,21 +461,6 @@ PRODUTO_TARGET = {
     "nome_canal": "calculadora", "nome_equipe": "calculadora", "nome_ong": "calculadora",
     "nome_projeto": "calculadora", "nome_evento": "calculadora"
 }
-
-# ===== ROTAS DE APRESENTAÇÃO (novo gerador) =====
-from apresentacao_textos import gerar_apresentacao
-
-@app.get("/api/apresentacao")
-async def get_apresentacao(lang: str = "pt"):
-    caminho = gerar_apresentacao(lang, "texto")
-    return FileResponse(caminho, media_type="application/pdf",
-                        filename=f"Apresentacao-{lang}.pdf")
-
-@app.get("/api/apresentacao-slides")
-async def get_apresentacao_slides(lang: str = "pt"):
-    caminho = gerar_apresentacao(lang, "slides")
-    return FileResponse(caminho, media_type="application/pdf",
-                        filename=f"Apresentacao-Slides-{lang}.pdf")
 
 # ===== MODELOS PYDANTIC =====
 class PayReq(BaseModel):
