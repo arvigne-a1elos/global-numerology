@@ -761,6 +761,89 @@ TABELAS = {
            "seg": ["Quốc gia", "Châu lục", "Thế giới", "Tài trợ độc quyền"]},
 }
 
+def gerar_pdf_texto(lang="pt", caminho_saida=None):
+    """Gera a apresentação em formato de documento (texto) com capa e tabelas."""
+    if lang not in CONTEUDO:
+        lang = "pt"
+    if not caminho_saida:
+        caminho_saida = os.path.join(STATIC_DIR, f"apresentacao_{lang}.pdf")
+    c = CONTEUDO[lang]
+    tb = TABELAS.get(lang, TABELAS["pt"])
+    largura, altura = A4
+    doc = canvas.Canvas(caminho_saida, pagesize=A4)
+
+    # Capa (fundo preto + logo + título dourado)
+    _capa(doc, largura, altura, lang, "texto")
+    doc.showPage()
+
+    secoes = [
+        (c["sobre_titulo"], c["sobre_texto"]),
+        (c["duns_titulo"], c["duns_texto"]),
+        (c["mercado_titulo"], c["mercado_texto"]),
+        (c["problema_titulo"], c["problema_texto"]),
+        (c["solucao_titulo"], c["solucao_texto"]),
+        (c["alcance_titulo"], c["alcance_texto"]),
+        (c["mercados_titulo"], c["mercados_texto"]),
+        (c["preco_titulo"], c["preco_texto"]),
+        (c["portfolio_titulo"], c["portfolio_texto"]),
+        (c["negocio_titulo"], c["negocio_texto"]),
+        (c["banners_titulo"], c["banners_texto"]),
+        (c["b2b_titulo"], c["b2b_texto"]),
+        (c["projecoes_titulo"], c["projecoes_texto"]),
+        (c["tracao_titulo"], c["tracao_texto"]),
+        (c["roteiro_titulo"], c["roteiro_texto"]),
+        (c["invest_titulo"], c["invest_texto"]),
+    ]
+    for titulo, texto in secoes:
+        _desenhar_marca_dagua(doc, largura, altura, lang)
+        # Faixa azul com o título da seção
+        doc.setFillColor(COR_AZUL)
+        doc.rect(0, altura - 16 * mm, largura, 16 * mm, stroke=0, fill=1)
+        doc.setFillColor(white)
+        doc.setFont(FONTES["bold"], 17)
+        doc.drawString(18 * mm, altura - 11 * mm, titulo)
+        # Corpo do texto
+        y = _texto_wrap(doc, texto, _fonte(lang), 12, 18 * mm,
+                        altura - 28 * mm, largura - 36 * mm, COR_PRETO, 7 * mm)
+        # Tabela dos 14 idiomas
+        if titulo == c["alcance_titulo"]:
+            linhas = [[tb["h_idioma"], tb["h_falantes"]]] + \
+                     [[nome, str(n)] for nome, n in LINHAS_IDIOMAS] + \
+                     [["TOTAL", "~5.320"]]
+            y = _tabela_pdf(doc, linhas, [0.6, 0.4], 18 * mm, y - 6 * mm,
+                            largura - 36 * mm, fonte=_fonte(lang))
+        # Tabela de banners
+        elif titulo == c["banners_titulo"]:
+            linhas = [[tb["h_seg"], tb["h_fixo"], tb["h_temp"]]]
+            for i, lab in enumerate(tb["seg"]):
+                fixo, temp = LINHAS_BANNERS[i]
+                linhas.append([lab, f"R$ {fixo}", f"R$ {temp}"])
+            y = _tabela_pdf(doc, linhas, [0.5, 0.25, 0.25], 18 * mm, y - 6 * mm,
+                            largura - 36 * mm, fonte=_fonte(lang))
+        # Tabela de descontos B2B
+        elif titulo == c["b2b_titulo"]:
+            linhas = [[tb["h_de"], tb["h_desc"]]] + LINHAS_B2B
+            y = _tabela_pdf(doc, linhas, [0.5, 0.5], 18 * mm, y - 6 * mm,
+                            largura - 36 * mm, fonte=_fonte(lang))
+        # Tabela de projeções (8 horizontes)
+        elif titulo == c["projecoes_titulo"]:
+            linhas = [[tb["h_hor"], tb["h_cons"], tb["h_otim"]]]
+            for i, n in enumerate(HORIZONTES):
+                cons, otim = RANGES[i]
+                linhas.append([f"{tb['h_ano']} {n}", f"R$ {cons}", f"R$ {otim}"])
+            y = _tabela_pdf(doc, linhas, [0.3, 0.35, 0.35], 18 * mm, y - 6 * mm,
+                            largura - 36 * mm, fonte=_fonte(lang))
+        # Rodapé dourado
+        doc.setFillColor(COR_DOURADO)
+        doc.setFont(FONTES["bold"], 9)
+        doc.drawCentredString(largura / 2, 12 * mm,
+                              f"{c['titulo']} · DUNS 942242668 · {c['confidencial']} {c['ano']}")
+        doc.showPage()
+
+    doc.save()
+    logger.info(f"PDF texto gerado: {caminho_saida}")
+    return caminho_saida
+
 # ------------------------------------------------------------
 # 4c. FUNÇÕES AUXILIARES DE DESENHO (texto e tabelas)
 # ------------------------------------------------------------
