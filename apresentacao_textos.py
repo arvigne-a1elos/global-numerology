@@ -972,6 +972,45 @@ if "_rodape" not in globals():
                               f"{_chave(c, 'confidencial') or 'CONFIDENCIAL'} {_chave(c, 'ano') or '2026'}")
         doc.drawRightString(largura - 18 * mm, 12 * mm, str(doc.getPageNumber()))
 
+# ------------------------------------------------------------
+# BLOCO CORRETIVO — montagem das tabelas (_montar_tabela e auxiliares)
+# ------------------------------------------------------------
+def _dados_idiomas(tb):
+    linhas = [[tb["h_idioma"], tb["h_falantes"]]]
+    for nome, n in LINHAS_IDIOMAS:
+        linhas.append([nome, str(n)])
+    linhas.append(["TOTAL", "~5.320"])
+    return linhas, [0.6, 0.4]
+
+def _dados_banners(tb):
+    linhas = [[tb["h_seg"], tb["h_fixo"], tb["h_temp"]]]
+    for i, lab in enumerate(tb["seg"]):
+        fixo, temp = LINHAS_BANNERS[i]
+        linhas.append([lab, f"R$ {fixo}", f"R$ {temp}"])
+    return linhas, [0.5, 0.25, 0.25]
+
+def _dados_b2b(tb):
+    linhas = [[tb["h_de"], tb["h_desc"]]] + LINHAS_B2B
+    return linhas, [0.5, 0.5]
+
+def _dados_projecoes(tb):
+    linhas = [[tb["h_hor"], tb["h_cons"], tb["h_otim"]]]
+    for i, n in enumerate(HORIZONTES):
+        cons, otim = RANGES[i]
+        linhas.append([f"{tb['h_ano']} {n}", f"R$ {cons}", f"R$ {otim}"])
+    return linhas, [0.3, 0.35, 0.35]
+
+def _montar_tabela(doc, tabela, tb, x, y, largura, fonte, tam=9):
+    if tabela == "idiomas":
+        dados, cols = _dados_idiomas(tb)
+    elif tabela == "banners":
+        dados, cols = _dados_banners(tb)
+    elif tabela == "b2b":
+        dados, cols = _dados_b2b(tb)
+    else:
+        dados, cols = _dados_projecoes(tb)
+    return _tabela_pdf(doc, dados, cols, x, y, largura, fonte=fonte, tam=tam)
+
 def gerar_pdf_texto(lang="pt", caminho_saida=None):
     """Gera a apresentação em formato de documento (texto) com capa e tabelas."""
     if lang not in CONTEUDO:
