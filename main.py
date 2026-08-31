@@ -31,6 +31,7 @@ import dateutil.parser as dp
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse, Response
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -124,10 +125,7 @@ SIMBOLO = {
     "ja": "¥", "zh": "¥", "ru": "₽", "id": "Rp", "tr": "₺", "vi": "₫",
     "he": "₪", "ar": "﷼"
 }
-
 # ===== HEALTH CHECK PARA O RENDER (evita o "Timed Out") =====
-from fastapi.responses import Response
-
 @app.get("/", include_in_schema=False)
 async def index():
     return RedirectResponse(url="/static/index.html")
