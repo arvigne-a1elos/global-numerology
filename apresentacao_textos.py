@@ -2438,9 +2438,9 @@ CONTEUDO = {
         ],
         "invest_alocacao": "Phân bổ vốn: 45% Công nghệ · 30% Tiếp thị · 25% Vận hành",
         "frase_final": "Các con số không bao giờ nói dối.",
-        "selo_final": ["DUNS 942242668", "23 SẢN PHẨM", "14 NGÔN NGỮ", "~5,3 TỶ NGƯỜI NÓI"],
+        "selo_final": ["DUNS 942242668", "23 SẢN PHẨM", "14 NGÔN NGỮ", "~5,3 TỶ NGƯỜI NÓI"]
     },
-   } 
+  } 
 # ------------------------------------------------------------
 # DADOS NUMÉRICOS DAS TABELAS
 # ------------------------------------------------------------
