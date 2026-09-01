@@ -31,4 +31,4 @@ def diagnosticar(caminho):
 
 if __name__ == "__main__":
     diagnosticar(sys.argv[1] if len(sys.argv) > 1 else "apresentacao_textos.py")
-python diagnostico.py apresentacao_textos.py
+
