@@ -981,8 +981,12 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
         doc.setFont(_fonte(lang), 9)
         _texto_wrap(doc, sub, _fonte(lang), 9, x + 5 * mm, y - 22 * mm,
                     col_w - 10 * mm, COR_CINZA, 4.5 * mm)
-    _grafico_pizza(doc, 18 * mm, y - 78 * mm, largura - 36 * mm, 68 * mm,
-                   ["B2C", "B2B", "Publicidade"], [60, 25, 15], "Composição da Receita")
+    _tabela_editorial(doc, 18 * mm, y - 60 * mm, largura - 36 * mm,
+                      [["Fonte de Receita", "Participação"],
+                       ["B2C — 14 Idiomas", "60%"],
+                       ["B2B — Descontos Progressivos", "25%"],
+                       ["Publicidade Geolocalizada", "15%"]],
+                      [0.7, 0.3], 10)
     _rodape(doc, largura, altura, lang, c, pagina)
     doc.showPage()
     pagina += 1
