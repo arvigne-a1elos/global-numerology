@@ -622,6 +622,75 @@ def _grafico_pizza(doc, x, y, w, h, rotulos, valores, titulo):
     except Exception as e:
         logger.warning("Grafico pizza: %s", e)
 
+def _grafico_linha(doc, x, y, w, h, categorias, series, titulo, cores=None):
+    """Linha do tempo com linhas grossas e coloridas (crescimento)."""
+    try:
+        n = len(categorias)
+        if n == 0:
+            return
+        paleta = cores or [COR_AZUL, COR_DOURADO, HexColor("#3B82F6")]
+        max_v = 1
+        for nome, valores in series:
+            max_v = max(max_v, max([abs(v) for v in valores]))
+        area_x = x + 20
+        area_y = y + 8
+        area_w = w - 40 - 110
+        area_h = h - 30
+        # titulo
+        doc.setFillColor(COR_PRETO)
+        doc.setFont(_fonte("pt", True), 9)
+        doc.drawCentredString(x + w / 2, y + h - 12, titulo)
+        # grade
+        doc.setStrokeColor(HexColor("#D8DAE0"))
+        doc.setLineWidth(0.5)
+        for g_i in range(5):
+            gy = area_y + (g_i / 4.0) * (area_h - 6)
+            doc.line(area_x, gy, area_x + area_w, gy)
+            doc.setFillColor(COR_CINZA_CLARO)
+            doc.setFont(_fonte("pt"), 6)
+            doc.drawRightString(area_x - 3, gy - 2,
+                                format(int(max_v * g_i / 4.0), ",").replace(",", "."))
+        # linhas grossas e coloridas
+        for si, (nome, valores) in enumerate(series):
+            cor = paleta[si % len(paleta)]
+            pts = []
+            for i, v in enumerate(valores):
+                px = area_x + (i / (n - 1)) * area_w
+                py = area_y + (v / max_v) * (area_h - 6)
+                pts.append((px, py))
+            doc.setStrokeColor(cor)
+            doc.setLineWidth(3)
+            p = doc.beginPath()
+            p.moveTo(*pts[0])
+            for pt in pts[1:]:
+                p.lineTo(*pt)
+            doc.drawPath(p, stroke=1, fill=0)
+            for px, py in pts:
+                doc.setFillColor(cor)
+                doc.circle(px, py, 2.5, stroke=0, fill=1)
+        # rotulos das categorias (abaixo, em tom escuro, sem rotacionar)
+        for i, cat in enumerate(categorias):
+            px = area_x + (i / (n - 1)) * area_w
+            doc.setFillColor(COR_PRETO)
+            doc.setFont(_fonte("pt", True), 7)
+            doc.drawCentredString(px, area_y - 4, str(cat))
+        # legenda (sem invadir o grafico)
+        lx = x + area_w + 28
+        ly = y + h - 22
+        doc.setFillColor(COR_PRETO)
+        doc.setFont(_fonte("pt", True), 8)
+        doc.drawString(lx, ly + 6, "Legenda")
+        for si, (nome, valores) in enumerate(series):
+            cor = paleta[si % len(paleta)]
+            doc.setStrokeColor(cor)
+            doc.setLineWidth(3)
+            doc.line(lx, ly - si * 13 + 4, lx + 10, ly - si * 13 + 4)
+            doc.setFillColor(COR_PRETO)
+            doc.setFont(_fonte("pt"), 7)
+            doc.drawString(lx + 14, ly - si * 13, str(nome)[:24])
+    except Exception as e:
+        logger.warning("Grafico linha: %s", e)
+
 # ------------------------------------------------------------
 # GERADOR TEXTO (documento editorial)
 # ------------------------------------------------------------
@@ -1225,17 +1294,19 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
     n_col = 4
     w = (largura - 2 * margem - (n_col - 1) * gap) / n_col
     h = 40 * mm
-    for i, (tit, sub) in enumerate(cards):          # ← NOVO LOOP
+    for i, (tit, sub) in enumerate(cards):
         x = margem + i * (w + gap)
         _caixa(doc, x, y - h, w, h, COR_FUNDO, COR_DOURADO)
+        # Titulo azul, no topo do card
         doc.setFillColor(COR_AZUL)
-        doc.setFont(_fonte(lang, True), 9)
-        _texto_wrap(doc, tit, _fonte(lang, True), 9, x + 5 * mm, y - 11 * mm,
-                    w - 10 * mm, COR_AZUL, 4 * mm, y_min=y - 18 * mm)
-        doc.setFillColor(COR_CINZA)
-        doc.setFont(_fonte(lang), 8)
-        _texto_wrap(doc, sub, _fonte(lang), 8, x + 5 * mm, y - 20 * mm,
-                    w - 10 * mm, COR_CINZA, 3.8 * mm, y_min=y - h + 4 * mm)
+        doc.setFont(_fonte(lang, True), 10)
+        _texto_wrap(doc, tit, _fonte(lang, True), 10, x + 4 * mm, y - 12 * mm,
+                    w - 8 * mm, COR_AZUL, 4.5 * mm, y_min=y - 20 * mm)
+        # Subtitulo em PRETO (nao some no fundo), abaixo, sem sobrepor
+        doc.setFillColor(COR_PRETO)
+        doc.setFont(_fonte(lang), 8.5)
+        _texto_wrap(doc, sub, _fonte(lang), 8.5, x + 4 * mm, y - 22 * mm,
+                    w - 8 * mm, COR_PRETO, 4 * mm, y_min=y - h + 4 * mm)
     rodape(pagina)
     doc.showPage()
     pagina += 1
@@ -1409,8 +1480,12 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
         _texto_wrap(doc, sub, _fonte(lang), 9, x + 6 * mm, y - 20 * mm,
                     col_w - 12 * mm, COR_CINZA, 4.5 * mm)
     y -= 50 * mm
-    _grafico_pizza(doc, 18 * mm, y - 60 * mm, largura - 36 * mm, 60 * mm,
-                   ["B2C", "B2B", "Publicidade"], [60, 25, 15], "Composição da Receita")
+    _tabela_editorial(doc, 18 * mm, y - 60 * mm, largura - 36 * mm,
+                      [["Fonte de Receita", "Participação"],
+                       ["B2C — 14 Idiomas", "60%"],
+                       ["B2B — Descontos Progressivos", "25%"],
+                       ["Publicidade Geolocalizada", "15%"]],
+                      [0.7, 0.3], 10)
     rodape(pagina)
     doc.showPage()
     pagina += 1
@@ -1470,9 +1545,11 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
     _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
                       c["projecoes_tabela"], [0.3, 0.35, 0.35], 8)
     y -= 75 * mm
-    _grafico_barras(doc, 18 * mm, y - 45 * mm, largura - 36 * mm, 45 * mm,
-                    ["Ano 1", "Ano 5", "Ano 10", "Ano 20", "Ano 50"],
-                    [33, 500, 3000, 15000, 75000], "Projeção Conservadora (R$ mil)")
+    _grafico_linha(doc, 18 * mm, y - 45 * mm, largura - 36 * mm, 45 * mm,
+                   ["Ano 1", "Ano 5", "Ano 10", "Ano 20", "Ano 50"],
+                   [("Conservador", [33, 500, 3000, 15000, 75000]),
+                    ("Otimista", [130, 1500, 8000, 40000, 250000])],
+                   "Crescimento Projetado (R$ mil)")
     rodape(pagina)
     doc.showPage()
     pagina += 1
@@ -1569,7 +1646,7 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
         doc.rect(x, altura * 0.40, w, 22 * mm, stroke=1, fill=0)
         doc.setFillColor(COR_DOURADO)
         doc.setFont(_fonte(lang, True), 11)
-        doc.drawCentredString(x + w / 2, altura * 0.475, item)
+        doc.drawCentredString(x + w / 2, altura * 0.40 + 11 * mm, item)
     rodape(pagina)
     doc.showPage()
 
