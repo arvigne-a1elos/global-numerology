@@ -63,13 +63,21 @@ def _registrar_fontes_extra():
     global _FONTES_EXTRA
     if _FONTES_EXTRA:
         return
+    base = os.path.dirname(os.path.abspath(__file__))
+    candidatos = [
+        os.path.join(base, "DejaVuSans.ttf"),          # raiz
+        os.path.join(base, "fonts", "DejaVuSans.ttf"), # pasta fonts/
+        os.path.join(STATIC_DIR, "DejaVuSans.ttf"),    # static/
+    ]
     try:
         for nome, arq in [("DejaVu", "DejaVuSans.ttf"),
                           ("DejaVu-Bold", "DejaVuSans-Bold.ttf")]:
-            caminho = os.path.join(STATIC_DIR, arq)
-            if os.path.exists(caminho):
-                pdfmetrics.registerFont(TTFont(nome, caminho))
-                _FONTES_EXTRA[nome] = True
+            for pasta in (base, os.path.join(base, "fonts"), STATIC_DIR):
+                caminho = os.path.join(pasta, arq)
+                if os.path.exists(caminho):
+                    pdfmetrics.registerFont(TTFont(nome, caminho))
+                    _FONTES_EXTRA[nome] = True
+                    break
     except Exception as e:
         logger.warning("Fontes extras: %s", e)
 
