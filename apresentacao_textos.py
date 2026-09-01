@@ -429,7 +429,17 @@ def _titulo_pagina(doc, largura, altura, lang, titulo, indice=None):
     doc.drawString(18 * mm, altura - 12 * mm, titulo)
     if indice is not None:
         doc.setFont(_fonte(lang, True), 11)
-        doc.drawRightString(largura - 18 * mm, altura - 12 * mm, "%02d" % indice)
+        doc.drawRightString(largura - 30 * mm, altura - 12 * mm, "%02d" % indice)
+    # Logo reduzida no canto superior direito
+    if os.path.exists(LOGO_PATH):
+        try:
+            iw, ih = ImageReader(LOGO_PATH).getSize()
+            lw = 10 * mm
+            lh = lw * ih / iw
+            doc.drawImage(LOGO_PATH, largura - 12 * mm - lw, altura - 15 * mm,
+                          width=lw, height=lh, mask="auto")
+        except Exception:
+            pass
 
 def _kpis_grid(doc, largura, altura, lang, kpis, y, colunas=4):
     margem = 18 * mm
@@ -932,22 +942,27 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
                     largura - 36 * mm, COR_CINZA, 5 * mm)
     y -= 4 * mm
     col_w = (largura - 36 * mm - 2 * 8 * mm) / 3
-    for i, (tit, sub) in enumerate(c["negocio_colunas"]):
+    for i, (tit, sub) in enumerate(c["b2b_planos"]):
         x = 18 * mm + i * (col_w + 8 * mm)
-        _caixa(doc, x, y - 60 * mm, col_w, 60 * mm, COR_FUNDO, COR_DOURADO)
+        _caixa(doc, x, y - 38 * mm, col_w, 38 * mm, COR_FUNDO, COR_DOURADO)
         doc.setFillColor(COR_AZUL)
-        doc.setFont(_fonte(lang, True), 11)
-        _texto_wrap(doc, tit, _fonte(lang, True), 11, x + 5 * mm, y - 12 * mm,
-                    col_w - 10 * mm, COR_AZUL, 5 * mm)
+        doc.setFont(_fonte(lang, True), 10)
+        _texto_wrap(doc, tit, _fonte(lang, True), 10, x + 5 * mm, y - 10 * mm,
+                    col_w - 10 * mm, COR_AZUL, 4.5 * mm)
         doc.setFillColor(COR_CINZA)
-        doc.setFont(_fonte(lang), 9)
-        _texto_wrap(doc, sub, _fonte(lang), 9, x + 5 * mm, y - 22 * mm,
-                    col_w - 10 * mm, COR_CINZA, 4.5 * mm)
-    _grafico_pizza(doc, 18 * mm, y - 78 * mm, largura - 36 * mm, 68 * mm,
-                   ["B2C", "B2B", "Publicidade"], [60, 25, 15], "Composição da Receita")
+        doc.setFont(_fonte(lang), 8)
+        _texto_wrap(doc, sub, _fonte(lang), 8, x + 5 * mm, y - 18 * mm,
+                    col_w - 10 * mm, COR_CINZA, 3.8 * mm)
+    y -= 46 * mm
+    doc.setFillColor(COR_PRETO)
+    doc.setFont(_fonte(lang, True), 11)
+    doc.drawString(18 * mm, y - 6 * mm, "Tabela de Descontos Progressivos")
+    y -= 12 * mm
+    _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
+                      c["b2b_tabela"], [0.22, 0.18, 0.28, 0.32], 9)
     _rodape(doc, largura, altura, lang, c, pagina)
     doc.showPage()
-    pagina += 1    
+    pagina += 1
 
     # PROJEÇÕES (tabela)
     _titulo_pagina(doc, largura, altura, lang, c["projecoes_titulo"], 14)
@@ -1376,27 +1391,27 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
     doc.showPage()
     pagina += 1
 
-    # ===== SLIDE 12 — MODELO DE NEGÓCIO (11) =====
     cab(c["negocio_titulo"], 11)
     y = altura - 32 * mm
     y = _texto_wrap(doc, c["negocio_texto"], _fonte(lang), 12, 18 * mm, y,
                     largura - 36 * mm, COR_CINZA, 6 * mm)
-    y -= 10 * mm
+    y -= 8 * mm
     col_w = (largura - 36 * mm - 2 * 10 * mm) / 3
     for i, (tit, sub) in enumerate(c["negocio_colunas"]):
-        x = 18 * mm + i * (col_w + 8 * mm)
-        _caixa(doc, x, y - 60 * mm, col_w, 60 * mm, COR_FUNDO, COR_DOURADO)
+        x = 18 * mm + i * (col_w + 10 * mm)
+        _caixa(doc, x, y - 45 * mm, col_w, 45 * mm, COR_FUNDO, COR_DOURADO)
         doc.setFillColor(COR_AZUL)
         doc.setFont(_fonte(lang, True), 11)
-        _texto_wrap(doc, tit, _fonte(lang, True), 11, x + 5 * mm, y - 12 * mm,
-                    col_w - 10 * mm, COR_AZUL, 5 * mm)
+        _texto_wrap(doc, tit, _fonte(lang, True), 11, x + 6 * mm, y - 12 * mm,
+                    col_w - 12 * mm, COR_AZUL, 5 * mm)
         doc.setFillColor(COR_CINZA)
         doc.setFont(_fonte(lang), 9)
-        _texto_wrap(doc, sub, _fonte(lang), 9, x + 5 * mm, y - 22 * mm,
-                    col_w - 10 * mm, COR_CINZA, 4.5 * mm)
-    _grafico_pizza(doc, 18 * mm, y - 78 * mm, largura - 36 * mm, 68 * mm,
+        _texto_wrap(doc, sub, _fonte(lang), 9, x + 6 * mm, y - 20 * mm,
+                    col_w - 12 * mm, COR_CINZA, 4.5 * mm)
+    y -= 50 * mm
+    _grafico_pizza(doc, 18 * mm, y - 60 * mm, largura - 36 * mm, 60 * mm,
                    ["B2C", "B2B", "Publicidade"], [60, 25, 15], "Composição da Receita")
-    _rodape(doc, largura, altura, lang, c, pagina)
+    rodape(pagina)
     doc.showPage()
     pagina += 1
 
@@ -1447,15 +1462,15 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
     doc.showPage()
     pagina += 1
 
-    # ===== SLIDE 15 — PROJEÇÕES FINANCEIRAS (14) =====
     cab(c["projecoes_titulo"], 14)
     y = altura - 32 * mm
     y = _texto_wrap(doc, c["projecoes_texto"], _fonte(lang), 12, 18 * mm, y,
                     largura - 36 * mm, COR_CINZA, 6 * mm)
-    y -= 10 * mm
+    y -= 8 * mm
     _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
-                      c["projecoes_tabela"], [0.3, 0.35, 0.35], 10)
-    _grafico_barras(doc, 18 * mm, y - 100 * mm, largura - 36 * mm, 50 * mm,
+                      c["projecoes_tabela"], [0.3, 0.35, 0.35], 8)
+    y -= 75 * mm
+    _grafico_barras(doc, 18 * mm, y - 45 * mm, largura - 36 * mm, 45 * mm,
                     ["Ano 1", "Ano 5", "Ano 10", "Ano 20", "Ano 50"],
                     [33, 500, 3000, 15000, 75000], "Projeção Conservadora (R$ mil)")
     rodape(pagina)
