@@ -2113,7 +2113,7 @@ CONTEUDO = {
         "selo_final": ["DUNS 942242668", "23 PRODUK", "14 BAHASA", "~5,3 M PENUTUR"],
     },
 
-            "tr": {
+        "tr": {
         "titulo": "A1ELOS Küresel Numeroloji",
         "subtitulo": "Sayıların bilimi başarınıza uygulandı",
         "capa_nota": "Yatırımcılar ve Ortaklar için Stratejik Sunum",
@@ -2279,6 +2279,29 @@ CONTEUDO = {
         "invest_alocacao": "Sermaye Dağılımı: %45 Teknoloji · %30 Pazarlama · %25 Operasyon",
         "frase_final": "Sayılar asla yalan söylemez.",
         "selo_final": ["DUNS 942242668", "23 ÜRÜN", "14 DİL", "~5,3 M KONUŞMACI"],
+        
+        "sumario_titulo": "Yönetici Özeti",
+        "duns_porque": "DUNS Neden Önemlidir?",
+        "preco_consciente": "Bilinçli Fiyatlandırma",
+        "idioma_col": "Dil",
+        "falantes_col": "Konuşmacı (milyon)",
+        "total_linha": "TOPLAM",
+        "linhas_idiomas": [
+            ["İngilizce", "1.528"], ["Mandarin", "1.184"], ["İspanyolca", "558"],
+            ["Fransızca", "396"], ["Arapça", "335"], ["Portekizce", "270"],
+            ["Rusça", "255"], ["Endonezce", "255"], ["Almanca", "134"],
+            ["Japonca", "123"], ["Vietnamca", "97"], ["Türkçe", "90"],
+            ["İtalyanca", "85"], ["İbranice", "9"],
+        ],
+        "fonte_receita": "Gelir Kaynağı",
+        "participacao": "Pay",
+        "b2c_linha": "B2C — 14 Dil",
+        "b2b_linha": "B2B — Kademeli İndirimler",
+        "pub_linha": "Coğrafi Hedefli Reklam",
+        "tabela_descontos": "Kademeli İndirim Tablosu",
+        "grafico_anos": ["1. Yıl", "5. Yıl", "10. Yıl", "20. Yıl", "50. Yıl"],
+        "grafico_titulo": "Muhafazakar Projeksiyon (TL bin)",
+        "fale_conosco": "Bize Ulaşın",    
     },
 
         "vi": {
@@ -2860,14 +2883,12 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     largura, altura = A4
     doc = canvas.Canvas(caminho_saida, pagesize=A4)
     pagina = 1
-
     # CAPA
     _capa(doc, largura, altura, lang, "texto")
     doc.showPage()
     pagina += 1
-
     # SUMÁRIO EXECUTIVO
-    _titulo_pagina(doc, largura, altura, lang, "Sumário Executivo", 1)
+    _titulo_pagina(doc, largura, altura, lang, c.get("sumario_titulo", "Sumário Executivo"), 1)
     y = altura - 32 * mm
     y = _texto_wrap(doc, c["sumario_intro"], _fonte(lang), 11, 18 * mm, y,
                     largura - 36 * mm, COR_CINZA, 5 * mm)
@@ -2896,7 +2917,6 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     _rodape(doc, largura, altura, lang, c, pagina)
     doc.showPage()
     pagina += 1
-
     # SOBRE + KPIs
     _titulo_pagina(doc, largura, altura, lang, c["sobre_titulo"], 2)
     y = altura - 32 * mm
@@ -2913,12 +2933,10 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     _rodape(doc, largura, altura, lang, c, pagina)
     doc.showPage()
     pagina += 1
-
     # CREDIBILIDADE (2 colunas)
     _titulo_pagina(doc, largura, altura, lang, c["duns_titulo"], 3)
     y = altura - 32 * mm
     col_w = (largura - 36 * mm - 8 * mm) / 2
-    # Esquerda: DUNS gigante
     _caixa(doc, 18 * mm, y - 70 * mm, col_w, 70 * mm, COR_PRETO, COR_DOURADO)
     doc.setFillColor(COR_DOURADO)
     doc.setFont(_fonte(lang, True), 28)
@@ -2930,11 +2948,10 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     doc.setFillColor(COR_DOURADO)
     doc.setFont(_fonte(lang, True), 14)
     doc.drawCentredString(18 * mm + col_w / 2, y - 62 * mm, c["duns_paises"])
-    # Direita: benefícios
     xr = 18 * mm + col_w + 8 * mm
     doc.setFillColor(COR_PRETO)
     doc.setFont(_fonte(lang, True), 12)
-    doc.drawString(xr, y - 8 * mm, "Por que o DUNS importa?")
+    doc.drawString(xr, y - 8 * mm, c.get("duns_porque", "Por que o DUNS importa?"))
     yy = y - 16 * mm
     yy = _texto_wrap(doc, c["duns_texto"], _fonte(lang), 10, xr, yy,
                      col_w, COR_CINZA, 4.5 * mm)
@@ -2952,7 +2969,6 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     _rodape(doc, largura, altura, lang, c, pagina)
     doc.showPage()
     pagina += 1
-
     # MERCADO
     _titulo_pagina(doc, largura, altura, lang, c["mercado_titulo"], 4)
     y = altura - 32 * mm
@@ -2963,12 +2979,10 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     _rodape(doc, largura, altura, lang, c, pagina)
     doc.showPage()
     pagina += 1
-
     # PROBLEMA (2 colunas)
     _titulo_pagina(doc, largura, altura, lang, c["problema_titulo"], 5)
     y = altura - 32 * mm
     col_w = (largura - 36 * mm - 8 * mm) / 2
-    # Esquerda
     doc.setFillColor(COR_PRETO)
     doc.setFont(_fonte(lang, True), 12)
     doc.drawString(18 * mm, y - 8 * mm, c["problema_col_esq_titulo"])
@@ -2983,7 +2997,6 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
         _texto_wrap(doc, sub, _fonte(lang), 8, 22 * mm, yy - 15 * mm,
                     col_w - 8 * mm, COR_CINZA, 3.5 * mm)
         yy -= 30 * mm
-    # Direita
     xr = 18 * mm + col_w + 8 * mm
     doc.setFillColor(COR_PRETO)
     doc.setFont(_fonte(lang, True), 12)
@@ -3000,7 +3013,6 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     _rodape(doc, largura, altura, lang, c, pagina)
     doc.showPage()
     pagina += 1
-
     # SOLUÇÃO (3 colunas)
     _titulo_pagina(doc, largura, altura, lang, c["solucao_titulo"], 6)
     y = altura - 32 * mm
@@ -3008,7 +3020,6 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
                     largura - 36 * mm, COR_PRETO, 6 * mm)
     y -= 4 * mm
     col_w = (largura - 36 * mm - 2 * 8 * mm) / 3
-
     for i, (tit, sub) in enumerate(c["solucao_colunas"]):
         x = 18 * mm + i * (col_w + 8 * mm)
         _caixa(doc, x, y - 60 * mm, col_w, 60 * mm, COR_FUNDO, COR_DOURADO)
@@ -3023,19 +3034,19 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     _rodape(doc, largura, altura, lang, c, pagina)
     doc.showPage()
     pagina += 1
-
     # ALCANCE + TABELA IDIOMAS
     _titulo_pagina(doc, largura, altura, lang, c["alcance_titulo"], 7)
     y = altura - 32 * mm
     y = _texto_wrap(doc, c["alcance_texto"], _fonte(lang), 11, 18 * mm, y,
                     largura - 36 * mm, COR_CINZA, 5 * mm)
     y -= 4 * mm
-    dados = [["Idioma", "Falantes (mi)"]] + LINHAS_IDIOMAS + [["TOTAL", "~5.320"]]
+    linhas = c.get("linhas_idiomas", LINHAS_IDIOMAS)
+    dados = [[c.get("idioma_col", "Idioma"), c.get("falantes_col", "Falantes (mi)")]] \
+            + linhas + [[c.get("total_linha", "TOTAL"), "~5.320"]]
     y = _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm, dados, [0.6, 0.4], 9)
     _rodape(doc, largura, altura, lang, c, pagina)
     doc.showPage()
     pagina += 1
-
     # 3 NOVOS MERCADOS (3 colunas com bandeiras)
     _titulo_pagina(doc, largura, altura, lang, c["mercados_titulo"], 8)
     y = altura - 32 * mm
@@ -3066,15 +3077,14 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     _rodape(doc, largura, altura, lang, c, pagina)
     doc.showPage()
     pagina += 1
-
-       # PREÇO (2 colunas)
+    # PREÇO (2 colunas)
     _titulo_pagina(doc, largura, altura, lang, c["preco_titulo"], 9)
     y = altura - 32 * mm
     col_w = (largura - 36 * mm - 8 * mm) / 2
     _caixa(doc, 18 * mm, y - 50 * mm, col_w, 50 * mm, COR_PRETO, COR_DOURADO)
     doc.setFillColor(COR_DOURADO)
     doc.setFont(_fonte(lang, True), 12)
-    doc.drawString(22 * mm, y - 14 * mm, "Preço Consciente")
+    doc.drawString(22 * mm, y - 14 * mm, c.get("preco_consciente", "Preço Consciente"))
     doc.setFillColor(white)
     doc.setFont(_fonte(lang), 10)
     _texto_wrap(doc, c["preco_esq"], _fonte(lang), 10, 22 * mm, y - 22 * mm,
@@ -3087,7 +3097,7 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     yy = _texto_wrap(doc, c["preco_dir"], _fonte(lang), 10, xr, yy, col_w,
                      COR_CINZA, 4.5 * mm)
     yy -= 6 * mm
-    for tit, sub in c["preco_pilares"]:          # ← NOVO LOOP
+    for tit, sub in c["preco_pilares"]:
         _caixa(doc, xr, yy - 26 * mm, col_w, 26 * mm, COR_FUNDO, COR_DOURADO)
         doc.setFillColor(COR_AZUL)
         doc.setFont(_fonte(lang, True), 10)
@@ -3100,7 +3110,6 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     _rodape(doc, largura, altura, lang, c, pagina)
     doc.showPage()
     pagina += 1
-
     # PORTFÓLIO (tabela 4 colunas)
     _titulo_pagina(doc, largura, altura, lang, c["portfolio_titulo"], 10)
     y = altura - 32 * mm
@@ -3117,8 +3126,7 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     _rodape(doc, largura, altura, lang, c, pagina)
     doc.showPage()
     pagina += 1
-
-        # NEGÓCIO (3 colunas)
+    # NEGÓCIO (3 colunas)
     _titulo_pagina(doc, largura, altura, lang, c["negocio_titulo"], 11)
     y = altura - 32 * mm
     y = _texto_wrap(doc, c["negocio_texto"], _fonte(lang), 11, 18 * mm, y,
@@ -3137,10 +3145,10 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
         _texto_wrap(doc, sub, _fonte(lang), 9, x + 5 * mm, y - 22 * mm,
                     col_w - 10 * mm, COR_CINZA, 4.5 * mm)
     _tabela_editorial(doc, 18 * mm, y - 60 * mm, largura - 36 * mm,
-                      [["Fonte de Receita", "Participação"],
-                       ["B2C — 14 Idiomas", "60%"],
-                       ["B2B — Descontos Progressivos", "25%"],
-                       ["Publicidade Geolocalizada", "15%"]],
+                      [[c.get("fonte_receita", "Fonte de Receita"), c.get("participacao", "Participação")],
+                       [c.get("b2c_linha", "B2C — 14 Idiomas"), "60%"],
+                       [c.get("b2b_linha", "B2B — Descontos Progressivos"), "25%"],
+                       [c.get("pub_linha", "Publicidade Geolocalizada"), "15%"]],
                       [0.7, 0.3], 10)
     _rodape(doc, largura, altura, lang, c, pagina)
     doc.showPage()
@@ -3162,7 +3170,6 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     _rodape(doc, largura, altura, lang, c, pagina)
     doc.showPage()
     pagina += 1
-
     # B2B (3 planos + tabela)
     _titulo_pagina(doc, largura, altura, lang, c["b2b_titulo"], 13)
     y = altura - 32 * mm
@@ -3184,14 +3191,13 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     y -= 46 * mm
     doc.setFillColor(COR_PRETO)
     doc.setFont(_fonte(lang, True), 11)
-    doc.drawString(18 * mm, y - 6 * mm, "Tabela de Descontos Progressivos")
+    doc.drawString(18 * mm, y - 6 * mm, c.get("tabela_descontos", "Tabela de Descontos Progressivos"))
     y -= 12 * mm
     _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
                       c["b2b_tabela"], [0.22, 0.18, 0.28, 0.32], 9)
     _rodape(doc, largura, altura, lang, c, pagina)
     doc.showPage()
     pagina += 1
-
     # PROJEÇÕES (tabela)
     _titulo_pagina(doc, largura, altura, lang, c["projecoes_titulo"], 14)
     y = altura - 32 * mm
@@ -3201,12 +3207,12 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
                       c["projecoes_tabela"], [0.3, 0.35, 0.35], 9)
     _grafico_barras(doc, 18 * mm, y - 100 * mm, largura - 36 * mm, 50 * mm,
-                    ["Ano 1", "Ano 5", "Ano 10", "Ano 20", "Ano 50"],
-                    [33, 500, 3000, 15000, 75000], "Projeção Conservadora (R$ mil)")
+                    c.get("grafico_anos", ["Ano 1", "Ano 5", "Ano 10", "Ano 20", "Ano 50"]),
+                    [33, 500, 3000, 15000, 75000],
+                    c.get("grafico_titulo", "Projeção Conservadora (R$ mil)"))
     _rodape(doc, largura, altura, lang, c, pagina)
     doc.showPage()
     pagina += 1
-
     # TRAÇÃO (KPIs)
     _titulo_pagina(doc, largura, altura, lang, c["tracao_titulo"], 15)
     y = altura - 32 * mm
@@ -3217,7 +3223,6 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     _rodape(doc, largura, altura, lang, c, pagina)
     doc.showPage()
     pagina += 1
-
     # ROTEIRO (4 fases em grid)
     _titulo_pagina(doc, largura, altura, lang, c["roteiro_titulo"], 16)
     y = altura - 32 * mm
@@ -3241,7 +3246,6 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     _rodape(doc, largura, altura, lang, c, pagina)
     doc.showPage()
     pagina += 1
-
     # INVESTIMENTO (2 colunas)
     _titulo_pagina(doc, largura, altura, lang, c["invest_titulo"], 17)
     y = altura - 32 * mm
@@ -3249,7 +3253,6 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
                     largura - 36 * mm, COR_CINZA, 5 * mm)
     y -= 4 * mm
     col_w = (largura - 36 * mm - 8 * mm) / 2
-    # Esquerda: dados de investimento
     _caixa(doc, 18 * mm, y - 60 * mm, col_w, 60 * mm, COR_PRETO, COR_DOURADO)
     yy = y - 14 * mm
     for tit, val in c["invest_dados"]:
@@ -3260,11 +3263,10 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
         doc.setFont(_fonte(lang, True), 14)
         doc.drawString(22 * mm, yy - 7 * mm, val)
         yy -= 18 * mm
-    # Direita: contatos
     xr = 18 * mm + col_w + 8 * mm
     doc.setFillColor(COR_PRETO)
     doc.setFont(_fonte(lang, True), 12)
-    doc.drawString(xr, y - 8 * mm, "Fale Conosco")
+    doc.drawString(xr, y - 8 * mm, c.get("fale_conosco", "Fale Conosco"))
     yy = y - 16 * mm
     for tit, val in c["invest_contato"]:
         doc.setFillColor(COR_AZUL)
@@ -3282,14 +3284,12 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     _rodape(doc, largura, altura, lang, c, pagina)
     doc.showPage()
     pagina += 1
-
     # PÁGINA FINAL
     doc.setFillColor(COR_PRETO)
     doc.rect(0, 0, largura, altura, stroke=0, fill=1)
     doc.setFillColor(COR_DOURADO)
     doc.setFont(_fonte(lang, True), 20)
     doc.drawCentredString(largura / 2, altura * 0.60, c["frase_final"])
-    # Selo
     selo = c["selo_final"]
     margem = 18 * mm
     gap = 6 * mm
@@ -3303,7 +3303,6 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
         doc.drawCentredString(x + w / 2, altura * 0.47, item)
     _rodape(doc, largura, altura, lang, c, pagina)
     doc.showPage()
-
     doc.save()
     logger.info("PDF texto editorial gerado: %s", caminho_saida)
     return caminho_saida
