@@ -2665,10 +2665,10 @@ def _kpis_grid(doc, largura, altura, lang, kpis, y, colunas=4):
                 _texto_wrap(doc, sub, _fonte(lang), 8, x + 4 * mm, y - h + 5 * mm,
                             w - 8 * mm, COR_CINZA, 3.5 * mm, y_min=y - h + 2 * mm)
     return y - max_h - 6 * mm
-def _tabela_editorial(doc, x, y, largura, dados, colunas_pct, tam=9):
-    est = ParagraphStyle("cel", fontName=_fonte("pt"), fontSize=tam,
+    def _tabela_editorial(doc, x, y, largura, dados, colunas_pct, tam=9, lang="pt"):
+    est = ParagraphStyle("cel", fontName=_fonte(lang), fontSize=tam,
                          leading=tam * 1.25, textColor=COR_PRETO)
-    est_head = ParagraphStyle("chead", fontName=_fonte("pt", True), fontSize=tam,
+    est_head = ParagraphStyle("chead", fontName=_fonte(lang, True), fontSize=tam,
                               leading=tam * 1.25, textColor=white)
     corpo = []
     for r, linha in enumerate(dados):
@@ -3054,7 +3054,7 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     linhas = c.get("linhas_idiomas", LINHAS_IDIOMAS)
     dados = [[c.get("idioma_col", "Idioma"), c.get("falantes_col", "Falantes (mi)")]] \
             + linhas + [[c.get("total_linha", "TOTAL"), "~5.320"]]
-    y = _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm, dados, [0.6, 0.4], 9)
+    y = _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm, dados, [0.6, 0.4], 9, lang)
     _rodape(doc, largura, altura, lang, c, pagina)
     doc.showPage()
     pagina += 1
@@ -3128,7 +3128,7 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
                     largura - 36 * mm, COR_CINZA, 5 * mm)
     y -= 4 * mm
     y = _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
-                          c["portfolio_tabela"], [0.22, 0.38, 0.18, 0.22], 9)
+                          c["portfolio_tabela"], [0.22, 0.38, 0.18, 0.22], 9, lang)
     y -= 6 * mm
     doc.setFillColor(COR_CINZA)
     doc.setFont(_fonte(lang), 9)
@@ -3160,7 +3160,7 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
                        [c.get("b2c_linha", "B2C — 14 Idiomas"), "60%"],
                        [c.get("b2b_linha", "B2B — Descontos Progressivos"), "25%"],
                        [c.get("pub_linha", "Publicidade Geolocalizada"), "15%"]],
-                      [0.7, 0.3], 10)
+                      [0.7, 0.3], 10, lang)
     _rodape(doc, largura, altura, lang, c, pagina)
     doc.showPage()
     pagina += 1
@@ -3171,7 +3171,7 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
                     largura - 36 * mm, COR_CINZA, 5 * mm)
     y -= 4 * mm
     y = _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
-                          c["banners_tabela"], [0.24, 0.20, 0.24, 0.32], 9)
+                          c["banners_tabela"], [0.24, 0.20, 0.24, 0.32], 9, lang)
     y -= 8 * mm
     _caixa(doc, 18 * mm, y - 20 * mm, largura - 36 * mm, 20 * mm, HexColor("#EEF2FA"), COR_AZUL)
     doc.setFillColor(COR_AZUL)
@@ -3205,7 +3205,7 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     doc.drawString(18 * mm, y - 6 * mm, c.get("tabela_descontos", "Tabela de Descontos Progressivos"))
     y -= 12 * mm
     _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
-                      c["b2b_tabela"], [0.22, 0.18, 0.28, 0.32], 9)
+                      c["b2b_tabela"], [0.22, 0.18, 0.28, 0.32], 9, lang)
     _rodape(doc, largura, altura, lang, c, pagina)
     doc.showPage()
     pagina += 1
@@ -3216,7 +3216,7 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
                     largura - 36 * mm, COR_CINZA, 5 * mm)
     y -= 4 * mm
     _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
-                      c["projecoes_tabela"], [0.3, 0.35, 0.35], 9)
+                      c["projecoes_tabela"], [0.3, 0.35, 0.35], 9, lang)
     _grafico_barras(doc, 18 * mm, y - 100 * mm, largura - 36 * mm, 50 * mm,
                     c.get("grafico_anos", ["Ano 1", "Ano 5", "Ano 10", "Ano 20", "Ano 50"]),
                     [33, 500, 3000, 15000, 75000],
@@ -3544,7 +3544,7 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
                     largura - 36 * mm, COR_CINZA, 6 * mm)
     y -= 10 * mm
     dados = [["Idioma", "Falantes (mi)"]] + LINHAS_IDIOMAS + [["TOTAL", "~5.320"]]
-    _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm, dados, [0.6, 0.4], 9)
+    _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm, dados, [0.6, 0.4], 9, lang)
     rodape(pagina)
     doc.showPage()
     pagina += 1
@@ -3621,7 +3621,7 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
                     largura - 36 * mm, COR_CINZA, 6 * mm)
     y -= 10 * mm
     y = _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
-                          c["portfolio_tabela"], [0.22, 0.38, 0.18, 0.22], 9)
+                          c["portfolio_tabela"], [0.22, 0.38, 0.18, 0.22], 9, lang)
     y -= 8 * mm
     doc.setFillColor(COR_CINZA)
     doc.setFont(_fonte(lang), 9)
@@ -3654,7 +3654,7 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
                        ["B2C — 14 Idiomas", "60%"],
                        ["B2B — Descontos Progressivos", "25%"],
                        ["Publicidade Geolocalizada", "15%"]],
-                      [0.7, 0.3], 10)
+                      [0.7, 0.3], 10, lang)
     rodape(pagina)
     doc.showPage()
     pagina += 1
@@ -3666,7 +3666,7 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
                     largura - 36 * mm, COR_CINZA, 5.5 * mm)
     y -= 10 * mm
     y = _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
-                          c["banners_tabela"], [0.24, 0.20, 0.24, 0.32], 9)
+                          c["banners_tabela"], [0.24, 0.20, 0.24, 0.32], 9, lang)
     y -= 10 * mm
     _caixa(doc, 18 * mm, y - 24 * mm, largura - 36 * mm, 24 * mm, HexColor("#EEF2FA"), COR_AZUL)
     doc.setFillColor(COR_AZUL)
@@ -3701,7 +3701,7 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
     doc.drawString(18 * mm, y - 6 * mm, "Tabela de Descontos Progressivos")
     y -= 14 * mm
     _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
-                      c["b2b_tabela"], [0.22, 0.18, 0.28, 0.32], 9)
+                      c["b2b_tabela"], [0.22, 0.18, 0.28, 0.32], 9, lang)
     rodape(pagina)
     doc.showPage()
     pagina += 1
@@ -3712,7 +3712,7 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
                     largura - 36 * mm, COR_CINZA, 6 * mm)
     y -= 8 * mm
     _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
-                      c["projecoes_tabela"], [0.3, 0.35, 0.35], 8)
+                      c["projecoes_tabela"], [0.3, 0.35, 0.35], 8, lang)
     y -= 75 * mm
     _grafico_linha(doc, 18 * mm, y - 45 * mm, largura - 36 * mm, 45 * mm,
                    ["Ano 1", "Ano 5", "Ano 10", "Ano 20", "Ano 50"],
