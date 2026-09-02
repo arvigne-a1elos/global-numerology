@@ -2665,7 +2665,8 @@ def _kpis_grid(doc, largura, altura, lang, kpis, y, colunas=4):
                 _texto_wrap(doc, sub, _fonte(lang), 8, x + 4 * mm, y - h + 5 * mm,
                             w - 8 * mm, COR_CINZA, 3.5 * mm, y_min=y - h + 2 * mm)
     return y - max_h - 6 * mm
-    def _tabela_editorial(doc, x, y, largura, dados, colunas_pct, tam=9, lang="pt"):
+    
+def _tabela_editorial(doc, x, y, largura, dados, colunas_pct, tam=9, lang="pt"):
     est = ParagraphStyle("cel", fontName=_fonte(lang), fontSize=tam,
                          leading=tam * 1.25, textColor=COR_PRETO)
     est_head = ParagraphStyle("chead", fontName=_fonte(lang, True), fontSize=tam,
@@ -2689,7 +2690,7 @@ def _kpis_grid(doc, largura, altura, lang, kpis, y, colunas=4):
     w, h = tbl.wrapOn(doc, largura, 600)
     tbl.drawOn(doc, x, y - h)
     return y - h
-
+    
 def _grafico_barras(doc, x, y, w, h, categorias, valores, titulo, cores=None):
     """Barras com cor distinta por categoria + legenda (cor -> significado)."""
     try:
