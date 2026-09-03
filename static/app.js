@@ -349,7 +349,7 @@ function montarTudo() {
   } catch (e) {
     console.error("[A1ELOS] ERRO em traduzirTudo:", e);
   }
-    if (typeof atualizarPrecos === 'function') {
+  if (typeof atualizarPrecos === 'function') {
     console.log("[A1ELOS] atualizarPrecos() EXECUTANDO");
     atualizarPrecos();
   }
@@ -460,7 +460,8 @@ function pesquisar(produto){ comprar(produto); }
 function atualizarPrecos() {
   var lang = getLang();
   var t = translations[lang] || translations.pt;
-  var precos = (typeof PRECO_DISPLAY !== 'undefined' && PRECO_DISPLAY[lang]) ? PRECO_DISPLAY[lang] : (PRECO_DISPLAY ? PRECO_DISPLAY.pt : null);
+  var precos = (typeof PRECO_DISPLAY !== 'undefined' && PRECO_DISPLAY[lang])
+               ? PRECO_DISPLAY[lang] : (PRECO_DISPLAY ? PRECO_DISPLAY.pt : null);
   if (!precos) return;
   var cards = document.querySelectorAll('.product-card[data-prod]');
   for (var i = 0; i < cards.length; i++) {
