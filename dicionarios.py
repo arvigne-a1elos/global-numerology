@@ -169,7 +169,9 @@ TRAD = {
         "legado": "4. Başarı (Miras)", "vibracao": "Doğum Titreşimi", "grade": "Enerji Izgarası",
         "presentes": "Mevcut Enerjiler", "carencias": "Enerji Eksikleri", "nota_final": "Final Notu", "regente": "Yönetici",
         "download": "PDF İndir", "voltar": "Geri", "confirmado": "Ödeme Onaylandı!", "gerado": "Haritanız başarıyla oluşturuldu.",
-        "nenhum": "Yok"
+        "nenhum": "Yok", "numeros_principais": "Ana Numaralarınız", "caminho_ciclos": "Yaşam Yolu ve Döngüler", "desafios_realizacoes": 
+        "Zorluklar ve Başarılar", "como_calculamos": "Nasıl hesaplıyoruz?", "por_que_energia_8": "Neden enerji 8?",
+        "energia_8_ideal": "Enerji 8 — İDEAL:", "alternativas": "Alternatifler:"
     },
         "vi": {
         "express": "Bản đồ Nhanh (₫ 25.000)", "completo": "Bản đồ Đầy đủ (₫ 53.000)",
@@ -182,10 +184,11 @@ TRAD = {
         "legado": "Thành tựu thứ 4 (Di sản)", "vibracao": "Rung động sinh", "grade": "Lưới năng lượng",
         "presentes": "Năng lượng hiện diện", "carencias": "Thiếu hụt năng lượng", "nota_final": "Điểm cuối cùng", "regente": "Người cai quản",
         "download": "Tải PDF", "voltar": "Quay lại", "confirmado": "Thanh toán đã xác nhận!", "gerado": "Bản đồ của bạn đã được tạo thành công.",
-        "nenhum": "Không có"
+        "nenhum": "Không có", "numeros_principais": "Các Số Chính của Bạn", "caminho_ciclos": "Đường đời và Chu kỳ",   
+        "desafios_realizacoes": "Thách thức và Thành đạt", "como_calculamos": "Chúng tôi tính như thế nào?", 
+        "por_que_energia_8": "Tại sao là năng lượng 8?", "energia_8_ideal": "Năng lượng 8 — LÝ TƯỞNG:", "alternativas": "Phương án thay thế:" 
     }
-}
-
+       
 def t(chave, lang):
     d = TRAD.get(lang, TRAD["pt"])
     return d.get(chave, TRAD["pt"].get(chave, chave))
