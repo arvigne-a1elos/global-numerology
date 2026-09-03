@@ -450,3 +450,4 @@ if (document.readyState === "loading") {
 } else {
   iniciarSeguro();
 }
+function pesquisar(produto){ comprar(produto); }
