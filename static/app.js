@@ -349,6 +349,10 @@ function montarTudo() {
   } catch (e) {
     console.error("[A1ELOS] ERRO em traduzirTudo:", e);
   }
+    if (typeof atualizarPrecos === 'function') {
+    console.log("[A1ELOS] atualizarPrecos() EXECUTANDO");
+    atualizarPrecos();
+  }
   if (typeof atualizarLinksApresentacao === 'function') {
     atualizarLinksApresentacao();
   }
@@ -451,3 +455,24 @@ if (document.readyState === "loading") {
   iniciarSeguro();
 }
 function pesquisar(produto){ comprar(produto); }
+
+// ===== ATUALIZAR PREÇOS DOS CARDS POR IDIOMA (23 produtos) =====
+function atualizarPrecos() {
+  var lang = getLang();
+  var t = translations[lang] || translations.pt;
+  var precos = (typeof PRECO_DISPLAY !== 'undefined' && PRECO_DISPLAY[lang]) ? PRECO_DISPLAY[lang] : (PRECO_DISPLAY ? PRECO_DISPLAY.pt : null);
+  if (!precos) return;
+  var cards = document.querySelectorAll('.product-card[data-prod]');
+  for (var i = 0; i < cards.length; i++) {
+    var prod = cards[i].getAttribute('data-prod');
+    var el = cards[i].querySelector('.prod-preco');
+    if (!el) continue;
+    if (prod === 'coletivo') {
+      el.textContent = t.sob_consulta || 'Sob consulta';
+      continue;
+    }
+    var faixa = PRODUTO_FAIXA[prod];
+    if (typeof faixa === 'undefined' || !precos[faixa]) continue;
+    el.textContent = precos[faixa];
+  }
+}
