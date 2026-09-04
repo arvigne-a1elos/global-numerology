@@ -33,6 +33,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse, Response
 from apresentacao_textos import gerar_apresentacao
+from fastapi.responses import FileResponse, JSONResponse
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -114,8 +115,10 @@ STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
 if os.path.isdir(STATIC_DIR):
     app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
+# ===== APRESENTAÇÃO OFICIAL (MODELO ADOTADO — 14 idiomas) =====
 # ===== 14 IDIOMAS E MOEDAS =====
-IDIOMAS = ["pt", "en", "es", "it", "fr", "de", "ja", "zh", "ru", "id", "tr", "vi", "he", "ar"]
+IDIOMAS_OFICIAIS = ["pt", "en", "es", "it", "fr", "de", "ja", "zh",
+                    "ru", "he", "ar", "id", "tr", "vi"]
 MOEDA = {
     "pt": "brl", "en": "usd", "es": "eur", "it": "eur", "fr": "eur", "de": "eur",
     "ja": "jpy", "zh": "cny", "ru": "rub", "id": "idr", "tr": "try", "vi": "vnd",
@@ -842,28 +845,27 @@ async def health():
 async def health_head():
     return Response(status_code=200)
 
-# ===== ROTAS DE APRESENTAÇÃO (texto e slides) — BLINDADAS =====
-from apresentacao_textos import gerar_apresentacao
-
 @app.get("/api/apresentacao")
-async def get_apresentacao(lang: str = "pt"):
-    try:
-        caminho = gerar_apresentacao(lang, "texto")
-        return FileResponse(caminho, media_type="application/pdf",
-                            filename=f"Apresentacao-{lang}.pdf")
-    except Exception as e:
-        logger.error("ERRO /api/apresentacao: %s", traceback.format_exc())
-        raise HTTPException(500, f"Erro ao gerar PDF: {e}")
-
-@app.get("/api/apresentacao-slides")
-async def get_apresentacao_slides(lang: str = "pt"):
-    try:
-        caminho = gerar_apresentacao(lang, "slides")
-        return FileResponse(caminho, media_type="application/pdf",
-                            filename=f"Apresentacao-Slides-{lang}.pdf")
-    except Exception as e:
-        logger.error("ERRO /api/apresentacao-slides: %s", traceback.format_exc())
-        raise HTTPException(500, f"Erro ao gerar slides: {e}")
+async def api_apresentacao_oficial(lang: str = "pt"):
+    """Serve a apresentação oficial em PDF, no idioma solicitado."""
+    if lang not in IDIOMAS_OFICIAIS:
+        lang = "pt"
+    caminho = os.path.join("static", f"apresentacao_oficial_{lang}.pdf")
+    if os.path.exists(caminho):
+        return FileResponse(
+            caminho,
+            media_type="application/pdf",
+            filename=f"A1ELOS_Apresentacao_{lang}.pdf",
+        )
+    # Fallback: se o idioma ainda não foi enviado ao repo, serve o pt
+    caminho_pt = os.path.join("static", "apresentacao_oficial_pt.pdf")
+    if os.path.exists(caminho_pt):
+        return FileResponse(
+            caminho_pt,
+            media_type="application/pdf",
+            filename="A1ELOS_Apresentacao_pt.pdf",
+        )
+    return JSONResponse({"erro": "Apresentação não encontrada."}, status_code=404)
 
 # ===== ROTA /criar-checkout (usada pelo site) =====
 @app.get("/criar-checkout")
