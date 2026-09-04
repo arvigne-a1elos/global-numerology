@@ -2149,7 +2149,7 @@ CONTEUDO = {
         "grafico_titulo_linha": "Pertumbuhan Diproyeksikan (Rp ribu)",
     },
 
-        "tr": {
+    "tr": {
         "titulo": "A1ELOS Küresel Numeroloji",
         "subtitulo": "Sayıların bilimi başarınıza uygulandı",
         "capa_nota": "Yatırımcılar ve Ortaklar için Stratejik Sunum",
@@ -2354,7 +2354,7 @@ CONTEUDO = {
         "fale_conosco": "Bize Ulaşın",    
     },
 
-        "vi": {
+    "vi": {
         "titulo": "A1ELOS Thần Số Học Toàn Cầu",
         "subtitulo": "Khoa học về các con số áp dụng cho thành công của bạn",
         "capa_nota": "Bài trình bày chiến lược cho Nhà đầu tư và Đối tác",
@@ -2794,65 +2794,6 @@ def _grafico_barras(doc, x, y, w, h, categorias, valores, titulo, cores=None):
             doc.drawString(lx + 12, ly - i * 13, str(categorias[i])[:24])
     except Exception as e:
         logger.warning("Grafico barras: %s", e)
-
-def _grafico_pizza(doc, x, y, w, h, rotulos, valores, titulo):
-    """Pizza com cor distinta por fatia + legenda (cor -> significado)."""
-    try:
-        n = len(valores)
-        if n == 0:
-            return
-        total = sum(valores) or 1
-        cores_fatia = [CORES_GRAFICO[i % len(CORES_GRAFICO)] for i in range(n)]
-        cx = x + min(w * 0.30, 150)
-        cy = y + h * 0.44
-        raio = min(w * 0.24, h * 0.38)
-        doc.setStrokeColor(white)
-        doc.setLineWidth(0.9)
-        ang = 90.0  # comeca no topo, sentido horario
-        for i, v in enumerate(valores):
-            ext = -(v / total) * 360.0
-            doc.setFillColor(cores_fatia[i])
-            p = doc.beginPath()
-            p.moveTo(cx, cy)
-            p.arc(cx - raio, cy - raio, cx + raio, cy + raio,
-                  startAng=ang, extent=ext)
-            p.close()
-            doc.drawPath(p, stroke=1, fill=1)
-            # rotulo dentro da fatia (nome curto + %)
-            if abs(ext) >= 10:
-                ang_med = math.radians(ang + ext / 2.0)
-                lx = cx + raio * 0.62 * math.cos(ang_med)
-                ly = cy + raio * 0.62 * math.sin(ang_med)
-                c = cores_fatia[i]
-                lum = 0.299 * c.red + 0.587 * c.green + 0.114 * c.blue
-                doc.setFillColor(white if lum < 0.62 else COR_PRETO)
-                doc.setFont(_fonte("pt", True), 7)
-                doc.drawCentredString(lx, ly, str(rotulos[i])[:12])
-                doc.setFont(_fonte("pt"), 6.5)
-                doc.drawCentredString(lx, ly - 8, "%.0f%%" % (v / total * 100))
-            ang += ext
-        # legenda: cor -> significado (valor + %)
-        lx = x + w * 0.62 + 6
-        ly = y + h - 18
-        doc.setFillColor(COR_PRETO)
-        doc.setFont(_fonte("pt", True), 8)
-        doc.drawString(lx, ly + 6, "Legenda")
-        for i, c_ in enumerate(cores_fatia):
-            doc.setFillColor(c_)
-            doc.rect(lx, ly - i * 14, 9, 9, stroke=0, fill=1)
-            doc.setFillColor(COR_PRETO)
-            doc.setFont(_fonte("pt", True), 7.5)
-            doc.drawString(lx + 13, ly - i * 14 + 1, str(rotulos[i])[:22])
-            doc.setFont(_fonte("pt"), 7)
-            doc.drawString(lx + 13, ly - i * 14 - 6,
-                           "%s  (%.0f%%)" % (format(int(valores[i]), ",").replace(",", "."),
-                                              valores[i] / total * 100 if total else 0))
-        # titulo
-        doc.setFillColor(COR_PRETO)
-        doc.setFont(_fonte("pt", True), 9)
-        doc.drawCentredString(x + w / 2, y + h - 8, titulo)
-    except Exception as e:
-        logger.warning("Grafico pizza: %s", e)
 
 def _grafico_linha(doc, x, y, w, h, categorias, series, titulo, cores=None):
     """Linha do tempo com linhas grossas e coloridas (crescimento)."""
