@@ -2884,7 +2884,8 @@ def _grafico_linha(doc, x, y, w, h, categorias, series, titulo, cores=None):
 # ------------------------------------------------------------
 # GERADOR TEXTO (documento editorial)
 # ------------------------------------------------------------
-def gerar_pdf_texto(lang="pt", caminho_saida=None): logger.info(">>> MARKER PDF TEXTO NOVO v2026-09-04")
+def gerar_pdf_texto(lang="pt", caminho_saida=None): 
+    logger.info(">>> MARKER PDF TEXTO NOVO v2026-09-04")
     _registrar_cid()
     _registrar_fontes_extra()
     if lang not in CONTEUDO:
