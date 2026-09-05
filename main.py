@@ -126,7 +126,7 @@ MOEDA = {
 }
 SIMBOLO = {
     "pt": "R$", "en": "US$", "es": "€", "it": "€", "fr": "€", "de": "€",
-    "ja": "¥", "zh": "¥", "ru": "₽", "id": "Rp", "tr": "₺", "vi": "₫",
+    "ja": "¥", "zh": "¥", "ru": "₽", "id": "Rp", "tr": "TL", "vi": "₫",
     "he": "₪", "ar": "﷼"
 }
 
@@ -867,6 +867,27 @@ async def api_apresentacao_oficial(lang: str = "pt"):
         )
     return JSONResponse({"erro": "Apresentação não encontrada."}, status_code=404)
 
+@app.get("/api/apresentacao-slides")
+async def api_apresentacao_slides(lang: str = "pt"):
+    """Serve o deck de slides (A4 paisagem) no idioma solicitado."""
+    if lang not in IDIOMAS_OFICIAIS:
+        lang = "pt"
+    caminho = os.path.join("static", f"apresentacao_slides_{lang}.pdf")
+    if os.path.exists(caminho):
+        return FileResponse(
+            caminho,
+            media_type="application/pdf",
+            filename=f"A1ELOS_Slides_{lang}.pdf",
+        )
+    caminho_pt = os.path.join("static", "apresentacao_slides_pt.pdf")
+    if os.path.exists(caminho_pt):
+        return FileResponse(
+            caminho_pt,
+            media_type="application/pdf",
+            filename="A1ELOS_Slides_pt.pdf",
+        )
+    return JSONResponse({"erro": "Slides não encontrados."}, status_code=404)
+
 # ===== ROTA /criar-checkout (usada pelo site) =====
 @app.get("/criar-checkout")
 async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
@@ -1055,3 +1076,9 @@ async def gerar_codigos_coletivo(req: BonusReq):
     itens = [{"id": "express", "qtd": 1}]
     gerados = _gerar_codigos_para_itens(itens)
     return {"ok": True, "gerados": gerados, "motivo": req.motivo}
+
+@app.post("/sugestao")
+async def receber_sugestao(req: SugestaoReq):
+    corpo = f"Sugestão de {req.nome} ({req.email}):\n\n{req.mensagem}"
+    _enviar_email_simples(ADMIN_EMAIL, "Nova Sugestão A1ELOS", corpo)
+    return {"ok": True}
