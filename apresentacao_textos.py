@@ -18,55 +18,6 @@ from reportlab.pdfbase.cidfonts import UnicodeCIDFont
 from reportlab.platypus import Table, TableStyle
 from reportlab.lib.utils import ImageReader
 from reportlab.platypus import Table, TableStyle, Paragraph
-import os
-
-IDIOMAS = ["pt", "en", "es", "it", "fr", "de", "ja", "zh",
-           "ru", "he", "ar", "id", "tr", "vi"]
-
-# ---- Importa o gerador de slides ----
-# A análise do apresentacao_textos.py mostrou a função gerar_pdf_slides
-# (deck A4 paisagem). Se o nome na sua versão for outro, ajuste aqui.
-try:
-    from apresentacao_textos import gerar_pdf_slides as gerar_slides
-except ImportError:
-    from apresentacao_textos import gerar_apresentacao as gerar_slides
-    # se usou o fallback acima, veja a observação no fim do arquivo
-
-def salvar_slides(lang):
-    destino = os.path.join("static", f"apresentacao_slides_{lang}.pdf")
-    print(f"  gerando apresentacao_slides_{lang}.pdf ...", end=" ")
-    try:
-        ret = gerar_slides(lang)
-    except TypeError:
-        # caso a função espere o diretório de saída como 2º argumento
-        ret = gerar_slides(lang, "static")
-    # Se a função retornou o caminho do PDF, usa-o direto.
-    if isinstance(ret, str) and ret and os.path.exists(ret):
-        os.makedirs("static", exist_ok=True)
-        os.replace(ret, destino)
-        print("ok")
-        return True
-    # Se não retornou caminho, procura o arquivo recém-gerado na pasta.
-    for candidato in (f"apresentacao_slides_{lang}.pdf",
-                      f"apresentacao_{lang}.pdf",
-                      f"Apresentacao-Slides-{lang}.pdf"):
-        if os.path.exists(candidato):
-            os.makedirs("static", exist_ok=True)
-            os.replace(candidato, destino)
-            print("ok")
-            return True
-    print("FALHOU (confira o nome/assinatura da função no seu arquivo)")
-    return False
-
-def main():
-    os.makedirs("static", exist_ok=True)
-    for lang in IDIOMAS:
-        salvar_slides(lang)
-    print("\nConcluído. Confira a pasta static/ — devem existir 14 arquivos apresentacao_slides_*.pdf")
-
-if __name__ == "__main__":
-    main()
-
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
