@@ -480,16 +480,6 @@ function atualizarPrecos() {
   }
 }
 
-// Busca a referência do servidor e atualiza os cards
-fetch('/api/precos')
-  .then(function(r){ return r.json(); })
-  .then(function(dados){
-    window.PRECO_DISPLAY = dados.display;
-    window.PRODUTO_FAIXA = dados.faixa;
-    atualizarPrecos();
-  })
-  .catch(function(e){ console.warn('[A1ELOS] /api/precos:', e); });
-
 // Busca a referência do servidor — com tratamento de erro
 fetch('/api/precos')
   .then(function(r){
