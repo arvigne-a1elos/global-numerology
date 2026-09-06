@@ -489,3 +489,20 @@ fetch('/api/precos')
     atualizarPrecos();
   })
   .catch(function(e){ console.warn('[A1ELOS] /api/precos:', e); });
+
+// Busca a referência do servidor — com tratamento de erro
+fetch('/api/precos')
+  .then(function(r){
+    if (!r.ok) throw new Error('HTTP ' + r.status);   // evita JSON.parse de página de erro
+    return r.json();
+  })
+  .then(function(dados){
+    window.PRECO_DISPLAY = dados.display;
+    window.PRODUTO_FAIXA = dados.faixa;
+    atualizarPrecos();
+  })
+  .catch(function(e){
+    console.warn('[A1ELOS] /api/precos indisponível:', e);
+    // Fallback: mantém os preços atuais dos cards (não quebra o site)
+    if (typeof atualizarPrecos === 'function') atualizarPrecos();
+  });
