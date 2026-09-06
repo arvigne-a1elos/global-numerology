@@ -456,7 +456,9 @@ if (document.readyState === "loading") {
 }
 function pesquisar(produto){ comprar(produto); }
 
-// ===== ATUALIZAR PREÇOS DOS CARDS POR IDIOMA (23 produtos) =====
+// ===== ATUALIZAR PREÇOS DOS CARDS — FONTE ÚNICA: /api/precos =====
+// Busca a tabela de referência do servidor (referencia/precos.py).
+// Não altera a tabela; apenas lê dela. Respeita moeda local.
 function atualizarPrecos() {
   var lang = getLang();
   var t = translations[lang] || translations.pt;
@@ -477,3 +479,13 @@ function atualizarPrecos() {
     el.textContent = precos[faixa];
   }
 }
+
+// Busca a referência do servidor e atualiza os cards
+fetch('/api/precos')
+  .then(function(r){ return r.json(); })
+  .then(function(dados){
+    window.PRECO_DISPLAY = dados.display;
+    window.PRODUTO_FAIXA = dados.faixa;
+    atualizarPrecos();
+  })
+  .catch(function(e){ console.warn('[A1ELOS] /api/precos:', e); });
