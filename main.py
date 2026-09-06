@@ -34,6 +34,7 @@ from email.mime.multipart import MIMEMultipart
 from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse, Response
 from apresentacao_textos import gerar_apresentacao
 from fastapi.responses import FileResponse, JSONResponse
+from referencia.precos import VALORES, SIMBOLO, PRODUTO_FAIXA, preco_local, preco_display
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -124,44 +125,6 @@ MOEDA = {
     "ja": "jpy", "zh": "cny", "ru": "rub", "id": "idr", "tr": "try", "vi": "vnd",
     "he": "ils", "ar": "sar"
 }
-SIMBOLO = {
-    "pt": "R$", "en": "US$", "es": "€", "it": "€", "fr": "€", "de": "€",
-    "ja": "¥", "zh": "¥", "ru": "₽", "id": "Rp", "tr": "TL", "vi": "₫",
-    "he": "₪", "ar": "﷼"
-}
-
-# ===== FAIXAS DE PREÇO (23 produtos) =====
-PRODUTO_FAIXA = {
-    "express": 0, "vida": 0, "completo": 1, "ia": 1,
-    "urna": 2, "eleitoral": 2, "imovel": 2, "calendario": 2,
-    "artistico": 3, "bebe": 3, "assinatura": 3,
-    "negocio": 4, "casal": 4, "familia": 5,
-    "coletivo": 5,                       # ← ADICIONADO (Bonus Coletivo/Korporat)
-    "nome_pet": 0, "nickname": 0, "nome_dominio": 0, "nome_canal": 0,
-    "nome_equipe": 0, "nome_ong": 0, "nome_projeto": 0, "nome_evento": 0
-}
-# ===== VALORES (unidades menores p/ Stripe) — tabela final aprovada =====
-# Moedas de 2 casas = inteiro × 100 (centavos). JPY e VND = inteiro (0 casas).
-VALORES = {
-    "pt": [800, 1700, 2600, 3500, 4400, 9800],
-    "en": [2000, 4400, 7100, 8900, 11600, 25100],
-    "es": [1100, 2600, 3500, 5300, 6200, 13400],
-    "it": [1100, 2600, 3500, 5300, 6200, 13400],
-    "fr": [1100, 2600, 3500, 5300, 6200, 13400],
-    "de": [1100, 2600, 3500, 5300, 6200, 13400],
-    "ja": [1400, 3000, 4600, 6200, 7700, 17000],        # JPY 0 casas
-    "zh": [2600, 5300, 7100, 9800, 12500, 26000],
-    "ru": [44000, 80000, 125000, 170000, 215000, 440000],
-    "id": [1100000, 2300000, 3600000, 4800000, 6000000, 13400000],
-    "tr": [5800, 12300, 18800, 25400, 31900, 71000],
-    "vi": [25000, 53000, 81000, 109000, 137000, 305000],  # VND 0 casas
-    "he": [4400, 9800, 14300, 19700, 24200, 53000],
-    "ar": [3500, 7100, 10700, 14300, 17000, 37700],
-}
-
-def preco_local(produto, lang):
-    lang = lang if lang in VALORES else "en"
-    return VALORES[lang][PRODUTO_FAIXA[produto]]
 
 # ===== NOMES DOS 23 PRODUTOS (14 IDIOMAS) =====
 PRODUTOS = {
@@ -717,6 +680,15 @@ async def criar_checkout_coletivo(lang: str = "pt", items: str = "[]"):
         cancel_url=f"{BASE_URL}/api/pay/cancel")
     return RedirectResponse(url=session.url)
 
+@app.get("/api/precos")
+async def api_precos():
+ return {
+   "valores": VALORES,
+   "simbolo": SIMBOLO,
+   "display": PRECO_DISPLAY,
+   "faixa": PRODUTO_FAIXA,
+ }   
+     
 @app.get("/api/pay/success")
 def pay_success(request: Request):
     sid = request.query_params.get("session_id", "")
@@ -950,15 +922,6 @@ def calculate(req: PayReq):
         db.close()
 
 ZERO_DECIMAL = {"ja", "vi"}  # moedas sem centavos no Stripe
-
-def preco_display(lang, faixa=0):
-    lang = lang if lang in VALORES else "en"
-    raw = VALORES[lang][faixa]
-    s = SIMBOLO.get(lang, SIMBOLO["en"])
-    if lang in ZERO_DECIMAL:
-        return f"{s} {raw:,}".replace(",", ".")          # ¥ 1.400 · ₫ 25.000
-    val = raw / 100
-    return f"{s} {val:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")  # US$ 20,00 · € 11,00
 
 @app.post("/calculate/urna")
 def calc_urna(req: UrnaPayReq):
