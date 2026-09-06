@@ -34,7 +34,7 @@ from email.mime.multipart import MIMEMultipart
 from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse, Response
 from apresentacao_textos import gerar_apresentacao
 from fastapi.responses import FileResponse, JSONResponse
-from referencia.precos import VALORES, SIMBOLO, PRODUTO_FAIXA, preco_local, preco_display
+from referencia.precos import VALORES, SIMBOLO, PRECO_DISPLAY, PRODUTO_FAIXA, preco_local, preco_display
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
