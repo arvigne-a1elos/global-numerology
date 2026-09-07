@@ -2,8 +2,6 @@
 # ============================================================
 # apresentacao_textos.py
 # Gerador de Apresentação Empresarial A1ELOS — LAYOUT EDITORIAL
-# FASE 1: Português completo (textos expandidos + layout rico)
-# Próximas fases: tradução para os outros 13 idiomas
 # ============================================================
 import os, math, logging
 from reportlab.lib.pagesizes import A4, landscape
@@ -11,22 +9,71 @@ from reportlab.lib.units import mm
 from reportlab.lib.colors import HexColor, white, black
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_JUSTIFY
-from reportlab.pdfgen import canvas
+from reportlab.pdfgen import canvas as _canvas
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase.cidfonts import UnicodeCIDFont
-from reportlab.platypus import Table, TableStyle
-from reportlab.lib.utils import ImageReader
 from reportlab.platypus import Table, TableStyle, Paragraph
+from reportlab.lib.utils import ImageReader
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_DIR = os.path.join(BASE_DIR, "static")
-LOGO_PATH = os.path.join(STATIC_DIR, "logo.png")
-if not os.path.exists(LOGO_PATH):
-    LOGO_PATH = os.path.join(STATIC_DIR, "Logo.png")
 
+# DUAS logos separadas (A1ELOS à direita, Numerologia à esquerda)
+LOGO_A1ELOS = os.path.join(STATIC_DIR, "Logo-A1ELOS.png")
+LOGO_NUMEROLOGIA = os.path.join(STATIC_DIR, "Logo.png")
+CONTATOS = "A1ELOS Assessoria e Consultoria · contato@a1elos.com.br · a1elos.com.br"
+
+class NumberedCanvas(_canvas.Canvas):
+    """Canvas que desenha cabeçalho (logos) e rodapé (página X de Y + contatos)."""
+    def __init__(self, *args, **kwargs):
+        self._saved_page_states = []
+        self._logo_a1elos = kwargs.pop('logo_a1elos', None)
+        self._logo_num = kwargs.pop('logo_num', None)
+        self._contatos = kwargs.pop('contatos', '')
+        super().__init__(*args, **kwargs)
+
+    def showPage(self):
+        self._saved_page_states.append(dict(self.__dict__))
+        self._startPage()
+
+    def save(self):
+        num_pages = len(self._saved_page_states)
+        for state in self._saved_page_states:
+            self.__dict__.update(state)
+            self._desenhar_cabecalho()
+            self._desenhar_rodape(num_pages)
+            super().showPage()
+        super().save()
+
+    def _desenhar_cabecalho(self):
+        w, h = self._pagesize
+        if self._logo_num:
+            try:
+                self.drawImage(ImageReader(self._logo_num), 28, h - 34,
+                               width=24, height=24, preserveAspectRatio=True,
+                               mask='auto')
+            except Exception:
+                pass
+        if self._logo_a1elos:
+            try:
+                self.drawImage(ImageReader(self._logo_a1elos), w - 52, h - 34,
+                               width=24, height=24, preserveAspectRatio=True,
+                               mask='auto')
+            except Exception:
+                pass
+
+    def _desenhar_rodape(self, num_pages):
+        w, h = self._pagesize
+        self.setFont("Helvetica", 8)
+        self.setFillColorRGB(0.55, 0.55, 0.55)
+        self.drawCentredString(w / 2.0, 18, f"{self._pageNumber}-{num_pages}")
+        if self._contatos:
+            self.setFont("Helvetica", 7)
+            self.drawCentredString(w / 2.0, 10, self._contatos)
 # ------------------------------------------------------------
 # CORES DA MARCA
 # ------------------------------------------------------------
@@ -2916,13 +2963,21 @@ def _bandeira(doc, x, y, w, h, pais):
     doc.rect(x, y, w, h, stroke=1, fill=0)
 
 def _rodape(doc, largura, altura, lang, c, pagina):
+    # Linha 1 (já existente): título · DUNS · confidencialidade — centro
     doc.setFillColor(COR_CINZA_CLARO)
     doc.setFont(_fonte(lang), 8)
     doc.drawCentredString(largura / 2, 10 * mm,
                           f"{c['titulo']} · DUNS 942242668 · {c['confidencial']} {c['ano']}")
+
+    # Linha 1 (modificada): página-total — canto DIREITO (era só o número)
     doc.setFillColor(COR_DOURADO)
     doc.setFont(_fonte(lang, True), 9)
-    doc.drawRightString(largura - 15 * mm, 10 * mm, str(pagina))
+    doc.drawRightString(largura - 15 * mm, 10 * mm, f"{pagina}-{TOTAL_PAGINAS}")
+
+    # NOVO: contatos — linha inferior, discreta (6.5pt)
+    doc.setFillColorRGB(0.55, 0.55, 0.55)
+    doc.setFont(_fonte(lang), 6.5)
+    doc.drawCentredString(largura / 2, 4 * mm, CONTATOS)
 
 # ------------------------------------------------------------
 # CAPA
@@ -2973,13 +3028,23 @@ def _titulo_pagina(doc, largura, altura, lang, titulo, indice=None):
     if indice is not None:
         doc.setFont(_fonte(lang, True), 11)
         doc.drawRightString(largura - 30 * mm, altura - 12 * mm, "%02d" % indice)
-    # Logo reduzida no canto superior direito
+    # Logo A1ELOS — canto superior DIREITO (já existe)
     if os.path.exists(LOGO_PATH):
         try:
             iw, ih = ImageReader(LOGO_PATH).getSize()
             lw = 10 * mm
             lh = lw * ih / iw
             doc.drawImage(LOGO_PATH, largura - 12 * mm - lw, altura - 15 * mm,
+                          width=lw, height=lh, mask="auto")
+        except Exception:
+            pass
+    # ===== NOVO: Logo Numerologia — canto superior ESQUERDO =====
+    if os.path.exists(LOGO_NUMEROLOGIA):
+        try:
+            iw, ih = ImageReader(LOGO_NUMEROLOGIA).getSize()
+            lw = 8 * mm
+            lh = lw * ih / iw
+            doc.drawImage(LOGO_NUMEROLOGIA, 6 * mm, altura - 15 * mm,
                           width=lw, height=lh, mask="auto")
         except Exception:
             pass
