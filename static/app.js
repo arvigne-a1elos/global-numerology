@@ -459,11 +459,17 @@ function pesquisar(produto){ comprar(produto); }
 // ===== ATUALIZAR PREÇOS DOS CARDS — FONTE ÚNICA: /api/precos =====
 // Busca a tabela de referência do servidor (referencia/precos.py).
 // Não altera a tabela; apenas lê dela. Respeita moeda local.
+function formatarValor(centavos) {
+  var v = (centavos / 100).toFixed(0);
+  return v.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
+
 function atualizarPrecos() {
   var lang = getLang();
   var t = translations[lang] || translations.pt;
-  var precos = (typeof PRECO_DISPLAY !== 'undefined' && PRECO_DISPLAY[lang])
-               ? PRECO_DISPLAY[lang] : (PRECO_DISPLAY ? PRECO_DISPLAY.pt : null);
+  var precos = (typeof PRECO_VALORES !== 'undefined' && PRECO_VALORES[lang])
+               ? PRECO_VALORES[lang] : (PRECO_VALORES ? PRECO_VALORES.pt : null);
+  var simbolo = (typeof SIMBOLO !== 'undefined' && SIMBOLO[lang]) ? SIMBOLO[lang] : 'R$';
   if (!precos) return;
   var cards = document.querySelectorAll('.product-card[data-prod]');
   for (var i = 0; i < cards.length; i++) {
@@ -475,26 +481,24 @@ function atualizarPrecos() {
       continue;
     }
     var faixa = PRODUTO_FAIXA[prod];
-    if (typeof faixa === 'undefined') continue;
-    var indiceCard = faixa <= 1 ? faixa : (faixa <= 3 ? 2 : 3);
-    if (!precos[indiceCard]) continue;
-    el.textContent = precos[indiceCard];
+    if (typeof faixa === 'undefined' || !precos[faixa]) continue;
+    el.textContent = simbolo + ' ' + formatarValor(precos[faixa]);   // preço ÚNICO
   }
 }
 
 // Busca a referência do servidor — com tratamento de erro
 fetch('/api/precos')
   .then(function(r){
-    if (!r.ok) throw new Error('HTTP ' + r.status);   // evita JSON.parse de página de erro
+    if (!r.ok) throw new Error('HTTP ' + r.status);
     return r.json();
   })
   .then(function(dados){
-    window.PRECO_DISPLAY = dados.display;
-    window.PRODUTO_FAIXA = dados.faixa;
+    window.PRECO_VALORES = dados.valores;   // 6 preços exatos por idioma (em centavos)
+    window.SIMBOLO = dados.simbolo;         // moeda local (R$, US$, €, ¥...)
+    window.PRODUTO_FAIXA = dados.faixa;     // 23 produtos → faixa 0-5
     atualizarPrecos();
   })
   .catch(function(e){
     console.warn('[A1ELOS] /api/precos indisponível:', e);
-    // Fallback: mantém os preços atuais dos cards (não quebra o site)
     if (typeof atualizarPrecos === 'function') atualizarPrecos();
   });
