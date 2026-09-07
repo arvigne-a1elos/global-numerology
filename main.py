@@ -31,7 +31,7 @@ import dateutil.parser as dp
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse, Response
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse, Response
 from apresentacao_textos import gerar_apresentacao
 from referencia.precos import VALORES, SIMBOLO, PRECO_DISPLAY, PRODUTO_FAIXA, preco_local, preco_display
 
@@ -106,13 +106,18 @@ FONTE_POR_IDIOMA = {
     'vi': 'DejaVu',   # vietnamita: diacríticos combinados
 }
 
+# ===== APP =====
+app = FastAPI(title="Global Numerology")
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True,
+                   allow_methods=["*"], allow_headers=["*"])
+
+STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
+if os.path.isdir(STATIC_DIR):
+    app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+
 # ============================================================
 # ROTAS DE APRESENTAÇÃO (PDF por idioma — sob demanda)
 # ============================================================
-from fastapi.responses import FileResponse
-import io
-
-# Idiomas suportados pelo gerador (14)
 IDIOMAS_APRES = ["pt", "en", "es", "it", "fr", "de", "ja", "zh",
                  "ru", "id", "tr", "vi", "he", "ar"]
 
@@ -122,10 +127,7 @@ def _gerar_apresentacao(lang: str, modo: str):
         raise HTTPException(status_code=400, detail=f"Idioma '{lang}' não suportado.")
     try:
         import apresentacao_textos as ap
-        if modo == "slides":
-            caminho = ap.gerar_pdf_slides(lang)
-        else:
-            caminho = ap.gerar_pdf_texto(lang)
+        caminho = ap.gerar_pdf_slides(lang) if modo == "slides" else ap.gerar_pdf_texto(lang)
         if not caminho or not os.path.exists(caminho):
             raise HTTPException(status_code=500, detail="Falha ao gerar o PDF.")
         with open(caminho, "rb") as f:
@@ -138,36 +140,15 @@ def _gerar_apresentacao(lang: str, modo: str):
 
 @app.get("/api/apresentacao")
 async def api_apresentacao(lang: str = "pt"):
-    """Baixa o PDF da apresentação empresarial no idioma escolhido."""
     dados, nome = _gerar_apresentacao(lang, "texto")
     return Response(content=dados, media_type="application/pdf",
                     headers={"Content-Disposition": f'attachment; filename="{nome}"'})
 
 @app.get("/api/apresentacao-slides")
 async def api_apresentacao_slides(lang: str = "pt"):
-    """Baixa o PDF dos slides no idioma escolhido."""
     dados, nome = _gerar_apresentacao(lang, "slides")
     return Response(content=dados, media_type="application/pdf",
                     headers={"Content-Disposition": f'attachment; filename="{nome}"'})
-
-# ===== APP =====
-app = FastAPI(title="Global Numerology")
-app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True,
-                   allow_methods=["*"], allow_headers=["*"])
-
-STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
-if os.path.isdir(STATIC_DIR):
-    app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
-
-# ===== APRESENTAÇÃO OFICIAL (MODELO ADOTADO — 14 idiomas) =====
-# ===== 14 IDIOMAS E MOEDAS =====
-IDIOMAS_OFICIAIS = ["pt", "en", "es", "it", "fr", "de", "ja", "zh",
-                    "ru", "he", "ar", "id", "tr", "vi"]
-MOEDA = {
-    "pt": "brl", "en": "usd", "es": "eur", "it": "eur", "fr": "eur", "de": "eur",
-    "ja": "jpy", "zh": "cny", "ru": "rub", "id": "idr", "tr": "try", "vi": "vnd",
-    "he": "ils", "ar": "sar"
-}
 
 # ===== NOMES DOS 23 PRODUTOS (14 IDIOMAS) =====
 PRODUTOS = {
