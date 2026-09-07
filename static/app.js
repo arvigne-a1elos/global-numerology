@@ -475,8 +475,10 @@ function atualizarPrecos() {
       continue;
     }
     var faixa = PRODUTO_FAIXA[prod];
-    if (typeof faixa === 'undefined' || !precos[faixa]) continue;
-    el.textContent = precos[faixa];
+    if (typeof faixa === 'undefined') continue;
+    var indiceCard = faixa <= 1 ? faixa : (faixa <= 3 ? 2 : 3);
+    if (!precos[indiceCard]) continue;
+    el.textContent = precos[indiceCard];
   }
 }
 
