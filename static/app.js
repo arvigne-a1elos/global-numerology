@@ -1,6 +1,17 @@
 // ===== A1ELOS GLOBAL NUMEROLOGY - APP.JS (VERSÃO CONSOLIDADA) =====
 // ================================================================
 // ===== MONTAR SELETOR DE IDIOMAS (14 bandeiras) =====
+// GUARDA ANTI-REENTRÂNCIA (adicione no topo do arquivo)
+let _cicloEmExecucao = false;
+
+function iniciarCiclo() {
+    if (_cicloEmExecucao) return false;   // se já está rodando, ignora
+    _cicloEmExecucao = true;
+    return true;
+}
+function finalizarCiclo() {
+    _cicloEmExecucao = false;
+}
 function montarSeletorIdioma() {
   var container = document.getElementById('langSelector');
   if (!container) return;
@@ -314,54 +325,54 @@ function carregarPartials() {
     .catch(function(e){ console.warn('[partials] produtos.html:', e); });
 }
 
-// ===== MONTAR TUDO (consolidado, blindado e com diagnóstico) =====
+// ===== MONTAR TUDO (com trava anti-dupla execução) =====
+var _montando = false;
 function montarTudo() {
+  if (_montando) return;          // trava UMA vez, no topo
+  _montando = true;
   try {
     if (typeof montarTabelaBC === "function") {
       console.log("[A1ELOS] montarTabelaBC() EXECUTANDO");
       montarTabelaBC();
       console.log("[A1ELOS] montarTabelaBC() CONCLUÍDA");
-    } else {
-      console.warn("[A1ELOS] montarTabelaBC NÃO encontrada");
-    }
-  } catch (e) {
-    console.error("[A1ELOS] ERRO em montarTabelaBC:", e);
-  }
+    } else { console.warn("[A1ELOS] montarTabelaBC NÃO encontrada"); }
+  } catch (e) { console.error("[A1ELOS] ERRO em montarTabelaBC:", e); }
   try {
     if (typeof montarEnergias === "function") {
       console.log("[A1ELOS] montarEnergias() EXECUTANDO");
       montarEnergias();
       console.log("[A1ELOS] montarEnergias() CONCLUÍDA");
-    } else {
-      console.warn("[A1ELOS] montarEnergias NÃO encontrada");
-    }
-  } catch (e) {
-    console.error("[A1ELOS] ERRO em montarEnergias:", e);
-  }
+    } else { console.warn("[A1ELOS] montarEnergias NÃO encontrada"); }
+  } catch (e) { console.error("[A1ELOS] ERRO em montarEnergias:", e); }
   try {
     if (typeof traduzirTudo === "function") {
       console.log("[A1ELOS] traduzirTudo() EXECUTANDO");
       traduzirTudo();
       console.log("[A1ELOS] traduzirTudo() CONCLUÍDA");
-    } else {
-      console.warn("[A1ELOS] traduzirTudo NÃO encontrada");
-    }
-  } catch (e) {
-    console.error("[A1ELOS] ERRO em traduzirTudo:", e);
-  }
+    } else { console.warn("[A1ELOS] traduzirTudo NÃO encontrada"); }
+  } catch (e) { console.error("[A1ELOS] ERRO em traduzirTudo:", e); }
   if (typeof atualizarPrecos === 'function') {
     console.log("[A1ELOS] atualizarPrecos() EXECUTANDO");
     atualizarPrecos();
+    console.log("[A1ELOS] atualizarPrecos() CONCLUÍDA");
   }
   if (typeof atualizarLinksApresentacao === 'function') {
     atualizarLinksApresentacao();
   }
+  _montando = false;              // libera a trava no fim
 }
+
 function atualizarLinksApresentacao() {
+  var lang = (typeof getLang === 'function') ? getLang() : 'pt';
   var btnAp = document.getElementById('btnApresentacao');
-  if (btnAp && typeof getLang === 'function') btnAp.href = '/api/apresentacao?lang=' + getLang();
+  if (btnAp) btnAp.href = '/api/apresentacao?lang=' + lang;
   var btnSlides = document.getElementById('btnApresentacaoSlides');
-  if (btnSlides && typeof getLang === 'function') btnSlides.href = '/api/apresentacao-slides?lang=' + getLang();
+  if (btnSlides) btnSlides.href = '/api/apresentacao-slides?lang=' + lang;
+  // Também cobre os cards de download da seção Investidores, se usarem links diretos
+  var aInvest = document.querySelectorAll('a[data-doc="apresentacao"]');
+  for (var i = 0; i < aInvest.length; i++) aInvest[i].href = '/api/apresentacao?lang=' + lang;
+  var aSlides = document.querySelectorAll('a[data-doc="slides"]');
+  for (var j = 0; j < aSlides.length; j++) aSlides[j].href = '/api/apresentacao-slides?lang=' + lang;
 }
 
 var MESES_TRAD = {
@@ -464,6 +475,26 @@ function formatarValor(centavos) {
   return v.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 }
 
+// ===== SOMAR SOB MEDIDA NA MOEDA DO IDIOMA =====
+function formatarMoeda(lang, valor) {
+  var simbolo = (typeof SIMBOLO !== 'undefined' && SIMBOLO[lang]) ? SIMBOLO[lang] : 'R$';
+  return simbolo + ' ' + String(valor).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
+
+function atualizarSomaSobMedida(lang, precos) {
+  var sel = document.querySelectorAll('.sob-medida-item.selecionado, .item-selecionado');
+  var soma = 0;
+  for (var i = 0; i < sel.length; i++) {
+    var el = sel[i];
+    var faixa = parseInt(el.getAttribute('data-preco') || el.getAttribute('data-faixa'), 10);
+    if (!isNaN(faixa) && precos[faixa]) {
+      soma += parseInt(precos[faixa], 10);
+    }
+  }
+  var alvo = document.getElementById('soma-sob-medida');
+  if (alvo) alvo.textContent = formatarMoeda(lang, soma);
+}
+
 function atualizarPrecos() {
   var lang = getLang();
   var t = translations[lang] || translations.pt;
@@ -482,23 +513,13 @@ function atualizarPrecos() {
     }
     var faixa = PRODUTO_FAIXA[prod];
     if (typeof faixa === 'undefined' || !precos[faixa]) continue;
-    el.textContent = simbolo + ' ' + formatarValor(precos[faixa]);   // preço ÚNICO
+    el.textContent = simbolo + ' ' + formatarValor(precos[faixa]);
+  }
+  try {
+    if (typeof atualizarSomaSobMedida === 'function') {
+      atualizarSomaSobMedida(lang, precos);
+    }
+  } catch (err) {
+    console.error('[A1ELOS] erro em atualizarSomaSobMedida:', err);
   }
 }
-
-// Busca a referência do servidor — com tratamento de erro
-fetch('/api/precos')
-  .then(function(r){
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    return r.json();
-  })
-  .then(function(dados){
-    window.PRECO_VALORES = dados.valores;   // 6 preços exatos por idioma (em centavos)
-    window.SIMBOLO = dados.simbolo;         // moeda local (R$, US$, €, ¥...)
-    window.PRODUTO_FAIXA = dados.faixa;     // 23 produtos → faixa 0-5
-    atualizarPrecos();
-  })
-  .catch(function(e){
-    console.warn('[A1ELOS] /api/precos indisponível:', e);
-    if (typeof atualizarPrecos === 'function') atualizarPrecos();
-  });
