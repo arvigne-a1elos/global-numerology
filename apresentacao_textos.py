@@ -25,7 +25,9 @@ STATIC_DIR = os.path.join(BASE_DIR, "static")
 # DUAS logos separadas (A1ELOS à direita, Numerologia à esquerda)
 LOGO_A1ELOS = os.path.join(STATIC_DIR, "Logo-A1ELOS.png")
 LOGO_NUMEROLOGIA = os.path.join(STATIC_DIR, "Logo.png")
-CONTATOS = "A1ELOS Assessoria e Consultoria · contato@a1elos.com.br · a1elos.com.br"
+# ===== RODAPÉ =====  (substitua a linha CONTATOS antiga por esta)
+CONTATOS = "a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.br/contato"
+TOTAL_PAGINAS = 21   # capa(1) + 17 seções + Pix + Referências + página final
 
 class NumberedCanvas(_canvas.Canvas):
     """Canvas que desenha cabeçalho (logos) e rodapé (página X de Y + contatos)."""
@@ -74,6 +76,9 @@ class NumberedCanvas(_canvas.Canvas):
         if self._contatos:
             self.setFont("Helvetica", 7)
             self.drawCentredString(w / 2.0, 10, self._contatos)
+
+
+
 # ------------------------------------------------------------
 # CORES DA MARCA
 # ------------------------------------------------------------
@@ -344,6 +349,25 @@ CONTEUDO = {
         "graf_cons": "Conservador",
         "graf_otim": "Otimista",
         "grafico_titulo_linha": "Crescimento Projetado (R$ mil)",
+        "pix_titulo": "Brasil: A Infraestrutura Pix",
+        "pix_texto": "O Pix é a infraestrutura pública de pagamentos instantâneos do Brasil. Para a A1ELOS, ele garante cobrança imediata, baixo custo e aceitação universal — o alicerce da operação B2C no mercado brasileiro e a porta de entrada para a expansão internacional.",
+        "pix_kpis": [
+            ("30,1 bi", "Transações em 2025", "+20% vs 2024 · Febraban"),
+            ("76,4%", "da população usa Pix", "211 milhões de brasileiros · Banco Central"),
+            ("R$ 68,2 tri", "movimentados no 2º sem. 2025", "78,4 bi de transações · Banco Central"),
+            ("~80 bi", "transações em 2025", "+25,7% vs ano anterior · Relatório do Pix"),
+        ],
+        "pix_fonte": "Fontes: Banco Central do Brasil (Pix em Números) e Febraban (Pesquisa de Tecnologia Bancária).",
+        "ref_titulo": "Referências Bibliográficas",
+        "ref_intro": "Fontes utilizadas para os dados de mercado, projeções e indicadores desta apresentação.",
+        "ref_lista": [
+            ("Global Wellness Institute", "Economia global do bem-estar: US$ 6,8 tri (2024) → US$ 9,8 tri (2029)."),
+            ("MarkNtel Advisors", "Apps de astrologia e numerologia: US$ 3 bi → US$ 9 bi até 2030 (CAGR ~20%)."),
+            ("FMI · Banco Mundial", "PIB e paridade do poder de compra (PPP) por país."),
+            ("Banco Central do Brasil", "Estatísticas oficiais do Pix: transações, volume e usuários."),
+            ("Febraban", "Pesquisa de Tecnologia Bancária — crescimento do Pix em 2025."),
+            ("IBGE", "População e indicadores socioeconômicos do Brasil."),
+    ],
     },
 
     "en": {
@@ -546,6 +570,25 @@ CONTEUDO = {
         "graf_cons": "Conservative",
         "graf_otim": "Optimistic",
         "grafico_titulo_linha": "Projected Growth (US$ thousands)",
+        "pix_titulo": "Brazil: The Pix Infrastructure",
+        "pix_texto": "Pix is Brazil's public instant-payment infrastructure. For A1ELOS it ensures immediate billing, low cost and universal acceptance — the foundation of our B2C operation in Brazil and the gateway to international expansion.",
+        "pix_kpis": [
+            ("30.1bn", "Transactions in 2025", "+20% vs 2024 · Febraban"),
+            ("76.4%", "of the population use Pix", "211 million Brazilians · Central Bank"),
+            ("R$ 68.2tn", "moved in H2 2025", "78.4bn transactions · Central Bank"),
+            ("~80bn", "transactions in 2025", "+25.7% vs previous year · Pix Report"),
+        ],
+        "pix_fonte": "Sources: Central Bank of Brazil (Pix by the Numbers) and Febraban (Banking Technology Survey).",
+        "ref_titulo": "References",
+        "ref_intro": "Sources used for the market data, projections and indicators in this presentation.",
+        "ref_lista": [
+            ("Global Wellness Institute", "Global wellness economy: US$ 6.8tn (2024) → US$ 9.8tn (2029)."),
+            ("MarkNtel Advisors", "Astrology and numerology apps: US$ 3bn → US$ 9bn by 2030 (CAGR ~20%)."),
+            ("IMF · World Bank", "GDP and purchasing-power parity (PPP) by country."),
+            ("Central Bank of Brazil", "Official Pix statistics: transactions, volume and users."),
+            ("Febraban", "Banking Technology Survey — Pix growth in 2025."),
+            ("IBGE", "Population and socioeconomic indicators of Brazil."),
+    ],        
     },
 
     "es": {
@@ -740,6 +783,25 @@ CONTEUDO = {
         "graf_cons": "Conservador",
         "graf_otim": "Optimista",
         "grafico_titulo_linha": "Crecimiento Proyectado (€ miles)",
+        "pix_titulo": "Brasil: La Infraestructura Pix",
+        "pix_texto": "Pix es la infraestructura pública de pagos instantáneos de Brasil. Para A1ELOS garantiza cobro inmediato, bajo costo y aceptación universal: la base de la operación B2C en el mercado brasileño y la puerta de entrada a la expansión internacional.",
+        "pix_kpis": [
+            ("30,1 mil M", "Transacciones en 2025", "+20 % frente a 2024 · Febraban"),
+            ("76,4 %", "de la población usa Pix", "211 millones de brasileños · Banco Central"),
+            ("R$ 68,2 billones", "movilizados en el 2.º semestre de 2025", "78,4 mil M de transacciones · Banco Central"),
+            ("~80 mil M", "transacciones en 2025", "+25,7 % frente al año anterior · Informe Pix"),
+        ],
+        "pix_fonte": "Fuentes: Banco Central de Brasil (Pix en cifras) y Febraban (Encuesta de Tecnología Bancaria).",
+        "ref_titulo": "Referencias Bibliográficas",
+        "ref_intro": "Fuentes utilizadas para los datos de mercado, proyecciones e indicadores de esta presentación.",
+        "ref_lista": [
+            ("Global Wellness Institute", "Economía global del bienestar: US$ 6,8 billones (2024) → US$ 9,8 billones (2029)."),
+            ("MarkNtel Advisors", "Apps de astrología y numerología: US$ 3 mil M → US$ 9 mil M para 2030 (CAGR ~20 %)."),
+            ("FMI · Banco Mundial", "PIB y paridad del poder adquisitivo (PPP) por país."),
+            ("Banco Central de Brasil", "Estadísticas oficiales del Pix: transacciones, volumen y usuarios."),
+            ("Febraban", "Encuesta de Tecnología Bancaria — crecimiento del Pix en 2025."),
+            ("IBGE", "Población e indicadores socioeconómicos de Brasil."),
+    ],        
     },
 
     "it": {
@@ -934,6 +996,25 @@ CONTEUDO = {
         "graf_cons": "Conservativo",
         "graf_otim": "Ottimista",
         "grafico_titulo_linha": "Crescita Proiettata (€ migliaia)",
+        "pix_titulo": "Brasile: L'infrastruttura Pix",
+        "pix_texto": "Pix è l'infrastruttura pubblica brasiliana per i pagamenti istantanei. Per A1ELOS garantisce incasso immediato, basso costo e accettazione universale: la base dell'operazione B2C in Brasile e la porta d'ingresso all'espansione internazionale.",
+        "pix_kpis": [
+            ("30,1 mld", "Transazioni nel 2025", "+20% vs 2024 · Febraban"),
+            ("76,4%", "della popolazione usa Pix", "211 milioni di brasiliani · Banca Centrale"),
+            ("R$ 68,2 bilioni", "movimentati nel 2° sem. 2025", "78,4 mld di transazioni · Banca Centrale"),
+            ("~80 mld", "transazioni nel 2025", "+25,7% vs anno precedente · Rapporto Pix"),
+        ],
+        "pix_fonte": "Fonti: Banca Centrale del Brasile (Pix in numeri) e Febraban (Indagine sulla Tecnologia Bancaria).",
+        "ref_titulo": "Riferimenti Bibliografici",
+        "ref_intro": "Fonti utilizzate per i dati di mercato, le proiezioni e gli indicatori di questa presentazione.",
+        "ref_lista": [
+            ("Global Wellness Institute", "Economia globale del benessere: US$ 6,8 bilioni (2024) → US$ 9,8 bilioni (2029)."),
+            ("MarkNtel Advisors", "App di astrologia e numerologia: US$ 3 miliardi → US$ 9 miliardi entro il 2030 (CAGR ~20%)."),
+            ("FMI · Banca Mondiale", "PIL e parità del potere d'acquisto (PPA) per paese."),
+            ("Banca Centrale del Brasile", "Statistiche ufficiali Pix: transazioni, volumi e utenti."),
+            ("Febraban", "Indagine sulla Tecnologia Bancaria — crescita del Pix nel 2025."),
+            ("IBGE", "Popolazione e indicatori socioeconomici del Brasile."),
+    ],
     },
     
     "fr": {
@@ -1128,6 +1209,25 @@ CONTEUDO = {
         "graf_cons": "Conservateur",
         "graf_otim": "Optimiste",
         "grafico_titulo_linha": "Croissance Projetée (€ milliers)",
+        "pix_titulo": "Brésil : L'infrastructure Pix",
+        "pix_texto": "Pix est l'infrastructure publique de paiement instantané du Brésil. Pour A1ELOS, elle garantit un encaissement immédiat, un coût réduit et une acceptation universelle — la base de l'activité B2C au Brésil et la porte d'entrée vers l'expansion internationale.",
+        "pix_kpis": [
+            ("30,1 mds", "Transactions en 2025", "+20 % vs 2024 · Febraban"),
+            ("76,4 %", "de la population utilise Pix", "211 millions de Brésiliens · Banque centrale"),
+            ("R$ 68,2 billions", "mouvementés au 2e semestre 2025", "78,4 mds de transactions · Banque centrale"),
+            ("~80 mds", "transactions en 2025", "+25,7 % vs année précédente · Rapport Pix"),
+        ],
+        "pix_fonte": "Sources : Banque centrale du Brésil (Pix en chiffres) et Febraban (Enquête sur la technologie bancaire).",
+        "ref_titulo": "Références Bibliographiques",
+        "ref_intro": "Sources utilisées pour les données de marché, les projections et les indicateurs de cette présentation.",
+        "ref_lista": [
+            ("Global Wellness Institute", "Économie mondiale du bien-être : US$ 6,8 billions (2024) → US$ 9,8 billions (2029)."),
+            ("MarkNtel Advisors", "Applications d'astrologie et de numérologie : US$ 3 mds → US$ 9 mds d'ici 2030 (TCAC ~20 %)."),
+            ("FMI · Banque mondiale", "PIB et parité de pouvoir d'achat (PPA) par pays."),
+            ("Banque centrale du Brésil", "Statistiques officielles de Pix : transactions, volume et utilisateurs."),
+            ("Febraban", "Enquête sur la technologie bancaire — croissance de Pix en 2025."),
+            ("IBGE", "Population et indicateurs socioéconomiques du Brésil."),
+    ],
     },
 
     "de": {
@@ -1322,6 +1422,25 @@ CONTEUDO = {
         "graf_cons": "Konservativ",
         "graf_otim": "Optimistisch",
         "grafico_titulo_linha": "Projiziertes Wachstum (€ Tausend)",
+        "pix_titulo": "Brasilien: Die Pix-Infrastruktur",
+        "pix_texto": "Pix ist Brasiliens öffentliche Infrastruktur für Sofortzahlungen. Für A1ELOS bedeutet sie sofortige Zahlungseingänge, geringe Kosten und universelle Akzeptanz — das Fundament des B2C-Geschäfts in Brasilien und das Tor zur internationalen Expansion.",
+        "pix_kpis": [
+            ("30,1 Mrd.", "Transaktionen 2025", "+20 % ggü. 2024 · Febraban"),
+            ("76,4 %", "der Bevölkerung nutzt Pix", "211 Mio. Brasilianer · Zentralbank"),
+            ("R$ 68,2 Bio.", "im 2. Halbjahr 2025", "78,4 Mrd. Transaktionen · Zentralbank"),
+            ("~80 Mrd.", "Transaktionen 2025", "+25,7 % ggü. Vorjahr · Pix-Bericht"),
+         ],
+         "pix_fonte": "Quellen: Zentralbank von Brasilien (Pix in Zahlen) und Febraban (Umfrage zur Banktechnologie).",
+         "ref_titulo": "Quellenverzeichnis",
+         "ref_intro": "Quellen für die Marktdaten, Prognosen und Kennzahlen dieser Präsentation.",
+         "ref_lista": [
+             ("Global Wellness Institute", "Globale Wellness-Wirtschaft: US$ 6,8 Bio. (2024) → US$ 9,8 Bio. (2029)."),
+             ("MarkNtel Advisors", "Astrologie- und Numerologie-Apps: US$ 3 Mrd. → US$ 9 Mrd. bis 2030 (CAGR ~20 %)."),
+             ("IWF · Weltbank", "BIP und Kaufkraftparität (KKP) nach Ländern."),
+             ("Zentralbank von Brasilien", "Offizielle Pix-Statistiken: Transaktionen, Volumen und Nutzer."),
+             ("Febraban", "Umfrage zur Banktechnologie — Pix-Wachstum 2025."),
+             ("IBGE", "Bevölkerung und sozioökonomische Indikatoren Brasiliens."),
+    ],
     },
 
     "ru": {
@@ -1516,6 +1635,25 @@ CONTEUDO = {
         "graf_cons": "Консервативный",
         "graf_otim": "Оптимистичный",
         "grafico_titulo_linha": "Прогнозируемый рост (₽ тыс.)",
+        "pix_titulo": "Бразилия: Инфраструктура Pix",
+        "pix_texto": "Pix — это бразильская государственная инфраструктура мгновенных платежей. Для A1ELOS она гарантирует немедленное зачисление, низкие издержки и повсеместное принятие — основу B2C-операций на бразильском рынке и вход в международную экспансию.",
+        "pix_kpis": [
+            ("30,1 млрд", "транзакций в 2025 г.", "+20% к 2024 г. · Febraban"),
+            ("76,4%", "населения пользуется Pix", "211 млн бразильцев · Центробанк"),
+            ("R$ 68,2 трлн", "за 2-е полугодие 2025 г.", "78,4 млрд транзакций · Центробанк"),
+            ("~80 млрд", "транзакций в 2025 г.", "+25,7% к прошлому году · Отчёт Pix"),
+        ],
+        "pix_fonte": "Источники: Центральный банк Бразилии (Pix в цифрах) и Febraban (Исследование банковских технологий).",
+        "ref_titulo": "Библиография",
+        "ref_intro": "Источники, использованные для рыночных данных, прогнозов и показателей данной презентации.",
+        "ref_lista": [
+            ("Global Wellness Institute", "Мировая экономика благополучия: US$ 6,8 трлн (2024) → US$ 9,8 трлн (2029)."),
+            ("MarkNtel Advisors", "Приложения астрологии и нумерологии: US$ 3 млрд → US$ 9 млрд к 2030 г. (CAGR ~20 %)."),
+            ("МВФ · Всемирный банк", "ВВП и паритет покупательной способности (ППС) по странам."),
+            ("Центральный банк Бразилии", "Официальная статистика Pix: транзакции, объём и пользователи."),
+            ("Febraban", "Исследование банковских технологий — рост Pix в 2025 г."),
+            ("IBGE", "Население и социально-экономические показатели Бразилии."),
+    ],
     },
 
     "ja": {
@@ -1710,6 +1848,25 @@ CONTEUDO = {
         "graf_cons": "保守的",
         "graf_otim": "楽観的",
         "grafico_titulo_linha": "予測成長（千円）",
+        "pix_titulo": "ブラジル: Pixインフラ",
+        "pix_texto": "Pixはブラジルの公的な即時決済インフラです。A1ELOSにとって、即時入金・低コスト・全国的な利用を保証するもので、ブラジル市場でのB2C事業の基盤であり、海外展開への入り口です。",
+        "pix_kpis": [
+            ("301億", "2025年の取引件数", "前年比+20%・Febraban"),
+            ("76.4%", "の国民がPixを利用", "ブラジル人2億1100万人・中央銀行"),
+            ("R$ 68.2兆", "2025年下半期の取引額", "784億件の取引・中央銀行"),
+            ("約800億", "2025年の取引件数", "前年比+25.7%・Pix報告書"),
+         ],
+         "pix_fonte": "出典: ブラジル中央銀行（Pixの統計）およびフェブラバン（銀行技術調査）。",
+         "ref_titulo": "参考文献",
+         "ref_intro": "本プレゼンテーションの市場データ、予測、指標に使用した出典です。",
+         "ref_lista": [
+            ("Global Wellness Institute", "世界のウェルネス経済: 6.8兆米ドル（2024）→ 9.8兆米ドル（2029）。"),
+            ("MarkNtel Advisors", "占星術・数秘術アプリ: 30億米ドル → 90億米ドル（2030年まで、CAGR約20%）。"),
+            ("IMF・世界銀行", "各国のGDPと購買力平価（PPP）。"),
+            ("ブラジル中央銀行", "Pixの公式統計: 取引件数・取引額・利用者数。"),
+            ("Febraban", "銀行技術調査 — 2025年のPix成長。"),
+            ("IBGE", "ブラジルの人口および社会経済指標。"),
+    ],
     },
 
     "zh": {
@@ -1904,6 +2061,25 @@ CONTEUDO = {
         "graf_cons": "保守",
         "graf_otim": "乐观",
         "grafico_titulo_linha": "预计增长（千元）",
+        "pix_titulo": "巴西：Pix支付基础设施",
+        "pix_texto": "Pix是巴西的公共即时支付基础设施。对A1ELOS而言，它保证即时收款、低成本与全民接受——是我们在巴西市场开展B2C业务的基础，也是走向国际扩张的门户。",
+        "pix_kpis": [
+            ("301亿", "2025年交易笔数", "较2024年增长20%·Febraban"),
+            ("76.4%", "的人口使用Pix", "2.11亿巴西人·中央银行"),
+            ("R$ 68.2万亿", "2025年下半年交易额", "784亿笔交易·中央银行"),
+            ("约800亿", "2025年交易笔数", "较上年增长25.7%·Pix报告"),
+        ],
+        "pix_fonte": "来源：巴西中央银行（Pix数据）和Febraban（银行技术调查）。",
+        "ref_titulo": "参考文献",
+        "ref_intro": "本演示文稿中市场数据、预测和指标所使用的来源。",
+        "ref_lista": [
+            ("Global Wellness Institute", "全球健康经济：6.8万亿美元（2024）→ 9.8万亿美元（2029）。"),
+            ("MarkNtel Advisors", "占星与数字命理应用：300亿美元 → 900亿美元（到2030年，CAGR约20%）。"),
+            ("IMF · 世界银行", "各国GDP与购买力平价（PPP）。"),
+            ("巴西中央银行", "Pix官方统计：交易笔数、金额与用户。"),
+            ("Febraban", "银行技术调查——2025年Pix增长。"),
+            ("IBGE", "巴西人口与社会经济指标。"),
+    ],
     },
 
     "he": {
@@ -2098,6 +2274,25 @@ CONTEUDO = {
         "graf_cons": "שמרני",
         "graf_otim": "אופטימי",
         "grafico_titulo_linha": "צמיחה חזויה (₪ אלפים)",
+        "pix_titulo": "ברזיל: תשתית הפיקס",
+        "pix_texto": "פיקס היא תשתית התשלומים המיידיים הציבורית של ברזיל. עבור A1ELOS היא מבטיחה גבייה מיידית, עלות נמוכה וקבלה אוניברסלית — הבסיס לפעילות B2C בשוק הברזילאי ושער הכניסה להתרחבות בינלאומית.",
+        "pix_kpis": [
+            ("30.1 מיליארד", "עסקאות ב-2025", "פלוס 20% לעומת 2024 · פבררבן"),
+            ("76.4%", "מהאוכלוסייה משתמשת בפיקס", "211 מיליון ברזילאים · הבנק המרכזי"),
+            ("R$ 68.2 טריליון", "במחצית השנייה של 2025", "78.4 מיליארד עסקאות · הבנק המרכזי"),
+            ("כ-80 מיליארד", "עסקאות ב-2025", "פלוס 25.7% לעומת השנה הקודמת · דוח פיקס"),
+        ],
+        "pix_fonte": "מקורות: הבנק המרכזי של ברזיל (Pix במספרים) ופבררבן (סקר טכנולוגיית הבנקאות).",
+        "ref_titulo": "מקורות ביבליוגרפיים",
+        "ref_intro": "מקורות ששימשו לנתוני השוק, התחזיות והמדדים במצגת זו.",
+        "ref_lista": [
+            ("Global Wellness Institute", "כלכלת הבריאות והרווחה העולמית: 6.8 טריליון דולר (2024) → 9.8 טריליון דולר (2029)."),
+            ("MarkNtel Advisors", "אפליקציות אסטרולוגיה ונומרולוגיה: 3 מיליארד דולר → 9 מיליארד דולר עד 2030 (CAGR ~20%)."),
+            ("קרן המטבע · הבנק העולמי", "תמ״ג ושווי כוח קנייה (PPP) לפי מדינה."),
+            ("הבנק המרכזי של ברזיל", "סטטיסטיקה רשמית של פיקס: עסקאות, היקף ומשתמשים."),
+            ("Febraban", "סקר טכנולוגיית הבנקאות — צמיחת פיקס ב-2025."),
+            ("IBGE", "אוכלוסיית ברזיל ומדדים סוציו-אקונומיים."),
+    ],
     },
 
     "ar": {
@@ -2292,6 +2487,25 @@ CONTEUDO = {
         "graf_cons": "محافظ",
         "graf_otim": "متفائل",
         "grafico_titulo_linha": "النمو المتوقع (آلاف ر.س)",
+        "pix_titulo": "البرازيل: البنية التحتية لـ Pix",
+        "pix_texto": "Pix هو نظام المدفوعات الفورية العام في البرازيل. بالنسبة لـ A1ELOS، يضمن التحصيل الفوري والتكلفة المنخفضة والقبول الشامل — أساس عمليات B2C في السوق البرازيلية وبوابة التوسع الدولي.",
+        "pix_kpis": [
+            ("30.1 مليار", "معاملة في 2025", "+20% مقارنة بعام 2024 · فيبرابان"),
+            ("76.4%", "من السكان يستخدمون Pix", "211 مليون برازيلي · البنك المركزي"),
+            ("68.2 تريليون R$", "في النصف الثاني من 2025", "78.4 مليار معاملة · البنك المركزي"),
+            ("نحو 80 مليار", "معاملة في 2025", "+25.7% مقارنة بالعام السابق · تقرير Pix"),
+        ],
+        "pix_fonte": "المصادر: البنك المركزي البرازيلي (Pix بالأرقام) وفيبرابان (مسح تكنولوجيا البنوك).",
+        "ref_titulo": "المراجع الببليوغرافية",
+        "ref_intro": "المصادر المستخدمة لبيانات السوق والتوقعات والمؤشرات في هذا العرض التقديمي.",
+        "ref_lista": [
+            ("Global Wellness Institute", "اقتصاد العافية العالمي: 6.8 تريليون دولار (2024) → 9.8 تريليون دولار (2029)."),
+            ("MarkNtel Advisors", "تطبيقات علم التنجيم والأعداد: 3 مليارات دولار → 9 مليارات دولار بحلول 2030 (نمو سنوي مركب ~20%)."),
+            ("صندوق النقد · البنك الدولي", "الناتج المحلي الإجمالي وتعادل القوة الشرائية (PPP) حسب البلد."),
+            ("البنك المركزي البرازيلي", "إحصاءات رسمية لـ Pix: المعاملات والحجم والمستخدمون."),
+            ("Febraban", "مسح تكنولوجيا البنوك — نمو Pix في 2025."),
+            ("IBGE", "سكان البرازيل والمؤشرات الاجتماعية والاقتصادية."),
+    ],
     },
 
     "id": {
@@ -2486,6 +2700,25 @@ CONTEUDO = {
         "graf_cons": "Konservatif",
         "graf_otim": "Optimis",
         "grafico_titulo_linha": "Pertumbuhan Diproyeksikan (Rp ribu)",
+        "pix_titulo": "Brasil: Infrastruktur Pix",
+        "pix_texto": "Pix adalah infrastruktur pembayaran instan publik Brasil. Bagi A1ELOS, Pix menjamin pembayaran langsung, biaya rendah, dan penerimaan universal — fondasi operasi B2C di pasar Brasil dan pintu masuk ekspansi internasional.",
+        "pix_kpis": [
+            ("30,1 miliar", "Transaksi pada 2025", "+20% vs 2024 · Febraban"),
+            ("76,4%", "penduduk menggunakan Pix", "211 juta warga Brasil · Bank Sentral"),
+            ("R$ 68,2 triliun", "pergerakan di semester II 2025", "78,4 miliar transaksi · Bank Sentral"),
+            ("~80 miliar", "transaksi pada 2025", "+25,7% vs tahun sebelumnya · Laporan Pix"),
+         ],
+         "pix_fonte": "Sumber: Bank Sentral Brasil (Pix dalam Angka) dan Febraban (Survei Teknologi Perbankan).",
+         "ref_titulo": "Referensi Bibliografi",
+         "ref_intro": "Sumber yang digunakan untuk data pasar, proyeksi, dan indikator presentasi ini.",
+         "ref_lista": [
+            ("Global Wellness Institute", "Ekonomi kesehatan global: US$ 6,8 triliun (2024) → US$ 9,8 triliun (2029)."),
+            ("MarkNtel Advisors", "Aplikasi astrologi dan numerologi: US$ 3 miliar → US$ 9 miliar pada 2030 (CAGR ~20%)."),
+            ("IMF · Bank Dunia", "PDB dan paritas daya beli (PPP) per negara."),
+            ("Bank Sentral Brasil", "Statistik resmi Pix: transaksi, volume, dan pengguna."),
+            ("Febraban", "Survei Teknologi Perbankan — pertumbuhan Pix 2025."),
+            ("IBGE", "Populasi dan indikator sosial-ekonomi Brasil."),
+    ],
     },
 
     "tr": {
@@ -2687,7 +2920,26 @@ CONTEUDO = {
         "selo_final": ["DUNS 942242668", "23 ÜRÜN", "14 DİL", "~5,3 M KONUŞMACI"],
         "graf_cons": "Muhafazakar",
         "graf_otim": "İyimser",
-        "grafico_titulo_linha": "Projeksiyonlu Büyüme (TL bin)",    
+        "grafico_titulo_linha": "Projeksiyonlu Büyüme (TL bin)",
+        "pix_titulo": "Brezilya: Pix Altyapısı",
+        "pix_texto": "Pix, Brezilya'nın kamusal anlık ödeme altyapısıdır. A1ELOS için anında tahsilat, düşük maliyet ve evrensel kabul sağlar — Brezilya pazarındaki B2C operasyonunun temeli ve uluslararası genişlemenin kapısıdır.",
+        "pix_kpis": [
+            ("30,1 milyar", "İşlemler (2025)", "2024'e göre +%20 · Febraban"),
+            ("%76,4", "nüfus Pix kullanıyor", "211 milyon Brezilyalı · Merkez Bankası"),
+            ("R$ 68,2 trilyon", "2025'in ikinci yarısı", "78,4 milyar işlem · Merkez Bankası"),
+            ("~80 milyar", "İşlemler (2025)", "önceki yıla göre +%25,7 · Pix Raporu"),
+         ],
+         "pix_fonte": "Kaynaklar: Brezilya Merkez Bankası (Pix Rakamlarla) ve Febraban (Bankacılık Teknolojisi Araştırması).",
+         "ref_titulo": "Kaynakça",
+         "ref_intro": "Bu sunumdaki pazar verileri, projeksiyonlar ve göstergeler için kullanılan kaynaklar.",
+         "ref_lista": [
+             ("Global Wellness Institute", "Küresel sağlıklı yaşam ekonomisi: 6,8 trilyon ABD$ (2024) → 9,8 trilyon ABD$ (2029)."),
+             ("MarkNtel Advisors", "Astroloji ve numeroloji uygulamaları: 3 milyar ABD$ → 9 milyar ABD$ (2030'a kadar, CAGR ~%20)."),
+             ("IMF · Dünya Bankası", "Ülkelere göre GSYİH ve satın alma gücü paritesi (PPP)."),
+             ("Brezilya Merkez Bankası", "Pix resmî istatistikleri: işlemler, hacim ve kullanıcılar."),
+             ("Febraban", "Bankacılık Teknolojisi Araştırması — 2025'te Pix büyümesi."),
+             ("IBGE", "Brezilya nüfusu ve sosyoekonomik göstergeler."),
+    ],
     },
 
     "vi": {
@@ -2881,7 +3133,26 @@ CONTEUDO = {
         "selo_final": ["DUNS 942242668", "23 SẢN PHẨM", "14 NGÔN NGỮ", "~5,3 TỶ NGƯỜI NÓI"],
         "graf_cons": "Thận trọng",
         "graf_otim": "Lạc quan",
-        "grafico_titulo_linha": "Tăng trưởng dự kiến (₫ nghìn)",    
+        "grafico_titulo_linha": "Tăng trưởng dự kiến (₫ nghìn)",
+        "pix_titulo": "Brazil: Hạ tầng Pix",
+        "pix_texto": "Pix là hạ tầng thanh toán tức thời công cộng của Brazil. Với A1ELOS, Pix đảm bảo thu tiền ngay lập tức, chi phí thấp và được chấp nhận rộng rãi — nền tảng của hoạt động B2C tại thị trường Brazil và là cửa ngõ mở rộng quốc tế.",
+        "pix_kpis": [
+            ("30,1 tỷ", "giao dịch năm 2025", "+20% so với 2024 · Febraban"),
+            ("76,4%", "dân số dùng Pix", "211 triệu người Brazil · Ngân hàng Trung ương"),
+            ("R$ 68,2 nghìn tỷ", "nửa cuối 2025", "78,4 tỷ giao dịch · Ngân hàng Trung ương"),
+            ("~80 tỷ", "giao dịch năm 2025", "+25,7% so với năm trước · Báo cáo Pix"),
+        ],
+        "pix_fonte": "Nguồn: Ngân hàng Trung ương Brazil (Pix bằng số liệu) và Febraban (Khảo sát Công nghệ Ngân hàng).",
+        "ref_titulo": "Tài liệu tham khảo",
+        "ref_intro": "Nguồn được sử dụng cho dữ liệu thị trường, dự báo và chỉ số của bài trình bày này.",
+        "ref_lista": [
+            ("Global Wellness Institute", "Kinh tế chăm sóc sức khỏe toàn cầu: 6,8 nghìn tỷ USD (2024) → 9,8 nghìn tỷ USD (2029)."),
+            ("MarkNtel Advisors", "Ứng dụng chiêm tinh và thần số học: 3 tỷ USD → 9 tỷ USD vào 2030 (CAGR ~20%)."),
+            ("IMF · Ngân hàng Thế giới", "GDP và sức mua tương đương (PPP) theo quốc gia."),
+            ("Ngân hàng Trung ương Brazil", "Thống kê chính thức về Pix: giao dịch, khối lượng và người dùng."),
+            ("Febraban", "Khảo sát Công nghệ Ngân hàng — tăng trưởng Pix năm 2025."),
+            ("IBGE", "Dân số và các chỉ số kinh tế - xã hội của Brazil."),
+    ],
     },
   } 
 # ------------------------------------------------------------
@@ -2963,22 +3234,20 @@ def _bandeira(doc, x, y, w, h, pais):
     doc.rect(x, y, w, h, stroke=1, fill=0)
 
 def _rodape(doc, largura, altura, lang, c, pagina):
-    # Linha 1 (já existente): título · DUNS · confidencialidade — centro
+    # Linha 1 — centro: título · DUNS · confidencialidade (igual ao atual)
     doc.setFillColor(COR_CINZA_CLARO)
     doc.setFont(_fonte(lang), 8)
     doc.drawCentredString(largura / 2, 10 * mm,
                           f"{c['titulo']} · DUNS 942242668 · {c['confidencial']} {c['ano']}")
-
-    # Linha 1 (modificada): página-total — canto DIREITO (era só o número)
+    # Linha 1 — direita: folha atual - total (a capa não conta)
     doc.setFillColor(COR_DOURADO)
     doc.setFont(_fonte(lang, True), 9)
-    doc.drawRightString(largura - 15 * mm, 10 * mm, f"{pagina}-{TOTAL_PAGINAS}")
-
-    # NOVO: contatos — linha inferior, discreta (6.5pt)
+    doc.drawRightString(largura - 15 * mm, 10 * mm, f"{pagina - 1}-{TOTAL_PAGINAS - 2}")
+    # Linha 2 — centro: contatos, discretos (para anotar em exposição)
     doc.setFillColorRGB(0.55, 0.55, 0.55)
-    doc.setFont(_fonte(lang), 6.5)
+    doc.setFont(_fonte(lang), 7)
     doc.drawCentredString(largura / 2, 4 * mm, CONTATOS)
-
+    
 # ------------------------------------------------------------
 # CAPA
 # ------------------------------------------------------------
@@ -3657,6 +3926,63 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     _rodape(doc, largura, altura, lang, c, pagina)
     doc.showPage()
     pagina += 1
+        # PIX — INFRAESTRUTURA DE PAGAMENTO NO BRASIL
+    _titulo_pagina(doc, largura, altura, lang,
+                   c.get("pix_titulo", "Brasil: A Infraestrutura Pix"), 18)
+    y = altura - 32 * mm
+    y = _texto_wrap(doc, c.get("pix_texto",
+        "O Pix é a infraestrutura pública de pagamentos instantâneos do Brasil. Para a A1ELOS, "
+        "ele garante cobrança imediata, baixo custo e aceitação universal — o alicerce da operação "
+        "B2C no mercado brasileiro e a porta de entrada para a expansão internacional."),
+        _fonte(lang), 11, 18 * mm, y, largura - 36 * mm, COR_CINZA, 5 * mm)
+    y -= 4 * mm
+    y = _kpis_grid(doc, largura, altura, lang, c.get("pix_kpis", [
+        ("30,1 bi", "Transações em 2025", "+20% vs 2024 · Febraban"),
+        ("76,4%", "da população usa Pix", "211 milhões de brasileiros · Banco Central"),
+        ("R$ 68,2 tri", "movimentados no 2º sem. 2025", "78,4 bi de transações · Banco Central"),
+        ("~80 bi", "transações em 2025", "+25,7% vs ano anterior · Relatório do Pix"),
+    ]), y, 4)
+    y -= 6 * mm
+    _caixa(doc, 18 * mm, y - 18 * mm, largura - 36 * mm, 18 * mm,
+           HexColor("#EEF2FA"), COR_AZUL)
+    doc.setFillColor(COR_AZUL)
+    doc.setFont(_fonte(lang, True), 9)
+    _texto_wrap(doc, c.get("pix_fonte",
+        "Fontes: Banco Central do Brasil (Pix em Números) e Febraban (Pesquisa de Tecnologia Bancária)."),
+        _fonte(lang, True), 9, 22 * mm, y - 11 * mm,
+        largura - 44 * mm, COR_AZUL, 4 * mm)
+    _rodape(doc, largura, altura, lang, c, pagina)
+    doc.showPage()
+    pagina += 1
+        # REFERÊNCIAS BIBLIOGRÁFICAS
+    _titulo_pagina(doc, largura, altura, lang,
+                   c.get("ref_titulo", "Referências Bibliográficas"), 19)
+    y = altura - 32 * mm
+    y = _texto_wrap(doc, c.get("ref_intro",
+        "Fontes utilizadas para os dados de mercado, projeções e indicadores desta apresentação."),
+        _fonte(lang), 11, 18 * mm, y, largura - 36 * mm, COR_CINZA, 5 * mm)
+    y -= 8 * mm
+    for tit, sub in c.get("ref_lista", [
+        ("Global Wellness Institute", "Economia global do bem-estar: US$ 6,8 tri (2024) → US$ 9,8 tri (2029)."),
+        ("MarkNtel Advisors", "Apps de astrologia e numerologia: US$ 3 bi → US$ 9 bi até 2030 (CAGR ~20%)."),
+        ("FMI · Banco Mundial", "PIB e paridade do poder de compra (PPP) por país."),
+        ("Banco Central do Brasil", "Estatísticas oficiais do Pix: transações, volume e usuários."),
+        ("Febraban", "Pesquisa de Tecnologia Bancária — crescimento do Pix em 2025."),
+        ("IBGE", "População e indicadores socioeconômicos do Brasil."),
+    ]):
+        _caixa(doc, 18 * mm, y - 20 * mm, largura - 36 * mm, 20 * mm,
+               COR_FUNDO, COR_DOURADO)
+        doc.setFillColor(COR_AZUL)
+        doc.setFont(_fonte(lang, True), 10)
+        doc.drawString(22 * mm, y - 13 * mm, tit)
+        doc.setFillColor(COR_CINZA)
+        doc.setFont(_fonte(lang), 8.5)
+        _texto_wrap(doc, sub, _fonte(lang), 8.5, 22 * mm, y - 9 * mm,
+                    largura - 44 * mm, COR_CINZA, 4 * mm)
+        y -= 24 * mm
+    _rodape(doc, largura, altura, lang, c, pagina)
+    doc.showPage()
+    pagina += 1
     # PÁGINA FINAL
     doc.setFillColor(COR_PRETO)
     doc.rect(0, 0, largura, altura, stroke=0, fill=1)
@@ -4160,7 +4486,68 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
     rodape(pagina)
     doc.showPage()
     pagina += 1
+   
+    # ===== SLIDE 19A — PIX (18) =====
+    cab(c.get("pix_titulo", "Brasil: A Infraestrutura Pix"), 18)
+    y = altura - 32 * mm
+    y = _texto_wrap(doc, c.get("pix_texto",
+        "O Pix é a infraestrutura pública de pagamentos instantâneos do Brasil. Para a A1ELOS, "
+        "ele garante cobrança imediata, baixo custo e aceitação universal — o alicerce da operação "
+        "B2C no mercado brasileiro e a porta de entrada para a expansão internacional."),
+        _fonte(lang), 12, 18 * mm, y, largura - 36 * mm, COR_CINZA, 6 * mm)
+    y -= 10 * mm
+    _kpis_grid(doc, largura, altura, lang, c.get("pix_kpis", [
+        ("30,1 bi", "Transações em 2025", "+20% vs 2024 · Febraban"),
+        ("76,4%", "da população usa Pix", "211 milhões de brasileiros · Banco Central"),
+        ("R$ 68,2 tri", "movimentados no 2º sem. 2025", "78,4 bi de transações · Banco Central"),
+        ("~80 bi", "transações em 2025", "+25,7% vs ano anterior · Relatório do Pix"),
+    ]), y, 4)
+    _caixa(doc, 18 * mm, 16 * mm, largura - 36 * mm, 14 * mm,
+           HexColor("#EEF2FA"), COR_AZUL)
+    doc.setFillColor(COR_AZUL)
+    doc.setFont(_fonte(lang, True), 8)
+    _texto_wrap(doc, c.get("pix_fonte",
+        "Fontes: Banco Central do Brasil (Pix em Números) e Febraban (Pesquisa de Tecnologia Bancária)."),
+        _fonte(lang, True), 8, 22 * mm, 21 * mm,
+        largura - 44 * mm, COR_AZUL, 3.5 * mm)
+    rodape(pagina)
+    doc.showPage()
+    pagina += 1
 
+    # ===== SLIDE 19B — REFERÊNCIAS (19) =====
+    cab(c.get("ref_titulo", "Referências Bibliográficas"), 19)
+    y = altura - 32 * mm
+    y = _texto_wrap(doc, c.get("ref_intro",
+        "Fontes utilizadas para os dados de mercado, projeções e indicadores desta apresentação."),
+        _fonte(lang), 12, 18 * mm, y, largura - 36 * mm, COR_CINZA, 6 * mm)
+    y -= 10 * mm
+    refs = c.get("ref_lista", [
+        ("Global Wellness Institute", "Economia global do bem-estar: US$ 6,8 tri (2024) → US$ 9,8 tri (2029)."),
+        ("MarkNtel Advisors", "Apps de astrologia e numerologia: US$ 3 bi → US$ 9 bi até 2030 (CAGR ~20%)."),
+        ("FMI · Banco Mundial", "PIB e paridade do poder de compra (PPP) por país."),
+        ("Banco Central do Brasil", "Estatísticas oficiais do Pix: transações, volume e usuários."),
+        ("Febraban", "Pesquisa de Tecnologia Bancária — crescimento do Pix em 2025."),
+        ("IBGE", "População e indicadores socioeconômicos do Brasil."),
+    ])
+    col_w = (largura - 36 * mm - 8 * mm) / 2
+    for i, (tit, sub) in enumerate(refs):
+        col = i % 2
+        lin = i // 2
+        x = 18 * mm + col * (col_w + 8 * mm)
+        yy = y - lin * (40 * mm + 6 * mm)
+        _caixa(doc, x, yy - 36 * mm, col_w, 36 * mm, COR_FUNDO, COR_DOURADO)
+        doc.setFillColor(COR_AZUL)
+        doc.setFont(_fonte(lang, True), 10)
+        _texto_wrap(doc, tit, _fonte(lang, True), 10, x + 5 * mm, yy - 12 * mm,
+                    col_w - 10 * mm, COR_AZUL, 4.5 * mm)
+        doc.setFillColor(COR_CINZA)
+        doc.setFont(_fonte(lang), 8.5)
+        _texto_wrap(doc, sub, _fonte(lang), 8.5, x + 5 * mm, yy - 20 * mm,
+                    col_w - 10 * mm, COR_CINZA, 4 * mm, y_min=yy - 33 * mm)
+    rodape(pagina)
+    doc.showPage()
+    pagina += 1
+    
     # ===== SLIDE 19 — PÁGINA FINAL =====
     doc.setFillColor(COR_PRETO)
     doc.rect(0, 0, largura, altura, stroke=0, fill=1)
