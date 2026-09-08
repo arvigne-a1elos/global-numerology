@@ -502,8 +502,10 @@ function atualizarSomaSobMedida(lang, precos) {
 function atualizarPrecos() {
   var lang = getLang();
   var t = translations[lang] || translations.pt;
-  var precos = (typeof PRECO_VALORES !== 'undefined' && PRECO_VALORES[lang])
-               ? PRECO_VALORES[lang] : (PRECO_VALORES ? PRECO_VALORES.pt : null);
+  // Se os dados ainda não chegaram do servidor, sai sem erro.
+  // O fetch('/api/precos') no final do arquivo chama atualizarPrecos() de novo quando chegar.
+  if (typeof PRECO_VALORES === 'undefined' || typeof PRODUTO_FAIXA === 'undefined') return;
+  var precos = PRECO_VALORES[lang] || PRECO_VALORES.pt;
   var simbolo = (typeof SIMBOLO !== 'undefined' && SIMBOLO[lang]) ? SIMBOLO[lang] : 'R$';
   if (!precos) return;
   var cards = document.querySelectorAll('.product-card[data-prod]');
