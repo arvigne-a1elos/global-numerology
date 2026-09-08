@@ -607,11 +607,6 @@ function montarTabelaBC() {
     corpo.appendChild(tr);
   });
 }
-function precoUnitarioBC(prodId) {
-  var p = window.BC_PRODUTOS.find(function(x){ return x[0] === prodId; });
-  return p ? p[2] : 0;
-}
-
 function atualizarResumoBC() {
   var lang = (typeof getLang === 'function') ? getLang() : 'pt';
   var base = (window.PRECO_BASE && window.PRECO_BASE[lang]) ? window.PRECO_BASE[lang]
