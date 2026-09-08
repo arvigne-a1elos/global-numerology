@@ -22,6 +22,7 @@ logger = logging.getLogger(__name__)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_DIR = os.path.join(BASE_DIR, "static")
+LOGO_PATH = os.path.join(STATIC_DIR, "logo.png")
 
 # DUAS logos separadas (A1ELOS à direita, Numerologia à esquerda)
 LOGO_A1ELOS = os.path.join(STATIC_DIR, "Logo-A1ELOS.png")
