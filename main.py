@@ -32,8 +32,15 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse, Response
-from apresentacao_textos import gerar_apresentacao
 from referencia.precos import VALORES, SIMBOLO, PRECO_DISPLAY, PRODUTO_FAIXA, preco_local, preco_display
+
+# ===== APP (OBRIGATÓRIO ANTES DE QUALQUER ROTA) =====
+app = FastAPI(title="Global Numerology")
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True,
+                   allow_methods=["*"], allow_headers=["*"])
+STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
+if os.path.isdir(STATIC_DIR):
+    app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -105,15 +112,6 @@ FONTE_POR_IDIOMA = {
     'tr': 'DejaVu',   # turco: ç ğ ı ö ş ü (Helvetica padrão não cobre ş e ğ)
     'vi': 'DejaVu',   # vietnamita: diacríticos combinados
 }
-
-# ===== APP =====
-app = FastAPI(title="Global Numerology")
-app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True,
-                   allow_methods=["*"], allow_headers=["*"])
-
-STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
-if os.path.isdir(STATIC_DIR):
-    app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 # ============================================================
 # ROTAS DE APRESENTAÇÃO (PDF por idioma — sob demanda)
