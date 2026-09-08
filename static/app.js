@@ -14,7 +14,12 @@ function finalizarCiclo() {
 }
 function montarSeletorIdioma() {
   var container = document.getElementById('langSelector');
-  if (!container) return;
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'langSelector';
+    document.body.insertBefore(container, document.body.firstChild);
+  }
+  container.style.cssText = 'display:flex;justify-content:center;align-items:center;gap:6px;flex-wrap:wrap;padding:8px;background:#111;border-bottom:1px solid #222;';
   if (container.children.length > 0) return;
   var lista = [
     {id:'pt', b:'🇧🇷'},{id:'en', b:'🇺🇸'},{id:'es', b:'🇪🇸'},{id:'it', b:'🇮🇹'},
@@ -22,24 +27,25 @@ function montarSeletorIdioma() {
     {id:'ru', b:'🇷🇺'},{id:'id', b:'🇮🇩'},{id:'tr', b:'🇹🇷'},{id:'vi', b:'🇻🇳'},
     {id:'he', b:'🇮🇱'},{id:'ar', b:'🇸🇦'}
   ];
-  var atual = getLang();
+  var atual = (typeof getLang === 'function') ? getLang() : 'pt';
   lista.forEach(function(l) {
     var b = document.createElement('button');
-    b.className = 'lang-btn' + (l.id === atual ? ' active' : '');
+    b.type = 'button';
     b.title = l.id.toUpperCase();
-    b.innerHTML = l.b;
-            b.onclick = function() {
-        setLanguage(l.id);
-        var ativos = container.querySelectorAll('.lang-btn');
-        for (var i = 0; i < ativos.length; i++) ativos[i].classList.remove('active');
-        b.classList.add('active');
-        // Reconstroi tabela BC, energias, textos, preços e links no novo idioma
-        if (typeof montarTudo === "function") {
-          montarTudo();
-        } else if (typeof traduzirTudo === "function") {
-          traduzirTudo();
-        }
-      };
+    b.textContent = l.b;
+    b.style.cssText = 'font-size:20px;padding:4px 8px;cursor:pointer;background:transparent;border:1px solid #333;border-radius:6px;line-height:1;';
+    if (l.id === atual) b.style.borderColor = '#C9A94E';
+    b.onclick = function() {
+      if (typeof setLanguage === 'function') setLanguage(l.id);
+      var ativos = container.querySelectorAll('button');
+      for (var i = 0; i < ativos.length; i++) { ativos[i].style.borderColor = '#333'; }
+      b.style.borderColor = '#C9A94E';
+      if (typeof montarTudo === 'function') montarTudo();
+      else if (typeof traduzirTudo === 'function') traduzirTudo();
+    };
+    container.appendChild(b);
+  });
+}
     });   // ← fecha o forEach
   }       // ← fecha a montarSeletorIdioma
 function pagarVida(){var n=document.getElementById('vidaNome').value.trim(),b=document.getElementById('vidaNasc').value;if(!n||!b){alert(t_preencha());return;}location.href='/criar-checkout?produto=vida&nome='+encodeURIComponent(n)+'&nascimento='+encodeURIComponent(b)+'&lang='+getLang();}
