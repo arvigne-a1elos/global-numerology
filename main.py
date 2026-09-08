@@ -841,49 +841,6 @@ async def health():
 async def health_head():
     return Response(status_code=200)
 
-@app.get("/api/apresentacao")
-async def api_apresentacao_oficial(lang: str = "pt"):
-    """Serve a apresentação oficial em PDF, no idioma solicitado."""
-    if lang not in IDIOMAS_OFICIAIS:
-        lang = "pt"
-    caminho = os.path.join("static", f"apresentacao_oficial_{lang}.pdf")
-    if os.path.exists(caminho):
-        return FileResponse(
-            caminho,
-            media_type="application/pdf",
-            filename=f"A1ELOS_Apresentacao_{lang}.pdf",
-        )
-    # Fallback: se o idioma ainda não foi enviado ao repo, serve o pt
-    caminho_pt = os.path.join("static", "apresentacao_oficial_pt.pdf")
-    if os.path.exists(caminho_pt):
-        return FileResponse(
-            caminho_pt,
-            media_type="application/pdf",
-            filename="A1ELOS_Apresentacao_pt.pdf",
-        )
-    return JSONResponse({"erro": "Apresentação não encontrada."}, status_code=404)
-
-@app.get("/api/apresentacao-slides")
-async def api_apresentacao_slides(lang: str = "pt"):
-    """Serve o deck de slides (A4 paisagem) no idioma solicitado."""
-    if lang not in IDIOMAS_OFICIAIS:
-        lang = "pt"
-    caminho = os.path.join("static", f"apresentacao_slides_{lang}.pdf")
-    if os.path.exists(caminho):
-        return FileResponse(
-            caminho,
-            media_type="application/pdf",
-            filename=f"A1ELOS_Slides_{lang}.pdf",
-        )
-    caminho_pt = os.path.join("static", "apresentacao_slides_pt.pdf")
-    if os.path.exists(caminho_pt):
-        return FileResponse(
-            caminho_pt,
-            media_type="application/pdf",
-            filename="A1ELOS_Slides_pt.pdf",
-        )
-    return JSONResponse({"erro": "Slides não encontrados."}, status_code=404)
-
 # ===== ROTA /criar-checkout (usada pelo site) =====
 @app.get("/criar-checkout")
 async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
