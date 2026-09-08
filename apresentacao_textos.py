@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_DIR = os.path.join(BASE_DIR, "static")
 LOGO_PATH = os.path.join(STATIC_DIR, "logo.png")              # logo do site → ESQUERDA
-LOGO_A1ELOS = os.path.join(STATIC_DIR, "Logo-A1ELOS.png")     # logo A1ELOS → DIREITA
+LOGO_A1ELOS = os.path.join(STATIC_DIR, "logo-a1elos.png")     # logo A1ELOS → DIREITA
 
 # ===== RODAPÉ =====  (substitua a linha CONTATOS antiga por esta)
 CONTATOS = "a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.br/contato"
