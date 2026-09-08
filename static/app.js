@@ -28,19 +28,20 @@ function montarSeletorIdioma() {
     b.className = 'lang-btn' + (l.id === atual ? ' active' : '');
     b.title = l.id.toUpperCase();
     b.innerHTML = l.b;
-      b.onclick = function() {
-  setLanguage(l.id);
-  var ativos = container.querySelectorAll('.lang-btn');
-  for (var i = 0; i < ativos.length; i++) ativos[i].classList.remove('active');
-  b.classList.add('active');
-  // Reconstroi tabela BC, energias, textos, preços e links no novo idioma
-  if (typeof montarTudo === "function") {
-    montarTudo();
-  } else if (typeof traduzirTudo === "function") {
-    traduzirTudo();
-  }
-};
-   
+            b.onclick = function() {
+        setLanguage(l.id);
+        var ativos = container.querySelectorAll('.lang-btn');
+        for (var i = 0; i < ativos.length; i++) ativos[i].classList.remove('active');
+        b.classList.add('active');
+        // Reconstroi tabela BC, energias, textos, preços e links no novo idioma
+        if (typeof montarTudo === "function") {
+          montarTudo();
+        } else if (typeof traduzirTudo === "function") {
+          traduzirTudo();
+        }
+      };
+    });   // ← fecha o forEach
+  }       // ← fecha a montarSeletorIdioma
 function pagarVida(){var n=document.getElementById('vidaNome').value.trim(),b=document.getElementById('vidaNasc').value;if(!n||!b){alert(t_preencha());return;}location.href='/criar-checkout?produto=vida&nome='+encodeURIComponent(n)+'&nascimento='+encodeURIComponent(b)+'&lang='+getLang();}
 function pagarIa(){var n=document.getElementById('iaNome').value.trim(),e=document.getElementById('iaEnergia').value;if(!n||!e){alert(t_preencha());return;}location.href='/criar-checkout?produto=ia&nome='+encodeURIComponent(n)+'&energia='+encodeURIComponent(e)+'&lang='+getLang();}
 function pagarImovel(){var n=document.getElementById('imovelNumero').value.trim();if(!n){alert(t_preencha());return;}location.href='/criar-checkout?produto=imovel&dado='+encodeURIComponent(n)+'&lang='+getLang();}
