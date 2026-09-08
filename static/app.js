@@ -336,15 +336,12 @@ function carregarPartials() {
 }
 
 // ===== MONTAR TUDO (com trava anti-dupla execução) =====
-var _montando = false;
 function montarTudo() {
-  if (_montando) return;          // trava UMA vez, no topo
+  if (_montando) return;
   _montando = true;
-  try { if (typeof montarSeletorIdioma === "function") montarSeletorIdioma(); }
-   catch (e) { console.error("[A1ELOS] seletor idioma:", e); }  
   try {
     if (typeof montarSeletorIdioma === "function") montarSeletorIdioma();
-  } catch (e) { console.error("[A1ELOS] ERRO em montarSeletorIdioma:", e); }  
+  } catch (e) { console.error("[A1ELOS] ERRO em montarSeletorIdioma:", e); }
   try {
     if (typeof montarTabelaBC === "function") {
       console.log("[A1ELOS] montarTabelaBC() EXECUTANDO");
