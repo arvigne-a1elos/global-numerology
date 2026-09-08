@@ -529,3 +529,13 @@ function atualizarPrecos() {
     console.error('[A1ELOS] erro em atualizarSomaSobMedida:', err);
   }
 }
+// ===== CARREGA PREÇOS DO SERVIDOR (fonte única: /api/precos) =====
+fetch('/api/precos')
+  .then(function(r){ if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+  .then(function(d){
+    window.PRECO_VALORES = d.valores || {};
+    window.SIMBOLO = d.simbolo || {};
+    if (d.faixa) window.PRODUTO_FAIXA = d.faixa;
+    if (typeof atualizarPrecos === 'function') atualizarPrecos();
+  })
+  .catch(function(e){ console.warn('[A1ELOS] /api/precos:', e); });
