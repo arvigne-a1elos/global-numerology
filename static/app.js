@@ -334,6 +334,8 @@ var _montando = false;
 function montarTudo() {
   if (_montando) return;          // trava UMA vez, no topo
   _montando = true;
+  try { if (typeof montarSeletorIdioma === "function") montarSeletorIdioma(); }
+   catch (e) { console.error("[A1ELOS] seletor idioma:", e); }  
   try {
     if (typeof montarSeletorIdioma === "function") montarSeletorIdioma();
   } catch (e) { console.error("[A1ELOS] ERRO em montarSeletorIdioma:", e); }  
