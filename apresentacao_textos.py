@@ -22,11 +22,9 @@ logger = logging.getLogger(__name__)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_DIR = os.path.join(BASE_DIR, "static")
-LOGO_PATH = os.path.join(STATIC_DIR, "logo.png")
+LOGO_PATH = os.path.join(STATIC_DIR, "Logo.png")              # logo do site → ESQUERDA
+LOGO_A1ELOS = os.path.join(STATIC_DIR, "Logo-A1ELOS.png")     # logo A1ELOS → DIREITA
 
-# DUAS logos separadas (A1ELOS à direita, Numerologia à esquerda)
-LOGO_A1ELOS = os.path.join(STATIC_DIR, "Logo-A1ELOS.png")
-LOGO_NUMEROLOGIA = os.path.join(STATIC_DIR, "Logo.png")
 # ===== RODAPÉ =====  (substitua a linha CONTATOS antiga por esta)
 CONTATOS = "a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.br/contato"
 TOTAL_PAGINAS = 21   # capa(1) + 17 seções + Pix + Referências + página final
@@ -35,8 +33,8 @@ class NumberedCanvas(_canvas.Canvas):
     """Canvas que desenha cabeçalho (logos) e rodapé (página X de Y + contatos)."""
     def __init__(self, *args, **kwargs):
         self._saved_page_states = []
-        self._logo_a1elos = kwargs.pop('logo_a1elos', None)
-        self._logo_num = kwargs.pop('logo_num', None)
+        self._logo_a1elos = LOGO_A1ELOS      # usa a global diretamente
+        self._logo_num = LOGO_PATH           # usa a global diretamente
         self._contatos = kwargs.pop('contatos', '')
         super().__init__(*args, **kwargs)
 
@@ -3299,23 +3297,23 @@ def _titulo_pagina(doc, largura, altura, lang, titulo, indice=None):
     if indice is not None:
         doc.setFont(_fonte(lang, True), 11)
         doc.drawRightString(largura - 30 * mm, altura - 12 * mm, "%02d" % indice)
-    # Logo A1ELOS — canto superior DIREITO (já existe)
+        # Logo do SITE (Numerologia) — canto superior ESQUERDO
     if os.path.exists(LOGO_PATH):
         try:
             iw, ih = ImageReader(LOGO_PATH).getSize()
-            lw = 10 * mm
+            lw = 8 * mm
             lh = lw * ih / iw
-            doc.drawImage(LOGO_PATH, largura - 12 * mm - lw, altura - 15 * mm,
+            doc.drawImage(LOGO_PATH, 6 * mm, altura - 15 * mm,
                           width=lw, height=lh, mask="auto")
         except Exception:
             pass
-    # ===== NOVO: Logo Numerologia — canto superior ESQUERDO =====
-    if os.path.exists(LOGO_NUMEROLOGIA):
+    # Logo A1ELOS — canto superior DIREITO
+    if os.path.exists(LOGO_A1ELOS):
         try:
-            iw, ih = ImageReader(LOGO_NUMEROLOGIA).getSize()
-            lw = 8 * mm
+            iw, ih = ImageReader(LOGO_A1ELOS).getSize()
+            lw = 10 * mm
             lh = lw * ih / iw
-            doc.drawImage(LOGO_NUMEROLOGIA, 6 * mm, altura - 15 * mm,
+            doc.drawImage(LOGO_A1ELOS, largura - 12 * mm - lw, altura - 15 * mm,
                           width=lw, height=lh, mask="auto")
         except Exception:
             pass
