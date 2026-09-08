@@ -134,8 +134,8 @@ def _gerar_apresentacao(lang: str, modo: str):
             return f.read(), os.path.basename(caminho)
     except HTTPException:
         raise
-    except Exception as e:
-        logger.error("Erro ao gerar apresentação %s/%s: %s", lang, modo, e)
+    except Exception:
+        logger.exception("Erro ao gerar apresentação %s/%s", lang, modo)
         raise HTTPException(status_code=500, detail="Erro ao gerar a apresentação.")
 
 @app.get("/api/apresentacao")
@@ -917,15 +917,6 @@ def calc_eleitoral(req: EleitoralPayReq):
     return {"sugestoes": sugs}
 
 # ===== ROTAS BASE =====
-@app.get("/")
-def root():
-    try:
-        return HTMLResponse(open(os.path.join(os.path.dirname(__file__), "static", "index.html"), "r", encoding="utf-8").read())
-    except Exception:
-        try:
-            return HTMLResponse(open(os.path.join(os.path.dirname(__file__), "index.html"), "r", encoding="utf-8").read())
-        except Exception:
-            return HTMLResponse("<h1>API ativa</h1>")
 
 @app.get("/config")
 def config():
