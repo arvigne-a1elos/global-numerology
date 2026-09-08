@@ -612,23 +612,31 @@ function precoUnitarioBC(prodId) {
   return p ? p[2] : 0;
 }
 function atualizarResumoBC() {
-  var t = (typeof translations !== 'undefined' && translations[getLang()]) ? translations[getLang()] : {};
-  var total = 0, qtdTotal = 0;
-  document.querySelectorAll('#bcTabelaCorpo input[data-prod]').forEach(function(inp){
+  var lang = (typeof getLang === 'function') ? getLang() : 'pt';
+  var base = (window.PRECO_BASE && window.PRECO_BASE[lang]) ? window.PRECO_BASE[lang]
+            : (window.PRECO_BASE ? window.PRECO_BASE.pt : {});
+  var simb = (window.SIMB && window.SIMB[lang]) ? window.SIMB[lang] : 'R$';
+  var qtdTotal = 0, total = 0;
+  document.querySelectorAll('#bcTabelaCorpo input[data-prod]').forEach(function(inp) {
     var prod = inp.getAttribute('data-prod');
     var q = parseInt(inp.value, 10) || 0;
-    window.BC_QUANTIDADES[prod] = q;
-    total += q * precoUnitarioBC(prod);
+    if (q <= 0) return;
+    var faixa = window.PRODUTO_FAIXA ? window.PRODUTO_FAIXA[prod] : null;
+    var unit = 0;
+    if (base && faixa !== null && faixa !== undefined) unit = parseInt(base[faixa], 10) || 0;
+    total += unit * q;
     qtdTotal += q;
   });
-  var pct = (typeof descontoBC === 'function') ? descontoBC(qtdTotal) : 0;
-  var finalV = total - Math.round(total * pct / 100);
-  var el = document.getElementById('bcResumo');
-  if (el) {
-    el.innerHTML = '<strong>' + (t.bc_total || 'Total bruto') + ':</strong> ' + total
-      + ' &nbsp;|&nbsp; ' + (t.bc_discount || 'Desconto') + ': ' + pct + '%'
-      + ' &nbsp;|&nbsp; <strong>' + (t.bc_final || 'Total final') + ':</strong> ' + finalV;
-  }
+  var descPct = (typeof descontoBC === 'function') ? descontoBC(qtdTotal) : 0;
+  var desc = Math.round(total * descPct / 100);
+  var final = total - desc;
+  var fmt = function(v){ return v.toLocaleString('pt-BR'); };
+  var elB = document.getElementById('bcTotalBruto'); if (elB) elB.textContent = simb + ' ' + fmt(total);
+  var elD = document.getElementById('bcDesconto');  if (elD) elD.textContent = simb + ' ' + fmt(desc);
+  var elF = document.getElementById('bcTotalFinal'); if (elF) elF.textContent = simb + ' ' + fmt(final);
+  var elI = document.getElementById('bcFaixaInfo');
+  if (elI) elI.textContent = (window.MONTAR_TRAD && MONTAR_TRAD[lang] && MONTAR_TRAD[lang].desconto)
+      ? (MONTAR_TRAD[lang].desconto + ': ' + descPct + '%') : ('Desconto: ' + descPct + '%');
 }
 
 /* ===== MENU DE ENERGIAS ===== */
