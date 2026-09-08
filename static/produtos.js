@@ -607,6 +607,7 @@ function montarTabelaBC() {
     corpo.appendChild(tr);
   });
 }
+
 function atualizarResumoBC() {
   var lang = (typeof getLang === 'function') ? getLang() : 'pt';
   var base = (window.PRECO_BASE && window.PRECO_BASE[lang]) ? window.PRECO_BASE[lang]
@@ -631,8 +632,8 @@ function atualizarResumoBC() {
   var elD = document.getElementById('bcDesconto');  if (elD) elD.textContent = simb + ' ' + fmt(desc);
   var elF = document.getElementById('bcTotalFinal'); if (elF) elF.textContent = simb + ' ' + fmt(final);
   var elI = document.getElementById('bcFaixaInfo');
-  if (elI) elI.textContent = (window.MONTAR_TRAD && MONTAR_TRAD[lang] && MONTAR_TRAD[lang].desconto)
-      ? (MONTAR_TRAD[lang].desconto + ': ' + descPct + '%') : ('Desconto: ' + descPct + '%');
+  if (elI) elI.textContent = (window.MONTAR_TRAD && window.MONTAR_TRAD[lang] && window.MONTAR_TRAD[lang].desconto)
+      ? (window.MONTAR_TRAD[lang].desconto + ': ' + descPct + '%') : ('Desconto: ' + descPct + '%');
 }
 
 /* ===== MENU DE ENERGIAS ===== */
