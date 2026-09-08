@@ -4,7 +4,6 @@
 # Gerador de Apresentação Empresarial A1ELOS — LAYOUT EDITORIAL
 # ============================================================
 import os, math, logging
-from reportlab.lib.pagesizes import A4, landscape
 from reportlab.lib.units import mm
 from reportlab.lib.colors import HexColor, white, black
 from reportlab.lib.styles import ParagraphStyle
@@ -15,6 +14,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase.cidfonts import UnicodeCIDFont
 from reportlab.platypus import Table, TableStyle, Paragraph
 from reportlab.lib.utils import ImageReader
+from reportlab.lib.pagesizes import A4, landscape
 from reportlab.pdfgen import canvas
 
 logging.basicConfig(level=logging.INFO)
