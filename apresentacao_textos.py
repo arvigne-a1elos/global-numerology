@@ -15,6 +15,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase.cidfonts import UnicodeCIDFont
 from reportlab.platypus import Table, TableStyle, Paragraph
 from reportlab.lib.utils import ImageReader
+from reportlab.pdfgen import canvas
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
