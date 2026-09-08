@@ -610,9 +610,9 @@ function montarTabelaBC() {
 
 function atualizarResumoBC() {
   var lang = (typeof getLang === 'function') ? getLang() : 'pt';
+  var simb = (window.SIMB && window.SIMB[lang]) ? window.SIMB[lang] : 'R$';
   var base = (window.PRECO_BASE && window.PRECO_BASE[lang]) ? window.PRECO_BASE[lang]
             : (window.PRECO_BASE ? window.PRECO_BASE.pt : {});
-  var simb = (window.SIMB && window.SIMB[lang]) ? window.SIMB[lang] : 'R$';
   var qtdTotal = 0, total = 0;
   document.querySelectorAll('#bcTabelaCorpo input[data-prod]').forEach(function(inp) {
     var prod = inp.getAttribute('data-prod');
@@ -627,7 +627,7 @@ function atualizarResumoBC() {
   var descPct = (typeof descontoBC === 'function') ? descontoBC(qtdTotal) : 0;
   var desc = Math.round(total * descPct / 100);
   var final = total - desc;
-  var fmt = function(v){ return v.toLocaleString('pt-BR'); };
+  var fmt = function(v){ return String(v).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); };
   var elB = document.getElementById('bcTotalBruto'); if (elB) elB.textContent = simb + ' ' + fmt(total);
   var elD = document.getElementById('bcDesconto');  if (elD) elD.textContent = simb + ' ' + fmt(desc);
   var elF = document.getElementById('bcTotalFinal'); if (elF) elF.textContent = simb + ' ' + fmt(final);
