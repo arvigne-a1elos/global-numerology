@@ -611,33 +611,7 @@ function precoUnitarioBC(prodId) {
   var p = window.BC_PRODUTOS.find(function(x){ return x[0] === prodId; });
   return p ? p[2] : 0;
 }
-function atualizarResumoBC() {
-  var lang = (typeof getLang === 'function') ? getLang() : 'pt';
-  var base = (window.PRECO_BASE && window.PRECO_BASE[lang]) ? window.PRECO_BASE[lang]
-            : (window.PRECO_BASE ? window.PRECO_BASE.pt : {});
-  var simb = (window.SIMB && window.SIMB[lang]) ? window.SIMB[lang] : 'R$';
-  var qtdTotal = 0, total = 0;
-  document.querySelectorAll('#bcTabelaCorpo input[data-prod]').forEach(function(inp) {
-    var prod = inp.getAttribute('data-prod');
-    var q = parseInt(inp.value, 10) || 0;
-    if (q <= 0) return;
-    var faixa = window.PRODUTO_FAIXA ? window.PRODUTO_FAIXA[prod] : null;
-    var unit = 0;
-    if (base && faixa !== null && faixa !== undefined) unit = parseInt(base[faixa], 10) || 0;
-    total += unit * q;
-    qtdTotal += q;
-  });
-  var descPct = (typeof descontoBC === 'function') ? descontoBC(qtdTotal) : 0;
-  var desc = Math.round(total * descPct / 100);
-  var final = total - desc;
-  var fmt = function(v){ return v.toLocaleString('pt-BR'); };
-  var elB = document.getElementById('bcTotalBruto'); if (elB) elB.textContent = simb + ' ' + fmt(total);
-  var elD = document.getElementById('bcDesconto');  if (elD) elD.textContent = simb + ' ' + fmt(desc);
-  var elF = document.getElementById('bcTotalFinal'); if (elF) elF.textContent = simb + ' ' + fmt(final);
-  var elI = document.getElementById('bcFaixaInfo');
-  if (elI) elI.textContent = (window.MONTAR_TRAD && MONTAR_TRAD[lang] && MONTAR_TRAD[lang].desconto)
-      ? (MONTAR_TRAD[lang].desconto + ': ' + descPct + '%') : ('Desconto: ' + descPct + '%');
-}
+
 
 /* ===== MENU DE ENERGIAS ===== */
 window.ENERGIA_PRODUTOS = window.ENERGIA_PRODUTOS || [["express","🔮"],["completo","📘"],["ia","🤖"],["nome_pet","🐾"],["nickname","🎮"],["nome_dominio","🌐"],["nome_canal","🎥"],["nome_equipe","🧭"],["nome_ong","🏛️"],["nome_projeto","📋"],["nome_evento","🎪"]];
