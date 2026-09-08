@@ -335,6 +335,9 @@ function montarTudo() {
   if (_montando) return;          // trava UMA vez, no topo
   _montando = true;
   try {
+    if (typeof montarSeletorIdioma === "function") montarSeletorIdioma();
+  } catch (e) { console.error("[A1ELOS] ERRO em montarSeletorIdioma:", e); }  
+  try {
     if (typeof montarTabelaBC === "function") {
       console.log("[A1ELOS] montarTabelaBC() EXECUTANDO");
       montarTabelaBC();
