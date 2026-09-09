@@ -331,43 +331,30 @@ function carregarPartials() {
     .catch(function(e){ console.warn('[partials] produtos.html:', e); });
 }
 
-// ===== MONTAR TUDO (com trava anti-dupla execução) =====
 function montarTudo() {
-  if (_montando) return;
-  _montando = true;
+  if (window._montando) return;        // trava UMA vez, no topo
+  window._montando = true;
   try {
     if (typeof montarSeletorIdioma === "function") montarSeletorIdioma();
   } catch (e) { console.error("[A1ELOS] ERRO em montarSeletorIdioma:", e); }
   try {
     if (typeof montarTabelaBC === "function") {
-      console.log("[A1ELOS] montarTabelaBC() EXECUTANDO");
       montarTabelaBC();
-      console.log("[A1ELOS] montarTabelaBC() CONCLUÍDA");
     } else { console.warn("[A1ELOS] montarTabelaBC NÃO encontrada"); }
   } catch (e) { console.error("[A1ELOS] ERRO em montarTabelaBC:", e); }
   try {
     if (typeof montarEnergias === "function") {
-      console.log("[A1ELOS] montarEnergias() EXECUTANDO");
       montarEnergias();
-      console.log("[A1ELOS] montarEnergias() CONCLUÍDA");
     } else { console.warn("[A1ELOS] montarEnergias NÃO encontrada"); }
   } catch (e) { console.error("[A1ELOS] ERRO em montarEnergias:", e); }
   try {
     if (typeof traduzirTudo === "function") {
-      console.log("[A1ELOS] traduzirTudo() EXECUTANDO");
       traduzirTudo();
-      console.log("[A1ELOS] traduzirTudo() CONCLUÍDA");
     } else { console.warn("[A1ELOS] traduzirTudo NÃO encontrada"); }
   } catch (e) { console.error("[A1ELOS] ERRO em traduzirTudo:", e); }
-  if (typeof atualizarPrecos === 'function') {
-    console.log("[A1ELOS] atualizarPrecos() EXECUTANDO");
-    atualizarPrecos();
-    console.log("[A1ELOS] atualizarPrecos() CONCLUÍDA");
-  }
-  if (typeof atualizarLinksApresentacao === 'function') {
-    atualizarLinksApresentacao();
-  }
-  _montando = false;              // libera a trava no fim
+  if (typeof atualizarPrecos === 'function') atualizarPrecos();
+  if (typeof atualizarLinksApresentacao === 'function') atualizarLinksApresentacao();
+  window._montando = false;            // libera a trava no fim
 }
 
 function atualizarLinksApresentacao() {
