@@ -630,7 +630,6 @@ window.BC_PRODUTOS = window.BC_PRODUTOS || [
   ["nome_projeto","Nome do Projeto",8,"📋"],["nome_evento","Nome do Evento",8,"🎪"]
 ];
 
-/* ===== TABELA BC ===== */
 function montarTabelaBC() {
   var lang = (typeof getLang === 'function') ? getLang() : 'pt';
   var t = (window.PRODUTOS_TRAD && window.PRODUTOS_TRAD[lang]) ? window.PRODUTOS_TRAD[lang] : {};
@@ -639,23 +638,28 @@ function montarTabelaBC() {
   var base = (window.PRECO_BASE && window.PRECO_BASE[lang]) ? window.PRECO_BASE[lang]
            : (window.PRECO_BASE ? window.PRECO_BASE.pt : null);
   if (!base) return;
-  // 1) Traduz os cabeçalhos (data-i18n-bc) na hora
+  // 1) Cabeçalhos traduzidos nos 14 idiomas
   var rotulos = {
-    servico: 'Serviço', preco: 'Preço', qtd: 'Quantidade',
-    en: { servico: 'Service', preco: 'Price', qtd: 'Quantity' },
-    es: { servico: 'Servicio', preco: 'Precio', qtd: 'Cantidad' },
-    it: { servico: 'Servizio', preco: 'Prezzo', qtd: 'Quantità' },
-    fr: { servico: 'Service', preco: 'Prix', qtd: 'Quantité' },
-    de: { servico: 'Leistung', preco: 'Preis', qtd: 'Menge' }
+    pt:{s:'Serviço',p:'Preço',q:'Quantidade'},
+    en:{s:'Service',p:'Price',q:'Quantity'},
+    es:{s:'Servicio',p:'Precio',q:'Cantidad'},
+    it:{s:'Servizio',p:'Prezzo',q:'Quantità'},
+    fr:{s:'Service',p:'Prix',q:'Quantité'},
+    de:{s:'Leistung',p:'Preis',q:'Menge'},
+    ja:{s:'サービス',p:'価格',q:'数量'},
+    zh:{s:'服务',p:'价格',q:'数量'},
+    ru:{s:'Услуга',p:'Цена',q:'Кол-во'},
+    id:{s:'Layanan',p:'Harga',q:'Jumlah'},
+    tr:{s:'Hizmet',p:'Fiyat',q:'Adet'},
+    vi:{s:'Dịch vụ',p:'Giá',q:'Số lượng'},
+    he:{s:'שירות',p:'מחיר',q:'כמות'},
+    ar:{s:'الخدمة',p:'السعر',q:'الكمية'}
   };
-  var rt = rotulos[lang] || rotulos;
-  var thServ = document.querySelector('th[data-i18n-bc="servico"]');
-  var thPreco = document.querySelector('th[data-i18n-bc="preco"]');
-  var thQtd = document.querySelector('th[data-i18n-bc="qtd"]');
-  if (thServ) thServ.textContent = rt.servico;
-  if (thPreco) thPreco.textContent = rt.preco;
-  if (thQtd) thQtd.textContent = rt.qtd;
-  // 2) Monta as linhas com nomes traduzidos
+  var rt = rotulos[lang] || rotulos.pt;
+  var thS = document.querySelector('th[data-i18n-bc="servico"]'); if (thS) thS.textContent = rt.s;
+  var thP = document.querySelector('th[data-i18n-bc="preco"]');   if (thP) thP.textContent = rt.p;
+  var thQ = document.querySelector('th[data-i18n-bc="qtd"]');     if (thQ) thQ.textContent = rt.q;
+  // 2) Linhas montadas dinamicamente (ignora o HTML estático)
   var produtos = ['express','vida','completo','ia','urna','eleitoral','imovel','calendario',
                   'artistico','bebe','assinatura','negocio','casal','familia','coletivo',
                   'nome_pet','nickname','nome_dominio','nome_canal','nome_equipe','nome_ong',
@@ -680,7 +684,7 @@ function montarTabelaBC() {
     };
     corpo.appendChild(tr);
   });
-  // 3) Atualiza o resumo no idioma/moeda ativos
+  // 3) Resumo no idioma/moeda ativos
   if (typeof atualizarResumoBC === 'function') atualizarResumoBC();
 }
 
