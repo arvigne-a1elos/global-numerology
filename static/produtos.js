@@ -932,3 +932,21 @@ function traduzirTudo() {
   }
   if (typeof atualizarMesesData === "function") atualizarMesesData();
 }
+
+function forcarTraducaoBC() {
+  var lang = (typeof getLang === 'function') ? getLang() : 'pt';
+  var t = (window.PRODUTOS_TRAD && window.PRODUTOS_TRAD[lang])
+        ? window.PRODUTOS_TRAD[lang]
+        : (window.PRODUTOS_TRAD ? window.PRODUTOS_TRAD.pt : null);
+  if (!t) return;
+  var linhas = document.querySelectorAll('#bcTabelaCorpo tr');
+  for (var i = 0; i < linhas.length; i++) {
+    var input = linhas[i].querySelector('input[data-prod]');
+    if (!input) continue;
+    var prod = input.getAttribute('data-prod');
+    var nome = t[prod];
+    if (!nome) continue;
+    var celulas = linhas[i].querySelectorAll('td');
+    if (celulas.length > 0) celulas[0].textContent = nome;
+  }
+}
