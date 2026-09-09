@@ -3311,7 +3311,7 @@ def _titulo_pagina(doc, largura, altura, lang, titulo, indice=None):
     if os.path.exists(LOGO_A1ELOS):
         try:
             iw, ih = ImageReader(LOGO_A1ELOS).getSize()
-            lw = 8 * mm
+            lw = 9 * mm
             lh = lw * ih / iw
             doc.drawImage(LOGO_A1ELOS, largura - 12 * mm - lw, altura - 15 * mm,
                           width=lw, height=lh, mask="auto")
