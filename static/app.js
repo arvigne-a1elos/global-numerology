@@ -354,6 +354,9 @@ function montarTudo() {
   } catch (e) { console.error("[A1ELOS] ERRO em traduzirTudo:", e); }
   if (typeof atualizarPrecos === 'function') atualizarPrecos();
   if (typeof atualizarLinksApresentacao === 'function') atualizarLinksApresentacao();
+  try {
+  if (typeof forcarTraducaoBC === "function") forcarTraducaoBC();
+  } catch (e) { console.error("[A1ELOS] ERRO em forcarTraducaoBC:", e); }  
   window._montando = false;            // libera a trava no fim
 }
 
