@@ -16,26 +16,27 @@ body {
 nav.sections a{color:#888;text-decoration:none;font-size:.75rem;text-transform:uppercase;letter-spacing:1px;transition:.3s}
 nav.sections a:hover{color:var(--gold)}
 [dir="rtl"] { text-align: right; }
+/* ===== SELETOR DE IDIOMAS — LAPIDADO ===== */
 .lang-wrapper {
-    position: relative; top: 0; left: 0; right: 0; z-index: 9999; width: 100%;
-    background: rgba(10,10,10,0.95); padding: 10px 0; margin: 0;
-    display: flex; justify-content: center; overflow-x: auto;
-    scrollbar-width: thin;
+  display: flex; justify-content: center;
+  padding: 10px 8px;
+  background: #0d0d0d;
+  border-bottom: 1px solid #2a2a2a;
 }
-#langSelector,
-.lang-container {
-    display: flex; gap: 8px; flex-wrap: nowrap; padding: 0 10px;
-    align-items: center; justify-content: center; margin: 0 auto;
-    width: fit-content;
-}
+#langSelector { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
 .lang-btn {
-    white-space: nowrap; padding: 6px 14px;
-    border: 1px solid var(--gold); border-radius: 8px;
-    background: transparent; color: #fff; font-size: 12px;
-    cursor: pointer; line-height: 1;
-    display: inline-flex; align-items: center; justify-content: center;
-    flex: 0 0 auto;
-
+  width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  border: 1px solid #3a3a3a;
+  background: #151515;
+  color: #b9b9b9;
+  font-size: 12px; font-weight: 700; letter-spacing: .02em;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+.lang-btn:hover { border-color: #C9A94E; color: #fff; transform: translateY(-1px); }
+.lang-btn.active { border-color: #C9A94E; background: rgba(201,169,78,.18); color: #C9A94E; box-shadow: 0 0 8px rgba(201,169,78,.25); }
 }
 .logo-img {
     width: 210px; height: 210px; margin-bottom: 30px; border-radius: 50%;
