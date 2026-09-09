@@ -347,6 +347,7 @@ function montarTudo() {
       montarEnergias();
     } else { console.warn("[A1ELOS] montarEnergias NÃO encontrada"); }
   } catch (e) { console.error("[A1ELOS] ERRO em montarEnergias:", e); }
+  try { if (typeof traduzirNomesBC === 'function') traduzirNomesBC(); } catch (e) {}  
   try {
     if (typeof traduzirTudo === "function") {
       traduzirTudo();
