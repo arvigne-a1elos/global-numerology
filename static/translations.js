@@ -2783,8 +2783,6 @@ const translations = {
         nome_ong:"Nama LSM, Asosiasi, Lembaga atau Yayasan", nome_projeto:"Nama Proyek", nome_evento:"Nama Acara",
         criar_personalizado:"Buat Kustom", servico:"Layanan", preco:"Harga", quantidade:"Jumlah",
         bc_tbl_service:"Layanan", bc_tbl_price:"Harga", bc_tbl_qty:"Jumlah",
-       }
-    },                                    
                   
     tr: {
         hero_title: "NUMEROLOJİ HARİTASI",
@@ -3015,9 +3013,8 @@ const translations = {
          nome_canal:"Kanal Adı", nome_equipe:"Ekip Adı",
          nome_ong:"STK, Dernek, Enstitü veya Vakıf Adı", nome_projeto:"Proje Adı", nome_evento:"Etkinlik Adı",
          criar_personalizado:"Özel Oluştur", servico:"Hizmet", preco:"Fiyat", quantidade:"Adet",
-         bc_tbl_service:"Hizmet", bc_tbl_price:"Fiyat", bc_tbl_qty:"Adet"    
-        }
-    }, 
+         bc_tbl_service:"Hizmet", bc_tbl_price:"Fiyat", bc_tbl_qty:"Adet",    
+         
     vi: {
         hero_title: "BẢN ĐỒ THẦN SỐ",
         hero_subtitle: "Khám phá những gì các con số tiết lộ về bạn",
@@ -3247,7 +3244,7 @@ const translations = {
          nome_canal:"Tên Kênh", nome_equipe:"Tên Đội Nhóm",
          nome_ong:"Tên Tổ Chức, Hiệp Hội, Viện hoặc Quỹ", nome_projeto:"Tên Dự Án", nome_evento:"Tên Sự Kiện",
          criar_personalizado:"Tạo Theo Yêu Cầu", servico:"Dịch vụ", preco:"Giá", quantidade:"Số lượng",
-         bc_tbl_service:"Dịch vụ", bc_tbl_price:"Giá", bc_tbl_qty:"Số lượng"    
+         bc_tbl_service:"Dịch vụ", bc_tbl_price:"Giá", bc_tbl_qty:"Số lượng",    
         }    
       },  
     };
