@@ -3843,6 +3843,37 @@ var SERVICOS_TRAD = {
   "vi": [["Bản đồ Nhanh","₫ 38.000"],["Bản đồ Đầy đủ","₫ 88.000"],["Tên Phiếu bầu","₫ 125.000"],["Số Bầu cử","₫ 125.000"]]
 };
 
+window.PRODUTOS_TRAD.id = {
+  express:"Peta Ekspres", vida:"Fase Kehidupan & Tahun", completo:"Peta Lengkap",
+  ia:"Pencarian Nama AI", urna:"Validasi Nama Surat Suara", eleitoral:"Nomor Elektoral",
+  imovel:"Nomor Properti", calendario:"Kalender Energi Bulanan", artistico:"Validasi Nama Artistik",
+  bebe:"Perencanaan Nama Bayi", assinatura:"Validasi Tanda Tangan", negocio:"Nama untuk Bisnis/Produk",
+  casal:"Peta Pasangan", familia:"Peta Keluarga Premium", coletivo:"Bonus Kolektif/Perusahaan",
+  nome_pet:"Nama Hewan Peliharaan", nickname:"Nama Panggilan Digital", nome_dominio:"Nama Domain",
+  nome_canal:"Nama Kanal", nome_equipe:"Nama Tim",
+  nome_ong:"Nama LSM, Asosiasi, Lembaga atau Yayasan", nome_projeto:"Nama Proyek", nome_evento:"Nama Acara"
+};
+window.PRODUTOS_TRAD.tr = {
+  express:"Ekspres Harita", vida:"Yaşam Evresi ve Yıl", completo:"Tam Harita",
+  ia:"AI İsim Arama", urna:"Oy Pusulası İsim Doğrulama", eleitoral:"Seçim Numarası",
+  imovel:"Mülk Numarası", calendario:"Aylık Enerji Takvimi", artistico:"Sahne Adı Doğrulama",
+  bebe:"Bebek İsmi Planlama", assinatura:"İmza Doğrulama", negocio:"İşletme/Ürün Adı",
+  casal:"Çift Haritası", familia:"Premium Aile Haritası", coletivo:"Kurumsal Bonus",
+  nome_pet:"Evcil Hayvan Adı", nickname:"Dijital Takma Ad", nome_dominio:"Alan Adı",
+  nome_canal:"Kanal Adı", nome_equipe:"Ekip Adı",
+  nome_ong:"STK, Dernek, Enstitü veya Vakıf Adı", nome_projeto:"Proje Adı", nome_evento:"Etkinlik Adı"
+};
+window.PRODUTOS_TRAD.vi = {
+  express:"Bản Đồ Nhanh", vida:"Giai Đoạn Cuộc Đời & Năm", completo:"Bản Đồ Đầy Đủ",
+  ia:"Tìm Kiếm Tên AI", urna:"Xác Minh Tên Phiếu Bầu", eleitoral:"Số Bầu Cử",
+  imovel:"Số Bất Động Sản", calendario:"Lịch Năng Lượng Hàng Tháng", artistico:"Xác Minh Nghệ Danh",
+  bebe:"Lên Kế Hoạch Tên Cho Bé", assinatura:"Xác Minh Chữ Ký", negocio:"Tên Cho Doanh Nghiệp/Sản Phẩm",
+  casal:"Bản Đồ Cặp Đôi", familia:"Bản Đồ Gia Đình Cao Cấp", coletivo:"Thưởng Tập Thể/Doanh Nghiệp",
+  nome_pet:"Tên Thú Cưng", nickname:"Biệt Danh Kỹ Thuật Số", nome_dominio:"Tên Miền",
+  nome_canal:"Tên Kênh", nome_equipe:"Tên Đội Nhóm",
+  nome_ong:"Tên Tổ Chức, Hiệp Hội, Viện hoặc Quỹ", nome_projeto:"Tên Dự Án", nome_evento:"Tên Sự Kiện"
+};
+
 // ===== SHIM DE SEGURANÇA: reconstrói PRODUTOS_TRAD se ausente =====
 if (typeof PRODUTOS_TRAD === "undefined") {
   var PRODUTOS_TRAD = {};
