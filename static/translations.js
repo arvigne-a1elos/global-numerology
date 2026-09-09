@@ -2751,7 +2751,6 @@ const translations = {
         f_tipo_ong: "Jenis Lembaga",
         ia_texto: "Pilih nama ideal dengan analisis numerologi energi nama oleh AI.",
         confirme_energia: "Konfirmasi Energi X",
-        express:"Peta Ekspres",vida:"Fase Kehidupan & Tahun",completo:"Peta Lengkap",ia:"Pencarian Nama AI",urna:"Validasi Nama Surat Suara",eleitoral:"Nomor Elektoral",imovel:"Nomor Properti",calendario:"Kalender Energi Bulanan",artistico:"Validasi Nama Artistik",bebe:"Perencanaan Nama Bayi",assinatura:"Validasi Tanda Tangan",negocio:"Nama untuk Bisnis/Produk",casal:"Peta Pasangan",familia:"Peta Keluarga Premium",coletivo:"Bonus Kolektif/Perusahaan",nome_pet:"Nama Hewan Peliharaan",nickname:"Nama Panggilan Digital",nome_dominio:"Nama Domain",nome_canal:"Nama Kanal",nome_equipe:"Nama Tim",nome_ong:"Nama LSM, Asosiasi, Lembaga atau Yayasan",nome_projeto:"Nama Proyek",nome_evento:"Nama Acara",
         calc_caminho: "Jalan Hidup",
         calc_realizacao: "Pencapaian",
         calc_alma: "Jiwa",
@@ -2765,8 +2764,6 @@ const translations = {
         slides_card_titulo: "📊 Presentasi Slide",
         slides_card_texto: "Slide visual untuk rapat dan proyeksi",
         download_slides: "Unduh PPTX",
-        criar_personalizado:"Buat Kustom", servico:"Layanan", preco:"Harga", quantidade:"Jumlah",
-        bc_tbl_service:"Layanan", bc_tbl_price:"Harga", bc_tbl_qty:"Jumlah",
         pay_vida:"🔒 Bayar — Hasil PDF + QRCode", pay_ia:"🔒 Bayar — Hasil PDF + QRCode", pay_imovel:"🔒 Bayar — Hasil PDF + QRCode", pay_calendario:"🔒 Bayar — Hasil PDF + QRCode", pay_artistico:"🔒 Bayar — Hasil PDF + QRCode", pay_bebe:"🔒 Bayar — Hasil PDF + QRCode", pay_assinatura:"🔒 Bayar — Hasil PDF + QRCode", pay_negocio:"🔒 Bayar — Hasil PDF + QRCode", pay_casal:"🔒 Bayar — Hasil PDF + QRCode", pay_familia:"🔒 Bayar — Hasil PDF + QRCode",
         f_mes:"Bulan", ph_ex_numero:"Cth: 123", ph_nome_artistico:"Nama artistik Anda", ph_sobrenome:"Nama belakang", ph_sua_assinatura:"Tanda tangan Anda", ph_nome_negocio:"Nama bisnis", ph_membros:"Nama setiap anggota, satu per baris",
         nomes5: { caminho: "Jalan Hidup", destino: "Takdir", alma: "Jiwa", personalidade: "Kepribadian", realizacao: "Pencapaian" },
@@ -2775,9 +2772,20 @@ const translations = {
             sig_realizacao: "Bagaimana Anda mengekspresikan bakat dan mencapai tujuan Anda di dunia.",
             sig_alma: "Apa yang paling diinginkan hati Anda dan yang memberi makan esensi Anda.",
             sig_personalidade: "Bagaimana orang lain melihat Anda dan kesan yang Anda berikan.",
-            sig_destino: "Ke mana pilihan dan potensi Anda dapat membawa Anda di masa depan.",
-        }
-    },
+            sig_destino: "Ke mana pilihan dan potensi Anda dapat membawa Anda di masa depan.",                     
+        Object.assign(translations.id, {express:"Peta Ekspres", vida:"Fase Kehidupan & Tahun", completo:"Peta Lengkap",
+        ia:"Pencarian Nama AI", urna:"Validasi Nama Surat Suara", eleitoral:"Nomor Elektoral",
+        imovel:"Nomor Properti", calendario:"Kalender Energi Bulanan", artistico:"Validasi Nama Artistik",
+        bebe:"Perencanaan Nama Bayi", assinatura:"Validasi Tanda Tangan", negocio:"Nama untuk Bisnis/Produk",
+        casal:"Peta Pasangan", familia:"Peta Keluarga Premium", coletivo:"Bonus Kolektif/Perusahaan",
+        nome_pet:"Nama Hewan Peliharaan", nickname:"Nama Panggilan Digital", nome_dominio:"Nama Domain",
+        nome_canal:"Nama Kanal", nome_equipe:"Nama Tim",
+        nome_ong:"Nama LSM, Asosiasi, Lembaga atau Yayasan", nome_projeto:"Nama Proyek", nome_evento:"Nama Acara",
+        criar_personalizado:"Buat Kustom", servico:"Layanan", preco:"Harga", quantidade:"Jumlah",
+        bc_tbl_service:"Layanan", bc_tbl_price:"Harga", bc_tbl_qty:"Jumlah",
+       }
+    },                                    
+                  
     tr: {
         hero_title: "NUMEROLOJİ HARİTASI",
         hero_subtitle: "Sayıların sizin hakkınızda neler ortaya koyduğunu keşfedin",
@@ -2975,7 +2983,6 @@ const translations = {
         f_tipo_ong: "Kurum Türü",
         ia_texto: "AI tarafından adın enerjisinin numeroloji analiziyle ideal adı seçin.",
         confirme_energia: "X Enerjisini Onayla",
-        express:"Ekspres Harita",vida:"Yaşam Evresi ve Yıl",completo:"Tam Harita",ia:"AI İsim Arama",urna:"Oy Pusulası İsim Doğrulama",eleitoral:"Seçim Numarası",imovel:"Mülk Numarası",calendario:"Aylık Enerji Takvimi",artistico:"Sahne Adı Doğrulama",bebe:"Bebek İsmi Planlama",assinatura:"İmza Doğrulama",negocio:"İşletme/Ürün Adı",casal:"Çift Haritası",familia:"Premium Aile Haritası",coletivo:"Kurumsal Bonus",nome_pet:"Evcil Hayvan Adı",nickname:"Dijital Takma Ad",nome_dominio:"Alan Adı",nome_canal:"Kanal Adı",nome_equipe:"Ekip Adı",nome_ong:"STK, Dernek, Enstitü veya Vakıf Adı",nome_projeto:"Proje Adı",nome_evento:"Etkinlik Adı",
         calc_caminho: "Yaşam Yolu",
         calc_realizacao: "Gerçekleşme",
         calc_alma: "Ruh",
@@ -2989,17 +2996,26 @@ const translations = {
         slides_card_titulo: "📊 Slayt Sunumu",
         slides_card_texto: "Toplantılar ve projeksiyon için görsel slaytlar",
         download_slides: "PPTX İndir",
-        criar_personalizado:"Özel Oluştur", servico:"Hizmet", preco:"Fiyat", quantidade:"Adet",
-        bc_tbl_service:"Hizmet", bc_tbl_price:"Fiyat", bc_tbl_qty:"Adet",
         pay_vida:"🔒 Öde — Sonuç PDF + QRCode", pay_ia:"🔒 Öde — Sonuç PDF + QRCode", pay_imovel:"🔒 Öde — Sonuç PDF + QRCode", pay_calendario:"🔒 Öde — Sonuç PDF + QRCode", pay_artistico:"🔒 Öde — Sonuç PDF + QRCode", pay_bebe:"🔒 Öde — Sonuç PDF + QRCode", pay_assinatura:"🔒 Öde — Sonuç PDF + QRCode", pay_negocio:"🔒 Öde — Sonuç PDF + QRCode", pay_casal:"🔒 Öde — Sonuç PDF + QRCode", pay_familia:"🔒 Öde — Sonuç PDF + QRCode",
         f_mes:"Ay", ph_ex_numero:"Örn: 123", ph_nome_artistico:"Sahne adınız", ph_sobrenome:"Soyad", ph_sua_assinatura:"İmzanız", ph_nome_negocio:"İşletme adı", ph_membros:"Her üyenin adı, satır başına bir",
         nomes5: { caminho: "Yaşam Yolu", destino: "Kader", alma: "Ruh", personalidade: "Kişilik", realizacao: "Gerçekleşme" },
-        sig: {
+       sig: {
             sig_caminho: "Bu hayatta yürümeye geldiğiniz yol ve amacınızın merkezi dersleri.",
             sig_realizacao: "Yeteneklerinizi nasıl ifade ettiğiniz ve hedeflerinizi dünyada nasıl gerçekleştirdiğiniz.",
             sig_alma: "Kalbinizin en çok arzuladığı ve özünüzü besleyen şey.",
             sig_personalidade: "Başkalarının sizi nasıl gördüğü ve bıraktığınız izlenim.",
             sig_destino: "Seçimlerinizin ve potansiyelinizin sizi gelecekte nereye götürebileceği.",
+        Object.assign(translations.tr, {
+         express:"Ekspres Harita", vida:"Yaşam Evresi ve Yıl", completo:"Tam Harita",
+         ia:"AI İsim Arama", urna:"Oy Pusulası İsim Doğrulama", eleitoral:"Seçim Numarası",
+         imovel:"Mülk Numarası", calendario:"Aylık Enerji Takvimi", artistico:"Sahne Adı Doğrulama",
+         bebe:"Bebek İsmi Planlama", assinatura:"İmza Doğrulama", negocio:"İşletme/Ürün Adı",
+         casal:"Çift Haritası", familia:"Premium Aile Haritası", coletivo:"Kurumsal Bonus",
+         nome_pet:"Evcil Hayvan Adı", nickname:"Dijital Takma Ad", nome_dominio:"Alan Adı",
+         nome_canal:"Kanal Adı", nome_equipe:"Ekip Adı",
+         nome_ong:"STK, Dernek, Enstitü veya Vakıf Adı", nome_projeto:"Proje Adı", nome_evento:"Etkinlik Adı",
+         criar_personalizado:"Özel Oluştur", servico:"Hizmet", preco:"Fiyat", quantidade:"Adet",
+         bc_tbl_service:"Hizmet", bc_tbl_price:"Fiyat", bc_tbl_qty:"Adet"    
         }
     }, 
     vi: {
@@ -3199,7 +3215,6 @@ const translations = {
         f_tipo_ong: "Loại Tổ Chức",
         ia_texto: "Chọn tên lý tưởng với phân tích thần số về năng lượng của tên bởi AI.",
         confirme_energia: "Xác Nhận Năng Lượng X",
-        express:"Bản Đồ Nhanh",vida:"Giai Đoạn Cuộc Đời & Năm",completo:"Bản Đồ Đầy Đủ",ia:"Tìm Kiếm Tên AI",urna:"Xác Minh Tên Phiếu Bầu",eleitoral:"Số Bầu Cử",imovel:"Số Bất Động Sản",calendario:"Lịch Năng Lượng Hàng Tháng",artistico:"Xác Minh Nghệ Danh",bebe:"Lên Kế Hoạch Tên Cho Bé",assinatura:"Xác Minh Chữ Ký",negocio:"Tên Cho Doanh Nghiệp/Sản Phẩm",casal:"Bản Đồ Cặp Đôi",familia:"Bản Đồ Gia Đình Cao Cấp",coletivo:"Thưởng Tập Thể/Doanh Nghiệp",nome_pet:"Tên Thú Cưng",nickname:"Biệt Danh Kỹ Thuật Số",nome_dominio:"Tên Miền",nome_canal:"Tên Kênh",nome_equipe:"Tên Đội Nhóm",nome_ong:"Tên Tổ Chức, Hiệp Hội, Viện hoặc Quỹ",nome_projeto:"Tên Dự Án",nome_evento:"Tên Sự Kiện",
         calc_caminho: "Đường Đời",
         calc_realizacao: "Thành Tựu",
         calc_alma: "Tâm Hồn",
@@ -3213,8 +3228,6 @@ const translations = {
         slides_card_titulo: "📊 Bài Thuyết Trình Slide",
         slides_card_texto: "Slide trực quan cho cuộc họp và trình chiếu",
         download_slides: "Tải PPTX",
-        criar_personalizado:"Tạo Theo Yêu Cầu", servico:"Dịch vụ", preco:"Giá", quantidade:"Số lượng",
-        bc_tbl_service:"Dịch vụ", bc_tbl_price:"Giá", bc_tbl_qty:"Số lượng",
         pay_vida:"🔒 Trả — Kết quả PDF + QRCode", pay_ia:"🔒 Trả — Kết quả PDF + QRCode", pay_imovel:"🔒 Trả — Kết quả PDF + QRCode", pay_calendario:"🔒 Trả — Kết quả PDF + QRCode", pay_artistico:"🔒 Trả — Kết quả PDF + QRCode", pay_bebe:"🔒 Trả — Kết quả PDF + QRCode", pay_assinatura:"🔒 Trả — Kết quả PDF + QRCode", pay_negocio:"🔒 Trả — Kết quả PDF + QRCode", pay_casal:"🔒 Trả — Kết quả PDF + QRCode", pay_familia:"🔒 Trả — Kết quả PDF + QRCode",
         f_mes:"Tháng", ph_ex_numero:"VD: 123", ph_nome_artistico:"Nghệ danh của bạn", ph_sobrenome:"Họ", ph_sua_assinatura:"Chữ ký của bạn", ph_nome_negocio:"Tên doanh nghiệp", ph_membros:"Tên từng thành viên, mỗi dòng một",
         nomes5: { caminho: "Đường Đời", destino: "Định Mệnh", alma: "Tâm Hồn", personalidade: "Tính Cách", realizacao: "Thành Tựu" },
@@ -3224,6 +3237,17 @@ const translations = {
             sig_alma: "Điều trái tim bạn khao khát nhất và điều nuôi dưỡng bản chất của bạn.",
             sig_personalidade: "Cách người khác nhìn nhận bạn và ấn tượng bạn tạo ra.",
             sig_destino: "Nơi lựa chọn và tiềm năng của bạn có thể đưa bạn đến trong tương lai.",
+        Object.assign(translations.vi, {
+         express:"Bản Đồ Nhanh", vida:"Giai Đoạn Cuộc Đời & Năm", completo:"Bản Đồ Đầy Đủ",
+         ia:"Tìm Kiếm Tên AI", urna:"Xác Minh Tên Phiếu Bầu", eleitoral:"Số Bầu Cử",
+         imovel:"Số Bất Động Sản", calendario:"Lịch Năng Lượng Hàng Tháng", artistico:"Xác Minh Nghệ Danh",
+         bebe:"Lên Kế Hoạch Tên Cho Bé", assinatura:"Xác Minh Chữ Ký", negocio:"Tên Cho Doanh Nghiệp/Sản Phẩm",
+         casal:"Bản Đồ Cặp Đôi", familia:"Bản Đồ Gia Đình Cao Cấp", coletivo:"Thưởng Tập Thể/Doanh Nghiệp",
+         nome_pet:"Tên Thú Cưng", nickname:"Biệt Danh Kỹ Thuật Số", nome_dominio:"Tên Miền",
+         nome_canal:"Tên Kênh", nome_equipe:"Tên Đội Nhóm",
+         nome_ong:"Tên Tổ Chức, Hiệp Hội, Viện hoặc Quỹ", nome_projeto:"Tên Dự Án", nome_evento:"Tên Sự Kiện",
+         criar_personalizado:"Tạo Theo Yêu Cầu", servico:"Dịch vụ", preco:"Giá", quantidade:"Số lượng",
+         bc_tbl_service:"Dịch vụ", bc_tbl_price:"Giá", bc_tbl_qty:"Số lượng"    
         }    
       },  
     };
