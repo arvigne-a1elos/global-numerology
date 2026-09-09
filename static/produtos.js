@@ -949,3 +949,18 @@ function forcarTraducaoBC() {
     if (td) td.textContent = dict[prod]; // SÓ o nome — a moeda fica intacta
   }
 }
+
+function traduzirNomesBC() {
+  var lang = (typeof getLang === 'function') ? getLang() : 'pt';
+  var d = (window.PRODUTOS_TRAD && window.PRODUTOS_TRAD[lang]) ? window.PRODUTOS_TRAD[lang] : null;
+  if (!d) return;
+  var linhas = document.querySelectorAll('#bcTabelaCorpo tr');
+  for (var i = 0; i < linhas.length; i++) {
+    var inp = linhas[i].querySelector('input[data-prod]');
+    if (!inp) continue;
+    var chave = inp.getAttribute('data-prod');
+    if (!d[chave]) continue;
+    var tdNome = linhas[i].querySelector('td');
+    if (tdNome) tdNome.textContent = d[chave]; // SÓ o nome. A cifra nem é tocada.
+  }
+}
