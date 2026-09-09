@@ -3247,8 +3247,7 @@ const translations = {
             sig_personalidade: "Cách người khác nhìn nhận bạn và ấn tượng bạn tạo ra.",
             sig_destino: "Nơi lựa chọn và tiềm năng của bạn có thể đưa bạn đến trong tương lai.",
         }    
-    },    
- 
+     
 PRODUTO_FAIXA = {
     "express": 0, "vida": 0, "completo": 1, "ia": 1,
     "urna": 2, "eleitoral": 2, "imovel": 2, "calendario": 2,
