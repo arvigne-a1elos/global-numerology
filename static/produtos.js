@@ -595,45 +595,56 @@ window.BC_PRODUTOS = window.BC_PRODUTOS || [
 
 /* ===== TABELA BC ===== */
 function montarTabelaBC() {
-  var corpo = document.getElementById("bcTabelaCorpo");
-  if (!corpo) return;
-  corpo.innerHTML = "";
-  window.BC_PRODUTOS.forEach(function(p) {
-    var tr = document.createElement("tr");
-    tr.setAttribute("data-prod", p[0]);
-    tr.innerHTML = '<td><span class="bc-prod-nome">' + p[3] + ' ' + p[1] + '</span></td>'
-      + '<td style="text-align:center;color:var(--gold)" class="bc-prod-preco">R$ ' + p[2] + '</td>'
-      + '<td style="text-align:center"><input type="number" min="0" max="1000" value="0" data-prod="' + p[0] + '" oninput="atualizarResumoBC()"></td>';
-    corpo.appendChild(tr);
-  });
-}
-
-function atualizarResumoBC() {
   var lang = (typeof getLang === 'function') ? getLang() : 'pt';
+  var t = (window.PRODUTOS_TRAD && window.PRODUTOS_TRAD[lang]) ? window.PRODUTOS_TRAD[lang] : {};
+  var tp = (window.PRODUTOS_TRAD && window.PRODUTOS_TRAD.pt) ? window.PRODUTOS_TRAD.pt : {};
   var simb = (window.SIMB && window.SIMB[lang]) ? window.SIMB[lang] : 'R$';
   var base = (window.PRECO_BASE && window.PRECO_BASE[lang]) ? window.PRECO_BASE[lang]
-            : (window.PRECO_BASE ? window.PRECO_BASE.pt : {});
-  var qtdTotal = 0, total = 0;
-  document.querySelectorAll('#bcTabelaCorpo input[data-prod]').forEach(function(inp) {
-    var prod = inp.getAttribute('data-prod');
-    var q = parseInt(inp.value, 10) || 0;
-    if (q <= 0) return;
-    var faixa = window.PRODUTO_FAIXA ? window.PRODUTO_FAIXA[prod] : null;
-    var unit = 0;
-    if (base && faixa !== null && faixa !== undefined) unit = parseInt(base[faixa], 10) || 0;
-    total += unit * q;
-    qtdTotal += q;
+           : (window.PRECO_BASE ? window.PRECO_BASE.pt : null);
+  if (!base) return;
+  // 1) Traduz os cabeçalhos (data-i18n-bc) na hora
+  var rotulos = {
+    servico: 'Serviço', preco: 'Preço', qtd: 'Quantidade',
+    en: { servico: 'Service', preco: 'Price', qtd: 'Quantity' },
+    es: { servico: 'Servicio', preco: 'Precio', qtd: 'Cantidad' },
+    it: { servico: 'Servizio', preco: 'Prezzo', qtd: 'Quantità' },
+    fr: { servico: 'Service', preco: 'Prix', qtd: 'Quantité' },
+    de: { servico: 'Leistung', preco: 'Preis', qtd: 'Menge' }
+  };
+  var rt = rotulos[lang] || rotulos;
+  var thServ = document.querySelector('th[data-i18n-bc="servico"]');
+  var thPreco = document.querySelector('th[data-i18n-bc="preco"]');
+  var thQtd = document.querySelector('th[data-i18n-bc="qtd"]');
+  if (thServ) thServ.textContent = rt.servico;
+  if (thPreco) thPreco.textContent = rt.preco;
+  if (thQtd) thQtd.textContent = rt.qtd;
+  // 2) Monta as linhas com nomes traduzidos
+  var produtos = ['express','vida','completo','ia','urna','eleitoral','imovel','calendario',
+                  'artistico','bebe','assinatura','negocio','casal','familia','coletivo',
+                  'nome_pet','nickname','nome_dominio','nome_canal','nome_equipe','nome_ong',
+                  'nome_projeto','nome_evento'];
+  var corpo = document.getElementById('bcTabelaCorpo');
+  if (!corpo) return;
+  corpo.innerHTML = '';
+  var qtds = window.BC_QUANTIDADES || (window.BC_QUANTIDADES = {});
+  produtos.forEach(function(prod) {
+    var faixa = (window.PRODUTO_FAIXA && window.PRODUTO_FAIXA[prod] !== undefined) ? window.PRODUTO_FAIXA[prod] : null;
+    if (faixa === null) return;
+    var precoUnit = parseInt(base[faixa], 10) || 0;
+    var nome = t[prod] || tp[prod] || prod;
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td>' + nome + '</td>'
+      + '<td>' + simb + ' ' + String(precoUnit).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + '</td>'
+      + '<td><input type="number" min="0" value="' + (qtds[prod] || 0) + '" data-prod="' + prod + '" style="width:70px;padding:4px;border:1px solid #333;border-radius:4px;background:#111;color:#fff;text-align:center"></td>';
+    var inp = tr.querySelector('input');
+    inp.oninput = inp.onchange = function() {
+      qtds[prod] = parseInt(inp.value, 10) || 0;
+      atualizarResumoBC();
+    };
+    corpo.appendChild(tr);
   });
-  var descPct = (typeof descontoBC === 'function') ? descontoBC(qtdTotal) : 0;
-  var desc = Math.round(total * descPct / 100);
-  var final = total - desc;
-  var fmt = function(v){ return String(v).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); };
-  var elB = document.getElementById('bcTotalBruto'); if (elB) elB.textContent = simb + ' ' + fmt(total);
-  var elD = document.getElementById('bcDesconto');  if (elD) elD.textContent = simb + ' ' + fmt(desc);
-  var elF = document.getElementById('bcTotalFinal'); if (elF) elF.textContent = simb + ' ' + fmt(final);
-  var elI = document.getElementById('bcFaixaInfo');
-  if (elI) elI.textContent = (window.MONTAR_TRAD && window.MONTAR_TRAD[lang] && window.MONTAR_TRAD[lang].desconto)
-      ? (window.MONTAR_TRAD[lang].desconto + ': ' + descPct + '%') : ('Desconto: ' + descPct + '%');
+  // 3) Atualiza o resumo no idioma/moeda ativos
+  if (typeof atualizarResumoBC === 'function') atualizarResumoBC();
 }
 
 /* ===== MENU DE ENERGIAS ===== */
