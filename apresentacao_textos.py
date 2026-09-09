@@ -33,7 +33,7 @@ class NumberedCanvas(_canvas.Canvas):
     """Canvas que desenha cabeçalho (logos) e rodapé (página X de Y + contatos)."""
     def __init__(self, *args, **kwargs):
         self._saved_page_states = []
-        self._logo_a1elos = LOGO_A1ELOS      # usa a global diretamente
+        self._logo_a1elos = A1ELOS           # usa a global diretamente
         self._logo_num = LOGO_PATH           # usa a global diretamente
         self._contatos = kwargs.pop('contatos', '')
         super().__init__(*args, **kwargs)
