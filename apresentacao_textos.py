@@ -3303,7 +3303,7 @@ def _titulo_pagina(doc, largura, altura, lang, titulo, indice=None):
             iw, ih = ImageReader(LOGO_PATH).getSize()
             lw = 6 * mm
             lh = lw * ih / iw
-            doc.drawImage(LOGO_PATH, 12 * mm - lw, altura - 15 * mm,
+            doc.drawImage(LOGO_PATH, largura - 12 * mm - lw, altura - 15 * mm,
                           width=lw, height=lh, mask="auto")
         except Exception:
             pass
