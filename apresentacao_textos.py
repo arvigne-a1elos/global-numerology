@@ -22,8 +22,8 @@ logger = logging.getLogger(__name__)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_DIR = os.path.join(BASE_DIR, "static")
-LOGO_PATH   = os.path.join(STATIC_DIR, "logo.png")            # logo do site → ESQUERDA
-A1ELOS = os.path.join(STATIC_DIR, "A1ELOS.png")               # logo A1ELOS → DIREITA
+LOGO_PATH   = os.path.join(STATIC_DIR, "logo.png")      # logo do site → ESQUERDA
+LOGO_A1ELOS = os.path.join(STATIC_DIR, "A1ELOS.png")    # logo A1ELOS → DIREITA
 
 # ===== RODAPÉ =====  (substitua a linha CONTATOS antiga por esta)
 CONTATOS = "a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.br/contato"
@@ -33,8 +33,8 @@ class NumberedCanvas(_canvas.Canvas):
     """Canvas que desenha cabeçalho (logos) e rodapé (página X de Y + contatos)."""
     def __init__(self, *args, **kwargs):
         self._saved_page_states = []
-        self._a1elos = A1ELOS                # usa a global diretamente
-        self._logo_num = LOGO_PATH           # usa a global diretamente
+        self._logo_a1elos = LOGO_A1ELOS     # ← volta para "_logo_a1elos" (o que o cabeçalho usa)
+        self._logo_num = LOGO_PATH          # ← mantém "_logo_num" (já está certo)
         self._contatos = kwargs.pop('contatos', '')
         super().__init__(*args, **kwargs)
 
