@@ -3297,13 +3297,13 @@ def _titulo_pagina(doc, largura, altura, lang, titulo, indice=None):
     if indice is not None:
         doc.setFont(_fonte(lang, True), 11)
         doc.drawRightString(largura - 30 * mm, altura - 12 * mm, "%02d" % indice)
-        # Logo do SITE (Numerologia) — canto superior ESQUERDO
+       # Logo do SITE (Numerologia) — canto superior ESQUERDO
     if os.path.exists(LOGO_PATH):
         try:
             iw, ih = ImageReader(LOGO_PATH).getSize()
             lw = 8 * mm
             lh = lw * ih / iw
-            doc.drawImage(LOGO_PATH, largura - 12 * mm - lw, altura - 15 * mm,
+            doc.drawImage(LOGO_PATH, 6 * mm, altura - 15 * mm,
                           width=lw, height=lh, mask="auto")
         except Exception:
             pass
