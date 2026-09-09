@@ -12,6 +12,7 @@ function iniciarCiclo() {
 function finalizarCiclo() {
     _cicloEmExecucao = false;
 }
+
 function montarSeletorIdioma() {
   var container = document.getElementById('langSelector');
   if (!container) {
@@ -19,27 +20,23 @@ function montarSeletorIdioma() {
     container.id = 'langSelector';
     document.body.insertBefore(container, document.body.firstChild);
   }
-  container.style.cssText = 'display:flex;justify-content:center;align-items:center;gap:6px;flex-wrap:wrap;padding:8px;background:#111;border-bottom:1px solid #222;';
   if (container.children.length > 0) return;
   var lista = [
-    {id:'pt', b:'🇧🇷'},{id:'en', b:'🇺🇸'},{id:'es', b:'🇪🇸'},{id:'it', b:'🇮🇹'},
-    {id:'fr', b:'🇫🇷'},{id:'de', b:'🇩🇪'},{id:'ja', b:'🇯🇵'},{id:'zh', b:'🇨🇳'},
-    {id:'ru', b:'🇷🇺'},{id:'id', b:'🇮🇩'},{id:'tr', b:'🇹🇷'},{id:'vi', b:'🇻🇳'},
-    {id:'he', b:'🇮🇱'},{id:'ar', b:'🇸🇦'}
+    {id:'pt'},{id:'en'},{id:'es'},{id:'it'},{id:'fr'},{id:'de'},{id:'ja'},{id:'zh'},
+    {id:'ru'},{id:'id'},{id:'tr'},{id:'vi'},{id:'he'},{id:'ar'}
   ];
   var atual = (typeof getLang === 'function') ? getLang() : 'pt';
   lista.forEach(function(l) {
     var b = document.createElement('button');
     b.type = 'button';
+    b.className = 'lang-btn' + (l.id === atual ? ' active' : '');
     b.title = l.id.toUpperCase();
-    b.textContent = l.b;
-    b.style.cssText = 'font-size:20px;padding:4px 8px;cursor:pointer;background:transparent;border:1px solid #333;border-radius:6px;line-height:1;';
-    if (l.id === atual) b.style.borderColor = '#C9A94E';
+    b.textContent = l.id.toUpperCase();
     b.onclick = function() {
       if (typeof setLanguage === 'function') setLanguage(l.id);
-      var ativos = container.querySelectorAll('button');
-      for (var i = 0; i < ativos.length; i++) { ativos[i].style.borderColor = '#333'; }
-      b.style.borderColor = '#C9A94E';
+      var ativos = container.querySelectorAll('.lang-btn');
+      for (var i = 0; i < ativos.length; i++) ativos[i].classList.remove('active');
+      b.classList.add('active');
       if (typeof montarTudo === 'function') montarTudo();
       else if (typeof traduzirTudo === 'function') traduzirTudo();
     };
