@@ -62,6 +62,43 @@ function pesquisar(produto) {
   if (calc) calc.scrollIntoView({ behavior: "smooth" });
 }
 
+function atualizarResumoBC() {
+  var lang = (typeof getLang === 'function') ? getLang() : 'pt';
+  var simbolo = (typeof SIMBOLO !== 'undefined' && SIMBOLO[lang]) ? SIMBOLO[lang]
+              : ((typeof SIMB !== 'undefined' && SIMB[lang]) ? SIMB[lang]
+              : ((window.MOEDAS && window.MOEDAS[lang]) ? window.MOEDAS[lang] : 'R$'));
+  var servidor = (typeof PRECO_VALORES !== 'undefined' && PRECO_VALORES[lang]);
+  var base = servidor ? PRECO_VALORES[lang]
+           : (typeof PRECO_BASE !== 'undefined' ? (PRECO_BASE[lang] || PRECO_BASE.pt) : null);
+  if (!base) return;
+  var qtdTotal = 0, total = 0;
+  var inps = document.querySelectorAll('#bcTabelaCorpo input[data-prod]');
+  for (var i = 0; i < inps.length; i++) {
+    var q = parseInt(inps[i].value, 10) || 0;
+    if (q <= 0) continue;
+    var prod = inps[i].getAttribute('data-prod');
+    var faixa = (typeof PRODUTO_FAIXA !== 'undefined' && PRODUTO_FAIXA) ? PRODUTO_FAIXA[prod] : null;
+    if (faixa === null || faixa === undefined) continue;
+    var unit = parseInt(base[faixa], 10) || 0;
+    if (servidor) unit = Math.round(unit / 100);
+    total += unit * q;
+    qtdTotal += q;
+  }
+  var descPct = (typeof descontoBC === 'function') ? descontoBC(qtdTotal) : 0;
+  var desc = Math.round(total * descPct / 100);
+  var final = total - desc;
+  var fmt = function(v){ return String(v).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); };
+  var elB = document.getElementById('bcTotalBruto'); if (elB) elB.textContent = simbolo + ' ' + fmt(total);
+  var elD = document.getElementById('bcDesconto');  if (elD) elD.textContent = simbolo + ' ' + fmt(desc);
+  var elF = document.getElementById('bcTotalFinal'); if (elF) elF.textContent = simbolo + ' ' + fmt(final);
+  var elI = document.getElementById('bcFaixaInfo');
+  if (elI) {
+    var rotulo = (window.MONTAR_TRAD && window.MONTAR_TRAD[lang] && window.MONTAR_TRAD[lang].desconto)
+               ? window.MONTAR_TRAD[lang].desconto : 'Desconto';
+    elI.textContent = rotulo + ': ' + descPct + '%';
+  }
+}
+
 /* ===== PRODUTOS_TRAD (23 produtos, 14 idiomas) ===== */
 window.PRODUTOS_TRAD = window.PRODUTOS_TRAD || {
  pt:{express:"Mapa Express",vida:"Qual Vida/Ano",completo:"Mapa Completo",ia:"Pesquisa IA de Nomes",urna:"Validação Nome de Urna",eleitoral:"Número Eleitoral",imovel:"Número do Imóvel",calendario:"Calendário Mensal Energético",artistico:"Validação Nome Artístico",bebe:"Planejamento Nome de Bebê",assinatura:"Validação de Assinaturas",negocio:"Nome para Negócio/Produto",casal:"Mapa do Casal",familia:"Mapa Família Premium",coletivo:"Bônus Coletivo/Empresarial",nome_pet:"Nome do Pet",nickname:"Nickname Digital",nome_dominio:"Nome do Domínio",nome_canal:"Nome do Canal",nome_equipe:"Nome da Equipe",nome_ong:"Nome de ONG, Associação, Instituto ou Fundação",nome_projeto:"Nome do Projeto",nome_evento:"Nome do Evento"},
