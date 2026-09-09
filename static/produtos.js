@@ -814,8 +814,8 @@ function confirmarBC() {
   var qtdTotal = itens.reduce(function(a, i) { return a + i.qtd; }, 0);
   var pct = (typeof descontoBC === "function") ? descontoBC(qtdTotal) : 0;
   var final = bruto - Math.round(bruto * pct / 100);
-  var simbolo = (window.PRECO_DISPLAY && window.PRECO_DISPLAY[getLang()] && window.PRECO_DISPLAY[getLang()][0])
-    ? window.PRECO_DISPLAY[getLang()][0].replace(/[0-9.,\s]/g, '').trim() : 'R$';
+  var simbolo = (typeof SIMBOLO !== 'undefined' && SIMBOLO[lang]) ? SIMBOLO[lang]
+            : ((typeof SIMB !== 'undefined' && SIMB[lang]) ? SIMB[lang] : 'R$');
   var linhas = itens.map(function(i) {
     return (t.bc_linha || "{nome}: {qtd}x {simbolo} {preco} = {simbolo} {total}")
       .replace('{nome}', i.nome).replace('{qtd}', i.qtd).replace('{simbolo}', simbolo)
