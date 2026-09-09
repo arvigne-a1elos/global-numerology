@@ -2773,7 +2773,7 @@ const translations = {
             sig_alma: "Apa yang paling diinginkan hati Anda dan yang memberi makan esensi Anda.",
             sig_personalidade: "Bagaimana orang lain melihat Anda dan kesan yang Anda berikan.",
             sig_destino: "Ke mana pilihan dan potensi Anda dapat membawa Anda di masa depan.",                     
-        Object.assign(translations.id, {express:"Peta Ekspres", vida:"Fase Kehidupan & Tahun", completo:"Peta Lengkap",
+        express:"Peta Ekspres", vida:"Fase Kehidupan & Tahun", completo:"Peta Lengkap",
         ia:"Pencarian Nama AI", urna:"Validasi Nama Surat Suara", eleitoral:"Nomor Elektoral",
         imovel:"Nomor Properti", calendario:"Kalender Energi Bulanan", artistico:"Validasi Nama Artistik",
         bebe:"Perencanaan Nama Bayi", assinatura:"Validasi Tanda Tangan", negocio:"Nama untuk Bisnis/Produk",
@@ -2781,9 +2781,10 @@ const translations = {
         nome_pet:"Nama Hewan Peliharaan", nickname:"Nama Panggilan Digital", nome_dominio:"Nama Domain",
         nome_canal:"Nama Kanal", nome_equipe:"Nama Tim",
         nome_ong:"Nama LSM, Asosiasi, Lembaga atau Yayasan", nome_projeto:"Nama Proyek", nome_evento:"Nama Acara",
-        criar_personalizado:"Buat Kustom", servico:"Layanan", preco:"Harga", quantidade:"Jumlah",
         bc_tbl_service:"Layanan", bc_tbl_price:"Harga", bc_tbl_qty:"Jumlah",
-                  
+        servico:"Layanan", preco:"Harga", quantidade:"Jumlah",
+        }    
+    },                
     tr: {
         hero_title: "NUMEROLOJİ HARİTASI",
         hero_subtitle: "Sayıların sizin hakkınızda neler ortaya koyduğunu keşfedin",
@@ -3003,17 +3004,18 @@ const translations = {
             sig_alma: "Kalbinizin en çok arzuladığı ve özünüzü besleyen şey.",
             sig_personalidade: "Başkalarının sizi nasıl gördüğü ve bıraktığınız izlenim.",
             sig_destino: "Seçimlerinizin ve potansiyelinizin sizi gelecekte nereye götürebileceği.",
-        Object.assign(translations.tr, {
-         express:"Ekspres Harita", vida:"Yaşam Evresi ve Yıl", completo:"Tam Harita",
-         ia:"AI İsim Arama", urna:"Oy Pusulası İsim Doğrulama", eleitoral:"Seçim Numarası",
-         imovel:"Mülk Numarası", calendario:"Aylık Enerji Takvimi", artistico:"Sahne Adı Doğrulama",
-         bebe:"Bebek İsmi Planlama", assinatura:"İmza Doğrulama", negocio:"İşletme/Ürün Adı",
-         casal:"Çift Haritası", familia:"Premium Aile Haritası", coletivo:"Kurumsal Bonus",
-         nome_pet:"Evcil Hayvan Adı", nickname:"Dijital Takma Ad", nome_dominio:"Alan Adı",
-         nome_canal:"Kanal Adı", nome_equipe:"Ekip Adı",
-         nome_ong:"STK, Dernek, Enstitü veya Vakıf Adı", nome_projeto:"Proje Adı", nome_evento:"Etkinlik Adı",
-         criar_personalizado:"Özel Oluştur", servico:"Hizmet", preco:"Fiyat", quantidade:"Adet",
-         bc_tbl_service:"Hizmet", bc_tbl_price:"Fiyat", bc_tbl_qty:"Adet",    
+        express:"Ekspres Harita", vida:"Yaşam Evresi ve Yıl", completo:"Tam Harita",
+        ia:"AI İsim Arama", urna:"Oy Pusulası İsim Doğrulama", eleitoral:"Seçim Numarası",
+        imovel:"Mülk Numarası", calendario:"Aylık Enerji Takvimi", artistico:"Sahne Adı Doğrulama",
+        bebe:"Bebek İsmi Planlama", assinatura:"İmza Doğrulama", negocio:"İşletme/Ürün Adı",
+        casal:"Çift Haritası", familia:"Premium Aile Haritası", coletivo:"Kurumsal Bonus",
+        nome_pet:"Evcil Hayvan Adı", nickname:"Dijital Takma Ad", nome_dominio:"Alan Adı",
+        nome_canal:"Kanal Adı", nome_equipe:"Ekip Adı",
+        nome_ong:"STK, Dernek, Enstitü veya Vakıf Adı", nome_projeto:"Proje Adı", nome_evento:"Etkinlik Adı",
+        bc_tbl_service:"Hizmet", bc_tbl_price:"Fiyat", bc_tbl_qty:"Adet",
+        servico:"Hizmet", preco:"Fiyat", quantidade:"Adet", criar_personalizado:"Özel Oluştur",   
+        }    
+    },
          
     vi: {
         hero_title: "BẢN ĐỒ THẦN SỐ",
@@ -3234,18 +3236,19 @@ const translations = {
             sig_alma: "Điều trái tim bạn khao khát nhất và điều nuôi dưỡng bản chất của bạn.",
             sig_personalidade: "Cách người khác nhìn nhận bạn và ấn tượng bạn tạo ra.",
             sig_destino: "Nơi lựa chọn và tiềm năng của bạn có thể đưa bạn đến trong tương lai.",
-        Object.assign(translations.vi, {
-         express:"Bản Đồ Nhanh", vida:"Giai Đoạn Cuộc Đời & Năm", completo:"Bản Đồ Đầy Đủ",
-         ia:"Tìm Kiếm Tên AI", urna:"Xác Minh Tên Phiếu Bầu", eleitoral:"Số Bầu Cử",
-         imovel:"Số Bất Động Sản", calendario:"Lịch Năng Lượng Hàng Tháng", artistico:"Xác Minh Nghệ Danh",
-         bebe:"Lên Kế Hoạch Tên Cho Bé", assinatura:"Xác Minh Chữ Ký", negocio:"Tên Cho Doanh Nghiệp/Sản Phẩm",
-         casal:"Bản Đồ Cặp Đôi", familia:"Bản Đồ Gia Đình Cao Cấp", coletivo:"Thưởng Tập Thể/Doanh Nghiệp",
-         nome_pet:"Tên Thú Cưng", nickname:"Biệt Danh Kỹ Thuật Số", nome_dominio:"Tên Miền",
-         nome_canal:"Tên Kênh", nome_equipe:"Tên Đội Nhóm",
-         nome_ong:"Tên Tổ Chức, Hiệp Hội, Viện hoặc Quỹ", nome_projeto:"Tên Dự Án", nome_evento:"Tên Sự Kiện",
-         criar_personalizado:"Tạo Theo Yêu Cầu", servico:"Dịch vụ", preco:"Giá", quantidade:"Số lượng",
-         bc_tbl_service:"Dịch vụ", bc_tbl_price:"Giá", bc_tbl_qty:"Số lượng",    
-      };
+        express:"Bản Đồ Nhanh", vida:"Giai Đoạn Cuộc Đời & Năm", completo:"Bản Đồ Đầy Đủ",
+        ia:"Tìm Kiếm Tên AI", urna:"Xác Minh Tên Phiếu Bầu", eleitoral:"Số Bầu Cử",
+        imovel:"Số Bất Động Sản", calendario:"Lịch Năng Lượng Hàng Tháng", artistico:"Xác Minh Nghệ Danh",
+        bebe:"Lên Kế Hoạch Tên Cho Bé", assinatura:"Xác Minh Chữ Ký", negocio:"Tên Cho Doanh Nghiệp/Sản Phẩm",
+        casal:"Bản Đồ Cặp Đôi", familia:"Bản Đồ Gia Đình Cao Cấp", coletivo:"Thưởng Tập Thể/Doanh Nghiệp",
+        nome_pet:"Tên Thú Cưng", nickname:"Biệt Danh Kỹ Thuật Số", nome_dominio:"Tên Miền",
+        nome_canal:"Tên Kênh", nome_equipe:"Tên Đội Nhóm",
+        nome_ong:"Tên Tổ Chức, Hiệp Hội, Viện hoặc Quỹ", nome_projeto:"Tên Dự Án", nome_evento:"Tên Sự Kiện",
+        bc_tbl_service:"Dịch vụ", bc_tbl_price:"Giá", bc_tbl_qty:"Số lượng",
+        servico:"Dịch vụ", preco:"Giá", quantidade:"Số lượng", criar_personalizado:"Tạo Theo Yêu Cầu",    
+        }    
+    },    
+  };
 
 PRODUTO_FAIXA = {
     "express": 0, "vida": 0, "completo": 1, "ia": 1,
