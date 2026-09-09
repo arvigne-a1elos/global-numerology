@@ -2751,7 +2751,7 @@ const translations = {
         f_tipo_ong: "Jenis Lembaga",
         ia_texto: "Pilih nama ideal dengan analisis numerologi energi nama oleh AI.",
         confirme_energia: "Konfirmasi Energi X",
-        express:"Peta Ekspres",vida:"Fase Kehidupan & Tahun",completo:"Peta Lengkap",ia:"Pencarian Nama AI",urna:"Validasi Nama Surat Suara",eleitoral:"Nomor Elektoral",imovel:"Nomor Properti",calendario:"Kalender Energi Bulanan",artistico:"Validasi Nama Artistik",bebe:"Perencanaan Nama Bayi",assinatura:"Validasi Tanda Tangan",negocio:"Nama untuk Bisnis/Produk",casal:"Peta Pasangan",familia:"Peta Keluarga Premium",coletivo:"Bonus Kolektif/Perusahaan",nome_pet:"Nama Hewan Peliharaan",nickname:"Nama Panggilan Digital",nome_dominio:"Nama Domain",nome_canal:"Nama Kanal",nome_equipe:"Nama Tim",nome_ong:"Nama LSM, Asosiasi, Lembaga atau Yayasan",nome_projeto:"Nama Proyek",nome_evento:"Nama Acara"},
+        express:"Peta Ekspres",vida:"Fase Kehidupan & Tahun",completo:"Peta Lengkap",ia:"Pencarian Nama AI",urna:"Validasi Nama Surat Suara",eleitoral:"Nomor Elektoral",imovel:"Nomor Properti",calendario:"Kalender Energi Bulanan",artistico:"Validasi Nama Artistik",bebe:"Perencanaan Nama Bayi",assinatura:"Validasi Tanda Tangan",negocio:"Nama untuk Bisnis/Produk",casal:"Peta Pasangan",familia:"Peta Keluarga Premium",coletivo:"Bonus Kolektif/Perusahaan",nome_pet:"Nama Hewan Peliharaan",nickname:"Nama Panggilan Digital",nome_dominio:"Nama Domain",nome_canal:"Nama Kanal",nome_equipe:"Nama Tim",nome_ong:"Nama LSM, Asosiasi, Lembaga atau Yayasan",nome_projeto:"Nama Proyek",nome_evento:"Nama Acara",
         calc_caminho: "Jalan Hidup",
         calc_realizacao: "Pencapaian",
         calc_alma: "Jiwa",
@@ -3214,7 +3214,7 @@ const translations = {
         slides_card_texto: "Slide trực quan cho cuộc họp và trình chiếu",
         download_slides: "Tải PPTX",
         criar_personalizado:"Tạo Theo Yêu Cầu", servico:"Dịch vụ", preco:"Giá", quantidade:"Số lượng",
-        bc_tbl_service:"Dịch vụ", bc_tbl_price:"Giá", bc_tbl_qty:"Số lượng"
+        bc_tbl_service:"Dịch vụ", bc_tbl_price:"Giá", bc_tbl_qty:"Số lượng",
         pay_vida:"🔒 Trả — Kết quả PDF + QRCode", pay_ia:"🔒 Trả — Kết quả PDF + QRCode", pay_imovel:"🔒 Trả — Kết quả PDF + QRCode", pay_calendario:"🔒 Trả — Kết quả PDF + QRCode", pay_artistico:"🔒 Trả — Kết quả PDF + QRCode", pay_bebe:"🔒 Trả — Kết quả PDF + QRCode", pay_assinatura:"🔒 Trả — Kết quả PDF + QRCode", pay_negocio:"🔒 Trả — Kết quả PDF + QRCode", pay_casal:"🔒 Trả — Kết quả PDF + QRCode", pay_familia:"🔒 Trả — Kết quả PDF + QRCode",
         f_mes:"Tháng", ph_ex_numero:"VD: 123", ph_nome_artistico:"Nghệ danh của bạn", ph_sobrenome:"Họ", ph_sua_assinatura:"Chữ ký của bạn", ph_nome_negocio:"Tên doanh nghiệp", ph_membros:"Tên từng thành viên, mỗi dòng một",
         nomes5: { caminho: "Đường Đời", destino: "Định Mệnh", alma: "Tâm Hồn", personalidade: "Tính Cách", realizacao: "Thành Tựu" },
