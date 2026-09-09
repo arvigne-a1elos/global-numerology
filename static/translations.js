@@ -3248,8 +3248,7 @@ const translations = {
         servico:"Dịch vụ", preco:"Giá", quantidade:"Số lượng", criar_personalizado:"Tạo Theo Yêu Cầu",    
         }    
     },    
-  };
-
+ 
 PRODUTO_FAIXA = {
     "express": 0, "vida": 0, "completo": 1, "ia": 1,
     "urna": 2, "eleitoral": 2, "imovel": 2, "calendario": 2,
