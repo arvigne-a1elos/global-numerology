@@ -3246,8 +3246,7 @@ const translations = {
          criar_personalizado:"Tạo Theo Yêu Cầu", servico:"Dịch vụ", preco:"Giá", quantidade:"Số lượng",
          bc_tbl_service:"Dịch vụ", bc_tbl_price:"Giá", bc_tbl_qty:"Số lượng",    
         }    
-      },  
-    };
+     };
 
 PRODUTO_FAIXA = {
     "express": 0, "vida": 0, "completo": 1, "ia": 1,
