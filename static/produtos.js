@@ -926,18 +926,17 @@ function traduzirTudo() {
 
 function forcarTraducaoBC() {
   var lang = (typeof getLang === 'function') ? getLang() : 'pt';
-  var t = (window.PRODUTOS_TRAD && window.PRODUTOS_TRAD[lang])
-        ? window.PRODUTOS_TRAD[lang]
-        : (window.PRODUTOS_TRAD ? window.PRODUTOS_TRAD.pt : null);
-  if (!t) return;
+  var dict = (window.PRODUTOS_TRAD && window.PRODUTOS_TRAD[lang])
+           ? window.PRODUTOS_TRAD[lang]
+           : (window.PRODUTOS_TRAD ? window.PRODUTOS_TRAD.pt : null);
+  if (!dict) return;
   var linhas = document.querySelectorAll('#bcTabelaCorpo tr');
   for (var i = 0; i < linhas.length; i++) {
-    var input = linhas[i].querySelector('input[data-prod]');
-    if (!input) continue;
-    var prod = input.getAttribute('data-prod');
-    var nome = t[prod];
-    if (!nome) continue;
-    var celulas = linhas[i].querySelectorAll('td');
-    if (celulas.length > 0) celulas[0].textContent = nome;
+    var inp = linhas[i].querySelector('input[data-prod]');
+    if (!inp) continue;
+    var prod = inp.getAttribute('data-prod');
+    if (!dict[prod]) continue;
+    var td = linhas[i].querySelector('td');
+    if (td) td.textContent = dict[prod]; // SÓ o nome — a moeda fica intacta
   }
 }
