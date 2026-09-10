@@ -124,14 +124,15 @@ def _gerar_apresentacao(lang="pt", modo="texto"):
         if modo != "slides" and lang == "pt":
             oficial = os.path.join(STATIC_DIR, "apresentacao_oficial_pt.pdf")
             if os.path.exists(oficial):
-                return oficial, os.path.basename(oficial)   # 2 valores
+                with open(oficial, "rb") as f:
+                    return f.read(), os.path.basename(oficial)
         import apresentacao_textos as ap
         if modo == "slides":
             caminho = ap.gerar_pdf_slides(lang)
         else:
             caminho = ap.gerar_pdf_texto(lang)
         with open(caminho, "rb") as f:
-            return f.read(), os.path.basename(caminho)      # 2 valores
+            return f.read(), os.path.basename(caminho)
     except HTTPException:
         raise
     except Exception:
