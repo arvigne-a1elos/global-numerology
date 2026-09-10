@@ -4124,13 +4124,14 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
                               f"{c['titulo']} · DUNS 942242668 · {c['confidencial']} {c['ano']}")
         doc.setFillColor(COR_DOURADO)
         doc.setFont(_fonte(lang, True), 9)
-        doc.drawRightString(largura - 15 * mm, 10 * mm, f"{pagina - 1}-{TOTAL_PAGINAS - 2}")
+        doc.drawRightString(largura - 15 * mm, 10 * mm, f"{pagina}-{TOTAL_PAGINAS}")
         doc.setFillColorRGB(0.55, 0.55, 0.55)
         doc.setFont(_fonte(lang), 7)
         doc.drawCentredString(largura / 2, 4 * mm, CONTATOS)
        
-    # ===== SLIDE 1 — CAPA =====
+        # ===== SLIDE 1 — CAPA =====
     _capa(doc, largura, altura, lang, "slides")
+    rodape(1)
     doc.showPage()
     pagina += 1
 
@@ -4255,17 +4256,17 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
     doc.setFont(_fonte(lang, True), 13)
     doc.drawString(18 * mm, y - 8 * mm, c["problema_col_esq_titulo"])
     yy = y - 16 * mm
+    yy = y - 16 * mm
     for tit, sub in c["problema_col_esq"]:
         _caixa(doc, 18 * mm, yy - 30 * mm, col_w, 30 * mm, COR_FUNDO, COR_DOURADO)
         doc.setFillColor(COR_AZUL)
-        doc.setFont(_fonte(lang, True), 10)
-        doc.drawString(22 * mm, yy - 23 * mm, tit)
+        doc.setFont(_fonte(lang, True), 9.5)
+        doc.drawCentredString(18 * mm + col_w / 2, yy - 22.5 * mm, tit)
         doc.setFillColor(COR_CINZA)
-        doc.setFont(_fonte(lang), 8)
-        _texto_wrap(doc, sub, _fonte(lang), 8, 22 * mm, yy - 17 * mm,
-                    col_w - 8 * mm, COR_CINZA, 3.5 * mm)
-        yy -= 34 * mm
-    xr = 18 * mm + col_w + 10 * mm
+        _texto_wrap(doc, sub, _fonte(lang), 7.5, 22 * mm, yy - 17 * mm,
+                    col_w - 8 * mm, COR_CINZA, 3.2 * mm, y_min=yy - 28 * mm)
+        yy -= 33 * mm   
+        xr = 18 * mm + col_w + 10 * mm
     doc.setFillColor(COR_PRETO)
     doc.setFont(_fonte(lang, True), 13)
     doc.drawString(xr, y - 8 * mm, c["problema_col_dir_titulo"])
