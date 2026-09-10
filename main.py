@@ -124,9 +124,9 @@ def _gerar_apresentacao(lang: str, modo: str):
     if lang not in IDIOMAS_APRES:
         raise HTTPException(status_code=400, detail=f"Idioma '{lang}' não suportado.")
     if modo != "slides" and lang == "pt":
-    oficial = os.path.join(STATIC_DIR, "apresentacao_oficial_pt.pdf")
-    if os.path.exists(oficial):
-        return oficial
+       oficial = os.path.join(STATIC_DIR, "apresentacao_oficial_pt.pdf")
+       if os.path.exists(oficial):
+          return oficial
     try:
         import apresentacao_textos as ap
         caminho = ap.gerar_pdf_slides(lang) if modo == "slides" else ap.gerar_pdf_texto(lang)
