@@ -113,44 +113,6 @@ FONTE_POR_IDIOMA = {
     'vi': 'DejaVu',   # vietnamita: diacríticos combinados
 }
 
-# ============================================================
-# ROTAS DE APRESENTAÇÃO (PDF por idioma — sob demanda)
-# ============================================================
-IDIOMAS_APRES = ["pt", "en", "es", "it", "fr", "de", "ja", "zh",
-                 "ru", "id", "tr", "vi", "he", "ar"]
-
-def _gerar_apresentacao(lang="pt", modo="texto"):
-    try:
-        if modo != "slides" and lang == "pt":
-            oficial = os.path.join(STATIC_DIR, "apresentacao_oficial_pt.pdf")
-            if os.path.exists(oficial):
-                with open(oficial, "rb") as f:
-                    return f.read(), os.path.basename(oficial)
-        import apresentacao_textos as ap
-        if modo == "slides":
-            caminho = ap.gerar_pdf_slides(lang)
-        else:
-            caminho = ap.gerar_pdf_texto(lang)
-        with open(caminho, "rb") as f:
-            return f.read(), os.path.basename(caminho)
-    except HTTPException:
-        raise
-    except Exception:
-        logger.exception("Erro ao gerar apresentação %s/%s", lang, modo)
-        raise HTTPException(status_code=500, detail="Erro ao gerar a apresentação.")
-
-@app.get("/api/apresentacao")
-async def api_apresentacao(lang: str = "pt"):
-    dados, nome = _gerar_apresentacao(lang, "texto")
-    return Response(content=dados, media_type="application/pdf",
-                    headers={"Content-Disposition": f'attachment; filename="{nome}"'})
-
-@app.get("/api/apresentacao-slides")
-async def api_apresentacao_slides(lang: str = "pt"):
-    dados, nome = _gerar_apresentacao(lang, "slides")
-    return Response(content=dados, media_type="application/pdf",
-                    headers={"Content-Disposition": f'attachment; filename="{nome}"'})
-
 # ===== NOMES DOS 23 PRODUTOS (14 IDIOMAS) =====
 PRODUTOS = {
     "pt": {"express": "Mapa Express", "vida": "Qual Vida/Ano", "completo": "Mapa Completo",
@@ -665,6 +627,44 @@ def pay_eleitoral(req: EleitoralPayReq):
             "cargo": req.cargo, "email": req.email, "numero_existente": "",
             "nome_completo": req.nome_completo}
     return _criar_sessao("eleitoral", req.lang or "pt", req.email, req.nome_completo, "", meta)
+
+# ============================================================
+# ROTAS DE APRESENTAÇÃO (PDF por idioma — sob demanda)
+# ============================================================
+IDIOMAS_APRES = ["pt", "en", "es", "it", "fr", "de", "ja", "zh",
+                 "ru", "id", "tr", "vi", "he", "ar"]
+
+def _gerar_apresentacao(lang="pt", modo="texto"):
+    try:
+        if modo != "slides" and lang == "pt":
+            oficial = os.path.join(STATIC_DIR, "apresentacao_oficial_pt.pdf")
+            if os.path.exists(oficial):
+                with open(oficial, "rb") as f:
+                    return f.read(), os.path.basename(oficial)
+        import apresentacao_textos as ap
+        if modo == "slides":
+            caminho = ap.gerar_pdf_slides(lang)
+        else:
+            caminho = ap.gerar_pdf_texto(lang)
+        with open(caminho, "rb") as f:
+            return f.read(), os.path.basename(caminho)
+    except HTTPException:
+        raise
+    except Exception:
+        logger.exception("Erro ao gerar apresentação %s/%s", lang, modo)
+        raise HTTPException(status_code=500, detail="Erro ao gerar a apresentação.")
+
+@app.get("/api/apresentacao")
+async def api_apresentacao(lang: str = "pt"):
+    dados, nome = _gerar_apresentacao(lang, "texto")
+    return Response(content=dados, media_type="application/pdf",
+                    headers={"Content-Disposition": f'attachment; filename="{nome}"'})
+
+@app.get("/api/apresentacao-slides")
+async def api_apresentacao_slides(lang: str = "pt"):
+    dados, nome = _gerar_apresentacao(lang, "slides")
+    return Response(content=dados, media_type="application/pdf",
+                    headers={"Content-Disposition": f'attachment; filename="{nome}"'})
 
 # ===== CHECKOUT COLETIVO (desconto progressivo) =====
 @app.get("/criar-checkout-coletivo")
