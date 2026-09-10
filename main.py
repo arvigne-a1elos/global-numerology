@@ -120,25 +120,18 @@ IDIOMAS_APRES = ["pt", "en", "es", "it", "fr", "de", "ja", "zh",
                  "ru", "id", "tr", "vi", "he", "ar"]
 
 def _gerar_apresentacao(lang="pt", modo="texto"):
-    if modo != "slides" and lang == "pt":
-        oficial = os.path.join(STATIC_DIR, "apresentacao_oficial_pt.pdf")
-        if os.path.exists(oficial):
-            return oficial, os.path.basename(oficial)
-    import apresentacao_textos as ap
-    if modo == "slides":
-        caminho = ap.gerar_pdf_slides(lang)
-    else:
-        caminho = ap.gerar_pdf_texto(lang)
-    with open(caminho, "rb") as f:
-        dados = f.read()
-    return dados, os.path.basename(caminho)
     try:
+        if modo != "slides" and lang == "pt":
+            oficial = os.path.join(STATIC_DIR, "apresentacao_oficial_pt.pdf")
+            if os.path.exists(oficial):
+                return oficial, os.path.basename(oficial)   # 2 valores
         import apresentacao_textos as ap
-        caminho = ap.gerar_pdf_slides(lang) if modo == "slides" else ap.gerar_pdf_texto(lang)
-        if not caminho or not os.path.exists(caminho):
-            raise HTTPException(status_code=500, detail="Falha ao gerar o PDF.")
+        if modo == "slides":
+            caminho = ap.gerar_pdf_slides(lang)
+        else:
+            caminho = ap.gerar_pdf_texto(lang)
         with open(caminho, "rb") as f:
-            return f.read(), os.path.basename(caminho)
+            return f.read(), os.path.basename(caminho)      # 2 valores
     except HTTPException:
         raise
     except Exception:
