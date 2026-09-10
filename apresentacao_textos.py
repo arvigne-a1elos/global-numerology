@@ -4037,27 +4037,26 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
     pagina = 1
 
     def cab(titulo, indice):
-    doc.setFillColor(COR_AZUL)
-    doc.rect(0, altura - 20 * mm, largura, 20 * mm, stroke=0, fill=1)
-    # LOGOS no cabeçalho dos slides (site à esquerda, A1ELOS à direita)
+     doc.setFillColor(COR_AZUL)
+     doc.rect(0, altura - 20 * mm, largura, 20 * mm, stroke=0, fill=1)
     try:
-        if os.path.exists(LOGO_PATH):
-            doc.drawImage(LOGO_PATH, 6 * mm, altura - 17 * mm,
-                          width=13 * mm, height=13 * mm,
-                          preserveAspectRatio=True, mask='auto')
+      if os.path.exists(LOGO_PATH):
+         doc.drawImage(LOGO_PATH, 6 * mm, altura - 17 * mm,
+               width=13 * mm, height=13 * mm,
+               preserveAspectRatio=True, mask='auto')
     except Exception:
-        pass
+      pass
     try:
-        if os.path.exists(LOGO_A1ELOS):
-            doc.drawImage(LOGO_A1ELOS, largura - 19 * mm, altura - 17 * mm,
-                          width=13 * mm, height=13 * mm,
-                          preserveAspectRatio=True, mask='auto')
+      if os.path.exists(LOGO_A1ELOS):
+         doc.drawImage(LOGO_A1ELOS, largura - 19 * mm, altura - 17 * mm,
+               width=13 * mm, height=13 * mm,
+               preserveAspectRatio=True, mask='auto')
     except Exception:
-        pass
+      pass
     doc.setFillColor(white)
     tam = 20 if len(titulo) <= 40 else 15
     _texto_wrap(doc, titulo, _fonte(lang, True), tam, 24 * mm, altura - 13 * mm,
-                largura - 52 * mm, white, 9 * mm)
+         largura - 52 * mm, white, 9 * mm)
     doc.setFillColor(COR_DOURADO)
     doc.setFont(_fonte(lang, True), 12)
     doc.drawRightString(largura - 24 * mm, altura - 13 * mm, "%02d" % indice)
