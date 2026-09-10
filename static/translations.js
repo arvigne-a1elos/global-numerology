@@ -3843,6 +3843,20 @@ var SERVICOS_TRAD = {
   "vi": [["Bản đồ Nhanh","₫ 38.000"],["Bản đồ Đầy đủ","₫ 88.000"],["Tên Phiếu bầu","₫ 125.000"],["Số Bầu cử","₫ 125.000"]]
 };
 
+if (!window.PRODUTOS_TRAD) window.PRODUTOS_TRAD = {};
+window.PRODUTOS_TRAD.id = {
+  express:"Peta Ekspres", vida:"Fase Kehidupan & Tahun", completo:"Peta Lengkap",
+  ia:"Pencarian Nama AI", urna:"Validasi Nama Surat Suara", eleitoral:"Nomor Elektoral",
+  imovel:"Nomor Properti", calendario:"Kalender Energi Bulanan", artistico:"Validasi Nama Artistik",
+  bebe:"Perencanaan Nama Bayi", assinatura:"Validasi Tanda Tangan", negocio:"Nama untuk Bisnis/Produk",
+  casal:"Peta Pasangan", familia:"Peta Keluarga Premium", coletivo:"Bonus Kolektif/Perusahaan",
+  nome_pet:"Nama Hewan Peliharaan", nickname:"Nama Panggilan Digital", nome_dominio:"Nama Domain",
+  nome_canal:"Nama Kanal", nome_equipe:"Nama Tim",
+  nome_ong:"Nama LSM, Asosiasi, Lembaga atau Yayasan", nome_projeto:"Nama Proyek", nome_evento:"Nama Acara"
+};
+window.PRODUTOS_TRAD.tr = { ... };   // continua igual
+window.PRODUTOS_TRAD.vi = { ... };   // continua igual
+
 window.PRODUTOS_TRAD.id = {
   express:"Peta Ekspres", vida:"Fase Kehidupan & Tahun", completo:"Peta Lengkap",
   ia:"Pencarian Nama AI", urna:"Validasi Nama Surat Suara", eleitoral:"Nomor Elektoral",
