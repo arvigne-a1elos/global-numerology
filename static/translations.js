@@ -3876,17 +3876,16 @@ window.PRODUTOS_TRAD.vi = {
 };
 
 // ===== SHIM DE SEGURANÇA: reconstrói PRODUTOS_TRAD se ausente =====
-if (typeof PRODUTOS_TRAD === "undefined") {
-  var PRODUTOS_TRAD = {};
-  var _langs = ["pt","en","es","it","fr","de","ja","zh","ru","he","ar","id","tr","vi"];
-  var _chaves = ["express","vida","completo","ia","urna","eleitoral","imovel","calendario","artistico","bebe","assinatura","negocio","casal","familia","coletivo","nome_pet","nickname","nome_dominio","nome_canal","nome_equipe","nome_ong","nome_projeto","nome_evento"];
-  _langs.forEach(function(l){
-    PRODUTOS_TRAD[l] = {};
-    var t = (typeof translations !== "undefined" && translations[l]) ? translations[l] : {};
-    _chaves.forEach(function(k){
-      if (t[k] !== undefined) PRODUTOS_TRAD[l][k] = t[k];
-      var dk = "desc_" + k;
-      if (t[dk] !== undefined) PRODUTOS_TRAD[l][dk] = t[dk];
-    });
+// ===== GARANTIA: popula window.PRODUTOS_TRAD para os 14 idiomas =====
+if (typeof window.PRODUTOS_TRAD === "undefined" || !window.PRODUTOS_TRAD) window.PRODUTOS_TRAD = {};
+var _langs14 = ["pt","en","es","it","fr","de","ja","zh","ru","he","ar","id","tr","vi"];
+var _chavesBC = ["express","vida","completo","ia","urna","eleitoral","imovel","calendario","artistico","bebe","assinatura","negocio","casal","familia","coletivo","nome_pet","nickname","nome_dominio","nome_canal","nome_equipe","nome_ong","nome_projeto","nome_evento"];
+_langs14.forEach(function(l){
+  if (!window.PRODUTOS_TRAD[l]) window.PRODUTOS_TRAD[l] = {};
+  var t = (typeof translations !== "undefined" && translations[l]) ? translations[l] : {};
+  _chavesBC.forEach(function(k){
+    if (window.PRODUTOS_TRAD[l][k] === undefined && t[k] !== undefined) window.PRODUTOS_TRAD[l][k] = t[k];
+    var dk = "desc_" + k;
+    if (window.PRODUTOS_TRAD[l][dk] === undefined && t[dk] !== undefined) window.PRODUTOS_TRAD[l][dk] = t[dk];
   });
-}
+});
