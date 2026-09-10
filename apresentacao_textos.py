@@ -4061,6 +4061,21 @@ def cab(titulo, indice):
     doc.setFont(_fonte(lang, True), 12)
     doc.drawRightString(largura - 24 * mm, altura - 13 * mm, "%02d" % indice)
 
+def _rodape(doc, largura, altura, lang, c, pagina):
+    # Linha 1 — centro: título · DUNS · confidencialidade (igual ao atual)
+    doc.setFillColor(COR_CINZA_CLARO)
+    doc.setFont(_fonte(lang), 8)
+    doc.drawCentredString(largura / 2, 10 * mm,
+                          f"{c['titulo']} · DUNS 942242668 · {c['confidencial']} {c['ano']}")
+    # Linha 1 — direita: folha atual - total (a capa não conta)
+    doc.setFillColor(COR_DOURADO)
+    doc.setFont(_fonte(lang, True), 9)
+    doc.drawRightString(largura - 15 * mm, 10 * mm, f"{pagina - 1}-{TOTAL_PAGINAS - 2}")
+    # Linha 2 — centro: contatos, discretos (para anotar em exposição)
+    doc.setFillColorRGB(0.55, 0.55, 0.55)
+    doc.setFont(_fonte(lang), 7)
+    doc.drawCentredString(largura / 2, 4 * mm, CONTATOS)
+
     # ===== SLIDE 1 — CAPA =====
     _capa(doc, largura, altura, lang, "slides")
     doc.showPage()
