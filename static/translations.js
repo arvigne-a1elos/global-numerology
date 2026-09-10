@@ -3891,7 +3891,7 @@ window.PRODUTOS_TRAD.vi = {
 // ===== SHIM DE SEGURANÇA: reconstrói PRODUTOS_TRAD se ausente =====
 if (typeof PRODUTOS_TRAD === "undefined") {
   var PRODUTOS_TRAD = {};
-  var _langs = ["pt","en","es","it","fr","de","ja","zh","ru","hi","he","ar"];
+  var _langs = ["pt","en","es","it","fr","de","ja","zh","ru","he","ar","id","tr","vi"];
   var _chaves = ["express","vida","completo","ia","urna","eleitoral","imovel","calendario","artistico","bebe","assinatura","negocio","casal","familia","coletivo","nome_pet","nickname","nome_dominio","nome_canal","nome_equipe","nome_ong","nome_projeto","nome_evento"];
   _langs.forEach(function(l){
     PRODUTOS_TRAD[l] = {};
