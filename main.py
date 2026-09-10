@@ -907,8 +907,8 @@ def calculate(req: PayReq):
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Calc: {e}")
-        raise HTTPException(500, "Erro")
+        logger.exception("Falha ao gerar apresentacao: %s", e)
+        raise HTTPException(status_code=500, detail="Erro ao gerar a apresentação.")
     finally:
         db.close()
 
