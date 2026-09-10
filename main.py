@@ -119,14 +119,19 @@ FONTE_POR_IDIOMA = {
 IDIOMAS_APRES = ["pt", "en", "es", "it", "fr", "de", "ja", "zh",
                  "ru", "id", "tr", "vi", "he", "ar"]
 
-def _gerar_apresentacao(lang: str, modo: str):
-    """Gera o PDF da apresentação no idioma pedido e retorna os bytes."""
-    if lang not in IDIOMAS_APRES:
-        raise HTTPException(status_code=400, detail=f"Idioma '{lang}' não suportado.")
+def _gerar_apresentacao(lang="pt", modo="texto"):
     if modo != "slides" and lang == "pt":
         oficial = os.path.join(STATIC_DIR, "apresentacao_oficial_pt.pdf")
         if os.path.exists(oficial):
-            return oficial
+            return oficial, os.path.basename(oficial)
+    import apresentacao_textos as ap
+    if modo == "slides":
+        caminho = ap.gerar_pdf_slides(lang)
+    else:
+        caminho = ap.gerar_pdf_texto(lang)
+    with open(caminho, "rb") as f:
+        dados = f.read()
+    return dados, os.path.basename(caminho)
     try:
         import apresentacao_textos as ap
         caminho = ap.gerar_pdf_slides(lang) if modo == "slides" else ap.gerar_pdf_texto(lang)
@@ -145,6 +150,9 @@ async def api_apresentacao(lang: str = "pt"):
     dados, nome = _gerar_apresentacao(lang, "texto")
     return Response(content=dados, media_type="application/pdf",
                     headers={"Content-Disposition": f'attachment; filename="{nome}"'})
+  File "/opt/render/project/src/main.py", line 145, in api_apresentacao
+    dados, nome = _gerar_apresentacao(lang, "texto")
+ValueError: too many values to unpack (expected 2)
 
 @app.get("/api/apresentacao-slides")
 async def api_apresentacao_slides(lang: str = "pt"):
