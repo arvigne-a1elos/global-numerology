@@ -4036,7 +4036,7 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
     doc = canvas.Canvas(caminho_saida, pagesize=landscape(A4))
     pagina = 1
 
- def cab(titulo, indice):
+def cab(titulo, indice):
     doc.setFillColor(COR_AZUL)
     doc.rect(0, altura - 20 * mm, largura, 20 * mm, stroke=0, fill=1)
     try:
