@@ -124,35 +124,19 @@ def _gerar_apresentacao(lang="pt", modo="texto"):
         if modo != "slides" and lang == "pt":
             oficial = os.path.join(STATIC_DIR, "apresentacao_oficial_pt.pdf")
             if os.path.exists(oficial):
-                with open(oficial, "rb") as f:
-                    return f.read(), os.path.basename(oficial)
+                return oficial, os.path.basename(oficial)   # 2 valores
         import apresentacao_textos as ap
         if modo == "slides":
             caminho = ap.gerar_pdf_slides(lang)
         else:
             caminho = ap.gerar_pdf_texto(lang)
         with open(caminho, "rb") as f:
-            return f.read(), os.path.basename(caminho)
+            return f.read(), os.path.basename(caminho)      # 2 valores
     except HTTPException:
         raise
     except Exception:
         logger.exception("Erro ao gerar apresentação %s/%s", lang, modo)
         raise HTTPException(status_code=500, detail="Erro ao gerar a apresentação.")
-
-@app.get("/api/apresentacao")
-async def api_apresentacao(lang: str = "pt"):
-    dados, nome = _gerar_apresentacao(lang, "texto")
-return Response(content=dados, media_type="application/pdf",
-    headers={"Content-Disposition": f'attachment; filename="{nome}"'})
-    File "/opt/render/project/src/main.py", line 145, in api_apresentacao
-    dados, nome = _gerar_apresentacao(lang, "texto")
-    ValueError: too many values to unpack (expected 2)
-
-@app.get("/api/apresentacao-slides")
-async def api_apresentacao_slides(lang: str = "pt"):
-    dados, nome = _gerar_apresentacao(lang, "slides")
-    return Response(content=dados, media_type="application/pdf",
-                    headers={"Content-Disposition": f'attachment; filename="{nome}"'})
 
 # ===== NOMES DOS 23 PRODUTOS (14 IDIOMAS) =====
 PRODUTOS = {
