@@ -144,9 +144,9 @@ async def api_apresentacao(lang: str = "pt"):
     dados, nome = _gerar_apresentacao(lang, "texto")
     return Response(content=dados, media_type="application/pdf",
                     headers={"Content-Disposition": f'attachment; filename="{nome}"'})
-  File "/opt/render/project/src/main.py", line 145, in api_apresentacao
+    File "/opt/render/project/src/main.py", line 145, in api_apresentacao
     dados, nome = _gerar_apresentacao(lang, "texto")
-ValueError: too many values to unpack (expected 2)
+    ValueError: too many values to unpack (expected 2)
 
 @app.get("/api/apresentacao-slides")
 async def api_apresentacao_slides(lang: str = "pt"):
