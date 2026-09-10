@@ -77,8 +77,6 @@ class NumberedCanvas(_canvas.Canvas):
             self.setFont("Helvetica", 7)
             self.drawCentredString(w / 2.0, 10, self._contatos)
 
-
-
 # ------------------------------------------------------------
 # CORES DA MARCA
 # ------------------------------------------------------------
@@ -4061,21 +4059,76 @@ def cab(titulo, indice):
     doc.setFont(_fonte(lang, True), 12)
     doc.drawRightString(largura - 24 * mm, altura - 13 * mm, "%02d" % indice)
 
-def _rodape(doc, largura, altura, lang, c, pagina):
-    # Linha 1 — centro: título · DUNS · confidencialidade (igual ao atual)
-    doc.setFillColor(COR_CINZA_CLARO)
-    doc.setFont(_fonte(lang), 8)
-    doc.drawCentredString(largura / 2, 10 * mm,
-                          f"{c['titulo']} · DUNS 942242668 · {c['confidencial']} {c['ano']}")
-    # Linha 1 — direita: folha atual - total (a capa não conta)
-    doc.setFillColor(COR_DOURADO)
-    doc.setFont(_fonte(lang, True), 9)
-    doc.drawRightString(largura - 15 * mm, 10 * mm, f"{pagina - 1}-{TOTAL_PAGINAS - 2}")
-    # Linha 2 — centro: contatos, discretos (para anotar em exposição)
-    doc.setFillColorRGB(0.55, 0.55, 0.55)
-    doc.setFont(_fonte(lang), 7)
-    doc.drawCentredString(largura / 2, 4 * mm, CONTATOS)
+# ------------------------------------------------------------
+# ENTRADA PRINCIPAL
+# ------------------------------------------------------------
+def gerar_apresentacao(lang="pt", modo="texto"):
+    if modo == "slides":
+        return gerar_pdf_slides(lang)
+    return gerar_pdf_texto(lang)
 
+def gerar_pdf_slides(lang="pt", caminho_saida=None):
+    """Gera o deck em paisagem (landscape A4) com layout editorial completo."""
+    def _sem_emoji(obj):
+        """Remove emojis de bandeira (fora do BMP) que o Helvetica não renderiza."""
+        if isinstance(obj, dict):
+            return {k: _sem_emoji(v) for k, v in obj.items()}
+        if isinstance(obj, list):
+            return [_sem_emoji(v) for v in obj]
+        if isinstance(obj, tuple):
+            return tuple(_sem_emoji(v) for v in obj)
+        if isinstance(obj, str):
+            return "".join(ch for ch in obj if ord(ch) < 0x10000)
+        return obj
+
+    _registrar_cid()
+    _registrar_fontes_extra()
+    if lang not in CONTEUDO:
+        lang = "pt"
+    c = _sem_emoji(CONTEUDO[lang])
+    if not caminho_saida:
+        caminho_saida = os.path.join(STATIC_DIR, f"apresentacao_slides_{lang}.pdf")
+    largura, altura = landscape(A4)
+    doc = canvas.Canvas(caminho_saida, pagesize=landscape(A4))
+    pagina = 1
+
+    def cab(titulo, indice):
+        doc.setFillColor(COR_AZUL)
+        doc.rect(0, altura - 20 * mm, largura, 20 * mm, stroke=0, fill=1)
+        try:
+            if os.path.exists(LOGO_PATH):
+                doc.drawImage(LOGO_PATH, 6 * mm, altura - 17 * mm,
+                              width=13 * mm, height=13 * mm,
+                              preserveAspectRatio=True, mask='auto')
+        except Exception:
+            pass
+        try:
+            if os.path.exists(LOGO_A1ELOS):
+                doc.drawImage(LOGO_A1ELOS, largura - 19 * mm, altura - 17 * mm,
+                              width=13 * mm, height=13 * mm,
+                              preserveAspectRatio=True, mask='auto')
+        except Exception:
+            pass
+        doc.setFillColor(white)
+        tam = 20 if len(titulo) <= 40 else 15
+        _texto_wrap(doc, titulo, _fonte(lang, True), tam, 24 * mm, altura - 13 * mm,
+                    largura - 52 * mm, white, 9 * mm)
+        doc.setFillColor(COR_DOURADO)
+        doc.setFont(_fonte(lang, True), 12)
+        doc.drawRightString(largura - 24 * mm, altura - 13 * mm, "%02d" % indice)
+
+    def rodape(pagina):
+        doc.setFillColor(COR_CINZA_CLARO)
+        doc.setFont(_fonte(lang), 8)
+        doc.drawCentredString(largura / 2, 10 * mm,
+                              f"{c['titulo']} · DUNS 942242668 · {c['confidencial']} {c['ano']}")
+        doc.setFillColor(COR_DOURADO)
+        doc.setFont(_fonte(lang, True), 9)
+        doc.drawRightString(largura - 15 * mm, 10 * mm, f"{pagina - 1}-{TOTAL_PAGINAS - 2}")
+        doc.setFillColorRGB(0.55, 0.55, 0.55)
+        doc.setFont(_fonte(lang), 7)
+        doc.drawCentredString(largura / 2, 4 * mm, CONTATOS)
+       
     # ===== SLIDE 1 — CAPA =====
     _capa(doc, largura, altura, lang, "slides")
     doc.showPage()
@@ -4599,14 +4652,6 @@ def _rodape(doc, largura, altura, lang, c, pagina):
     doc.save()
     logger.info("PDF slides editorial gerado: %s", caminho_saida)
     return caminho_saida
-
-# ------------------------------------------------------------
-# ENTRADA PRINCIPAL
-# ------------------------------------------------------------
-def gerar_apresentacao(lang="pt", modo="texto"):
-    if modo == "slides":
-        return gerar_pdf_slides(lang)
-    return gerar_pdf_texto(lang)
 
 def gerar_todas():
     import sys
