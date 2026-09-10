@@ -642,16 +642,16 @@ def _gerar_apresentacao(lang="pt", modo="texto"):
                 with open(oficial, "rb") as f:
                     return f.read(), os.path.basename(oficial)
         import apresentacao_textos as ap
-        if modo == "slides":
-            caminho = ap.gerar_pdf_slides(lang)
-        else:
-            caminho = ap.gerar_pdf_texto(lang)
-        if not caminho:
-            oficial = os.path.join(STATIC_DIR, "apresentacao_oficial_pt.pdf")
-            if os.path.exists(oficial):
-                with open(oficial, "rb") as f:
+            if modo == "slides":
+               caminho = ap.gerar_pdf_slides(lang)
+            else:
+               caminho = ap.gerar_pdf_texto(lang)
+           if not caminho:
+              oficial = os.path.join(STATIC_DIR, "apresentacao_oficial_pt.pdf")
+              if os.path.exists(oficial):
+                 with open(oficial, "rb") as f:
                     return f.read(), os.path.basename(oficial)
-            raise HTTPException(status_code=500,
+              raise HTTPException(status_code=500,
                                 detail=f"Não foi possível gerar a apresentação em {lang} ({modo}).")
         with open(caminho, "rb") as f:
             return f.read(), os.path.basename(caminho)
