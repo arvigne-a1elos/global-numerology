@@ -139,6 +139,18 @@ def _gerar_apresentacao(lang="pt", modo="texto"):
         logger.exception("Erro ao gerar apresentação %s/%s", lang, modo)
         raise HTTPException(status_code=500, detail="Erro ao gerar a apresentação.")
 
+@app.get("/api/apresentacao")
+async def api_apresentacao(lang: str = "pt"):
+    dados, nome = _gerar_apresentacao(lang, "texto")
+    return Response(content=dados, media_type="application/pdf",
+                    headers={"Content-Disposition": f'attachment; filename="{nome}"'})
+
+@app.get("/api/apresentacao-slides")
+async def api_apresentacao_slides(lang: str = "pt"):
+    dados, nome = _gerar_apresentacao(lang, "slides")
+    return Response(content=dados, media_type="application/pdf",
+                    headers={"Content-Disposition": f'attachment; filename="{nome}"'})
+
 # ===== NOMES DOS 23 PRODUTOS (14 IDIOMAS) =====
 PRODUTOS = {
     "pt": {"express": "Mapa Express", "vida": "Qual Vida/Ano", "completo": "Mapa Completo",
