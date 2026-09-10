@@ -642,16 +642,16 @@ def _gerar_apresentacao(lang="pt", modo="texto"):
                 with open(oficial, "rb") as f:
                     return f.read(), os.path.basename(oficial)
         import apresentacao_textos as ap
-            if modo == "slides":
-               caminho = ap.gerar_pdf_slides(lang)
-            else:
-               caminho = ap.gerar_pdf_texto(lang)
-           if not caminho:
-              oficial = os.path.join(STATIC_DIR, "apresentacao_oficial_pt.pdf")
-              if os.path.exists(oficial):
-                 with open(oficial, "rb") as f:
+        if modo == "slides":
+            caminho = ap.gerar_pdf_slides(lang)
+        else:
+            caminho = ap.gerar_pdf_texto(lang)
+        if not caminho:
+            oficial = os.path.join(STATIC_DIR, "apresentacao_oficial_pt.pdf")
+            if os.path.exists(oficial):
+                with open(oficial, "rb") as f:
                     return f.read(), os.path.basename(oficial)
-              raise HTTPException(status_code=500,
+            raise HTTPException(status_code=500,
                                 detail=f"Não foi possível gerar a apresentação em {lang} ({modo}).")
         with open(caminho, "rb") as f:
             return f.read(), os.path.basename(caminho)
@@ -672,20 +672,7 @@ async def api_apresentacao_slides(lang: str = "pt"):
     dados, nome = _gerar_apresentacao(lang, "slides")
     return Response(content=dados, media_type="application/pdf",
                     headers={"Content-Disposition": f'attachment; filename="{nome}"'})
-
-        if modo == "slides":
-            caminho = ap.gerar_pdf_slides(lang)
-        else:
-            caminho = ap.gerar_pdf_texto(lang)
-        if not caminho:
-            # Fallback: usa o PDF oficial PT se o idioma não for suportado
-            oficial = os.path.join(STATIC_DIR, "apresentacao_oficial_pt.pdf")
-            if os.path.exists(oficial):
-                with open(oficial, "rb") as f:
-                    return f.read(), os.path.basename(oficial)
-            raise HTTPException(status_code=500,
-                                detail=f"Não foi possível gerar a apresentação em {lang}.")
-
+  
 # ===== CHECKOUT COLETIVO (desconto progressivo) =====
 @app.get("/criar-checkout-coletivo")
 async def criar_checkout_coletivo(lang: str = "pt", items: str = "[]"):
