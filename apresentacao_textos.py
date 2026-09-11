@@ -381,7 +381,7 @@ CONTEUDO = {
         "b2b_planos": [
             ("Gói Cơ Bản · 50 Mã", "50× Bản Đồ Nhanh (₫ 25.000 mỗi mã). Lý tưởng cho chương trình phúc lợi nhân viên và hoạt động hội nhập."),
             ("Gói Trung Cấp · 100 Mã", "50× Bản Đồ Nhanh + 50× Tìm Kiếm AI (₫ 53.000). Hoàn hảo cho nhân sự và chiến lược thương hiệu tuyển dụng."),
-            ("Gói Cao Cấp · 200 Mã", "100× Bản Đồ Nhanh + 100× Bản Đồ Đầy Đủ (₫ 53.000). Độ sâu phân tích tối đa cho đội nhóm lớn."),
+            ("Gói Cao Cấp · 200 Mã", "100× Bản Đồ Nhanh + 100× Bản Đồ Đầy Đủ (₫ 53.000). Độ sâu phân tích tối đa para đội nhóm lớn."),
         ],
         "b2b_tabela": [
             ["A partir de", "Desconto", "Perfil", "Uso Recomendado"],
