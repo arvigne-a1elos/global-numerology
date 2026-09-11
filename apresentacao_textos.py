@@ -92,7 +92,6 @@ BLOCO_JURIDICO_PT = [
 ]
 
 def _render_bloco_juridico(doc, largura, altura, lang, c):
-    """Renderiza o bloco juridico (secoes 19-29) em PT para todos os idiomas."""
     margem = 18 * mm
     largura_texto = largura - 2 * margem
     y = altura - 32 * mm
