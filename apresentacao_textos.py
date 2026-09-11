@@ -4090,7 +4090,7 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
         doc.setFont(_fonte(lang, True), 10)
         doc.drawCentredString(x + w / 2, altura * 0.47, item)
     _rodape(doc, largura, altura, lang, c, pagina)
-        doc.showPage()
+    doc.showPage()
     _render_bloco_juridico(doc, largura, altura, lang, c)
     doc.save()
     logger.info("PDF texto editorial gerado: %s", caminho_saida)
