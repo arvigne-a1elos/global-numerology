@@ -663,6 +663,12 @@ def _gerar_apresentacao(lang="pt", modo="texto"):
         logger.exception("Erro ao gerar apresentacao %s/%s", lang, modo)
         raise HTTPException(status_code=500, detail="Erro ao gerar a apresentacao.")
 
+@app.get("/api/apresentacao")
+async def api_apresentacao(lang: str = "pt"):
+    dados, nome = _gerar_apresentacao(lang, "texto")
+    return Response(content=dados, media_type="application/pdf",
+                    headers={"Content-Disposition": f'attachment; filename="{nome}"'})
+
 @app.get("/api/apresentacao-slides")
 async def api_apresentacao_slides(lang: str = "pt"):
     dados, nome = _gerar_apresentacao(lang, "slides")
