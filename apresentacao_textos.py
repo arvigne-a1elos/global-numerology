@@ -92,20 +92,20 @@ BLOCO_JURIDICO_PT = [
 ]
 
 def _render_bloco_juridico(doc, largura, altura, lang, c):
-    """Renderiza o bloco juridico (secoes 19-29) em PT, com fallback para todos os idiomas."""
+    """Renderiza o bloco juridico (secoes 19-29) em PT para todos os idiomas."""
     margem = 18 * mm
     largura_texto = largura - 2 * margem
     y = altura - 32 * mm
     doc.setFillColor(COR_AZUL)
     doc.setFont(_fonte(lang, True), 14)
-    y = _texto_wrap(doc, "ESTRUTURA JURIDICA, GOVERNANCA E COMPLIANCE",
+    y = _texto_wrap(doc, "ESTRUTURA JURÍDICA, GOVERNANÇA E COMPLIANCE",
                     _fonte(lang, True), 14, margem, y, largura_texto, COR_AZUL, 7 * mm)
     doc.setStrokeColor(COR_DOURADO)
     doc.setLineWidth(1.2)
     doc.line(margem, y - 2 * mm, largura - margem, y - 2 * mm)
     y -= 8 * mm
     for titulo, paragrafos in BLOCO_JURIDICO_PT:
-        if y < 60 * mm:
+        if y < 70 * mm:
             doc.showPage()
             y = altura - 30 * mm
         doc.setFillColor(COR_AZUL)
