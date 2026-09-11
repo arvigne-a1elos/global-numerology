@@ -32,7 +32,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse, Response
-from referencia.precos import VALORES, SIMBOLO, PRECO_DISPLAY, PRODUTO_FAIXA, preco_local, preco_display
+from referencia.precos import VALORES, SIMBOLO, PRECO_DISPLAY, PRODUTO_FAIXA, preco_local, preco_display, MOEDA
 
 # ===== APP (OBRIGATÓRIO ANTES DE QUALQUER ROTA) =====
 app = FastAPI(title="Global Numerology")
@@ -636,36 +636,25 @@ IDIOMAS_APRES = ["pt", "en", "es", "it", "fr", "de", "ja", "zh",
 
 def _gerar_apresentacao(lang="pt", modo="texto"):
     try:
-        if modo != "slides" and lang == "pt":
-            oficial = os.path.join(STATIC_DIR, "apresentacao_oficial_pt.pdf")
-            if os.path.exists(oficial):
-                with open(oficial, "rb") as f:
-                    return f.read(), os.path.basename(oficial)
         import apresentacao_textos as ap
         if modo == "slides":
             caminho = ap.gerar_pdf_slides(lang)
         else:
             caminho = ap.gerar_pdf_texto(lang)
-        if not caminho:
-            oficial = os.path.join(STATIC_DIR, "apresentacao_oficial_pt.pdf")
-            if os.path.exists(oficial):
-                with open(oficial, "rb") as f:
-                    return f.read(), os.path.basename(oficial)
-            raise HTTPException(status_code=500,
-                                detail=f"Não foi possível gerar a apresentação em {lang} ({modo}).")
-        with open(caminho, "rb") as f:
-            return f.read(), os.path.basename(caminho)
+        if caminho and os.path.exists(caminho):
+            with open(caminho, "rb") as f:
+                return f.read(), os.path.basename(caminho)
+        oficial = os.path.join(STATIC_DIR, "apresentacao_oficial_pt.pdf")
+        if os.path.exists(oficial):
+            with open(oficial, "rb") as f:
+                return f.read(), os.path.basename(oficial)
+        raise HTTPException(status_code=500,
+                            detail=f"Nao foi possivel gerar a apresentacao em {lang} ({modo}).")
     except HTTPException:
         raise
     except Exception:
-        logger.exception("Erro ao gerar apresentação %s/%s", lang, modo)
-        raise HTTPException(status_code=500, detail="Erro ao gerar a apresentação.")
-
-@app.get("/api/apresentacao")
-async def api_apresentacao(lang: str = "pt"):
-    dados, nome = _gerar_apresentacao(lang, "texto")
-    return Response(content=dados, media_type="application/pdf",
-                    headers={"Content-Disposition": f'attachment; filename="{nome}"'})
+        logger.exception("Erro ao gerar apresentacao %s/%s", lang, modo)
+        raise HTTPException(status_code=500, detail="Erro ao gerar a apresentacao.")
 
 @app.get("/api/apresentacao-slides")
 async def api_apresentacao_slides(lang: str = "pt"):
