@@ -29,6 +29,99 @@ LOGO_A1ELOS = os.path.join(STATIC_DIR, "A1ELOS.png")    # logo A1ELOS → DIREIT
 CONTATOS = "a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.br/contato"
 TOTAL_PAGINAS = 21   # capa(1) + 17 seções + Pix + Referências + página final
 
+# ============================================================
+# BLOCO JURÍDICO / GOVERNANÇA E COMPLIANCE (SEÇÕES 19-29)
+# Conteúdo em PT com fallback para todos os idiomas.
+# ============================================================
+BLOCO_JURIDICO_PT = [
+    ("19. Governança Corporativa, Conformidade e Estrutura Jurídica", [
+        "A governança corporativa da A1ELOS Global Numerology é estruturada sobre as melhores práticas do direito societário nacional e internacional, assegurando total transparência decisória e mitigação de riscos operacionais. As operações societárias regem-se subsidiariamente pela Lei nº 6.404/1976 (Lei das Sociedades por Ações), aplicando-se os estritos deveres fiduciários de diligência (art. 153) e de lealdade (art. 155) à totalidade de seus diretores executivos e conselheiros estratégicos.",
+        "No âmbito do direito material civil, a atuação da holding vincula-se ao princípio da boa-fé objetiva insculpido no art. 422 da Lei nº 10.406/2002 (Código Civil Brasileiro), bem como ao postulado da autonomia patrimonial da pessoa jurídica delineado no art. 49-A do mesmo diploma legal, garantindo a perfeita segregação entre os ativos da entidade societária e o patrimônio pessoal de seus sócios e investidores.",
+        "A companhia adota comitês permanentes de conformidade fiscal e auditoria contábil interna periódica. O descumprimento de quaisquer diretrizes de governança ou o cometimento de atos que atentem contra o patrimônio da sociedade sujeitam os infratores a sanções disciplinares, destituição imediata de cargos executivos e responsabilização civil e penal integral pelos prejuízos causados.",
+    ]),
+    ("20. Arquitetura Tecnológica e Motores de Inteligência Artificial", [
+        "A infraestrutura de suporte computacional da A1ELOS fundamenta-se em clusters de microsserviços distribuídos em provedores de nuvem de primeira linha com alta redundância geográfica e latência ultrabaixa. O pipeline técnico realiza de forma contínua a ingestão de requisições, o processamento de equações de numerologia pitagórica e hermenêutica, a sintetização contextualizada por inteligência artificial e a compilação instantânea dos relatórios editoriais.",
+        "O desenvolvimento do ecossistema atende integralmente aos parâmetros de segurança da informação e governo digital estipulados pela Lei nº 14.129/2021 e às diretrizes internacionais das normas técnicas ISO/IEC 27001 e ISO/IEC 27701. A infraestrutura possui elasticidade horizontal automatizada, dimensionando capacidade computacional sem dependência de intervenção humana manual.",
+        "No que tange à disponibilização de aplicações na internet e responsabilidade dos provedores, a plataforma opera sob estrita consonância com o Marco Civil da Internet (Lei nº 12.965/2014), assegurando a observância dos direitos dos usuários (art. 7º) e a guarda segura de registros de acesso nos prazos legalmente mandatados.",
+    ]),
+    ("21. Proteção de Dados, Privacidade e Soberania Digital (LGPD e GDPR)", [
+        "A tutela da privacidade e dos dados pessoais constitui compromisso inegociável da A1ELOS. A coleta de dados sensíveis e biográficos (como nome completo, data de nascimento e endereço de correio eletrônico) restringe-se estritamente ao necessário para o processamento dos cálculos numerológicos contratados, operando sob as bases legais de execução de contrato e legítimo interesse (art. 7º, incisos V e IX, da Lei nº 13.709/2018 - LGPD).",
+        "Em âmbito internacional, a operação cumpre com rigor os ditames do Regulamento Geral sobre a Proteção de Dados da União Europeia (GDPR - Regulamento UE 2016/679), do California Consumer Privacy Act (CCPA) e das legislações asiáticas de proteção de dados. Os dados em repouso são protegidos por criptografia de padrão militar AES-256, enquanto o tráfego de rede utiliza exclusivamente protocolos seguros TLS 1.3 com perfeita confidencialidade direta.",
+        "Qualquer eventual desvio ou violação de segurança será tratado sob os procedimentos mandatórios de notificação tempestiva à Autoridade Nacional de Proteção de Dados (ANPD), aplicando-se aos agentes violadores as severas penalidades administrativas previstas no art. 52 da LGPD (com multas de até 2% do faturamento, limitadas a R$ 50.000.000,00 por infração), cumuladas com a reparação integral dos danos morais e materiais com base no art. 927 do Código Civil.",
+    ]),
+    ("22. Propriedade Intelectual, Marcas e Segredos de Negócio", [
+        "A totalidade dos ativos intangíveis da A1ELOS — incluindo algoritmos de cálculo, arquitetura de software, bases de dados semânticas em 14 idiomas, métodos de parametrização de PPP, logotipos, identidades visuais e marcas nominativas — encontra-se formalmente protegida sob as normas da Lei de Propriedade Industrial (Lei nº 9.279/1996), da Lei de Software (Lei nº 9.609/1998) e da Lei de Direitos Autorais (Lei nº 9.610/1998).",
+        "A holding conta com depósitos e registros resguardados internacionalmente pelos tratados da Convenção da União de Paris (CUP) e pelo Tratado de Cooperação em Matéria de Patentes (PCT). A tecnologia proprietária e as tabelas de conversão fonético-numérica são classificadas expressamente como segredos comerciais de alta confidencialidade (trade secrets).",
+        "A violação de quaisquer direitos autorais ou a apropriação indevida de código-fonte e metodologias sujeitará o infrator às ações cíveis indenizatórias por perdas, danos emergentes e lucros cessantes, sem prejuízo da deflagração das medidas penais cabíveis por concorrência desleal e contrafação previstas nos arts. 184 e 195 da Lei nº 9.279/1996.",
+    ]),
+    ("23. Política de Paridade de Poder de Compra (PPP) e Conformidade Financeira", [
+        "A política de precificação fundamentada em Paridade de Poder de Compra (PPP) constitui método estruturado de equilíbrio macroeconômico, sendo constantemente monitorada através de indexadores internacionais oficiais. A conversão das tarifas respeita a regulamentação do Novo Marco Cambial brasileiro (Lei nº 14.286/2021) e as normativas do Banco Central do Brasil (BACEN) e do Conselho Monetário Nacional (CMN).",
+        "A diferenciação de valores nominais entre diferentes jurisdições apoia-se em justificativa econômica objetiva, não configurando prática discriminatória ou infração à ordem econômica, atendendo plenamente aos arts. 39 e 51 da Lei nº 8.078/1990 (Código de Defesa do Consumidor). A plataforma proíbe expressamente a manipulação arbitrária de margens comerciais por parceiros ou distribuidores regionais.",
+        "A tentativa de arbitragem predatória de preços através de burla geográfica ou o uso não autorizado de VPNs para aquisições transfronteiriças indevidas ensejará o cancelamento unilateral imediato da licença de uso do produto digital adquirido, com retenção do valor pago a título de cláusula penal indenizatória.",
+    ]),
+    ("24. Prevenção à Lavagem de Dinheiro e Financiamento do Terrorismo (PLD/FT)", [
+        "A A1ELOS adota uma postura de tolerância zero em relação a atividades ilícitas, instituindo um programa robusto de Prevenção à Lavagem de Dinheiro e Combate ao Financiamento do Terrorismo (PLD/FT), estruturado nos moldes da Lei nº 9.613/1998 (com as alterações introduzidas pela Lei nº 12.683/2012), nas instruções da Unidade de Inteligência Financeira (UIF/COAF) e nas diretrizes internacionais do Grupo de Ação Financeira Internacional (GAFI/FATF).",
+        "Todos os parceiros institucionais B2B, anunciantes corporativos e adquirentes de grandes lotes de licenças passam por procedimentos estritos de verificação cadastral (Know Your Customer - KYC e Know Your Business - KYB), com cruzamento automatizado em listas restritivas globais (OFAC, Interpol, Conselho de Segurança da ONU e cadastro de Pessoas Politicamente Expostas - PEPs).",
+        "Identificada qualquer inconsistência cadastral ou transação suspeita, a companhia reserva-se o direito de rescindir liminarmente o contrato, congelar o fornecimento das licenças e proceder à comunicação mandatória aos órgãos de fiscalização financeira competentes, em estrito cumprimento ao art. 11 da Lei nº 9.613/1998.",
+    ]),
+    ("25. Gestão de Riscos, Continuidade de Negócios e Acordo de Nível de Serviço (SLA)", [
+        "A continuidade operacional da A1ELOS é assegurada por um Plano de Continuidade de Negócios (PCN) e um Plano de Recuperação de Desastres (Disaster Recovery) estruturados sob a norma ISO 22301 e as diretrizes do framework global COSO-ERM. A arquitetura em nuvem utiliza zonas de disponibilidade múltipla (Multi-AZ), backups criptografados em tempo real e balanceamento automático de carga.",
+        "Para clientes corporativos e contratos B2B, a companhia estabelece contratualmente um Acordo de Nível de Serviço (Service Level Agreement - SLA) garantindo disponibilidade mínima de 99,9% para a API de cálculo e geração de relatórios, calculada em bases mensais contínuas.",
+        "Em caso de descumprimento injustificado do SLA contratado por falha exclusiva da infraestrutura da holding, serão concedidos créditos de serviço proporcionais ao período de indisponibilidade, nos termos do art. 389 do Código Civil, limitando-se a responsabilidade financeira total da companhia a 30% da mensalidade ou do volume contratado no mês do evento.",
+    ]),
+    ("26. Relações de Trabalho, RH e Gestão de Talentos", [
+        "A gestão de talentos humanos da A1ELOS apoia-se nos princípios da meritocracia, inovação constante, valorização da diversidade cultural e estrita legalidade trabalhista. Todas as contratações e parcerias em território nacional subordinam-se à Consolidação das Leis do Trabalho (Decreto-Lei nº 5.452/1943) e às inovações regulatórias da Lei nº 13.467/2017, em especial o regime de teletrabalho previsto nos arts. 75-A e seguintes.",
+        "A holding mantém políticas severas de integridade corporativa, combatendo qualquer modalidade de discriminação, assédio moral ou sexual no ambiente físico e virtual de trabalho, disponibilizando canal de ouvidoria independente e anônimo.",
+        "A violação de deveres de confidencialidade, a prática de condutas desonestas ou o vazamento não autorizado de dados estratégicos por colaboradores acarretará demissão imediata por justa causa com base no art. 482 da CLT, cumulada com o ajuizamento de competente ação regressiva de perdas e danos.",
+    ]),
+    ("27. Sustentabilidade, Governança e Responsabilidade Social (ESG)", [
+        "A estratégia corporativa da A1ELOS incorpora nativamente os critérios Ambientais, Sociais e de Governança (ESG). Por operar sob modelo 100% digital em nuvem, a companhia mantém uma pegada de carbono operacional substancialmente reduzida, priorizando servidores hospedados em datacenters abastecidos por fontes de energia 100% renovável.",
+        "No pilar social, o compromisso concretiza-se na política de inclusão digital e paridade de poder de compra (PPP), viabilizando o acesso de populações vulneráveis e de países emergentes a ferramentas de autoconhecimento analítico a custos proporcionais à sua realidade econômica, alinhando-se aos Objetivos de Desenvolvimento Sustentável da ONU (notadamente ODS 8 — Trabalho Decente e Crescimento Econômico e ODS 10 — Redução das Desigualdades).",
+        "No âmbito da governança, a organização segue as recomendações do Instituto Brasileiro de Governança Corporativa (IBGC), com prestação periódica de contas, auditorias independentes e vedação a quaisquer práticas lesivas ao meio ambiente ou à ordem social.",
+    ]),
+    ("28. Estrutura da Rodada de Investimento e Direitos dos Minoritários", [
+        "A abertura da Rodada Seed da A1ELOS rege-se pelos parâmetros normativos do Marco Legal das Startups (Lei Complementar nº 182/2021) e pelas regras gerais de títulos societários conversíveis da Lei nº 6.404/1976. A captação é instrumentalizada mediante contratos de Mútuo Conversível em Participação Societária ou acordos SAFE internacionais.",
+        "Aos investidores participantes são assegurados direitos de proteção societária condizentes com o mercado institucional global de Venture Capital, incluindo: Direito à Informação (acesso a relatórios contábeis, operacionais e financeiros trimestrais, art. 109, III, da Lei das S.A.); Proteção Anti-Diluição (cláusula de ajuste proporcional de participação societária em rodadas futuras de down-round, modelo weighted average); Direito de Venda Conjunta (Tag Along) (garantia de 100% do preço por ação ofertado ao grupo controlador em caso de alienação de controle societário); e Direito de Preferência (prioridade na subscrição de novas emissões de capital da companhia para manutenção do percentual de participação societária detido).",
+        "Em caso de inadimplemento voluntário das obrigações contratuais por quaisquer das partes pactuantes, incidirá o vencimento antecipado do montante mútuo aportado, acrescido de correção monetária, juros moratórios de 1% (um por cento) ao mês e cláusula penal compensatória de 20% (vinte por cento) sobre o saldo devedor atualizado, com esteio nos arts. 408 e 412 do Código Civil.",
+    ]),
+    ("29. Disposições Finais, Foro Competente e Validade Jurídica", [
+        "As diretrizes, projeções, políticas e regras estipuladas ao longo desta Apresentação Empresarial consolidam a visão estratégica da diretoria da A1ELOS Global Numerology e refletem fidedignamente o modelo algorítmico, econômico e técnico já implementado no software e em seus microsserviços associados.",
+        "O presente instrumento possui plena validade jurídica, sendo reconhecidas como legítimas e vinculantes as assinaturas eletrônicas efetuadas por meio de certificados digitais nos moldes da Medida Provisória nº 2.200-2/2001 e da Lei nº 14.063/2020.",
+        "Para dirimir quaisquer controvérsias, dúvidas ou litígios oriundos da interpretação, execução ou validade deste documento e dos contratos a ele conexos, fica expressamente eleito o Foro da Comarca de São Paulo, Estado de São Paulo, com expressa renúncia a qualquer outro, por mais privilegiado que seja, facultando-se a submissão de litígios societários à arbitragem perante a Câmara de Comércio Brasil-Canadá (CCBC) ou Câmara de Arbitragem do Mercado (CAM/B3), nos termos da Lei nº 9.307/1996.",
+    ]),
+]
+
+def _render_bloco_juridico(doc, largura, altura, lang, c):
+    """Renderiza o bloco jurídico (seções 19-29) em PT, com fallback para todos os idiomas."""
+    margem = 18 * mm
+    largura_texto = largura - 2 * margem
+    # Cabeçalho do bloco
+    doc.setFillColor(COR_AZUL)
+    doc.setFont(_fonte(lang, True), 14)
+    y = altura - 32 * mm
+    y = _texto_wrap(doc, "ESTRUTURA JURÍDICA, GOVERNANÇA E COMPLIANCE",
+                    _fonte(lang, True), 14, margem, y, largura_texto, COR_AZUL, 7 * mm)
+    doc.setStrokeColor(COR_DOURADO)
+    doc.setLineWidth(1.2)
+    doc.line(margem, y - 2 * mm, largura - margem, y - 2 * mm)
+    y -= 8 * mm
+    for titulo, paragrafos in BLOCO_JURIDICO_PT:
+        doc.setFillColor(COR_AZUL)
+        doc.setFont(_fonte(lang, True), 12)
+        y = _texto_wrap(doc, titulo, _fonte(lang, True), 12, margem, y,
+                        largura_texto, COR_AZUL, 5.5 * mm)
+        y -= 3 * mm
+        for p in paragrafos:
+            doc.setFillColor(COR_PRETO)
+            y = _texto_wrap(doc, p, _fonte(lang), 10, margem, y,
+                            largura_texto, COR_PRETO, 4.5 * mm)
+            y -= 3 * mm
+            if y < 28 * mm:
+                doc.showPage()
+                y = altura - 30 * mm
+        y -= 5 * mm
+    return y
+
 class NumberedCanvas(_canvas.Canvas):
     """Canvas que desenha cabeçalho (logos) e rodapé (página X de Y + contatos)."""
     def __init__(self, *args, **kwargs):
@@ -3999,7 +4092,8 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
         doc.setFont(_fonte(lang, True), 10)
         doc.drawCentredString(x + w / 2, altura * 0.47, item)
     _rodape(doc, largura, altura, lang, c, pagina)
-    doc.showPage()
+        doc.showPage()
+    _render_bloco_juridico(doc, largura, altura, lang, c)
     doc.save()
     logger.info("PDF texto editorial gerado: %s", caminho_saida)
     return caminho_saida
@@ -4266,7 +4360,7 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
         _texto_wrap(doc, sub, _fonte(lang), 7.5, 22 * mm, yy - 17 * mm,
                     col_w - 8 * mm, COR_CINZA, 3.2 * mm, y_min=yy - 28 * mm)
         yy -= 33 * mm   
-        xr = 18 * mm + col_w + 10 * mm
+    xr = 18 * mm + col_w + 10 * mm
     doc.setFillColor(COR_PRETO)
     doc.setFont(_fonte(lang, True), 13)
     doc.drawString(xr, y - 8 * mm, c["problema_col_dir_titulo"])
