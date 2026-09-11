@@ -32,7 +32,14 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse, Response
-from referencia.precos import VALORES, SIMBOLO, PRECO_DISPLAY, PRODUTO_FAIXA, preco_local, preco_display, MOEDA
+from referencia.precos import VALORES, SIMBOLO, PRECO_DISPLAY, PRODUTO_FAIXA, preco_local, preco_display
+
+# ===== MOEDAS POR IDIOMA (ISO 4217, para o Stripe) =====
+MOEDA = {
+    "pt": "brl", "en": "usd", "es": "eur", "it": "eur", "fr": "eur", "de": "eur",
+    "ja": "jpy", "zh": "cny", "ru": "rub", "id": "idr", "tr": "try",
+    "vi": "vnd", "he": "ils", "ar": "sar"
+}
 
 # ===== APP (OBRIGATÓRIO ANTES DE QUALQUER ROTA) =====
 app = FastAPI(title="Global Numerology")
