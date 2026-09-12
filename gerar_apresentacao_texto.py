@@ -37,6 +37,16 @@ COR_CINZA = colors.HexColor("#555555")
 COR_CINZA_CLARO = colors.HexColor("#f0f0f0")
 CONTATOS = "a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.br/contato"
 
+def _campo(item, chave=None, idx=None, default=""):
+    """Lê um campo de um item que pode ser dict OU tuple/list."""
+    if isinstance(item, dict):
+        return item.get(chave, default) if chave else default
+    if isinstance(item, (tuple, list)):
+        if idx is not None and len(item) > idx:
+            return item[idx]
+        return default
+    return default
+
 def _fonte(lang, bold=False):
     base = FONTE_POR_IDIOMA.get(lang, "Helvetica")
     if base == "Helvetica":
@@ -96,7 +106,7 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
                            _estilo(lang, 9, True, COR_DOURADO, TA_CENTER)))
     story.append(Spacer(1, 30))
 
-    # ---- SUMÁRIO EXECUTIVO ----
+        # ---- SUMÁRIO EXECUTIVO ----
     if c.get("sumario_intro"):
         story.append(Paragraph(c.get("sumario_titulo", "Sumário Executivo"),
                                _estilo(lang, 16, True, COR_AZUL, antes=10)))
@@ -104,17 +114,15 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
                                _estilo(lang, 10, False, COR_CINZA, alinh=TA_JUSTIFY)))
     if c.get("sumario_cards"):
         for card in c["sumario_cards"]:
-            txt = f"<b>{card.get('numero','')} — {card.get('titulo','')}</b><br/>{card.get('subtitulo','')}"
+            num = _campo(card, "numero", 0)
+            tit = _campo(card, "titulo", 1)
+            sub = _campo(card, "subtitulo", 2)
+            txt = f"<b>{num} — {tit}</b><br/>{sub}"
             story.append(Paragraph(txt, _estilo(lang, 9.5, False, COR_PRETO, depois=4)))
 
     # ---- SOBRE ----
-    if c.get("sobre_texto"):
-        story.append(Paragraph(c.get("sobre_titulo", "Sobre a A1ELOS"),
-                               _estilo(lang, 16, True, COR_AZUL, antes=12)))
-        story.append(Paragraph(c["sobre_texto"],
-                               _estilo(lang, 10, False, COR_CINZA, alinh=TA_JUSTIFY)))
     if c.get("sobre_kpis"):
-        kpis = [[k.get("valor", ""), k.get("rotulo", "")] for k in c["sobre_kpis"]]
+        kpis = [[_campo(k, "valor", 0), _campo(k, "rotulo", 1)] for k in c["sobre_kpis"]]
         if kpis:
             t = Table(kpis, colWidths=[90, 130])
             t.setStyle(TableStyle([
@@ -133,7 +141,9 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
                                _estilo(lang, 10, False, COR_CINZA, alinh=TA_JUSTIFY)))
     if c.get("mercado_cards"):
         for card in c["mercado_cards"]:
-            story.append(Paragraph(f"<b>{card.get('titulo','')}</b> — {card.get('valor','')}",
+            tit = _campo(card, "titulo", 0)
+            val = _campo(card, "valor", 1)
+            story.append(Paragraph(f"<b>{tit}</b> — {val}",
                                    _estilo(lang, 9.5, False, COR_PRETO, depois=3)))
 
     # ---- PORTFÓLIO (tabela) ----
@@ -171,7 +181,9 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
         story.append(Paragraph(c.get("invest_titulo", "Investimento & Contato"),
                                _estilo(lang, 16, True, COR_AZUL, antes=12)))
         for d in c["invest_dados"]:
-            story.append(Paragraph(f"<b>{d.get('rotulo','')}:</b> {d.get('valor','')}",
+            rot = _campo(d, "rotulo", 0)
+            val = _campo(d, "valor", 1)
+            story.append(Paragraph(f"<b>{rot}:</b> {val}",
                                    _estilo(lang, 10, False, COR_PRETO, depois=3)))
         if c.get("invest_alocacao"):
             story.append(Paragraph(c["invest_alocacao"],
