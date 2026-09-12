@@ -650,7 +650,6 @@ def _gerar_apresentacao(lang="pt", modo="texto"):
         else:
             caminho = ap.gerar_pdf_texto(lang)
             candidato = os.path.join(STATIC_DIR, f"apresentacao_{lang}.pdf")
-        # Se a função retornou None mas salvou o arquivo, usa o arquivo salvo
         if not caminho or not os.path.exists(caminho):
             if os.path.exists(candidato):
                 caminho = candidato
