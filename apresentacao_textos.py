@@ -1,34 +1,460 @@
 # -*- coding: utf-8 -*-
 # ============================================================
-# apresentacao_textos.py
-# Gerador de Apresentação Empresarial A1ELOS — LAYOUT EDITORIAL
+# CABEÇALHO COM DUAS LOGOS (uma em cada lado) + RODAPÉ
+# Usado nas DUAS versões: documento (texto) e slides
 # ============================================================
-import os, math, logging
+import os
+from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import mm
-from reportlab.lib.colors import HexColor, white, black
-from reportlab.lib.styles import ParagraphStyle
+from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_JUSTIFY
-from reportlab.pdfgen import canvas as _canvas
+from reportlab.platypus import (SimpleDocTemplate, Paragraph, Spacer,
+                                Table, TableStyle, HRFlowable, Image)
+from reportlab.lib.styles import ParagraphStyle
 from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase.cidfonts import UnicodeCIDFont
-from reportlab.platypus import Table, TableStyle, Paragraph
-from reportlab.lib.utils import ImageReader
-from reportlab.lib.pagesizes import A4, landscape
-from reportlab.pdfgen import canvas
+from reportlab.pdfbase.ttfonts import TTFont
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
+IDIOMAS = ["pt", "en", "es", "it", "fr", "de", "ja", "zh",
+           "ru", "he", "ar", "id", "tr", "vi"]
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-STATIC_DIR = os.path.join(BASE_DIR, "static")
-LOGO_PATH   = os.path.join(STATIC_DIR, "logo.png")      # logo do site → ESQUERDA
-LOGO_A1ELOS = os.path.join(STATIC_DIR, "A1ELOS.png")    # logo A1ELOS → DIREITA
+# Fontes para idiomas especiais (CJK + cirílico + vietnamita/turco)
+try:
+    pdfmetrics.registerFont(UnicodeCIDFont('STSong-Light'))  # zh
+    pdfmetrics.registerFont(UnicodeCIDFont('HeiseiMin-W3'))  # ja
+    pdfmetrics.registerFont(TTFont('DejaVu', 'fonts/DejaVuSans.ttf'))  # ru/tr/vi
+except Exception:
+    pass
 
-# ===== RODAPÉ =====  (substitua a linha CONTATOS antiga por esta)
+FONTE_POR_IDIOMA = {'ja': 'HeiseiMin-W3', 'zh': 'STSong-Light',
+                    'ru': 'DejaVu', 'tr': 'DejaVu', 'vi': 'DejaVu'}
+
+COR_AZUL = colors.HexColor("#1a3a6b")
+COR_DOURADO = colors.HexColor("#B8860B")
+COR_PRETO = colors.HexColor("#1a1a1a")
+COR_CINZA = colors.HexColor("#444444")
+COR_CINZA_CLARO = colors.HexColor("#f0f0f0")
 CONTATOS = "a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.br/contato"
-TOTAL_PAGINAS = 21   # capa(1) + 17 seções + Pix + Referências + página final
 
+# Nomes das duas logos (coloque os arquivos em static/)
+LOGO_ESQ = os.path.join(STATIC_DIR, "logo.png")        # logo à esquerda
+LOGO_DIR = os.path.join(STATIC_DIR, "logo-a1elos.png") # logo à direita
+
+def _fonte(lang, bold=False):
+    base = FONTE_POR_IDIOMA.get(lang, "Helvetica")
+    if base == "Helvetica":
+        return "Helvetica-Bold" if bold else "Helvetica"
+    return base
+
+def _estilo(lang, tam, bold, cor, alinh=TA_LEFT, antes=0, depois=6):
+    return ParagraphStyle("s", fontName=_fonte(lang, bold), fontSize=tam,
+                          textColor=cor, alignment=alinh, leading=tam * 1.4,
+                          spaceBefore=antes, spaceAfter=depois)
+
+def _campo(item, chave=None, idx=None, default=""):
+    if isinstance(item, dict):
+        return item.get(chave, default) if chave else default
+    if isinstance(item, (tuple, list)):
+        if idx is not None and len(item) > idx:
+            return item[idx]
+        return default
+    return default
+
+def _texto_item(item, sep=" — "):
+    if isinstance(item, dict):
+        return sep.join(str(v) for v in item.values() if v)
+    if isinstance(item, (tuple, list)):
+        return sep.join(str(v) for v in item if v)
+    return str(item)
+
+def _desenha_logo(canvas, caminho, x, y, larg, alt):
+    """Desenha uma logo se o arquivo existir; ignora silenciosamente se não."""
+    try:
+        if caminho and os.path.exists(caminho):
+            canvas.drawImage(caminho, x, y, width=larg, height=alt,
+                             preserveAspectRatio=True, mask='auto')
+    except Exception:
+        pass
+
+def _cabecalho_duas_logos(canvas, doc_, c, lang, altura_cab=18*mm, cor_fundo=None):
+    """Cabeçalho com DUAS logos (esquerda e direita) + título central."""
+    w, h = A4
+    # Faixa do cabeçalho
+    if cor_fundo:
+        canvas.setFillColor(cor_fundo)
+        canvas.rect(0, h - altura_cab, w, altura_cab, stroke=0, fill=1)
+    # Logo esquerda
+    _desenha_logo(canvas, LOGO_ESQ, 15*mm, h - 16*mm, 12*mm, 12*mm)
+    # Logo direita
+    _desenha_logo(canvas, LOGO_DIR, w - 15*mm - 12*mm, h - 16*mm, 12*mm, 12*mm)
+    # Título central (entre as duas logos)
+    canvas.setFillColor(colors.white if cor_fundo else COR_AZUL)
+    canvas.setFont(_fonte(lang, True), 9)
+    titulo = c.get("titulo", "A1ELOS Global Numerology")
+    canvas.drawCentredString(w / 2, h - 12*mm, titulo)
+    # DUNS + confidencial à direita do título (se couber)
+    canvas.setFillColor(COR_DOURADO)
+    canvas.setFont(_fonte(lang), 7.5)
+    canvas.drawCentredString(w / 2, h - 16*mm,
+                             f"DUNS 942242668 · {c.get('confidencial','')}")
+    # Linha dourada abaixo do cabeçalho
+    canvas.setStrokeColor(COR_DOURADO)
+    canvas.setLineWidth(0.8)
+    canvas.line(15*mm, h - altura_cab, w - 15*mm, h - altura_cab)
+
+def _rodape(canvas, doc_, c, lang, num_pag=None, total_pag=None):
+    """Rodapé com contatos + página numerada (X de Y)."""
+    w, h = A4
+    # Linha dourada acima do rodapé
+    canvas.setStrokeColor(COR_DOURADO)
+    canvas.setLineWidth(0.8)
+    canvas.line(15*mm, 17*mm, w - 15*mm, 17*mm)
+    # Contatos centralizados
+    canvas.setFillColor(COR_CINZA)
+    canvas.setFont(_fonte(lang), 7.5)
+    canvas.drawCentredString(w / 2, 12*mm, CONTATOS)
+    # Número da página à direita
+    canvas.setFillColor(COR_AZUL)
+    canvas.setFont(_fonte(lang, True), 8)
+    pagina = num_pag if num_pag is not None else doc_.page
+    if total_pag:
+        canvas.drawRightString(w - 15*mm, 12*mm, f"{pagina} de {total_pag}")
+    else:
+        canvas.drawRightString(w - 15*mm, 12*mm, str(pagina))
+    # DUNS + confidencial + ano à esquerda
+    canvas.setFillColor(COR_CINZA)
+    canvas.setFont(_fonte(lang), 7)
+    canvas.drawString(15*mm, 12*mm,
+                      f"{c.get('titulo','A1ELOS')} · DUNS 942242668 · {c.get('confidencial','')} {c.get('ano','2026')}")
+
+def gerar_pdf_texto(lang="pt", caminho_saida=None):
+    """Gera o PDF documento A4 retrato — texto limpo, com cabeçalho (2 logos)
+    e rodapé (contatos + página). Retorna o caminho do arquivo."""
+    try:
+        from apresentacao_textos import CONTEUDO
+    except Exception:
+        CONTEUDO = {}
+    if lang not in CONTEUDO:
+        lang = "pt"
+    c = CONTEUDO.get(lang, CONTEUDO.get("pt", {}))
+    if not caminho_saida:
+        os.makedirs(STATIC_DIR, exist_ok=True)
+        caminho_saida = os.path.join(STATIC_DIR, f"apresentacao_empresarial_{lang}.pdf")
+
+    doc = SimpleDocTemplate(caminho_saida, pagesize=A4,
+                            leftMargin=50, rightMargin=50,
+                            topMargin=70, bottomMargin=55,
+                            title=f"A1ELOS {lang.upper()}",
+                            author="A1ELOS Global Numerology")
+    story = []
+
+    # ===== CAPA SIMPLES (SEM PRETA) =====
+    story.append(Spacer(1, 50))
+    story.append(Paragraph(c.get("titulo", "A1ELOS Global Numerology"),
+                           _estilo(lang, 24, True, COR_AZUL, TA_CENTER, 0, 4)))
+    story.append(Paragraph(c.get("subtitulo", ""),
+                           _estilo(lang, 13, False, COR_CINZA, TA_CENTER, 0, 10)))
+    story.append(HRFlowable(width="55%", thickness=1.2, color=COR_DOURADO,
+                            hAlign="CENTER", spaceBefore=4, spaceAfter=8))
+    story.append(Paragraph(c.get("capa_nota", ""),
+                           _estilo(lang, 10, False, COR_CINZA, TA_CENTER, 0, 2)))
+    story.append(Paragraph(f"{c.get('confidencial','')} · DUNS 942242668 · {c.get('ano','2026')}",
+                           _estilo(lang, 9, True, COR_DOURADO, TA_CENTER)))
+    story.append(Spacer(1, 30))
+
+    # ===== 1. SUMÁRIO EXECUTIVO =====
+    story.append(Paragraph(c.get("sumario_titulo", "Sumário Executivo"),
+                           _estilo(lang, 16, True, COR_AZUL, antes=14)))
+    if c.get("sumario_intro"):
+        story.append(Paragraph(c["sumario_intro"],
+                               _estilo(lang, 10.5, False, COR_PRETO, alinh=TA_JUSTIFY)))
+    for card in c.get("sumario_cards", []):
+        story.append(Paragraph(_texto_item(card, " — "),
+                               _estilo(lang, 10, False, COR_PRETO, depois=3)))
+
+    # ===== 2. SOBRE A A1ELOS =====
+    story.append(Paragraph(c.get("sobre_titulo", "Sobre a A1ELOS"),
+                           _estilo(lang, 16, True, COR_AZUL, antes=14)))
+    if c.get("sobre_texto"):
+        story.append(Paragraph(c["sobre_texto"],
+                               _estilo(lang, 10.5, False, COR_PRETO, alinh=TA_JUSTIFY)))
+    for k in c.get("sobre_kpis", []):
+        story.append(Paragraph(_texto_item(k, " — "),
+                               _estilo(lang, 10, False, COR_PRETO, depois=3)))
+    if c.get("sobre_duns"):
+        story.append(Paragraph(c["sobre_duns"],
+                               _estilo(lang, 10, False, COR_CINZA, alinh=TA_JUSTIFY, antes=4)))
+
+    # ===== 3. CREDIBILIDADE INTERNACIONAL (DUNS) =====
+    story.append(Paragraph(c.get("duns_titulo", "Credibilidade Internacional"),
+                           _estilo(lang, 16, True, COR_AZUL, antes=14)))
+    if c.get("duns_texto"):
+        story.append(Paragraph(c["duns_texto"],
+                               _estilo(lang, 10.5, False, COR_PRETO, alinh=TA_JUSTIFY)))
+    if c.get("duns_emitido"):
+        story.append(Paragraph(c["duns_emitido"],
+                               _estilo(lang, 10, False, COR_CINZA, alinh=TA_JUSTIFY, antes=4)))
+    if c.get("duns_paises"):
+        story.append(Paragraph(c["duns_paises"],
+                               _estilo(lang, 10, True, COR_DOURADO, antes=4)))
+    for b in c.get("duns_beneficios", []):
+        story.append(Paragraph(_texto_item(b, " — "),
+                               _estilo(lang, 10, False, COR_PRETO, depois=3)))
+
+    # ===== 4. OPORTUNIDADE DE MERCADO =====
+    story.append(Paragraph(c.get("mercado_titulo", "Oportunidade de Mercado"),
+                           _estilo(lang, 16, True, COR_AZUL, antes=14)))
+    if c.get("mercado_texto"):
+        story.append(Paragraph(c["mercado_texto"],
+                               _estilo(lang, 10.5, False, COR_PRETO, alinh=TA_JUSTIFY)))
+    for card in c.get("mercado_cards", []):
+        story.append(Paragraph(_texto_item(card, " — "),
+                               _estilo(lang, 10, False, COR_PRETO, depois=3)))
+
+    # ===== 5. O PROBLEMA QUE RESOLVEMOS =====
+    story.append(Paragraph(c.get("problema_titulo", "O Problema que Resolvemos"),
+                           _estilo(lang, 16, True, COR_AZUL, antes=14)))
+    if c.get("problema_col_esq_titulo"):
+        story.append(Paragraph(c["problema_col_esq_titulo"],
+                               _estilo(lang, 11, True, COR_PRETO, antes=6)))
+    for p in c.get("problema_col_esq", []):
+        story.append(Paragraph(_texto_item(p, " — "),
+                               _estilo(lang, 10, False, COR_PRETO, depois=3)))
+    if c.get("problema_col_dir_titulo"):
+        story.append(Paragraph(c["problema_col_dir_titulo"],
+                               _estilo(lang, 11, True, COR_PRETO, antes=6)))
+    if c.get("problema_col_dir"):
+        story.append(Paragraph(c["problema_col_dir"],
+                               _estilo(lang, 10, False, COR_PRETO, alinh=TA_JUSTIFY)))
+    if c.get("problema_destaque"):
+        story.append(Paragraph(c["problema_destaque"],
+                               _estilo(lang, 10, True, COR_AZUL, alinh=TA_JUSTIFY, antes=4)))
+
+    # ===== 6. NOSSA SOLUÇÃO =====
+    story.append(Paragraph(c.get("solucao_titulo", "Nossa Solução"),
+                           _estilo(lang, 16, True, COR_AZUL, antes=14)))
+    if c.get("solucao_texto"):
+        story.append(Paragraph(c["solucao_texto"],
+                               _estilo(lang, 10.5, False, COR_PRETO, alinh=TA_JUSTIFY)))
+    for col in c.get("solucao_colunas", []):
+        story.append(Paragraph(_texto_item(col, " — "),
+                               _estilo(lang, 10, False, COR_PRETO, depois=3)))
+
+    # ===== 7. ALCANCE GLOBAL =====
+    story.append(Paragraph(c.get("alcance_titulo", "Alcance Global"),
+                           _estilo(lang, 16, True, COR_AZUL, antes=14)))
+    if c.get("alcance_texto"):
+        story.append(Paragraph(c["alcance_texto"],
+                               _estilo(lang, 10.5, False, COR_PRETO, alinh=TA_JUSTIFY)))
+    for linha in c.get("linhas_idiomas", []):
+        story.append(Paragraph(_texto_item(linha, " — "),
+                               _estilo(lang, 10, False, COR_PRETO, depois=2)))
+    if c.get("total_linha"):
+        story.append(Paragraph(f"{c['total_linha']} — ~5.320",
+                               _estilo(lang, 10, True, COR_AZUL, antes=4)))
+
+    # ===== 8. TRÊS NOVOS MERCADOS =====
+    story.append(Paragraph(c.get("mercados_titulo", "3 Novos Mercados"),
+                           _estilo(lang, 16, True, COR_AZUL, antes=14)))
+    if c.get("mercados_texto"):
+        story.append(Paragraph(c["mercados_texto"],
+                               _estilo(lang, 10.5, False, COR_PRETO, alinh=TA_JUSTIFY)))
+    for m in c.get("mercados_cards", []):
+        nome = _campo(m, "titulo", 0)
+        dados = _campo(m, "subtitulo", 1)
+        if isinstance(dados, (list, tuple)):
+            dados = "; ".join(str(d) for d in dados)
+        story.append(Paragraph(f"<b>{nome}</b> — {dados}",
+                               _estilo(lang, 10, False, COR_PRETO, depois=3)))
+    if c.get("mercados_rodape"):
+        story.append(Paragraph(c["mercados_rodape"],
+                               _estilo(lang, 10, True, COR_AZUL, alinh=TA_JUSTIFY, antes=4)))
+
+    # ===== 9. FILOSOFIA DE PREÇO =====
+    story.append(Paragraph(c.get("preco_titulo", "Filosofia de Preço Consciente"),
+                           _estilo(lang, 16, True, COR_AZUL, antes=14)))
+    if c.get("preco_esq"):
+        story.append(Paragraph(c["preco_esq"],
+                               _estilo(lang, 10.5, False, COR_PRETO, alinh=TA_JUSTIFY)))
+    if c.get("preco_dir_titulo"):
+        story.append(Paragraph(c["preco_dir_titulo"],
+                               _estilo(lang, 11, True, COR_PRETO, antes=6)))
+    if c.get("preco_dir"):
+        story.append(Paragraph(c["preco_dir"],
+                               _estilo(lang, 10, False, COR_PRETO, alinh=TA_JUSTIFY)))
+    for p in c.get("preco_pilares", []):
+        story.append(Paragraph(_texto_item(p, " — "),
+                               _estilo(lang, 10, False, COR_PRETO, depois=3)))
+
+    # ===== 10. PORTFÓLIO =====
+    story.append(Paragraph(c.get("portfolio_titulo", "Portfólio"),
+                           _estilo(lang, 16, True, COR_AZUL, antes=14)))
+    if c.get("portfolio_texto"):
+        story.append(Paragraph(c["portfolio_texto"],
+                               _estilo(lang, 10.5, False, COR_PRETO, alinh=TA_JUSTIFY)))
+    for linha in c.get("portfolio_tabela", []):
+        story.append(Paragraph(_texto_item(linha, " — "),
+                               _estilo(lang, 10, False, COR_PRETO, depois=2)))
+    if c.get("portfolio_rodape"):
+        story.append(Paragraph(c["portfolio_rodape"],
+                               _estilo(lang, 10, True, COR_CINZA, alinh=TA_JUSTIFY, antes=4)))
+
+    # ===== 11. MODELO DE NEGÓCIO =====
+    story.append(Paragraph(c.get("negocio_titulo", "Modelo de Negócio"),
+                           _estilo(lang, 16, True, COR_AZUL, antes=14)))
+    if c.get("negocio_texto"):
+        story.append(Paragraph(c["negocio_texto"],
+                               _estilo(lang, 10.5, False, COR_PRETO, alinh=TA_JUSTIFY)))
+    for col in c.get("negocio_colunas", []):
+        story.append(Paragraph(_texto_item(col, " — "),
+                               _estilo(lang, 10, False, COR_PRETO, depois=3)))
+    if c.get("b2c_linha") and c.get("fonte_receita"):
+        story.append(Paragraph(f"{c['fonte_receita']}: {c['b2c_linha']} — 60% · {c['b2b_linha']} — 25% · {c['pub_linha']} — 15%",
+                               _estilo(lang, 10, False, COR_PRETO, antes=4)))
+
+    # ===== 12. BANNERS PUBLICITÁRIOS =====
+    story.append(Paragraph(c.get("banners_titulo", "Banners Publicitários"),
+                           _estilo(lang, 16, True, COR_AZUL, antes=14)))
+    if c.get("banners_texto"):
+        story.append(Paragraph(c["banners_texto"],
+                               _estilo(lang, 10.5, False, COR_PRETO, alinh=TA_JUSTIFY)))
+    for linha in c.get("banners_tabela", []):
+        story.append(Paragraph(_texto_item(linha, " — "),
+                               _estilo(lang, 10, False, COR_PRETO, depois=2)))
+    if c.get("banners_formatos"):
+        story.append(Paragraph(c["banners_formatos"],
+                               _estilo(lang, 9.5, False, COR_CINZA, alinh=TA_JUSTIFY, antes=4)))
+
+    # ===== 13. PACOTES B2B =====
+    story.append(Paragraph(c.get("b2b_titulo", "Pacotes Empresariais B2B"),
+                           _estilo(lang, 16, True, COR_AZUL, antes=14)))
+    if c.get("b2b_texto"):
+        story.append(Paragraph(c["b2b_texto"],
+                               _estilo(lang, 10.5, False, COR_PRETO, alinh=TA_JUSTIFY)))
+    for plano in c.get("b2b_planos", []):
+        story.append(Paragraph(_texto_item(plano, " — "),
+                               _estilo(lang, 10, False, COR_PRETO, depois=3)))
+    if c.get("tabela_descontos"):
+        story.append(Paragraph(c["tabela_descontos"],
+                               _estilo(lang, 11, True, COR_PRETO, antes=6)))
+    for linha in c.get("b2b_tabela", []):
+        story.append(Paragraph(_texto_item(linha, " — "),
+                               _estilo(lang, 10, False, COR_PRETO, depois=2)))
+
+    # ===== 14. PROJEÇÕES FINANCEIRAS =====
+    story.append(Paragraph(c.get("projecoes_titulo", "Projeções Financeiras"),
+                           _estilo(lang, 16, True, COR_AZUL, antes=14)))
+    if c.get("projecoes_texto"):
+        story.append(Paragraph(c["projecoes_texto"],
+                               _estilo(lang, 10.5, False, COR_PRETO, alinh=TA_JUSTIFY)))
+    for linha in c.get("projecoes_tabela", []):
+        story.append(Paragraph(_texto_item(linha, " — "),
+                               _estilo(lang, 10, False, COR_PRETO, depois=2)))
+
+    # ===== 15. TRAÇÃO =====
+    story.append(Paragraph(c.get("tracao_titulo", "Tração e Resultados"),
+                           _estilo(lang, 16, True, COR_AZUL, antes=14)))
+    if c.get("tracao_texto"):
+        story.append(Paragraph(c["tracao_texto"],
+                               _estilo(lang, 10.5, False, COR_PRETO, alinh=TA_JUSTIFY)))
+    for k in c.get("tracao_kpis", []):
+        story.append(Paragraph(_texto_item(k, " — "),
+                               _estilo(lang, 10, False, COR_PRETO, depois=3)))
+
+    # ===== 16. ROTEIRO ESTRATÉGICO =====
+    story.append(Paragraph(c.get("roteiro_titulo", "Roteiro Estratégico"),
+                           _estilo(lang, 16, True, COR_AZUL, antes=14)))
+    if c.get("roteiro_texto"):
+        story.append(Paragraph(c["roteiro_texto"],
+                               _estilo(lang, 10.5, False, COR_PRETO, alinh=TA_JUSTIFY)))
+    for f in c.get("roteiro_fases", []):
+        story.append(Paragraph(_texto_item(f, " — "),
+                               _estilo(lang, 10, False, COR_PRETO, depois=3)))
+
+    # ===== 17. INVESTIMENTO & CONTATO =====
+    story.append(Paragraph(c.get("invest_titulo", "Investimento & Contato"),
+                           _estilo(lang, 16, True, COR_AZUL, antes=14)))
+    if c.get("invest_texto"):
+        story.append(Paragraph(c["invest_texto"],
+                               _estilo(lang, 10.5, False, COR_PRETO, alinh=TA_JUSTIFY)))
+    for d in c.get("invest_dados", []):
+        story.append(Paragraph(_texto_item(d, ": "),
+                               _estilo(lang, 10, False, COR_PRETO, depois=3)))
+    for ct in c.get("invest_contato", []):
+        story.append(Paragraph(_texto_item(ct, ": "),
+                               _estilo(lang, 10, False, COR_PRETO, depois=3)))
+    if c.get("invest_alocacao"):
+        story.append(Paragraph(c["invest_alocacao"],
+                               _estilo(lang, 10, True, COR_AZUL, antes=4)))
+
+    # ===== 18. BRASIL: PIX =====
+    story.append(Paragraph(c.get("pix_titulo", "Brasil: A Infraestrutura Pix"),
+                           _estilo(lang, 16, True, COR_AZUL, antes=14)))
+    if c.get("pix_texto"):
+        story.append(Paragraph(c["pix_texto"],
+                               _estilo(lang, 10.5, False, COR_PRETO, alinh=TA_JUSTIFY)))
+    for k in c.get("pix_kpis", []):
+        story.append(Paragraph(_texto_item(k, " — "),
+                               _estilo(lang, 10, False, COR_PRETO, depois=3)))
+    if c.get("pix_fonte"):
+        story.append(Paragraph(c["pix_fonte"],
+                               _estilo(lang, 9, False, COR_CINZA, alinh=TA_JUSTIFY, antes=4)))
+
+    # ===== 19. REFERÊNCIAS =====
+    story.append(Paragraph(c.get("ref_titulo", "Referências Bibliográficas"),
+                           _estilo(lang, 16, True, COR_AZUL, antes=14)))
+    if c.get("ref_intro"):
+        story.append(Paragraph(c["ref_intro"],
+                               _estilo(lang, 10, False, COR_CINZA, alinh=TA_JUSTIFY)))
+    for r in c.get("ref_lista", []):
+        story.append(Paragraph(_texto_item(r, " — "),
+                               _estilo(lang, 10, False, COR_PRETO, depois=3)))
+
+    # ===== 20. BLOCO JURÍDICO (SE EXISTIR) =====
+    if c.get("bloco_juridico"):
+        story.append(HRFlowable(width="100%", thickness=1, color=COR_DOURADO,
+                                spaceBefore=10, spaceAfter=6))
+        for sec in c["bloco_juridico"]:
+            if isinstance(sec, dict):
+                if sec.get("titulo"):
+                    story.append(Paragraph(sec["titulo"],
+                                           _estilo(lang, 12, True, COR_AZUL, antes=8)))
+                for it in sec.get("itens", []):
+                    story.append(Paragraph(it,
+                                           _estilo(lang, 9.5, False, COR_CINZA, alinh=TA_JUSTIFY)))
+
+    # ===== 21. PÁGINA FINAL =====
+    story.append(Spacer(1, 30))
+    story.append(HRFlowable(width="55%", thickness=1.2, color=COR_DOURADO,
+                            hAlign="CENTER", spaceBefore=6, spaceAfter=8))
+    story.append(Paragraph(c.get("frase_final", "Os números nunca mentem."),
+                           _estilo(lang, 18, True, COR_AZUL, TA_CENTER)))
+    for s in c.get("selo_final", []):
+        story.append(Paragraph(str(s), _estilo(lang, 10, True, COR_DOURADO, TA_CENTER, depois=2)))
+
+    # ===== CABEÇALHO (2 LOGOS) E RODAPÉ — todas as páginas =====
+    def on_page(canvas, doc_):
+        _cabecalho_duas_logos(canvas, doc_, c, lang, cor_fundo=COR_AZUL)
+        _rodape(canvas, doc_, c, lang)
+
+    doc.build(story, onFirstPage=on_page, onLaterPages=on_page)
+    return caminho_saida
+
+def _titulo_pagina(canvas, doc_, c, lang, num, total):
+    """Título da página + cabeçalho com 2 logos (usado nos slides)."""
+    _cabecalho_duas_logos(canvas, doc_, c, lang, cor_fundo=COR_AZUL)
+    # Número do slide (X-Y) no rodapé
+    _rodape(canvas, doc_, c, lang, num_pag=num, total_pag=total)
+
+def _rodape_slides(canvas, doc_, c, lang, num, total):
+    _rodape(canvas, doc_, c, lang, num_pag=num, total_pag=total)
+
+def _capa(canvas, doc_, c, lang):
+    """Capa dos slides — sem capa preta, título central, com as 2 logos."""
+    _cabecalho_duas_logos(canvas, doc_, c, lang, cor_fundo=COR_AZUL)
+    _rodape(canvas, doc_, c, lang)
+    
 # ============================================================
 # BLOCO JURÍDICO / GOVERNANÇA E COMPLIANCE (SEÇÕES 19-29)
 # Conteúdo em PT com fallback para todos os idiomas.
@@ -220,18 +646,6 @@ def _registrar_fontes_extra():
                     break
     except Exception as e:
         logger.warning("Fontes extras: %s", e)
-
-def _fonte(lang, negrito=False):
-    if lang == "zh":
-        return "STSong-Light"
-    if lang == "ja":
-        return "HeiseiMin-W3"
-    if lang in ("ru", "ar", "he", "id", "tr", "vi"):
-        if negrito and _FONTES_EXTRA.get("DejaVu-Bold"):
-            return "DejaVu-Bold"
-        if _FONTES_EXTRA.get("DejaVu"):
-            return "DejaVu"
-    return FONTES["bold" if negrito else "normal"]
 
 # ------------------------------------------------------------
 # CONTEÚDO — PORTUGUÊS EXPANDIDO (FASE 1)
@@ -3321,1437 +3735,6 @@ def _bandeira(doc, x, y, w, h, pais):
     doc.setStrokeColor(HexColor("#888888"))
     doc.setLineWidth(0.3)
     doc.rect(x, y, w, h, stroke=1, fill=0)
-
-def _rodape(doc, largura, altura, lang, c, pagina):
-    # Linha 1 — centro: título · DUNS · confidencialidade (igual ao atual)
-    doc.setFillColor(COR_CINZA_CLARO)
-    doc.setFont(_fonte(lang), 8)
-    doc.drawCentredString(largura / 2, 10 * mm,
-                          f"{c['titulo']} · DUNS 942242668 · {c['confidencial']} {c['ano']}")
-    # Linha 1 — direita: folha atual - total (a capa não conta)
-    doc.setFillColor(COR_DOURADO)
-    doc.setFont(_fonte(lang, True), 9)
-    doc.drawRightString(largura - 15 * mm, 10 * mm, f"{pagina - 1}-{TOTAL_PAGINAS - 2}")
-    # Linha 2 — centro: contatos, discretos (para anotar em exposição)
-    doc.setFillColorRGB(0.55, 0.55, 0.55)
-    doc.setFont(_fonte(lang), 7)
-    doc.drawCentredString(largura / 2, 4 * mm, CONTATOS)
-    
-# ------------------------------------------------------------
-# CAPA
-# ------------------------------------------------------------
-def _capa(doc, largura, altura, lang, modo):
-    c = CONTEUDO.get(lang, CONTEUDO["pt"])
-    doc.setFillColor(COR_PRETO)
-    doc.rect(0, 0, largura, altura, stroke=0, fill=1)
-    # Logo
-    if os.path.exists(LOGO_PATH):
-        try:
-            iw, ih = ImageReader(LOGO_PATH).getSize()
-            lw = min(largura * 0.28, iw)
-            lh = lw * ih / iw
-            doc.drawImage(LOGO_PATH, (largura - lw) / 2, altura * 0.60,
-                          width=lw, height=lh, mask="auto")
-        except Exception:
-            pass
-    doc.setFillColor(COR_DOURADO)
-    doc.setFont(_fonte(lang, True), 30 if modo == "texto" else 34)
-    doc.drawCentredString(largura / 2, altura * 0.47, c["titulo"])
-    doc.setFillColor(white)
-    doc.setFont(_fonte(lang), 14)
-    doc.drawCentredString(largura / 2, altura * 0.41, c["subtitulo"])
-    doc.setStrokeColor(COR_DOURADO)
-    doc.setLineWidth(0.8)
-    doc.line(largura * 0.30, altura * 0.385, largura * 0.70, altura * 0.385)
-    doc.setFillColor(HexColor("#AAAAAA"))
-    doc.setFont(_fonte(lang), 11)
-    doc.drawCentredString(largura / 2, altura * 0.35, c["capa_nota"])
-    doc.setFillColor(COR_DOURADO)
-    doc.setFont(_fonte(lang, True), 12)
-    doc.drawCentredString(largura / 2, altura * 0.28, "DUNS 942242668")
-    doc.setFillColor(HexColor("#888888"))
-    doc.setFont(_fonte(lang), 9)
-    doc.drawCentredString(largura / 2, altura * 0.08,
-                          f"{c['confidencial']}  {c['ano']}")
-
-# ------------------------------------------------------------
-# PÁGINAS DE CONTEÚDO (layout editorial)
-# ------------------------------------------------------------
-def _titulo_pagina(doc, largura, altura, lang, titulo, indice=None):
-    doc.setFillColor(COR_AZUL)
-    doc.rect(0, altura - 18 * mm, largura, 18 * mm, stroke=0, fill=1)
-    doc.setFillColor(white)
-    doc.setFont(_fonte(lang, True), 16)
-    doc.drawString(18 * mm, altura - 12 * mm, titulo)
-    if indice is not None:
-        doc.setFont(_fonte(lang, True), 11)
-        doc.drawRightString(largura - 30 * mm, altura - 12 * mm, "%02d" % indice)
-       # Logo do SITE (Numerologia) — canto superior ESQUERDO
-    if os.path.exists(LOGO_PATH):
-        try:
-            iw, ih = ImageReader(LOGO_PATH).getSize()
-            lw = 10 * mm
-            lh = lw * ih / iw
-            doc.drawImage(LOGO_PATH, 6 * mm, altura - 15 * mm,
-                          width=lw, height=lh, mask="auto")
-        except Exception:
-            pass
-    # Logo A1ELOS — canto superior DIREITO
-    if os.path.exists(LOGO_A1ELOS):
-        try:
-            iw, ih = ImageReader(LOGO_A1ELOS).getSize()
-            lw = 9 * mm
-            lh = lw * ih / iw
-            doc.drawImage(LOGO_A1ELOS, largura - 12 * mm - lw, altura - 15 * mm,
-                          width=lw, height=lh, mask="auto")
-        except Exception:
-            pass
-
-def _kpis_grid(doc, largura, altura, lang, kpis, y, colunas=4):
-    margem = 18 * mm
-    gap = 6 * mm
-    w = (largura - 2 * margem - (colunas - 1) * gap) / colunas
-    x0 = margem
-    max_h = 0
-    for i, item in enumerate(kpis):
-        dois = (len(item) == 2)
-        h = 40 * mm if dois else 30 * mm
-        max_h = max(max_h, h)
-        x = x0 + i * (w + gap)
-        _caixa(doc, x, y - h, w, h, COR_FUNDO, COR_DOURADO)
-        if dois:
-            doc.setFillColor(COR_AZUL)
-            doc.setFont(_fonte(lang, True), 9)
-            _texto_wrap(doc, item[0], _fonte(lang, True), 9, x + 4 * mm, y - 10 * mm,
-                        w - 8 * mm, COR_AZUL, 4 * mm, y_min=y - h + 4 * mm)
-            doc.setFillColor(COR_CINZA)
-            doc.setFont(_fonte(lang), 7.5)
-            _texto_wrap(doc, item[1], _fonte(lang), 7.5, x + 4 * mm, y - 16 * mm,
-                        w - 8 * mm, COR_CINZA, 3.5 * mm, y_min=y - h + 4 * mm)
-        else:
-            num, rot, sub = item
-            doc.setFillColor(COR_DOURADO)
-            doc.setFont(_fonte(lang, True), 22)
-            doc.drawCentredString(x + w / 2, y - h + 18 * mm, num)
-            doc.setFillColor(COR_PRETO)
-            doc.setFont(_fonte(lang, True), 10)
-            doc.drawCentredString(x + w / 2, y - h + 10 * mm, rot)
-            if sub:
-                doc.setFillColor(COR_CINZA)
-                doc.setFont(_fonte(lang), 8)
-                _texto_wrap(doc, sub, _fonte(lang), 8, x + 4 * mm, y - h + 5 * mm,
-                            w - 8 * mm, COR_CINZA, 3.5 * mm, y_min=y - h + 2 * mm)
-    return y - max_h - 6 * mm
-    
-def _tabela_editorial(doc, x, y, largura, dados, colunas_pct, tam=9, lang="pt"):
-    est = ParagraphStyle("cel", fontName=_fonte(lang), fontSize=tam,
-                         leading=tam * 1.25, textColor=COR_PRETO)
-    est_head = ParagraphStyle("chead", fontName=_fonte(lang, True), fontSize=tam,
-                              leading=tam * 1.25, textColor=white)
-    corpo = []
-    for r, linha in enumerate(dados):
-        est_c = est_head if r == 0 else est
-        corpo.append([Paragraph(str(cel), est_c) for cel in linha])
-    tbl = Table(corpo, colWidths=[largura * p for p in colunas_pct])
-    tbl.setStyle(TableStyle([
-        ("BACKGROUND", (0, 0), (-1, 0), COR_AZUL),
-        ("TEXTCOLOR", (0, 0), (-1, 0), white),
-        ("GRID", (0, 0), (-1, -1), 0.4, COR_CINZA_CLARO),
-        ("ROWBACKGROUNDS", (0, 1), (-1, -1), [white, COR_FUNDO]),
-        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-        ("TOPPADDING", (0, 0), (-1, -1), 5),
-        ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
-        ("LEFTPADDING", (0, 0), (-1, -1), 6),
-        ("RIGHTPADDING", (0, 0), (-1, -1), 6),
-    ]))
-    w, h = tbl.wrapOn(doc, largura, 600)
-    tbl.drawOn(doc, x, y - h)
-    return y - h
-    
-def _grafico_barras(doc, x, y, w, h, categorias, valores, titulo, cores=None):
-    """Barras com cor distinta por categoria + legenda (cor -> significado)."""
-    try:
-        n = len(valores)
-        if n == 0:
-            return
-        paleta = cores or CORES_GRAFICO
-        cores_barra = [paleta[i % len(paleta)] for i in range(n)]
-        max_v = max([abs(v) for v in valores] + [1])
-        area_x = x + 20
-        area_y = y + 8
-        area_w = w - 40 - 110          # reserva direita para a legenda
-        area_h = h - 30
-        gap = 6
-        bar_w = max(6, (area_w - gap * (n - 1)) / n)
-        # titulo
-        doc.setFillColor(COR_PRETO)
-        doc.setFont(_fonte("pt", True), 9)
-        doc.drawCentredString(x + w / 2, y + h - 12, titulo)
-        # grade e eixo
-        doc.setStrokeColor(HexColor("#D8DAE0"))
-        doc.setLineWidth(0.5)
-        for g_i in range(5):
-            gy = area_y + (g_i / 4.0) * (area_h - 6)
-            doc.line(area_x, gy, area_x + area_w, gy)
-            doc.setFillColor(COR_CINZA_CLARO)
-            doc.setFont(_fonte("pt"), 6)
-            doc.drawRightString(area_x - 3, gy - 2,
-                                format(int(max_v * g_i / 4.0), ",").replace(",", "."))
-        # barras coloridas
-        for i, v in enumerate(valores):
-            bx = area_x + i * (bar_w + gap)
-            bh = max((v / max_v) * (area_h - 6), 1)
-            doc.setFillColor(cores_barra[i])
-            doc.rect(bx, area_y, bar_w, bh, stroke=0, fill=1)
-            doc.setFillColor(COR_PRETO)
-            doc.setFont(_fonte("pt", True), 6.5)
-            doc.drawCentredString(bx + bar_w / 2, area_y + bh + 2,
-                                  format(int(v), ",").replace(",", "."))
-            # rotulo da categoria (inclinado)
-            doc.saveState()
-            doc.translate(bx + bar_w / 2, area_y - 2)
-            doc.rotate(45)
-            doc.setFillColor(COR_CINZA)
-            doc.setFont(_fonte("pt"), 7)
-            doc.drawCentredString(0, 0, str(categorias[i])[:14])
-            doc.restoreState()
-        # legenda: cor -> significado
-        lx = x + area_w + 28
-        ly = y + h - 22
-        doc.setFillColor(COR_PRETO)
-        doc.setFont(_fonte("pt", True), 8)
-        doc.drawString(lx, ly + 6, "Legenda")
-        for i, c_ in enumerate(cores_barra):
-            doc.setFillColor(c_)
-            doc.rect(lx, ly - i * 13, 8, 8, stroke=0, fill=1)
-            doc.setFillColor(COR_PRETO)
-            doc.setFont(_fonte("pt"), 7)
-            doc.drawString(lx + 12, ly - i * 13, str(categorias[i])[:24])
-    except Exception as e:
-        logger.warning("Grafico barras: %s", e)
-
-def _grafico_linha(doc, x, y, w, h, categorias, series, titulo, cores=None):
-    """Linha do tempo com linhas grossas e coloridas (crescimento)."""
-    try:
-        n = len(categorias)
-        if n == 0:
-            return
-        paleta = cores or [COR_AZUL, COR_DOURADO, HexColor("#3B82F6")]
-        max_v = 1
-        for nome, valores in series:
-            max_v = max(max_v, max([abs(v) for v in valores]))
-        area_x = x + 20
-        area_y = y + 8
-        area_w = w - 40 - 110
-        area_h = h - 30
-        # titulo
-        doc.setFillColor(COR_PRETO)
-        doc.setFont(_fonte("pt", True), 9)
-        doc.drawCentredString(x + w / 2, y + h - 12, titulo)
-        # grade
-        doc.setStrokeColor(HexColor("#D8DAE0"))
-        doc.setLineWidth(0.5)
-        for g_i in range(5):
-            gy = area_y + (g_i / 4.0) * (area_h - 6)
-            doc.line(area_x, gy, area_x + area_w, gy)
-            doc.setFillColor(COR_CINZA_CLARO)
-            doc.setFont(_fonte("pt"), 6)
-            doc.drawRightString(area_x - 3, gy - 2,
-                                format(int(max_v * g_i / 4.0), ",").replace(",", "."))
-        # linhas grossas e coloridas
-        for si, (nome, valores) in enumerate(series):
-            cor = paleta[si % len(paleta)]
-            pts = []
-            for i, v in enumerate(valores):
-                px = area_x + (i / (n - 1)) * area_w
-                py = area_y + (v / max_v) * (area_h - 6)
-                pts.append((px, py))
-            doc.setStrokeColor(cor)
-            doc.setLineWidth(3)
-            p = doc.beginPath()
-            p.moveTo(*pts[0])
-            for pt in pts[1:]:
-                p.lineTo(*pt)
-            doc.drawPath(p, stroke=1, fill=0)
-            for px, py in pts:
-                doc.setFillColor(cor)
-                doc.circle(px, py, 2.5, stroke=0, fill=1)
-        # rotulos das categorias (abaixo, em tom escuro, sem rotacionar)
-        for i, cat in enumerate(categorias):
-            px = area_x + (i / (n - 1)) * area_w
-            doc.setFillColor(COR_PRETO)
-            doc.setFont(_fonte("pt", True), 7)
-            doc.drawCentredString(px, area_y - 4, str(cat))
-        # legenda (sem invadir o grafico)
-        lx = x + area_w + 28
-        ly = y + h - 22
-        doc.setFillColor(COR_PRETO)
-        doc.setFont(_fonte("pt", True), 8)
-        doc.drawString(lx, ly + 6, "Legenda")
-        for si, (nome, valores) in enumerate(series):
-            cor = paleta[si % len(paleta)]
-            doc.setStrokeColor(cor)
-            doc.setLineWidth(3)
-            doc.line(lx, ly - si * 13 + 4, lx + 10, ly - si * 13 + 4)
-            doc.setFillColor(COR_PRETO)
-            doc.setFont(_fonte("pt"), 7)
-            doc.drawString(lx + 14, ly - si * 13, str(nome)[:24])
-    except Exception as e:
-        logger.warning("Grafico linha: %s", e)
-
-# ------------------------------------------------------------
-# GERADOR TEXTO (documento editorial)
-# ------------------------------------------------------------
-def gerar_pdf_texto(lang="pt", caminho_saida=None): 
-    logger.info(">>> MARKER PDF TEXTO NOVO v2026-09-04")
-    _registrar_cid()
-    _registrar_fontes_extra()
-    if lang not in CONTEUDO:
-        lang = "pt"
-    c = CONTEUDO[lang]
-    if not caminho_saida:
-        caminho_saida = os.path.join(STATIC_DIR, f"apresentacao_{lang}.pdf")
-    largura, altura = A4
-    doc = canvas.Canvas(caminho_saida, pagesize=A4)
-    pagina = 1
-    # CAPA
-    _capa(doc, largura, altura, lang, "texto")
-    doc.showPage()
-    pagina += 1
-    # SUMÁRIO EXECUTIVO
-    _titulo_pagina(doc, largura, altura, lang, c.get("sumario_titulo", "Sumário Executivo"), 1)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c["sumario_intro"], _fonte(lang), 11, 18 * mm, y,
-                    largura - 36 * mm, COR_CINZA, 5 * mm)
-    y -= 4 * mm
-    cards = c["sumario_cards"]
-    margem = 18 * mm
-    gap = 6 * mm
-    w = (largura - 2 * margem - 2 * gap) / 3
-    h = 26 * mm
-    for i, (num, tit, sub) in enumerate(cards):
-        col = i % 3
-        lin = i // 3
-        x = margem + col * (w + gap)
-        yy = y - lin * (h + 6 * mm)
-        _caixa(doc, x, yy - h, w, h, COR_FUNDO, COR_DOURADO)
-        doc.setFillColor(COR_DOURADO)
-        doc.setFont(_fonte(lang, True), 18)
-        doc.drawString(x + 6 * mm, yy - h + 16 * mm, num)
-        doc.setFillColor(COR_PRETO)
-        doc.setFont(_fonte(lang, True), 10)
-        doc.drawString(x + 6 * mm, yy - h + 10 * mm, tit)
-        doc.setFillColor(COR_CINZA)
-        doc.setFont(_fonte(lang), 8)
-        _texto_wrap(doc, sub, _fonte(lang), 8, x + 6 * mm, yy - h + 5 * mm,
-                    w - 12 * mm, COR_CINZA, 3.5 * mm)
-    _rodape(doc, largura, altura, lang, c, pagina)
-    doc.showPage()
-    pagina += 1
-    # SOBRE + KPIs
-    _titulo_pagina(doc, largura, altura, lang, c["sobre_titulo"], 2)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c["sobre_texto"], _fonte(lang), 11.5, 18 * mm, y,
-                    largura - 36 * mm, COR_PRETO, 6 * mm)
-    y -= 3 * mm
-    y = _kpis_grid(doc, largura, altura, lang, c["sobre_kpis"], y, 4)
-    y -= 4 * mm
-    _caixa(doc, 18 * mm, y - 16 * mm, largura - 36 * mm, 16 * mm, HexColor("#EEF2FA"), COR_AZUL)
-    doc.setFillColor(COR_AZUL)
-    doc.setFont(_fonte(lang, True), 9)
-    _texto_wrap(doc, c["sobre_duns"], _fonte(lang, True), 9, 22 * mm, y - 11 * mm,
-                largura - 44 * mm, COR_AZUL, 4 * mm)
-    _rodape(doc, largura, altura, lang, c, pagina)
-    doc.showPage()
-    pagina += 1
-    # CREDIBILIDADE (2 colunas)
-    _titulo_pagina(doc, largura, altura, lang, c["duns_titulo"], 3)
-    y = altura - 32 * mm
-    col_w = (largura - 36 * mm - 8 * mm) / 2
-    _caixa(doc, 18 * mm, y - 70 * mm, col_w, 70 * mm, COR_PRETO, COR_DOURADO)
-    doc.setFillColor(COR_DOURADO)
-    doc.setFont(_fonte(lang, True), 28)
-    doc.drawCentredString(18 * mm + col_w / 2, y - 30 * mm, c["duns_numero"])
-    doc.setFillColor(white)
-    doc.setFont(_fonte(lang), 10)
-    _texto_wrap(doc, c["duns_emitido"], _fonte(lang), 10, 24 * mm, y - 44 * mm,
-                col_w - 12 * mm, white, 4.5 * mm)
-    doc.setFillColor(COR_DOURADO)
-    doc.setFont(_fonte(lang, True), 14)
-    doc.drawCentredString(18 * mm + col_w / 2, y - 62 * mm, c["duns_paises"])
-    xr = 18 * mm + col_w + 8 * mm
-    doc.setFillColor(COR_PRETO)
-    doc.setFont(_fonte(lang, True), 12)
-    doc.drawString(xr, y - 8 * mm, c.get("duns_porque", "Por que o DUNS importa?"))
-    yy = y - 16 * mm
-    yy = _texto_wrap(doc, c["duns_texto"], _fonte(lang), 10, xr, yy,
-                     col_w, COR_CINZA, 4.5 * mm)
-    yy -= 6 * mm
-    for tit, sub in c["duns_beneficios"]:
-        _caixa(doc, xr, yy - 20 * mm, col_w, 20 * mm, COR_FUNDO, COR_DOURADO)
-        doc.setFillColor(COR_AZUL)
-        doc.setFont(_fonte(lang, True), 10)
-        doc.drawString(xr + 5 * mm, yy - 14 * mm, tit)
-        doc.setFillColor(COR_CINZA)
-        doc.setFont(_fonte(lang), 8)
-        _texto_wrap(doc, sub, _fonte(lang), 8, xr + 5 * mm, yy - 10 * mm,
-                    col_w - 10 * mm, COR_CINZA, 3.5 * mm)
-        yy -= 24 * mm
-    _rodape(doc, largura, altura, lang, c, pagina)
-    doc.showPage()
-    pagina += 1
-    # MERCADO
-    _titulo_pagina(doc, largura, altura, lang, c["mercado_titulo"], 4)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c["mercado_texto"], _fonte(lang), 11.5, 18 * mm, y,
-                    largura - 36 * mm, COR_PRETO, 6 * mm)
-    y -= 3 * mm
-    y = _kpis_grid(doc, largura, altura, lang, c["mercado_cards"], y, 4)
-    _rodape(doc, largura, altura, lang, c, pagina)
-    doc.showPage()
-    pagina += 1
-    # PROBLEMA (2 colunas)
-    _titulo_pagina(doc, largura, altura, lang, c["problema_titulo"], 5)
-    y = altura - 32 * mm
-    col_w = (largura - 36 * mm - 8 * mm) / 2
-    doc.setFillColor(COR_PRETO)
-    doc.setFont(_fonte(lang, True), 12)
-    doc.drawString(18 * mm, y - 8 * mm, c["problema_col_esq_titulo"])
-    yy = y - 16 * mm
-    for tit, sub in c["problema_col_esq"]:
-        _caixa(doc, 18 * mm, yy - 26 * mm, col_w, 26 * mm, COR_FUNDO, COR_DOURADO)
-        doc.setFillColor(COR_AZUL)
-        doc.setFont(_fonte(lang, True), 10)
-        doc.drawString(22 * mm, yy - 20 * mm, tit)
-        doc.setFillColor(COR_CINZA)
-        doc.setFont(_fonte(lang), 8)
-        _texto_wrap(doc, sub, _fonte(lang), 8, 22 * mm, yy - 15 * mm,
-                    col_w - 8 * mm, COR_CINZA, 3.5 * mm)
-        yy -= 30 * mm
-    xr = 18 * mm + col_w + 8 * mm
-    doc.setFillColor(COR_PRETO)
-    doc.setFont(_fonte(lang, True), 12)
-    doc.drawString(xr, y - 8 * mm, c["problema_col_dir_titulo"])
-    yy = y - 16 * mm
-    yy = _texto_wrap(doc, c["problema_col_dir"], _fonte(lang), 10, xr, yy,
-                     col_w, COR_CINZA, 4.5 * mm)
-    yy -= 8 * mm
-    _caixa(doc, xr, yy - 34 * mm, col_w, 34 * mm, HexColor("#FFF3E0"), COR_DOURADO)
-    doc.setFillColor(COR_PRETO)
-    doc.setFont(_fonte(lang, True), 10)
-    _texto_wrap(doc, c["problema_destaque"], _fonte(lang, True), 10, xr + 6 * mm,
-                yy - 26 * mm, col_w - 12 * mm, COR_PRETO, 4.5 * mm)
-    _rodape(doc, largura, altura, lang, c, pagina)
-    doc.showPage()
-    pagina += 1
-    # SOLUÇÃO (3 colunas)
-    _titulo_pagina(doc, largura, altura, lang, c["solucao_titulo"], 6)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c["solucao_texto"], _fonte(lang), 11.5, 18 * mm, y,
-                    largura - 36 * mm, COR_PRETO, 6 * mm)
-    y -= 4 * mm
-    col_w = (largura - 36 * mm - 2 * 8 * mm) / 3
-    for i, (tit, sub) in enumerate(c["solucao_colunas"]):
-        x = 18 * mm + i * (col_w + 8 * mm)
-        _caixa(doc, x, y - 60 * mm, col_w, 60 * mm, COR_FUNDO, COR_DOURADO)
-        doc.setFillColor(COR_AZUL)
-        doc.setFont(_fonte(lang, True), 11)
-        _texto_wrap(doc, tit, _fonte(lang, True), 11, x + 5 * mm, y - 12 * mm,
-                    col_w - 10 * mm, COR_AZUL, 5 * mm)
-        doc.setFillColor(COR_CINZA)
-        doc.setFont(_fonte(lang), 9)
-        _texto_wrap(doc, sub, _fonte(lang), 9, x + 5 * mm, y - 22 * mm,
-                    col_w - 10 * mm, COR_CINZA, 4.5 * mm)
-    _rodape(doc, largura, altura, lang, c, pagina)
-    doc.showPage()
-    pagina += 1
-    # ALCANCE + TABELA IDIOMAS
-    _titulo_pagina(doc, largura, altura, lang, c["alcance_titulo"], 7)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c["alcance_texto"], _fonte(lang), 11, 18 * mm, y,
-                    largura - 36 * mm, COR_CINZA, 5 * mm)
-    y -= 4 * mm
-    linhas = c.get("linhas_idiomas", LINHAS_IDIOMAS)
-    dados = [[c.get("idioma_col", "Idioma"), c.get("falantes_col", "Falantes (mi)")]] \
-            + linhas + [[c.get("total_linha", "TOTAL"), "~5.320"]]
-    y = _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm, dados, [0.6, 0.4], 9, lang)
-    _rodape(doc, largura, altura, lang, c, pagina)
-    doc.showPage()
-    pagina += 1
-    # 3 NOVOS MERCADOS (3 colunas com bandeiras)
-    _titulo_pagina(doc, largura, altura, lang, c["mercados_titulo"], 8)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c["mercados_texto"], _fonte(lang), 11, 18 * mm, y,
-                    largura - 36 * mm, COR_CINZA, 5 * mm)
-    y -= 4 * mm
-    col_w = (largura - 36 * mm - 2 * 8 * mm) / 3
-    paises = ["id", "tr", "vn"]
-    for i, (tit, itens) in enumerate(c["mercados_cards"]):
-        x = 18 * mm + i * (col_w + 8 * mm)
-        _caixa(doc, x, y - 70 * mm, col_w, 70 * mm, COR_FUNDO, COR_DOURADO)
-        _bandeira(doc, x + 5 * mm, y - 22 * mm, 11 * mm, 7.5 * mm, paises[i])
-        doc.setFillColor(COR_AZUL)
-        doc.setFont(_fonte(lang, True), 12)
-        doc.drawString(x + 19 * mm, y - 12 * mm, tit)
-        yy = y - 20 * mm
-        for item in itens:
-            doc.setFillColor(COR_CINZA)
-            doc.setFont(_fonte(lang), 9)
-            yy = _texto_wrap(doc, "•  " + item, _fonte(lang), 9, x + 5 * mm, yy,
-                             col_w - 10 * mm, COR_CINZA, 4.5 * mm)
-    y -= 78 * mm
-    _caixa(doc, 18 * mm, y - 18 * mm, largura - 36 * mm, 18 * mm, HexColor("#EEF2FA"), COR_AZUL)
-    doc.setFillColor(COR_AZUL)
-    doc.setFont(_fonte(lang, True), 9)
-    _texto_wrap(doc, c["mercados_rodape"], _fonte(lang, True), 9, 22 * mm, y - 11 * mm,
-                largura - 44 * mm, COR_AZUL, 4 * mm)
-    _rodape(doc, largura, altura, lang, c, pagina)
-    doc.showPage()
-    pagina += 1
-    # PREÇO (2 colunas)
-    _titulo_pagina(doc, largura, altura, lang, c["preco_titulo"], 9)
-    y = altura - 32 * mm
-    col_w = (largura - 36 * mm - 8 * mm) / 2
-    _caixa(doc, 18 * mm, y - 50 * mm, col_w, 50 * mm, COR_PRETO, COR_DOURADO)
-    doc.setFillColor(COR_DOURADO)
-    doc.setFont(_fonte(lang, True), 12)
-    doc.drawString(22 * mm, y - 14 * mm, c.get("preco_consciente", "Preço Consciente"))
-    doc.setFillColor(white)
-    doc.setFont(_fonte(lang), 10)
-    _texto_wrap(doc, c["preco_esq"], _fonte(lang), 10, 22 * mm, y - 22 * mm,
-                col_w - 8 * mm, white, 4.5 * mm)
-    xr = 18 * mm + col_w + 8 * mm
-    doc.setFillColor(COR_PRETO)
-    doc.setFont(_fonte(lang, True), 12)
-    doc.drawString(xr, y - 8 * mm, c["preco_dir_titulo"])
-    yy = y - 16 * mm
-    yy = _texto_wrap(doc, c["preco_dir"], _fonte(lang), 10, xr, yy, col_w,
-                     COR_CINZA, 4.5 * mm)
-    yy -= 6 * mm
-    for tit, sub in c["preco_pilares"]:
-        _caixa(doc, xr, yy - 26 * mm, col_w, 26 * mm, COR_FUNDO, COR_DOURADO)
-        doc.setFillColor(COR_AZUL)
-        doc.setFont(_fonte(lang, True), 10)
-        doc.drawString(xr + 5 * mm, yy - 18 * mm, tit)
-        doc.setFillColor(COR_CINZA)
-        doc.setFont(_fonte(lang), 8)
-        _texto_wrap(doc, sub, _fonte(lang), 8, xr + 5 * mm, yy - 13 * mm,
-                    col_w - 10 * mm, COR_CINZA, 3.5 * mm, y_min=yy - 24 * mm)
-        yy -= 30 * mm
-    _rodape(doc, largura, altura, lang, c, pagina)
-    doc.showPage()
-    pagina += 1
-    # PORTFÓLIO (tabela 4 colunas)
-    _titulo_pagina(doc, largura, altura, lang, c["portfolio_titulo"], 10)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c["portfolio_texto"], _fonte(lang), 11, 18 * mm, y,
-                    largura - 36 * mm, COR_CINZA, 5 * mm)
-    y -= 4 * mm
-    y = _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
-                          c["portfolio_tabela"], [0.22, 0.38, 0.18, 0.22], 9, lang)
-    y -= 6 * mm
-    doc.setFillColor(COR_CINZA)
-    doc.setFont(_fonte(lang), 9)
-    _texto_wrap(doc, c["portfolio_rodape"], _fonte(lang), 9, 18 * mm, y,
-                largura - 36 * mm, COR_CINZA, 4 * mm)
-    _rodape(doc, largura, altura, lang, c, pagina)
-    doc.showPage()
-    pagina += 1
-    # NEGÓCIO (3 colunas)
-    _titulo_pagina(doc, largura, altura, lang, c["negocio_titulo"], 11)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c["negocio_texto"], _fonte(lang), 11, 18 * mm, y,
-                    largura - 36 * mm, COR_CINZA, 5 * mm)
-    y -= 4 * mm
-    col_w = (largura - 36 * mm - 2 * 8 * mm) / 3
-    for i, (tit, sub) in enumerate(c["negocio_colunas"]):
-        x = 18 * mm + i * (col_w + 8 * mm)
-        _caixa(doc, x, y - 60 * mm, col_w, 60 * mm, COR_FUNDO, COR_DOURADO)
-        doc.setFillColor(COR_AZUL)
-        doc.setFont(_fonte(lang, True), 11)
-        _texto_wrap(doc, tit, _fonte(lang, True), 11, x + 5 * mm, y - 12 * mm,
-                    col_w - 10 * mm, COR_AZUL, 5 * mm)
-        doc.setFillColor(COR_CINZA)
-        doc.setFont(_fonte(lang), 9)
-        _texto_wrap(doc, sub, _fonte(lang), 9, x + 5 * mm, y - 22 * mm,
-                    col_w - 10 * mm, COR_CINZA, 4.5 * mm)
-    _tabela_editorial(doc, 18 * mm, y - 60 * mm, largura - 36 * mm,
-                      [[c.get("fonte_receita", "Fonte de Receita"), c.get("participacao", "Participação")],
-                       [c.get("b2c_linha", "B2C — 14 Idiomas"), "60%"],
-                       [c.get("b2b_linha", "B2B — Descontos Progressivos"), "25%"],
-                       [c.get("pub_linha", "Publicidade Geolocalizada"), "15%"]],
-                      [0.7, 0.3], 10, lang)
-    _rodape(doc, largura, altura, lang, c, pagina)
-    doc.showPage()
-    pagina += 1
-    # BANNERS (tabela 4 colunas)
-    _titulo_pagina(doc, largura, altura, lang, c["banners_titulo"], 12)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c["banners_texto"], _fonte(lang), 11, 18 * mm, y,
-                    largura - 36 * mm, COR_CINZA, 5 * mm)
-    y -= 4 * mm
-    y = _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
-                          c["banners_tabela"], [0.24, 0.20, 0.24, 0.32], 9, lang)
-    y -= 8 * mm
-    _caixa(doc, 18 * mm, y - 20 * mm, largura - 36 * mm, 20 * mm, HexColor("#EEF2FA"), COR_AZUL)
-    doc.setFillColor(COR_AZUL)
-    doc.setFont(_fonte(lang), 9)
-    _texto_wrap(doc, c["banners_formatos"], _fonte(lang), 9, 22 * mm, y - 12 * mm,
-                largura - 44 * mm, COR_AZUL, 4 * mm)
-    _rodape(doc, largura, altura, lang, c, pagina)
-    doc.showPage()
-    pagina += 1
-    # B2B (3 planos + tabela)
-    _titulo_pagina(doc, largura, altura, lang, c["b2b_titulo"], 13)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c["b2b_texto"], _fonte(lang), 11, 18 * mm, y,
-                    largura - 36 * mm, COR_CINZA, 5 * mm)
-    y -= 4 * mm
-    col_w = (largura - 36 * mm - 2 * 8 * mm) / 3
-    for i, (tit, sub) in enumerate(c["b2b_planos"]):
-        x = 18 * mm + i * (col_w + 8 * mm)
-        _caixa(doc, x, y - 38 * mm, col_w, 38 * mm, COR_FUNDO, COR_DOURADO)
-        doc.setFillColor(COR_AZUL)
-        doc.setFont(_fonte(lang, True), 10)
-        _texto_wrap(doc, tit, _fonte(lang, True), 10, x + 5 * mm, y - 10 * mm,
-                    col_w - 10 * mm, COR_AZUL, 4.5 * mm)
-        doc.setFillColor(COR_CINZA)
-        doc.setFont(_fonte(lang), 8)
-        _texto_wrap(doc, sub, _fonte(lang), 8, x + 5 * mm, y - 18 * mm,
-                    col_w - 10 * mm, COR_CINZA, 3.8 * mm)
-    y -= 46 * mm
-    doc.setFillColor(COR_PRETO)
-    doc.setFont(_fonte(lang, True), 11)
-    doc.drawString(18 * mm, y - 6 * mm, c.get("tabela_descontos", "Tabela de Descontos Progressivos"))
-    y -= 12 * mm
-    _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
-                      c["b2b_tabela"], [0.22, 0.18, 0.28, 0.32], 9, lang)
-    _rodape(doc, largura, altura, lang, c, pagina)
-    doc.showPage()
-    pagina += 1
-    # PROJEÇÕES (tabela)
-    _titulo_pagina(doc, largura, altura, lang, c["projecoes_titulo"], 14)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c["projecoes_texto"], _fonte(lang), 11, 18 * mm, y,
-                    largura - 36 * mm, COR_CINZA, 5 * mm)
-    y -= 4 * mm
-    _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
-                      c["projecoes_tabela"], [0.3, 0.35, 0.35], 9, lang)
-    _grafico_barras(doc, 18 * mm, y - 100 * mm, largura - 36 * mm, 50 * mm,
-                    c.get("grafico_anos", ["Ano 1", "Ano 5", "Ano 10", "Ano 20", "Ano 50"]),
-                    [33, 500, 3000, 15000, 75000],
-                    c.get("grafico_titulo", "Projeção Conservadora (R$ mil)"))
-    _rodape(doc, largura, altura, lang, c, pagina)
-    doc.showPage()
-    pagina += 1
-    # TRAÇÃO (KPIs)
-    _titulo_pagina(doc, largura, altura, lang, c["tracao_titulo"], 15)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c["tracao_texto"], _fonte(lang), 11, 18 * mm, y,
-                    largura - 36 * mm, COR_CINZA, 5 * mm)
-    y -= 6 * mm
-    _kpis_grid(doc, largura, altura, lang, c["tracao_kpis"], y, 4)
-    _rodape(doc, largura, altura, lang, c, pagina)
-    doc.showPage()
-    pagina += 1
-    # ROTEIRO (4 fases em grid)
-    _titulo_pagina(doc, largura, altura, lang, c["roteiro_titulo"], 16)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c["roteiro_texto"], _fonte(lang), 11, 18 * mm, y,
-                    largura - 36 * mm, COR_CINZA, 5 * mm)
-    y -= 4 * mm
-    col_w = (largura - 36 * mm - 8 * mm) / 2
-    for i, (tit, sub) in enumerate(c["roteiro_fases"]):
-        col = i % 2
-        lin = i // 2
-        x = 18 * mm + col * (col_w + 8 * mm)
-        yy = y - lin * (44 * mm + 6 * mm)
-        _caixa(doc, x, yy - 44 * mm, col_w, 44 * mm, COR_FUNDO, COR_DOURADO)
-        doc.setFillColor(COR_AZUL)
-        doc.setFont(_fonte(lang, True), 11)
-        doc.drawString(x + 5 * mm, yy - 14 * mm, tit)
-        doc.setFillColor(COR_CINZA)
-        doc.setFont(_fonte(lang), 9)
-        _texto_wrap(doc, sub, _fonte(lang), 9, x + 5 * mm, yy - 22 * mm,
-                    col_w - 10 * mm, COR_CINZA, 4.5 * mm)
-    _rodape(doc, largura, altura, lang, c, pagina)
-    doc.showPage()
-    pagina += 1
-    # INVESTIMENTO (2 colunas)
-    _titulo_pagina(doc, largura, altura, lang, c["invest_titulo"], 17)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c["invest_texto"], _fonte(lang), 11, 18 * mm, y,
-                    largura - 36 * mm, COR_CINZA, 5 * mm)
-    y -= 4 * mm
-    col_w = (largura - 36 * mm - 8 * mm) / 2
-    _caixa(doc, 18 * mm, y - 60 * mm, col_w, 60 * mm, COR_PRETO, COR_DOURADO)
-    yy = y - 14 * mm
-    for tit, val in c["invest_dados"]:
-        doc.setFillColor(COR_DOURADO)
-        doc.setFont(_fonte(lang, True), 10)
-        doc.drawString(22 * mm, yy, tit)
-        doc.setFillColor(white)
-        doc.setFont(_fonte(lang, True), 14)
-        doc.drawString(22 * mm, yy - 7 * mm, val)
-        yy -= 18 * mm
-    xr = 18 * mm + col_w + 8 * mm
-    doc.setFillColor(COR_PRETO)
-    doc.setFont(_fonte(lang, True), 12)
-    doc.drawString(xr, y - 8 * mm, c.get("fale_conosco", "Fale Conosco"))
-    yy = y - 16 * mm
-    for tit, val in c["invest_contato"]:
-        doc.setFillColor(COR_AZUL)
-        doc.setFont(_fonte(lang, True), 10)
-        doc.drawString(xr, yy, tit)
-        doc.setFillColor(COR_CINZA)
-        doc.setFont(_fonte(lang), 10)
-        doc.drawString(xr, yy - 6 * mm, val)
-        yy -= 14 * mm
-    y -= 70 * mm
-    _caixa(doc, 18 * mm, y - 16 * mm, largura - 36 * mm, 16 * mm, HexColor("#EEF2FA"), COR_AZUL)
-    doc.setFillColor(COR_AZUL)
-    doc.setFont(_fonte(lang, True), 9)
-    doc.drawCentredString(largura / 2, y - 10 * mm, c["invest_alocacao"])
-    _rodape(doc, largura, altura, lang, c, pagina)
-    doc.showPage()
-    pagina += 1
-        # PIX — INFRAESTRUTURA DE PAGAMENTO NO BRASIL
-    _titulo_pagina(doc, largura, altura, lang,
-                   c.get("pix_titulo", "Brasil: A Infraestrutura Pix"), 18)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c.get("pix_texto",
-        "O Pix é a infraestrutura pública de pagamentos instantâneos do Brasil. Para a A1ELOS, "
-        "ele garante cobrança imediata, baixo custo e aceitação universal — o alicerce da operação "
-        "B2C no mercado brasileiro e a porta de entrada para a expansão internacional."),
-        _fonte(lang), 11, 18 * mm, y, largura - 36 * mm, COR_CINZA, 5 * mm)
-    y -= 4 * mm
-    y = _kpis_grid(doc, largura, altura, lang, c.get("pix_kpis", [
-        ("30,1 bi", "Transações em 2025", "+20% vs 2024 · Febraban"),
-        ("76,4%", "da população usa Pix", "211 milhões de brasileiros · Banco Central"),
-        ("R$ 68,2 tri", "movimentados no 2º sem. 2025", "78,4 bi de transações · Banco Central"),
-        ("~80 bi", "transações em 2025", "+25,7% vs ano anterior · Relatório do Pix"),
-    ]), y, 4)
-    y -= 6 * mm
-    _caixa(doc, 18 * mm, y - 18 * mm, largura - 36 * mm, 18 * mm,
-           HexColor("#EEF2FA"), COR_AZUL)
-    doc.setFillColor(COR_AZUL)
-    doc.setFont(_fonte(lang, True), 9)
-    _texto_wrap(doc, c.get("pix_fonte",
-        "Fontes: Banco Central do Brasil (Pix em Números) e Febraban (Pesquisa de Tecnologia Bancária)."),
-        _fonte(lang, True), 9, 22 * mm, y - 11 * mm,
-        largura - 44 * mm, COR_AZUL, 4 * mm)
-    _rodape(doc, largura, altura, lang, c, pagina)
-    doc.showPage()
-    pagina += 1
-        # REFERÊNCIAS BIBLIOGRÁFICAS
-    _titulo_pagina(doc, largura, altura, lang,
-                   c.get("ref_titulo", "Referências Bibliográficas"), 19)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c.get("ref_intro",
-        "Fontes utilizadas para os dados de mercado, projeções e indicadores desta apresentação."),
-        _fonte(lang), 11, 18 * mm, y, largura - 36 * mm, COR_CINZA, 5 * mm)
-    y -= 8 * mm
-    for tit, sub in c.get("ref_lista", [
-        ("Global Wellness Institute", "Economia global do bem-estar: US$ 6,8 tri (2024) → US$ 9,8 tri (2029)."),
-        ("MarkNtel Advisors", "Apps de astrologia e numerologia: US$ 3 bi → US$ 9 bi até 2030 (CAGR ~20%)."),
-        ("FMI · Banco Mundial", "PIB e paridade do poder de compra (PPP) por país."),
-        ("Banco Central do Brasil", "Estatísticas oficiais do Pix: transações, volume e usuários."),
-        ("Febraban", "Pesquisa de Tecnologia Bancária — crescimento do Pix em 2025."),
-        ("IBGE", "População e indicadores socioeconômicos do Brasil."),
-    ]):
-        _caixa(doc, 18 * mm, y - 20 * mm, largura - 36 * mm, 20 * mm,
-               COR_FUNDO, COR_DOURADO)
-        doc.setFillColor(COR_AZUL)
-        doc.setFont(_fonte(lang, True), 10)
-        doc.drawString(22 * mm, y - 13 * mm, tit)
-        doc.setFillColor(COR_CINZA)
-        doc.setFont(_fonte(lang), 8.5)
-        _texto_wrap(doc, sub, _fonte(lang), 8.5, 22 * mm, y - 9 * mm,
-                    largura - 44 * mm, COR_CINZA, 4 * mm)
-        y -= 24 * mm
-    _rodape(doc, largura, altura, lang, c, pagina)
-    doc.showPage()
-    pagina += 1
-    # PÁGINA FINAL
-    doc.setFillColor(COR_PRETO)
-    doc.rect(0, 0, largura, altura, stroke=0, fill=1)
-    doc.setFillColor(COR_DOURADO)
-    doc.setFont(_fonte(lang, True), 20)
-    doc.drawCentredString(largura / 2, altura * 0.60, c["frase_final"])
-    selo = c["selo_final"]
-    margem = 18 * mm
-    gap = 6 * mm
-    n = len(selo)
-    w = (largura - 2 * margem - (n - 1) * gap) / n
-    for i, item in enumerate(selo):
-        x = margem + i * (w + gap)
-        _caixa(doc, x, altura * 0.40, w, 20 * mm, None, COR_DOURADO)
-        doc.setFillColor(COR_DOURADO)
-        doc.setFont(_fonte(lang, True), 10)
-        doc.drawCentredString(x + w / 2, altura * 0.47, item)
-    _rodape(doc, largura, altura, lang, c, pagina)
-    doc.showPage()
-    _render_bloco_juridico(doc, largura, altura, lang, c)
-    doc.save()
-    logger.info("PDF texto editorial gerado: %s", caminho_saida)
-    return caminho_saida
-
-# ------------------------------------------------------------
-# GERADOR SLIDES (deck)
-# ------------------------------------------------------------
-
-def gerar_pdf_slides(lang="pt", caminho_saida=None):
-    """Gera o deck em paisagem (landscape A4) com layout editorial completo."""
-
-    def _sem_emoji(obj):
-        """Remove emojis de bandeira (fora do BMP) que o Helvetica não renderiza."""
-        if isinstance(obj, dict):
-            return {k: _sem_emoji(v) for k, v in obj.items()}
-        if isinstance(obj, list):
-            return [_sem_emoji(v) for v in obj]
-        if isinstance(obj, tuple):
-            return tuple(_sem_emoji(v) for v in obj)
-        if isinstance(obj, str):
-            return "".join(ch for ch in obj if ord(ch) < 0x10000)
-        return obj
-
-    _registrar_cid()
-    _registrar_fontes_extra()
-    if lang not in CONTEUDO:
-        lang = "pt"
-    c = _sem_emoji(CONTEUDO[lang])
-    if not caminho_saida:
-        caminho_saida = os.path.join(STATIC_DIR, f"apresentacao_slides_{lang}.pdf")
-    largura, altura = landscape(A4)
-    doc = canvas.Canvas(caminho_saida, pagesize=landscape(A4))
-    pagina = 1
-
-def cab(titulo, indice):
-    doc.setFillColor(COR_AZUL)
-    doc.rect(0, altura - 20 * mm, largura, 20 * mm, stroke=0, fill=1)
-    try:
-        if os.path.exists(LOGO_PATH):
-            doc.drawImage(LOGO_PATH, 6 * mm, altura - 17 * mm,
-                          width=13 * mm, height=13 * mm,
-                          preserveAspectRatio=True, mask='auto')
-    except Exception:
-        pass
-    try:
-        if os.path.exists(LOGO_A1ELOS):
-            doc.drawImage(LOGO_A1ELOS, largura - 19 * mm, altura - 17 * mm,
-                          width=13 * mm, height=13 * mm,
-                          preserveAspectRatio=True, mask='auto')
-    except Exception:
-        pass
-    doc.setFillColor(white)
-    tam = 20 if len(titulo) <= 40 else 15
-    _texto_wrap(doc, titulo, _fonte(lang, True), tam, 24 * mm, altura - 13 * mm,
-                largura - 52 * mm, white, 9 * mm)
-    doc.setFillColor(COR_DOURADO)
-    doc.setFont(_fonte(lang, True), 12)
-    doc.drawRightString(largura - 24 * mm, altura - 13 * mm, "%02d" % indice)
-
-# ------------------------------------------------------------
-# ENTRADA PRINCIPAL
-# ------------------------------------------------------------
-def gerar_apresentacao(lang="pt", modo="texto"):
-    if modo == "slides":
-        return gerar_pdf_slides(lang)
-    caminho = gerar_pdf_texto(lang)
-    if caminho and os.path.exists(caminho):
-        return caminho
-    # O gerador salvou o arquivo mas retornou None; localiza o arquivo salvo:
-    candidato = os.path.join(STATIC_DIR, f"apresentacao_{lang}.pdf")
-    if os.path.exists(candidato):
-        return candidato
-    return caminho
-
-def gerar_pdf_slides(lang="pt", caminho_saida=None):
-    """Gera o deck em paisagem (landscape A4) com layout editorial completo."""
-    def _sem_emoji(obj):
-        """Remove emojis de bandeira (fora do BMP) que o Helvetica não renderiza."""
-        if isinstance(obj, dict):
-            return {k: _sem_emoji(v) for k, v in obj.items()}
-        if isinstance(obj, list):
-            return [_sem_emoji(v) for v in obj]
-        if isinstance(obj, tuple):
-            return tuple(_sem_emoji(v) for v in obj)
-        if isinstance(obj, str):
-            return "".join(ch for ch in obj if ord(ch) < 0x10000)
-        return obj
-
-    _registrar_cid()
-    _registrar_fontes_extra()
-    if lang not in CONTEUDO:
-        lang = "pt"
-    c = _sem_emoji(CONTEUDO[lang])
-    if not caminho_saida:
-        caminho_saida = os.path.join(STATIC_DIR, f"apresentacao_slides_{lang}.pdf")
-    largura, altura = landscape(A4)
-    doc = canvas.Canvas(caminho_saida, pagesize=landscape(A4))
-    pagina = 1
-
-    def cab(titulo, indice):
-        doc.setFillColor(COR_AZUL)
-        doc.rect(0, altura - 20 * mm, largura, 20 * mm, stroke=0, fill=1)
-        try:
-            if os.path.exists(LOGO_PATH):
-                doc.drawImage(LOGO_PATH, 6 * mm, altura - 17 * mm,
-                              width=13 * mm, height=13 * mm,
-                              preserveAspectRatio=True, mask='auto')
-        except Exception:
-            pass
-        try:
-            if os.path.exists(LOGO_A1ELOS):
-                doc.drawImage(LOGO_A1ELOS, largura - 19 * mm, altura - 17 * mm,
-                              width=13 * mm, height=13 * mm,
-                              preserveAspectRatio=True, mask='auto')
-        except Exception:
-            pass
-        doc.setFillColor(white)
-        tam = 20 if len(titulo) <= 40 else 15
-        _texto_wrap(doc, titulo, _fonte(lang, True), tam, 24 * mm, altura - 13 * mm,
-                    largura - 52 * mm, white, 9 * mm)
-        doc.setFillColor(COR_DOURADO)
-        doc.setFont(_fonte(lang, True), 12)
-        doc.drawRightString(largura - 24 * mm, altura - 13 * mm, "%02d" % indice)
-
-    def rodape(pagina):
-        doc.setFillColor(COR_CINZA_CLARO)
-        doc.setFont(_fonte(lang), 8)
-        doc.drawCentredString(largura / 2, 10 * mm,
-                              f"{c['titulo']} · DUNS 942242668 · {c['confidencial']} {c['ano']}")
-        doc.setFillColor(COR_DOURADO)
-        doc.setFont(_fonte(lang, True), 9)
-        doc.drawRightString(largura - 15 * mm, 10 * mm, f"{pagina}-{TOTAL_PAGINAS}")
-        doc.setFillColorRGB(0.55, 0.55, 0.55)
-        doc.setFont(_fonte(lang), 7)
-        doc.drawCentredString(largura / 2, 4 * mm, CONTATOS)
-       
-        # ===== SLIDE 1 — CAPA =====
-    _capa(doc, largura, altura, lang, "slides")
-    rodape(1)
-    doc.showPage()
-    pagina += 1
-
-    # ===== SLIDE 2 — SUMÁRIO EXECUTIVO (01) =====
-    cab(c.get("sumario_titulo", "Sumário Executivo"), 1)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c["sumario_intro"], _fonte(lang), 12, 18 * mm, y,
-                    largura - 36 * mm, COR_CINZA, 6 * mm)
-    y -= 8 * mm
-    cards = c["sumario_cards"]
-    margem = 18 * mm
-    gap = 8 * mm
-    n_col = 4
-    w = (largura - 2 * margem - (n_col - 1) * gap) / n_col
-    h = 34 * mm
-    for i, (num, tit, sub) in enumerate(cards):
-        col = i % n_col
-        lin = i // n_col
-        x = margem + col * (w + gap)
-        yy = y - lin * (h + 8 * mm)
-        _caixa(doc, x, yy - h, w, h, COR_FUNDO, COR_DOURADO)
-        doc.setFillColor(COR_DOURADO)
-        doc.setFont(_fonte(lang, True), 16)
-        doc.drawString(x + 6 * mm, yy - h + 20 * mm, num)
-        doc.setFillColor(COR_PRETO)
-        doc.setFont(_fonte(lang, True), 10)
-        _texto_wrap(doc, tit, _fonte(lang, True), 10, x + 6 * mm, yy - h + 12 * mm,
-                    w - 12 * mm, COR_PRETO, 5 * mm)
-        doc.setFillColor(COR_CINZA)
-        _texto_wrap(doc, sub, _fonte(lang), 8, x + 6 * mm, yy - h + 6 * mm,
-                    w - 12 * mm, COR_CINZA, 4 * mm)
-    rodape(pagina)
-    doc.showPage()
-    pagina += 1
-
-    # ===== SLIDE 3 — SOBRE A A1ELOS (02) =====
-    cab(c["sobre_titulo"], 2)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c["sobre_texto"], _fonte(lang), 12, 18 * mm, y,
-                    largura - 36 * mm, COR_PRETO, 6 * mm)
-    y -= 8 * mm
-    y = _kpis_grid(doc, largura, altura, lang, c["sobre_kpis"], y, 4)
-    y -= 6 * mm
-    _caixa(doc, 18 * mm, y - 16 * mm, largura - 36 * mm, 16 * mm, HexColor("#EEF2FA"), COR_AZUL)
-    doc.setFillColor(COR_AZUL)
-    doc.setFont(_fonte(lang, True), 9)
-    _texto_wrap(doc, c["sobre_duns"], _fonte(lang, True), 9, 22 * mm, y - 11 * mm,
-                largura - 44 * mm, COR_AZUL, 4 * mm)
-    rodape(pagina)
-    doc.showPage()
-    pagina += 1
-
-    # ===== SLIDE 4 — CREDIBILIDADE INTERNACIONAL (03) =====
-    cab(c["duns_titulo"], 3)
-    y = altura - 32 * mm
-    col_w = (largura - 36 * mm - 10 * mm) / 2
-    _caixa(doc, 18 * mm, y - 85 * mm, col_w, 85 * mm, COR_PRETO, COR_DOURADO)
-    doc.setFillColor(COR_DOURADO)
-    doc.setFont(_fonte(lang, True), 34)
-    doc.drawCentredString(18 * mm + col_w / 2, y - 30 * mm, c["duns_numero"])
-    doc.setFillColor(white)
-    doc.setFont(_fonte(lang), 10)
-    _texto_wrap(doc, c["duns_emitido"], _fonte(lang), 10, 24 * mm, y - 50 * mm,
-                col_w - 12 * mm, white, 4.5 * mm)
-    doc.setFillColor(COR_DOURADO)
-    doc.setFont(_fonte(lang, True), 16)
-    doc.drawCentredString(18 * mm + col_w / 2, y - 72 * mm, c["duns_paises"])
-    xr = 18 * mm + col_w + 10 * mm
-    doc.setFillColor(COR_PRETO)
-    doc.setFont(_fonte(lang, True), 13)
-    doc.drawString(xr, y - 8 * mm, c.get("duns_porque", "Por que o DUNS importa?"))
-    yy = y - 16 * mm
-    yy = _texto_wrap(doc, c["duns_texto"], _fonte(lang), 10, xr, yy,
-                     col_w, COR_CINZA, 4.5 * mm)
-    yy -= 8 * mm
-    for tit, sub in c["duns_beneficios"]:
-        _caixa(doc, xr, yy - 24 * mm, col_w, 24 * mm, COR_FUNDO, COR_DOURADO)
-        doc.setFillColor(COR_AZUL)
-        doc.setFont(_fonte(lang, True), 10)
-        doc.drawString(xr + 5 * mm, yy - 17 * mm, tit)
-        doc.setFillColor(COR_CINZA)
-        doc.setFont(_fonte(lang), 8)
-        _texto_wrap(doc, sub, _fonte(lang), 8, xr + 5 * mm, yy - 12 * mm,
-                    col_w - 10 * mm, COR_CINZA, 3.5 * mm)
-        yy -= 28 * mm
-    rodape(pagina)
-    doc.showPage()
-    pagina += 1
-
-    # ===== SLIDE 5 — OPORTUNIDADE DE MERCADO (04) =====
-    cab(c["mercado_titulo"], 4)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c["mercado_texto"], _fonte(lang), 12, 18 * mm, y,
-                    largura - 36 * mm, COR_PRETO, 6 * mm)
-    y -= 10 * mm
-    cards = c["mercado_cards"]
-    n_col = 4
-    w = (largura - 2 * margem - (n_col - 1) * gap) / n_col
-    h = 40 * mm
-    for i, (tit, sub) in enumerate(cards):
-        x = margem + i * (w + gap)
-        _caixa(doc, x, y - h, w, h, COR_FUNDO, COR_DOURADO)
-        # Titulo azul, no topo do card
-        doc.setFillColor(COR_AZUL)
-        doc.setFont(_fonte(lang, True), 10)
-        _texto_wrap(doc, tit, _fonte(lang, True), 10, x + 4 * mm, y - 12 * mm,
-                    w - 8 * mm, COR_AZUL, 4.5 * mm, y_min=y - 20 * mm)
-        # Subtitulo em PRETO (nao some no fundo), abaixo, sem sobrepor
-        doc.setFillColor(COR_PRETO)
-        doc.setFont(_fonte(lang), 8.5)
-        _texto_wrap(doc, sub, _fonte(lang), 8.5, x + 4 * mm, y - 22 * mm,
-                    w - 8 * mm, COR_PRETO, 4 * mm, y_min=y - h + 4 * mm)
-    rodape(pagina)
-    doc.showPage()
-    pagina += 1
-
-    # ===== SLIDE 6 — O PROBLEMA (05) =====
-    cab(c["problema_titulo"], 5)
-    y = altura - 32 * mm
-    col_w = (largura - 36 * mm - 10 * mm) / 2
-    doc.setFillColor(COR_PRETO)
-    doc.setFont(_fonte(lang, True), 13)
-    doc.drawString(18 * mm, y - 8 * mm, c["problema_col_esq_titulo"])
-    yy = y - 16 * mm
-    yy = y - 16 * mm
-    for tit, sub in c["problema_col_esq"]:
-        _caixa(doc, 18 * mm, yy - 30 * mm, col_w, 30 * mm, COR_FUNDO, COR_DOURADO)
-        doc.setFillColor(COR_AZUL)
-        doc.setFont(_fonte(lang, True), 9.5)
-        doc.drawCentredString(18 * mm + col_w / 2, yy - 22.5 * mm, tit)
-        doc.setFillColor(COR_CINZA)
-        _texto_wrap(doc, sub, _fonte(lang), 7.5, 22 * mm, yy - 17 * mm,
-                    col_w - 8 * mm, COR_CINZA, 3.2 * mm, y_min=yy - 28 * mm)
-        yy -= 33 * mm   
-    xr = 18 * mm + col_w + 10 * mm
-    doc.setFillColor(COR_PRETO)
-    doc.setFont(_fonte(lang, True), 13)
-    doc.drawString(xr, y - 8 * mm, c["problema_col_dir_titulo"])
-    yy = y - 16 * mm
-    yy = _texto_wrap(doc, c["problema_col_dir"], _fonte(lang), 10, xr, yy,
-                     col_w, COR_CINZA, 4.5 * mm)
-    yy -= 10 * mm
-    _caixa(doc, xr, yy - 40 * mm, col_w, 40 * mm, HexColor("#FFF3E0"), COR_DOURADO)
-    doc.setFillColor(COR_PRETO)
-    doc.setFont(_fonte(lang, True), 10)
-    _texto_wrap(doc, c["problema_destaque"], _fonte(lang, True), 10, xr + 6 * mm,
-                yy - 30 * mm, col_w - 12 * mm, COR_PRETO, 4.5 * mm)
-    rodape(pagina)
-    doc.showPage()
-    pagina += 1
-
-    # ===== SLIDE 7 — SOLUÇÃO (06) =====
-    cab(c["solucao_titulo"], 6)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c["solucao_texto"], _fonte(lang), 12, 18 * mm, y,
-                    largura - 36 * mm, COR_PRETO, 6 * mm)
-    y -= 10 * mm
-    col_w = (largura - 36 * mm - 2 * 10 * mm) / 3
-    for i, (tit, sub) in enumerate(c["solucao_colunas"]):
-        x = 18 * mm + i * (col_w + 10 * mm)
-        _caixa(doc, x, y - 90 * mm, col_w, 90 * mm, COR_FUNDO, COR_DOURADO)
-        doc.setFillColor(COR_AZUL)
-        doc.setFont(_fonte(lang, True), 12)
-        _texto_wrap(doc, tit, _fonte(lang, True), 12, x + 6 * mm, y - 16 * mm,
-                    col_w - 12 * mm, COR_AZUL, 5.5 * mm)
-        doc.setFillColor(COR_CINZA)
-        doc.setFont(_fonte(lang), 9)
-        _texto_wrap(doc, sub, _fonte(lang), 9, x + 6 * mm, y - 28 * mm,
-                    col_w - 12 * mm, COR_CINZA, 4.5 * mm)
-    rodape(pagina)
-    doc.showPage()
-    pagina += 1
-
-    # ===== SLIDE 8 — ALCANCE GLOBAL + TABELA IDIOMAS (07) =====
-    cab(c["alcance_titulo"], 7)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c["alcance_texto"], _fonte(lang), 12, 18 * mm, y,
-                    largura - 36 * mm, COR_CINZA, 6 * mm)
-    y -= 10 * mm
-    linhas = c.get("linhas_idiomas", LINHAS_IDIOMAS)
-    dados = [[c.get("idioma_col", "Idioma"), c.get("falantes_col", "Falantes (mi)")]] \
-        + linhas + [[c.get("total_linha", "TOTAL"), "~5.320"]]
-    _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm, dados, [0.6, 0.4], 9, lang)
-    rodape(pagina)
-    doc.showPage()
-    pagina += 1
-
-    # ===== SLIDE 9 — 3 NOVOS MERCADOS (08) =====
-    cab(c["mercados_titulo"], 8)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c["mercados_texto"], _fonte(lang), 11, 18 * mm, y,
-                    largura - 36 * mm, COR_CINZA, 5.5 * mm)
-    y -= 10 * mm
-    col_w = (largura - 36 * mm - 2 * 8 * mm) / 3
-    paises = ["id", "tr", "vn"]
-    for i, (tit, itens) in enumerate(c["mercados_cards"]):
-        x = 18 * mm + i * (col_w + 8 * mm)
-        _caixa(doc, x, y - 70 * mm, col_w, 70 * mm, COR_FUNDO, COR_DOURADO)
-        _bandeira(doc, x + 5 * mm, y - 22 * mm, 11 * mm, 7.5 * mm, paises[i])
-        doc.setFillColor(COR_AZUL)
-        doc.setFont(_fonte(lang, True), 12)
-        doc.drawString(x + 20 * mm, y - 14 * mm, tit)
-        yy = y - 26 * mm
-        for item in itens:
-            doc.setFillColor(COR_CINZA)
-            doc.setFont(_fonte(lang), 9)
-            yy = _texto_wrap(doc, "•  " + item, _fonte(lang), 9, x + 5 * mm, yy,
-                             col_w - 10 * mm, COR_CINZA, 4.5 * mm, y_min=y - 66 * mm)
-    y -= 78 * mm
-    _caixa(doc, 18 * mm, y - 18 * mm, largura - 36 * mm, 18 * mm, HexColor("#EEF2FA"), COR_AZUL)
-    doc.setFillColor(COR_AZUL)
-    doc.setFont(_fonte(lang, True), 9)
-    _texto_wrap(doc, c["mercados_rodape"], _fonte(lang, True), 9, 22 * mm, y - 12 * mm,
-                largura - 44 * mm, COR_AZUL, 4 * mm)
-    rodape(pagina)
-    doc.showPage()
-    pagina += 1
-
-    # ===== SLIDE 10 — FILOSOFIA DE PREÇO (09) =====
-    cab(c["preco_titulo"], 9)
-    y = altura - 32 * mm
-    col_w = (largura - 36 * mm - 10 * mm) / 2
-    _caixa(doc, 18 * mm, y - 60 * mm, col_w, 60 * mm, COR_PRETO, COR_DOURADO)
-    doc.setFillColor(COR_DOURADO)
-    doc.setFont(_fonte(lang, True), 13)
-    doc.drawString(22 * mm, y - 16 * mm, c.get("preco_consciente", "Preço Consciente"))
-    doc.setFillColor(white)
-    doc.setFont(_fonte(lang), 10)
-    _texto_wrap(doc, c["preco_esq"], _fonte(lang), 10, 22 * mm, y - 26 * mm,
-                col_w - 8 * mm, white, 4.5 * mm)
-    xr = 18 * mm + col_w + 10 * mm
-    doc.setFillColor(COR_PRETO)
-    doc.setFont(_fonte(lang, True), 13)
-    doc.drawString(xr, y - 8 * mm, c["preco_dir_titulo"])
-    yy = y - 16 * mm
-    yy = _texto_wrap(doc, c["preco_dir"], _fonte(lang), 10, xr, yy,
-                     col_w, COR_CINZA, 4.5 * mm)
-    yy -= 8 * mm
-    for tit, sub in c["preco_pilares"]:
-        _caixa(doc, xr, yy - 24 * mm, col_w, 24 * mm, COR_FUNDO, COR_DOURADO)
-        doc.setFillColor(COR_AZUL)
-        doc.setFont(_fonte(lang, True), 10)
-        doc.drawString(xr + 5 * mm, yy - 17 * mm, tit)
-        doc.setFillColor(COR_CINZA)
-        doc.setFont(_fonte(lang), 8)
-        _texto_wrap(doc, sub, _fonte(lang), 8, xr + 5 * mm, yy - 12 * mm,
-                    col_w - 10 * mm, COR_CINZA, 3.5 * mm)
-        yy -= 28 * mm
-    rodape(pagina)
-    doc.showPage()
-    pagina += 1
-
-    # ===== SLIDE 11 — PORTFÓLIO (10) =====
-    cab(c["portfolio_titulo"], 10)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c["portfolio_texto"], _fonte(lang), 12, 18 * mm, y,
-                    largura - 36 * mm, COR_CINZA, 6 * mm)
-    y -= 10 * mm
-    y = _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
-                          c["portfolio_tabela"], [0.22, 0.38, 0.18, 0.22], 9, lang)
-    y -= 8 * mm
-    doc.setFillColor(COR_CINZA)
-    doc.setFont(_fonte(lang), 9)
-    _texto_wrap(doc, c["portfolio_rodape"], _fonte(lang), 9, 18 * mm, y,
-                largura - 36 * mm, COR_CINZA, 4 * mm)
-    rodape(pagina)
-    doc.showPage()
-    pagina += 1
-
-    cab(c["negocio_titulo"], 11)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c["negocio_texto"], _fonte(lang), 12, 18 * mm, y,
-                    largura - 36 * mm, COR_CINZA, 6 * mm)
-    y -= 8 * mm
-    col_w = (largura - 36 * mm - 2 * 10 * mm) / 3
-    for i, (tit, sub) in enumerate(c["negocio_colunas"]):
-        x = 18 * mm + i * (col_w + 10 * mm)
-        _caixa(doc, x, y - 45 * mm, col_w, 45 * mm, COR_FUNDO, COR_DOURADO)
-        doc.setFillColor(COR_AZUL)
-        doc.setFont(_fonte(lang, True), 11)
-        _texto_wrap(doc, tit, _fonte(lang, True), 11, x + 6 * mm, y - 12 * mm,
-                    col_w - 12 * mm, COR_AZUL, 5 * mm)
-        doc.setFillColor(COR_CINZA)
-        doc.setFont(_fonte(lang), 9)
-        _texto_wrap(doc, sub, _fonte(lang), 9, x + 6 * mm, y - 20 * mm,
-                    col_w - 12 * mm, COR_CINZA, 4.5 * mm)
-    y -= 50 * mm
-    _tabela_editorial(doc, 18 * mm, y - 60 * mm, largura - 36 * mm,
-                  [[c.get("fonte_receita", "Fonte de Receita"), c.get("participacao", "Participação")],
-                   [c.get("b2c_linha", "B2C — 14 Idiomas"), "60%"],
-                   [c.get("b2b_linha", "B2B — Descontos Progressivos"), "25%"],
-                   [c.get("pub_linha", "Publicidade Geolocalizada"), "15%"]],
-                  [0.7, 0.3], 10, lang)
-    rodape(pagina)
-    doc.showPage()
-    pagina += 1
-
-    # ===== SLIDE 13 — BANNERS (12) =====
-    cab(c["banners_titulo"], 12)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c["banners_texto"], _fonte(lang), 11, 18 * mm, y,
-                    largura - 36 * mm, COR_CINZA, 5.5 * mm)
-    y -= 10 * mm
-    y = _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
-                          c["banners_tabela"], [0.24, 0.20, 0.24, 0.32], 9, lang)
-    y -= 10 * mm
-    _caixa(doc, 18 * mm, y - 24 * mm, largura - 36 * mm, 24 * mm, HexColor("#EEF2FA"), COR_AZUL)
-    doc.setFillColor(COR_AZUL)
-    doc.setFont(_fonte(lang), 9)
-    _texto_wrap(doc, c["banners_formatos"], _fonte(lang), 9, 22 * mm, y - 15 * mm,
-                largura - 44 * mm, COR_AZUL, 4 * mm)
-    rodape(pagina)
-    doc.showPage()
-    pagina += 1
-
-    # ===== SLIDE 14 — PACOTES B2B (13) =====
-    cab(c["b2b_titulo"], 13)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c["b2b_texto"], _fonte(lang), 11, 18 * mm, y,
-                    largura - 36 * mm, COR_CINZA, 5.5 * mm)
-    y -= 10 * mm
-    col_w = (largura - 36 * mm - 2 * 10 * mm) / 3
-    for i, (tit, sub) in enumerate(c["b2b_planos"]):
-        x = 18 * mm + i * (col_w + 10 * mm)
-        _caixa(doc, x, y - 48 * mm, col_w, 48 * mm, COR_FUNDO, COR_DOURADO)
-        doc.setFillColor(COR_AZUL)
-        doc.setFont(_fonte(lang, True), 10)
-        _texto_wrap(doc, tit, _fonte(lang, True), 10, x + 6 * mm, y - 13 * mm,
-                    col_w - 12 * mm, COR_AZUL, 4.5 * mm)
-        doc.setFillColor(COR_CINZA)
-        doc.setFont(_fonte(lang), 8)
-        _texto_wrap(doc, sub, _fonte(lang), 8, x + 6 * mm, y - 22 * mm,
-                    col_w - 12 * mm, COR_CINZA, 3.8 * mm)
-    y -= 58 * mm
-    doc.setFillColor(COR_PRETO)
-    doc.setFont(_fonte(lang, True), 12)
-    doc.drawString(18 * mm, y - 6 * mm, c.get("tabela_descontos", "Tabela de Descontos Progressivos"))
-    y -= 14 * mm
-    _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
-                      c["b2b_tabela"], [0.22, 0.18, 0.28, 0.32], 9, lang)
-    rodape(pagina)
-    doc.showPage()
-    pagina += 1
-
-    cab(c["projecoes_titulo"], 14)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c["projecoes_texto"], _fonte(lang), 12, 18 * mm, y,
-                    largura - 36 * mm, COR_CINZA, 6 * mm)
-    y -= 8 * mm
-    _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
-                      c["projecoes_tabela"], [0.3, 0.35, 0.35], 8, lang)
-    y -= 75 * mm
-    _grafico_linha(doc, 18 * mm, y - 45 * mm, largura - 36 * mm, 45 * mm,
-               c.get("grafico_anos", ["Ano 1", "Ano 5", "Ano 10", "Ano 20", "Ano 50"]),
-               [(c.get("graf_cons", "Conservador"), [33, 500, 3000, 15000, 75000]),
-                (c.get("graf_otim", "Otimista"), [130, 1500, 8000, 40000, 250000])],
-               c.get("grafico_titulo_linha", "Crescimento Projetado (R$ mil)"))
-    rodape(pagina)
-    doc.showPage()
-    pagina += 1
-
-    # ===== SLIDE 16 — TRAÇÃO E RESULTADOS (15) =====
-    cab(c["tracao_titulo"], 15)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c["tracao_texto"], _fonte(lang), 12, 18 * mm, y,
-                    largura - 36 * mm, COR_CINZA, 6 * mm)
-    y -= 12 * mm
-    _kpis_grid(doc, largura, altura, lang, c["tracao_kpis"], y, 4)
-    rodape(pagina)
-    doc.showPage()
-    pagina += 1
-
-    # ===== SLIDE 17 — ROTEIRO ESTRATÉGICO (16) =====
-    cab(c["roteiro_titulo"], 16)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c["roteiro_texto"], _fonte(lang), 12, 18 * mm, y,
-                    largura - 36 * mm, COR_CINZA, 6 * mm)
-    y -= 10 * mm
-    col_w = (largura - 36 * mm - 10 * mm) / 2
-    for i, (tit, sub) in enumerate(c["roteiro_fases"]):
-        col = i % 2
-        lin = i // 2
-        x = 18 * mm + col * (col_w + 10 * mm)
-        yy = y - lin * (52 * mm + 8 * mm)
-        _caixa(doc, x, yy - 52 * mm, col_w, 52 * mm, COR_FUNDO, COR_DOURADO)
-        doc.setFillColor(COR_AZUL)
-        doc.setFont(_fonte(lang, True), 12)
-        doc.drawString(x + 6 * mm, yy - 16 * mm, tit)
-        doc.setFillColor(COR_CINZA)
-        doc.setFont(_fonte(lang), 9)
-        _texto_wrap(doc, sub, _fonte(lang), 9, x + 6 * mm, yy - 26 * mm,
-                    col_w - 12 * mm, COR_CINZA, 4.5 * mm)
-    rodape(pagina)
-    doc.showPage()
-    pagina += 1
-
-    # ===== SLIDE 18 — INVESTIMENTO E CONTATO (17) =====
-    cab(c["invest_titulo"], 17)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c["invest_texto"], _fonte(lang), 12, 18 * mm, y,
-                    largura - 36 * mm, COR_CINZA, 6 * mm)
-    y -= 10 * mm
-    col_w = (largura - 36 * mm - 10 * mm) / 2
-    _caixa(doc, 18 * mm, y - 75 * mm, col_w, 75 * mm, COR_PRETO, COR_DOURADO)
-    yy = y - 18 * mm
-    for tit, val in c["invest_dados"]:
-        doc.setFillColor(COR_DOURADO)
-        doc.setFont(_fonte(lang, True), 11)
-        doc.drawString(22 * mm, yy, tit)
-        doc.setFillColor(white)
-        doc.setFont(_fonte(lang, True), 16)
-        doc.drawString(22 * mm, yy - 9 * mm, val)
-        yy -= 22 * mm
-    xr = 18 * mm + col_w + 10 * mm
-    doc.setFillColor(COR_PRETO)
-    doc.setFont(_fonte(lang, True), 13)
-    doc.drawString(xr, y - 8 * mm, c.get("fale_conosco", "Fale Conosco"))
-    yy = y - 18 * mm
-    for tit, val in c["invest_contato"]:
-        doc.setFillColor(COR_AZUL)
-        doc.setFont(_fonte(lang, True), 11)
-        doc.drawString(xr, yy, tit)
-        doc.setFillColor(COR_CINZA)
-        doc.setFont(_fonte(lang), 11)
-        doc.drawString(xr, yy - 7 * mm, val)
-        yy -= 17 * mm
-    y -= 88 * mm
-    _caixa(doc, 18 * mm, y - 18 * mm, largura - 36 * mm, 18 * mm, HexColor("#EEF2FA"), COR_AZUL)
-    doc.setFillColor(COR_AZUL)
-    doc.setFont(_fonte(lang, True), 10)
-    doc.drawCentredString(largura / 2, y - 12 * mm, c["invest_alocacao"])
-    rodape(pagina)
-    doc.showPage()
-    pagina += 1
-   
-    # ===== SLIDE 19A — PIX (18) =====
-    cab(c.get("pix_titulo", "Brasil: A Infraestrutura Pix"), 18)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c.get("pix_texto",
-        "O Pix é a infraestrutura pública de pagamentos instantâneos do Brasil. Para a A1ELOS, "
-        "ele garante cobrança imediata, baixo custo e aceitação universal — o alicerce da operação "
-        "B2C no mercado brasileiro e a porta de entrada para a expansão internacional."),
-        _fonte(lang), 12, 18 * mm, y, largura - 36 * mm, COR_CINZA, 6 * mm)
-    y -= 10 * mm
-    _kpis_grid(doc, largura, altura, lang, c.get("pix_kpis", [
-        ("30,1 bi", "Transações em 2025", "+20% vs 2024 · Febraban"),
-        ("76,4%", "da população usa Pix", "211 milhões de brasileiros · Banco Central"),
-        ("R$ 68,2 tri", "movimentados no 2º sem. 2025", "78,4 bi de transações · Banco Central"),
-        ("~80 bi", "transações em 2025", "+25,7% vs ano anterior · Relatório do Pix"),
-    ]), y, 4)
-    _caixa(doc, 18 * mm, 16 * mm, largura - 36 * mm, 14 * mm,
-           HexColor("#EEF2FA"), COR_AZUL)
-    doc.setFillColor(COR_AZUL)
-    doc.setFont(_fonte(lang, True), 8)
-    _texto_wrap(doc, c.get("pix_fonte",
-        "Fontes: Banco Central do Brasil (Pix em Números) e Febraban (Pesquisa de Tecnologia Bancária)."),
-        _fonte(lang, True), 8, 22 * mm, 21 * mm,
-        largura - 44 * mm, COR_AZUL, 3.5 * mm)
-    rodape(pagina)
-    doc.showPage()
-    pagina += 1
-
-    # ===== SLIDE 19B — REFERÊNCIAS (19) =====
-    cab(c.get("ref_titulo", "Referências Bibliográficas"), 19)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c.get("ref_intro",
-        "Fontes utilizadas para os dados de mercado, projeções e indicadores desta apresentação."),
-        _fonte(lang), 12, 18 * mm, y, largura - 36 * mm, COR_CINZA, 6 * mm)
-    y -= 10 * mm
-    refs = c.get("ref_lista", [
-        ("Global Wellness Institute", "Economia global do bem-estar: US$ 6,8 tri (2024) → US$ 9,8 tri (2029)."),
-        ("MarkNtel Advisors", "Apps de astrologia e numerologia: US$ 3 bi → US$ 9 bi até 2030 (CAGR ~20%)."),
-        ("FMI · Banco Mundial", "PIB e paridade do poder de compra (PPP) por país."),
-        ("Banco Central do Brasil", "Estatísticas oficiais do Pix: transações, volume e usuários."),
-        ("Febraban", "Pesquisa de Tecnologia Bancária — crescimento do Pix em 2025."),
-        ("IBGE", "População e indicadores socioeconômicos do Brasil."),
-    ])
-    col_w = (largura - 36 * mm - 8 * mm) / 2
-    for i, (tit, sub) in enumerate(refs):
-        col = i % 2
-        lin = i // 2
-        x = 18 * mm + col * (col_w + 8 * mm)
-        yy = y - lin * (40 * mm + 6 * mm)
-        _caixa(doc, x, yy - 36 * mm, col_w, 36 * mm, COR_FUNDO, COR_DOURADO)
-        doc.setFillColor(COR_AZUL)
-        doc.setFont(_fonte(lang, True), 10)
-        _texto_wrap(doc, tit, _fonte(lang, True), 10, x + 5 * mm, yy - 12 * mm,
-                    col_w - 10 * mm, COR_AZUL, 4.5 * mm)
-        doc.setFillColor(COR_CINZA)
-        doc.setFont(_fonte(lang), 8.5)
-        _texto_wrap(doc, sub, _fonte(lang), 8.5, x + 5 * mm, yy - 20 * mm,
-                    col_w - 10 * mm, COR_CINZA, 4 * mm, y_min=yy - 33 * mm)
-    rodape(pagina)
-    doc.showPage()
-    pagina += 1
-    
-    # ===== SLIDE 19 — PÁGINA FINAL =====
-    doc.setFillColor(COR_PRETO)
-    doc.rect(0, 0, largura, altura, stroke=0, fill=1)
-    doc.setFillColor(COR_DOURADO)
-    doc.setFont(_fonte(lang, True), 24)
-    doc.drawCentredString(largura / 2, altura * 0.60, c["frase_final"])
-    selo = c["selo_final"]
-    margem = 18 * mm
-    gap = 8 * mm
-    n = len(selo)
-    w = (largura - 2 * margem - (n - 1) * gap) / n
-    for i, item in enumerate(selo):
-        x = margem + i * (w + gap)
-        doc.setStrokeColor(COR_DOURADO)
-        doc.setLineWidth(0.8)
-        doc.rect(x, altura * 0.40, w, 22 * mm, stroke=1, fill=0)
-        doc.setFillColor(COR_DOURADO)
-        doc.setFont(_fonte(lang, True), 11)
-        doc.drawCentredString(x + w / 2, altura * 0.40 + 11 * mm, item)
-    rodape(pagina)
-    doc.showPage()
-
-    doc.save()
-    logger.info("PDF slides editorial gerado: %s", caminho_saida)
-    return caminho_saida
 
 def gerar_todas():
     import sys
