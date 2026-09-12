@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 # gerar_apresentacao_texto.py
-# Gera o PDF EDITORIAL (texto) A4 retrato, sem capa preta, dados empresariais.
+# Gera o PDF EDITORIAL (texto) A4 retrato, SEM capa preta, apenas dados empresariais.
 # Salva em: static/apresentacao_empresarial_{lang}.pdf
-# Retorna o caminho do arquivo gerado (é isso que faz a rota servir o PDF novo).
+# RETORNA o caminho do arquivo (é isso que faz a rota servir o PDF novo).
 import os
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import mm
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_JUSTIFY
-from reportlab.platypus import (SimpleDocTemplate, Paragraph, Spacer, Table,
-                                TableStyle, HRFlowable)
+from reportlab.platypus import (SimpleDocTemplate, Paragraph, Spacer,
+                                Table, TableStyle, HRFlowable)
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.cidfonts import UnicodeCIDFont
@@ -39,7 +39,7 @@ CONTATOS = "a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.
 
 def _fonte(lang, bold=False):
     base = FONTE_POR_IDIOMA.get(lang, "Helvetica")
-    if base in ("Helvetica",):
+    if base == "Helvetica":
         return "Helvetica-Bold" if bold else "Helvetica"
     return base
 
@@ -49,8 +49,7 @@ def _estilo(lang, tam, bold, cor, alinh=TA_LEFT, antes=0, depois=6):
                           spaceBefore=antes, spaceAfter=depois)
 
 def _render_bloco_juridico(story, c, lang):
-    """Bloco jurídico final (sem inventar conteúdo; usa o que existir no CONTEUDO)."""
-    if "bloco_juridico" not in c:
+    if "bloco_juridico" not in c or not c["bloco_juridico"]:
         return
     story.append(HRFlowable(width="100%", thickness=1, color=COR_DOURADO,
                             spaceBefore=6, spaceAfter=6))
@@ -64,7 +63,7 @@ def _render_bloco_juridico(story, c, lang):
                 story.append(Paragraph("•  " + it, _estilo(lang, 9, False, COR_CINZA, alinh=TA_JUSTIFY)))
 
 def gerar_pdf_texto(lang="pt", caminho_saida=None):
-    """Gera o PDF editorial A4 retrato. Retorna o caminho do arquivo."""
+    """Gera o PDF editorial A4 retrato. RETORNA o caminho do arquivo."""
     try:
         from apresentacao_textos import CONTEUDO
     except Exception:
@@ -101,7 +100,8 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     if c.get("sumario_intro"):
         story.append(Paragraph(c.get("sumario_titulo", "Sumário Executivo"),
                                _estilo(lang, 16, True, COR_AZUL, antes=10)))
-        story.append(Paragraph(c["sumario_intro"], _estilo(lang, 10, False, COR_CINZA, alinh=TA_JUSTIFY)))
+        story.append(Paragraph(c["sumario_intro"],
+                               _estilo(lang, 10, False, COR_CINZA, alinh=TA_JUSTIFY)))
     if c.get("sumario_cards"):
         for card in c["sumario_cards"]:
             txt = f"<b>{card.get('numero','')} — {card.get('titulo','')}</b><br/>{card.get('subtitulo','')}"
@@ -111,7 +111,8 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     if c.get("sobre_texto"):
         story.append(Paragraph(c.get("sobre_titulo", "Sobre a A1ELOS"),
                                _estilo(lang, 16, True, COR_AZUL, antes=12)))
-        story.append(Paragraph(c["sobre_texto"], _estilo(lang, 10, False, COR_CINZA, alinh=TA_JUSTIFY)))
+        story.append(Paragraph(c["sobre_texto"],
+                               _estilo(lang, 10, False, COR_CINZA, alinh=TA_JUSTIFY)))
     if c.get("sobre_kpis"):
         kpis = [[k.get("valor", ""), k.get("rotulo", "")] for k in c["sobre_kpis"]]
         if kpis:
@@ -128,7 +129,8 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     if c.get("mercado_texto"):
         story.append(Paragraph(c.get("mercado_titulo", "Oportunidade de Mercado"),
                                _estilo(lang, 16, True, COR_AZUL, antes=12)))
-        story.append(Paragraph(c["mercado_texto"], _estilo(lang, 10, False, COR_CINZA, alinh=TA_JUSTIFY)))
+        story.append(Paragraph(c["mercado_texto"],
+                               _estilo(lang, 10, False, COR_CINZA, alinh=TA_JUSTIFY)))
     if c.get("mercado_cards"):
         for card in c["mercado_cards"]:
             story.append(Paragraph(f"<b>{card.get('titulo','')}</b> — {card.get('valor','')}",
@@ -184,7 +186,6 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     # ---- CABEÇALHO E RODAPÉ (todas as páginas) ----
     def on_page(canvas, doc_):
         w, h = A4
-        # Cabeçalho
         canvas.setFillColor(COR_AZUL)
         canvas.rect(0, h - 18 * mm, w, 18 * mm, stroke=0, fill=1)
         canvas.setFillColor(colors.white)
@@ -193,7 +194,6 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
         canvas.setFillColor(COR_DOURADO)
         canvas.setFont(_fonte(lang), 8)
         canvas.drawRightString(w - 20 * mm, h - 11 * mm, f"DUNS 942242668 · {c.get('confidencial','')}")
-        # Rodapé
         canvas.setFillColor(COR_CINZA_CLARO)
         canvas.setFont(_fonte(lang), 7.5)
         canvas.drawCentredString(w / 2, 12 * mm, CONTATOS)
@@ -212,5 +212,3 @@ if __name__ == "__main__":
     for lang in IDIOMAS:
         p = gerar_pdf_texto(lang)
         print(f"[{lang}] {p}")
-
-  
