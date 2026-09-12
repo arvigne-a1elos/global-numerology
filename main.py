@@ -643,12 +643,11 @@ IDIOMAS_APRES = ["pt", "en", "es", "it", "fr", "de", "ja", "zh",
 
 def _gerar_apresentacao(lang="pt", modo="texto"):
     try:
+        import apresentacao_textos as ap
         if modo == "slides":
-            import apresentacao_textos as ap
-            caminho = ap.gerar_pdf_slides(lang)           
+            caminho = ap.gerar_pdf_slides(lang)
         else:
-            import gerar_apresentacao_texto as gt
-            caminho = gt.gerar_pdf_texto(lang)   # retorna o caminho com nome novo
+            caminho = ap.gerar_pdf_texto(lang)
         if caminho and os.path.exists(caminho):
             with open(caminho, "rb") as f:
                 return f.read(), os.path.basename(caminho)
@@ -663,7 +662,6 @@ def _gerar_apresentacao(lang="pt", modo="texto"):
     except Exception:
         logger.exception("Erro ao gerar apresentacao %s/%s", lang, modo)
         raise HTTPException(status_code=500, detail="Erro ao gerar a apresentacao.")
-
 @app.get("/api/apresentacao")
 async def api_apresentacao(lang: str = "pt"):
     dados, nome = _gerar_apresentacao(lang, "texto")
