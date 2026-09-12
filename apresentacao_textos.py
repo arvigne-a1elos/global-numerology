@@ -4530,10 +4530,10 @@ def gerar_todas():
         alvos = [(lang, modo)]
     for l, m in alvos:
         try:
-            p = gerar_apresentacao(l, m)
+            if m == "slides":
+                p = gerar_pdf_slides(l)
+            else:
+                p = gerar_pdf_texto(l)
             print("OK", l, m, p)
         except Exception as e:
             print("ERRO", l, m, e)
-
-if __name__ == "__main__":
-    gerar_todas()
