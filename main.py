@@ -645,8 +645,7 @@ def _gerar_apresentacao(lang="pt", modo="texto"):
     try:
         if modo == "slides":
             import apresentacao_textos as ap
-            ap.gerar_pdf_slides(lang)
-            caminho = os.path.join(STATIC_DIR, f"apresentacao_slides_{lang}.pdf")
+            caminho = ap.gerar_pdf_slides(lang)           
         else:
             import gerar_apresentacao_texto as gt
             caminho = gt.gerar_pdf_texto(lang)   # retorna o caminho com nome novo
