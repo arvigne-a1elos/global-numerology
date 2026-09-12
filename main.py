@@ -643,42 +643,20 @@ IDIOMAS_APRES = ["pt", "en", "es", "it", "fr", "de", "ja", "zh",
 
 def _gerar_apresentacao(lang="pt", modo="texto"):
     try:
-        import apresentacao_textos as ap
-        candidatos = []
-        if modo == "slides":
-            ret = ap.gerar_pdf_slides(lang)
-            candidatos = [
-                os.path.join(STATIC_DIR, f"apresentacao_slides_{lang}.pdf"),
-                f"apresentacao_slides_{lang}.pdf",
-            ]
-        else:
-            ret = ap.gerar_pdf_texto(lang)
-            candidatos = [
-                os.path.join(STATIC_DIR, f"apresentacao_{lang}.pdf"),
-                os.path.join(STATIC_DIR, f"apresentacao_texto_{lang}.pdf"),
-                f"apresentacao_{lang}.pdf",
-                f"apresentacao_texto_{lang}.pdf",
-            ]
-        # 1) Se o gerador retornou um caminho válido, usa ele
-        if isinstance(ret, str) and ret and os.path.exists(ret):
-            caminho = ret
-        else:
-            # 2) Senão, procura entre os nomes conhecidos que o gerador salva
-            caminho = next((c for c in candidatos if os.path.exists(c)), None)
-        if caminho:
+        import gerar_apresentacao_texto as gt
+        caminho = gt.gerar_pdf_texto(lang)   # retorna o caminho com nome NOVO
+        if caminho and os.path.exists(caminho):
             with open(caminho, "rb") as f:
                 return f.read(), os.path.basename(caminho)
-        # 3) Último recurso: PDF oficial antigo
         oficial = os.path.join(STATIC_DIR, "apresentacao_oficial_pt.pdf")
         if os.path.exists(oficial):
             with open(oficial, "rb") as f:
                 return f.read(), os.path.basename(oficial)
-        raise HTTPException(status_code=500,
-                            detail=f"Nao foi possivel gerar a apresentacao em {lang} ({modo}).")
+        raise HTTPException(status_code=500, detail="Nao foi possivel gerar a apresentacao.")
     except HTTPException:
         raise
     except Exception:
-        logger.exception("Erro ao gerar apresentacao %s/%s", lang, modo)
+        logger.exception("Erro ao gerar apresentacao %s", lang)
         raise HTTPException(status_code=500, detail="Erro ao gerar a apresentacao.")
 
 @app.get("/api/apresentacao")
