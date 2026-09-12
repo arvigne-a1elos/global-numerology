@@ -3610,7 +3610,7 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
         lang = "pt"
     c = CONTEUDO[lang]
     if not caminho_saida:
-        caminho_saida = os.path.join(STATIC_DIR, f"apresentacao_{lang}.pdf")
+        caminho_saida = os.path.join(STATIC_DIR, f"apresentacao_v2_{lang}.pdf")
     largura, altura = A4
     doc = canvas.Canvas(caminho_saida, pagesize=A4)
     pagina = 1
@@ -4121,7 +4121,7 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
         lang = "pt"
     c = _sem_emoji(CONTEUDO[lang])
     if not caminho_saida:
-        caminho_saida = os.path.join(STATIC_DIR, f"apresentacao_slides_{lang}.pdf")
+        caminho_saida = os.path.join(STATIC_DIR, f"apresentacao_slides_v2_{lang}.pdf")
     largura, altura = landscape(A4)
     doc = canvas.Canvas(caminho_saida, pagesize=landscape(A4))
     pagina = 1
