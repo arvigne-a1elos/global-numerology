@@ -643,8 +643,13 @@ IDIOMAS_APRES = ["pt", "en", "es", "it", "fr", "de", "ja", "zh",
 
 def _gerar_apresentacao(lang="pt", modo="texto"):
     try:
-        import gerar_apresentacao_texto as gt
-        caminho = gt.gerar_pdf_texto(lang)   # retorna o caminho com nome NOVO
+        if modo == "slides":
+            import apresentacao_textos as ap
+            ap.gerar_pdf_slides(lang)
+            caminho = os.path.join(STATIC_DIR, f"apresentacao_slides_{lang}.pdf")
+        else:
+            import gerar_apresentacao_texto as gt
+            caminho = gt.gerar_pdf_texto(lang)   # retorna o caminho com nome novo
         if caminho and os.path.exists(caminho):
             with open(caminho, "rb") as f:
                 return f.read(), os.path.basename(caminho)
@@ -652,11 +657,12 @@ def _gerar_apresentacao(lang="pt", modo="texto"):
         if os.path.exists(oficial):
             with open(oficial, "rb") as f:
                 return f.read(), os.path.basename(oficial)
-        raise HTTPException(status_code=500, detail="Nao foi possivel gerar a apresentacao.")
+        raise HTTPException(status_code=500,
+                            detail=f"Nao foi possivel gerar a apresentacao em {lang} ({modo}).")
     except HTTPException:
         raise
     except Exception:
-        logger.exception("Erro ao gerar apresentacao %s", lang)
+        logger.exception("Erro ao gerar apresentacao %s/%s", lang, modo)
         raise HTTPException(status_code=500, detail="Erro ao gerar a apresentacao.")
 
 @app.get("/api/apresentacao")
