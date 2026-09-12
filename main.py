@@ -644,15 +644,31 @@ IDIOMAS_APRES = ["pt", "en", "es", "it", "fr", "de", "ja", "zh",
 def _gerar_apresentacao(lang="pt", modo="texto"):
     try:
         import apresentacao_textos as ap
+        candidatos = []
         if modo == "slides":
-            ap.gerar_pdf_slides(lang)
-            caminho = os.path.join(STATIC_DIR, f"apresentacao_slides_{lang}.pdf")
+            ret = ap.gerar_pdf_slides(lang)
+            candidatos = [
+                os.path.join(STATIC_DIR, f"apresentacao_slides_{lang}.pdf"),
+                f"apresentacao_slides_{lang}.pdf",
+            ]
         else:
-            ap.gerar_pdf_texto(lang)
-            caminho = os.path.join(STATIC_DIR, f"apresentacao_{lang}.pdf")
-        if os.path.exists(caminho):
+            ret = ap.gerar_pdf_texto(lang)
+            candidatos = [
+                os.path.join(STATIC_DIR, f"apresentacao_{lang}.pdf"),
+                os.path.join(STATIC_DIR, f"apresentacao_texto_{lang}.pdf"),
+                f"apresentacao_{lang}.pdf",
+                f"apresentacao_texto_{lang}.pdf",
+            ]
+        # 1) Se o gerador retornou um caminho válido, usa ele
+        if isinstance(ret, str) and ret and os.path.exists(ret):
+            caminho = ret
+        else:
+            # 2) Senão, procura entre os nomes conhecidos que o gerador salva
+            caminho = next((c for c in candidatos if os.path.exists(c)), None)
+        if caminho:
             with open(caminho, "rb") as f:
                 return f.read(), os.path.basename(caminho)
+        # 3) Último recurso: PDF oficial antigo
         oficial = os.path.join(STATIC_DIR, "apresentacao_oficial_pt.pdf")
         if os.path.exists(oficial):
             with open(oficial, "rb") as f:
