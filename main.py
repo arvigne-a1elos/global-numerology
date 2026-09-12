@@ -645,15 +645,12 @@ def _gerar_apresentacao(lang="pt", modo="texto"):
     try:
         import apresentacao_textos as ap
         if modo == "slides":
-            caminho = ap.gerar_pdf_slides(lang)
-            candidato = os.path.join(STATIC_DIR, f"apresentacao_slides_{lang}.pdf")
+            ap.gerar_pdf_slides(lang)
+            caminho = os.path.join(STATIC_DIR, f"apresentacao_slides_{lang}.pdf")
         else:
-            caminho = ap.gerar_pdf_texto(lang)
-            candidato = os.path.join(STATIC_DIR, f"apresentacao_{lang}.pdf")
-        if not caminho or not os.path.exists(caminho):
-            if os.path.exists(candidato):
-                caminho = candidato
-        if caminho and os.path.exists(caminho):
+            ap.gerar_pdf_texto(lang)
+            caminho = os.path.join(STATIC_DIR, f"apresentacao_{lang}.pdf")
+        if os.path.exists(caminho):
             with open(caminho, "rb") as f:
                 return f.read(), os.path.basename(caminho)
         oficial = os.path.join(STATIC_DIR, "apresentacao_oficial_pt.pdf")
