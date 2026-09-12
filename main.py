@@ -685,13 +685,15 @@ def _gerar_apresentacao(lang="pt", modo="texto"):
 async def api_apresentacao(lang: str = "pt"):
     dados, nome = _gerar_apresentacao(lang, "texto")
     return Response(content=dados, media_type="application/pdf",
-                    headers={"Content-Disposition": f'attachment; filename="{nome}"'})
+                    headers={"Content-Disposition": f'attachment; filename="{nome}"',
+                             "Cache-Control": "no-store"})
 
 @app.get("/api/apresentacao-slides")
 async def api_apresentacao_slides(lang: str = "pt"):
     dados, nome = _gerar_apresentacao(lang, "slides")
     return Response(content=dados, media_type="application/pdf",
-                    headers={"Content-Disposition": f'attachment; filename="{nome}"'})
+                    headers={"Content-Disposition": f'attachment; filename="{nome}"',
+                             "Cache-Control": "no-store"})
   
 # ===== CHECKOUT COLETIVO (desconto progressivo) =====
 @app.get("/criar-checkout-coletivo")
