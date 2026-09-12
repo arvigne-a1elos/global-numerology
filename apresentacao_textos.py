@@ -3,7 +3,7 @@
 # CABEÇALHO COM DUAS LOGOS (uma em cada lado) + RODAPÉ
 # Usado nas DUAS versões: documento (texto) e slides
 # ============================================================
-import os
+import os, math, logging
 from reportlab.pdfgen import canvas as _canvas
 from reportlab.lib.colors import HexColor
 from reportlab.lib.units import mm
@@ -147,7 +147,7 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
                             title=f"A1ELOS {lang.upper()}",
                             author="A1ELOS Global Numerology")
     story = []
-      
+   
     # ===== CAPA SIMPLES (SEM PRETA) =====
     story.append(Spacer(1, 50))
     story.append(Paragraph(c.get("titulo", "A1ELOS Global Numerology"),
@@ -432,27 +432,27 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     for s in c.get("selo_final", []):
         story.append(Paragraph(str(s), _estilo(lang, 10, True, COR_DOURADO, TA_CENTER, depois=2)))
 
-    # ===== CABEÇALHO (2 LOGOS) E RODAPÉ — todas as páginas =====
-def on_page(canvas, doc_):
-    _cabecalho_duas_logos(canvas, doc_, c, lang, cor_fundo=COR_AZUL)
-    _rodape(canvas, doc_, c, lang)
-
     doc.build(story, onFirstPage=on_page, onLaterPages=on_page)
-    return caminho_saida
+    return caminho_saida  
+
+    # ===== CABEÇALHO (2 LOGOS) E RODAPÉ — todas as páginas =====
+    def on_page(canvas, doc_):
+        _cabecalho_duas_logos(canvas, doc_, c, lang, cor_fundo=COR_AZUL)
+        _rodape(canvas, doc_, c, lang)
 
 def _titulo_pagina(canvas, doc_, c, lang, num, total):
-    """Título da página + cabeçalho com 2 logos (usado nos slides)."""
-    _cabecalho_duas_logos(canvas, doc_, c, lang, cor_fundo=COR_AZUL)
-    # Número do slide (X-Y) no rodapé
-    _rodape(canvas, doc_, c, lang, num_pag=num, total_pag=total)
+  """Título da página + cabeçalho com 2 logos (usado nos slides)."""
+  _cabecalho_duas_logos(canvas, doc_, c, lang, cor_fundo=COR_AZUL)
+  # Número do slide (X-Y) no rodapé
+  _rodape(canvas, doc_, c, lang, num_pag=num, total_pag=total)
 
 def _rodape_slides(canvas, doc_, c, lang, num, total):
-    _rodape(canvas, doc_, c, lang, num_pag=num, total_pag=total)
+  _rodape(canvas, doc_, c, lang, num_pag=num, total_pag=total)
 
 def _capa(canvas, doc_, c, lang):
-    """Capa dos slides — sem capa preta, título central, com as 2 logos."""
-    _cabecalho_duas_logos(canvas, doc_, c, lang, cor_fundo=COR_AZUL)
-    _rodape(canvas, doc_, c, lang)
+  """Capa dos slides — sem capa preta, título central, com as 2 logos."""
+  _cabecalho_duas_logos(canvas, doc_, c, lang, cor_fundo=COR_AZUL)
+  _rodape(canvas, doc_, c, lang)
     
 # ============================================================
 # BLOCO JURÍDICO / GOVERNANÇA E COMPLIANCE (SEÇÕES 19-29)
