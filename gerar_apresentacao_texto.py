@@ -107,6 +107,7 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     story.append(Spacer(1, 30))
 
         # ---- SUMÁRIO EXECUTIVO ----
+       # ---- SUMÁRIO EXECUTIVO ----
     if c.get("sumario_intro"):
         story.append(Paragraph(c.get("sumario_titulo", "Sumário Executivo"),
                                _estilo(lang, 16, True, COR_AZUL, antes=10)))
@@ -175,6 +176,22 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
             ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, COR_CINZA_CLARO]),
         ]))
         story.append(t)
+
+    # ---- INVESTIMENTO & CONTATO ----
+    if c.get("invest_dados"):
+        story.append(Paragraph(c.get("invest_titulo", "Investimento & Contato"),
+                               _estilo(lang, 16, True, COR_AZUL, antes=12)))
+        for d in c["invest_dados"]:
+            rot = _campo(d, "rotulo", 0)
+            val = _campo(d, "valor", 1)
+            story.append(Paragraph(f"<b>{rot}:</b> {val}",
+                                   _estilo(lang, 10, False, COR_PRETO, depois=3)))
+        if c.get("invest_alocacao"):
+            story.append(Paragraph(c["invest_alocacao"],
+                                   _estilo(lang, 9.5, True, COR_DOURADO, antes=6)))
+    story.append(Spacer(1, 10))
+    story.append(HRFlowable(width="100%", thickness=1, color=COR_DOURADO))
+    story.append(Paragraph(CONTATOS, _estilo(lang, 8, False, COR_CINZA, TA_CENTER, 4, 0)))
 
     # ---- INVESTIMENTO & CONTATO ----
     if c.get("invest_dados"):
