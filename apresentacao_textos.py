@@ -4157,7 +4157,14 @@ def cab(titulo, indice):
 def gerar_apresentacao(lang="pt", modo="texto"):
     if modo == "slides":
         return gerar_pdf_slides(lang)
-    return gerar_pdf_texto(lang)
+    caminho = gerar_pdf_texto(lang)
+    if caminho and os.path.exists(caminho):
+        return caminho
+    # O gerador salvou o arquivo mas retornou None; localiza o arquivo salvo:
+    candidato = os.path.join(STATIC_DIR, f"apresentacao_{lang}.pdf")
+    if os.path.exists(candidato):
+        return candidato
+    return caminho
 
 def gerar_pdf_slides(lang="pt", caminho_saida=None):
     """Gera o deck em paisagem (landscape A4) com layout editorial completo."""
