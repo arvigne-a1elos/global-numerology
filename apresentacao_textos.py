@@ -274,7 +274,7 @@ CONTEUDO = {
         "grafico_anos": ["1. Ano", "5. Ano", "10. Ano", "20. Ano", "50. Ano"],
         "grafico_titulo": "Projeção Conservadora (R$ mil)",
         "grafico_titulo_linha": "Crescimento Projetado (R$ mil)",
-        "fale_conosco": "Fale Conosco",        
+        "fale_conosco": "Fale Conosco",
         "sumario_intro": "Esta apresentação está estruturada para guiar investidores e parceiros por todos os aspectos estratégicos da A1ELOS Global Numerology — da tese de mercado ao modelo de receita recorrente.",
         "sumario_cards": [
             ("01", "Sobre a A1ELOS", "Holding, portfólio e credencial DUNS"),
@@ -351,12 +351,12 @@ CONTEUDO = {
         "portfolio_titulo": "Portfólio: 23 Produtos em 4 Níveis",
         "portfolio_texto": "A estrutura em camadas garante que cada perfil de usuário — do curioso ao profissional — encontre uma oferta adequada ao seu nível de engajamento e capacidade financeira.",
         "portfolio_tabela": [
-            ["Cấp độ", "Sản phẩm", "Khoảng giá (₫)", "Hồ sơ"],
-            ["Cơ bản", "Bản Đồ Nhanh, Tư Vấn Nhanh", "₫ 25.000", "Tò mò, lần đầu tiếp cận"],
-            ["Trung cấp", "Tìm Kiếm AI, Bản Đồ Đầy Đủ, Tương Hợp", "₫ 53.000", "Người dùng gắn kết"],
-            ["Nâng cao", "Thần Số Học Doanh Nghiệp, Chu Kỳ, Sứ Mệnh", "₫ 81.000 – 109.000", "Chuyên gia, doanh nhân"],
-            ["Cao cấp", "Chẩn Đoán Đầy Đủ, Bản Đồ Cá Nhân", "₫ 137.000 – 305.000", "Thu nhập cao, dùng cho doanh nghiệp"],
-            ["B2B / Doanh nghiệp", "Gói doanh nghiệp, giấy phép, quà tặng", "Liên hệ", "Doanh nghiệp và nhân sự"],
+            ["Nível", "Produtos", "Faixa de Preço (R$)", "Perfil"],
+            ["Básico", "Mapa Express, Mapa Completo", "R$ 8 – 17", "Curioso, primeiro contato"],
+            ["Intermediário", "Pesquisa IA, Nome de Urna, Nº Eleitoral", "R$ 26 – 53", "Usuário engajado"],
+            ["Avançado", "Numerologia Empresarial, Ciclos, Missão", "R$ 81 – 109", "Profissional, empreendedor"],
+            ["Premium", "Diagnósticos Completos, Mapas Pessoais", "R$ 137 – 305", "Alta renda, uso corporativo"],
+            ["B2B", "Pacotes empresariais, licenças, brindes", "Sob consulta", "Empresas e equipes"],
         ],
         "portfolio_rodape": "23 produtos cobrem toda a jornada do usuário, do primeiro contato ao cliente recorrente premium — maximizando LTV por idioma e mercado.",
         "negocio_titulo": "Modelo de Negócio: 3 Fontes de Receita",
@@ -379,9 +379,9 @@ CONTEUDO = {
         "b2b_titulo": "Pacotes Empresariais B2B — Alto Valor, Alto Volume",
         "b2b_texto": "Os Pacotes B2B transformam a A1ELOS em uma ferramenta de employer branding e bem-estar corporativo. Empresas adquirem códigos de acesso em volume para distribuir como brindes a colaboradores ou clientes — respaldadas pelo DUNS 942242668 para contratos corporativos formais.",
         "b2b_planos": [
-            ("Gói Cơ Bản · 50 Mã", "50× Bản Đồ Nhanh (₫ 25.000 mỗi mã). Lý tưởng cho chương trình phúc lợi nhân viên và hoạt động hội nhập."),
-            ("Gói Trung Cấp · 100 Mã", "50× Bản Đồ Nhanh + 50× Tìm Kiếm AI (₫ 53.000). Hoàn hảo cho nhân sự và chiến lược thương hiệu tuyển dụng."),
-            ("Gói Cao Cấp · 200 Mã", "100× Bản Đồ Nhanh + 100× Bản Đồ Đầy Đủ (₫ 53.000). Độ sâu phân tích tối đa para đội nhóm lớn."),
+            ("Plano Básico · 50 códigos", "50× Mapa Express (R$ 8 cada). Ideal para programas de benefícios a colaboradores e ações de integração."),
+            ("Plano Intermediário · 100 códigos", "50× Mapa Express + 50× Pesquisa IA (R$ 17). Perfeito para equipes e estratégia de marca empregadora."),
+            ("Plano Premium · 200 códigos", "100× Mapa Express + 100× Mapa Completo (R$ 17). Máxima profundidade analítica para grandes grupos."),
         ],
         "b2b_tabela": [
             ["A partir de", "Desconto", "Perfil", "Uso Recomendado"],
@@ -456,9 +456,9 @@ CONTEUDO = {
             ("Banco Central do Brasil", "Estatísticas oficiais do Pix: transações, volume e usuários."),
             ("Febraban", "Pesquisa de Tecnologia Bancária — crescimento do Pix em 2025."),
             ("IBGE", "População e indicadores socioeconômicos do Brasil."),
-    ],
-    },
-
+        ],
+        },
+    
     "en": {
         "titulo": "A1ELOS Global Numerology",
         "subtitulo": "The science of numbers applied to your success",
