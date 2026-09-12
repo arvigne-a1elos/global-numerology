@@ -5,6 +5,7 @@
 # ============================================================
 import os
 from reportlab.pdfgen import canvas as _canvas
+from reportlab.lib.colors import HexColor
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import mm
 from reportlab.lib import colors
