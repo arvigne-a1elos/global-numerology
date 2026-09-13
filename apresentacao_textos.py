@@ -130,11 +130,10 @@ def _cabecalho_duas_logos(canvas, doc_, c, lang, altura_cab=18*mm, cor_fundo=Non
     canvas.setFillColor(colors.white if cor_fundo else COR_AZUL)
     canvas.setFont(_fonte(lang, True), 9)
     titulo = c.get("titulo", "A1ELOS Global Numerology")
-    canvas.drawCentredString(w / 2, h - 12*mm, titulo)
-    # DUNS + confidencial à direita do título (se couber)
+    canvas.drawCentredString(w / 2, h - 7*mm, titulo)          # título (mais alto)
     canvas.setFillColor(COR_DOURADO)
     canvas.setFont(_fonte(lang), 7.5)
-    canvas.drawCentredString(w / 2, h - 11*mm,
+    canvas.drawCentredString(w / 2, h - 13*mm,                # DUNS + confidencial (mais abaixo)
                              f"DUNS 942242668 · {c.get('confidencial','')}")
     # Linha dourada abaixo do cabeçalho
     canvas.setStrokeColor(COR_DOURADO)
@@ -622,7 +621,7 @@ class NumberedCanvas(_canvas.Canvas):
         self.setFont("Helvetica", 8)
         self.setFillColorRGB(0.55, 0.55, 0.55)
         doc.drawCentredString(w / 2, y_linha1,
-            f"{c['titulo']} · DUNS 942242668 · {c['confidencial']} {c['ano']}   ·   {pagina}")
+         f"{c['titulo']} · DUNS 942242668 · {c['confidencial']} {c['ano']}   ·   {pagina}")
 
 # ------------------------------------------------------------
 # CORES DA MARCA
@@ -3884,6 +3883,27 @@ def _rodape_deck(doc, largura, altura, lang, c, pagina):
     doc.setFont(_fonte(lang), 7)
     doc.drawCentredString(largura / 2, 4 * mm, CONTATOS)
 
+def _texto_wrap_centrado(doc, texto, fonte, tam, x, y, largura, cor, entrelinha, y_min=0):
+    """Desenha texto centralizado, quebrando linhas. Retorna o novo y."""
+    doc.setFillColor(cor)
+    doc.setFont(fonte, tam)
+    palavras = str(texto).split()
+    linha = ""
+    for p in palavras:
+        teste = (linha + " " + p).strip()
+        if doc.stringWidth(teste, fonte, tam) <= largura:
+            linha = teste
+        else:
+            if y - entrelinha < y_min:
+                return y
+            doc.drawCentredString(x + largura / 2, y, linha)
+            y -= entrelinha
+            linha = p
+    if linha and y - entrelinha >= y_min:
+        doc.drawCentredString(x + largura / 2, y, linha)
+        y -= entrelinha
+    return y
+
 def _kpis_grid(doc, largura, altura, lang, dados, y, colunas=4):
     """Desenha uma grade de cards de KPIs e retorna o novo y."""
     if not dados:
@@ -4106,15 +4126,14 @@ def gerar_pdf_slides(lang):
     doc.setFont(_fonte(lang, True), 13)
     doc.drawString(18 * mm, y - 8 * mm, c["problema_col_esq_titulo"])
     yy = y - 16 * mm
-    yy = y - 16 * mm
     for tit, sub in c["problema_col_esq"]:
         _caixa(doc, 18 * mm, yy - 30 * mm, col_w, 30 * mm, COR_FUNDO, COR_DOURADO)
         doc.setFillColor(COR_AZUL)
         doc.setFont(_fonte(lang, True), 9.5)
         doc.drawCentredString(18 * mm + col_w / 2, yy - 22.5 * mm, tit)
         doc.setFillColor(COR_CINZA)
-        _texto_wrap(doc, sub, _fonte(lang), 7.5, 22 * mm, yy - 17 * mm,
-                    col_w - 8 * mm, COR_CINZA, 3.2 * mm, y_min=yy - 28 * mm)
+        _texto_wrap_centrado(doc, sub, _fonte(lang), 7.5, 18 * mm, yy - 17 * mm,
+                 col_w, COR_CINZA, 3.2 * mm, y_min=yy - 28 * mm)
         yy -= 33 * mm   
     xr = 18 * mm + col_w + 10 * mm
     doc.setFillColor(COR_PRETO)
@@ -4127,8 +4146,9 @@ def gerar_pdf_slides(lang):
     _caixa(doc, xr, yy - 40 * mm, col_w, 40 * mm, HexColor("#FFF3E0"), COR_DOURADO)
     doc.setFillColor(COR_PRETO)
     doc.setFont(_fonte(lang, True), 10)
-    _texto_wrap(doc, c["problema_destaque"], _fonte(lang, True), 10, xr + 6 * mm,
-                yy - 30 * mm, col_w - 12 * mm, COR_PRETO, 4.5 * mm)
+    _texto_wrap_centrado(doc, c["problema_destaque"], _fonte(lang, True), 10, xr,
+                         yy - 30 * mm, col_w, COR_PRETO, 4.5 * mm,
+                         y_min=yy - 38 * mm)
     rodape(pagina)
     doc.showPage()
     pagina += 1
