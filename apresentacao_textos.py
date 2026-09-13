@@ -3771,13 +3771,13 @@ def _grafico_linha(doc, x, y, largura, altura, lang, anos, series, titulo):
             else:
                 p.lineTo(px, py)
         doc.drawPath(p, stroke=1, fill=0)
-    # Rótulos dos anos (fonte do idioma — elimina os quadrados)
+    # Rótulos dos anos (fonte do idioma)
     doc.setFillColor(COR_CINZA)
     doc.setFont(_fonte(lang), 7)
     for i, a in enumerate(anos):
         px = x + (largura * i) / (n - 1) if n > 1 else x
         doc.drawCentredString(px, y - 3 * mm, str(a))
-    # ===== BLOCO DE TRADUÇÃO (legenda: o que cada linha representa) =====
+    # ===== LEGENDA (o que cada linha representa) =====
     ly = y - 9 * mm
     for idx, (nome, vals) in enumerate(series):
         doc.setStrokeColor(cores[idx % len(cores)])
@@ -4346,6 +4346,7 @@ def gerar_pdf_slides(lang):
     doc.showPage()
     pagina += 1
 
+# ===== SLIDE 15 — PROJEÇÕES FINANCEIRAS (14) =====
     cab(c["projecoes_titulo"], 14)
     y = altura - 32 * mm
     y = _texto_wrap(doc, c["projecoes_texto"], _fonte(lang), 12, 18 * mm, y,
@@ -4355,6 +4356,7 @@ def gerar_pdf_slides(lang):
                       c["projecoes_tabela"], [0.3, 0.35, 0.35], 8, lang)
     y -= 75 * mm
     _grafico_linha(doc, 18 * mm, y - 45 * mm, largura - 36 * mm, 45 * mm,
+               lang,
                c.get("grafico_anos", ["Ano 1", "Ano 5", "Ano 10", "Ano 20", "Ano 50"]),
                [(c.get("graf_cons", "Conservador"), [33, 500, 3000, 15000, 75000]),
                 (c.get("graf_otim", "Otimista"), [130, 1500, 8000, 40000, 250000])],
