@@ -3885,24 +3885,26 @@ def _kpis_grid(doc, largura, altura, lang, dados, y, colunas=4):
     larg = (largura - 2 * margem - (colunas - 1) * gap) / colunas
     alt_card = 26 * mm
     for i, kpi in enumerate(dados):
+        if isinstance(kpi, dict):
+            valor = str(kpi.get("valor", kpi.get("numero", "")))
+            rotulo = str(kpi.get("rotulo", kpi.get("label", kpi.get("titulo", ""))))
+        else:
+            kpi = list(kpi) + ["", "", ""]
+            valor = str(kpi[0])
+            rotulo = str(kpi[1])
         col = i % colunas
         lin = i // colunas
         x = margem + col * (larg + gap)
         yy = y - lin * (alt_card + gap)
-        # Fundo do card
         doc.setFillColor(COR_CINZA_CLARO)
         doc.setStrokeColor(COR_DOURADO)
         doc.setLineWidth(0.6)
         doc.rect(x, yy - alt_card, larg, alt_card, stroke=1, fill=1)
-        # Valor (grande, dourado)
         doc.setFillColor(COR_DOURADO)
         doc.setFont(_fonte(lang, True), 16)
-        valor = str(kpi.get("valor", kpi.get("numero", "")))
         doc.drawCentredString(x + larg / 2, yy - 8 * mm, valor)
-        # Rótulo (cinza, pequeno)
         doc.setFillColor(COR_CINZA)
         doc.setFont(_fonte(lang), 8)
-        rotulo = str(kpi.get("rotulo", kpi.get("label", kpi.get("titulo", ""))))
         doc.drawCentredString(x + larg / 2, yy - 16 * mm, rotulo)
     n_linhas = (len(dados) + colunas - 1) // colunas
     return y - n_linhas * (alt_card + gap)
