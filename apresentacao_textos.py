@@ -4455,9 +4455,7 @@ def gerar_pdf_slides(lang):
         doc.drawCentredString(x + w / 2, altura * 0.40 + 11 * mm, item)
     rodape(pagina)
     doc.showPage()
-
     doc.save()
-    logger.info("PDF slides editorial gerado: %s", caminho_saida)
     return caminho_saida
 
 def gerar_todas():
