@@ -3832,12 +3832,12 @@ def _capa_slides(doc, largura, altura, lang, modo):
     c = CONTEUDO.get(lang, CONTEUDO["pt"])
     doc.setFillColor(COR_PRETO)
     doc.rect(0, 0, largura, altura, stroke=0, fill=1)
-    if os.path.exists(LOGO_PATH):
+    if os.path.exists(LOGO_ESQ):
         try:
-            iw, ih = ImageReader(LOGO_PATH).getSize()
+            iw, ih = ImageReader(LOGO_ESQ).getSize()
             lw = min(largura * 0.28, iw)
             lh = lw * ih / iw
-            doc.drawImage(LOGO_PATH, (largura - lw) / 2, altura * 0.60,
+            doc.drawImage(LOGO_ESQ, (largura - lw) / 2, altura * 0.60,
                           width=lw, height=lh, mask="auto")
         except Exception:
             pass
