@@ -5,6 +5,7 @@
 # ============================================================
 import os, math, logging
 from reportlab.lib.units import mm
+from reportlab.lib import colors
 from reportlab.lib.colors import HexColor, white, black
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_JUSTIFY
