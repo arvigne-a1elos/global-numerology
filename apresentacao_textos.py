@@ -3876,69 +3876,95 @@ def _rodape_deck(doc, largura, altura, lang, c, pagina):
     doc.setFont(_fonte(lang), 7)
     doc.drawCentredString(largura / 2, 4 * mm, CONTATOS)
 
-def gerar_pdf_slides(lang="pt", caminho_saida=None):
-    """Gera o deck em paisagem (landscape A4) com layout editorial completo."""
-    def _sem_emoji(obj):
-        """Remove emojis de bandeira (fora do BMP) que o Helvetica não renderiza."""
-        if isinstance(obj, dict):
-            return {k: _sem_emoji(v) for k, v in obj.items()}
-        if isinstance(obj, list):
-            return [_sem_emoji(v) for v in obj]
-        if isinstance(obj, tuple):
-            return tuple(_sem_emoji(v) for v in obj)
-        if isinstance(obj, str):
-            return "".join(ch for ch in obj if ord(ch) < 0x10000)
-        return obj
-
-    _registrar_cid()
-    _registrar_fontes_extra()
-    if lang not in CONTEUDO:
-        lang = "pt"
-    c = _sem_emoji(CONTEUDO[lang])
-    if not caminho_saida:
-        caminho_saida = os.path.join(STATIC_DIR, f"apresentacao_slides_{lang}.pdf")
-    largura, altura = landscape(A4)
-    doc = canvas.Canvas(caminho_saida, pagesize=landscape(A4))
-    pagina = 1
-
-    def cab(titulo, indice):
-        doc.setFillColor(COR_AZUL)
-        doc.rect(0, altura - 20 * mm, largura, 20 * mm, stroke=0, fill=1)
-        try:
-            if os.path.exists(LOGO_PATH):
-                doc.drawImage(LOGO_PATH, 6 * mm, altura - 17 * mm,
-                              width=13 * mm, height=13 * mm,
-                              preserveAspectRatio=True, mask='auto')
-        except Exception:
-            pass
-        try:
-            if os.path.exists(LOGO_A1ELOS):
-                doc.drawImage(LOGO_A1ELOS, largura - 19 * mm, altura - 17 * mm,
-                              width=13 * mm, height=13 * mm,
-                              preserveAspectRatio=True, mask='auto')
-        except Exception:
-            pass
-        doc.setFillColor(white)
-        tam = 20 if len(titulo) <= 40 else 15
-        _texto_wrap(doc, titulo, _fonte(lang, True), tam, 24 * mm, altura - 13 * mm,
-                    largura - 52 * mm, white, 9 * mm)
+def _kpis_grid(doc, largura, altura, lang, dados, y, colunas=4):
+    """Desenha uma grade de cards de KPIs e retorna o novo y."""
+    if not dados:
+        return y
+    margem = 15 * mm
+    gap = 6 * mm
+    larg = (largura - 2 * margem - (colunas - 1) * gap) / colunas
+    alt_card = 26 * mm
+    for i, kpi in enumerate(dados):
+        col = i % colunas
+        lin = i // colunas
+        x = margem + col * (larg + gap)
+        yy = y - lin * (alt_card + gap)
+        # Fundo do card
+        doc.setFillColor(COR_CINZA_CLARO)
+        doc.setStrokeColor(COR_DOURADO)
+        doc.setLineWidth(0.6)
+        doc.rect(x, yy - alt_card, larg, alt_card, stroke=1, fill=1)
+        # Valor (grande, dourado)
         doc.setFillColor(COR_DOURADO)
-        doc.setFont(_fonte(lang, True), 12)
-        doc.drawRightString(largura - 24 * mm, altura - 13 * mm, "%02d" % indice)
+        doc.setFont(_fonte(lang, True), 16)
+        valor = str(kpi.get("valor", kpi.get("numero", "")))
+        doc.drawCentredString(x + larg / 2, yy - 8 * mm, valor)
+        # Rótulo (cinza, pequeno)
+        doc.setFillColor(COR_CINZA)
+        doc.setFont(_fonte(lang), 8)
+        rotulo = str(kpi.get("rotulo", kpi.get("label", kpi.get("titulo", ""))))
+        doc.drawCentredString(x + larg / 2, yy - 16 * mm, rotulo)
+    n_linhas = (len(dados) + colunas - 1) // colunas
+    return y - n_linhas * (alt_card + gap)
+
+def _texto_wrap(doc, texto, fonte, tamanho, x, y, largura, cor, entrelinha=4*mm):
+    """Desenha texto quebrando linhas automaticamente. Retorna o novo y."""
+    doc.setFillColor(cor)
+    doc.setFont(fonte, tamanho)
+    palavras = str(texto).split()
+    linha = ""
+    for p in palavras:
+        teste = (linha + " " + p).strip()
+        if doc.stringWidth(teste, fonte, tamanho) <= largura:
+            linha = teste
+        else:
+            doc.drawString(x, y, linha)
+            y -= entrelinha
+            linha = p
+    if linha:
+        doc.drawString(x, y, linha)
+        y -= entrelinha
+    return y
+
+def _caixa(doc, x, y, w, h, cor_fundo, cor_borda):
+    """Desenha uma caixa retangular com fundo e borda."""
+    doc.setFillColor(cor_fundo)
+    doc.setStrokeColor(cor_borda)
+    doc.setLineWidth(0.8)
+    doc.rect(x, y, w, h, stroke=1, fill=1)
+
+def gerar_pdf_slides(lang):
+    c = CONTEUDO.get(lang, CONTEUDO["pt"])
+    largura, altura = landscape(A4)
+    caminho_saida = os.path.join(STATIC_DIR, f"apresentacao_slides_{lang}.pdf")
+    doc = canvas.Canvas(caminho_saida, pagesize=landscape(A4))
+
+    # ===== CLOSURES (usam doc, largura, altura, lang, c) =====
+    def cab(titulo, nivel=1):
+        """Título de seção do slide."""
+        doc.setFillColor(COR_AZUL)
+        doc.setFont(_fonte(lang, True), 20 if nivel == 1 else 16)
+        doc.drawString(18*mm, altura - 24*mm, titulo)
+        doc.setStrokeColor(COR_DOURADO)
+        doc.setLineWidth(0.8)
+        doc.line(18*mm, altura - 28*mm, largura - 18*mm, altura - 28*mm)
 
     def rodape(pagina):
-        """Apenas desenha o rodapé do slide."""
+        """Apenas desenha o rodapé do slide (sem recursão)."""
         doc.setFillColor(COR_CINZA_CLARO)
         doc.setFont(_fonte(lang), 8)
         doc.drawCentredString(largura / 2, 10 * mm,
-                f"{c['titulo']} · DUNS 942242668 · {c['confidencial']} {c['ano']}")
+                              f"{c['titulo']} · DUNS 942242668 · {c['confidencial']} {c['ano']}")
         doc.setFillColor(COR_DOURADO)
         doc.setFont(_fonte(lang, True), 9)
         doc.drawRightString(largura - 15 * mm, 10 * mm, str(pagina))
         doc.setFillColorRGB(0.55, 0.55, 0.55)
         doc.setFont(_fonte(lang), 7)
         doc.drawCentredString(largura / 2, 4 * mm, CONTATOS)
-       
+               
+    doc = canvas.Canvas(caminho_saida, pagesize=landscape(A4))
+    pagina = 1 
+           
     # ===== SLIDE 1 — CAPA =====
     _capa_slides(doc, largura, altura, lang, "slides")
     rodape(1)
