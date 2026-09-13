@@ -41,6 +41,8 @@ COR_CINZA = colors.HexColor("#444444")
 COR_CINZA_CLARO = colors.HexColor("#f0f0f0")
 CONTATOS = "a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.br/contato"
 
+TOTAL_PAGINAS = 20   # ajuste para o número real de slides
+
 # Nomes das duas logos (coloque os arquivos em static/)
 LOGO_ESQ = os.path.join(STATIC_DIR, "logo.png")        # logo à esquerda
 LOGO_DIR = os.path.join(STATIC_DIR, "A1ELOS.png")      # logo à direita
@@ -3931,16 +3933,16 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
                               f"{c['titulo']} · DUNS 942242668 · {c['confidencial']} {c['ano']}")
         doc.setFillColor(COR_DOURADO)
         doc.setFont(_fonte(lang, True), 9)
-        doc.drawRightString(largura - 15 * mm, 10 * mm, f"{pagina}-{TOTAL_PAGINAS}")
+        doc.drawRightString(largura - 15 * mm, 10 * mm, f"{pagina}")
         doc.setFillColorRGB(0.55, 0.55, 0.55)
         doc.setFont(_fonte(lang), 7)
         doc.drawCentredString(largura / 2, 4 * mm, CONTATOS)
        
         # ===== SLIDE 1 — CAPA =====
-    _capa_slides(doc, largura, altura, lang, "slides")
-    rodape(1)
-    doc.showPage()
-    pagina += 1
+        _capa_slides(doc, largura, altura, lang, "slides")
+        rodape(1)
+        doc.showPage()
+        pagina += 1
 
     # ===== SLIDE 2 — SUMÁRIO EXECUTIVO (01) =====
     cab(c.get("sumario_titulo", "Sumário Executivo"), 1)
