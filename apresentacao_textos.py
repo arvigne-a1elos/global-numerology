@@ -33,6 +33,10 @@ except Exception:
 
 FONTE_POR_IDIOMA = {'ja': 'HeiseiMin-W3', 'zh': 'STSong-Light',
                     'ru': 'DejaVu', 'tr': 'DejaVu', 'vi': 'DejaVu'}
+FONTES_RTL = {
+    "ar": ("NotoNaskhArabic", "static/fonts/NotoNaskhArabic-Regular.ttf", "static/fonts/NotoNaskhArabic-Bold.ttf"),
+    "he": ("NotoSansHebrew", "static/fonts/NotoSansHebrew-Regular.ttf", "static/fonts/NotoSansHebrew-Bold.ttf"),
+}
 
 COR_AZUL = colors.HexColor("#1a3a6b")
 COR_DOURADO = colors.HexColor("#B8860B")
@@ -48,10 +52,22 @@ LOGO_ESQ = os.path.join(STATIC_DIR, "logo.png")        # logo à esquerda
 LOGO_DIR = os.path.join(STATIC_DIR, "A1ELOS.png")      # logo à direita
 
 def _fonte(lang, bold=False):
+    if lang in FONTES_RTL:
+        nome = FONTES_RTL[lang][0]
+        return nome + "-Bold" if bold else nome
     base = FONTE_POR_IDIOMA.get(lang, "Helvetica")
     if base == "Helvetica":
         return "Helvetica-Bold" if bold else "Helvetica"
     return base
+
+def _registrar_fontes_rtl():
+    for lang, (nome, reg, bold) in FONTES_RTL.items():
+        if os.path.exists(reg):
+            pdfmetrics.registerFont(TTFont(nome, reg))
+        if os.path.exists(bold):
+            pdfmetrics.registerFont(TTFont(nome + "-Bold", bold))
+
+_registrar_fontes_rtl()
 
 def _estilo(lang, tam, bold, cor, alinh=TA_LEFT, antes=0, depois=6):
     return ParagraphStyle("s", fontName=_fonte(lang, bold), fontSize=tam,
