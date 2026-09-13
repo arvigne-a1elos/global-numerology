@@ -109,15 +109,12 @@ def _cabecalho_duas_logos(canvas, doc_, c, lang, altura_cab=18*mm, cor_fundo=Non
 def _rodape(canvas, doc_, c, lang, num_pag=None, total_pag=None):
     """Rodapé com contatos + página numerada (X de Y)."""
     w, h = A4
-    # Linha dourada acima do rodapé
     canvas.setStrokeColor(COR_DOURADO)
     canvas.setLineWidth(0.8)
     canvas.line(15*mm, 17*mm, w - 15*mm, 17*mm)
-    # Contatos centralizados
     canvas.setFillColor(COR_CINZA)
     canvas.setFont(_fonte(lang), 7.5)
     canvas.drawCentredString(w / 2, 12*mm, CONTATOS)
-    # Número da página à direita
     canvas.setFillColor(COR_AZUL)
     canvas.setFont(_fonte(lang, True), 8)
     pagina = num_pag if num_pag is not None else doc_.page
@@ -125,7 +122,6 @@ def _rodape(canvas, doc_, c, lang, num_pag=None, total_pag=None):
         canvas.drawRightString(w - 15*mm, 12*mm, f"{pagina} de {total_pag}")
     else:
         canvas.drawRightString(w - 15*mm, 12*mm, str(pagina))
-    # DUNS + confidencial + ano à esquerda
     canvas.setFillColor(COR_CINZA)
     canvas.setFont(_fonte(lang), 7)
     canvas.drawString(15*mm, 12*mm,
