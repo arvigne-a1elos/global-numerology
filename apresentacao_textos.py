@@ -43,7 +43,7 @@ CONTATOS = "a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.
 
 # Nomes das duas logos (coloque os arquivos em static/)
 LOGO_ESQ = os.path.join(STATIC_DIR, "logo.png")        # logo à esquerda
-LOGO_DIR = os.path.join(STATIC_DIR, "logo-a1elos.png") # logo à direita
+LOGO_DIR = os.path.join(STATIC_DIR, "A1ELOS.png")      # logo à direita
 
 def _fonte(lang, bold=False):
     base = FONTE_POR_IDIOMA.get(lang, "Helvetica")
