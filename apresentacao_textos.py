@@ -3927,22 +3927,23 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
         doc.drawRightString(largura - 24 * mm, altura - 13 * mm, "%02d" % indice)
 
     def rodape(pagina):
+        """Apenas desenha o rodapé do slide."""
         doc.setFillColor(COR_CINZA_CLARO)
         doc.setFont(_fonte(lang), 8)
         doc.drawCentredString(largura / 2, 10 * mm,
-                              f"{c['titulo']} · DUNS 942242668 · {c['confidencial']} {c['ano']}")
+                f"{c['titulo']} · DUNS 942242668 · {c['confidencial']} {c['ano']}")
         doc.setFillColor(COR_DOURADO)
         doc.setFont(_fonte(lang, True), 9)
-        doc.drawRightString(largura - 15 * mm, 10 * mm, f"{pagina}")
+        doc.drawRightString(largura - 15 * mm, 10 * mm, str(pagina))
         doc.setFillColorRGB(0.55, 0.55, 0.55)
         doc.setFont(_fonte(lang), 7)
         doc.drawCentredString(largura / 2, 4 * mm, CONTATOS)
        
-        # ===== SLIDE 1 — CAPA =====
-        _capa_slides(doc, largura, altura, lang, "slides")
-        rodape(1)
-        doc.showPage()
-        pagina += 1
+    # ===== SLIDE 1 — CAPA =====
+    _capa_slides(doc, largura, altura, lang, "slides")
+    rodape(1)
+    doc.showPage()
+    pagina += 1
 
     # ===== SLIDE 2 — SUMÁRIO EXECUTIVO (01) =====
     cab(c.get("sumario_titulo", "Sumário Executivo"), 1)
