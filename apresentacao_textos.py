@@ -4379,7 +4379,7 @@ def gerar_pdf_slides(lang):
     y = _texto_wrap(doc, c["projecoes_texto"], _fonte(lang), 12, 18 * mm, y,
                     largura - 36 * mm, COR_CINZA, 6 * mm)
     y -= 8 * mm
-    y = _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
+        _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
                     c["projecoes_tabela"], [0.3, 0.35, 0.35], 8, lang,
                     moeda_cols=(1, 2))
     y -= 75 * mm
