@@ -3744,38 +3744,23 @@ def _tabela_editorial(doc, x, y, largura, dados, proporcoes, tam, lang):
         y -= alt_linha
     return y
 
-def _grafico_linha(doc, x, y, largura, altura, *args):
-    """Gráfico de linhas com legenda. Aceita chamada com OU sem o parâmetro lang."""
-    # --- Detecta o idioma opcional e separa os demais argumentos ---
-    if args and isinstance(args[0], str):
-        lang = args[0]
-        args = args[1:]
-    else:
-        lang = "pt"
-    anos = args[0] if len(args) > 0 else ["Ano 1", "Ano 5", "Ano 10", "Ano 20", "Ano 50"]
-    series = args[1] if len(args) > 1 else []
-    titulo = args[2] if len(args) > 2 else ""
-
-    # Título
+def _grafico_linha(doc, x, y, largura, altura, lang, anos, series, titulo):
+    """Gráfico de linhas com legenda traduzida (fonte do idioma)."""
     doc.setFillColor(COR_PRETO)
     doc.setFont(_fonte(lang, True), 9)
     doc.drawString(x, y + altura - 4 * mm, titulo)
-
     # Eixos
     doc.setStrokeColor(COR_CINZA)
     doc.setLineWidth(0.5)
     doc.line(x, y, x, y + altura - 8 * mm)
     doc.line(x, y, x + largura, y)
-
-    # Escala (maior valor)
+    # Valor máximo (para escala)
     max_v = 1
     for nome, vals in series:
         for v in vals:
             max_v = max(max_v, v)
     n = len(anos)
     cores = [COR_AZUL, COR_DOURADO]
-
-    # Linhas
     for idx, (nome, vals) in enumerate(series):
         doc.setStrokeColor(cores[idx % len(cores)])
         doc.setLineWidth(1.2)
@@ -3788,15 +3773,13 @@ def _grafico_linha(doc, x, y, largura, altura, *args):
             else:
                 p.lineTo(px, py)
         doc.drawPath(p, stroke=1, fill=0)
-
-    # Rótulos dos anos (fonte do idioma)
+    # Rótulos dos anos (fonte do idioma — elimina os quadrados)
     doc.setFillColor(COR_CINZA)
     doc.setFont(_fonte(lang), 7)
     for i, a in enumerate(anos):
         px = x + (largura * i) / (n - 1) if n > 1 else x
         doc.drawCentredString(px, y - 3 * mm, str(a))
-
-    # Legenda traduzida (o que cada linha representa)
+    # ===== BLOCO DE TRADUÇÃO (legenda: o que cada linha representa) =====
     ly = y - 9 * mm
     for idx, (nome, vals) in enumerate(series):
         doc.setStrokeColor(cores[idx % len(cores)])
