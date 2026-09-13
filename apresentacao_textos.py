@@ -53,21 +53,34 @@ LOGO_DIR = os.path.join(STATIC_DIR, "A1ELOS.png")      # logo à direita
 
 def _fonte(lang, bold=False):
     if lang in FONTES_RTL:
-        nome = FONTES_RTL[lang][0]
-        return nome + "-Bold" if bold else nome
+        return FONTES_RTL[lang][0]
     base = FONTE_POR_IDIOMA.get(lang, "Helvetica")
     if base == "Helvetica":
         return "Helvetica-Bold" if bold else "Helvetica"
     return base
 
 def _registrar_fontes_rtl():
+    candidatos = ["static/fonts", "fonts", "static",
+                  os.path.join(STATIC_DIR, "fonts"), STATIC_DIR]
     for lang, (nome, reg, bold) in FONTES_RTL.items():
-        if os.path.exists(reg):
-            pdfmetrics.registerFont(TTFont(nome, reg))
-        if os.path.exists(bold):
-            pdfmetrics.registerFont(TTFont(nome + "-Bold", bold))
-
-_registrar_fontes_rtl()
+        arq_reg = os.path.basename(reg)
+        arq_bold = os.path.basename(bold)
+        reg_path = bold_path = None
+        for pasta in candidatos:
+            if os.path.exists(os.path.join(pasta, arq_reg)):
+                reg_path = os.path.join(pasta, arq_reg)
+            if os.path.exists(os.path.join(pasta, arq_bold)):
+                bold_path = os.path.join(pasta, arq_bold)
+        if reg_path:
+            try:
+                pdfmetrics.registerFont(TTFont(nome, reg_path))
+            except Exception:
+                pass
+        if bold_path:
+            try:
+                pdfmetrics.registerFont(TTFont(nome + "-Bold", bold_path))
+            except Exception:
+                pass
 
 def _estilo(lang, tam, bold, cor, alinh=TA_LEFT, antes=0, depois=6):
     return ParagraphStyle("s", fontName=_fonte(lang, bold), fontSize=tam,
