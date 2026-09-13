@@ -10,7 +10,7 @@ from reportlab.lib.colors import HexColor, white, black
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_JUSTIFY
 from reportlab.pdfgen import canvas as _canvas
-from reportlab.pdfgen import canvas
+from reportlab.pdfgen import canvas 
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase.cidfonts import UnicodeCIDFont
@@ -113,9 +113,11 @@ def _rodape(canvas, doc_, c, lang, num_pag=None, total_pag=None):
     canvas.setStrokeColor(COR_DOURADO)
     canvas.setLineWidth(0.8)
     canvas.line(15*mm, 17*mm, w - 15*mm, 17*mm)
+    # Linha de cima (y=12mm): título/DUNS à esquerda + página à direita
     canvas.setFillColor(COR_CINZA)
-    canvas.setFont(_fonte(lang), 7.5)
-    canvas.drawCentredString(w / 2, 12*mm, CONTATOS)
+    canvas.setFont(_fonte(lang), 7)
+    canvas.drawString(15*mm, 12*mm,
+                      f"{c.get('titulo','A1ELOS')} · DUNS 942242668 · {c.get('confidencial','')} {c.get('ano','2026')}")
     canvas.setFillColor(COR_AZUL)
     canvas.setFont(_fonte(lang, True), 8)
     pagina = num_pag if num_pag is not None else doc_.page
@@ -123,10 +125,10 @@ def _rodape(canvas, doc_, c, lang, num_pag=None, total_pag=None):
         canvas.drawRightString(w - 15*mm, 12*mm, f"{pagina} de {total_pag}")
     else:
         canvas.drawRightString(w - 15*mm, 12*mm, str(pagina))
+    # Linha de baixo (y=8mm): contatos centralizados, sozinhos
     canvas.setFillColor(COR_CINZA)
-    canvas.setFont(_fonte(lang), 7)
-    canvas.drawString(15*mm, 12*mm,
-                      f"{c.get('titulo','A1ELOS')} · DUNS 942242668 · {c.get('confidencial','')} {c.get('ano','2026')}")
+    canvas.setFont(_fonte(lang), 7.5)
+    canvas.drawCentredString(w / 2, 8*mm, CONTATOS)
 
 def gerar_pdf_texto(lang="pt", caminho_saida=None):
     """Gera o PDF documento A4 retrato — texto limpo. Retorna o caminho."""
@@ -3825,6 +3827,53 @@ def gerar_apresentacao(lang="pt", modo="texto"):
         return candidato
     return caminho
 
+def _capa_slides(doc, largura, altura, lang, modo):
+    """Capa dos slides — fundo preto, título central, logo."""
+    c = CONTEUDO.get(lang, CONTEUDO["pt"])
+    doc.setFillColor(COR_PRETO)
+    doc.rect(0, 0, largura, altura, stroke=0, fill=1)
+    if os.path.exists(LOGO_PATH):
+        try:
+            iw, ih = ImageReader(LOGO_PATH).getSize()
+            lw = min(largura * 0.28, iw)
+            lh = lw * ih / iw
+            doc.drawImage(LOGO_PATH, (largura - lw) / 2, altura * 0.60,
+                          width=lw, height=lh, mask="auto")
+        except Exception:
+            pass
+    doc.setFillColor(COR_DOURADO)
+    doc.setFont(_fonte(lang, True), 34)
+    doc.drawCentredString(largura / 2, altura * 0.47, c["titulo"])
+    doc.setFillColor(white)
+    doc.setFont(_fonte(lang), 14)
+    doc.drawCentredString(largura / 2, altura * 0.41, c["subtitulo"])
+    doc.setStrokeColor(COR_DOURADO)
+    doc.setLineWidth(0.8)
+    doc.line(largura * 0.30, altura * 0.385, largura * 0.70, altura * 0.385)
+    doc.setFillColor(HexColor("#AAAAAA"))
+    doc.setFont(_fonte(lang), 11)
+    doc.drawCentredString(largura / 2, altura * 0.35, c["capa_nota"])
+    doc.setFillColor(COR_DOURADO)
+    doc.setFont(_fonte(lang, True), 12)
+    doc.drawCentredString(largura / 2, altura * 0.28, "DUNS 942242668")
+    doc.setFillColor(HexColor("#888888"))
+    doc.setFont(_fonte(lang), 9)
+    doc.drawCentredString(largura / 2, altura * 0.08,
+                          f"{c['confidencial']}  {c['ano']}")
+
+def _rodape_deck(doc, largura, altura, lang, c, pagina):
+    """Rodapé dos slides — título/DUNS à esquerda, página à direita, contatos embaixo."""
+    doc.setFillColor(COR_CINZA_CLARO)
+    doc.setFont(_fonte(lang), 8)
+    doc.drawCentredString(largura / 2, 10 * mm,
+                          f"{c['titulo']} · DUNS 942242668 · {c['confidencial']} {c['ano']}")
+    doc.setFillColor(COR_DOURADO)
+    doc.setFont(_fonte(lang, True), 9)
+    doc.drawRightString(largura - 15 * mm, 10 * mm, f"{pagina - 1}-{TOTAL_PAGINAS - 2}")
+    doc.setFillColorRGB(0.55, 0.55, 0.55)
+    doc.setFont(_fonte(lang), 7)
+    doc.drawCentredString(largura / 2, 4 * mm, CONTATOS)
+
 def gerar_pdf_slides(lang="pt", caminho_saida=None):
     """Gera o deck em paisagem (landscape A4) com layout editorial completo."""
     def _sem_emoji(obj):
@@ -3888,7 +3937,7 @@ def gerar_pdf_slides(lang="pt", caminho_saida=None):
         doc.drawCentredString(largura / 2, 4 * mm, CONTATOS)
        
         # ===== SLIDE 1 — CAPA =====
-    _capa(doc, largura, altura, lang, "slides")
+    _capa_slides(doc, largura, altura, lang, "slides")
     rodape(1)
     doc.showPage()
     pagina += 1
