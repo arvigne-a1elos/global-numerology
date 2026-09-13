@@ -3746,10 +3746,10 @@ def _tabela_editorial(doc, x, y, largura, dados, proporcoes, tam, lang):
         y -= alt_linha
     return y
 
-def _grafico_linha(doc, x, y, largura, altura, anos, series, titulo):
-    """Desenha um gráfico de linhas simples."""
+def _grafico_linha(doc, x, y, largura, altura, lang, anos, series, titulo):
+    """Gráfico de linhas com legenda traduzida (fonte do idioma)."""
     doc.setFillColor(COR_PRETO)
-    doc.setFont("Helvetica-Bold", 9)
+    doc.setFont(_fonte(lang, True), 9)
     doc.drawString(x, y + altura - 4 * mm, titulo)
     # Eixos
     doc.setStrokeColor(COR_CINZA)
@@ -3775,12 +3775,23 @@ def _grafico_linha(doc, x, y, largura, altura, anos, series, titulo):
             else:
                 p.lineTo(px, py)
         doc.drawPath(p, stroke=1, fill=0)
-    # Rótulos dos anos
+    # Rótulos dos anos (fonte do idioma)
     doc.setFillColor(COR_CINZA)
-    doc.setFont("Helvetica", 7)
+    doc.setFont(_fonte(lang), 7)
     for i, a in enumerate(anos):
         px = x + (largura * i) / (n - 1) if n > 1 else x
         doc.drawCentredString(px, y - 3 * mm, str(a))
+    # ===== LEGENDA TRADUZIDA (tabela do que cada linha representa) =====
+    ly = y - 9 * mm
+    for idx, (nome, vals) in enumerate(series):
+        doc.setStrokeColor(cores[idx % len(cores)])
+        doc.setLineWidth(1.2)
+        doc.line(x, ly, x + 8 * mm, ly)
+        doc.setFillColor(COR_PRETO)
+        doc.setFont(_fonte(lang), 8)
+        doc.drawString(x + 10 * mm, ly - 2 * mm, nome)
+        ly -= 5 * mm
+    return ly
 
 def _bandeira(doc, x, y, w, h, pais):
     """Desenha uma mini-bandeira (id, tr, vn)."""
