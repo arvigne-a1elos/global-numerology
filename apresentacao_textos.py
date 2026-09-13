@@ -135,7 +135,7 @@ def _cabecalho_duas_logos(canvas, doc_, c, lang, altura_cab=18*mm, cor_fundo=Non
     # DUNS + confidencial à direita do título (se couber)
     canvas.setFillColor(COR_DOURADO)
     canvas.setFont(_fonte(lang), 7.5)
-    canvas.drawCentredString(w / 2, h - 16*mm,
+    canvas.drawCentredString(w / 2, h - 11*mm,
                              f"DUNS 942242668 · {c.get('confidencial','')}")
     # Linha dourada abaixo do cabeçalho
     canvas.setStrokeColor(COR_DOURADO)
@@ -622,10 +622,8 @@ class NumberedCanvas(_canvas.Canvas):
         w, h = self._pagesize
         self.setFont("Helvetica", 8)
         self.setFillColorRGB(0.55, 0.55, 0.55)
-        self.drawCentredString(w / 2.0, 18, f"{self._pageNumber}-{num_pages}")
-        if self._contatos:
-            self.setFont("Helvetica", 7)
-            self.drawCentredString(w / 2.0, 10, self._contatos)
+        doc.drawCentredString(w / 2, y_linha1,
+            f"{c['titulo']} · DUNS 942242668 · {c['confidencial']} {c['ano']}   ·   {pagina}")
 
 # ------------------------------------------------------------
 # CORES DA MARCA
@@ -3781,7 +3779,7 @@ def _grafico_linha(doc, x, y, largura, altura, lang, anos, series, titulo):
     for i, a in enumerate(anos):
         px = x + (largura * i) / (n - 1) if n > 1 else x
         doc.drawCentredString(px, y - 3 * mm, str(a))
-    # ===== LEGENDA TRADUZIDA (tabela do que cada linha representa) =====
+    # ===== LEGENDA (o que cada linha representa) =====
     ly = y - 9 * mm
     for idx, (nome, vals) in enumerate(series):
         doc.setStrokeColor(cores[idx % len(cores)])
@@ -3792,7 +3790,7 @@ def _grafico_linha(doc, x, y, largura, altura, lang, anos, series, titulo):
         doc.drawString(x + 10 * mm, ly - 2 * mm, nome)
         ly -= 5 * mm
     return ly
-
+           
 def _bandeira(doc, x, y, w, h, pais):
     """Desenha uma mini-bandeira (id, tr, vn)."""
     if pais == "id":
@@ -3907,14 +3905,17 @@ def _kpis_grid(doc, largura, altura, lang, dados, y, colunas=4):
         lin = i // colunas
         x = margem + col * (larg + gap)
         yy = y - lin * (alt_card + gap)
-        doc.setFillColor(COR_CINZA_CLARO)
+        # Fundo do card (preto)
+        doc.setFillColor(COR_PRETO)
         doc.setStrokeColor(COR_DOURADO)
         doc.setLineWidth(0.6)
         doc.rect(x, yy - alt_card, larg, alt_card, stroke=1, fill=1)
-        doc.setFillColor(COR_DOURADO)
+        # Valor (grande, branco)
+        doc.setFillColor(white)
         doc.setFont(_fonte(lang, True), 16)
         doc.drawCentredString(x + larg / 2, yy - 8 * mm, valor)
-        doc.setFillColor(COR_CINZA)
+        # Rótulo (dourado claro, pequeno)
+        doc.setFillColor(COR_DOURADO)
         doc.setFont(_fonte(lang), 8)
         doc.drawCentredString(x + larg / 2, yy - 16 * mm, rotulo)
     n_linhas = (len(dados) + colunas - 1) // colunas
