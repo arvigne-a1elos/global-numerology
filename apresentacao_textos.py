@@ -4,18 +4,17 @@
 # Usado nas DUAS versões: documento (texto) e slides
 # ============================================================
 import os, math, logging
-from reportlab.pdfgen import canvas as _canvas
-from reportlab.lib.colors import HexColor
 from reportlab.lib.units import mm
-from reportlab.lib import colors
-from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_JUSTIFY
-from reportlab.platypus import (SimpleDocTemplate, Paragraph, Spacer,
-                                Table, TableStyle, HRFlowable, Image)
+from reportlab.lib.colors import HexColor, white, black
 from reportlab.lib.styles import ParagraphStyle
+from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_JUSTIFY
+from reportlab.pdfgen import canvas as _canvas
 from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.cidfonts import UnicodeCIDFont
 from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.lib.pagesizes import A4
+from reportlab.pdfbase.cidfonts import UnicodeCIDFont
+from reportlab.platypus import Table, TableStyle, Paragraph, SimpleDocTemplate, Spacer, HRFlowable, Image
+from reportlab.lib.utils import ImageReader
+from reportlab.lib.pagesizes import A4, landscape
 
 
 STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
@@ -432,13 +431,13 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     for s in c.get("selo_final", []):
         story.append(Paragraph(str(s), _estilo(lang, 10, True, COR_DOURADO, TA_CENTER, depois=2)))
 
-    doc.build(story, onFirstPage=on_page, onLaterPages=on_page)
-    return caminho_saida  
-
     # ===== CABEÇALHO (2 LOGOS) E RODAPÉ — todas as páginas =====
     def on_page(canvas, doc_):
         _cabecalho_duas_logos(canvas, doc_, c, lang, cor_fundo=COR_AZUL)
         _rodape(canvas, doc_, c, lang)
+
+    doc.build(story, onFirstPage=on_page, onLaterPages=on_page)
+    return caminho_saida 
 
 def _titulo_pagina(canvas, doc_, c, lang, num, total):
   """Título da página + cabeçalho com 2 logos (usado nos slides)."""
