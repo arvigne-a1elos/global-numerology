@@ -3712,8 +3712,9 @@ LINHAS_IDIOMAS = [
 # ------------------------------------------------------------
 # ENTRADA PRINCIPAL
 # ------------------------------------------------------------
-def _tabela_editorial(doc, x, y, largura, dados, proporcoes, tam, lang):
-    """Desenha uma tabela editorial e retorna o novo y."""
+def _tabela_editorial(doc, x, y, largura, dados, proporcoes, tam, lang, moeda_cols=()):
+    """Desenha uma tabela editorial e retorna o novo y.
+    moeda_cols: tupla de índices de colunas que devem receber o símbolo da moeda."""
     if not dados:
         return y
     alt_linha = 7 * mm
@@ -3737,7 +3738,10 @@ def _tabela_editorial(doc, x, y, largura, dados, proporcoes, tam, lang):
         doc.setFont(_fonte(lang), tam)
         xx = x
         for i, cel in enumerate(linha):
-            doc.drawString(xx + 1 * mm, y - 5 * mm, str(cel))
+            texto = str(cel)
+            if i in moeda_cols:
+                texto = _com_moeda(lang, texto)
+            doc.drawString(xx + 1 * mm, y - 5 * mm, texto)
             xx += largs[i]
         y -= alt_linha
     return y
@@ -3788,7 +3792,28 @@ def _grafico_linha(doc, x, y, largura, altura, lang, anos, series, titulo):
         doc.drawString(x + 10 * mm, ly - 2 * mm, nome)
         ly -= 5 * mm
     return ly
-           
+
+# Moeda por idioma
+MOEDA = {
+    "pt": "R$", "en": "US$", "es": "€", "it": "€", "fr": "€", "de": "€",
+    "ja": "¥", "zh": "¥", "ru": "₽", "he": "₪", "ar": "﷼",
+    "id": "Rp", "tr": "₺", "vi": "₫",
+}
+
+def _moeda(lang):
+    return MOEDA.get(lang, "")
+
+def _com_moeda(lang, texto):
+    """Adiciona o símbolo da moeda ao valor, se ainda não tiver e se for numérico."""
+    m = _moeda(lang)
+    t = str(texto)
+    if not m or m in t:
+        return t
+    # só adiciona se o valor contém dígitos (evita "Sob consulta" ganhar moeda)
+    if any(ch.isdigit() for ch in t):
+        return f"{m} {t}"
+    return t
+
 def _bandeira(doc, x, y, w, h, pais):
     """Desenha uma mini-bandeira (id, tr, vn)."""
     if pais == "id":
@@ -4261,7 +4286,8 @@ def gerar_pdf_slides(lang):
                     largura - 36 * mm, COR_CINZA, 6 * mm)
     y -= 10 * mm
     y = _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
-                          c["portfolio_tabela"], [0.22, 0.38, 0.18, 0.22], 9, lang)
+                    c["portfolio_tabela"], [0.22, 0.38, 0.18, 0.22], 9, lang,
+                    moeda_cols=(2,))
     y -= 8 * mm
     doc.setFillColor(COR_CINZA)
     doc.setFont(_fonte(lang), 9)
@@ -4306,7 +4332,8 @@ def gerar_pdf_slides(lang):
                     largura - 36 * mm, COR_CINZA, 5.5 * mm)
     y -= 10 * mm
     y = _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
-                          c["banners_tabela"], [0.24, 0.20, 0.24, 0.32], 9, lang)
+                    c["banners_tabela"], [0.22, 0.22, 0.22, 0.34], 9, lang,
+                    moeda_cols=(1, 2))
     y -= 10 * mm
     _caixa(doc, 18 * mm, y - 24 * mm, largura - 36 * mm, 24 * mm, HexColor("#EEF2FA"), COR_AZUL)
     doc.setFillColor(COR_AZUL)
@@ -4352,8 +4379,9 @@ def gerar_pdf_slides(lang):
     y = _texto_wrap(doc, c["projecoes_texto"], _fonte(lang), 12, 18 * mm, y,
                     largura - 36 * mm, COR_CINZA, 6 * mm)
     y -= 8 * mm
-    _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
-                      c["projecoes_tabela"], [0.3, 0.35, 0.35], 8, lang)
+    y = _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
+                    c["projecoes_tabela"], [0.3, 0.35, 0.35], 8, lang,
+                    moeda_cols=(1, 2))
     y -= 75 * mm
     _grafico_linha(doc, 18 * mm, y - 45 * mm, largura - 36 * mm, 45 * mm,
                lang,
