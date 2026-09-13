@@ -3775,21 +3775,22 @@ def _kpis_grid(doc, largura, altura, lang, dados, y, colunas=4):
     n_linhas = (len(dados) + colunas - 1) // colunas
     return y - n_linhas * (alt_card + gap)
 
-def _texto_wrap(doc, texto, fonte, tamanho, x, y, largura, cor, entrelinha=4*mm):
-    """Desenha texto quebrando linhas automaticamente. Retorna o novo y."""
+def _texto_wrap(doc, texto, fonte, tam, x, y, largura_max, cor, entrelinha, y_min=0):
     doc.setFillColor(cor)
-    doc.setFont(fonte, tamanho)
-    palavras = str(texto).split()
+    doc.setFont(fonte, tam)
+    palavras = texto.split()
     linha = ""
     for p in palavras:
         teste = (linha + " " + p).strip()
-        if doc.stringWidth(teste, fonte, tamanho) <= largura:
+        if doc.stringWidth(teste, fonte, tam) <= largura_max:
             linha = teste
         else:
+            if y - entrelinha < y_min:
+                return y
             doc.drawString(x, y, linha)
             y -= entrelinha
             linha = p
-    if linha:
+    if linha and y - entrelinha >= y_min:
         doc.drawString(x, y, linha)
         y -= entrelinha
     return y
