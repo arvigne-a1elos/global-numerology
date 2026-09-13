@@ -53,32 +53,36 @@ LOGO_DIR = os.path.join(STATIC_DIR, "A1ELOS.png")      # logo à direita
 
 def _fonte(lang, bold=False):
     if lang in FONTES_RTL:
-        return FONTES_RTL[lang][0]
+        nome = FONTES_RTL[lang][0]
+        if nome in pdfmetrics.getRegisteredFontNames():
+            return nome
+        return "DejaVu"
     base = FONTE_POR_IDIOMA.get(lang, "Helvetica")
     if base == "Helvetica":
         return "Helvetica-Bold" if bold else "Helvetica"
     return base
 
 def _registrar_fontes_rtl():
-    candidatos = ["static/fonts", "fonts", "static",
-                  os.path.join(STATIC_DIR, "fonts"), STATIC_DIR]
+    """Procura as fontes árabe/hebraico em qualquer pasta do projeto e registra."""
+    raiz = os.path.dirname(os.path.abspath(__file__))
     for lang, (nome, reg, bold) in FONTES_RTL.items():
         arq_reg = os.path.basename(reg)
         arq_bold = os.path.basename(bold)
-        reg_path = bold_path = None
-        for pasta in candidatos:
-            if os.path.exists(os.path.join(pasta, arq_reg)):
-                reg_path = os.path.join(pasta, arq_reg)
-            if os.path.exists(os.path.join(pasta, arq_bold)):
-                bold_path = os.path.join(pasta, arq_bold)
-        if reg_path:
+        achou_reg = None
+        achou_bold = None
+        for pasta_atual, subpastas, arquivos in os.walk(raiz):
+            if arq_reg in arquivos:
+                achou_reg = os.path.join(pasta_atual, arq_reg)
+            if arq_bold in arquivos:
+                achou_bold = os.path.join(pasta_atual, arq_bold)
+        if achou_reg:
             try:
-                pdfmetrics.registerFont(TTFont(nome, reg_path))
+                pdfmetrics.registerFont(TTFont(nome, achou_reg))
             except Exception:
                 pass
-        if bold_path:
+        if achou_bold:
             try:
-                pdfmetrics.registerFont(TTFont(nome + "-Bold", bold_path))
+                pdfmetrics.registerFont(TTFont(nome + "-Bold", achou_bold))
             except Exception:
                 pass
 
