@@ -3683,6 +3683,107 @@ LINHAS_IDIOMAS = [
 # ------------------------------------------------------------
 # ENTRADA PRINCIPAL
 # ------------------------------------------------------------
+def _tabela_editorial(doc, x, y, largura, dados, proporcoes, tam, lang):
+    """Desenha uma tabela editorial e retorna o novo y."""
+    if not dados:
+        return y
+    alt_linha = 7 * mm
+    n_cols = len(dados[0])
+    largs = [largura * p for p in proporcoes]
+    # Cabeçalho (azul, negrito)
+    doc.setFillColor(COR_AZUL)
+    doc.setFont(_fonte(lang, True), tam)
+    xx = x
+    for i, cel in enumerate(dados[0]):
+        doc.drawString(xx + 1 * mm, y - 5 * mm, str(cel))
+        xx += largs[i]
+    y -= alt_linha
+    # Linha separadora dourada
+    doc.setStrokeColor(COR_DOURADO)
+    doc.setLineWidth(0.6)
+    doc.line(x, y + 1 * mm, x + largura, y + 1 * mm)
+    # Corpo (cinza)
+    for linha in dados[1:]:
+        doc.setFillColor(COR_CINZA)
+        doc.setFont(_fonte(lang), tam)
+        xx = x
+        for i, cel in enumerate(linha):
+            doc.drawString(xx + 1 * mm, y - 5 * mm, str(cel))
+            xx += largs[i]
+        y -= alt_linha
+    return y
+
+def _grafico_linha(doc, x, y, largura, altura, anos, series, titulo):
+    """Desenha um gráfico de linhas simples."""
+    doc.setFillColor(COR_PRETO)
+    doc.setFont("Helvetica-Bold", 9)
+    doc.drawString(x, y + altura - 4 * mm, titulo)
+    # Eixos
+    doc.setStrokeColor(COR_CINZA)
+    doc.setLineWidth(0.5)
+    doc.line(x, y, x, y + altura - 8 * mm)
+    doc.line(x, y, x + largura, y)
+    # Valor máximo (para escala)
+    max_v = 1
+    for nome, vals in series:
+        for v in vals:
+            max_v = max(max_v, v)
+    n = len(anos)
+    cores = [COR_AZUL, COR_DOURADO]
+    for idx, (nome, vals) in enumerate(series):
+        doc.setStrokeColor(cores[idx % len(cores)])
+        doc.setLineWidth(1.2)
+        p = doc.beginPath()
+        for i, v in enumerate(vals):
+            px = x + (largura * i) / (n - 1) if n > 1 else x
+            py = y + (altura - 8 * mm) * (v / max_v)
+            if i == 0:
+                p.moveTo(px, py)
+            else:
+                p.lineTo(px, py)
+        doc.drawPath(p, stroke=1, fill=0)
+    # Rótulos dos anos
+    doc.setFillColor(COR_CINZA)
+    doc.setFont("Helvetica", 7)
+    for i, a in enumerate(anos):
+        px = x + (largura * i) / (n - 1) if n > 1 else x
+        doc.drawCentredString(px, y - 3 * mm, str(a))
+
+def _bandeira(doc, x, y, w, h, pais):
+    """Desenha uma mini-bandeira (id, tr, vn)."""
+    if pais == "id":
+        doc.setFillColor(HexColor("#CE1126"))
+        doc.rect(x, y + h / 2, w, h / 2, stroke=0, fill=1)
+        doc.setFillColor(white)
+        doc.rect(x, y, w, h / 2, stroke=0, fill=1)
+    elif pais == "tr":
+        doc.setFillColor(HexColor("#E30A17"))
+        doc.rect(x, y, w, h, stroke=0, fill=1)
+        doc.setFillColor(white)
+        doc.circle(x + w * 0.42, y + h / 2, h * 0.30, stroke=0, fill=1)
+        doc.setFillColor(HexColor("#E30A17"))
+        doc.circle(x + w * 0.48, y + h / 2, h * 0.26, stroke=0, fill=1)
+    elif pais == "vn":
+        doc.setFillColor(HexColor("#DA251D"))
+        doc.rect(x, y, w, h, stroke=0, fill=1)
+        cx, cy = x + w / 2, y + h / 2
+        r = h * 0.38
+        pts = []
+        for i in range(10):
+            ang = math.pi / 2 + i * math.pi / 5
+            rr = r if i % 2 == 0 else r * 0.45
+            pts.append((cx + rr * math.cos(ang), cy + rr * math.sin(ang)))
+        p = doc.beginPath()
+        p.moveTo(*pts[0])
+        for pt in pts[1:]:
+            p.lineTo(*pt)
+        p.close()
+        doc.setFillColor(HexColor("#FFCD00"))
+        doc.drawPath(p, stroke=0, fill=1)
+    doc.setStrokeColor(HexColor("#888888"))
+    doc.setLineWidth(0.3)
+    doc.rect(x, y, w, h, stroke=1, fill=0)
+
 def gerar_apresentacao(lang="pt", modo="texto"):
     if modo == "slides":
         return gerar_pdf_slides(lang)
