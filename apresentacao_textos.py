@@ -200,7 +200,7 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
 # ===== Canvas com total de páginas (X de Y) =====
 _RODAPE_FN = None
 
-    class CanvasComTotal(canvas.Canvas):
+class CanvasComTotal(canvas.Canvas):
 
     def _desenhar_cabecalho(self):
         w, h = self._pagesize
@@ -687,7 +687,7 @@ def _registrar_fontes_extra():
         logger.warning("Fontes extras: %s", e)
 
     doc.build(story, onFirstPage=on_page, onLaterPages=on_page)
-    return caminho_saida
+        return caminho_saida
 
 # ------------------------------------------------------------
 # CONTEÚDO — PORTUGUÊS EXPANDIDO (FASE 1)
