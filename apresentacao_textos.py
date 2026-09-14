@@ -171,21 +171,34 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     if not caminho_saida:
         os.makedirs(STATIC_DIR, exist_ok=True)
         caminho_saida = os.path.join(STATIC_DIR, f"apresentacao_empresarial_{lang}.pdf")
+    global _RODAPE_FN
 
-    # ===== Canvas customizado: captura o total de páginas =====
-    class NumeroCanvas(canvas.Canvas):
+    def _rodape_total(cnv, num, total):
+        _rodape(cnv, None, c, lang, num_pag=num, total_pag=total)
+
+    _RODAPE_FN = _rodape_total           
+
+   # ===== Canvas com total de páginas (X de Y) =====
+_RODAPE_FN = None   # preenchido dentro de gerar_pdf_texto
+
+class CanvasComTotal(canvas.Canvas):
+    """Acumula as páginas e, no fim, desenha o rodapé com 'X de Y' em cada uma."""
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._saved = []
+        self._paginas = []
+
     def showPage(self):
-        self._saved.append(dict(self.__dict__))
+        self._paginas.append(dict(self.__dict__))
         self._startPage()
+
     def save(self):
-        total = len(self._saved)
-        for state in self._saved:
-            self.__dict__.update(state)
-            _rodape(self, None, c, lang, num_pag=self._pageNumber, total_pag=total)
-            canvas.Canvas.showPage(self)   # ← chama a classe BASE, não super()
+        total = len(self._paginas)
+        for estado in self._paginas:
+            self.__dict__.update(estado)
+            if _RODAPE_FN is not None:
+                _RODAPE_FN(self, self._pageNumber, total)
+            canvas.Canvas.showPage(self)
         canvas.Canvas.save(self)
             total = len(self._saved)
             for state in self._saved:
@@ -197,11 +210,11 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
             _rodape(self, None, c, lang, num_pag=self._pageNumber, total_pag=total)
 
     doc = SimpleDocTemplate(caminho_saida, pagesize=A4,
-                            leftMargin=50, rightMargin=50,
-                            topMargin=70, bottomMargin=55,
-                            title=f"A1ELOS {lang.upper()}",
-                            author="A1ELOS Global Numerology",
-                            canvasmaker=NumeroCanvas)
+            leftMargin=50, rightMargin=50,
+            topMargin=70, bottomMargin=55,
+            title=f"A1ELOS {lang.upper()}",
+            author="A1ELOS Global Numerology",
+            canvasmaker=CanvasComTotal)
     story = []
     # ... (todo o conteúdo que você já tem, adicionando em story) ...
     doc.build(story)
@@ -492,21 +505,11 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
         story.append(Paragraph(str(s), _estilo(lang, 10, True, COR_DOURADO, TA_CENTER, depois=2)))
 
     # ===== CABEÇALHO (2 LOGOS) E RODAPÉ — todas as páginas =====
-    def on_page(canvas, doc_):
-        _cabecalho_duas_logos(canvas, doc_, c, lang, cor_fundo=COR_AZUL)
-        _rodape(canvas, doc_, c, lang)
-
-    doc.build(story, onFirstPage=on_page, onLaterPages=on_page)
-    return caminho_saida 
-
-def _titulo_pagina(canvas, doc_, c, lang, num, total):
-  """Título da página + cabeçalho com 2 logos (usado nos slides)."""
-  _cabecalho_duas_logos(canvas, doc_, c, lang, cor_fundo=COR_AZUL)
-  # Número do slide (X-Y) no rodapé
-  _rodape(canvas, doc_, c, lang, num_pag=num, total_pag=total)
-
-def _rodape_slides(canvas, doc_, c, lang, num, total):
-  _rodape(canvas, doc_, c, lang, num_pag=num, total_pag=total)
+def on_page(canvas, doc_):
+    _cabecalho_duas_logos(canvas, doc_, c, lang, cor_fundo=COR_AZUL)
+    
+doc.build(story, onFirstPage=on_page, onLaterPages=on_page)
+return caminho_saida
 
 def _capa(canvas, doc_, c, lang):
   """Capa dos slides — sem capa preta, título central, com as 2 logos."""
