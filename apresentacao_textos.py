@@ -146,18 +146,17 @@ def _rodape(canvas, doc_, c, lang, num_pag=None, total_pag=None):
     canvas.setStrokeColor(COR_DOURADO)
     canvas.setLineWidth(0.8)
     canvas.line(15*mm, 17*mm, w - 15*mm, 17*mm)
-    # Linha de cima (y=12mm): título/DUNS à esquerda + página à direita
+    # Linha de cima (y=12mm): título/DUNS/ano + página, TUDO CENTRALIZADO
     canvas.setFillColor(COR_CINZA)
     canvas.setFont(_fonte(lang), 7)
-    canvas.drawString(15*mm, 12*mm,
-                      f"{c.get('titulo','A1ELOS')} · DUNS 942242668 · {c.get('confidencial','')} {c.get('ano','2026')}")
-    canvas.setFillColor(COR_AZUL)
-    canvas.setFont(_fonte(lang, True), 8)
     pagina = num_pag if num_pag is not None else doc_.page
     if total_pag:
-        canvas.drawRightString(w - 15*mm, 12*mm, f"{pagina} de {total_pag}")
+        rodape_txt = (f"{c.get('titulo','A1ELOS')} · DUNS 942242668 · "
+                      f"{c.get('confidencial','')} {c.get('ano','2026')}   ·   {pagina} de {total_pag}")
     else:
-        canvas.drawRightString(w - 15*mm, 12*mm, str(pagina))
+        rodape_txt = (f"{c.get('titulo','A1ELOS')} · DUNS 942242668 · "
+                      f"{c.get('confidencial','')} {c.get('ano','2026')}   ·   {pagina}")
+    canvas.drawCentredString(w / 2, 12*mm, rodape_txt)
     # Linha de baixo (y=8mm): contatos centralizados, sozinhos
     canvas.setFillColor(COR_CINZA)
     canvas.setFont(_fonte(lang), 7.5)
@@ -4144,6 +4143,7 @@ def gerar_pdf_slides(lang):
     pagina += 1
 
     # ===== SLIDE 6 — O PROBLEMA (05) =====
+    # ===== SLIDE 6 — O PROBLEMA (05) =====
     cab(c["problema_titulo"], 5)
     y = altura - 32 * mm
     col_w = (largura - 36 * mm - 10 * mm) / 2
@@ -4153,13 +4153,15 @@ def gerar_pdf_slides(lang):
     yy = y - 16 * mm
     for tit, sub in c["problema_col_esq"]:
         _caixa(doc, 18 * mm, yy - 30 * mm, col_w, 30 * mm, COR_FUNDO, COR_DOURADO)
+        # Título no TOPO do card
         doc.setFillColor(COR_AZUL)
         doc.setFont(_fonte(lang, True), 9.5)
-        doc.drawCentredString(18 * mm + col_w / 2, yy - 22.5 * mm, tit)
+        doc.drawCentredString(18 * mm + col_w / 2, yy - 9 * mm, tit)
+        # Texto centralizado ABAIXO do título
         doc.setFillColor(COR_CINZA)
-        _texto_wrap_centrado(doc, sub, _fonte(lang), 7.5, 18 * mm, yy - 17 * mm,
+        _texto_wrap_centrado(doc, sub, _fonte(lang), 7.5, 18 * mm, yy - 16 * mm,
                  col_w, COR_CINZA, 3.2 * mm, y_min=yy - 28 * mm)
-        yy -= 33 * mm   
+        yy -= 33 * mm
     xr = 18 * mm + col_w + 10 * mm
     doc.setFillColor(COR_PRETO)
     doc.setFont(_fonte(lang, True), 13)
@@ -4286,8 +4288,8 @@ def gerar_pdf_slides(lang):
                     largura - 36 * mm, COR_CINZA, 6 * mm)
     y -= 10 * mm
     y = _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
-                    c["portfolio_tabela"], [0.22, 0.38, 0.18, 0.22], 9, lang,
-                    moeda_cols=(2,))
+                          c["portfolio_tabela"], [0.22, 0.38, 0.18, 0.22], 9, lang,
+                          moeda_cols=(2,))
     y -= 8 * mm
     doc.setFillColor(COR_CINZA)
     doc.setFont(_fonte(lang), 9)
@@ -4332,8 +4334,8 @@ def gerar_pdf_slides(lang):
                     largura - 36 * mm, COR_CINZA, 5.5 * mm)
     y -= 10 * mm
     _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
-                    c["banners_tabela"], [0.22, 0.22, 0.22, 0.34], 9, lang,
-                    moeda_cols=(1, 2))
+                      c["banners_tabela"], [SUAS_PROPORCOES], 9, lang,
+                      moeda_cols=(1, 2))
     y -= 10 * mm
     _caixa(doc, 18 * mm, y - 24 * mm, largura - 36 * mm, 24 * mm, HexColor("#EEF2FA"), COR_AZUL)
     doc.setFillColor(COR_AZUL)
@@ -4380,8 +4382,8 @@ def gerar_pdf_slides(lang):
                     largura - 36 * mm, COR_CINZA, 6 * mm)
     y -= 8 * mm
     _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
-                    c["projecoes_tabela"], [0.3, 0.35, 0.35], 8, lang,
-                    moeda_cols=(1, 2))
+                      c["projecoes_tabela"], [0.3, 0.35, 0.35], 8, lang,
+                      moeda_cols=(1, 2))
     y -= 75 * mm
     _grafico_linha(doc, 18 * mm, y - 45 * mm, largura - 36 * mm, 45 * mm,
                lang,
