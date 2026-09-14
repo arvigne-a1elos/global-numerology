@@ -231,10 +231,7 @@ class CanvasComTotal(canvas.Canvas):
     def on_page(canvas, doc_):
         _cabecalho_duas_logos(canvas, doc_, c, lang, cor_fundo=COR_AZUL)
 
-    doc.build(story, onFirstPage=on_page, onLaterPages=on_page)
-    return caminho_saida
-
-    # ===== CAPA SIMPLES (SEM PRETA) =====
+        # ===== CAPA SIMPLES (SEM PRETA) =====
     story.append(Spacer(1, 50))
     story.append(Paragraph(c.get("titulo", "A1ELOS Global Numerology"),
                            _estilo(lang, 24, True, COR_AZUL, TA_CENTER, 0, 4)))
@@ -688,6 +685,9 @@ def _registrar_fontes_extra():
                     break
     except Exception as e:
         logger.warning("Fontes extras: %s", e)
+
+doc.build(story, onFirstPage=on_page, onLaterPages=on_page)
+    return caminho_saida
 
 # ------------------------------------------------------------
 # CONTEÚDO — PORTUGUÊS EXPANDIDO (FASE 1)
