@@ -3929,24 +3929,27 @@ def _rodape_deck(doc, largura, altura, lang, c, pagina):
     doc.setFont(_fonte(lang), 7)
     doc.drawCentredString(largura / 2, 4 * mm, CONTATOS)
 
-def _texto_wrap_centrado(doc, texto, fonte, tam, x, y, largura, cor, entrelinha, y_min=0):
-    """Desenha texto centralizado, quebrando linhas. Retorna o novo y."""
+def _texto_wrap_centrado_v(doc, texto, fonte, tam, x, y_top, largura, cor, entrelinha, altura):
+    """Texto centralizado horizontal E verticalmente dentro de uma área.
+    x, y_top: canto superior da área; largura e altura: dimensões da área."""
     doc.setFillColor(cor)
     doc.setFont(fonte, tam)
     palavras = str(texto).split()
+    linhas = []
     linha = ""
     for p in palavras:
         teste = (linha + " " + p).strip()
         if doc.stringWidth(teste, fonte, tam) <= largura:
             linha = teste
         else:
-            if y - entrelinha < y_min:
-                return y
-            doc.drawCentredString(x + largura / 2, y, linha)
-            y -= entrelinha
+            linhas.append(linha)
             linha = p
-    if linha and y - entrelinha >= y_min:
-        doc.drawCentredString(x + largura / 2, y, linha)
+    if linha:
+        linhas.append(linha)
+    altura_texto = len(linhas) * entrelinha
+    y = y_top - max(0, (altura - altura_texto) / 2)
+    for ln in linhas:
+        doc.drawCentredString(x + largura / 2, y, ln)
         y -= entrelinha
     return y
 
@@ -4164,7 +4167,6 @@ def gerar_pdf_slides(lang):
     pagina += 1
 
     # ===== SLIDE 6 — O PROBLEMA (05) =====
-    # ===== SLIDE 6 — O PROBLEMA (05) =====
     cab(c["problema_titulo"], 5)
     y = altura - 32 * mm
     col_w = (largura - 36 * mm - 10 * mm) / 2
@@ -4174,14 +4176,15 @@ def gerar_pdf_slides(lang):
     yy = y - 16 * mm
     for tit, sub in c["problema_col_esq"]:
         _caixa(doc, 18 * mm, yy - 30 * mm, col_w, 30 * mm, COR_FUNDO, COR_DOURADO)
-        # Título no TOPO do card
+        # Título no topo do card
         doc.setFillColor(COR_AZUL)
         doc.setFont(_fonte(lang, True), 9.5)
         doc.drawCentredString(18 * mm + col_w / 2, yy - 9 * mm, tit)
-        # Texto centralizado ABAIXO do título
+        # Texto centralizado (horizontal E vertical) na área restante do card
         doc.setFillColor(COR_CINZA)
-        _texto_wrap_centrado(doc, sub, _fonte(lang), 7.5, 18 * mm, yy - 16 * mm,
-                 col_w, COR_CINZA, 3.2 * mm, y_min=yy - 28 * mm)
+        _texto_wrap_centrado_v(doc, sub, _fonte(lang), 7.5,
+                               18 * mm, yy - 13 * mm, col_w,
+                               COR_CINZA, 3.2 * mm, 15 * mm)
         yy -= 33 * mm
     xr = 18 * mm + col_w + 10 * mm
     doc.setFillColor(COR_PRETO)
@@ -4191,12 +4194,11 @@ def gerar_pdf_slides(lang):
     yy = _texto_wrap(doc, c["problema_col_dir"], _fonte(lang), 10, xr, yy,
                      col_w, COR_CINZA, 4.5 * mm)
     yy -= 10 * mm
+    # Bloco dourado — texto centralizado NO CENTRO do bloco
     _caixa(doc, xr, yy - 40 * mm, col_w, 40 * mm, HexColor("#FFF3E0"), COR_DOURADO)
     doc.setFillColor(COR_PRETO)
-    doc.setFont(_fonte(lang, True), 10)
-    _texto_wrap_centrado(doc, c["problema_destaque"], _fonte(lang, True), 10, xr,
-                         yy - 30 * mm, col_w, COR_PRETO, 4.5 * mm,
-                         y_min=yy - 38 * mm)
+    _texto_wrap_centrado_v(doc, c["problema_destaque"], _fonte(lang, True), 10,
+                           xr, yy, col_w, COR_PRETO, 4.5 * mm, 40 * mm)
     rodape(pagina)
     doc.showPage()
     pagina += 1
@@ -4354,9 +4356,11 @@ def gerar_pdf_slides(lang):
     y = _texto_wrap(doc, c["banners_texto"], _fonte(lang), 11, 18 * mm, y,
                     largura - 36 * mm, COR_CINZA, 5.5 * mm)
     y -= 10 * mm
-    _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
-                      c["banners_tabela"], [0.22, 0.22, 0.22, 0.34], 9, lang,
-                      moeda_cols=(1, 2))
+    y = _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
+                    c["banners_tabela"], [0.22, 0.22, 0.22, 0.34], 9, lang,
+                    moeda_cols=(1, 2))
+    y -= 10 * mm
+    y -= 10 * mm
     y -= 10 * mm
     _caixa(doc, 18 * mm, y - 24 * mm, largura - 36 * mm, 24 * mm, HexColor("#EEF2FA"), COR_AZUL)
     doc.setFillColor(COR_AZUL)
