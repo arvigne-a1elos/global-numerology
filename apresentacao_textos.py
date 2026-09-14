@@ -506,8 +506,8 @@ class CanvasComTotal(canvas.Canvas):
 
 def _capa(canvas, doc_, c, lang):
     """Capa dos slides — sem capa preta, título central, com as 2 logos."""
-        _cabecalho_duas_logos(canvas, doc_, c, lang, cor_fundo=COR_AZUL)
-        _rodape(canvas, doc_, c, lang)
+    _cabecalho_duas_logos(canvas, doc_, c, lang, cor_fundo=COR_AZUL)
+    _rodape(canvas, doc_, c, lang)
     
 # ============================================================
 # BLOCO JURÍDICO / GOVERNANÇA E COMPLIANCE (SEÇÕES 19-29)
