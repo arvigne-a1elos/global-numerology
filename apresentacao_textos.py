@@ -193,6 +193,23 @@ _RODAPE_FN = None
 
 class CanvasComTotal(canvas.Canvas):
 
+    def _desenhar_cabecalho(self):
+        w, h = self._pagesize
+        if self._logo_num:
+            try:
+                self.drawImage(ImageReader(self._logo_num), 28, h - 34,
+                               width=24, height=24, preserveAspectRatio=True,
+                               mask='auto')
+            except Exception:
+                pass
+        if self._logo_a1elos:
+            try:
+                self.drawImage(ImageReader(self._logo_a1elos), w - 52, h - 34,
+                               width=24, height=24, preserveAspectRatio=True,
+                               mask='auto')
+            except Exception:
+                pass           
+           
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._saved = []
@@ -210,10 +227,10 @@ class CanvasComTotal(canvas.Canvas):
             canvas.Canvas.showPage(self)
         canvas.Canvas.save(self)
 
-     def _capa(canvas, doc_, c, lang):
-         """Capa dos slides — sem capa preta, título central, com as 2 logos."""
-         _cabecalho_duas_logos(canvas, doc_, c, lang, cor_fundo=COR_AZUL)
-         _rodape(canvas, doc_, c, lang)  
+def _capa(canvas, doc_, c, lang):
+    """Capa dos slides — sem capa preta, título central, com as 2 logos."""
+    _cabecalho_duas_logos(canvas, doc_, c, lang, cor_fundo=COR_AZUL)
+    _rodape(canvas, doc_, c, lang)  
 
     # ===== CAPA SIMPLES (SEM PRETA) =====
     story.append(Spacer(1, 50))
@@ -499,7 +516,7 @@ class CanvasComTotal(canvas.Canvas):
     for s in c.get("selo_final", []):
         story.append(Paragraph(str(s), _estilo(lang, 10, True, COR_DOURADO, TA_CENTER, depois=2)))
 
- # ===== CABEÇALHO (2 LOGOS) E RODAPÉ — todas as páginas =====
+  # ===== CABEÇALHO (2 LOGOS) E RODAPÉ — todas as páginas =====
     def on_page(canvas, doc_):
         _cabecalho_duas_logos(canvas, doc_, c, lang, cor_fundo=COR_AZUL)
 
@@ -618,23 +635,6 @@ class NumberedCanvas(_canvas.Canvas):
             self._desenhar_rodape(num_pages)
             super().showPage()
         super().save()
-
-    def _desenhar_cabecalho(self):
-        w, h = self._pagesize
-        if self._logo_num:
-            try:
-                self.drawImage(ImageReader(self._logo_num), 28, h - 34,
-                               width=24, height=24, preserveAspectRatio=True,
-                               mask='auto')
-            except Exception:
-                pass
-        if self._logo_a1elos:
-            try:
-                self.drawImage(ImageReader(self._logo_a1elos), w - 52, h - 34,
-                               width=24, height=24, preserveAspectRatio=True,
-                               mask='auto')
-            except Exception:
-                pass
 
 # ------------------------------------------------------------
 # CORES DA MARCA
