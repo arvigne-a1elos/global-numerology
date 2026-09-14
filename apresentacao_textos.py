@@ -4310,7 +4310,7 @@ def gerar_pdf_slides(lang):
     y -= 10 * mm
     y = _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
                           c["portfolio_tabela"], [0.22, 0.38, 0.18, 0.22], 9, lang,
-                          moeda_cols=(2,)
+                          moeda_cols=(2,))
     y -= 8 * mm
     doc.setFillColor(COR_CINZA)
     doc.setFont(_fonte(lang), 9)
@@ -4355,8 +4355,8 @@ def gerar_pdf_slides(lang):
                     largura - 36 * mm, COR_CINZA, 5.5 * mm)
     y -= 10 * mm
     _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
-                    c["banners_tabela"], [0.22, 0.22, 0.22, 0.34], 9, lang,
-                    moeda_cols=(1, 2)
+                      c["banners_tabela"], [0.22, 0.22, 0.22, 0.34], 9, lang,
+                      moeda_cols=(1, 2))
     y -= 10 * mm
     _caixa(doc, 18 * mm, y - 24 * mm, largura - 36 * mm, 24 * mm, HexColor("#EEF2FA"), COR_AZUL)
     doc.setFillColor(COR_AZUL)
@@ -4404,7 +4404,7 @@ def gerar_pdf_slides(lang):
     y -= 8 * mm
     _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
                       c["projecoes_tabela"], [0.3, 0.35, 0.35], 8, lang,
-                      moeda_cols=(1, 2)
+                      moeda_cols=(1, 2))
     y -= 75 * mm
     _grafico_linha(doc, 18 * mm, y - 45 * mm, largura - 36 * mm, 45 * mm,
                lang,
