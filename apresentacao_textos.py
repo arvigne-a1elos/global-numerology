@@ -171,54 +171,51 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     if not caminho_saida:
         os.makedirs(STATIC_DIR, exist_ok=True)
         caminho_saida = os.path.join(STATIC_DIR, f"apresentacao_empresarial_{lang}.pdf")
+
     global _RODAPE_FN
 
     def _rodape_total(cnv, num, total):
         _rodape(cnv, None, c, lang, num_pag=num, total_pag=total)
 
-    _RODAPE_FN = _rodape_total           
+    _RODAPE_FN = _rodape_total
 
-   # ===== Canvas com total de páginas (X de Y) =====
-_RODAPE_FN = None   # preenchido dentro de gerar_pdf_texto
+    doc = SimpleDocTemplate(caminho_saida, pagesize=A4,
+                            leftMargin=50, rightMargin=50,
+                            topMargin=70, bottomMargin=55,
+                            title=f"A1ELOS {lang.upper()}",
+                            author="A1ELOS Global Numerology",
+                            canvasmaker=CanvasComTotal)
+
+    story = []
+    # ... (todo o conteúdo que você já tem) ...
+    doc.build(story)
+    return caminho_saida
+    story = []
+    # ... (todo o conteúdo que você já tem) ...
+    doc.build(story)
+    return caminho_saida
+
+# ===== Canvas com total de páginas (X de Y) =====
+_RODAPE_FN = None
 
 class CanvasComTotal(canvas.Canvas):
-    """Acumula as páginas e, no fim, desenha o rodapé com 'X de Y' em cada uma."""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._paginas = []
+        self._saved = []
 
     def showPage(self):
-        self._paginas.append(dict(self.__dict__))
+        self._saved.append(dict(self.__dict__))
         self._startPage()
 
     def save(self):
-        total = len(self._paginas)
-        for estado in self._paginas:
+        total = len(self._saved)
+        for estado in self._saved:
             self.__dict__.update(estado)
             if _RODAPE_FN is not None:
                 _RODAPE_FN(self, self._pageNumber, total)
             canvas.Canvas.showPage(self)
-            canvas.Canvas.save(self)
-            total = len(self._saved)
-            for state in self._saved:
-                self.__dict__.update(state)
-                self._rodape(total)
-                super().showPage()
-            super().save()
-        def _rodape(self, total):
-            _rodape(self, None, c, lang, num_pag=self._pageNumber, total_pag=total)
-
-    doc = SimpleDocTemplate(caminho_saida, pagesize=A4,
-            leftMargin=50, rightMargin=50,
-            topMargin=70, bottomMargin=55,
-            title=f"A1ELOS {lang.upper()}",
-            author="A1ELOS Global Numerology",
-            canvasmaker=CanvasComTotal)
-    story = []
-    # ... (todo o conteúdo que você já tem, adicionando em story) ...
-    doc.build(story)
-    return caminho_saida
+        canvas.Canvas.save(self)
    
     # ===== CAPA SIMPLES (SEM PRETA) =====
     story.append(Spacer(1, 50))
