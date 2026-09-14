@@ -643,7 +643,6 @@ COR_CINZA = HexColor("#555555")
 COR_CINZA_CLARO = HexColor("#9E9E9E")
 COR_FUNDO = HexColor("#F7F5EF")   # bege claro editorial
 COR_VERDE = HexColor("#2E7D32")
-
 CORES_GRAFICO = [COR_AZUL, COR_DOURADO, HexColor("#3B82F6"), HexColor("#2E7D32"),
                  HexColor("#8E44AD"), HexColor("#E67E22"), HexColor("#C0392B"),
                  HexColor("#16A085"), HexColor("#F39C12"), HexColor("#7F8C8D")]
@@ -687,7 +686,7 @@ def _registrar_fontes_extra():
         logger.warning("Fontes extras: %s", e)
 
     doc.build(story, onFirstPage=on_page, onLaterPages=on_page)
-        return caminho_saida
+    return caminho_saida
 
 # ------------------------------------------------------------
 # CONTEÚDO — PORTUGUÊS EXPANDIDO (FASE 1)
