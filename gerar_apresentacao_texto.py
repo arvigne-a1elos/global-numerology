@@ -45,8 +45,7 @@ def _campo(item, chave=None, idx=None, default=""):
         if idx is not None and len(item) > idx:
             return item[idx]
         return default
-    return default
-
+ 
 def _fonte(lang, bold=False):
     base = FONTE_POR_IDIOMA.get(lang, "Helvetica")
     if base == "Helvetica":
@@ -106,8 +105,7 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
                            _estilo(lang, 9, True, COR_DOURADO, TA_CENTER)))
     story.append(Spacer(1, 30))
 
-        # ---- SUMÁRIO EXECUTIVO ----
-       # ---- SUMÁRIO EXECUTIVO ----
+    # ---- SUMÁRIO EXECUTIVO ----
     if c.get("sumario_intro"):
         story.append(Paragraph(c.get("sumario_titulo", "Sumário Executivo"),
                                _estilo(lang, 16, True, COR_AZUL, antes=10)))
