@@ -199,7 +199,7 @@ class CanvasComTotal(canvas.Canvas):
             if _RODAPE_FN is not None:
                 _RODAPE_FN(self, self._pageNumber, total)
             canvas.Canvas.showPage(self)
-        canvas.Canvas.save(self)
+            canvas.Canvas.save(self)
             total = len(self._saved)
             for state in self._saved:
                 self.__dict__.update(state)
