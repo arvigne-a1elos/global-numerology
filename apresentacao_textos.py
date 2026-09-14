@@ -686,7 +686,7 @@ def _registrar_fontes_extra():
     except Exception as e:
         logger.warning("Fontes extras: %s", e)
 
-doc.build(story, onFirstPage=on_page, onLaterPages=on_page)
+    doc.build(story, onFirstPage=on_page, onLaterPages=on_page)
     return caminho_saida
 
 # ------------------------------------------------------------
