@@ -44,7 +44,7 @@ COR_CINZA = colors.HexColor("#444444")
 COR_CINZA_CLARO = colors.HexColor("#f0f0f0")
 CONTATOS = "a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.br/contato"
 
-TOTAL_PAGINAS = 20   # ajuste para o número real de slides
+TOTAL_PAGINAS = 21   # ajuste para o número real de slides
 
 # Nomes das duas logos (coloque os arquivos em static/)
 LOGO_ESQ = os.path.join(STATIC_DIR, "logo.png")        # logo à esquerda
@@ -4042,12 +4042,11 @@ def gerar_pdf_slides(lang):
         doc.setFont(_fonte(lang), 7)
         doc.drawCentredString(largura / 2, 4 * mm, CONTATOS)
                
-    doc = canvas.Canvas(caminho_saida, pagesize=landscape(A4))
     pagina = 1 
            
     # ===== SLIDE 1 — CAPA =====
     _capa_slides(doc, largura, altura, lang, "slides")
-    rodape(1)
+    rodape(pagina)
     doc.showPage()
     pagina += 1
 
@@ -4311,7 +4310,7 @@ def gerar_pdf_slides(lang):
     y -= 10 * mm
     y = _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
                           c["portfolio_tabela"], [0.22, 0.38, 0.18, 0.22], 9, lang,
-                          moeda_cols=(2,))
+                          moeda_cols=(2,)
     y -= 8 * mm
     doc.setFillColor(COR_CINZA)
     doc.setFont(_fonte(lang), 9)
@@ -4357,7 +4356,7 @@ def gerar_pdf_slides(lang):
     y -= 10 * mm
     _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
                     c["banners_tabela"], [0.22, 0.22, 0.22, 0.34], 9, lang,
-                    moeda_cols=(1, 2))
+                    moeda_cols=(1, 2)
     y -= 10 * mm
     _caixa(doc, 18 * mm, y - 24 * mm, largura - 36 * mm, 24 * mm, HexColor("#EEF2FA"), COR_AZUL)
     doc.setFillColor(COR_AZUL)
@@ -4405,7 +4404,7 @@ def gerar_pdf_slides(lang):
     y -= 8 * mm
     _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
                       c["projecoes_tabela"], [0.3, 0.35, 0.35], 8, lang,
-                      moeda_cols=(1, 2))
+                      moeda_cols=(1, 2)
     y -= 75 * mm
     _grafico_linha(doc, 18 * mm, y - 45 * mm, largura - 36 * mm, 45 * mm,
                lang,
