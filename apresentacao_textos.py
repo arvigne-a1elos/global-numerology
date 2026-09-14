@@ -500,12 +500,12 @@ class CanvasComTotal(canvas.Canvas):
     # ===== CABEÇALHO (2 LOGOS) E RODAPÉ — todas as páginas =====
     def on_page(canvas, doc_):
         _cabecalho_duas_logos(canvas, doc_, c, lang, cor_fundo=COR_AZUL)
-    
+
     doc.build(story, onFirstPage=on_page, onLaterPages=on_page)
     return caminho_saida
 
-    def _capa(canvas, doc_, c, lang):
-        """Capa dos slides — sem capa preta, título central, com as 2 logos."""
+def _capa(canvas, doc_, c, lang):
+    """Capa dos slides — sem capa preta, título central, com as 2 logos."""
         _cabecalho_duas_logos(canvas, doc_, c, lang, cor_fundo=COR_AZUL)
         _rodape(canvas, doc_, c, lang)
     
