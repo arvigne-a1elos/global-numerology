@@ -46,9 +46,9 @@ CONTATOS = "a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.
 
 TOTAL_PAGINAS = 21   # ajuste para o número real de slides
 
-    # ===== CABEÇALHO (2 LOGOS) E RODAPÉ — todas as páginas =====
-    def on_page(canvas, doc_):
-        _cabecalho_duas_logos(canvas, doc_, c, lang, cor_fundo=COR_AZUL)
+# ===== CABEÇALHO (2 LOGOS) E RODAPÉ — todas as páginas =====
+def on_page(canvas, doc_):
+     _cabecalho_duas_logos(canvas, doc_, c, lang, cor_fundo=COR_AZUL)
 
 def _capa(canvas, doc_, c, lang):
     """Capa dos slides — sem capa preta, título central, com as 2 logos."""
