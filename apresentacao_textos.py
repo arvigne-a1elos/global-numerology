@@ -190,11 +190,7 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     # ... (todo o conteúdo que você já tem) ...
     doc.build(story)
     return caminho_saida
-    story = []
-    # ... (todo o conteúdo que você já tem) ...
-    doc.build(story)
-    return caminho_saida
-
+    
 # ===== Canvas com total de páginas (X de Y) =====
 _RODAPE_FN = None
 
