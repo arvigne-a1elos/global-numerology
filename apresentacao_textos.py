@@ -174,13 +174,19 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
 
     # ===== Canvas customizado: captura o total de páginas =====
     class NumeroCanvas(canvas.Canvas):
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-            self._saved = []
-        def showPage(self):
-            self._saved.append(dict(self.__dict__))
-            self._startPage()
-        def save(self):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._saved = []
+    def showPage(self):
+        self._saved.append(dict(self.__dict__))
+        self._startPage()
+    def save(self):
+        total = len(self._saved)
+        for state in self._saved:
+            self.__dict__.update(state)
+            _rodape(self, None, c, lang, num_pag=self._pageNumber, total_pag=total)
+            canvas.Canvas.showPage(self)   # ← chama a classe BASE, não super()
+        canvas.Canvas.save(self)
             total = len(self._saved)
             for state in self._saved:
                 self.__dict__.update(state)
