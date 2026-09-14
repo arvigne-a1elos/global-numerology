@@ -164,7 +164,7 @@ def _rodape(canvas, doc_, c, lang, num_pag=None, total_pag=None):
 
 def gerar_pdf_texto(lang="pt", caminho_saida=None):
     """Gera o PDF documento A4 retrato — texto limpo. Retorna o caminho."""
-    global CONTEUDO   # usa o CONTEUDO que já existe neste arquivo
+    global CONTEUDO
     if lang not in CONTEUDO:
         lang = "pt"
     c = CONTEUDO.get(lang, CONTEUDO.get("pt", {}))
@@ -172,12 +172,34 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
         os.makedirs(STATIC_DIR, exist_ok=True)
         caminho_saida = os.path.join(STATIC_DIR, f"apresentacao_empresarial_{lang}.pdf")
 
+    # ===== Canvas customizado: captura o total de páginas =====
+    class NumeroCanvas(canvas.Canvas):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self._saved = []
+        def showPage(self):
+            self._saved.append(dict(self.__dict__))
+            self._startPage()
+        def save(self):
+            total = len(self._saved)
+            for state in self._saved:
+                self.__dict__.update(state)
+                self._rodape(total)
+                super().showPage()
+            super().save()
+        def _rodape(self, total):
+            _rodape(self, None, c, lang, num_pag=self._pageNumber, total_pag=total)
+
     doc = SimpleDocTemplate(caminho_saida, pagesize=A4,
                             leftMargin=50, rightMargin=50,
                             topMargin=70, bottomMargin=55,
                             title=f"A1ELOS {lang.upper()}",
-                            author="A1ELOS Global Numerology")
+                            author="A1ELOS Global Numerology",
+                            canvasmaker=NumeroCanvas)
     story = []
+    # ... (todo o conteúdo que você já tem, adicionando em story) ...
+    doc.build(story)
+    return caminho_saida
    
     # ===== CAPA SIMPLES (SEM PRETA) =====
     story.append(Spacer(1, 50))
@@ -4015,7 +4037,7 @@ def gerar_pdf_slides(lang):
                               f"{c['titulo']} · DUNS 942242668 · {c['confidencial']} {c['ano']}")
         doc.setFillColor(COR_DOURADO)
         doc.setFont(_fonte(lang, True), 9)
-        doc.drawRightString(largura - 15 * mm, 10 * mm, str(pagina))
+        doc.drawRightString(largura - 15 * mm, 10 * mm, f"{pagina} de {TOTAL_PAGINAS}")
         doc.setFillColorRGB(0.55, 0.55, 0.55)
         doc.setFont(_fonte(lang), 7)
         doc.drawCentredString(largura / 2, 4 * mm, CONTATOS)
@@ -4334,8 +4356,8 @@ def gerar_pdf_slides(lang):
                     largura - 36 * mm, COR_CINZA, 5.5 * mm)
     y -= 10 * mm
     _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
-                      c["banners_tabela"], [SUAS_PROPORCOES], 9, lang,
-                      moeda_cols=(1, 2))
+                    c["banners_tabela"], [0.22, 0.22, 0.22, 0.34], 9, lang,
+                    moeda_cols=(1, 2))
     y -= 10 * mm
     _caixa(doc, 18 * mm, y - 24 * mm, largura - 36 * mm, 24 * mm, HexColor("#EEF2FA"), COR_AZUL)
     doc.setFillColor(COR_AZUL)
