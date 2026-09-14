@@ -46,6 +46,15 @@ CONTATOS = "a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.
 
 TOTAL_PAGINAS = 21   # ajuste para o número real de slides
 
+    # ===== CABEÇALHO (2 LOGOS) E RODAPÉ — todas as páginas =====
+    def on_page(canvas, doc_):
+        _cabecalho_duas_logos(canvas, doc_, c, lang, cor_fundo=COR_AZUL)
+
+def _capa(canvas, doc_, c, lang):
+    """Capa dos slides — sem capa preta, título central, com as 2 logos."""
+    _cabecalho_duas_logos(canvas, doc_, c, lang, cor_fundo=COR_AZUL)
+    _rodape(canvas, doc_, c, lang)    
+
 # Nomes das duas logos (coloque os arquivos em static/)
 LOGO_ESQ = os.path.join(STATIC_DIR, "logo.png")        # logo à esquerda
 LOGO_DIR = os.path.join(STATIC_DIR, "A1ELOS.png")      # logo à direita
@@ -226,15 +235,6 @@ class CanvasComTotal(canvas.Canvas):
                 _RODAPE_FN(self, self._pageNumber, total)
             canvas.Canvas.showPage(self)
         canvas.Canvas.save(self)
-
-    # ===== CABEÇALHO (2 LOGOS) E RODAPÉ — todas as páginas =====
-    def on_page(canvas, doc_):
-        _cabecalho_duas_logos(canvas, doc_, c, lang, cor_fundo=COR_AZUL)
-
-def _capa(canvas, doc_, c, lang):
-    """Capa dos slides — sem capa preta, título central, com as 2 logos."""
-    _cabecalho_duas_logos(canvas, doc_, c, lang, cor_fundo=COR_AZUL)
-    _rodape(canvas, doc_, c, lang)           
 
         # ===== CAPA SIMPLES (SEM PRETA) =====
     story.append(Spacer(1, 50))
