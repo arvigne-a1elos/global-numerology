@@ -3806,7 +3806,7 @@ def _grafico_linha(doc, x, y, largura, altura, lang, anos, series, titulo):
 # Moeda por idioma
 MOEDA = {
     "pt": "R$", "en": "US$", "es": "€", "it": "€", "fr": "€", "de": "€",
-    "ja": "¥", "zh": "¥", "ru": "₽", "he": "₪", "ar": "﷼",
+    "ja": "¥", "zh": "¥", "ru": "₽", "he": "₪", "ar": "ر.س",
     "id": "Rp", "tr": "₺", "vi": "₫",
 }
 
