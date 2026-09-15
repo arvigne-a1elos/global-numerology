@@ -133,7 +133,7 @@ TRAD = {
         "nenhum": "אין"
     },
     "ar": {
-        "express": "خريطة سريعة (ر.س 35,00)", "completo": "خريطة كاملة (ر.س 71,00)",
+        "express": "خريطة سريعة (﷼ 35,00)", "completo": "خريطة كاملة (﷼ 71,00)",
         "significado": "المعنى", "caminho_vida": "مسار الحياة", "expressao": "التعبير", "motivacao": "الدافع",
         "personalidade": "الشخصية", "destino": "المصير", "seu_perfil": "ملفك العددي", "analise": "تحليل مفصل",
         "positivo": "الجوانب الإيجابية", "negativo": "الجوانب السلبية", "licao": "درس الحياة", "ciclos": "دورات الحياة",
