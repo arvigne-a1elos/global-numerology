@@ -121,7 +121,7 @@ def _desenha_logo(canvas, caminho, x, y, larg, alt):
 
 def _cabecalho_duas_logos(canvas, doc_, c, lang, altura_cab=18*mm, cor_fundo=None):
     """Cabeçalho com DUAS logos (esquerda e direita) + título central."""
-    w, h = A4
+    w, h = getattr(canvas, "_pagesize", A4)
     # Faixa do cabeçalho
     if cor_fundo:
         canvas.setFillColor(cor_fundo)
@@ -146,7 +146,7 @@ def _cabecalho_duas_logos(canvas, doc_, c, lang, altura_cab=18*mm, cor_fundo=Non
 
 def _rodape(canvas, doc_, c, lang, num_pag=None, total_pag=None):
     """Rodapé com contatos + página numerada (X de Y)."""
-    w, h = A4
+    w, h = getattr(canvas, "_pagesize", A4)
     canvas.setStrokeColor(COR_DOURADO)
     canvas.setLineWidth(0.8)
     canvas.line(15*mm, 17*mm, w - 15*mm, 17*mm)
