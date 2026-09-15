@@ -46,14 +46,9 @@ CONTATOS = "a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.
 
 TOTAL_PAGINAS = 21   # ajuste para o número real de slides
 
-# ===== CABEÇALHO (2 LOGOS) E RODAPÉ — todas as páginas =====
-def on_page(canvas, doc_):
-     _cabecalho_duas_logos(canvas, doc_, c, lang, cor_fundo=COR_AZUL)
-
 def _capa(canvas, doc_, c, lang):
     """Capa dos slides — sem capa preta, título central, com as 2 logos."""
     _cabecalho_duas_logos(canvas, doc_, c, lang, cor_fundo=COR_AZUL)
-    _rodape(canvas, doc_, c, lang)    
 
 # Nomes das duas logos (coloque os arquivos em static/)
 LOGO_ESQ = os.path.join(STATIC_DIR, "logo.png")        # logo à esquerda
@@ -646,9 +641,6 @@ def _registrar_fontes_extra():
     except Exception as e:
         logger.warning("Fontes extras: %s", e)
 
-    doc.build(story, onFirstPage=on_page, onLaterPages=on_page)
-    return caminho_saida
-
 # ===== Canvas com total de páginas (X de Y) =====
 _RODAPE_FN = None
 
@@ -688,6 +680,13 @@ class CanvasComTotal(canvas.Canvas):
             canvas.Canvas.showPage(self)
         canvas.Canvas.save(self)
 
+# ===== CABEÇALHO (2 LOGOS) E RODAPÉ — todas as páginas =====
+def on_page(canvas, doc_):
+     _cabecalho_duas_logos(canvas, doc_, c, lang, cor_fundo=COR_AZUL)
+     _rodape(canvas, doc_, c, lang)
+
+doc.build(story, onFirstPage=on_page, onLaterPages=on_page)
+return caminho_saida
 # ------------------------------------------------------------
 # CONTEÚDO — PORTUGUÊS EXPANDIDO (FASE 1)
 # ------------------------------------------------------------
