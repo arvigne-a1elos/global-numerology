@@ -285,6 +285,7 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
         story.append(Paragraph(c["alcance_texto"],
                                _estilo(lang, 10.5, False, COR_PRETO, alinh=TA_JUSTIFY)))
     for linha in c.get("portfolio_tabela", []):
+        linha = [_com_moeda(lang, cel) if i == 2 else cel for i, cel in enumerate(linha)]
         story.append(Paragraph(_texto_item(linha, " — "),
                                _estilo(lang, 10, False, COR_PRETO, depois=2)))
     if c.get("total_linha"):
@@ -331,6 +332,7 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
         story.append(Paragraph(c["portfolio_texto"],
                                _estilo(lang, 10.5, False, COR_PRETO, alinh=TA_JUSTIFY)))
     for linha in c.get("portfolio_tabela", []):
+        linha = [_com_moeda(lang, cel) if i == 2 else cel for i, cel in enumerate(linha)]
         story.append(Paragraph(_texto_item(linha, " — "),
                                _estilo(lang, 10, False, COR_PRETO, depois=2)))
     if c.get("portfolio_rodape"):
@@ -357,6 +359,7 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
         story.append(Paragraph(c["banners_texto"],
                                _estilo(lang, 10.5, False, COR_PRETO, alinh=TA_JUSTIFY)))
     for linha in c.get("banners_tabela", []):
+        linha = [_com_moeda(lang, cel) if i in (1, 2) else cel for i, cel in enumerate(linha)]
         story.append(Paragraph(_texto_item(linha, " — "),
                                _estilo(lang, 10, False, COR_PRETO, depois=2)))
     if c.get("banners_formatos"):
@@ -386,6 +389,7 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
         story.append(Paragraph(c["projecoes_texto"],
                                _estilo(lang, 10.5, False, COR_PRETO, alinh=TA_JUSTIFY)))
     for linha in c.get("projecoes_tabela", []):
+        linha = [_com_moeda(lang, cel) if i in (1, 2) else cel for i, cel in enumerate(linha)]
         story.append(Paragraph(_texto_item(linha, " — "),
                                _estilo(lang, 10, False, COR_PRETO, depois=2)))
 
