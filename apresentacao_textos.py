@@ -172,6 +172,14 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     if lang not in CONTEUDO:
         lang = "pt"
     c = CONTEUDO.get(lang, CONTEUDO.get("pt", {}))
+    global _RODAPE_FN
+
+    def _rodape_total(cnv, num, total):
+    _cabecalho_duas_logos(cnv, None, c, lang, cor_fundo=COR_AZUL)
+    _rodape(cnv, None, c, lang, num_pag=num, total_pag=total)
+
+    _RODAPE_FN = _rodape_total
+    
     if not caminho_saida:
         os.makedirs(STATIC_DIR, exist_ok=True)
         caminho_saida = os.path.join(STATIC_DIR, f"apresentacao_empresarial_{lang}.pdf")
