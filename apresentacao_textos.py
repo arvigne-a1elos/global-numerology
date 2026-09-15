@@ -172,28 +172,16 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     if lang not in CONTEUDO:
         lang = "pt"
     c = CONTEUDO.get(lang, CONTEUDO.get("pt", {}))
-    global _RODAPE_FN
-
-    def _rodape_total(cnv, num, total):
-    _cabecalho_duas_logos(cnv, None, c, lang, cor_fundo=COR_AZUL)
-    _rodape(cnv, None, c, lang, num_pag=num, total_pag=total)
-
-    _RODAPE_FN = _rodape_total
-    
-    if not caminho_saida:
-        os.makedirs(STATIC_DIR, exist_ok=True)
-        caminho_saida = os.path.join(STATIC_DIR, f"apresentacao_empresarial_{lang}.pdf")
-    
-    doc.build(story)
-    return caminho_saida       
 
     global _RODAPE_FN
     _CTX_TEXTO["c"] = c
     _CTX_TEXTO["lang"] = lang
     _RODAPE_FN = _rodape_texto
-    doc.build(story)
-    return caminho_saida      
-           
+
+    if not caminho_saida:
+        os.makedirs(STATIC_DIR, exist_ok=True)
+        caminho_saida = os.path.join(STATIC_DIR, f"apresentacao_empresarial_{lang}.pdf")
+
     doc = SimpleDocTemplate(caminho_saida, pagesize=A4,
                             leftMargin=50, rightMargin=50,
                             topMargin=70, bottomMargin=55,
@@ -486,6 +474,9 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
                            _estilo(lang, 18, True, COR_AZUL, TA_CENTER)))
     for s in c.get("selo_final", []):
         story.append(Paragraph(str(s), _estilo(lang, 10, True, COR_DOURADO, TA_CENTER, depois=2)))
+
+    doc.build(story)
+    return caminho_saida          
 
 # ============================================================
 # BLOCO JURÍDICO / GOVERNANÇA E COMPLIANCE (SEÇÕES 19-29)
