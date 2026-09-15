@@ -183,14 +183,17 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     if not caminho_saida:
         os.makedirs(STATIC_DIR, exist_ok=True)
         caminho_saida = os.path.join(STATIC_DIR, f"apresentacao_empresarial_{lang}.pdf")
+    
+    doc.build(story)
+    return caminho_saida       
 
     global _RODAPE_FN
-
-    def _rodape_total(cnv, num, total):
-        _rodape(cnv, None, c, lang, num_pag=num, total_pag=total)
-
-    _RODAPE_FN = _rodape_total
-
+    _CTX_TEXTO["c"] = c
+    _CTX_TEXTO["lang"] = lang
+    _RODAPE_FN = _rodape_texto
+    doc.build(story)
+    return caminho_saida      
+           
     doc = SimpleDocTemplate(caminho_saida, pagesize=A4,
                             leftMargin=50, rightMargin=50,
                             topMargin=70, bottomMargin=55,
@@ -4588,3 +4591,12 @@ def gerar_todas():
             print("OK", l, m, p)
         except Exception as e:
             print("ERRO", l, m, e)
+
+# ===== Cabeçalho (2 logos) + rodapé (X de Y) da apresentação de TEXTO =====
+_CTX_TEXTO = {"c": None, "lang": "pt"}
+
+def _rodape_texto(cnv, num, total):
+    c = _CTX_TEXTO["c"]
+    lang = _CTX_TEXTO["lang"]
+    _cabecalho_duas_logos(cnv, None, c, lang, cor_fundo=COR_AZUL)
+    _rodape(cnv, None, c, lang, num_pag=num, total_pag=total)
