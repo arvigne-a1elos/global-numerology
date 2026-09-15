@@ -197,46 +197,7 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
 
     story = []
 
-# ===== Canvas com total de páginas (X de Y) =====
-_RODAPE_FN = None
-
-class CanvasComTotal(canvas.Canvas):
-
-    def _desenhar_cabecalho(self):
-        w, h = self._pagesize
-        if self._logo_num:
-            try:
-                self.drawImage(ImageReader(self._logo_num), 28, h - 34,
-                               width=24, height=24, preserveAspectRatio=True,
-                               mask='auto')
-            except Exception:
-                pass
-        if self._logo_a1elos:
-            try:
-                self.drawImage(ImageReader(self._logo_a1elos), w - 52, h - 34,
-                               width=24, height=24, preserveAspectRatio=True,
-                               mask='auto')
-            except Exception:
-                pass           
-           
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self._saved = []
-
-    def showPage(self):
-        self._saved.append(dict(self.__dict__))
-        self._startPage()
-
-    def save(self):
-        total = len(self._saved)
-        for estado in self._saved:
-            self.__dict__.update(estado)
-            if _RODAPE_FN is not None:
-                _RODAPE_FN(self, self._pageNumber, total)
-            canvas.Canvas.showPage(self)
-        canvas.Canvas.save(self)
-
-        # ===== CAPA SIMPLES (SEM PRETA) =====
+# ===== CAPA SIMPLES (SEM PRETA) =====
     story.append(Spacer(1, 50))
     story.append(Paragraph(c.get("titulo", "A1ELOS Global Numerology"),
                            _estilo(lang, 24, True, COR_AZUL, TA_CENTER, 0, 4)))
@@ -687,6 +648,45 @@ def _registrar_fontes_extra():
 
     doc.build(story, onFirstPage=on_page, onLaterPages=on_page)
     return caminho_saida
+
+# ===== Canvas com total de páginas (X de Y) =====
+_RODAPE_FN = None
+
+class CanvasComTotal(canvas.Canvas):
+
+    def _desenhar_cabecalho(self):
+        w, h = self._pagesize
+        if self._logo_num:
+            try:
+                self.drawImage(ImageReader(self._logo_num), 28, h - 34,
+                               width=24, height=24, preserveAspectRatio=True,
+                               mask='auto')
+            except Exception:
+                pass
+        if self._logo_a1elos:
+            try:
+                self.drawImage(ImageReader(self._logo_a1elos), w - 52, h - 34,
+                               width=24, height=24, preserveAspectRatio=True,
+                               mask='auto')
+            except Exception:
+                pass           
+           
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._saved = []
+
+    def showPage(self):
+        self._saved.append(dict(self.__dict__))
+        self._startPage()
+
+    def save(self):
+        total = len(self._saved)
+        for estado in self._saved:
+            self.__dict__.update(estado)
+            if _RODAPE_FN is not None:
+                _RODAPE_FN(self, self._pageNumber, total)
+            canvas.Canvas.showPage(self)
+        canvas.Canvas.save(self)
 
 # ------------------------------------------------------------
 # CONTEÚDO — PORTUGUÊS EXPANDIDO (FASE 1)
