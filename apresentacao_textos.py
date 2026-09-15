@@ -3028,7 +3028,7 @@ CONTEUDO = {
         "selo_final": ["DUNS 942242668", "23 منتجًا", "14 لغة", "~5.3 مليار متحدث"],
         "graf_cons": "محافظ",
         "graf_otim": "متفائل",
-        "grafico_titulo_linha": "النمو المتوقع (آلاف ر.س)",
+        "grafico_titulo_linha": "النمو المتوقع (آلاف ﷼)",
         "pix_titulo": "البرازيل: البنية التحتية لـ Pix",
         "pix_texto": "Pix هو نظام المدفوعات الفورية العام في البرازيل. بالنسبة لـ A1ELOS، يضمن التحصيل الفوري والتكلفة المنخفضة والقبول الشامل — أساس عمليات B2C في السوق البرازيلية وبوابة التوسع الدولي.",
         "pix_kpis": [
@@ -3806,7 +3806,7 @@ def _grafico_linha(doc, x, y, largura, altura, lang, anos, series, titulo):
 # Moeda por idioma
 MOEDA = {
     "pt": "R$", "en": "US$", "es": "€", "it": "€", "fr": "€", "de": "€",
-    "ja": "¥", "zh": "¥", "ru": "₽", "he": "₪", "ar": "ر.س",
+    "ja": "¥", "zh": "¥", "ru": "₽", "he": "₪", "ar": "﷼",
     "id": "Rp", "tr": "₺", "vi": "₫",
 }
 
