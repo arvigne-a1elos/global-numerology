@@ -479,7 +479,7 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     _CTX_TEXTO["lang"] = lang
     _RODAPE_FN = _rodape_texto
            
-    doc.build(story)
+    doc.build(story, canvasmaker=CanvasComTotal)
     return caminho_saida          
 
 # ============================================================
