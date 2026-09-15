@@ -391,7 +391,7 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     for linha in c.get("projecoes_tabela", []):
         linha = [_com_moeda(lang, cel) if i in (1, 2) else cel for i, cel in enumerate(linha)]
         story.append(Paragraph(_texto_item(linha, " — "),
-                               _estilo(lang, 10, False, COR_PRETO, depois=2)))
+                               _estilo(lang, 10, False, COR_PRETO, depois=2))))
 
     # ===== 15. TRAÇÃO =====
     story.append(Paragraph(c.get("tracao_titulo", "Tração e Resultados"),
