@@ -680,7 +680,7 @@ class CanvasComTotal(canvas.Canvas):
             canvas.Canvas.showPage(self)
         canvas.Canvas.save(self)
 
-# ===== CABEÇALHO (2 LOGOS) E RODAPÉ — todas as páginas =====
+    # ===== CABEÇALHO (2 LOGOS) E RODAPÉ — todas as páginas =====
     def on_page(canvas, doc_):
         _cabecalho_duas_logos(canvas, doc_, c, lang, cor_fundo=COR_AZUL)
         _rodape(canvas, doc_, c, lang)
