@@ -680,12 +680,14 @@ class CanvasComTotal(canvas.Canvas):
             canvas.Canvas.showPage(self)
         canvas.Canvas.save(self)
 
-    # ===== CABEÇALHO (2 LOGOS) E RODAPÉ — todas as páginas =====
-    def on_page(canvas, doc_):
-        _cabecalho_duas_logos(canvas, doc_, c, lang, cor_fundo=COR_AZUL)
-        _rodape(canvas, doc_, c, lang)
+       # ===== CABEÇALHO (2 LOGOS) E RODAPÉ — todas as páginas =====
+    def _rodape_total(cnv, num, total):
+        _cabecalho_duas_logos(cnv, None, c, lang, cor_fundo=COR_AZUL)
+        _rodape(cnv, None, c, lang, num_pag=num, total_pag=total)
 
-    doc.build(story, onFirstPage=on_page, onLaterPages=on_page)
+    global _RODAPE_FN
+    _RODAPE_FN = _rodape_total
+    doc.build(story)
     return caminho_saida
 # ------------------------------------------------------------
 # CONTEÚDO — PORTUGUÊS EXPANDIDO (FASE 1)
