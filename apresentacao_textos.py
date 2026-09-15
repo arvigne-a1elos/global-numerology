@@ -686,7 +686,7 @@ class CanvasComTotal(canvas.Canvas):
         _rodape(canvas, doc_, c, lang)
 
     doc.build(story, onFirstPage=on_page, onLaterPages=on_page)
-    return caminho_saida
+        return caminho_saida
 # ------------------------------------------------------------
 # CONTEÚDO — PORTUGUÊS EXPANDIDO (FASE 1)
 # ------------------------------------------------------------
