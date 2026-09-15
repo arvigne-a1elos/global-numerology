@@ -173,11 +173,6 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
         lang = "pt"
     c = CONTEUDO.get(lang, CONTEUDO.get("pt", {}))
 
-    global _RODAPE_FN
-    _CTX_TEXTO["c"] = c
-    _CTX_TEXTO["lang"] = lang
-    _RODAPE_FN = _rodape_texto
-
     if not caminho_saida:
         os.makedirs(STATIC_DIR, exist_ok=True)
         caminho_saida = os.path.join(STATIC_DIR, f"apresentacao_empresarial_{lang}.pdf")
@@ -289,7 +284,7 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     if c.get("alcance_texto"):
         story.append(Paragraph(c["alcance_texto"],
                                _estilo(lang, 10.5, False, COR_PRETO, alinh=TA_JUSTIFY)))
-    for linha in c.get("linhas_idiomas", []):
+    for linha in c.get("portfolio_tabela", []):
         story.append(Paragraph(_texto_item(linha, " — "),
                                _estilo(lang, 10, False, COR_PRETO, depois=2)))
     if c.get("total_linha"):
@@ -474,7 +469,12 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
                            _estilo(lang, 18, True, COR_AZUL, TA_CENTER)))
     for s in c.get("selo_final", []):
         story.append(Paragraph(str(s), _estilo(lang, 10, True, COR_DOURADO, TA_CENTER, depois=2)))
-
+  
+    global _RODAPE_FN
+    _CTX_TEXTO["c"] = c
+    _CTX_TEXTO["lang"] = lang
+    _RODAPE_FN = _rodape_texto
+           
     doc.build(story)
     return caminho_saida          
 
@@ -4019,6 +4019,7 @@ def gerar_pdf_slides(lang):
 
     def rodape(pagina):
         """Apenas desenha o rodapé do slide (sem recursão)."""
+        _cabecalho_duas_logos(doc, None, c, lang, cor_fundo=COR_AZUL)       
         doc.setFillColor(COR_CINZA_CLARO)
         doc.setFont(_fonte(lang), 8)
         doc.drawCentredString(largura / 2, 10 * mm,
@@ -4591,3 +4592,13 @@ def _rodape_texto(cnv, num, total):
     lang = _CTX_TEXTO["lang"]
     _cabecalho_duas_logos(cnv, None, c, lang, cor_fundo=COR_AZUL)
     _rodape(cnv, None, c, lang, num_pag=num, total_pag=total)
+
+def _linha_com_moeda(linha, moeda, cols):
+    nova = []
+    for i, cel in enumerate(linha):
+        s = str(cel).strip()
+        if i in cols and s and not s.startswith(moeda):
+            nova.append(f"{moeda} {cel}")
+        else:
+            nova.append(cel)
+    return nova
