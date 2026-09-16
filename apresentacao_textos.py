@@ -3937,8 +3937,8 @@ def _capa_slides(doc, largura, altura, lang, modo):
             iw, ih = ImageReader(LOGO_ESQ).getSize()
             lw = min(largura * 0.28, iw)
             lh = lw * ih / iw
-            doc.drawImage(LOGO_ESQ, (largura - lw) / 2, altura * 0.60,
-                          width=lw, height=lh, mask="auto")
+            doc.drawImage(LOGO_ESQ, (largura - lw) / 2, altura * 0.52,
+                  width=lw, height=lh, mask="auto")
         except Exception:
             pass
     doc.setFillColor(COR_DOURADO)
