@@ -3974,29 +3974,25 @@ def _rodape_deck(doc, largura, altura, lang, c, pagina):
     doc.setFont(_fonte(lang), 7)
     doc.drawCentredString(largura / 2, 4 * mm, CONTATOS)
 
-def _texto_wrap_centrado_v(doc, texto, fonte, tam, x, y_top, largura, cor, entrelinha, altura):
-    """Texto centralizado horizontal E verticalmente dentro de uma área.
-    x, y_top: canto superior da área; largura e altura: dimensões da área."""
+def _texto_wrap_centrado_v(doc, texto, fonte, tam, x, y, largura, cor, entrelinha, altura):
+    """Texto quebrado, centralizado horizontal e verticalmente
+    dentro da área de altura 'altura'. y = TOPO da área."""
+    fator, eh_cjk = _fator_script(texto)
+    tam2 = tam * fator
+    larg_interna = max(largura, 1)
+    linhas = _quebrar_harmonizado(texto, fonte, tam2, larg_interna, eh_cjk)
+    total = len(linhas) * entrelinha
+    while tam2 > 5 and total > altura:
+        tam2 -= 0.5
+        linhas = _quebrar_harmonizado(texto, fonte, tam2, larg_interna, eh_cjk)
+        total = len(linhas) * entrelinha
+    doc.setFont(fonte, tam2)
     doc.setFillColor(cor)
-    doc.setFont(fonte, tam)
-    palavras = str(texto).split()
-    linhas = []
-    linha = ""
-    for p in palavras:
-        teste = (linha + " " + p).strip()
-        if doc.stringWidth(teste, fonte, tam) <= largura:
-            linha = teste
-        else:
-            linhas.append(linha)
-            linha = p
-    if linha:
-        linhas.append(linha)
-    altura_texto = len(linhas) * entrelinha
-    y = y_top - max(0, (altura - altura_texto) / 2)
+    y_ini = y - (altura - total) / 2   # ← CORREÇÃO: centraliza de verdade
     for ln in linhas:
-        doc.drawCentredString(x + largura / 2, y, ln)
-        y -= entrelinha
-    return y
+        doc.drawCentredString(x + larg_interna / 2, y_ini, ln)
+        y_ini -= entrelinha
+    return y_ini + entrelinha
 
 def _kpis_grid(doc, largura, altura, lang, dados, y, colunas=4):
     """Desenha uma grade de cards de KPIs e retorna o novo y."""
@@ -4034,25 +4030,27 @@ def _kpis_grid(doc, largura, altura, lang, dados, y, colunas=4):
     n_linhas = (len(dados) + colunas - 1) // colunas
     return y - n_linhas * (alt_card + gap)
 
-def _texto_wrap(doc, texto, fonte, tam, x, y, largura_max, cor, entrelinha, y_min=0):
+def _texto_wrap(doc, texto, fonte, tam, x, y, largura, cor, entrelinha, y_min=None):
+    """Quebra, ENCOLHE a fonte até caber na largura e na altura, e desenha.
+    y = topo. Se y_min for dado, o texto nunca passa dele."""
+    fator, eh_cjk = _fator_script(texto)
+    tam2 = tam * fator
+    larg_interna = max(largura, 1)
+    linhas = _quebrar_harmonizado(texto, fonte, tam2, larg_interna, eh_cjk)
+    if y_min is not None:
+        disp = max(y - y_min, 1)
+        while tam2 > 5 and len(linhas) * entrelinha > disp:
+            tam2 -= 0.5
+            linhas = _quebrar_harmonizado(texto, fonte, tam2, larg_interna, eh_cjk)
+    doc.setFont(fonte, tam2)
     doc.setFillColor(cor)
-    doc.setFont(fonte, tam)
-    palavras = texto.split()
-    linha = ""
-    for p in palavras:
-        teste = (linha + " " + p).strip()
-        if doc.stringWidth(teste, fonte, tam) <= largura_max:
-            linha = teste
-        else:
-            if y - entrelinha < y_min:
-                return y
-            doc.drawString(x, y, linha)
-            y -= entrelinha
-            linha = p
-    if linha and y - entrelinha >= y_min:
-        doc.drawString(x, y, linha)
-        y -= entrelinha
-    return y
+    yy = y
+    for ln in linhas:
+        if y_min is not None and yy - entrelinha < y_min - 0.1:
+            break
+        doc.drawString(x, yy, ln)
+        yy -= entrelinha
+    return yy
 
 def _caixa(doc, x, y, w, h, cor_fundo, cor_borda):
     """Desenha uma caixa retangular com fundo e borda."""
@@ -4099,7 +4097,6 @@ def gerar_pdf_slides(lang):
     doc.showPage()
     pagina += 1
 
-    # ===== SLIDE 2 — SUMÁRIO EXECUTIVO (01) =====
     # ===== SLIDE 2 — SUMÁRIO EXECUTIVO (01) =====
     cab(c.get("sumario_titulo", "Sumário Executivo"), 1)
     y = altura - 32 * mm
@@ -4212,7 +4209,7 @@ def gerar_pdf_slides(lang):
     doc.showPage()
     pagina += 1
 
-    # ===== SLIDE 6 — O PROBLEMA (05) =====
+       # ===== SLIDE 6 — O PROBLEMA (05) =====
     cab(c["problema_titulo"], 5)
     y = altura - 32 * mm
     col_w = (largura - 36 * mm - 10 * mm) / 2
@@ -4222,12 +4219,11 @@ def gerar_pdf_slides(lang):
     yy = y - 16 * mm
     for tit, sub in c["problema_col_esq"]:
         _caixa(doc, 18 * mm, yy - 34 * mm, col_w, 34 * mm, COR_FUNDO, COR_DOURADO)
-        # Título centralizado no topo do card (não invade o corpo)
+        # Título ALINHADO AO TOPO (nunca sobe acima da borda do card)
         doc.setFillColor(COR_AZUL)
-        _texto_wrap_centrado_v(doc, tit, _fonte(lang, True), 9.5,
-                               18 * mm, yy - 5 * mm, col_w,
-                               COR_AZUL, 4.5 * mm, 12 * mm)
-        # Texto centralizado (horizontal E vertical) na área restante do card
+        _texto_wrap(doc, tit, _fonte(lang, True), 9.5, 18 * mm + 4 * mm, yy - 6 * mm,
+                    col_w - 8 * mm, COR_AZUL, 4.5 * mm, y_min=yy - 16 * mm)
+        # Corpo centralizado na área restante
         doc.setFillColor(COR_CINZA)
         _texto_wrap_centrado_v(doc, sub, _fonte(lang), 8,
                                18 * mm, yy - 18 * mm, col_w,
@@ -4237,12 +4233,11 @@ def gerar_pdf_slides(lang):
     doc.setFillColor(COR_PRETO)
     doc.setFont(_fonte(lang, True), 13)
     doc.drawString(xr, y - 8 * mm, c["problema_col_dir_titulo"])
-    yy = y - 16 * mm
-    # Texto da direita centralizado numa área fixa (não empurra o bloco dourado)
+    # Texto da direita em área FIXA (não empurra o bloco dourado)
     _texto_wrap_centrado_v(doc, c["problema_col_dir"], _fonte(lang), 9.5,
-                           xr, yy, col_w, COR_CINZA, 4.5 * mm, 50 * mm)
-    yy -= 60 * mm
-    # Bloco dourado — texto centralizado NO CENTRO do bloco
+                           xr, y - 16 * mm, col_w, COR_CINZA, 4.5 * mm, 52 * mm)
+    # Bloco dourado em posição FIXA
+    yy = y - 78 * mm
     _caixa(doc, xr, yy - 40 * mm, col_w, 40 * mm, HexColor("#FFF3E0"), COR_DOURADO)
     doc.setFillColor(COR_PRETO)
     _texto_wrap_centrado_v(doc, c["problema_destaque"], _fonte(lang, True), 10,
@@ -4318,34 +4313,38 @@ def gerar_pdf_slides(lang):
     doc.showPage()
     pagina += 1
 
-       # ===== SLIDE 10 — FILOSOFIA DE PREÇO (09) =====
+    # ===== SLIDE 10 — FILOSOFIA DE PREÇO (09) =====
     cab(c["preco_titulo"], 9)
     y = altura - 32 * mm
     col_w = (largura - 36 * mm - 10 * mm) / 2
+    # Caixa preta da esquerda
     _caixa(doc, 18 * mm, y - 60 * mm, col_w, 60 * mm, COR_PRETO, COR_DOURADO)
     doc.setFillColor(COR_DOURADO)
     doc.setFont(_fonte(lang, True), 13)
     doc.drawString(22 * mm, y - 16 * mm, c.get("preco_consciente", "Preço Consciente"))
+    # Texto da caixa preta, contido e centralizado
     doc.setFillColor(white)
-    _texto_wrap_centrado_v(doc, c["preco_esq"], _fonte(lang), 10, 22 * mm, y - 22 * mm,
-                           col_w - 8 * mm, white, 4.5 * mm, 36 * mm)
+    _texto_wrap_centrado_v(doc, c["preco_esq"], _fonte(lang), 10, 22 * mm, y - 24 * mm,
+                           col_w - 8 * mm, white, 4.5 * mm, 34 * mm)
+    # Coluna direita
     xr = 18 * mm + col_w + 10 * mm
     doc.setFillColor(COR_PRETO)
     doc.setFont(_fonte(lang, True), 13)
     doc.drawString(xr, y - 8 * mm, c["preco_dir_titulo"])
-    yy = y - 16 * mm
-    _texto_wrap_centrado_v(doc, c["preco_dir"], _fonte(lang), 10, xr, yy,
-                           col_w, COR_CINZA, 4.5 * mm, 40 * mm)
-    yy -= 50 * mm
+    # Texto da direita em área FIXA
+    _texto_wrap_centrado_v(doc, c["preco_dir"], _fonte(lang), 10, xr, y - 16 * mm,
+                           col_w, COR_CINZA, 4.5 * mm, 42 * mm)
+    # 3 cards em posições FIXAS
+    yy = y - 66 * mm
     for tit, sub in c["preco_pilares"]:
-        _caixa(doc, xr, yy - 24 * mm, col_w, 24 * mm, COR_FUNDO, COR_DOURADO)
+        _caixa(doc, xr, yy - 26 * mm, col_w, 26 * mm, COR_FUNDO, COR_DOURADO)
         doc.setFillColor(COR_AZUL)
-        _texto_wrap(doc, tit, _fonte(lang, True), 10, xr + 5 * mm, yy - 15 * mm,
-                    col_w - 10 * mm, COR_AZUL, 4.2 * mm, y_min=yy - 20 * mm)
+        _texto_wrap(doc, tit, _fonte(lang, True), 10, xr + 5 * mm, yy - 6 * mm,
+                    col_w - 10 * mm, COR_AZUL, 4.2 * mm, y_min=yy - 14 * mm)
         doc.setFillColor(COR_CINZA)
-        _texto_wrap(doc, sub, _fonte(lang), 8, xr + 5 * mm, yy - 11 * mm,
-                    col_w - 10 * mm, COR_CINZA, 3.5 * mm, y_min=yy - 22 * mm)
-        yy -= 28 * mm
+        _texto_wrap(doc, sub, _fonte(lang), 8, xr + 5 * mm, yy - 16 * mm,
+                    col_w - 10 * mm, COR_CINZA, 3.5 * mm, y_min=yy - 24 * mm)
+        yy -= 30 * mm
     rodape(pagina)
     doc.showPage()
     pagina += 1
@@ -4753,8 +4752,8 @@ def _texto_wrap(doc, texto, fonte, tam, x, y, largura, cor, entrelinha, y_min=No
     return yy
 
 def _texto_wrap_centrado_v(doc, texto, fonte, tam, x, y, largura, cor, entrelinha, altura):
-    """Texto quebrado, centralizado horizontal e verticalmente
-    dentro da area de altura 'altura'. y = topo da area."""
+    """Texto quebrado, centralizado horizontal e verticalmente dentro da área
+    de altura 'altura'. y = TOPO da área. Encolhe a fonte até caber."""
     fator, eh_cjk = _fator_script(texto)
     tam2 = tam * fator
     larg_interna = max(largura, 1)
@@ -4766,7 +4765,7 @@ def _texto_wrap_centrado_v(doc, texto, fonte, tam, x, y, largura, cor, entrelinh
         total = len(linhas) * entrelinha
     doc.setFont(fonte, tam2)
     doc.setFillColor(cor)
-    y_ini = y + (altura - total) / 2 + entrelinha
+    y_ini = y - (altura - total) / 2   # centraliza de verdade (não sobe acima da borda)
     for ln in linhas:
         doc.drawCentredString(x + larg_interna / 2, y_ini, ln)
         y_ini -= entrelinha
