@@ -647,6 +647,41 @@ def _registrar_fontes_extra():
     except Exception as e:
         logger.warning("Fontes extras: %s", e)
 
+def _quebrar_linhas(texto, fonte, tam, largura):
+    """Quebra o texto em linhas que cabem na largura dada."""
+    from reportlab.pdfbase.pdfmetrics import stringWidth
+    def eh_cjk(ch):
+        o = ord(ch)
+        return (0x4E00 <= o <= 0x9FFF) or (0x3040 <= o <= 0x30FF)  # CJK + japonês
+    linhas, atual = [], ""
+    for ch in texto:
+        teste = atual + ch if (eh_cjk(ch) or atual == "" or eh_cjk(atual[-1])) else atual + " " + ch
+        if stringWidth(teste, fonte, tam) <= largura:
+            atual = teste
+        else:
+            linhas.append(atual)
+            atual = ch
+    if atual:
+        linhas.append(atual)
+    return linhas
+
+def _texto_caixa(doc, x, y, largura, texto, tam, lang, cor, altura_linha=None):
+    """Desenha o texto quebrado e centralizado dentro da área (x, y) de altura variável."""
+    from reportlab.pdfbase.pdfmetrics import stringWidth
+    fator = {"ja": 0.95, "zh": 0.92, "ru": 0.97}.get(lang, 1.0)  # encolhe um pouco p/ esses idiomas
+    tam2 = tam * fator
+    fonte = _fonte(lang, False)
+    doc.setFont(fonte, tam2)
+    doc.setFillColor(cor)
+    if altura_linha is None:
+        altura_linha = tam2 * 1.5
+    linhas = _quebrar_linhas(texto, fonte, tam2, largura)
+    ultimo_y = y
+    for i, ln in enumerate(linhas):
+        doc.drawCentredString(x + largura / 2, ultimo_y, ln)
+        ultimo_y -= altura_linha
+    return ultimo_y  # novo y do fundo da caixa
+
 # ===== Canvas com total de páginas (X de Y) =====
 _RODAPE_FN = None
 
