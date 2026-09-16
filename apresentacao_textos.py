@@ -4100,6 +4100,7 @@ def gerar_pdf_slides(lang):
     pagina += 1
 
     # ===== SLIDE 2 — SUMÁRIO EXECUTIVO (01) =====
+    # ===== SLIDE 2 — SUMÁRIO EXECUTIVO (01) =====
     cab(c.get("sumario_titulo", "Sumário Executivo"), 1)
     y = altura - 32 * mm
     y = _texto_wrap(doc, c["sumario_intro"], _fonte(lang), 12, 18 * mm, y,
@@ -4110,7 +4111,7 @@ def gerar_pdf_slides(lang):
     gap = 8 * mm
     n_col = 4
     w = (largura - 2 * margem - (n_col - 1) * gap) / n_col
-    h = 34 * mm
+    h = 38 * mm
     for i, (num, tit, sub) in enumerate(cards):
         col = i % n_col
         lin = i // n_col
@@ -4119,18 +4120,17 @@ def gerar_pdf_slides(lang):
         _caixa(doc, x, yy - h, w, h, COR_FUNDO, COR_DOURADO)
         doc.setFillColor(COR_DOURADO)
         doc.setFont(_fonte(lang, True), 16)
-        doc.drawString(x + 6 * mm, yy - h + 20 * mm, num)
+        doc.drawString(x + 6 * mm, yy - h + 22 * mm, num)
         doc.setFillColor(COR_PRETO)
-        doc.setFont(_fonte(lang, True), 10)
-        _texto_wrap(doc, tit, _fonte(lang, True), 10, x + 6 * mm, yy - h + 12 * mm,
-                    w - 12 * mm, COR_PRETO, 5 * mm)
+        _texto_wrap(doc, tit, _fonte(lang, True), 10, x + 6 * mm, yy - h + 14 * mm,
+                    w - 12 * mm, COR_PRETO, 4.5 * mm, y_min=yy - h + 6 * mm)
         doc.setFillColor(COR_CINZA)
-        _texto_wrap(doc, sub, _fonte(lang), 8, x + 6 * mm, yy - h + 6 * mm,
-                    w - 12 * mm, COR_CINZA, 4 * mm)
+        _texto_wrap(doc, sub, _fonte(lang), 8, x + 6 * mm, yy - h + 5 * mm,
+                    w - 12 * mm, COR_CINZA, 3.8 * mm, y_min=yy - h + 1 * mm)
     rodape(pagina)
     doc.showPage()
     pagina += 1
-
+           
     # ===== SLIDE 3 — SOBRE A A1ELOS (02) =====
     cab(c["sobre_titulo"], 2)
     y = altura - 32 * mm
@@ -4221,25 +4221,27 @@ def gerar_pdf_slides(lang):
     doc.drawString(18 * mm, y - 8 * mm, c["problema_col_esq_titulo"])
     yy = y - 16 * mm
     for tit, sub in c["problema_col_esq"]:
-        _caixa(doc, 18 * mm, yy - 30 * mm, col_w, 30 * mm, COR_FUNDO, COR_DOURADO)
-        # Título no topo do card
+        _caixa(doc, 18 * mm, yy - 34 * mm, col_w, 34 * mm, COR_FUNDO, COR_DOURADO)
+        # Título centralizado no topo do card (não invade o corpo)
         doc.setFillColor(COR_AZUL)
-        doc.setFont(_fonte(lang, True), 9.5)
-        doc.drawCentredString(18 * mm + col_w / 2, yy - 9 * mm, tit)
+        _texto_wrap_centrado_v(doc, tit, _fonte(lang, True), 9.5,
+                               18 * mm, yy - 5 * mm, col_w,
+                               COR_AZUL, 4.5 * mm, 12 * mm)
         # Texto centralizado (horizontal E vertical) na área restante do card
         doc.setFillColor(COR_CINZA)
-        _texto_wrap_centrado_v(doc, sub, _fonte(lang), 7.5,
-                               18 * mm, yy - 13 * mm, col_w,
-                               COR_CINZA, 3.2 * mm, 15 * mm)
-        yy -= 33 * mm
+        _texto_wrap_centrado_v(doc, sub, _fonte(lang), 8,
+                               18 * mm, yy - 18 * mm, col_w,
+                               COR_CINZA, 3.8 * mm, 15 * mm)
+        yy -= 37 * mm
     xr = 18 * mm + col_w + 10 * mm
     doc.setFillColor(COR_PRETO)
     doc.setFont(_fonte(lang, True), 13)
     doc.drawString(xr, y - 8 * mm, c["problema_col_dir_titulo"])
     yy = y - 16 * mm
-    yy = _texto_wrap(doc, c["problema_col_dir"], _fonte(lang), 10, xr, yy,
-                     col_w, COR_CINZA, 4.5 * mm)
-    yy -= 10 * mm
+    # Texto da direita centralizado numa área fixa (não empurra o bloco dourado)
+    _texto_wrap_centrado_v(doc, c["problema_col_dir"], _fonte(lang), 9.5,
+                           xr, yy, col_w, COR_CINZA, 4.5 * mm, 50 * mm)
+    yy -= 60 * mm
     # Bloco dourado — texto centralizado NO CENTRO do bloco
     _caixa(doc, xr, yy - 40 * mm, col_w, 40 * mm, HexColor("#FFF3E0"), COR_DOURADO)
     doc.setFillColor(COR_PRETO)
@@ -4316,7 +4318,7 @@ def gerar_pdf_slides(lang):
     doc.showPage()
     pagina += 1
 
-    # ===== SLIDE 10 — FILOSOFIA DE PREÇO (09) =====
+       # ===== SLIDE 10 — FILOSOFIA DE PREÇO (09) =====
     cab(c["preco_titulo"], 9)
     y = altura - 32 * mm
     col_w = (largura - 36 * mm - 10 * mm) / 2
@@ -4325,26 +4327,24 @@ def gerar_pdf_slides(lang):
     doc.setFont(_fonte(lang, True), 13)
     doc.drawString(22 * mm, y - 16 * mm, c.get("preco_consciente", "Preço Consciente"))
     doc.setFillColor(white)
-    doc.setFont(_fonte(lang), 10)
-    _texto_wrap(doc, c["preco_esq"], _fonte(lang), 10, 22 * mm, y - 26 * mm,
-                col_w - 8 * mm, white, 4.5 * mm)
+    _texto_wrap_centrado_v(doc, c["preco_esq"], _fonte(lang), 10, 22 * mm, y - 22 * mm,
+                           col_w - 8 * mm, white, 4.5 * mm, 36 * mm)
     xr = 18 * mm + col_w + 10 * mm
     doc.setFillColor(COR_PRETO)
     doc.setFont(_fonte(lang, True), 13)
     doc.drawString(xr, y - 8 * mm, c["preco_dir_titulo"])
     yy = y - 16 * mm
-    yy = _texto_wrap(doc, c["preco_dir"], _fonte(lang), 10, xr, yy,
-                     col_w, COR_CINZA, 4.5 * mm)
-    yy -= 8 * mm
+    _texto_wrap_centrado_v(doc, c["preco_dir"], _fonte(lang), 10, xr, yy,
+                           col_w, COR_CINZA, 4.5 * mm, 40 * mm)
+    yy -= 50 * mm
     for tit, sub in c["preco_pilares"]:
         _caixa(doc, xr, yy - 24 * mm, col_w, 24 * mm, COR_FUNDO, COR_DOURADO)
         doc.setFillColor(COR_AZUL)
-        doc.setFont(_fonte(lang, True), 10)
-        doc.drawString(xr + 5 * mm, yy - 17 * mm, tit)
+        _texto_wrap(doc, tit, _fonte(lang, True), 10, xr + 5 * mm, yy - 15 * mm,
+                    col_w - 10 * mm, COR_AZUL, 4.2 * mm, y_min=yy - 20 * mm)
         doc.setFillColor(COR_CINZA)
-        doc.setFont(_fonte(lang), 8)
-        _texto_wrap(doc, sub, _fonte(lang), 8, xr + 5 * mm, yy - 12 * mm,
-                    col_w - 10 * mm, COR_CINZA, 3.5 * mm)
+        _texto_wrap(doc, sub, _fonte(lang), 8, xr + 5 * mm, yy - 11 * mm,
+                    col_w - 10 * mm, COR_CINZA, 3.5 * mm, y_min=yy - 22 * mm)
         yy -= 28 * mm
     rodape(pagina)
     doc.showPage()
@@ -4673,9 +4673,9 @@ def _fator_script(texto):
     t = str(texto)
     if any(0x2E80 <= ord(c) <= 0x9FFF or 0x3040 <= ord(c) <= 0x30FF
            or 0xAC00 <= ord(c) <= 0xD7AF for c in t):
-        return 0.85, True            # japonês/chines: encolhe + quebra por caractere
+        return 0.90, True             # japonês/chines: encolhe + quebra por caractere
     if any(0x0400 <= ord(c) <= 0x04FF for c in t):
-        return 0.95, False           # russo/cirilico: encolhe levemente
+        return 0.96, False           # russo/cirilico: encolhe levemente
     if any(0x0590 <= ord(c) <= 0x05FF or 0x0600 <= ord(c) <= 0x06FF for c in t):
         return 0.92, False           # hebraico/arabe: encolhe levemente
     return 1.0, False                # latino e demais: sem mudanca
@@ -4726,7 +4726,7 @@ def _quebrar_harmonizado(texto, fonte, tam, largura, eh_cjk):
 
 def _tam_ajus(lang, tam):
     """Encolhe o tamanho da fonte por idioma (usado nas tabelas)."""
-    fator = {"ja": 0.85, "zh": 0.85, "ru": 0.95,
+    fator = {"ja": 0.90, "zh": 0.90, "ru": 0.96,
              "he": 0.92, "ar": 0.92}.get(lang, 1.0)
     return tam * fator
 
