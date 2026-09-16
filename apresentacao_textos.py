@@ -665,22 +665,43 @@ def _quebrar_linhas(texto, fonte, tam, largura):
         linhas.append(atual)
     return linhas
 
-def _texto_caixa(doc, x, y, largura, texto, tam, lang, cor, altura_linha=None):
-    """Desenha o texto quebrado e centralizado dentro da área (x, y) de altura variável."""
+def _encaixar_texto(doc, x, y, largura, altura_max, texto, tam, lang, cor,
+                    min_tam=None, altura_linha=None):
+    """Quebra e desenha o texto CENTRALIZADO (horizontal e vertical) dentro
+    da área (x, y, largura, altura_max). Encolhe a fonte até caber.
+    y = TOPO da área reservada. Retorna o y da base do bloco."""
     from reportlab.pdfbase.pdfmetrics import stringWidth
-    fator = {"ja": 0.95, "zh": 0.92, "ru": 0.97}.get(lang, 1.0)  # encolhe um pouco p/ esses idiomas
-    tam2 = tam * fator
+
+    fator = {"ja": 0.95, "zh": 0.92, "ru": 0.97}.get(lang, 1.0)  # encolhe um pouco (CJK/cirílico)
     fonte = _fonte(lang, False)
-    doc.setFont(fonte, tam2)
-    doc.setFillColor(cor)
+    if min_tam is None:
+        min_tam = max(6.0, tam * 0.65)          # piso de segurança
     if altura_linha is None:
-        altura_linha = tam2 * 1.5
-    linhas = _quebrar_linhas(texto, fonte, tam2, largura)
-    ultimo_y = y
-    for i, ln in enumerate(linhas):
-        doc.drawCentredString(x + largura / 2, ultimo_y, ln)
-        ultimo_y -= altura_linha
-    return ultimo_y  # novo y do fundo da caixa
+        altura_linha = lambda t: t * 1.4         # entrelinha proporcional
+
+    t = tam * fator
+    linhas = []
+    lh = 0
+    while t >= min_tam:
+        lh = altura_linha(t) if callable(altura_linha) else altura_linha
+        linhas = _quebrar_linhas(texto, fonte, t, largura)
+        if len(linhas) * lh <= altura_max:
+            break
+        t -= 0.5
+
+    if not linhas:                                # nunca deve cair aqui; proteção extra
+        linhas = _quebrar_linhas(texto, fonte, t, largura)
+        lh = altura_linha(t) if callable(altura_linha) else altura_linha
+
+    total = len(linhas) * lh
+    # centraliza verticalmente dentro da área reservada
+    y_ini = y + (altura_max - total) / 2 + lh
+    doc.setFont(fonte, t)
+    doc.setFillColor(cor)
+    for ln in linhas:
+        doc.drawCentredString(x + largura / 2, y_ini, ln)
+        y_ini -= lh
+    return y_ini + lh                               # base do bloco
 
 # ===== Canvas com total de páginas (X de Y) =====
 _RODAPE_FN = None
@@ -4259,7 +4280,7 @@ def gerar_pdf_slides(lang):
     linhas = c.get("linhas_idiomas", LINHAS_IDIOMAS)
     dados = [[c.get("idioma_col", "Idioma"), c.get("falantes_col", "Falantes (mi)")]] \
         + linhas + [[c.get("total_linha", "TOTAL"), "~5.320"]]
-    _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm, dados, [0.6, 0.4], 9, lang)
+    _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm, dados, [0.6, 0.4], _tam_ajus(lang, 9), lang)
     rodape(pagina)
     doc.showPage()
     pagina += 1
@@ -4336,7 +4357,7 @@ def gerar_pdf_slides(lang):
                     largura - 36 * mm, COR_CINZA, 6 * mm)
     y -= 10 * mm
     y = _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
-                          c["portfolio_tabela"], [0.22, 0.38, 0.18, 0.22], 9, lang,
+                          c["portfolio_tabela"], [0.22, 0.38, 0.18, 0.22], _tam_ajus(lang, 9), lang,
                           moeda_cols=(2,))
     y -= 8 * mm
     doc.setFillColor(COR_CINZA)
@@ -4370,7 +4391,7 @@ def gerar_pdf_slides(lang):
                    [c.get("b2c_linha", "B2C — 14 Idiomas"), "60%"],
                    [c.get("b2b_linha", "B2B — Descontos Progressivos"), "25%"],
                    [c.get("pub_linha", "Publicidade Geolocalizada"), "15%"]],
-                  [0.7, 0.3], 10, lang)
+                  [0.7, 0.3], _tam_ajus(lang, 10), lang)
     rodape(pagina)
     doc.showPage()
     pagina += 1
@@ -4382,7 +4403,7 @@ def gerar_pdf_slides(lang):
                     largura - 36 * mm, COR_CINZA, 5.5 * mm)
     y -= 10 * mm
     y = _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
-                    c["banners_tabela"], [0.22, 0.22, 0.22, 0.34], 9, lang,
+                    c["banners_tabela"], [0.22, 0.22, 0.22, 0.34], _tam_ajus(lang, 9), lang,
                     moeda_cols=(1, 2))
     y -= 10 * mm
     y -= 10 * mm
@@ -4420,7 +4441,7 @@ def gerar_pdf_slides(lang):
     doc.drawString(18 * mm, y - 6 * mm, c.get("tabela_descontos", "Tabela de Descontos Progressivos"))
     y -= 14 * mm
     _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
-                      c["b2b_tabela"], [0.22, 0.18, 0.28, 0.32], 9, lang)
+                      c["b2b_tabela"], [0.22, 0.18, 0.28, 0.32], _tam_ajus(lang, 9), lang)
     rodape(pagina)
     doc.showPage()
     pagina += 1
@@ -4432,7 +4453,7 @@ def gerar_pdf_slides(lang):
                     largura - 36 * mm, COR_CINZA, 6 * mm)
     y -= 8 * mm
     _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
-                      c["projecoes_tabela"], [0.3, 0.35, 0.35], 8, lang,
+                      c["projecoes_tabela"], [0.3, 0.35, 0.35], _tam_ajus(lang, 8), lang,
                       moeda_cols=(1, 2))
     y -= 75 * mm
     _grafico_linha(doc, 18 * mm, y - 45 * mm, largura - 36 * mm, 45 * mm,
@@ -4641,3 +4662,112 @@ def _linha_com_moeda(linha, moeda, cols):
         else:
             nova.append(cel)
     return nova
+
+# ============================================================
+# PATCH DE HARMONIZAÇÃO — texto cabe em qualquer idioma (JA/ZH/RU/HE/AR)
+# Versões NOVAS de _texto_wrap e _texto_wrap_centrado_v
+# ============================================================
+
+def _fator_script(texto):
+    """Devolve (fator, eh_cjk) conforme o alfabeto do texto."""
+    t = str(texto)
+    if any(0x2E80 <= ord(c) <= 0x9FFF or 0x3040 <= ord(c) <= 0x30FF
+           or 0xAC00 <= ord(c) <= 0xD7AF for c in t):
+        return 0.85, True            # japonês/chines: encolhe + quebra por caractere
+    if any(0x0400 <= ord(c) <= 0x04FF for c in t):
+        return 0.95, False           # russo/cirilico: encolhe levemente
+    if any(0x0590 <= ord(c) <= 0x05FF or 0x0600 <= ord(c) <= 0x06FF for c in t):
+        return 0.92, False           # hebraico/arabe: encolhe levemente
+    return 1.0, False                # latino e demais: sem mudanca
+
+def _quebrar_harmonizado(texto, fonte, tam, largura, eh_cjk):
+    """Quebra o texto em linhas que cabem na largura.
+    CJK: quebra por caractere. Demais: por palavra (com quebra de palavra longa)."""
+    from reportlab.pdfbase.pdfmetrics import stringWidth
+    t = str(texto)
+    if not t:
+        return [""]
+    linhas = []
+    if eh_cjk:
+        atual = ""
+        for ch in t:
+            if stringWidth(atual + ch, fonte, tam) <= largura:
+                atual += ch
+            else:
+                if atual:
+                    linhas.append(atual)
+                atual = ch
+        if atual:
+            linhas.append(atual)
+        return linhas
+    palavras = t.split()
+    atual = ""
+    for p in palavras:
+        teste = p if not atual else atual + " " + p
+        if stringWidth(teste, fonte, tam) <= largura:
+            atual = teste
+        else:
+            if atual:
+                linhas.append(atual)
+            if stringWidth(p, fonte, tam) > largura:
+                sub = ""
+                for ch in p:
+                    if stringWidth(sub + ch, fonte, tam) <= largura:
+                        sub += ch
+                    else:
+                        linhas.append(sub)
+                        sub = ch
+                atual = sub
+            else:
+                atual = p
+    if atual:
+        linhas.append(atual)
+    return linhas
+
+def _tam_ajus(lang, tam):
+    """Encolhe o tamanho da fonte por idioma (usado nas tabelas)."""
+    fator = {"ja": 0.85, "zh": 0.85, "ru": 0.95,
+             "he": 0.92, "ar": 0.92}.get(lang, 1.0)
+    return tam * fator
+
+def _texto_wrap(doc, texto, fonte, tam, x, y, largura, cor, entrelinha, y_min=None):
+    """Mesma assinatura da funcao original. Quebra, encolhe ate caber
+    e desenha o texto. Retorna o novo y."""
+    fator, eh_cjk = _fator_script(texto)
+    tam2 = tam * fator
+    larg_interna = max(largura, 1)
+    linhas = _quebrar_harmonizado(texto, fonte, tam2, larg_interna, eh_cjk)
+    if y_min is not None:
+        disp = max(y - y_min, 1)
+        while tam2 > 5 and len(linhas) * entrelinha > disp:
+            tam2 -= 0.5
+            linhas = _quebrar_harmonizado(texto, fonte, tam2, larg_interna, eh_cjk)
+    doc.setFont(fonte, tam2)
+    doc.setFillColor(cor)
+    yy = y
+    for ln in linhas:
+        if y_min is not None and yy - entrelinha < y_min - 0.1:
+            break
+        doc.drawString(x, yy, ln)
+        yy -= entrelinha
+    return yy
+
+def _texto_wrap_centrado_v(doc, texto, fonte, tam, x, y, largura, cor, entrelinha, altura):
+    """Texto quebrado, centralizado horizontal e verticalmente
+    dentro da area de altura 'altura'. y = topo da area."""
+    fator, eh_cjk = _fator_script(texto)
+    tam2 = tam * fator
+    larg_interna = max(largura, 1)
+    linhas = _quebrar_harmonizado(texto, fonte, tam2, larg_interna, eh_cjk)
+    total = len(linhas) * entrelinha
+    while tam2 > 5 and total > altura:
+        tam2 -= 0.5
+        linhas = _quebrar_harmonizado(texto, fonte, tam2, larg_interna, eh_cjk)
+        total = len(linhas) * entrelinha
+    doc.setFont(fonte, tam2)
+    doc.setFillColor(cor)
+    y_ini = y + (altura - total) / 2 + entrelinha
+    for ln in linhas:
+        doc.drawCentredString(x + larg_interna / 2, y_ini, ln)
+        y_ini -= entrelinha
+    return y_ini + entrelinha
