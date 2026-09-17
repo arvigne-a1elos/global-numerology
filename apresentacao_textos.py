@@ -465,7 +465,7 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
                     story.append(Paragraph(it,
                                            _estilo(lang, 9.5, False, COR_CINZA, alinh=TA_JUSTIFY)))
 
-   # ===== 21. PÁGINA FINAL =====
+# ===== 21. PÁGINA FINAL =====
 story.append(Spacer(1, 16))
 story.append(HRFlowable(width="55%", thickness=1.2, color=COR_DOURADO,
                         hAlign="CENTER", spaceBefore=4, spaceAfter=6))
@@ -477,7 +477,7 @@ if selos:
     linha_selos = "   ·   ".join(str(s) for s in selos)
     story.append(Paragraph(linha_selos,
                            _estilo(lang, 9, True, COR_DOURADO, TA_CENTER, depois=2)))
-
+           
 # ============================================================
 # BLOCO JURÍDICO / GOVERNANÇA E COMPLIANCE (SEÇÕES 19-29)
 # Conteúdo em PT com fallback para todos os idiomas.
