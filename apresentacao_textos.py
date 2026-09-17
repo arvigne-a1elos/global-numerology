@@ -181,7 +181,7 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
                             leftMargin=50, rightMargin=50,
                             topMargin=70, bottomMargin=55,
                             title=f"A1ELOS {lang.upper()}",
-                            author="A1ELOS Global Numerology",
+                            author="A1ELOS Global Numerology",)
                             
     story = []           
            
