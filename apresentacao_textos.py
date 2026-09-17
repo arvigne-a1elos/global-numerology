@@ -182,8 +182,7 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
                             topMargin=70, bottomMargin=55,
                             title=f"A1ELOS {lang.upper()}",
                             author="A1ELOS Global Numerology",
-                            canvasmaker=CanvasComTotal)
-
+                            
     story = []           
            
 # ===== CAPA SIMPLES (SEM PRETA) =====
@@ -477,7 +476,12 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
         linha_selos = "   ·   ".join(str(s) for s in selos)
         story.append(Paragraph(linha_selos,
                                _estilo(lang, 9, True, COR_DOURADO, TA_CENTER, depois=2)))
-    
+
+    global _RODAPE_FN
+    _CTX_TEXTO["c"] = c
+    _CTX_TEXTO["lang"] = lang
+    _RODAPE_FN = _rodape_texto      
+
     doc.build(story, canvasmaker=CanvasComTotal)
     return caminho_saida 
            
@@ -571,15 +575,6 @@ def _render_bloco_juridico(doc, largura, altura, lang, c):
             y -= 3 * mm
         y -= 5 * mm
     return y
-
-class NumberedCanvas(_canvas.Canvas):
-    """Canvas que desenha cabeçalho (logos) e rodapé (página X de Y + contatos)."""
-    def __init__(self, *args, **kwargs):
-        self._saved_page_states = []
-        self._logo_a1elos = LOGO_A1ELOS     # ← volta para "_logo_a1elos" (o que o cabeçalho usa)
-        self._logo_num = LOGO_PATH          # ← mantém "_logo_num" (já está certo)
-        self._contatos = kwargs.pop('contatos', '')
-        super().__init__(*args, **kwargs)
 
     def showPage(self):
         self._saved_page_states.append(dict(self.__dict__))
@@ -706,7 +701,6 @@ def _encaixar_texto(doc, x, y, largura, altura_max, texto, tam, lang, cor,
 _RODAPE_FN = None
 
 class CanvasComTotal(canvas.Canvas):
-
     def _desenhar_cabecalho(self):
         w, h = self._pagesize
         if self._logo_num:
@@ -722,13 +716,16 @@ class CanvasComTotal(canvas.Canvas):
                                width=24, height=24, preserveAspectRatio=True,
                                mask='auto')
             except Exception:
-                pass           
-           
+                pass
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._saved = []
+        self._logo_num = LOGO_ESQ          # ← era LOGO_PATH (logo.png, esquerda)
+        self._logo_a1elos = LOGO_DIR       # ← era LOGO_A1ELOS (A1ELOS.png, direita)
 
     def showPage(self):
+        self._desenhar_cabecalho()          # ← desenha os 2 logos em cada página
         self._saved.append(dict(self.__dict__))
         self._startPage()
 
