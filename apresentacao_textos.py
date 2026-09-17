@@ -465,18 +465,18 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
                     story.append(Paragraph(it,
                                            _estilo(lang, 9.5, False, COR_CINZA, alinh=TA_JUSTIFY)))
 
-# ===== 21. PÁGINA FINAL =====
-story.append(Spacer(1, 16))
-story.append(HRFlowable(width="55%", thickness=1.2, color=COR_DOURADO,
-                        hAlign="CENTER", spaceBefore=4, spaceAfter=6))
-story.append(Paragraph(c.get("frase_final", "Os números nunca mentem."),
-                       _estilo(lang, 15, True, COR_AZUL, TA_CENTER)))
-# Selos em UMA linha horizontal (economiza espaço, evita página isolada)
-selos = c.get("selo_final", [])
-if selos:
-    linha_selos = "   ·   ".join(str(s) for s in selos)
-    story.append(Paragraph(linha_selos,
-                           _estilo(lang, 9, True, COR_DOURADO, TA_CENTER, depois=2)))
+    # ===== 21. PÁGINA FINAL =====
+    story.append(Spacer(1, 16))
+    story.append(HRFlowable(width="55%", thickness=1.2, color=COR_DOURADO,
+                hAlign="CENTER", spaceBefore=4, spaceAfter=6))
+    story.append(Paragraph(c.get("frase_final", "Os números nunca mentem."),
+                _estilo(lang, 15, True, COR_AZUL, TA_CENTER)))
+    # Selos em UMA linha horizontal (economiza espaço, evita página isolada)
+    selos = c.get("selo_final", [])
+    if selos:
+       linha_selos = "   ·   ".join(str(s) for s in selos)
+       story.append(Paragraph(linha_selos,
+                                           _estilo(lang, 9, True, COR_DOURADO, TA_CENTER, depois=2)))
            
 # ============================================================
 # BLOCO JURÍDICO / GOVERNANÇA E COMPLIANCE (SEÇÕES 19-29)
