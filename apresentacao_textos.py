@@ -184,16 +184,8 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
                             author="A1ELOS Global Numerology",
                             canvasmaker=CanvasComTotal)
 
-story = []           
+    story = []           
            
-    selos = c.get("selo_final", [])
-    if selos:
-        linha_selos = "   ·   ".join(str(s) for s in selos)
-        story.append(Paragraph(linha_selos,
-                               _estilo(lang, 9, True, COR_DOURADO, TA_CENTER, depois=2)))       
-    doc.build(story, canvasmaker=CanvasComTotal)
-    return caminho_saida      
-    
 # ===== CAPA SIMPLES (SEM PRETA) =====
     story.append(Spacer(1, 50))
     story.append(Paragraph(c.get("titulo", "A1ELOS Global Numerology"),
@@ -485,6 +477,9 @@ story = []
         linha_selos = "   ·   ".join(str(s) for s in selos)
         story.append(Paragraph(linha_selos,
                                _estilo(lang, 9, True, COR_DOURADO, TA_CENTER, depois=2)))
+    
+    doc.build(story, canvasmaker=CanvasComTotal)
+    return caminho_saida 
            
 # ============================================================
 # BLOCO JURÍDICO / GOVERNANÇA E COMPLIANCE (SEÇÕES 19-29)
