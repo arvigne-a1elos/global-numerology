@@ -964,3 +964,132 @@ function traduzirNomesBC() {
     if (tdNome) tdNome.textContent = d[chave]; // SÓ o nome. A cifra nem é tocada.
   }
 }
+
+/* ===== URNA - 5 GRAFIAS (14 idiomas) ===== */
+window.URNA_CARGOS = {
+  vereador: {
+    pt:{masculino:{completo:'Vereador',abrev:'Ver.',abrev_total:'Ver.'},feminino:{completo:'Vereadora',abrev:'Ver.',abrev_total:'Ver.'}},
+    en:{masculino:{completo:'Councilor',abrev:'Coun.',abrev_total:'Coun.'},feminino:{completo:'Councilwoman',abrev:'Coun.',abrev_total:'Coun.'}},
+    es:{masculino:{completo:'Concejal',abrev:'Conc.',abrev_total:'Conc.'},feminino:{completo:'Concejala',abrev:'Conc.',abrev_total:'Conc.'}},
+    it:{masculino:{completo:'Consigliere',abrev:'Cons.',abrev_total:'Cons.'},feminino:{completo:'Consigliera',abrev:'Cons.',abrev_total:'Cons.'}},
+    fr:{masculino:{completo:'Conseiller municipal',abrev:'Cons. mun.',abrev_total:'Cons.'},feminino:{completo:'Conseillère municipale',abrev:'Cons. mun.',abrev_total:'Cons.'}},
+    de:{masculino:{completo:'Stadtrat',abrev:'StR',abrev_total:'StR'},feminino:{completo:'Stadträtin',abrev:'StR',abrev_total:'StR'}},
+    ja:{masculino:{completo:'市議会議員',abrev:'市議',abrev_total:'市議'},feminino:{completo:'市議会議員',abrev:'市議',abrev_total:'市議'}},
+    zh:{masculino:{completo:'市议员',abrev:'市议员',abrev_total:'市议员'},feminino:{completo:'市议员',abrev:'市议员',abrev_total:'市议员'}},
+    ru:{masculino:{completo:'Депутат горсовета',abrev:'Деп.',abrev_total:'Деп.'},feminino:{completo:'Депутат горсовета',abrev:'Деп.',abrev_total:'Деп.'}},
+    id:{masculino:{completo:'Anggota DPRD Kota',abrev:'Anggota',abrev_total:'Anggota'},feminino:{completo:'Anggota DPRD Kota',abrev:'Anggota',abrev_total:'Anggota'}},
+    tr:{masculino:{completo:'Belediye Meclis Üyesi',abrev:'Üye',abrev_total:'Üye'},feminino:{completo:'Belediye Meclis Üyesi',abrev:'Üye',abrev_total:'Üye'}},
+    vi:{masculino:{completo:'Ủy viên HĐ thành phố',abrev:'UV HĐTP',abrev_total:'UV'},feminino:{completo:'Ủy viên HĐ thành phố',abrev:'UV HĐTP',abrev_total:'UV'}},
+    he:{masculino:{completo:'חבר מועצה',abrev:'ח״מ',abrev_total:'ח״מ'},feminino:{completo:'חברת מועצה',abrev:'ח״מ',abrev_total:'ח״מ'}},
+    ar:{masculino:{completo:'عضو مجلس بلدي',abrev:'عضو',abrev_total:'عضو'},feminino:{completo:'عضو مجلس بلدي',abrev:'عضو',abrev_total:'عضو'}}
+  },
+  dep_estadual: {
+    pt:{masculino:{completo:'Deputado Estadual',abrev:'Dep. Estadual',abrev_total:'Dep. Est.'},feminino:{completo:'Deputada Estadual',abrev:'Dep. Estadual',abrev_total:'Dep. Est.'}},
+    en:{masculino:{completo:'State Deputy',abrev:'St. Dep.',abrev_total:'St. Dep.'},feminino:{completo:'State Deputy',abrev:'St. Dep.',abrev_total:'St. Dep.'}},
+    es:{masculino:{completo:'Diputado Estatal',abrev:'Dip. Est.',abrev_total:'Dip. Est.'},feminino:{completo:'Diputada Estatal',abrev:'Dip. Est.',abrev_total:'Dip. Est.'}},
+    it:{masculino:{completo:'Deputato Regionale',abrev:'Dep. Reg.',abrev_total:'Dep. Reg.'},feminino:{completo:'Deputata Regionale',abrev:'Dep. Reg.',abrev_total:'Dep. Reg.'}},
+    fr:{masculino:{completo:'Député régional',abrev:'Dép. rég.',abrev_total:'Dép. rég.'},feminino:{completo:'Députée régionale',abrev:'Dép. rég.',abrev_total:'Dép. rég.'}},
+    de:{masculino:{completo:'Landtagsabgeordneter',abrev:'MdL',abrev_total:'MdL'},feminino:{completo:'Landtagsabgeordnete',abrev:'MdL',abrev_total:'MdL'}},
+    ja:{masculino:{completo:'州議会議員',abrev:'州議',abrev_total:'州議'},feminino:{completo:'州議会議員',abrev:'州議',abrev_total:'州議'}},
+    zh:{masculino:{completo:'州议员',abrev:'州议员',abrev_total:'州议员'},feminino:{completo:'州议员',abrev:'州议员',abrev_total:'州议员'}},
+    ru:{masculino:{completo:'Депутат региональный',abrev:'Деп.',abrev_total:'Деп.'},feminino:{completo:'Депутат региональный',abrev:'Деп.',abrev_total:'Деп.'}},
+    id:{masculino:{completo:'Anggota DPRD Provinsi',abrev:'Anggota',abrev_total:'Anggota'},feminino:{completo:'Anggota DPRD Provinsi',abrev:'Anggota',abrev_total:'Anggota'}},
+    tr:{masculino:{completo:'Eyalet Milletvekili',abrev:'Mv.',abrev_total:'Mv.'},feminino:{completo:'Eyalet Milletvekili',abrev:'Mv.',abrev_total:'Mv.'}},
+    vi:{masculino:{completo:'Đại biểu HĐ bang',abrev:'ĐB HĐB',abrev_total:'ĐB'},feminino:{completo:'Đại biểu HĐ bang',abrev:'ĐB HĐB',abrev_total:'ĐB'}},
+    he:{masculino:{completo:'חבר מועצה',abrev:'ח״מ',abrev_total:'ח״מ'},feminino:{completo:'חברת מועצה',abrev:'ח״מ',abrev_total:'ח״מ'}},
+    ar:{masculino:{completo:'نائب إقليمي',abrev:'نائب',abrev_total:'نائب'},feminino:{completo:'نائب إقليمي',abrev:'نائب',abrev_total:'نائب'}}
+  },
+  dep_federal: {
+    pt:{masculino:{completo:'Deputado Federal',abrev:'Dep. Federal',abrev_total:'Dep. Fed.'},feminino:{completo:'Deputada Federal',abrev:'Dep. Federal',abrev_total:'Dep. Fed.'}},
+    en:{masculino:{completo:'Federal Deputy',abrev:'Fed. Dep.',abrev_total:'Fed. Dep.'},feminino:{completo:'Federal Deputy',abrev:'Fed. Dep.',abrev_total:'Fed. Dep.'}},
+    es:{masculino:{completo:'Diputado Federal',abrev:'Dip. Fed.',abrev_total:'Dip. Fed.'},feminino:{completo:'Diputada Federal',abrev:'Dip. Fed.',abrev_total:'Dip. Fed.'}},
+    it:{masculino:{completo:'Deputato Federale',abrev:'Dep. Fed.',abrev_total:'Dep. Fed.'},feminino:{completo:'Deputata Federale',abrev:'Dep. Fed.',abrev_total:'Dep. Fed.'}},
+    fr:{masculino:{completo:'Député fédéral',abrev:'Dép. féd.',abrev_total:'Dép. féd.'},feminino:{completo:'Députée fédérale',abrev:'Dép. féd.',abrev_total:'Dép. féd.'}},
+    de:{masculino:{completo:'Bundestagsabgeordneter',abrev:'MdB',abrev_total:'MdB'},feminino:{completo:'Bundestagsabgeordnete',abrev:'MdB',abrev_total:'MdB'}},
+    ja:{masculino:{completo:'連邦議会議員',abrev:'連邦議',abrev_total:'連邦議'},feminino:{completo:'連邦議会議員',abrev:'連邦議',abrev_total:'連邦議'}},
+    zh:{masculino:{completo:'联邦议员',abrev:'联邦议员',abrev_total:'联邦议员'},feminino:{completo:'联邦议员',abrev:'联邦议员',abrev_total:'联邦议员'}},
+    ru:{masculino:{completo:'Депутат федеральный',abrev:'Деп.',abrev_total:'Деп.'},feminino:{completo:'Депутат федеральный',abrev:'Деп.',abrev_total:'Деп.'}},
+    id:{masculino:{completo:'Anggota DPR',abrev:'Anggota',abrev_total:'Anggota'},feminino:{completo:'Anggota DPR',abrev:'Anggota',abrev_total:'Anggota'}},
+    tr:{masculino:{completo:'Federal Milletvekili',abrev:'Mv.',abrev_total:'Mv.'},feminino:{completo:'Federal Milletvekili',abrev:'Mv.',abrev_total:'Mv.'}},
+    vi:{masculino:{completo:'Đại biểu Quốc hội',abrev:'ĐB QH',abrev_total:'ĐB'},feminino:{completo:'Đại biểu Quốc hội',abrev:'ĐB QH',abrev_total:'ĐB'}},
+    he:{masculino:{completo:'חבר הכנסת',abrev:'ח״כ',abrev_total:'ח״כ'},feminino:{completo:'חברת הכנסת',abrev:'ח״כ',abrev_total:'ח״כ'}},
+    ar:{masculino:{completo:'نائب اتحادي',abrev:'نائب',abrev_total:'نائب'},feminino:{completo:'نائب اتحادي',abrev:'نائب',abrev_total:'نائب'}}
+  },
+  senador: {
+    pt:{masculino:{completo:'Senador',abrev:'Sen.',abrev_total:'Sen.'},feminino:{completo:'Senadora',abrev:'Sen.',abrev_total:'Sen.'}},
+    en:{masculino:{completo:'Senator',abrev:'Sen.',abrev_total:'Sen.'},feminino:{completo:'Senator',abrev:'Sen.',abrev_total:'Sen.'}},
+    es:{masculino:{completo:'Senador',abrev:'Sen.',abrev_total:'Sen.'},feminino:{completo:'Senadora',abrev:'Sen.',abrev_total:'Sen.'}},
+    it:{masculino:{completo:'Senatore',abrev:'Sen.',abrev_total:'Sen.'},feminino:{completo:'Senatrice',abrev:'Sen.',abrev_total:'Sen.'}},
+    fr:{masculino:{completo:'Sénateur',abrev:'Sén.',abrev_total:'Sén.'},feminino:{completo:'Sénatrice',abrev:'Sén.',abrev_total:'Sén.'}},
+    de:{masculino:{completo:'Senator',abrev:'Sen.',abrev_total:'Sen.'},feminino:{completo:'Senatorin',abrev:'Sen.',abrev_total:'Sen.'}},
+    ja:{masculino:{completo:'上院議員',abrev:'上院',abrev_total:'上院'},feminino:{completo:'上院議員',abrev:'上院',abrev_total:'上院'}},
+    zh:{masculino:{completo:'参议员',abrev:'参议员',abrev_total:'参议员'},feminino:{completo:'参议员',abrev:'参议员',abrev_total:'参议员'}},
+    ru:{masculino:{completo:'Сенатор',abrev:'Сен.',abrev_total:'Сен.'},feminino:{completo:'Сенатор',abrev:'Сен.',abrev_total:'Сен.'}},
+    id:{masculino:{completo:'Senator',abrev:'Sen.',abrev_total:'Sen.'},feminino:{completo:'Senator',abrev:'Sen.',abrev_total:'Sen.'}},
+    tr:{masculino:{completo:'Senatör',abrev:'Sen.',abrev_total:'Sen.'},feminino:{completo:'Senatör',abrev:'Sen.',abrev_total:'Sen.'}},
+    vi:{masculino:{completo:'Thượng nghị sĩ',abrev:'ThN',abrev_total:'ThN'},feminino:{completo:'Thượng nghị sĩ',abrev:'ThN',abrev_total:'ThN'}},
+    he:{masculino:{completo:'סנטור',abrev:'סנ',abrev_total:'סנ'},feminino:{completo:'סנטורית',abrev:'סנ',abrev_total:'סנ'}},
+    ar:{masculino:{completo:'عضو مجلس الشيوخ',abrev:'عضو',abrev_total:'عضو'},feminino:{completo:'عضو مجلس الشيوخ',abrev:'عضو',abrev_total:'عضو'}}
+  }
+};
+window.URNA_UI = {
+  pt:{gen_label:'Gênero do(a) candidato(a):',masc:'Masculino',fem:'Feminino',nome_completo:'(escreva o nome completo)',nome_abreviado:'(nome abreviado)',aviso:'O cargo à esquerda entra automaticamente no cálculo.'},
+  en:{gen_label:'Candidate gender:',masc:'Male',fem:'Female',nome_completo:'(write the full name)',nome_abreviado:'(abbreviated name)',aviso:'The office shown on the left is automatically added to the calculation.'},
+  es:{gen_label:'Género del/de la candidato/a:',masc:'Masculino',fem:'Femenino',nome_completo:'(escriba el nombre completo)',nome_abreviado:'(nombre abreviado)',aviso:'El cargo de la izquierda se añade automáticamente al cálculo.'},
+  it:{gen_label:'Genere del/della candidato/a:',masc:'Maschile',fem:'Femminile',nome_completo:'(scrivi il nome completo)',nome_abreviado:'(nome abbreviato)',aviso:'La carica a sinistra viene aggiunta automaticamente al calcolo.'},
+  fr:{gen_label:'Genre du/de la candidat(e) :',masc:'Masculin',fem:'Féminin',nome_completo:'(écrivez le nom complet)',nome_abreviado:'(nom abrégé)',aviso:'Le poste affiché à gauche est ajouté automatiquement au calcul.'},
+  de:{gen_label:'Geschlecht des/der Kandidaten/Kandidatin:',masc:'Männlich',fem:'Weiblich',nome_completo:'(vollständigen Namen schreiben)',nome_abreviado:'(abgekürzter Name)',aviso:'Das links angezeigte Amt wird automatisch in die Berechnung einbezogen.'},
+  ja:{gen_label:'候補者の性別:',masc:'男性',fem:'女性',nome_completo:'(フルネームを入力)',nome_abreviado:'(短縮名)',aviso:'左側に表示される役職は自動的に計算に含まれます。'},
+  zh:{gen_label:'候选人性别:',masc:'男',fem:'女',nome_completo:'(填写全名)',nome_abreviado:'(简称)',aviso:'左侧显示的职务会自动加入计算。'},
+  ru:{gen_label:'Пол кандидата:',masc:'Мужской',fem:'Женский',nome_completo:'(введите полное имя)',nome_abreviado:'(сокращённое имя)',aviso:'Должность, показанная слева, автоматически добавляется в расчёт.'},
+  id:{gen_label:'Jenis kelamin kandidat:',masc:'Laki-laki',fem:'Perempuan',nome_completo:'(tulis nama lengkap)',nome_abreviado:'(nama singkat)',aviso:'Jabatan di kiri otomatis ditambahkan ke perhitungan.'},
+  tr:{gen_label:'Adayın cinsiyeti:',masc:'Erkek',fem:'Kadın',nome_completo:'(tam adı yazın)',nome_abreviado:'(kısa ad)',aviso:'Soldaki makam otomatik olarak hesaplamaya eklenir.'},
+  vi:{gen_label:'Giới tính ứng viên:',masc:'Nam',fem:'Nữ',nome_completo:'(nhập tên đầy đủ)',nome_abreviado:'(tên viết tắt)',aviso:'Chức vụ bên trái được tự động cộng vào phép tính.'},
+  he:{gen_label:'מגדר המועמד/ת:',masc:'זכר',fem:'נקבה',nome_completo:'(הקלד/י שם מלא)',nome_abreviado:'(שם מקוצר)',aviso:'התפקיד משמאל מתווסף אוטומטית לחישוב.'},
+  ar:{gen_label:'جنس المرشح/ة:',masc:'ذكر',fem:'أنثى',nome_completo:'(اكتب الاسم الكامل)',nome_abreviado:'(اسم مختصر)',aviso:'يُضاف المنصب الموضح على اليسار تلقائيًا إلى الحساب.'}
+};
+
+function atualizarGrafiasUrna(){
+  var lang=localStorage.getItem('l')||'pt';
+  var d=window.URNA_CARGOS, ui=window.URNA_UI[lang]||window.URNA_UI.pt;
+  var cr=document.getElementById('urnaCargo')?document.getElementById('urnaCargo').value:'vereador';
+  var ge=document.getElementById('urnaGenero')?document.getElementById('urnaGenero').value:'masculino';
+  var lg=document.getElementById('urnaGeneroLabel'); if(lg)lg.textContent=ui.gen_label;
+  var gm=document.getElementById('urnaGenMasc'); if(gm)gm.textContent=ui.masc;
+  var gf=document.getElementById('urnaGenFem'); if(gf)gf.textContent=ui.fem;
+  var av=document.getElementById('urnaAviso'); if(av)av.textContent=ui.aviso;
+  var c=(d[cr]||{}); var f=(c[lang]||c.pt||{})[ge]||(c.pt&&c.pt.masculino)||{completo:'',abrev:'',abrev_total:''};
+  var pref=[f.completo, f.completo+' -', f.abrev, f.abrev+' -', f.abrev_total];
+  var ph=[ui.nome_completo, ui.nome_abreviado, ui.nome_completo, ui.nome_abreviado, ui.nome_completo];
+  for(var i=1;i<=5;i++){
+    var p=document.getElementById('urnaPrefixo'+i);
+    var inp=document.getElementById('urnaNome'+i);
+    if(p){p.textContent=pref[i-1]; p.dataset.valor=pref[i-1];}
+    if(inp){inp.placeholder=ph[i-1];}
+  }
+}
+
+function pagarUrna(){
+  var lang=localStorage.getItem('l')||'pt';
+  var nc=(document.getElementById('urnaNome')?document.getElementById('urnaNome').value:'').trim();
+  var cr=document.getElementById('urnaCargo')?document.getElementById('urnaCargo').value:'vereador';
+  var ge=document.getElementById('urnaGenero')?document.getElementById('urnaGenero').value:'masculino';
+  if(nc.length<3){alert('Preencha o nome completo da pessoa');return;}
+  var nomes=[];
+  for(var i=1;i<=5;i++){
+    var p=document.getElementById('urnaPrefixo'+i);
+    var inp=document.getElementById('urnaNome'+i);
+    var n=inp?inp.value.trim():'';
+    if(!n) continue;
+    var pref=p?p.dataset.valor||'':'';
+    nomes.push(pref+' '+n);
+  }
+  if(!nomes.length){alert('Preencha pelo menos uma grafia com o nome do candidato');return;}
+  var enc=encodeURIComponent;
+  var qs='lang='+enc(lang)+'&produto=urna&nome_completo='+enc(nc)+'&cargo='+enc(cr)+'&genero='+enc(ge)+'&nome='+enc(nc);
+  for(var i=1;i<=nomes.length;i++){ qs+='&nome'+i+'='+enc(nomes[i-1]); }
+  window.location.href='/criar-checkout?'+qs;
+}
+
+/* Inicializa e reaplica na troca de idioma */
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',atualizarGrafiasUrna);}else{atualizarGrafiasUrna();}
