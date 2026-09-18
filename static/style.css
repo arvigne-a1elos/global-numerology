@@ -169,3 +169,14 @@ footer { padding: 60px 20px; text-align: center; border-top: 1px solid #222; col
 .urna-grafia{display:flex;align-items:center;gap:8px;margin-bottom:10px}
 .urna-prefixo{background:rgba(201,169,78,.12);border:1px solid rgba(201,169,78,.4);color:var(--gold);padding:10px 12px;border-radius:8px 0 0 8px;font-size:.85rem;white-space:nowrap}
 .urna-grafia input{flex:1;border-radius:0 8px 8px 0}
+
+.energia-sel{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.energia-btn{width:44px;height:44px;border-radius:50%;border:1px solid rgba(201,169,78,.4);background:transparent;color:var(--gold);font-weight:700;cursor:pointer;transition:.2s}
+.energia-btn:hover{border-color:var(--gold);background:rgba(201,169,78,.12)}
+.energia-btn.ideal{border:2px solid #0b7a3b;color:#0b7a3b;position:relative}
+.energia-btn.ideal::after{content:'★';position:absolute;top:-6px;right:-2px;font-size:10px;color:#0b7a3b}
+.energia-btn.selecionada{background:var(--gold);color:#000}
+.energia-btn.selecionada.ideal{background:#0b7a3b;color:#fff}
+.energia-dica{color:#888;font-size:.8rem;margin-top:6px}
+.urna-grafia.bate-energia{border-color:#0b7a3b;background:rgba(11,122,59,.08)}
+.urna-grafia.bate-energia .urna-prefixo{border-color:#0b7a3b;color:#0b7a3b}
