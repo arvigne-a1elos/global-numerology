@@ -569,8 +569,11 @@ def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=No
         meta.update(meta_extra)
 
     # Default: se for urna e nenhuma energia foi escolhida, assume 8
-    if produto == "urna" and not meta.get("energia"):
-        meta["energia"] = "8"
+    IDEAL_ENERGIA = {"urna": "8", "arte": "2", "amor": "5", "comunidade": "6", "estudos": "7"}
+
+    # dentro de _criar_sessao:
+    if produto in IDEAL_ENERGIA and not meta.get("energia"):
+    meta["energia"] = IDEAL_ENERGIA[produto]
 
     pay_types = ["card", "boleto"] if MOEDA.get(lang, "brl") == "brl" else ["card"]
     locale = lang if lang in ["pt", "en", "es", "fr", "de", "it", "ja", "zh", "id", "tr", "vi"] else "auto"
