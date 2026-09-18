@@ -124,30 +124,38 @@
         </div>
     </section>
 
-       <!-- FORMULÁRIO NOME DE URNA -->
-    <section id="form-urna" class="hidden-form">
-        <div class="form-container">
-            <h2 class="section-title" data-i18n="urna_title">Validação do Nome de Urna</h2>
-            <p class="section-sub" data-i18n="urna_sub">5 tentativas + cálculo letra a letra + PDF sigiloso — R$ 26</p>
-            <div class="form-group"><label data-i18n="f_nome">Nome Completo da Pessoa</label><input type="text" id="urnaNome" data-i18n-ph="ph_nome_completo" placeholder="Nome completo"></div>
-            <div class="form-group"><label data-i18n="f_cargo">Cargo em Disputa</label>
-    <select id="urnaCargo">
+<!-- FORMULÁRIO NOME DE URNA (5 grafias) -->
+<section id="form-urna" class="hidden-form">
+  <div class="form-container">
+    <h2 class="section-title" data-i18n="urna_title">Validação do Nome de Urna</h2>
+    <p class="section-sub" data-i18n="urna_sub">5 grafias por nome + cálculo letra a letra + PDF sigiloso — R$ 26</p>
+    <div class="form-group"><label data-i18n="f_nome">Nome Completo da Pessoa</label><input type="text" id="urnaNome" data-i18n-ph="ph_nome_completo" placeholder="Nome completo"></div>
+    <div class="form-group"><label data-i18n="f_cargo">Cargo em Disputa</label>
+      <select id="urnaCargo" onchange="atualizarGrafiasUrna()">
         <option value="vereador" data-i18n="c_vereador">Vereador</option>
         <option value="dep_estadual" data-i18n="c_estadual">Dep. Estadual</option>
         <option value="dep_federal" data-i18n="c_federal">Dep. Federal</option>
         <option value="senador" data-i18n="c_senador">Senador</option>
-    </select>
-</div>
-            <h3 style="color:var(--gold);margin:20px 0 10px" data-i18n="urna_options">Insira até 5 opções de nome de candidato:</h3>
-            <div class="form-group"><input type="text" id="urnaNome1" data-i18n-ph="ph_nome_1" placeholder="Nome 1"></div>
-            <div class="form-group"><input type="text" id="urnaNome2" data-i18n-ph="ph_nome_2" placeholder="Nome 2"></div>
-            <div class="form-group"><input type="text" id="urnaNome3" data-i18n-ph="ph_nome_3" placeholder="Nome 3"></div>
-            <div class="form-group"><input type="text" id="urnaNome4" data-i18n-ph="ph_nome_4" placeholder="Nome 4"></div>
-            <div class="form-group"><input type="text" id="urnaNome5" data-i18n-ph="ph_nome_5" placeholder="Nome 5"></div>
-            <button class="btn btn-full" onclick="pagarUrna()" data-i18n="pay_urna">🔒 Pagar R$ 26 — Resultado em PDF + QRCode</button>
-        </div>
-    </section>
-
+      </select>
+    </div>
+    <div class="form-group">
+      <label id="urnaGeneroLabel"></label>
+      <select id="urnaGenero" onchange="atualizarGrafiasUrna()">
+        <option value="masculino" id="urnaGenMasc"></option>
+        <option value="feminino" id="urnaGenFem"></option>
+      </select>
+    </div>
+    <h3 style="color:var(--gold);margin:20px 0 10px" data-i18n="urna_options">As 5 grafias deste nome:</h3>
+    <p id="urnaAviso" style="color:#888;font-size:.8rem;margin-bottom:12px"></p>
+    <div class="form-group urna-grafia"><span class="urna-prefixo" id="urnaPrefixo1"></span><input type="text" id="urnaNome1" autocomplete="off"></div>
+    <div class="form-group urna-grafia"><span class="urna-prefixo" id="urnaPrefixo2"></span><input type="text" id="urnaNome2" autocomplete="off"></div>
+    <div class="form-group urna-grafia"><span class="urna-prefixo" id="urnaPrefixo3"></span><input type="text" id="urnaNome3" autocomplete="off"></div>
+    <div class="form-group urna-grafia"><span class="urna-prefixo" id="urnaPrefixo4"></span><input type="text" id="urnaNome4" autocomplete="off"></div>
+    <div class="form-group urna-grafia"><span class="urna-prefixo" id="urnaPrefixo5"></span><input type="text" id="urnaNome5" autocomplete="off"></div>
+    <button class="btn btn-full" id="urnaBtn" onclick="pagarUrna()" data-i18n="pay_urna">🔒 Pagar R$ 26 — Resultado em PDF + QRCode</button>
+  </div>
+</section>
+    
         <!-- FORMULÁRIO NÚMERO ELEITORAL -->
     <section id="form-eleitoral" class="hidden-form">
         <div class="form-container">
