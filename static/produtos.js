@@ -1066,7 +1066,20 @@ function atualizarGrafiasUrna(){
     var inp=document.getElementById('urnaNome'+i);
     if(p){p.textContent=pref[i-1]; p.dataset.valor=pref[i-1];}
     if(inp){inp.placeholder=ph[i-1];}
+  }  
+
+  /* ===== BLOCO DE ENERGIA (FORA do for) ===== */
+  var uiE = window.ENERGIA_UI[lang] || window.ENERGIA_UI.pt;
+  var lbl = document.getElementById('urnaEnergiaLabel');
+  if(lbl) lbl.textContent = uiE.label;
+  var dica = document.getElementById('urnaEnergiaDica');
+  if(dica) dica.textContent = uiE.dica;
+  montarSeletorEnergia('urnaEnergiaSel', atualizarDestaqueEnergia);
+  for(var k=1;k<=5;k++){
+    var inpK = document.getElementById('urnaNome'+k);
+    if(inpK) inpK.addEventListener('input', atualizarDestaqueEnergia);
   }
+  atualizarDestaqueEnergia();
 }
 
 function pagarUrna(){
@@ -1087,6 +1100,9 @@ function pagarUrna(){
   if(!nomes.length){alert('Preencha pelo menos uma grafia com o nome do candidato');return;}
   var enc=encodeURIComponent;
   var qs='lang='+enc(lang)+'&produto=urna&nome_completo='+enc(nc)+'&cargo='+enc(cr)+'&genero='+enc(ge)+'&nome='+enc(nc);
+  var boxE = document.getElementById('urnaEnergiaSel');
+  var energia = boxE ? (boxE.dataset.energia || '8') : '8';
+  qs += '&energia=' + enc(energia);
   for(var i=1;i<=nomes.length;i++){ qs+='&nome'+i+'='+enc(nomes[i-1]); }
   window.location.href='/criar-checkout?'+qs;
 }
@@ -1145,6 +1161,9 @@ function montarSeletorEnergia(containerId, aoSelecionar){
     };
     box.appendChild(b);
   }
+  var btn8 = box.querySelector('.energia-btn[data-energia="8"]');
+  if(btn8){ btn8.classList.add('selecionada'); box.dataset.energia='8'; }
+  if(aoSelecionar) aoSelecionar(8);
   return box;
 }
 
