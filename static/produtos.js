@@ -1074,7 +1074,7 @@ function atualizarGrafiasUrna(){
   if(lbl) lbl.textContent = uiE.label;
   var dica = document.getElementById('urnaEnergiaDica');
   if(dica) dica.textContent = uiE.dica;
-  montarSeletorEnergia('urnaEnergiaSel', atualizarDestaqueEnergia);
+  montarSeletorEnergia('urnaEnergiaSel', atualizarDestaqueEnergia, 8);
   for(var k=1;k<=5;k++){
     var inpK = document.getElementById('urnaNome'+k);
     if(inpK) inpK.addEventListener('input', atualizarDestaqueEnergia);
@@ -1140,8 +1140,9 @@ function energiaGrafia(texto){
   return {soma:soma, energia:reduzirNum(soma)};
 }
 
-function montarSeletorEnergia(containerId, aoSelecionar){
-  var lang = uraObterIdioma();
+function montarSeletorEnergia(containerId, aoSelecionar, ideal){
+  ideal = ideal || 8;   // default continua 8 (urna/candidatura)
+  var lang = localStorage.getItem('l') || 'pt';
   var ui = window.ENERGIA_UI[lang] || window.ENERGIA_UI.pt;
   var box = document.getElementById(containerId);
   if(!box) return;
@@ -1149,9 +1150,9 @@ function montarSeletorEnergia(containerId, aoSelecionar){
   for(var i=1;i<=9;i++){
     var b=document.createElement('button');
     b.type='button';
-    b.className='energia-btn'+(i===8?' ideal':'');
+    b.className='energia-btn'+(i===ideal?' ideal':'');
     b.textContent=i;
-    b.title=(i===8)?ui.ideal:String(i);
+    b.title=(i===ideal)?ui.ideal:String(i);
     b.dataset.energia=i;
     b.onclick=function(){
       box.querySelectorAll('.energia-btn').forEach(function(x){x.classList.remove('selecionada');});
@@ -1161,9 +1162,9 @@ function montarSeletorEnergia(containerId, aoSelecionar){
     };
     box.appendChild(b);
   }
-  var btn8 = box.querySelector('.energia-btn[data-energia="8"]');
-  if(btn8){ btn8.classList.add('selecionada'); box.dataset.energia='8'; }
-  if(aoSelecionar) aoSelecionar(8);
+  var btnIdeal = box.querySelector('.energia-btn[data-energia="'+ideal+'"]');
+  if(btnIdeal){ btnIdeal.classList.add('selecionada'); box.dataset.energia=ideal; }
+  if(aoSelecionar) aoSelecionar(ideal);
   return box;
 }
 
