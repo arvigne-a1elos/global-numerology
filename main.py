@@ -864,6 +864,7 @@ async def health_head():
 
 # ===== ROTA /criar-checkout (usada pelo site) =====
 @app.get("/criar-checkout")
+
 async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
                                 qtd: int = 0, total: float = 0, itens: str = "",
                                 nome: str = "", nascimento: str = "",
@@ -931,14 +932,6 @@ def calc_urna(req: UrnaPayReq):
     nomes = [n.strip() for n in [req.nome1, req.nome2, req.nome3, req.nome4, req.nome5] if n.strip()]
     res, ideal, sugs = validar_nomes_urna(nomes, req.cargo)
     return {"resultados": res, "ideal": ideal, "sugestoes": sugs}
-
-async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
-                                qtd: int = 0, total: float = 0, itens: str = "",
-                                nome: str = "", nascimento: str = "",
-                                nome_completo: str = "", cargo: str = "vereador",
-                                genero: str = "masculino",
-                                numero: str = "", email: str = "",
-                                ...):
 
 @app.post("/calculate/eleitoral")
 def calc_eleitoral(req: EleitoralPayReq):
