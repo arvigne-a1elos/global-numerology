@@ -416,11 +416,12 @@ class PayReq(BaseModel):
 
 class UrnaPayReq(BaseModel):
     nome_completo: str
-    nome_urna: str
+    nome_urna: str = ""
     email: Optional[str] = ""
     lang: str = "pt"
     cargo: str = "vereador"
     genero: str = "masculino"
+    energia: str = ""
     nome1: str = ""
     nome2: str = ""
     nome3: str = ""
@@ -557,24 +558,30 @@ def _enviar_email_simples(destinatario, assunto, corpo):
         logger.error(f"SMTP: {e}")
         return False
 
-# ===== CRIACAO DE SESSAO STRIPE =====
 def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=None):
     if lang not in PRICE_IDS or produto not in PRICE_IDS[lang]:
         raise HTTPException(status_code=400, detail="Idioma ou produto invalido")
     price_id = PRICE_IDS[lang].get(produto, "")
     nome_prod = PRODUTOS.get(lang, PRODUTOS["pt"]).get(produto, produto)
+
     meta = {"tipo": produto, "lang": lang, "nome": nome, "birth": birth, "email": email}
     if meta_extra:
         meta.update(meta_extra)
+
+    # Default: se for urna e nenhuma energia foi escolhida, assume 8
+    if produto == "urna" and not meta.get("energia"):
+        meta["energia"] = "8"
+
     pay_types = ["card", "boleto"] if MOEDA.get(lang, "brl") == "brl" else ["card"]
     locale = lang if lang in ["pt", "en", "es", "fr", "de", "it", "ja", "zh", "id", "tr", "vi"] else "auto"
+
     if produto == "urna":
-        meta = meta or {}
         success_url = f"{BASE_URL}/api/pay/urna-success?session_id={{CHECKOUT_SESSION_ID}}"
     elif produto == "eleitoral":
         success_url = f"{BASE_URL}/api/pay/eleitoral-success?session_id={{CHECKOUT_SESSION_ID}}"
     else:
         success_url = f"{BASE_URL}/api/pay/success?session_id={{CHECKOUT_SESSION_ID}}"
+
     try:
         if price_id and price_id.startswith("price_"):
             session = stripe.checkout.Session.create(
@@ -622,11 +629,16 @@ def pay_urna(req: UrnaPayReq):
     nomes = [n.strip() for n in [req.nome1, req.nome2, req.nome3, req.nome4, req.nome5] if n.strip()]
     if not nomes:
         raise HTTPException(400, "Pelo menos 1 nome")
-        meta = {"tipo": "urna", "lang": req.lang or "pt", "nome_completo": req.nome_completo,
-            "cargo": req.cargo, "genero": req.genero, "email": req.email, "nome": req.nome_completo}
+
+    # meta criada FORA do if, no corpo da função (correção do bug)
+    energia = getattr(req, "energia", "") or "8"
+    meta = {"tipo": "urna", "lang": req.lang or "pt", "nome_completo": req.nome_completo,
+            "cargo": req.cargo, "genero": req.genero, "energia": energia,
+            "email": req.email, "nome": req.nome_completo}
     for i, n in enumerate(nomes, 1):
         meta[f"nome{i}"] = n
     return _criar_sessao("urna", req.lang or "pt", req.email, req.nome_completo, "", meta)
+    
     # ===== CHECKOUT NUMERO ELEITORAL =====
 @app.post("/pay/eleitoral")
 def pay_eleitoral(req: EleitoralPayReq):
@@ -929,6 +941,7 @@ def calc_urna(req: UrnaPayReq):
     nomes = [n.strip() for n in [req.nome1, req.nome2, req.nome3, req.nome4, req.nome5] if n.strip()]
     res, ideal, sugs = validar_nomes_urna(nomes, req.cargo)
     return {"resultados": res, "ideal": ideal, "sugestoes": sugs}
+    
 
 @app.post("/calculate/eleitoral")
 def calc_eleitoral(req: EleitoralPayReq):
