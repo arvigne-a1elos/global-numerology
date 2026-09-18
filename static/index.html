@@ -145,6 +145,20 @@
         <option value="feminino" id="urnaGenFem"></option>
       </select>
     </div>
+        <div class="form-group">
+      <label id="urnaGeneroLabel"></label>
+      <select id="urnaGenero" onchange="atualizarGrafiasUrna()">
+        <option value="masculino" id="urnaGenMasc"></option>
+        <option value="feminino" id="urnaGenFem"></option>
+      </select>
+    </div>
+
+    <!-- 👇 SELEÇÃO DE ENERGIA (1-9, 8 ideal) - COLE AQUI -->
+    <div class="form-group">
+      <label id="urnaEnergiaLabel"></label>
+      <div id="urnaEnergiaSel" class="energia-sel"></div>
+      <p id="urnaEnergiaDica" class="energia-dica"></p>
+    </div>
     <h3 style="color:var(--gold);margin:20px 0 10px" data-i18n="urna_options">As 5 grafias deste nome:</h3>
     <p id="urnaAviso" style="color:#888;font-size:.8rem;margin-bottom:12px"></p>
     <div class="form-group urna-grafia"><span class="urna-prefixo" id="urnaPrefixo1"></span><input type="text" id="urnaNome1" autocomplete="off"></div>
