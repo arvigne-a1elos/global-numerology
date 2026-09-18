@@ -1093,3 +1093,71 @@ function pagarUrna(){
 
 /* Inicializa e reaplica na troca de idioma */
 if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',atualizarGrafiasUrna);}else{atualizarGrafiasUrna();}
+
+/* ===== SELETOR DE ENERGIA REUTILIZAVEL (1-9, 8 ideal) ===== */
+window.ENERGIA_UI = {
+  pt:{label:'Energia desejada para a campanha:',ideal:'8 · ideal',dica:'Escolha a energia. A 8 é a ideal para dinheiro e poder. As grafias que somarem a energia escolhida serão destacadas em verde.'},
+  en:{label:'Desired campaign energy:',ideal:'8 · ideal',dica:'Choose the energy. 8 is ideal for money and power. Spellings that total the chosen energy will be highlighted in green.'},
+  es:{label:'Energía deseada para la campaña:',ideal:'8 · ideal',dica:'Elija la energía. La 8 es ideal para el dinero y el poder. Las grafías que sumen la energía elegida se resaltarán en verde.'},
+  fr:{label:'Énergie souhaitée pour la campagne :',ideal:'8 · idéal',dica:"Choisissez l'énergie. La 8 est idéale pour l'argent et le pouvoir. Les graphies totalisant l'énergie choisie seront surlignées en vert."},
+  de:{label:'Gewünschte Energie für die Kampagne:',ideal:'8 · ideal',dica:'Wählen Sie die Energie. Die 8 ist ideal für Geld und Macht. Schreibweisen, die die gewählte Energie ergeben, werden grün hervorgehoben.'},
+  it:{label:'Energia desiderata per la campagna:',ideal:'8 · ideale',dica:'Scegli l\'energia. La 8 è ideale per denaro e potere. Le grafie che totalizzano l\'energia scelta saranno evidenziate in verde.'},
+  ja:{label:'キャンペーンの希望エネルギー:',ideal:'8 · 理想',dica:'エネルギーを選択してください。8はお金と力に理想的です。選択したエネルギーになる表記が緑で強調されます。'},
+  zh:{label:'竞选期望能量:',ideal:'8 · 理想',dica:'请选择能量。8对于金钱和权力最为理想。总和达到所选能量的写法将用绿色突出显示。'},
+  ru:{label:'Желаемая энергия кампании:',ideal:'8 · идеал',dica:'Выберите энергию. 8 идеальна для денег и власти. Написания, дающие выбранную энергию, будут выделены зелёным.'},
+  id:{label:'Energi yang diinginkan untuk kampanye:',ideal:'8 · ideal',dica:'Pilih energi. 8 ideal untuk uang dan kekuasaan. Ejaan yang berjumlah energi terpilih akan disorot hijau.'},
+  tr:{label:'Kampanya için istenen enerji:',ideal:'8 · ideal',dica:'Enerjiyi seçin. 8 para ve güç için idealdir. Seçilen enerjiyi veren yazımlar yeşil vurgulanır.'},
+  vi:{label:'Năng lượng mong muốn cho chiến dịch:',ideal:'8 · lý tưởng',dica:'Chọn năng lượng. 8 là lý tưởng cho tiền bạc và quyền lực. Các cách viết có tổng bằng năng lượng đã chọn sẽ được tô xanh.'},
+  he:{label:'אנרגיה רצויה לקמפיין:',ideal:'8 · אידיאלי',dica:'בחרו אנרגיה. 8 אידיאלית לכסף ולכוח. כתיבים המסתכמים באנרגיה הנבחרת יודגשו בירוק.'},
+  ar:{label:'الطاقة المرغوبة للحملة:',ideal:'8 · مثالي',dica:'اختر الطاقة. 8 مثالية للمال والسلطة. سيتم تمييز الكتابات التي تساوي الطاقة المختارة باللون الأخضر.'}
+};
+
+/* Mapa letra->valor (numerologia pitagorica) */
+window.LETRA_VALOR = {A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8};
+
+function reduzirNum(n){ while(n>9 && n!==11 && n!==22){ n=String(n).split('').reduce(function(a,d){return a+parseInt(d,10);},0);} return n; }
+
+function energiaGrafia(texto){
+  var limpo = String(texto||'').toUpperCase().replace(/[^A-Z]/g,'');
+  var soma = 0;
+  for(var i=0;i<limpo.length;i++){ soma += (window.LETRA_VALOR[limpo[i]]||0); }
+  return {soma:soma, energia:reduzirNum(soma)};
+}
+
+function montarSeletorEnergia(containerId, aoSelecionar){
+  var lang = uraObterIdioma();
+  var ui = window.ENERGIA_UI[lang] || window.ENERGIA_UI.pt;
+  var box = document.getElementById(containerId);
+  if(!box) return;
+  box.innerHTML = '';
+  for(var i=1;i<=9;i++){
+    var b=document.createElement('button');
+    b.type='button';
+    b.className='energia-btn'+(i===8?' ideal':'');
+    b.textContent=i;
+    b.title=(i===8)?ui.ideal:String(i);
+    b.dataset.energia=i;
+    b.onclick=function(){
+      box.querySelectorAll('.energia-btn').forEach(function(x){x.classList.remove('selecionada');});
+      this.classList.add('selecionada');
+      box.dataset.energia=this.dataset.energia;
+      if(aoSelecionar) aoSelecionar(parseInt(this.dataset.energia,10));
+    };
+    box.appendChild(b);
+  }
+  return box;
+}
+
+function atualizarDestaqueEnergia(){
+  var box=document.getElementById('urnaEnergiaSel');
+  var alvo=box?parseInt(box.dataset.energia||'0',10):0;
+  for(var i=1;i<=5;i++){
+    var inp=document.getElementById('urnaNome'+i);
+    var p=document.getElementById('urnaPrefixo'+i);
+    var row=inp?inp.closest('.urna-grafia'):null;
+    if(!row) continue;
+    var texto=(p?p.dataset.valor||'':'')+' '+(inp?inp.value:'');
+    var e=energiaGrafia(texto).energia;
+    row.classList.toggle('bate-energia', alvo>0 && e===alvo);
+  }
+}
