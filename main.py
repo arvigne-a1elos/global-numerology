@@ -99,6 +99,8 @@ try:
 except Exception as e:
     logger.error(f"DB init adiado: {e}")
 
+
+
 # ===== FONTES PARA IDIOMAS (CJK + Cirílico) =====
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.cidfonts import UnicodeCIDFont
@@ -418,6 +420,7 @@ class UrnaPayReq(BaseModel):
     email: Optional[str] = ""
     lang: str = "pt"
     cargo: str = "vereador"
+    genero: str = "masculino"
     nome1: str = ""
     nome2: str = ""
     nome3: str = ""
@@ -618,8 +621,8 @@ def pay_urna(req: UrnaPayReq):
     nomes = [n.strip() for n in [req.nome1, req.nome2, req.nome3, req.nome4, req.nome5] if n.strip()]
     if not nomes:
         raise HTTPException(400, "Pelo menos 1 nome")
-    meta = {"tipo": "urna", "lang": req.lang or "pt", "nome_completo": req.nome_completo,
-            "cargo": req.cargo, "email": req.email, "nome": req.nome_completo}
+        meta = {"tipo": "urna", "lang": req.lang or "pt", "nome_completo": req.nome_completo,
+            "cargo": req.cargo, "genero": req.genero, "email": req.email, "nome": req.nome_completo}
     for i, n in enumerate(nomes, 1):
         meta[f"nome{i}"] = n
     return _criar_sessao("urna", req.lang or "pt", req.email, req.nome_completo, "", meta)
@@ -920,6 +923,14 @@ def calc_urna(req: UrnaPayReq):
     nomes = [n.strip() for n in [req.nome1, req.nome2, req.nome3, req.nome4, req.nome5] if n.strip()]
     res, ideal, sugs = validar_nomes_urna(nomes, req.cargo)
     return {"resultados": res, "ideal": ideal, "sugestoes": sugs}
+
+async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
+                                qtd: int = 0, total: float = 0, itens: str = "",
+                                nome: str = "", nascimento: str = "",
+                                nome_completo: str = "", cargo: str = "vereador",
+                                genero: str = "masculino",
+                                numero: str = "", email: str = "",
+                                ...):
 
 @app.post("/calculate/eleitoral")
 def calc_eleitoral(req: EleitoralPayReq):
