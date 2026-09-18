@@ -455,3 +455,198 @@ def pdf_produto(produto, dados, nome, bd_str, lang, dado=""):
                        _estilo("F", FONTE, 8, GRAY, TA_CENTER)))
     doc.build(e, onFirstPage=_cabecalho_pagina, onLaterPages=_cabecalho_pagina)
     return path
+
+# -*- coding: utf-8 -*-
+# pdf_service.py - ADICIONE ESTA FUNCAO AO FINAL DO ARQUIVO
+# pdf_urna(nome_completo, cargo_label, resultados, sugestoes, lang="pt")
+# resultados vem de validar_nomes_urna (produtos/urna.py):
+#   cada item: {nome, forma, soma, energia, eh_ideal, explicacao,
+#               letras:[{letra,valor}], nota_traducao, observacao}
+
+import os, uuid
+from xml.sax.saxutils import escape
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.units import mm
+from reportlab.lib import colors
+from reportlab.lib.styles import ParagraphStyle
+from reportlab.platypus import (SimpleDocTemplate, Paragraph, Spacer,
+                                Table, TableStyle, KeepTogether)
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.pdfbase.cidfonts import UnicodeCIDFont
+
+# Caminhos de fontes tentados em ordem. Ajuste FONT_CJK_EXTRA para a fonte
+# CJK que voce ja usa no servico (o log "Fontes CJK registradas" indica qual).
+FONT_DEJAVU = ["static/fonts/DejaVuSans.ttf", "fonts/DejaVuSans.ttf",
+               "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"]
+FONT_DEJAVU_BOLD = ["static/fonts/DejaVuSans-Bold.ttf", "fonts/DejaVuSans-Bold.ttf",
+                    "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"]
+FONT_CJK_EXTRA = ["static/fonts/NotoSansCJK-Regular.ttc",
+                  "static/fonts/NotoSansSC-Regular.otf",
+                  "static/fonts/WenQuanYiMicroHei.ttf"]
+
+LABELS_URNA = {
+    "pt": {"titulo": "Validação do Nome de Urna", "nome": "Nome completo", "cargo": "Cargo",
+           "grafia": "Grafia", "soma": "Soma", "energia": "Energia",
+           "ideal": "ENERGIA 8 · IDEAL PARA CANDIDATURA", "letra": "Detalhamento letra a letra",
+           "obs": "Observação do autor", "sug": "Sugestões", "nota": "Nota de tradução"},
+    "en": {"titulo": "Ballot Name Validation", "nome": "Full name", "cargo": "Position",
+           "grafia": "Spelling", "soma": "Total", "energia": "Energy",
+           "ideal": "ENERGY 8 · IDEAL FOR CANDIDACY", "letra": "Letter-by-letter breakdown",
+           "obs": "Author's note", "sug": "Suggestions", "nota": "Translation note"},
+    "es": {"titulo": "Validación del Nombre de Urna", "nome": "Nombre completo", "cargo": "Cargo",
+           "grafia": "Grafía", "soma": "Suma", "energia": "Energía",
+           "ideal": "ENERGÍA 8 · IDEAL PARA LA CANDIDATURA", "letra": "Desglose letra a letra",
+           "obs": "Observación del autor", "sug": "Sugerencias", "nota": "Nota de traducción"},
+    "fr": {"titulo": "Validation du Nom d'Urne", "nome": "Nom complet", "cargo": "Poste",
+           "grafia": "Graphie", "soma": "Somme", "energia": "Énergie",
+           "ideal": "ÉNERGIE 8 · IDÉAL POUR LA CANDIDATURE", "letra": "Détail lettre par lettre",
+           "obs": "Observation de l'auteur", "sug": "Suggestions", "nota": "Note de traduction"},
+    "de": {"titulo": "Überprüfung des Urnennamens", "nome": "Vollständiger Name", "cargo": "Amt",
+           "grafia": "Schreibweise", "soma": "Summe", "energia": "Energie",
+           "ideal": "ENERGIE 8 · IDEAL FÜR DIE KANDIDATUR", "letra": "Buchstabenweise Aufschlüsselung",
+           "obs": "Anmerkung des Autors", "sug": "Vorschläge", "nota": "Übersetzungshinweis"},
+    "it": {"titulo": "Validazione del Nome d'Urna", "nome": "Nome completo", "cargo": "Carica",
+           "grafia": "Grafia", "soma": "Somma", "energia": "Energia",
+           "ideal": "ENERGIA 8 · IDEALE PER LA CANDIDATURA", "letra": "Dettaglio lettera per lettera",
+           "obs": "Osservazione dell'autore", "sug": "Suggerimenti", "nota": "Nota di traduzione"},
+    "ja": {"titulo": "ウルナ名の検証", "nome": "フルネーム", "cargo": "役職",
+           "grafia": "表記", "soma": "合計", "energia": "エネルギー",
+           "ideal": "エネルギー8 · 立候補に最適", "letra": "文字ごとの内訳",
+           "obs": "著者の所見", "sug": "提案", "nota": "翻訳に関する注記"},
+    "zh": {"titulo": "选票名称验证", "nome": "全名", "cargo": "职位",
+           "grafia": "写法", "soma": "总和", "energia": "能量",
+           "ideal": "能量8 · 对竞选最理想", "letra": "逐字母分解",
+           "obs": "作者说明", "sug": "建议", "nota": "翻译说明"},
+    "ru": {"titulo": "Проверка имени в бюллетене", "nome": "Полное имя", "cargo": "Должность",
+           "grafia": "Написание", "soma": "Сумма", "energia": "Энергия",
+           "ideal": "ЭНЕРГИЯ 8 · ИДЕАЛЬНО ДЛЯ КАНДИДАТУРЫ", "letra": "Разбор по буквам",
+           "obs": "Примечание автора", "sug": "Предложения", "nota": "Примечание о переводе"},
+    "id": {"titulo": "Validasi Nama di Surat Suara", "nome": "Nama lengkap", "cargo": "Jabatan",
+           "grafia": "Ejaan", "soma": "Jumlah", "energia": "Energi",
+           "ideal": "ENERGI 8 · IDEAL UNTUK PENCALONAN", "letra": "Rincian per huruf",
+           "obs": "Catatan penulis", "sug": "Saran", "nota": "Catatan terjemahan"},
+    "tr": {"titulo": "Oy Pusulası Adı Doğrulama", "nome": "Tam ad", "cargo": "Makam",
+           "grafia": "Yazım", "soma": "Toplam", "energia": "Enerji",
+           "ideal": "ENERJİ 8 · ADAYLIK İÇİN İDEAL", "letra": "Harf harf döküm",
+           "obs": "Yazarın notu", "sug": "Öneriler", "nota": "Çeviri notu"},
+    "vi": {"titulo": "Xác thực Tên trên Phiếu bầu", "nome": "Họ tên đầy đủ", "cargo": "Chức vụ",
+           "grafia": "Cách viết", "soma": "Tổng", "energia": "Năng lượng",
+           "ideal": "NĂNG LƯỢNG 8 · LÝ TƯỞNG CHO ỨNG CỬ", "letra": "Chi tiết từng chữ cái",
+           "obs": "Nhận xét của tác giả", "sug": "Gợi ý", "nota": "Ghi chú bản dịch"},
+    "he": {"titulo": "אימות שם בקלפי", "nome": "שם מלא", "cargo": "תפקיד",
+           "grafia": "כתיב", "soma": "סכום", "energia": "אנרגיה",
+           "ideal": "אנרגיה 8 · אידיאלי למועמדות", "letra": "פירוט אות אחר אות",
+           "obs": "הערת המחבר", "sug": "הצעות", "nota": "הערת תרגום"},
+    "ar": {"titulo": "التحقق من اسم بطاقة الاقتراع", "nome": "الاسم الكامل", "cargo": "المنصب",
+           "grafia": "الكتابة", "soma": "المجموع", "energia": "الطاقة",
+           "ideal": "الطاقة 8 · مثالي للترشح", "letra": "التفصيل حرفًا بحرف",
+           "obs": "ملاحظة المؤلف", "sug": "اقتراحات", "nota": "ملاحظة الترجمة"},
+}
+
+def _fontes_urna():
+    fonts = {}
+    for nome, caminhos in (("DejaVu", FONT_DEJAVU), ("DejaVuBold", FONT_DEJAVU_BOLD)):
+        for p in caminhos:
+            try:
+                if os.path.exists(p):
+                    pdfmetrics.registerFont(TTFont(nome, p, subfontIndex=0))
+                    fonts[nome] = True
+                    break
+            except Exception:
+                continue
+    for p in FONT_CJK_EXTRA:
+        try:
+            if os.path.exists(p):
+                pdfmetrics.registerFont(TTFont("CJKUrna", p, subfontIndex=0))
+                fonts["CJK"] = True
+                break
+        except Exception:
+            continue
+    if "CJK" not in fonts:
+        try:
+            pdfmetrics.registerFont(UnicodeCIDFont("STSong-Light"))
+            fonts["CJK"] = True
+        except Exception:
+            pass
+    return fonts
+
+def pdf_urna(nome_completo, cargo_label, resultados, sugestoes, lang="pt"):
+    os.makedirs("static/relatorios", exist_ok=True)
+    codigo = uuid.uuid4().hex[:8]
+    arquivo = f"static/relatorios/urna_{codigo}.pdf"
+
+    fonts = _fontes_urna()
+    fonte_base = "DejaVu" if fonts.get("DejaVu") else "Helvetica"
+    fonte_bold = "DejaVuBold" if fonts.get("DejaVuBold") else "Helvetica-Bold"
+    fonte_cjk = "CJKUrna" if fonts.get("CJK") else None
+
+    usar_cjk = lang in ("ja", "zh", "ru", "he", "ar")
+    f_normal = fonte_cjk if (usar_cjk and fonte_cjk) else fonte_base
+    f_bold = fonte_cjk if (usar_cjk and fonte_cjk) else fonte_bold
+
+    L = LABELS_URNA.get(lang, LABELS_URNA["en"])
+
+    st_titulo = ParagraphStyle("t", fontName=f_bold, fontSize=16, leading=20,
+                               alignment=1, textColor=colors.HexColor("#1a1a1a"), spaceAfter=4)
+    st_sub = ParagraphStyle("s", fontName=f_normal, fontSize=9, leading=12,
+                            alignment=1, textColor=colors.HexColor("#888888"), spaceAfter=12)
+    st_h = ParagraphStyle("h", fontName=f_bold, fontSize=12, leading=15,
+                          textColor=colors.HexColor("#C9A94E"), spaceBefore=10, spaceAfter=4)
+    st_txt = ParagraphStyle("t2", fontName=f_normal, fontSize=10, leading=14,
+                            textColor=colors.HexColor("#222222"))
+    st_graf = ParagraphStyle("g", fontName=f_bold, fontSize=11, leading=14,
+                             textColor=colors.HexColor("#1a1a1a"))
+    st_obs = ParagraphStyle("o", fontName=f_normal, fontSize=9, leading=12,
+                            textColor=colors.HexColor("#555555"))
+    st_nota = ParagraphStyle("n", fontName=f_normal, fontSize=8, leading=11,
+                             textColor=colors.HexColor("#999999"))
+    st_sug = ParagraphStyle("u", fontName=f_normal, fontSize=10, leading=13,
+                            textColor=colors.HexColor("#333333"))
+
+    doc = SimpleDocTemplate(arquivo, pagesize=A4,
+                            rightMargin=18 * mm, leftMargin=18 * mm,
+                            topMargin=16 * mm, bottomMargin=16 * mm,
+                            title=f"A1ELOS - {L['titulo']}",
+                            author="A1ELOS Global Numerology")
+    story = []
+    story.append(Paragraph(escape(nome_completo or ""), st_titulo))
+    story.append(Paragraph(escape(cargo_label or ""), st_sub))
+    story.append(Spacer(1, 6))
+
+    for r in (resultados or []):
+        bloco = []
+        base_graf = r.get("forma") or r.get("nome") or ""
+        energia = r.get("energia", "?")
+        soma = r.get("soma", "?")
+        eh_ideal = bool(r.get("eh_ideal"))
+        bloco.append(Paragraph(f"{L['grafia']}: {escape(str(base_graf))}", st_graf))
+        linha = f"{L['soma']}: {soma} &nbsp;·&nbsp; {L['energia']}: {energia}"
+        if eh_ideal:
+            linha += f"<br/><font color='#0b7a3b'>{escape(L['ideal'])}</font>"
+        bloco.append(Paragraph(linha, st_txt))
+        letras = r.get("letras") or []
+        if letras:
+            partes = ", ".join(
+                f"{escape(str(l.get('letra', '')))}={l.get('valor', '')}" for l in letras)
+            bloco.append(Paragraph(f"{L['letra']}: {partes}", st_obs))
+        obs = r.get("observacao")
+        if obs:
+            bloco.append(Paragraph(f"{L['obs']}: {escape(str(obs))}", st_obs))
+        story.append(KeepTogether(bloco))
+        story.append(Spacer(1, 8))
+
+    notas = [r.get("nota_traducao") for r in (resultados or []) if r.get("nota_traducao")]
+    if notas:
+        story.append(Paragraph(f"{L['nota']}: {escape(str(notas[0]))}", st_nota))
+
+    if sugestoes:
+        story.append(Paragraph(L["sug"], st_h))
+        for s in sugestoes[:3]:
+            tag = " · " + L["ideal"] if s.get("eh_ideal") else ""
+            story.append(Paragraph(
+                f"- {escape(str(s.get('nome', '')))} ({L['energia']}: {s.get('energia', '?')}){tag}",
+                st_sug))
+
+    doc.build(story)
+    return arquivo
