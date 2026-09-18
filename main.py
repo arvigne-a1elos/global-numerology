@@ -569,10 +569,7 @@ def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=No
     pay_types = ["card", "boleto"] if MOEDA.get(lang, "brl") == "brl" else ["card"]
     locale = lang if lang in ["pt", "en", "es", "fr", "de", "it", "ja", "zh", "id", "tr", "vi"] else "auto"
     if produto == "urna":
-        meta = {"nome_completo": nome_completo, "cargo": cargo, "genero": genero,
-                "nome": nome_completo,
-                "nome1": nome1, "nome2": nome2, "nome3": nome3,
-                "nome4": nome4, "nome5": nome5}
+        meta = meta or {}
         success_url = f"{BASE_URL}/api/pay/urna-success?session_id={{CHECKOUT_SESSION_ID}}"
     elif produto == "eleitoral":
         success_url = f"{BASE_URL}/api/pay/eleitoral-success?session_id={{CHECKOUT_SESSION_ID}}"
