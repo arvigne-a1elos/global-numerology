@@ -293,6 +293,9 @@ function toggleForm(formId) {
   el.style.display = escondido ? 'block' : 'none';
   if (escondido) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
+
+  if (window.atualizarGrafiasUrna) { atualizarGrafiasUrna(); }
+
 // ===== ENVIAR MENSAGEM / ATIVAR BÔNUS =====
 window.enviarMensagem = window.enviarMensagem || function(){
   var nome = (document.getElementById('msgNome') ? document.getElementById('msgNome').value : '').trim();
