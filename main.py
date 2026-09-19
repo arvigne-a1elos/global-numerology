@@ -569,7 +569,7 @@ def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=No
         meta.update(meta_extra)
 
     # Default: se for urna e nenhuma energia foi escolhida, assume 8
-    IDEAL_ENERGIA = {"urna": "8", "arte": "2", "amor": "5", "comunidade": "6", "estudos": "7"}
+    IDEAL_ENERGIA = {"urna": "8", "arte": "2", "comunidade": "6"}
 
     if produto in IDEAL_ENERGIA and not meta.get("energia"):
        meta["energia"] = IDEAL_ENERGIA[produto]
