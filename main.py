@@ -578,17 +578,23 @@ IDEAL_ENERGIA = {
     "negocio": "8",     # Nome para Negócio/Produto
 }
 
-     # Energia fixa (sem seletor; a pesquisa usa sempre este número)
-ENERGIA_FIXA = {
-    "amor": "5",        # Mapa do Casal / Mapa da Família Premium
-}
+# Produtos da Pesquisa IA (modal de energias)
+PRODUTOS_IA = [
+    "pet", "dominio", "canal", "equipe", "projeto", "evento",
+    "ong", "nickname", "bebe", "assinatura", "imovel", "negocio",
+]
 
     # Dentro de _criar_sessao:
     if produto in IDEAL_ENERGIA and not meta.get("energia"):
        meta["energia"] = IDEAL_ENERGIA[produto]
     elif produto in ENERGIA_FIXA and not meta.get("energia"):
        meta["energia"] = ENERGIA_FIXA[produto]
-    
+
+     # Energia fixa (sem seletor; a pesquisa usa sempre este número)
+ENERGIA_FIXA = {
+    "amor": "5",        # Mapa do Casal / Mapa da Família Premium
+}
+
     pay_types = ["card", "boleto"] if MOEDA.get(lang, "brl") == "brl" else ["card"]
     locale = lang if lang in ["pt", "en", "es", "fr", "de", "it", "ja", "zh", "id", "tr", "vi"] else "auto"
 
