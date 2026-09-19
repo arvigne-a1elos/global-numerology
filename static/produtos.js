@@ -1141,7 +1141,6 @@ function energiaGrafia(texto){
 }
 
 function montarSeletorEnergia(containerId, aoSelecionar, ideal){
-  ideal = ideal || 8;   // default continua 8 (urna/candidatura)
   var lang = localStorage.getItem('l') || 'pt';
   var ui = window.ENERGIA_UI[lang] || window.ENERGIA_UI.pt;
   var box = document.getElementById(containerId);
@@ -1162,9 +1161,12 @@ function montarSeletorEnergia(containerId, aoSelecionar, ideal){
     };
     box.appendChild(b);
   }
-  var btnIdeal = box.querySelector('.energia-btn[data-energia="'+ideal+'"]');
-  if(btnIdeal){ btnIdeal.classList.add('selecionada'); box.dataset.energia=ideal; }
-  if(aoSelecionar) aoSelecionar(ideal);
+  // Só marca a estrela e pré-seleciona se houver um ideal definido
+  if(ideal){
+    var btnIdeal = box.querySelector('.energia-btn[data-energia="'+ideal+'"]');
+    if(btnIdeal){ btnIdeal.classList.add('selecionada'); box.dataset.energia=ideal; }
+    if(aoSelecionar) aoSelecionar(ideal);
+  }
   return box;
 }
 
