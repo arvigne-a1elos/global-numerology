@@ -689,7 +689,7 @@ function montarTabelaBC() {
 }
 
 /* ===== MENU DE ENERGIAS ===== */
-window.ENERGIA_PRODUTOS = window.ENERGIA_PRODUTOS || [["express","🔮"],["completo","📘"],["ia","🤖"],["nome_pet","🐾"],["nickname","🎮"],["nome_dominio","🌐"],["nome_canal","🎥"],["nome_equipe","🧭"],["nome_ong","🏛️"],["nome_projeto","📋"],["nome_evento","🎪"]];
+window.ENERGIA_PRODUTOS = window.ENERGIA_PRODUTOS || [["ia","🤖"],["nome_pet","🐾"],["nickname","🎮"],["nome_dominio","🌐"],["nome_canal","🎥"],["nome_equipe","🧭"],["nome_ong","🏛️"],["nome_projeto","📋"],["nome_evento","🎪"]];
 function pesquisarEnergia(n) {
   abrirMenuEnergia(n, getLang());
 }
@@ -1074,7 +1074,10 @@ function atualizarGrafiasUrna(){
   if(lbl) lbl.textContent = uiE.label;
   var dica = document.getElementById('urnaEnergiaDica');
   if(dica) dica.textContent = uiE.dica;
-  montarSeletorEnergia('urnaEnergiaSel', atualizarDestaqueEnergia, 8);
+  montarSeletorEnergia('urnaEnergiaSel', atualizarDestaqueEnergia, 8);        // Urna ★8
+  montarSeletorEnergia('eleitoralEnergiaSel', atualizarDestaqueEleitoral, 8); // Eleitoral ★8
+  montarSeletorEnergia('arteEnergiaSel', atualizarDestaqueArte, 2);           // Artístico ★2
+  montarSeletorEnergia('ongEnergiaSel', atualizarDestaqueOng, 6);             // ONG ★6
   for(var k=1;k<=5;k++){
     var inpK = document.getElementById('urnaNome'+k);
     if(inpK) inpK.addEventListener('input', atualizarDestaqueEnergia);
@@ -1161,6 +1164,16 @@ function montarSeletorEnergia(containerId, aoSelecionar, ideal){
     };
     box.appendChild(b);
   }
+  if(ideal){
+    var btnIdeal = box.querySelector('.energia-btn[data-energia="'+ideal+'"]');
+    if(btnIdeal){ btnIdeal.classList.add('selecionada'); box.dataset.energia=ideal; }
+    if(aoSelecionar) aoSelecionar(ideal);
+  }
+  return box;
+}
+
+// Amor: sem seletor, energia fixa 5
+// Estudos: sem seletor, energia livre
   // Só marca a estrela e pré-seleciona se houver um ideal definido
   if(ideal){
     var btnIdeal = box.querySelector('.energia-btn[data-energia="'+ideal+'"]');
