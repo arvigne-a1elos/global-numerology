@@ -558,17 +558,7 @@ def _enviar_email_simples(destinatario, assunto, corpo):
         logger.error(f"SMTP: {e}")
         return False
 
-def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=None):
-    if lang not in PRICE_IDS or produto not in PRICE_IDS[lang]:
-        raise HTTPException(status_code=400, detail="Idioma ou produto invalido")
-    price_id = PRICE_IDS[lang].get(produto, "")
-    nome_prod = PRODUTOS.get(lang, PRODUTOS["pt"]).get(produto, produto)
-
-    meta = {"tipo": produto, "lang": lang, "nome": nome, "birth": birth, "email": email}
-    if meta_extra:
-        meta.update(meta_extra)
-
-    # Energias ideais (com estrela) por produto
+# ===== ENERGIA IDEAL / FIXA / PRODUTOS IA (nível de módulo) =====
 IDEAL_ENERGIA = {
     "urna": "8",        # Nome de Urna
     "eleitoral": "8",   # Número Eleitoral
@@ -578,23 +568,29 @@ IDEAL_ENERGIA = {
     "negocio": "8",     # Nome para Negócio/Produto
 }
 
-# Produtos da Pesquisa IA (modal de energias)
-PRODUTOS_IA = [
-    "pet", "dominio", "canal", "equipe", "projeto", "evento",
-    "ong", "nickname", "bebe", "assinatura", "imovel", "negocio",
-]
-
-    # Dentro de _criar_sessao:
-    if produto in IDEAL_ENERGIA and not meta.get("energia"):
-       meta["energia"] = IDEAL_ENERGIA[produto]
-    elif produto in ENERGIA_FIXA and not meta.get("energia"):
-       meta["energia"] = ENERGIA_FIXA[produto]
-
-     # Energia fixa (sem seletor; a pesquisa usa sempre este número)
 ENERGIA_FIXA = {
     "amor": "5",        # Mapa do Casal / Mapa da Família Premium
 }
 
+# ===== PRODUTOS DA PESQUISA IA (8 — Card da IA) =====
+PRODUTOS_IA = [
+    "pet", "dominio", "canal", "equipe", "projeto", "evento",
+    "ong", "nickname",
+]
+
+def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=None):
+    if lang not in PRICE_IDS or produto not in PRICE_IDS[lang]:
+        raise HTTPException(status_code=400, detail="Idioma ou produto invalido")
+    price_id = PRICE_IDS[lang].get(produto, "")
+    nome_prod = PRODUTOS.get(lang, PRODUTOS["pt"]).get(produto, produto)
+    meta = {"tipo": produto, "lang": lang, "nome": nome, "birth": birth, "email": email}
+    if meta_extra:
+        meta.update(meta_extra)
+    # Energia padrão: ideal (★) se existir; senão fixa; senão mantém a escolhida
+    if produto in IDEAL_ENERGIA and not meta.get("energia"):
+        meta["energia"] = IDEAL_ENERGIA[produto]
+    elif produto in ENERGIA_FIXA and not meta.get("energia"):
+        meta["energia"] = ENERGIA_FIXA[produto]
     pay_types = ["card", "boleto"] if MOEDA.get(lang, "brl") == "brl" else ["card"]
     locale = lang if lang in ["pt", "en", "es", "fr", "de", "it", "ja", "zh", "id", "tr", "vi"] else "auto"
 
