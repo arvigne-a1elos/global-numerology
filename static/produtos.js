@@ -689,7 +689,7 @@ function montarTabelaBC() {
 }
 
 /* ===== MENU DE ENERGIAS ===== */
-window.ENERGIA_PRODUTOS = window.ENERGIA_PRODUTOS || [["ia","🤖"],["nome_pet","🐾"],["nickname","🎮"],["nome_dominio","🌐"],["nome_canal","🎥"],["nome_equipe","🧭"],["nome_ong","🏛️"],["nome_projeto","📋"],["nome_evento","🎪"]];
+window.ENERGIA_PRODUTOS = window.ENERGIA_PRODUTOS || [["ia","🤖"],["nome_pet","🐾"],["nickname","🎮"],["nome_dominio","🌐"],["nome_canal","🎥"],["nome_equipe","🧭"],["nome_ong","🏛️"],["nome_projeto","📋"],["nome_evento","🎪"],["nome_bebe","👶"],["assinatura","✍️"],["numero_imovel","🏠"],["nome_negocio","💼"]];
 function pesquisarEnergia(n) {
   abrirMenuEnergia(n, getLang());
 }
@@ -1078,6 +1078,8 @@ function atualizarGrafiasUrna(){
   montarSeletorEnergia('eleitoralEnergiaSel', atualizarDestaqueEleitoral, 8); // Eleitoral ★8
   montarSeletorEnergia('arteEnergiaSel', atualizarDestaqueArte, 2);           // Artístico ★2
   montarSeletorEnergia('ongEnergiaSel', atualizarDestaqueOng, 6);             // ONG ★6
+  // Amor: sem seletor, energia fixa 5
+  // Estudos: sem seletor, energia livre
   for(var k=1;k<=5;k++){
     var inpK = document.getElementById('urnaNome'+k);
     if(inpK) inpK.addEventListener('input', atualizarDestaqueEnergia);
