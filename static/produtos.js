@@ -1068,6 +1068,23 @@ function atualizarGrafiasUrna(){
     if(inp){inp.placeholder=ph[i-1];}
   }  
 
+window.ENERGIA_UI = {
+  pt: { ideal: "Ideal para este produto", selecionada: "Energia selecionada" },
+  en: { ideal: "Ideal for this product", selecionada: "Selected energy" },
+  es: { ideal: "Ideal para este producto", selecionada: "Energía seleccionada" },
+  fr: { ideal: "Idéal pour ce produit", selecionada: "Énergie sélectionnée" },
+  de: { ideal: "Ideal für dieses Produkt", selecionada: "Ausgewählte Energie" },
+  it: { ideal: "Ideale per questo prodotto", selecionada: "Energia selezionata" },
+  ja: { ideal: "この製品に最適", selecionada: "選択されたエネルギー" },
+  zh: { ideal: "此产品理想选择", selecionada: "已选能量" },
+  id: { ideal: "Ideal untuk produk ini", selecionada: "Energi dipilih" },
+  tr: { ideal: "Bu ürün için ideal", selecionada: "Seçilen enerji" },
+  vi: { ideal: "Lý tưởng cho sản phẩm này", selecionada: "Năng lượng đã chọn" },
+  ru: { ideal: "Идеально для этого продукта", selecionada: "Выбранная энергия" },
+  he: { ideal: "אידיאלי למוצר זה", selecionada: "האנרגיה שנבחרה" },
+  hi: { ideal: "इस उत्पाद के लिए आदर्श", selecionada: "चयनित ऊर्जा" }
+};
+  
   /* ===== BLOCO DE ENERGIA (FORA do for) ===== */
   var uiE = window.ENERGIA_UI[lang] || window.ENERGIA_UI.pt;
   var lbl = document.getElementById('urnaEnergiaLabel');
@@ -1078,6 +1095,7 @@ function atualizarGrafiasUrna(){
   montarSeletorEnergia('eleitoralEnergiaSel', atualizarDestaqueEleitoral, 8); // Eleitoral ★8
   montarSeletorEnergia('arteEnergiaSel', atualizarDestaqueArte, 2);           // Artístico ★2
   montarSeletorEnergia('ongEnergiaSel', atualizarDestaqueOng, 6);             // ONG ★6
+  
   // Amor: sem seletor, energia fixa 5
   // Estudos: sem seletor, energia livre
   for(var k=1;k<=5;k++){
@@ -1110,27 +1128,59 @@ function pagarUrna(){
   qs += '&energia=' + enc(energia);
   for(var i=1;i<=nomes.length;i++){ qs+='&nome'+i+'='+enc(nomes[i-1]); }
   window.location.href='/criar-checkout?'+qs;
+
+/* ===== DESTAQUE GENÉRICO DE ENERGIA ===== */
+/* Requisito mínimo no HTML: cada número (eleitoral) ou cada grafia (arte/ong)
+   recebe a classe  en-alvo  no elemento. Ex.:
+   <div class="en-alvo">34567</div>  (número eleitoral)
+   <input class="en-alvo" ...>       (input de grafia, com o prefixo ao lado) */
+function atualizarDestaqueCard(containerId, tipo) {
+  var box = document.getElementById(containerId);
+  if (!box) return;
+  var alvo = parseInt(box.dataset.energia || '0', 10);
+  var card = box.closest('form') || box.parentNode;
+  var itens = card.querySelectorAll('.en-alvo');
+  for (var i = 0; i < itens.length; i++) {
+    var el = itens[i];
+    var texto = '';
+    if (el.tagName === 'INPUT') {
+      var linha = el.closest('[data-grafia]') || el.parentNode;
+      var pref = linha ? linha.querySelector('[data-valor]') : null;
+      texto = (pref ? (pref.dataset.valor || '') : '') + ' ' + el.value;
+    } else {
+      texto = el.dataset.valor || el.textContent || '';
+    }
+    var e = (tipo === 'numero')
+      ? energiaNumero(parseInt(String(texto).replace(/\D/g, ''), 10))
+      : energiaGrafia(texto).energia;
+    el.classList.toggle('bate-energia', alvo > 0 && e === alvo);
+  }
 }
+
+/* As 3 funções que o seu bloco já chama (mantenha o bloco como está) */
+function atualizarDestaqueEleitoral() { atualizarDestaqueCard('eleitoralEnergiaSel', 'numero'); }
+function atualizarDestaqueArte()      { atualizarDestaqueCard('arteEnergiaSel', 'grafia'); }
+function atualizarDestaqueOng()       { atualizarDestaqueCard('ongEnergiaSel', 'grafia'); }
 
 /* Inicializa e reaplica na troca de idioma */
 if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',atualizarGrafiasUrna);}else{atualizarGrafiasUrna();}
 
 /* ===== SELETOR DE ENERGIA REUTILIZAVEL (1-9, 8 ideal) ===== */
 window.ENERGIA_UI = {
-  pt:{label:'Energia desejada para a campanha:',ideal:'8 · ideal',dica:'Escolha a energia. A 8 é a ideal para dinheiro e poder. As grafias que somarem a energia escolhida serão destacadas em verde.'},
-  en:{label:'Desired campaign energy:',ideal:'8 · ideal',dica:'Choose the energy. 8 is ideal for money and power. Spellings that total the chosen energy will be highlighted in green.'},
-  es:{label:'Energía deseada para la campaña:',ideal:'8 · ideal',dica:'Elija la energía. La 8 es ideal para el dinero y el poder. Las grafías que sumen la energía elegida se resaltarán en verde.'},
-  fr:{label:'Énergie souhaitée pour la campagne :',ideal:'8 · idéal',dica:"Choisissez l'énergie. La 8 est idéale pour l'argent et le pouvoir. Les graphies totalisant l'énergie choisie seront surlignées en vert."},
-  de:{label:'Gewünschte Energie für die Kampagne:',ideal:'8 · ideal',dica:'Wählen Sie die Energie. Die 8 ist ideal für Geld und Macht. Schreibweisen, die die gewählte Energie ergeben, werden grün hervorgehoben.'},
-  it:{label:'Energia desiderata per la campagna:',ideal:'8 · ideale',dica:'Scegli l\'energia. La 8 è ideale per denaro e potere. Le grafie che totalizzano l\'energia scelta saranno evidenziate in verde.'},
-  ja:{label:'キャンペーンの希望エネルギー:',ideal:'8 · 理想',dica:'エネルギーを選択してください。8はお金と力に理想的です。選択したエネルギーになる表記が緑で強調されます。'},
-  zh:{label:'竞选期望能量:',ideal:'8 · 理想',dica:'请选择能量。8对于金钱和权力最为理想。总和达到所选能量的写法将用绿色突出显示。'},
-  ru:{label:'Желаемая энергия кампании:',ideal:'8 · идеал',dica:'Выберите энергию. 8 идеальна для денег и власти. Написания, дающие выбранную энергию, будут выделены зелёным.'},
-  id:{label:'Energi yang diinginkan untuk kampanye:',ideal:'8 · ideal',dica:'Pilih energi. 8 ideal untuk uang dan kekuasaan. Ejaan yang berjumlah energi terpilih akan disorot hijau.'},
-  tr:{label:'Kampanya için istenen enerji:',ideal:'8 · ideal',dica:'Enerjiyi seçin. 8 para ve güç için idealdir. Seçilen enerjiyi veren yazımlar yeşil vurgulanır.'},
-  vi:{label:'Năng lượng mong muốn cho chiến dịch:',ideal:'8 · lý tưởng',dica:'Chọn năng lượng. 8 là lý tưởng cho tiền bạc và quyền lực. Các cách viết có tổng bằng năng lượng đã chọn sẽ được tô xanh.'},
-  he:{label:'אנרגיה רצויה לקמפיין:',ideal:'8 · אידיאלי',dica:'בחרו אנרגיה. 8 אידיאלית לכסף ולכוח. כתיבים המסתכמים באנרגיה הנבחרת יודגשו בירוק.'},
-  ar:{label:'الطاقة المرغوبة للحملة:',ideal:'8 · مثالي',dica:'اختر الطاقة. 8 مثالية للمال والسلطة. سيتم تمييز الكتابات التي تساوي الطاقة المختارة باللون الأخضر.'}
+  pt: { ideal: "Ideal para este produto", selecionada: "Energia selecionada", label: "Cargo + Energia Nome", dica: "Energia Ideal 8" },
+  en: { ideal: "Ideal for this product", selecionada: "Selected energy", label: "Position + Name Energy", dica: "Ideal Energy 8" },
+  es: { ideal: "Ideal para este producto", selecionada: "Energía seleccionada", label: "Cargo + Energía Nombre", dica: "Energía Ideal 8" },
+  fr: { ideal: "Idéal pour ce produit", selecionada: "Énergie sélectionnée", label: "Poste + Énergie Nom", dica: "Énergie Idéale 8" },
+  de: { ideal: "Ideal für dieses Produkt", selecionada: "Ausgewählte Energie", label: "Position + Namensenergie", dica: "Ideale Energie 8" },
+  it: { ideal: "Ideale per questo prodotto", selecionada: "Energia selezionata", label: "Carica + Energia Nome", dica: "Energia Ideale 8" },
+  ja: { ideal: "この製品に最適", selecionada: "選択されたエネルギー", label: "役職＋名前のエネルギー", dica: "理想のエネルギー8" },
+  zh: { ideal: "此产品理想选择", selecionada: "已选能量", label: "职位 + 姓名能量", dica: "理想能量 8" },
+  id: { ideal: "Ideal untuk produk ini", selecionada: "Energi dipilih", label: "Jabatan + Energi Nama", dica: "Energi Ideal 8" },
+  tr: { ideal: "Bu ürün için ideal", selecionada: "Seçilen enerji", label: "Pozisyon + İsim Enerjisi", dica: "İdeal Enerji 8" },
+  vi: { ideal: "Lý tưởng cho sản phẩm này", selecionada: "Năng lượng đã chọn", label: "Chức vụ + Năng lượng Tên", dica: "Năng lượng Lý tưởng 8" },
+  ru: { ideal: "Идеально для этого продукта", selecionada: "Выбранная энергия", label: "Должность + Энергия имени", dica: "Идеальная энергия 8" },
+  he: { ideal: "אידיאלי למוצר זה", selecionada: "האנרגיה שנבחרה", label: "תפקיד + אנרגיית שם", dica: "אנרגיה אידיאלית 8" },
+  hi: { ideal: "इस उत्पाद के लिए आदर्श", selecionada: "चयनित ऊर्जा", label: "पद + नाम ऊर्जा", dica: "आदर्श ऊर्जा 8" }
 };
 
 /* Mapa letra->valor (numerologia pitagorica) */
@@ -1165,18 +1215,9 @@ function montarSeletorEnergia(containerId, aoSelecionar, ideal){
       if(aoSelecionar) aoSelecionar(parseInt(this.dataset.energia,10));
     };
     box.appendChild(b);
-  }
-  if(ideal){
-    var btnIdeal = box.querySelector('.energia-btn[data-energia="'+ideal+'"]');
-    if(btnIdeal){ btnIdeal.classList.add('selecionada'); box.dataset.energia=ideal; }
-    if(aoSelecionar) aoSelecionar(ideal);
-  }
-  return box;
-}
-
 // Amor: sem seletor, energia fixa 5
 // Estudos: sem seletor, energia livre
-  // Só marca a estrela e pré-seleciona se houver um ideal definido
+// Só marca a estrela e pré-seleciona se houver um ideal definido
   if(ideal){
     var btnIdeal = box.querySelector('.energia-btn[data-energia="'+ideal+'"]');
     if(btnIdeal){ btnIdeal.classList.add('selecionada'); box.dataset.energia=ideal; }
