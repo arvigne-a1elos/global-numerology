@@ -689,7 +689,7 @@ function montarTabelaBC() {
 }
 
 /* ===== MENU DE ENERGIAS ===== */
-window.ENERGIA_PRODUTOS = window.ENERGIA_PRODUTOS || [["ia","🤖"],["nome_pet","🐾"],["nickname","🎮"],["nome_dominio","🌐"],["nome_canal","🎥"],["nome_equipe","🧭"],["nome_ong","🏛️"],["nome_projeto","📋"],["nome_evento","🎪"],["nome_bebe","👶"],["assinatura","✍️"],["numero_imovel","🏠"],["nome_negocio","💼"]];
+window.ENERGIA_PRODUTOS = window.ENERGIA_PRODUTOS || [["ia","🤖"],["nome_pet","🐾"],["nickname","🎮"],["nome_dominio","🌐"],["nome_canal","🎥"],["nome_equipe","🧭"],["nome_ong","🏛️"],["nome_projeto","📋"],["nome_evento","🎪"],["bebe","👶"],["assinatura","✍️"],["imovel","🏠"],["negocio","💼"]];
 function pesquisarEnergia(n) {
   abrirMenuEnergia(n, getLang());
 }
