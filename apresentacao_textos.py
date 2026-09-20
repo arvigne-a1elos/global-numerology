@@ -4287,7 +4287,7 @@ def gerar_pdf_slides(lang):
         cab(c.get("sumario_titulo", "Sumário Executivo"), 1)
         y = altura - 32 * mm
         y = _texto_wrap(doc, c["sumario_intro"], _fonte(lang), 12, 18 * mm, y,
-                        largura - 36 * mm, COR_CINZA, 6 * mm)
+        largura - 36 * mm, COR_CINZA, 6 * mm)
         y -= 8 * mm
         cards = c["sumario_cards"]
         margem = 18 * mm
