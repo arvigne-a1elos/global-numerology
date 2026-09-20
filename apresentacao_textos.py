@@ -4130,6 +4130,12 @@ def _capa_slides(doc, largura, altura, lang, modo):
     doc.drawCentredString(largura / 2, altura * 0.08,
                           f"{c['confidencial']}  {c['ano']}")
 
+def _rodape_texto(cnv, num, total):
+    c = _CTX_TEXTO["c"]
+    lang = _CTX_TEXTO["lang"]
+    _cabecalho_duas_logos(cnv, None, c, lang, cor_fundo=COR_AZUL)
+    _rodape(cnv, None, c, lang, num_pag=num, total_pag=total)
+
 def _rodape_deck(doc, largura, altura, lang, c, pagina):
     """Rodapé dos slides — título/DUNS à esquerda, página à direita, contatos embaixo."""
     doc.setFillColor(COR_CINZA_CLARO)
