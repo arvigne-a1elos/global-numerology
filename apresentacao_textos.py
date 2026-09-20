@@ -4245,7 +4245,7 @@ def gerar_pdf_slides(lang):
 
     def rodape(pagina):
         """Apenas desenha o rodapé do slide (sem recursão)."""
-        _cabecalho_duas_logos(doc, None, c, lang, cor_fundo=COR_AZUL)       
+        _cabecalho_duas_logos(doc, None, c, lang, cor_fundo=COR_AZUL)
         doc.setFillColor(COR_CINZA_CLARO)
         doc.setFont(_fonte(lang), 8)
         doc.drawCentredString(largura / 2, 10 * mm,
@@ -4256,119 +4256,183 @@ def gerar_pdf_slides(lang):
         doc.setFillColorRGB(0.55, 0.55, 0.55)
         doc.setFont(_fonte(lang), 7)
         doc.drawCentredString(largura / 2, 4 * mm, CONTATOS)
-               
-    pagina = 1 
 
-# ============================================================
-# SLIDES ATUALIZADOS (20/09/2026) — dados novos + visual premium
-# Uso: c = APRESENTACAO_TEXTOS[lang]
-# ============================================================
-
-# ---- SLIDE 1 — CAPA (visual premium dourado/preto) ----
-def _capa_slides_v2(doc, largura, altura, lang, c):
-    # Fundo preto premium
-    doc.setFillColor(COR_PRETO)
-    doc.rect(0, 0, largura, altura, fill=1, stroke=0)
-    # Linha dourada superior
-    doc.setStrokeColor(COR_DOURADO)
-    doc.setLineWidth(1.2)
-    doc.line(0, altura - 6 * mm, largura, altura - 6 * mm)
-    # Título principal
-    doc.setFillColor(COR_DOURADO)
-    doc.setFont(_fonte(lang, True), 30)
-    doc.drawCentredString(largura / 2, altura - 45 * mm, c["titulo"])
-    # Subtítulo
-    doc.setFillColor(HexColor("#E8E8E8"))
-    doc.setFont(_fonte(lang), 14)
-    doc.drawCentredString(largura / 2, altura - 55 * mm, c["subtitulo"])
-    # Nota da capa
-    doc.setFillColor(COR_DOURADO)
-    doc.setFont(_fonte(lang, True), 11)
-    doc.drawCentredString(largura / 2, altura - 63 * mm, c["capa_nota"])
-    # Selo confidencial + ano
-    doc.setFillColor(HexColor("#B71C1C"))
-    doc.setFont(_fonte(lang, True), 9)
-    doc.drawCentredString(largura / 2, altura - 72 * mm,
-                          f"{c['confidencial']} · {c['ano']}")
-    # Linha dourada inferior
-    doc.setStrokeColor(COR_DOURADO)
-    doc.setLineWidth(1.2)
-    doc.line(0, 16 * mm, largura, 16 * mm)
-  pagina += 1         
-
-# ---- SLIDE 2 — SUMÁRIO EXECUTIVO (cards 4x2) ----
-def _slide_sumario_v2(doc, largura, altura, lang, c, pagina):
-    cab(c.get("sumario_titulo", "Sumário Executivo"), 1)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c["sumario_intro"], _fonte(lang), 12, 18 * mm, y,
-                    largura - 36 * mm, COR_CINZA, 6 * mm)
-    y -= 8 * mm
-    cards = c["sumario_cards"]
-    margem = 18 * mm
-    gap = 8 * mm
-    n_col = 4
-    w = (largura - 2 * margem - (n_col - 1) * gap) / n_col
-    h = 38 * mm
-    for i, (num, tit, sub) in enumerate(cards):
-        col = i % n_col
-        lin = i // n_col
-        x = margem + col * (w + gap)
-        yy = y - lin * (h + 8 * mm)
-        # Cartão com borda dourada
-        _caixa(doc, x, yy - h, w, h, COR_FUNDO, COR_DOURADO)
-        # Número grande dourado
-        doc.setFillColor(COR_DOURADO)
-        doc.setFont(_fonte(lang, True), 16)
-        doc.drawString(x + 6 * mm, yy - h + 22 * mm, num)
-        # Título
+    # ===== FUNÇÕES DE SLIDE (v2 — visual premium dourado/preto) =====
+    def _capa_slides_v2():
+        """SLIDE 1 — CAPA (visual premium)."""
         doc.setFillColor(COR_PRETO)
-        _texto_wrap(doc, tit, _fonte(lang, True), 10, x + 6 * mm, yy - h + 14 * mm,
-                    w - 12 * mm, COR_PRETO, 4.5 * mm, y_min=yy - h + 6 * mm)
-        # Subtítulo
-        doc.setFillColor(COR_CINZA)
-        _texto_wrap(doc, sub, _fonte(lang), 8, x + 6 * mm, yy - h + 5 * mm,
-                    w - 12 * mm, COR_CINZA, 3.8 * mm, y_min=yy - h + 1 * mm)
+        doc.rect(0, 0, largura, altura, fill=1, stroke=0)
+        doc.setStrokeColor(COR_DOURADO)
+        doc.setLineWidth(1.2)
+        doc.line(0, altura - 6 * mm, largura, altura - 6 * mm)
+        doc.setFillColor(COR_DOURADO)
+        doc.setFont(_fonte(lang, True), 30)
+        doc.drawCentredString(largura / 2, altura - 45 * mm, c["titulo"])
+        doc.setFillColor(HexColor("#E8E8E8"))
+        doc.setFont(_fonte(lang), 14)
+        doc.drawCentredString(largura / 2, altura - 55 * mm, c["subtitulo"])
+        doc.setFillColor(COR_DOURADO)
+        doc.setFont(_fonte(lang, True), 11)
+        doc.drawCentredString(largura / 2, altura - 63 * mm, c["capa_nota"])
+        doc.setFillColor(HexColor("#B71C1C"))
+        doc.setFont(_fonte(lang, True), 9)
+        doc.drawCentredString(largura / 2, altura - 72 * mm,
+                              f"{c['confidencial']} · {c['ano']}")
+        doc.setStrokeColor(COR_DOURADO)
+        doc.setLineWidth(1.2)
+        doc.line(0, 16 * mm, largura, 16 * mm)
+
+    def _slide_sumario_v2(pagina):
+        """SLIDE 2 — SUMÁRIO EXECUTIVO (cards 4x2)."""
+        cab(c.get("sumario_titulo", "Sumário Executivo"), 1)
+        y = altura - 32 * mm
+        y = _texto_wrap(doc, c["sumario_intro"], _fonte(lang), 12, 18 * mm, y,
+                        largura - 36 * mm, COR_CINZA, 6 * mm)
+        y -= 8 * mm
+        cards = c["sumario_cards"]
+        margem = 18 * mm
+        gap = 8 * mm
+        n_col = 4
+        w = (largura - 2 * margem - (n_col - 1) * gap) / n_col
+        h = 38 * mm
+        for i, (num, tit, sub) in enumerate(cards):
+            col = i % n_col
+            lin = i // n_col
+            x = margem + col * (w + gap)
+            yy = y - lin * (h + 8 * mm)
+            _caixa(doc, x, yy - h, w, h, COR_FUNDO, COR_DOURADO)
+            doc.setFillColor(COR_DOURADO)
+            doc.setFont(_fonte(lang, True), 16)
+            doc.drawString(x + 6 * mm, yy - h + 22 * mm, num)
+            doc.setFillColor(COR_PRETO)
+            _texto_wrap(doc, tit, _fonte(lang, True), 10, x + 6 * mm, yy - h + 14 * mm,
+                        w - 12 * mm, COR_PRETO, 4.5 * mm, y_min=yy - h + 6 * mm)
+            doc.setFillColor(COR_CINZA)
+            _texto_wrap(doc, sub, _fonte(lang), 8, x + 6 * mm, yy - h + 5 * mm,
+                        w - 12 * mm, COR_CINZA, 3.8 * mm, y_min=yy - h + 1 * mm)
+        rodape(pagina)
+        doc.showPage()
+
+    def _slide_sobre_v2(pagina):
+        """SLIDE 3 — SOBRE A A1ELOS (KPIs + DUNS)."""
+        cab(c["sobre_titulo"], 2)
+        y = altura - 32 * mm
+        y = _texto_wrap(doc, c["sobre_texto"], _fonte(lang), 12, 18 * mm, y,
+                        largura - 36 * mm, COR_PRETO, 6 * mm)
+        y -= 8 * mm
+        y = _kpis_grid(doc, largura, altura, lang, c["sobre_kpis"], y, 4)
+        y -= 6 * mm
+        _caixa(doc, 18 * mm, y - 16 * mm, largura - 36 * mm, 16 * mm, HexColor("#EEF2FA"), COR_AZUL)
+        doc.setFillColor(COR_AZUL)
+        doc.setFont(_fonte(lang, True), 9)
+        _texto_wrap(doc, c["sobre_duns"], _fonte(lang, True), 9, 22 * mm, y - 11 * mm,
+                    largura - 44 * mm, COR_AZUL, 4 * mm)
+        rodape(pagina)
+        doc.showPage()
+
+    def _slide_b2b_v2(pagina):
+        """SLIDE 14 — PACOTES B2B + TABELA DE DESCONTOS (8 faixas, NOVA)."""
+        cab(c["b2b_titulo"], 3)
+        y = altura - 32 * mm
+        y = _texto_wrap(doc, c["b2b_texto"], _fonte(lang), 11, 18 * mm, y,
+                        largura - 36 * mm, COR_PRETO, 5.5 * mm)
+        y -= 6 * mm
+        planos = c["b2b_planos"]
+        margem = 18 * mm
+        gap = 8 * mm
+        w = (largura - 2 * margem - 2 * gap) / 3
+        h = 30 * mm
+        for i, (tit, desc) in enumerate(planos):
+            x = margem + i * (w + gap)
+            _caixa(doc, x, y - h, w, h, COR_FUNDO, COR_DOURADO)
+            doc.setFillColor(COR_DOURADO)
+            doc.setFont(_fonte(lang, True), 9)
+            _texto_wrap(doc, tit, _fonte(lang, True), 9, x + 5 * mm, y - 6 * mm,
+                        w - 10 * mm, COR_DOURADO, 4 * mm)
+            doc.setFillColor(COR_CINZA)
+            _texto_wrap(doc, desc, _fonte(lang), 8, x + 5 * mm, y - 14 * mm,
+                        w - 10 * mm, COR_CINZA, 3.8 * mm, y_min=y - h + 3 * mm)
+        y -= h + 6 * mm
+        doc.setFillColor(COR_DOURADO)
+        doc.setFont(_fonte(lang, True), 11)
+        doc.drawString(18 * mm, y, c["tabela_descontos"])
+        y -= 6 * mm
+        tabela = c["b2b_tabela"]
+        col_w = [(largura - 36 * mm) * 0.25, (largura - 36 * mm) * 0.15,
+                 (largura - 36 * mm) * 0.30, (largura - 36 * mm) * 0.30]
+        linha_h = 8 * mm
+        x0 = 18 * mm
+        for j, titulo in enumerate(tabela[0]):
+            _caixa(doc, x0 + sum(col_w[:j]), y - linha_h, col_w[j], linha_h,
+                   HexColor("#1A1A1A"), COR_DOURADO)
+            doc.setFillColor(COR_DOURADO)
+            doc.setFont(_fonte(lang, True), 8)
+            doc.drawString(x0 + sum(col_w[:j]) + 2 * mm, y - linha_h + 2.5 * mm, titulo)
+        y -= linha_h
+        for i, linha in enumerate(tabela[1:]):
+            cor_fundo = HexColor("#FAFAFA") if i % 2 == 0 else HexColor("#F0F0F0")
+            for j, val in enumerate(linha):
+                _caixa(doc, x0 + sum(col_w[:j]), y - linha_h, col_w[j], linha_h,
+                       cor_fundo, HexColor("#CCCCCC"))
+                doc.setFillColor(COR_PRETO)
+                doc.setFont(_fonte(lang, True) if j == 1 else _fonte(lang), 7.5)
+                doc.drawString(x0 + sum(col_w[:j]) + 2 * mm, y - linha_h + 2.5 * mm, val)
+            y -= linha_h
+        rodape(pagina)
+        doc.showPage()
+
+    def _slide_projecoes_v2(pagina):
+        """SLIDE 15 — PROJEÇÕES (1ª década em 1/3/5/7/10, NOVA)."""
+        cab(c["projecoes_titulo"], 4)
+        y = altura - 32 * mm
+        y = _texto_wrap(doc, c["projecoes_texto"], _fonte(lang), 11, 18 * mm, y,
+                        largura - 36 * mm, COR_PRETO, 5.5 * mm)
+        y -= 6 * mm
+        tabela = c["projecoes_tabela"]
+        col_w = [(largura - 36 * mm) * 0.30, (largura - 36 * mm) * 0.35,
+                 (largura - 36 * mm) * 0.35]
+        linha_h = 9 * mm
+        x0 = 18 * mm
+        for j, titulo in enumerate(tabela[0]):
+            _caixa(doc, x0 + sum(col_w[:j]), y - linha_h, col_w[j], linha_h,
+                   HexColor("#1A1A1A"), COR_DOURADO)
+            doc.setFillColor(COR_DOURADO)
+            doc.setFont(_fonte(lang, True), 9)
+            doc.drawString(x0 + sum(col_w[:j]) + 3 * mm, y - linha_h + 3 * mm, titulo)
+        y -= linha_h
+        anos_destaque = [str(a) for a in [1, 3, 5, 7, 10]]
+        for i, linha in enumerate(tabela[1:]):
+            cor_fundo = HexColor("#FAFAFA") if i % 2 == 0 else HexColor("#F0F0F0")
+            if any(ano in linha[0] for ano in anos_destaque):
+                cor_fundo = HexColor("#FFF8E1")
+            for j, val in enumerate(linha):
+                _caixa(doc, x0 + sum(col_w[:j]), y - linha_h, col_w[j], linha_h,
+                       cor_fundo, HexColor("#CCCCCC"))
+                doc.setFillColor(COR_PRETO)
+                doc.setFont(_fonte(lang, True) if j == 0 else _fonte(lang), 8)
+                doc.drawString(x0 + sum(col_w[:j]) + 3 * mm, y - linha_h + 3 * mm, val)
+            y -= linha_h
+        rodape(pagina)
+        doc.showPage()
+
+    # ===== GERAÇÃO DOS SLIDES =====
+    pagina = 1
+
+    # SLIDE 1 — CAPA
+    _capa_slides_v2()
     rodape(pagina)
     doc.showPage()
     pagina += 1
 
-# ---- SLIDE 3 — SOBRE A A1ELOS (KPIs + DUNS) ----
-def _slide_sobre_v2(doc, largura, altura, lang, c, pagina):
-    cab(c["sobre_titulo"], 2)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c["sobre_texto"], _fonte(lang), 12, 18 * mm, y,
-                    largura - 36 * mm, COR_PRETO, 6 * mm)
-    y -= 8 * mm
-    y = _kpis_grid(doc, largura, altura, lang, c["sobre_kpis"], y, 4)
-    y -= 6 * mm
-    # Caixa DUNS com borda azul
-    _caixa(doc, 18 * mm, y - 16 * mm, largura - 36 * mm, 16 * mm, HexColor("#EEF2FA"), COR_AZUL)
-    doc.setFillColor(COR_AZUL)
-    doc.setFont(_fonte(lang, True), 9)
-    _texto_wrap(doc, c["sobre_duns"], _fonte(lang, True), 9, 22 * mm, y - 11 * mm,
-                largura - 44 * mm, COR_AZUL, 4 * mm)
-    rodape(pagina)
-    doc.showPage()
-    pagina += 1
-           
-    # ===== SLIDE 3 — SOBRE A A1ELOS (02) =====
-    cab(c["sobre_titulo"], 2)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c["sobre_texto"], _fonte(lang), 12, 18 * mm, y,
-                    largura - 36 * mm, COR_PRETO, 6 * mm)
-    y -= 8 * mm
-    y = _kpis_grid(doc, largura, altura, lang, c["sobre_kpis"], y, 4)
-    y -= 6 * mm
-    _caixa(doc, 18 * mm, y - 16 * mm, largura - 36 * mm, 16 * mm, HexColor("#EEF2FA"), COR_AZUL)
-    doc.setFillColor(COR_AZUL)
-    doc.setFont(_fonte(lang, True), 9)
-    _texto_wrap(doc, c["sobre_duns"], _fonte(lang, True), 9, 22 * mm, y - 11 * mm,
-                largura - 44 * mm, COR_AZUL, 4 * mm)
-    rodape(pagina)
-    doc.showPage()
+    # SLIDE 2 — SUMÁRIO EXECUTIVO
+    _slide_sumario_v2(pagina)
     pagina += 1
 
-    # ===== SLIDE 4 — CREDIBILIDADE INTERNACIONAL (03) =====
+    # SLIDE 3 — SOBRE A A1ELOS
+    _slide_sobre_v2(pagina)
+    pagina += 1
+
+    # SLIDE 4 — CREDIBILIDADE INTERNACIONAL
     cab(c["duns_titulo"], 3)
     y = altura - 32 * mm
     col_w = (largura - 36 * mm - 10 * mm) / 2
@@ -4405,7 +4469,7 @@ def _slide_sobre_v2(doc, largura, altura, lang, c, pagina):
     doc.showPage()
     pagina += 1
 
-    # ===== SLIDE 5 — OPORTUNIDADE DE MERCADO (04) =====
+    # SLIDE 5 — OPORTUNIDADE DE MERCADO
     cab(c["mercado_titulo"], 4)
     y = altura - 32 * mm
     y = _texto_wrap(doc, c["mercado_texto"], _fonte(lang), 12, 18 * mm, y,
@@ -4413,17 +4477,17 @@ def _slide_sobre_v2(doc, largura, altura, lang, c, pagina):
     y -= 10 * mm
     cards = c["mercado_cards"]
     n_col = 4
+    margem = 18 * mm
+    gap = 8 * mm
     w = (largura - 2 * margem - (n_col - 1) * gap) / n_col
     h = 40 * mm
     for i, (tit, sub) in enumerate(cards):
         x = margem + i * (w + gap)
         _caixa(doc, x, y - h, w, h, COR_FUNDO, COR_DOURADO)
-        # Titulo azul, no topo do card
         doc.setFillColor(COR_AZUL)
         doc.setFont(_fonte(lang, True), 10)
         _texto_wrap(doc, tit, _fonte(lang, True), 10, x + 4 * mm, y - 12 * mm,
                     w - 8 * mm, COR_AZUL, 4.5 * mm, y_min=y - 20 * mm)
-        # Subtitulo em PRETO (nao some no fundo), abaixo, sem sobrepor
         doc.setFillColor(COR_PRETO)
         doc.setFont(_fonte(lang), 8.5)
         _texto_wrap(doc, sub, _fonte(lang), 8.5, x + 4 * mm, y - 22 * mm,
@@ -4432,7 +4496,7 @@ def _slide_sobre_v2(doc, largura, altura, lang, c, pagina):
     doc.showPage()
     pagina += 1
 
-       # ===== SLIDE 6 — O PROBLEMA (05) =====
+    # SLIDE 6 — O PROBLEMA
     cab(c["problema_titulo"], 5)
     y = altura - 32 * mm
     col_w = (largura - 36 * mm - 10 * mm) / 2
@@ -4442,11 +4506,9 @@ def _slide_sobre_v2(doc, largura, altura, lang, c, pagina):
     yy = y - 16 * mm
     for tit, sub in c["problema_col_esq"]:
         _caixa(doc, 18 * mm, yy - 34 * mm, col_w, 34 * mm, COR_FUNDO, COR_DOURADO)
-        # Título ALINHADO AO TOPO (nunca sobe acima da borda do card)
         doc.setFillColor(COR_AZUL)
         _texto_wrap(doc, tit, _fonte(lang, True), 9.5, 18 * mm + 4 * mm, yy - 6 * mm,
                     col_w - 8 * mm, COR_AZUL, 4.5 * mm, y_min=yy - 16 * mm)
-        # Corpo centralizado na área restante
         doc.setFillColor(COR_CINZA)
         _texto_wrap_centrado_v(doc, sub, _fonte(lang), 8,
                                18 * mm, yy - 18 * mm, col_w,
@@ -4456,10 +4518,8 @@ def _slide_sobre_v2(doc, largura, altura, lang, c, pagina):
     doc.setFillColor(COR_PRETO)
     doc.setFont(_fonte(lang, True), 13)
     doc.drawString(xr, y - 8 * mm, c["problema_col_dir_titulo"])
-    # Texto da direita em área FIXA (não empurra o bloco dourado)
     _texto_wrap_centrado_v(doc, c["problema_col_dir"], _fonte(lang), 9.5,
                            xr, y - 16 * mm, col_w, COR_CINZA, 4.5 * mm, 52 * mm)
-    # Bloco dourado em posição FIXA
     yy = y - 78 * mm
     _caixa(doc, xr, yy - 40 * mm, col_w, 40 * mm, HexColor("#FFF3E0"), COR_DOURADO)
     doc.setFillColor(COR_PRETO)
@@ -4469,7 +4529,7 @@ def _slide_sobre_v2(doc, largura, altura, lang, c, pagina):
     doc.showPage()
     pagina += 1
 
-    # ===== SLIDE 7 — SOLUÇÃO (06) =====
+    # SLIDE 7 — SOLUÇÃO
     cab(c["solucao_titulo"], 6)
     y = altura - 32 * mm
     y = _texto_wrap(doc, c["solucao_texto"], _fonte(lang), 12, 18 * mm, y,
@@ -4491,7 +4551,7 @@ def _slide_sobre_v2(doc, largura, altura, lang, c, pagina):
     doc.showPage()
     pagina += 1
 
-    # ===== SLIDE 8 — ALCANCE GLOBAL + TABELA IDIOMAS (07) =====
+    # SLIDE 8 — ALCANCE GLOBAL + TABELA IDIOMAS
     cab(c["alcance_titulo"], 7)
     y = altura - 32 * mm
     y = _texto_wrap(doc, c["alcance_texto"], _fonte(lang), 12, 18 * mm, y,
@@ -4505,7 +4565,7 @@ def _slide_sobre_v2(doc, largura, altura, lang, c, pagina):
     doc.showPage()
     pagina += 1
 
-    # ===== SLIDE 9 — 3 NOVOS MERCADOS (08) =====
+    # SLIDE 9 — 3 NOVOS MERCADOS
     cab(c["mercados_titulo"], 8)
     y = altura - 32 * mm
     y = _texto_wrap(doc, c["mercados_texto"], _fonte(lang), 11, 18 * mm, y,
@@ -4536,28 +4596,23 @@ def _slide_sobre_v2(doc, largura, altura, lang, c, pagina):
     doc.showPage()
     pagina += 1
 
-    # ===== SLIDE 10 — FILOSOFIA DE PREÇO (09) =====
+    # SLIDE 10 — FILOSOFIA DE PREÇO
     cab(c["preco_titulo"], 9)
     y = altura - 32 * mm
     col_w = (largura - 36 * mm - 10 * mm) / 2
-    # Caixa preta da esquerda
     _caixa(doc, 18 * mm, y - 60 * mm, col_w, 60 * mm, COR_PRETO, COR_DOURADO)
     doc.setFillColor(COR_DOURADO)
     doc.setFont(_fonte(lang, True), 13)
     doc.drawString(22 * mm, y - 16 * mm, c.get("preco_consciente", "Preço Consciente"))
-    # Texto da caixa preta, contido e centralizado
     doc.setFillColor(white)
     _texto_wrap_centrado_v(doc, c["preco_esq"], _fonte(lang), 10, 22 * mm, y - 24 * mm,
                            col_w - 8 * mm, white, 4.5 * mm, 34 * mm)
-    # Coluna direita
     xr = 18 * mm + col_w + 10 * mm
     doc.setFillColor(COR_PRETO)
     doc.setFont(_fonte(lang, True), 13)
     doc.drawString(xr, y - 8 * mm, c["preco_dir_titulo"])
-    # Texto da direita em área FIXA
     _texto_wrap_centrado_v(doc, c["preco_dir"], _fonte(lang), 10, xr, y - 16 * mm,
                            col_w, COR_CINZA, 4.5 * mm, 42 * mm)
-    # 3 cards em posições FIXAS
     yy = y - 66 * mm
     for tit, sub in c["preco_pilares"]:
         _caixa(doc, xr, yy - 26 * mm, col_w, 26 * mm, COR_FUNDO, COR_DOURADO)
@@ -4572,7 +4627,7 @@ def _slide_sobre_v2(doc, largura, altura, lang, c, pagina):
     doc.showPage()
     pagina += 1
 
-    # ===== SLIDE 11 — PORTFÓLIO (10) =====
+    # SLIDE 11 — PORTFÓLIO
     cab(c["portfolio_titulo"], 10)
     y = altura - 32 * mm
     y = _texto_wrap(doc, c["portfolio_texto"], _fonte(lang), 12, 18 * mm, y,
@@ -4590,6 +4645,7 @@ def _slide_sobre_v2(doc, largura, altura, lang, c, pagina):
     doc.showPage()
     pagina += 1
 
+    # SLIDE 12 — MODELO DE NEGÓCIO
     cab(c["negocio_titulo"], 11)
     y = altura - 32 * mm
     y = _texto_wrap(doc, c["negocio_texto"], _fonte(lang), 12, 18 * mm, y,
@@ -4618,7 +4674,7 @@ def _slide_sobre_v2(doc, largura, altura, lang, c, pagina):
     doc.showPage()
     pagina += 1
 
-    # ===== SLIDE 13 — BANNERS (12) =====
+    # SLIDE 13 — BANNERS
     cab(c["banners_titulo"], 12)
     y = altura - 32 * mm
     y = _texto_wrap(doc, c["banners_texto"], _fonte(lang), 11, 18 * mm, y,
@@ -4627,9 +4683,7 @@ def _slide_sobre_v2(doc, largura, altura, lang, c, pagina):
     y = _tabela_editorial(doc, 18 * mm, y, largura - 36 * mm,
                     c["banners_tabela"], [0.22, 0.22, 0.22, 0.34], _tam_ajus(lang, 9), lang,
                     moeda_cols=(1, 2))
-    y -= 10 * mm
-    y -= 10 * mm
-    y -= 10 * mm
+    y -= 30 * mm
     _caixa(doc, 18 * mm, y - 24 * mm, largura - 36 * mm, 24 * mm, HexColor("#EEF2FA"), COR_AZUL)
     doc.setFillColor(COR_AZUL)
     doc.setFont(_fonte(lang), 9)
@@ -4639,100 +4693,15 @@ def _slide_sobre_v2(doc, largura, altura, lang, c, pagina):
     doc.showPage()
     pagina += 1
 
-# ---- SLIDE 14 — PACOTES B2B + TABELA DE DESCONTOS (8 faixas, NOVA) ----
-def _slide_b2b_v2(doc, largura, altura, lang, c, pagina):
-    cab(c["b2b_titulo"], 3)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c["b2b_texto"], _fonte(lang), 11, 18 * mm, y,
-                    largura - 36 * mm, COR_PRETO, 5.5 * mm)
-    y -= 6 * mm
-    # Três planos em cartões
-    planos = c["b2b_planos"]
-    margem = 18 * mm
-    gap = 8 * mm
-    w = (largura - 2 * margem - 2 * gap) / 3
-    h = 30 * mm
-    for i, (tit, desc) in enumerate(planos):
-        x = margem + i * (w + gap)
-        _caixa(doc, x, y - h, w, h, COR_FUNDO, COR_DOURADO)
-        doc.setFillColor(COR_DOURADO)
-        doc.setFont(_fonte(lang, True), 9)
-        _texto_wrap(doc, tit, _fonte(lang, True), 9, x + 5 * mm, y - 6 * mm,
-                    w - 10 * mm, COR_DOURADO, 4 * mm)
-        doc.setFillColor(COR_CINZA)
-        _texto_wrap(doc, desc, _fonte(lang), 8, x + 5 * mm, y - 14 * mm,
-                    w - 10 * mm, COR_CINZA, 3.8 * mm, y_min=y - h + 3 * mm)
-    y -= h + 6 * mm
-    # Tabela de descontos (8 faixas + acima de 2000)
-    doc.setFillColor(COR_DOURADO)
-    doc.setFont(_fonte(lang, True), 11)
-    doc.drawString(18 * mm, y, c["tabela_descontos"])
-    y -= 6 * mm
-    tabela = c["b2b_tabela"]
-    col_w = [(largura - 36 * mm) * 0.25, (largura - 36 * mm) * 0.15,
-             (largura - 36 * mm) * 0.30, (largura - 36 * mm) * 0.30]
-    linha_h = 8 * mm
-    x0 = 18 * mm
-    # Cabeçalho
-    for j, titulo in enumerate(tabela[0]):
-        _caixa(doc, x0 + sum(col_w[:j]), y - linha_h, col_w[j], linha_h,
-               HexColor("#1A1A1A"), COR_DOURADO)
-        doc.setFillColor(COR_DOURADO)
-        doc.setFont(_fonte(lang, True), 8)
-        doc.drawString(x0 + sum(col_w[:j]) + 2 * mm, y - linha_h + 2.5 * mm, titulo)
-    y -= linha_h
-    # Linhas (alternando fundo)
-    for i, linha in enumerate(tabela[1:]):
-        cor_fundo = HexColor("#FAFAFA") if i % 2 == 0 else HexColor("#F0F0F0")
-        for j, val in enumerate(linha):
-            _caixa(doc, x0 + sum(col_w[:j]), y - linha_h, col_w[j], linha_h,
-                   cor_fundo, HexColor("#CCCCCC"))
-            doc.setFillColor(COR_PRETO)
-            doc.setFont(_fonte(lang, True) if j == 1 else _fonte(lang), 7.5)
-            doc.drawString(x0 + sum(col_w[:j]) + 2 * mm, y - linha_h + 2.5 * mm, val)
-        y -= linha_h
-    rodape(pagina)
-    doc.showPage()
+    # SLIDE 14 — PACOTES B2B + DESCONTOS (NOVA)
+    _slide_b2b_v2(pagina)
     pagina += 1
 
-# ---- SLIDE 15 — PROJEÇÕES (1ª década em 1/3/5/7/10, NOVA) ----
-def _slide_projecoes_v2(doc, largura, altura, lang, c, pagina):
-    cab(c["projecoes_titulo"], 4)
-    y = altura - 32 * mm
-    y = _texto_wrap(doc, c["projecoes_texto"], _fonte(lang), 11, 18 * mm, y,
-                    largura - 36 * mm, COR_PRETO, 5.5 * mm)
-    y -= 6 * mm
-    tabela = c["projecoes_tabela"]
-    col_w = [(largura - 36 * mm) * 0.30, (largura - 36 * mm) * 0.35,
-             (largura - 36 * mm) * 0.35]
-    linha_h = 9 * mm
-    x0 = 18 * mm
-    # Cabeçalho
-    for j, titulo in enumerate(tabela[0]):
-        _caixa(doc, x0 + sum(col_w[:j]), y - linha_h, col_w[j], linha_h,
-               HexColor("#1A1A1A"), COR_DOURADO)
-        doc.setFillColor(COR_DOURADO)
-        doc.setFont(_fonte(lang, True), 9)
-        doc.drawString(x0 + sum(col_w[:j]) + 3 * mm, y - linha_h + 3 * mm, titulo)
-    y -= linha_h
-    # Linhas (destaque dourado nos anos 1,3,5,7,10)
-    anos_destaque = [str(a) for a in [1, 3, 5, 7, 10]]
-    for i, linha in enumerate(tabela[1:]):
-        cor_fundo = HexColor("#FAFAFA") if i % 2 == 0 else HexColor("#F0F0F0")
-        if any(ano in linha[0] for ano in anos_destaque):
-            cor_fundo = HexColor("#FFF8E1")  # destaque dourado claro
-        for j, val in enumerate(linha):
-            _caixa(doc, x0 + sum(col_w[:j]), y - linha_h, col_w[j], linha_h,
-                   cor_fundo, HexColor("#CCCCCC"))
-            doc.setFillColor(COR_PRETO)
-            doc.setFont(_fonte(lang, True) if j == 0 else _fonte(lang), 8)
-            doc.drawString(x0 + sum(col_w[:j]) + 3 * mm, y - linha_h + 3 * mm, val)
-        y -= linha_h
-    rodape(pagina)
-    doc.showPage()
+    # SLIDE 15 — PROJEÇÕES (NOVA)
+    _slide_projecoes_v2(pagina)
     pagina += 1
 
-    # ===== SLIDE 16 — TRAÇÃO E RESULTADOS (15) =====
+    # SLIDE 16 — TRAÇÃO E RESULTADOS
     cab(c["tracao_titulo"], 15)
     y = altura - 32 * mm
     y = _texto_wrap(doc, c["tracao_texto"], _fonte(lang), 12, 18 * mm, y,
@@ -4743,7 +4712,7 @@ def _slide_projecoes_v2(doc, largura, altura, lang, c, pagina):
     doc.showPage()
     pagina += 1
 
-    # ===== SLIDE 17 — ROTEIRO ESTRATÉGICO (16) =====
+    # SLIDE 17 — ROTEIRO ESTRATÉGICO
     cab(c["roteiro_titulo"], 16)
     y = altura - 32 * mm
     y = _texto_wrap(doc, c["roteiro_texto"], _fonte(lang), 12, 18 * mm, y,
@@ -4767,7 +4736,7 @@ def _slide_projecoes_v2(doc, largura, altura, lang, c, pagina):
     doc.showPage()
     pagina += 1
 
-    # ===== SLIDE 18 — INVESTIMENTO E CONTATO (17) =====
+    # SLIDE 18 — INVESTIMENTO E CONTATO
     cab(c["invest_titulo"], 17)
     y = altura - 32 * mm
     y = _texto_wrap(doc, c["invest_texto"], _fonte(lang), 12, 18 * mm, y,
@@ -4805,8 +4774,8 @@ def _slide_projecoes_v2(doc, largura, altura, lang, c, pagina):
     rodape(pagina)
     doc.showPage()
     pagina += 1
-   
-    # ===== SLIDE 19A — PIX (18) =====
+
+    # SLIDE 19A — PIX
     cab(c.get("pix_titulo", "Brasil: A Infraestrutura Pix"), 18)
     y = altura - 32 * mm
     y = _texto_wrap(doc, c.get("pix_texto",
@@ -4833,7 +4802,7 @@ def _slide_projecoes_v2(doc, largura, altura, lang, c, pagina):
     doc.showPage()
     pagina += 1
 
-    # ===== SLIDE 19B — REFERÊNCIAS (19) =====
+    # SLIDE 19B — REFERÊNCIAS
     cab(c.get("ref_titulo", "Referências Bibliográficas"), 19)
     y = altura - 32 * mm
     y = _texto_wrap(doc, c.get("ref_intro",
@@ -4866,8 +4835,8 @@ def _slide_projecoes_v2(doc, largura, altura, lang, c, pagina):
     rodape(pagina)
     doc.showPage()
     pagina += 1
-    
-    # ===== SLIDE 19 — PÁGINA FINAL =====
+
+    # SLIDE 19 — PÁGINA FINAL
     doc.setFillColor(COR_PRETO)
     doc.rect(0, 0, largura, altura, stroke=0, fill=1)
     doc.setFillColor(COR_DOURADO)
@@ -4888,46 +4857,9 @@ def _slide_projecoes_v2(doc, largura, altura, lang, c, pagina):
         doc.drawCentredString(x + w / 2, altura * 0.40 + 11 * mm, item)
     rodape(pagina)
     doc.showPage()
+
     doc.save()
     return caminho_saida
-
-def gerar_todas():
-    import sys
-    args = [a for a in sys.argv[1:]]
-    if not args:
-        alvos = [(l, m) for l in CONTEUDO for m in ("texto", "slides")]
-    else:
-        lang = args[0]
-        modo = args[1] if len(args) > 1 else "texto"
-        alvos = [(lang, modo)]
-    for l, m in alvos:
-        try:
-            if m == "slides":
-                p = gerar_pdf_slides(l)
-            else:
-                p = gerar_pdf_texto(l)
-            print("OK", l, m, p)
-        except Exception as e:
-            print("ERRO", l, m, e)
-
-# ===== Cabeçalho (2 logos) + rodapé (X de Y) da apresentação de TEXTO =====
-_CTX_TEXTO = {"c": None, "lang": "pt"}
-
-def _rodape_texto(cnv, num, total):
-    c = _CTX_TEXTO["c"]
-    lang = _CTX_TEXTO["lang"]
-    _cabecalho_duas_logos(cnv, None, c, lang, cor_fundo=COR_AZUL)
-    _rodape(cnv, None, c, lang, num_pag=num, total_pag=total)
-
-def _linha_com_moeda(linha, moeda, cols):
-    nova = []
-    for i, cel in enumerate(linha):
-        s = str(cel).strip()
-        if i in cols and s and not s.startswith(moeda):
-            nova.append(f"{moeda} {cel}")
-        else:
-            nova.append(cel)
-    return nova
 
 # ============================================================
 # PATCH DE HARMONIZAÇÃO — texto cabe em qualquer idioma (JA/ZH/RU/HE/AR)
