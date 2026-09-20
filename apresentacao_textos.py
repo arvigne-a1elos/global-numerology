@@ -18,6 +18,7 @@ from reportlab.platypus import Table, TableStyle, Paragraph, SimpleDocTemplate, 
 from reportlab.lib.utils import ImageReader
 from reportlab.lib.pagesizes import A4, landscape
 
+_CTX_TEXTO = {}
 STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
 IDIOMAS = ["pt", "en", "es", "it", "fr", "de", "ja", "zh",
            "ru", "he", "ar", "id", "tr", "vi"]
