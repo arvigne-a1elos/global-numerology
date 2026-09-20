@@ -714,7 +714,7 @@ async def api_apresentacao_slides(lang: str = "pt"):
 # ===== CHECKOUT COLETIVO (desconto progressivo) =====
 @app.get("/criar-checkout-coletivo")
 async def criar_checkout_coletivo(lang: str = "pt", items: str = "[]"):
-    if not STRIPE_KEY:
+    if not stripe.api_key:
         raise HTTPException(503, "Stripe nao configurado")
     try:
         itens = json.loads(items)
@@ -734,7 +734,7 @@ async def criar_checkout_coletivo(lang: str = "pt", items: str = "[]"):
         if desc > 0:
             unit = int(round(unit * (1 - desc)))
         line_items.append({"price_data": {"currency": MOEDA.get(lang, "brl"),
-            "product_data": {"name": PRODUTOS.get(lang, PRODUTOS["pt"]).get(pid, pid)},
+            "product_data": {"name": PRODUCT_NAMES.get(lang, PRODUCT_NAMES["pt"]).get(pid, pid)},
             "unit_amount": unit}, "quantity": qtd})
     if not line_items:
         raise HTTPException(400, "Itens invalidos")
@@ -746,8 +746,8 @@ async def criar_checkout_coletivo(lang: str = "pt", items: str = "[]"):
         locale=locale,
         metadata={"tipo": "coletivo", "lang": lang, "desconto": str(int(desc * 100)),
                   "itens": json.dumps(itens)},
-        success_url=f"{BASE_URL}/api/pay/success?session_id={{CHECKOUT_SESSION_ID}}",
-        cancel_url=f"{BASE_URL}/api/pay/cancel")
+        success_url=SITE_URL + "/static/sucesso.html?session_id={CHECKOUT_SESSION_ID}",
+        cancel_url=SITE_URL + "/static/cancelado.html")
     return RedirectResponse(url=session.url)
 
 @app.get("/api/precos")
