@@ -610,9 +610,11 @@ window.OPCOES_TRAD = window.OPCOES_TRAD || {
 
 /* ===== FUNÇÕES AUXILIARES ===== */
 function tradOpcao(chave) {
-  var lang = getLang();
-  var t = window.OPCOES_TRAD[lang] || window.OPCOES_TRAD.pt;
-  return t[chave] || window.OPCOES_FALLBACK[chave] || chave;
+  var lang = (typeof getLang === 'function') ? getLang() : (localStorage.getItem('l') || 'pt');
+  var trad = window.OPCOES_TRAD || {};
+  var t = trad[lang] || trad.pt || {};
+  var fb = window.OPCOES_FALLBACK || {};
+  return t[chave] || fb[chave] || chave;
 }
 function tradCard(chave){ var l=getLang(); var t=window.CARDS_TRAD[l]||window.CARDS_TRAD.pt; return t[chave]||chave; }
 function tradMontar(chave){ var l=getLang(); var t=window.MONTAR_TRAD[l]||window.MONTAR_TRAD.pt; return t[chave]||chave; }
