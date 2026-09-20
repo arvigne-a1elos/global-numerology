@@ -818,28 +818,6 @@ function montarPassoNome(produto, lang) {
   document.getElementById("modalDadoInput").focus();
 }
 
-/* ===== GRADE DE ENERGIAS ===== */
-function montarEnergias() {
-  var lang = getLang();
-  var container = document.getElementById("energiasGrid")
-    || document.getElementById("energias")
-    || document.querySelector(".energias-grid");
-  if (!container) return;
-  var titulos = window.ENERGIA_TITULOS[lang] || window.ENERGIA_TITULOS["pt"];
-  var descs = window.ENERGIAS_DESC[lang] || window.ENERGIAS_DESC["pt"] || {};
-  var btn = window.ENERGIAS_BTN[lang] || "Pesquisar";
-  var html = "";
-  for (var i = 1; i <= 9; i++) {
-    html += '<div class="energia-card">'
-      + '<div class="energia-num">' + i + '</div>'
-      + '<div class="energia-nome">' + (titulos[String(i)] || ("Energia " + i)) + '</div>'
-      + '<div class="energia-desc">' + (descs[String(i)] || "") + '</div>'
-      + '<button class="btn btn-full" onclick="pesquisarEnergia(' + i + ')">' + btn + '</button>'
-      + '</div>';
-  }
-  container.innerHTML = html;
-}
-
 /* ===== CONFIRMAR BÔNUS COLETIVO ===== */
 function confirmarBC() {
   var itens = [];
@@ -1107,10 +1085,38 @@ function atualizarDestaqueArte()      { atualizarDestaqueCard('arteEnergiaSel', 
 function atualizarDestaqueOng()       { atualizarDestaqueCard('ongEnergiaSel', 'grafia'); }  
 
 function montarEnergias() {
-  montarSeletorEnergia('urnaEnergiaSel', atualizarDestaqueUrna, 8);
-  montarSeletorEnergia('eleitoralEnergiaSel', atualizarDestaqueEleitoral, 8);
-  montarSeletorEnergia('arteEnergiaSel', atualizarDestaqueArte, 2);
-  montarSeletorEnergia('ongEnergiaSel', atualizarDestaqueOng, 6);
+  var lang = (typeof getLang === 'function') ? getLang() : (localStorage.getItem('l') || 'pt');
+
+  // ===== 1. GRID DE CARDS DA SEÇÃO "ENERGIAS" (era linha 822) =====
+  var container = document.getElementById("energiasGrid")
+    || document.getElementById("energias")
+    || document.querySelector(".energias-grid");
+  if (container) {
+    var titulos = window.ENERGIA_TITULOS[lang] || window.ENERGIA_TITULOS["pt"];
+    var descs = window.ENERGIAS_DESC[lang] || window.ENERGIAS_DESC["pt"] || {};
+    var btn = window.ENERGIAS_BTN[lang] || "Pesquisar";
+    var html = "";
+    for (var i = 1; i <= 9; i++) {
+      html += '<div class="energia-card">'
+        + '<div class="energia-num">' + i + '</div>'
+        + '<div class="energia-nome">' + (titulos[String(i)] || ("Energia " + i)) + '</div>'
+        + '<div class="energia-desc">' + (descs[String(i)] || "") + '</div>'
+        + '<button class="btn btn-full" onclick="pesquisarEnergia(' + i + ')">' + btn + '</button>'
+        + '</div>';
+    }
+    container.innerHTML = html;
+  }
+
+  // ===== 2. SELETORES DE ENERGIA NOS FORMULÁRIOS (era linha 1109) =====
+  var uiE = window.ENERGIA_UI[lang] || window.ENERGIA_UI.pt;
+  var lbl = document.getElementById('urnaEnergiaLabel');
+  if(lbl) lbl.textContent = uiE.label;
+  var dica = document.getElementById('urnaEnergiaDica');
+  if(dica) dica.textContent = uiE.dica;
+  montarSeletorEnergia('urnaEnergiaSel', atualizarDestaqueUrna, 8);        // Urna ★8
+  montarSeletorEnergia('eleitoralEnergiaSel', atualizarDestaqueEleitoral, 8); // Eleitoral ★8
+  montarSeletorEnergia('arteEnergiaSel', atualizarDestaqueArte, 2);        // Artístico ★2
+  montarSeletorEnergia('ongEnergiaSel', atualizarDestaqueOng, 6);          // ONG ★6
   // Amor: sem seletor, energia fixa 5
   // Estudos: sem seletor, energia livre
   for(var k=1;k<=5;k++){
@@ -1229,4 +1235,3 @@ function atualizarDestaqueEnergia(){
     var e=energiaGrafia(texto).energia;
     row.classList.toggle('bate-energia', alvo>0 && e===alvo);
   }
-}
