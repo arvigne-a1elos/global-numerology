@@ -1089,7 +1089,7 @@ function atualizarDestaqueOng()       { atualizarDestaqueCard('ongEnergiaSel', '
 function montarEnergias() {
   var lang = (typeof getLang === 'function') ? getLang() : (localStorage.getItem('l') || 'pt');
 
-  // ===== 1. GRID DE CARDS DA SEÇÃO "ENERGIAS" (era linha 822) =====
+  // ===== 1. GRID DE CARDS DA SEÇÃO "ENERGIAS" =====
   var container = document.getElementById("energiasGrid")
     || document.getElementById("energias")
     || document.querySelector(".energias-grid");
@@ -1109,7 +1109,7 @@ function montarEnergias() {
     container.innerHTML = html;
   }
 
-  // ===== 2. SELETORES DE ENERGIA NOS FORMULÁRIOS (era linha 1109) =====
+  // ===== 2. SELETORES DE ENERGIA NOS FORMULÁRIOS =====
   var uiE = window.ENERGIA_UI[lang] || window.ENERGIA_UI.pt;
   var lbl = document.getElementById('urnaEnergiaLabel');
   if(lbl) lbl.textContent = uiE.label;
@@ -1236,4 +1236,4 @@ function atualizarDestaqueEnergia(){
     var texto=(p?p.dataset.valor||'':'')+' '+(inp?inp.value:'');
     var e=energiaGrafia(texto).energia;
     row.classList.toggle('bate-energia', alvo>0 && e===alvo);
-  }
+  }   
