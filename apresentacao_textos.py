@@ -4235,7 +4235,7 @@ def _caixa(doc, x, y, w, h, cor_fundo, cor_borda):
     doc.rect(x, y, w, h, stroke=1, fill=1)
 
 def gerar_pdf_slides(lang):
-    c = CONTEUDO.get(lang, CONTEUDO["pt"])
+    c = APRESENTACAO_TEXTOS.get(lang, APRESENTACAO_TEXTOS["pt"])
     largura, altura = landscape(A4)
     caminho_saida = os.path.join(STATIC_DIR, f"apresentacao_slides_{lang}.pdf")
     doc = canvas.Canvas(caminho_saida, pagesize=landscape(A4))
