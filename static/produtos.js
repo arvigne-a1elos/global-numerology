@@ -1224,16 +1224,3 @@ function montarSeletorEnergia(containerId, aoSelecionar, ideal){
   }
   return box;
 }
-
-function atualizarDestaqueEnergia(){
-  var box=document.getElementById('urnaEnergiaSel');
-  var alvo=box?parseInt(box.dataset.energia||'0',10):0;
-  for(var i=1;i<=5;i++){
-    var inp=document.getElementById('urnaNome'+i);
-    var p=document.getElementById('urnaPrefixo'+i);
-    var row=inp?inp.closest('.urna-grafia'):null;
-    if(!row) continue;
-    var texto=(p?p.dataset.valor||'':'')+' '+(inp?inp.value:'');
-    var e=energiaGrafia(texto).energia;
-    row.classList.toggle('bate-energia', alvo>0 && e===alvo);
-  }   
