@@ -1215,6 +1215,7 @@ function montarSeletorEnergia(containerId, aoSelecionar, ideal){
       if(aoSelecionar) aoSelecionar(parseInt(this.dataset.energia,10));
     };
     box.appendChild(b);
+  }      
 // Amor: sem seletor, energia fixa 5
 // Estudos: sem seletor, energia livre
 // Só marca a estrela e pré-seleciona se houver um ideal definido
