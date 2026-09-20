@@ -1068,42 +1068,78 @@ function atualizarGrafiasUrna(){
     if(inp){inp.placeholder=ph[i-1];}
   }  
 
-window.ENERGIA_UI = {
-  pt: { ideal: "Ideal para este produto", selecionada: "Energia selecionada" },
-  en: { ideal: "Ideal for this product", selecionada: "Selected energy" },
-  es: { ideal: "Ideal para este producto", selecionada: "Energía seleccionada" },
-  fr: { ideal: "Idéal pour ce produit", selecionada: "Énergie sélectionnée" },
-  de: { ideal: "Ideal für dieses Produkt", selecionada: "Ausgewählte Energie" },
-  it: { ideal: "Ideale per questo prodotto", selecionada: "Energia selezionata" },
-  ja: { ideal: "この製品に最適", selecionada: "選択されたエネルギー" },
-  zh: { ideal: "此产品理想选择", selecionada: "已选能量" },
-  id: { ideal: "Ideal untuk produk ini", selecionada: "Energi dipilih" },
-  tr: { ideal: "Bu ürün için ideal", selecionada: "Seçilen enerji" },
-  vi: { ideal: "Lý tưởng cho sản phẩm này", selecionada: "Năng lượng đã chọn" },
-  ru: { ideal: "Идеально для этого продукта", selecionada: "Выбранная энергия" },
-  he: { ideal: "אידיאלי למוצר זה", selecionada: "האנרגיה שנבחרה" },
-  hi: { ideal: "इस उत्पाद के लिए आदर्श", selecionada: "चयनित ऊर्जा" }
-};
-  
-  /* ===== BLOCO DE ENERGIA (FORA do for) ===== */
-  var uiE = window.ENERGIA_UI[lang] || window.ENERGIA_UI.pt;
-  var lbl = document.getElementById('urnaEnergiaLabel');
-  if(lbl) lbl.textContent = uiE.label;
-  var dica = document.getElementById('urnaEnergiaDica');
-  if(dica) dica.textContent = uiE.dica;
-  montarSeletorEnergia('urnaEnergiaSel', atualizarDestaqueEnergia, 8);        // Urna ★8
-  montarSeletorEnergia('eleitoralEnergiaSel', atualizarDestaqueEleitoral, 8); // Eleitoral ★8
-  montarSeletorEnergia('arteEnergiaSel', atualizarDestaqueArte, 2);           // Artístico ★2
-  montarSeletorEnergia('ongEnergiaSel', atualizarDestaqueOng, 6);             // ONG ★6
-  
+/* ===== DESTAQUE DE ENERGIA UNIFICADO (urna, eleitoral, artístico, ong) ===== */
+function atualizarDestaqueCard(containerId, tipo) {
+  var box = document.getElementById(containerId);
+  if (!box) return;
+  var alvo = parseInt(box.dataset.energia || '0', 10);
+  var card = box.closest('form') || box.parentNode;
+  // Captura os alvos das DUAS estruturas: .en-alvo (eleitoral/arte/ong) e .urna-grafia (urna)
+  var itens = card.querySelectorAll('.en-alvo, .urna-grafia');
+  for (var i = 0; i < itens.length; i++) {
+    var el = itens[i];
+    var texto = '';
+    if (el.classList.contains('urna-grafia')) {
+      // Estrutura da URNA: linha com prefixo [data-valor] + input
+      var inp = el.querySelector('input');
+      var pref = el.querySelector('[data-valor]');
+      texto = (pref ? (pref.dataset.valor || '') : '') + ' ' + (inp ? inp.value : '');
+    } else if (el.tagName === 'INPUT') {
+      // Estrutura genérica: input com prefixo [data-valor] na linha [data-grafia]
+      var linha = el.closest('[data-grafia]') || el.parentNode;
+      var pref2 = linha ? linha.querySelector('[data-valor]') : null;
+      texto = (pref2 ? (pref2.dataset.valor || '') : '') + ' ' + el.value;
+    } else {
+      // Elemento não-input (ex.: número eleitoral)
+      texto = el.dataset.valor || el.textContent || '';
+    }
+    var e = (tipo === 'numero')
+      ? energiaNumero(parseInt(String(texto).replace(/\D/g, ''), 10))
+      : energiaGrafia(texto).energia;
+    el.classList.toggle('bate-energia', alvo > 0 && e === alvo);
+  }
+}
+
+/* Os 4 wrappers — um para cada produto */
+function atualizarDestaqueUrna()      { atualizarDestaqueCard('urnaEnergiaSel', 'grafia'); }
+function atualizarDestaqueEleitoral() { atualizarDestaqueCard('eleitoralEnergiaSel', 'numero'); }
+function atualizarDestaqueArte()      { atualizarDestaqueCard('arteEnergiaSel', 'grafia'); }
+function atualizarDestaqueOng()       { atualizarDestaqueCard('ongEnergiaSel', 'grafia'); }  
+
+function montarEnergias() {
+  montarSeletorEnergia('urnaEnergiaSel', atualizarDestaqueUrna, 8);
+  montarSeletorEnergia('eleitoralEnergiaSel', atualizarDestaqueEleitoral, 8);
+  montarSeletorEnergia('arteEnergiaSel', atualizarDestaqueArte, 2);
+  montarSeletorEnergia('ongEnergiaSel', atualizarDestaqueOng, 6);
   // Amor: sem seletor, energia fixa 5
   // Estudos: sem seletor, energia livre
   for(var k=1;k<=5;k++){
     var inpK = document.getElementById('urnaNome'+k);
-    if(inpK) inpK.addEventListener('input', atualizarDestaqueEnergia);
+    if(inpK) inpK.addEventListener('input', atualizarDestaqueUrna);
   }
-  atualizarDestaqueEnergia();
+  atualizarDestaqueUrna();
 }
+
+/* Inicializa e reaplica na troca de idioma */
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',atualizarGrafiasUrna);}else{atualizarGrafiasUrna();}
+
+/* ===== SELETOR DE ENERGIA REUTILIZAVEL (1-9, 8 ideal) ===== */
+window.ENERGIA_UI = {
+  pt: { ideal: "Ideal para este produto", selecionada: "Energia selecionada", label: "Cargo + Energia Nome", dica: "Energia Ideal 8" },
+  en: { ideal: "Ideal for this product", selecionada: "Selected energy", label: "Position + Name Energy", dica: "Ideal Energy 8" },
+  es: { ideal: "Ideal para este producto", selecionada: "Energía seleccionada", label: "Cargo + Energía Nombre", dica: "Energía Ideal 8" },
+  fr: { ideal: "Idéal pour ce produit", selecionada: "Énergie sélectionnée", label: "Poste + Énergie Nom", dica: "Énergie Idéale 8" },
+  de: { ideal: "Ideal für dieses Produkt", selecionada: "Ausgewählte Energie", label: "Position + Namensenergie", dica: "Ideale Energie 8" },
+  it: { ideal: "Ideale per questo prodotto", selecionada: "Energia selezionata", label: "Carica + Energia Nome", dica: "Energia Ideale 8" },
+  ja: { ideal: "この製品に最適", selecionada: "選択されたエネルギー", label: "役職＋名前のエネルギー", dica: "理想のエネルギー8" },
+  zh: { ideal: "此产品理想选择", selecionada: "已选能量", label: "职位 + 姓名能量", dica: "理想能量 8" },
+  id: { ideal: "Ideal untuk produk ini", selecionada: "Energi dipilih", label: "Jabatan + Energi Nama", dica: "Energi Ideal 8" },
+  tr: { ideal: "Bu ürün için ideal", selecionada: "Seçilen enerji", label: "Pozisyon + İsim Enerjisi", dica: "İdeal Enerji 8" },
+  vi: { ideal: "Lý tưởng cho sản phẩm này", selecionada: "Năng lượng đã chọn", label: "Chức vụ + Năng lượng Tên", dica: "Năng lượng Lý tưởng 8" },
+  ru: { ideal: "Идеально для этого продукта", selecionada: "Выбранная энергия", label: "Должность + Энергия имени", dica: "Идеальная энергия 8" },
+  he: { ideal: "אידיאלי למוצר זה", selecionada: "האנרגיה שנבחרה", label: "תפקיד + אנרגיית שם", dica: "אנרגיה אידיאלית 8" },
+  hi: { ideal: "इस उत्पाद के लिए आदर्श", selecionada: "चयनित ऊर्जा", label: "पद + नाम ऊर्जा", dica: "आदर्श ऊर्जा 8" }
+};  
 
 function pagarUrna(){
   var lang=localStorage.getItem('l')||'pt';
@@ -1128,60 +1164,7 @@ function pagarUrna(){
   qs += '&energia=' + enc(energia);
   for(var i=1;i<=nomes.length;i++){ qs+='&nome'+i+'='+enc(nomes[i-1]); }
   window.location.href='/criar-checkout?'+qs;
-
-/* ===== DESTAQUE GENÉRICO DE ENERGIA ===== */
-/* Requisito mínimo no HTML: cada número (eleitoral) ou cada grafia (arte/ong)
-   recebe a classe  en-alvo  no elemento. Ex.:
-   <div class="en-alvo">34567</div>  (número eleitoral)
-   <input class="en-alvo" ...>       (input de grafia, com o prefixo ao lado) */
-function atualizarDestaqueCard(containerId, tipo) {
-  var box = document.getElementById(containerId);
-  if (!box) return;
-  var alvo = parseInt(box.dataset.energia || '0', 10);
-  var card = box.closest('form') || box.parentNode;
-  var itens = card.querySelectorAll('.en-alvo');
-  for (var i = 0; i < itens.length; i++) {
-    var el = itens[i];
-    var texto = '';
-    if (el.tagName === 'INPUT') {
-      var linha = el.closest('[data-grafia]') || el.parentNode;
-      var pref = linha ? linha.querySelector('[data-valor]') : null;
-      texto = (pref ? (pref.dataset.valor || '') : '') + ' ' + el.value;
-    } else {
-      texto = el.dataset.valor || el.textContent || '';
-    }
-    var e = (tipo === 'numero')
-      ? energiaNumero(parseInt(String(texto).replace(/\D/g, ''), 10))
-      : energiaGrafia(texto).energia;
-    el.classList.toggle('bate-energia', alvo > 0 && e === alvo);
-  }
 }
-
-/* As 3 funções que o seu bloco já chama (mantenha o bloco como está) */
-function atualizarDestaqueEleitoral() { atualizarDestaqueCard('eleitoralEnergiaSel', 'numero'); }
-function atualizarDestaqueArte()      { atualizarDestaqueCard('arteEnergiaSel', 'grafia'); }
-function atualizarDestaqueOng()       { atualizarDestaqueCard('ongEnergiaSel', 'grafia'); }
-
-/* Inicializa e reaplica na troca de idioma */
-if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',atualizarGrafiasUrna);}else{atualizarGrafiasUrna();}
-
-/* ===== SELETOR DE ENERGIA REUTILIZAVEL (1-9, 8 ideal) ===== */
-window.ENERGIA_UI = {
-  pt: { ideal: "Ideal para este produto", selecionada: "Energia selecionada", label: "Cargo + Energia Nome", dica: "Energia Ideal 8" },
-  en: { ideal: "Ideal for this product", selecionada: "Selected energy", label: "Position + Name Energy", dica: "Ideal Energy 8" },
-  es: { ideal: "Ideal para este producto", selecionada: "Energía seleccionada", label: "Cargo + Energía Nombre", dica: "Energía Ideal 8" },
-  fr: { ideal: "Idéal pour ce produit", selecionada: "Énergie sélectionnée", label: "Poste + Énergie Nom", dica: "Énergie Idéale 8" },
-  de: { ideal: "Ideal für dieses Produkt", selecionada: "Ausgewählte Energie", label: "Position + Namensenergie", dica: "Ideale Energie 8" },
-  it: { ideal: "Ideale per questo prodotto", selecionada: "Energia selezionata", label: "Carica + Energia Nome", dica: "Energia Ideale 8" },
-  ja: { ideal: "この製品に最適", selecionada: "選択されたエネルギー", label: "役職＋名前のエネルギー", dica: "理想のエネルギー8" },
-  zh: { ideal: "此产品理想选择", selecionada: "已选能量", label: "职位 + 姓名能量", dica: "理想能量 8" },
-  id: { ideal: "Ideal untuk produk ini", selecionada: "Energi dipilih", label: "Jabatan + Energi Nama", dica: "Energi Ideal 8" },
-  tr: { ideal: "Bu ürün için ideal", selecionada: "Seçilen enerji", label: "Pozisyon + İsim Enerjisi", dica: "İdeal Enerji 8" },
-  vi: { ideal: "Lý tưởng cho sản phẩm này", selecionada: "Năng lượng đã chọn", label: "Chức vụ + Năng lượng Tên", dica: "Năng lượng Lý tưởng 8" },
-  ru: { ideal: "Идеально для этого продукта", selecionada: "Выбранная энергия", label: "Должность + Энергия имени", dica: "Идеальная энергия 8" },
-  he: { ideal: "אידיאלי למוצר זה", selecionada: "האנרגיה שנבחרה", label: "תפקיד + אנרגיית שם", dica: "אנרגיה אידיאלית 8" },
-  hi: { ideal: "इस उत्पाद के लिए आदर्श", selecionada: "चयनित ऊर्जा", label: "पद + नाम ऊर्जा", dica: "आदर्श ऊर्जा 8" }
-};
 
 /* Mapa letra->valor (numerologia pitagorica) */
 window.LETRA_VALOR = {A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8};
@@ -1193,6 +1176,13 @@ function energiaGrafia(texto){
   var soma = 0;
   for(var i=0;i<limpo.length;i++){ soma += (window.LETRA_VALOR[limpo[i]]||0); }
   return {soma:soma, energia:reduzirNum(soma)};
+}
+
+/* NOVA: energia de um número (Nº Eleitoral) */
+function energiaNumero(num){
+  var n = parseInt(num, 10) || 0;
+  if (n <= 0) return 0;
+  return reduzirNum(n);
 }
 
 function montarSeletorEnergia(containerId, aoSelecionar, ideal){
