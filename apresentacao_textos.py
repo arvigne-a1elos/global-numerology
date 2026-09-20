@@ -168,10 +168,10 @@ def _rodape(canvas, doc_, c, lang, num_pag=None, total_pag=None):
 
 def gerar_pdf_texto(lang="pt", caminho_saida=None):
     """Gera o PDF documento A4 retrato — texto limpo. Retorna o caminho."""
-    global CONTEUDO
-    if lang not in CONTEUDO:
+    global APRESENTACAO_TEXTOS
+    if lang not in APRESENTACAO_TEXTOS:
         lang = "pt"
-    c = CONTEUDO.get(lang, CONTEUDO.get("pt", {}))
+    c = APRESENTACAO_TEXTOS.get(lang, APRESENTACAO_TEXTOS.get("pt", {}))
 
     if not caminho_saida:
         os.makedirs(STATIC_DIR, exist_ok=True)
