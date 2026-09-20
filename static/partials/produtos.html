@@ -64,6 +64,7 @@
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-ia')" data-i18n="pesquisar_btn">pesquisar</button>
             </div>
+            
             <!-- 5. Validação Nome de Urna -->
             <div class="product-card" data-prod="urna">
                 <div class="icon">🗳️</div>
@@ -78,20 +79,85 @@
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-urna')" data-i18n="start_urna">Iniciar Validação</button>
             </div>
+
+            <!-- Formulário do Nome de Urna (aparece ao clicar) -->
+            <form id="form-urna" class="hidden">
+             <label>Nome completo da pessoa</label>
+             <input id="urnaNome" type="text" placeholder="Nome completo">
+
+             <label>Cargo</label>
+             <select id="urnaCargo">
+              <option value="vereador">Vereador</option>
+              <option value="prefeito">Prefeito</option>
+              <option value="deputado">Deputado</option>
+              <option value="governador">Governador</option>
+              <option value="senador">Senador</option>
+              <option value="presidente">Presidente</option>
+             </select>
+
+             <label id="urnaGeneroLabel">Gênero</label>
+             <select id="urnaGenero">
+              <option value="masculino" id="urnaGenMasc">Masculino</option>
+              <option value="feminino" id="urnaGenFem">Feminino</option>
+             </select>
+             <p id="urnaAviso" class="urna-aviso"></p>
+
+             <label>Grafias do nome de urna</label>
+             <div class="urna-grafia">
+              <span class="urna-prefixo" id="urnaPrefixo1" data-valor=""></span>
+              <input id="urnaNome1" type="text" placeholder="Grafia 1">
+             </div>
+             <div class="urna-grafia">
+              <span class="urna-prefixo" id="urnaPrefixo2" data-valor=""></span>
+              <input id="urnaNome2" type="text" placeholder="Grafia 2">
+             </div>
+             <div class="urna-grafia">
+              <span class="urna-prefixo" id="urnaPrefixo3" data-valor=""></span>
+              <input id="urnaNome3" type="text" placeholder="Grafia 3">
+             </div>
+             <div class="urna-grafia">
+              <span class="urna-prefixo" id="urnaPrefixo4" data-valor=""></span>
+              <input id="urnaNome4" type="text" placeholder="Grafia 4">
+             </div>
+             <div class="urna-grafia">
+              <span class="urna-prefixo" id="urnaPrefixo5" data-valor=""></span>
+              <input id="urnaNome5" type="text" placeholder="Grafia 5">
+             </div>
+
+             <label id="urnaEnergiaLabel" class="urna-label"></label>
+             <p id="urnaEnergiaDica" class="urna-dica"></p>
+             <div id="urnaEnergiaSel" class="energia-selector"></div>
+
+             <button class="btn btn-full" onclick="pagarUrna()">Pagar</button>
+            </form>
+        
             <!-- 6. Número Eleitoral -->
             <div class="product-card" data-prod="eleitoral">
-                <div class="icon">🔢</div>
-                <h3 class="prod-nome" data-i18n="p_eleitoral">Número Eleitoral</h3>
-                <div class="price prod-preco">R$ 26</div>
-                <p class="desc" data-i18n="desc_eleitoral">Sugestões de números com energia 8 para sua candidatura política. Análise com PDF sigiloso.</p>
-                <ul class="features">
-                    <li>✅ 5 números sugeridos</li>
-                    <li>✅ Prioridade energia 8 (Poder)</li>
-                    <li>✅ Cálculo completo</li>
-                    <li>📲 PDF + QRCode</li>
-                </ul>
-                <button class="btn btn-full" onclick="toggleForm('form-eleitoral')" data-i18n="start_eleitoral">Calcular Nº Eleitoral</button>
+                 <div class="icon">🔢</div>
+                 <h3 class="prod-nome" data-i18n="p_eleitoral">Número Eleitoral</h3>
+                 <div class="price prod-preco">R$ 26</div>
+                 <p class="desc" data-i18n="desc_eleitoral">Sugestões de números com energia 8 para sua candidatura política. Análise com PDF sigiloso.</p>
+                 <ul class="features">
+                     <li>✅ 5 números sugeridos</li>
+                     <li>✅ Prioridade energia 8 (Poder)</li>
+                     <li>✅ Cálculo completo</li>
+                     <li>📲 PDF + QRCode</li>
+                 </ul>
+                 <button class="btn btn-full" onclick="toggleForm('form-eleitoral')" data-i18n="start_eleitoral">Calcular Nº Eleitoral</button>
             </div>
+
+            <!-- Formulário do Nº Eleitoral (aparece ao clicar) -->
+            <form id="form-eleitoral" class="hidden">
+              <label>Nome completo do candidato</label>
+              <input id="eleitoralNome" type="text" placeholder="Nome completo">
+              <label>Sigla do partido</label>
+              <input id="eleitoralSigla" type="text" placeholder="Sigla">
+              <label id="eleitoralEnergiaLabel" class="urna-label"></label>
+              <p id="eleitoralEnergiaDica" class="urna-dica"></p>
+              <div id="eleitoralEnergiaSel" class="energia-selector"></div>
+              <button class="btn btn-full" onclick="pagarEleitoral()">Pagar</button>
+            </form>
+        
             <!-- 7. Número do Imóvel -->
             <div class="product-card" data-prod="imovel">
                 <div class="icon">🏠</div>
@@ -120,6 +186,7 @@
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-calendario')" data-i18n="pesquisar_btn">pesquisar</button>
             </div>
+        
             <!-- 9. Validação Nome Artístico -->
             <div class="product-card" data-prod="artistico">
                 <div class="icon">🎭</div>
@@ -132,8 +199,40 @@
                     <li>✅ Energia do nome</li>
                     <li>📲 PDF + QRCode</li>
                 </ul>
-                <button class="btn btn-full" onclick="toggleForm('form-artistico')" data-i18n="pesquisar_btn">pesquisar</button>
+                <button class="btn btn-full" onclick="toggleForm('form-artistico')" data-i18n="pesquisar_btn">Iniciar Validação</button>
             </div>
+
+            <!-- Formulário do Artístico (aparece ao clicar) -->
+            <form id="form-form-artistico" class="hidden">
+             <label>Nome artístico completo</label>
+             <input id="arteNome" type="text" placeholder="Nome artístico">
+             <label>Grafias do nome artístico</label>
+             <div class="arte-grafia">
+              <span class="arte-prefixo" data-valor=""></span>
+              <input id="arteNome1" type="text" placeholder="Grafia 1">
+             </div>
+             <div class="arte-grafia">
+              <span class="arte-prefixo" data-valor=""></span>
+              <input id="arteNome2" type="text" placeholder="Grafia 2">
+             </div>
+             <div class="arte-grafia">
+              <span class="arte-prefixo" data-valor=""></span>
+              <input id="arteNome3" type="text" placeholder="Grafia 3">
+             </div>
+             <div class="arte-grafia">
+              <span class="arte-prefixo" data-valor=""></span>
+              <input id="arteNome4" type="text" placeholder="Grafia 4">
+             </div>
+             <div class="arte-grafia">
+              <span class="arte-prefixo" data-valor=""></span>
+              <input id="arteNome5" type="text" placeholder="Grafia 5">
+             </div>
+             <label id="arteEnergiaLabel" class="urna-label"></label>
+             <p id="arteEnergiaDica" class="urna-dica"></p>
+             <div id="arteEnergiaSel" class="energia-selector"></div>
+             <button class="btn btn-full" onclick="pagarArte()">Pagar</button>
+            </form>
+        
             <!-- 10. Planejamento Nome de Bebê -->
             <div class="product-card" data-prod="bebe">
                 <div class="icon">👶</div>
@@ -289,6 +388,7 @@
             </ul>
             <button class="btn btn-full" onclick="pesquisar('nome_equipe')" data-i18n="pesquisar_btn">pesquisar</button>
            </div>
+           
            <!-- 21. Nome de ONG -->
            <div class="product-card" data-prod="nome_ong">
             <div class="icon">🤝</div>
@@ -303,6 +403,38 @@
             </ul>
             <button class="btn btn-full" onclick="pesquisar('nome_ong')" data-i18n="pesquisar_btn">pesquisar</button>
            </div>
+
+           <!-- Formulário da ONG (aparece ao clicar) -->
+           <form id="form-ong" class="hidden">
+            <label>Nome da ONG / Associação / Instituto / Fundação</label>
+            <input id="ongNome" type="text" placeholder="Nome da organização">
+            <label>Grafias do nome</label>
+            <div class="ong-grafia">
+             <span class="ong-prefixo" data-valor=""></span>
+             <input id="ongNome1" type="text" placeholder="Grafia 1">
+            </div>
+            <div class="ong-grafia">
+             <span class="ong-prefixo" data-valor=""></span>
+             <input id="ongNome2" type="text" placeholder="Grafia 2">
+            </div>
+            <div class="ong-grafia">
+             <span class="ong-prefixo" data-valor=""></span>
+             <input id="ongNome3" type="text" placeholder="Grafia 3">
+            </div>
+            <div class="ong-grafia">
+             <span class="ong-prefixo" data-valor=""></span>
+             <input id="ongNome4" type="text" placeholder="Grafia 4">
+            </div>
+            <div class="ong-grafia">
+             <span class="ong-prefixo" data-valor=""></span>
+             <input id="ongNome5" type="text" placeholder="Grafia 5">
+            </div>
+            <label id="ongEnergiaLabel" class="urna-label"></label>
+            <p id="ongEnergiaDica" class="urna-dica"></p>
+            <div id="ongEnergiaSel" class="energia-selector"></div>
+            <button class="btn btn-full" onclick="pagarOng()">Pagar</button>
+           </form>
+        
            <!-- 22. Nome do Projeto -->
            <div class="product-card" data-prod="nome_projeto">
             <div class="icon">🚀</div>
