@@ -252,7 +252,18 @@ PRODUTOS = {
         "nome_projeto": "Tên Dự Án", "nome_evento": "Tên Sự Kiện"}     
     }
 
-# ===== PRICE IDS STRIPE (23 produtos, 12 idiomas) =====
+# Aliases para compatibilidade com o checkout coletivo e _criar_sessao
+PRODUCT_NAMES = PRODUTOS
+BASE_URL = SITE_URL
+
+# Energia ideal (★) por produto — padrão quando o cliente não escolhe
+IDEAL_ENERGIA = {
+    "urna": 8, "eleitoral": 8, "artistico": 2,
+    "nome_ong": 6, "assinatura": 8, "negocio": 8,
+}
+ENERGIA_FIXA = {}
+
+# ===== PRICE IDS STRIPE (23 produtos, 14 idiomas) =====
 PRICE_IDS = {
     "pt": {"express": "price_1TxocVBMLa84bVJ0EL0kb9Dn", "completo": "price_1TxohlBMLa84bVJ0jVj9307b",
            "urna": "price_1TxollBMLa84bVJ0Wk5zIak6", "eleitoral": "price_1TxopFBMLa84bVJ0jvtJExVj",
