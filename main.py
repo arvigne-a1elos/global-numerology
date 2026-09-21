@@ -2,7 +2,7 @@
 # main.py - A1ELOS Global Numerology API
 # VERSÃO CONSOLIDADA CORRIGIDA - TODAS AS ROTAS DOS 23 PRODUTOS
 import stripe
-from produtos.mapa import reduzir, calc_mapa, calc_grid, analisar_express, analisar_completo, analisar_vida
+from produtos.mapa import reduzir, calc_mapa, calc_grid, analisar_express, analisar_completo, analisar_vidaF
 from produtos.nome import analisar_nome
 from produtos.urna import validar_nomes_urna
 from produtos.eleitoral import gerar_numeros
@@ -475,6 +475,27 @@ ENERGIAS = {
     4: "Trabalho", 5: "Liberdade", 6: "Familia",
     7: "Sabedoria", 8: "Poder e Prosperidade (IDEAL)", 9: "Humanitarismo",
 }
+
+# ===== ENERGIAS POR PRODUTO =====
+# Ideal (★): padrão pré-selecionado, mas o cliente SEMPRE pode mudar
+IDEAL_ENERGIA = {
+    "urna": 8,        # Validação Nome de Urna
+    "eleitoral": 8,   # Número Eleitoral
+    "artistico": 2,   # Validação Nome Artístico
+    "nome_ong": 6,    # Nome de ONG
+    "assinatura": 8,  # Validação de Assinaturas
+    "negocio": 8,     # Nome para Negócio/Produto
+}
+
+# Fixa sem seletor: NENHUM produto usa.
+# express/vida/completo/calendario → números próprios do cliente (fora da função)
+# casal/familia → tabela de compatibilidade do livro (fora da função)
+ENERGIA_FIXA = {}
+
+# Semântica das energias do amor (para projetos sob encomenda e PDFs):
+# 5 = amor de casamento, namoro, paixão, sexual
+# 6 = amor altruísta, fraternal, humanitário
+# Relações humanas → usar a tabela do livro para nivelar compatibilidades
 
 # ===== GERADOR DE PDF (usa gerador_pdf.py se existir; senão fallback interno) =====
 def _gerar_pdf_local(prod, data, lang, nome, bd, dado=""):
