@@ -37,7 +37,7 @@ nav.sections a:hover{color:var(--gold)}
 }
 .lang-btn:hover { border-color: #C9A94E; color: #fff; transform: translateY(-1px); }
 .lang-btn.active { border-color: #C9A94E; background: rgba(201,169,78,.18); color: #C9A94E; box-shadow: 0 0 8px rgba(201,169,78,.25); }
-}
+
 .logo-img {
     width: 210px; height: 210px; margin-bottom: 30px; border-radius: 50%;
     box-shadow: 0 0 30px rgba(201,169,78,0.2);
