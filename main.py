@@ -250,9 +250,6 @@ PRODUTOS = {
         "nome_projeto": "Tên Dự Án", "nome_evento": "Tên Sự Kiện"}     
     }
 
-success_url=BASE_URL + "/static/sucesso.html?session_id={CHECKOUT_SESSION_ID}",
-cancel_url=BASE_URL + "/static/cancelado.html"
-
 # ===== PRICE IDS STRIPE (23 produtos, 14 idiomas) =====
 PRICE_IDS = {
     "pt": {"express": "price_1TxocVBMLa84bVJ0EL0kb9Dn", "completo": "price_1TxohlBMLa84bVJ0jVj9307b",
@@ -408,6 +405,9 @@ PRODUTO_TARGET = {
     "nome_projeto": "calculadora", "nome_evento": "calculadora"
 }
 
+# ===== ALIAS PARA COMPATIBILIDADE (checkout coletivo) =====
+PRODUCT_NAMES = PRODUTOS
+
 # ===== MODELOS PYDANTIC =====
 class PayReq(BaseModel):
     nome: str
@@ -479,24 +479,22 @@ ENERGIAS = {
 
 # ===== ENERGIAS POR PRODUTO =====
 # Ideal (★): padrão pré-selecionado, mas o cliente SEMPRE pode mudar
+# Chaves seguem os IDs reais usados no frontend (produtos.html/app.js)
 IDEAL_ENERGIA = {
-    "urna": 8,        # Validação Nome de Urna
-    "eleitoral": 8,   # Número Eleitoral
-    "artistico": 2,   # Validação Nome Artístico
-    "nome_ong": 6,    # Nome de ONG
-    "assinatura": 8,  # Validação de Assinaturas
-    "negocio": 8,     # Nome para Negócio/Produto
+    "urna": "8",        # Validação Nome de Urna (poder)
+    "eleitoral": "8",   # Número Eleitoral (poder)
+    "artistico": "2",   # Validação Nome Artístico (cooperação, expressão)
+    "nome_ong": "6",    # ONG, Instituto, Associação, Fundação (amor altruísta/humanitário)
+    "assinatura": "8",  # Validação de Assinaturas (poder)
+    "negocio": "8",     # Nome para Negócio/Produto (poder)
 }
-
-# Fixa sem seletor: NENHUM produto usa.
-# express/vida/completo/calendario → números próprios do cliente (fora da função)
-# casal/familia → tabela de compatibilidade do livro (fora da função)
-ENERGIA_FIXA = {}
-
-# Semântica das energias do amor (para projetos sob encomenda e PDFs):
-# 5 = amor de casamento, namoro, paixão, sexual
-# 6 = amor altruísta, fraternal, humanitário
-# Relações humanas → usar a tabela do livro para nivelar compatibilidades
+# Fixa (sem seletor): energia gravada no metadata para o PDF usar na explicação.
+# O GRAU DE COMPATIBILIDADE de casal/família continua vindo SOMENTE da tabela Cissay.
+# Aqui o 5 alimenta a camada textual (energia 5 = campo afetivo, paixão, envolvimento).
+ENERGIA_FIXA = {
+    "casal": "5",    # Mapa do Casal: energia 5 para explicação afetiva
+    "familia": "5",  # Mapa Família Premium: idem
+}
 
 # ===== GERADOR DE PDF (usa gerador_pdf.py se existir; senão fallback interno) =====
 def _gerar_pdf_local(prod, data, lang, nome, bd, dado=""):
@@ -768,8 +766,8 @@ async def criar_checkout_coletivo(lang: str = "pt", items: str = "[]"):
         locale=locale,
         metadata={"tipo": "coletivo", "lang": lang, "desconto": str(int(desc * 100)),
                   "itens": json.dumps(itens)},
-        success_url=SITE_URL + "/static/sucesso.html?session_id={CHECKOUT_SESSION_ID}",
-        cancel_url=SITE_URL + "/static/cancelado.html")
+        success_url=BASE_URL + "/static/sucesso.html?session_id={CHECKOUT_SESSION_ID}",
+        cancel_url=BASE_URL + "/static/cancelado.html")
     return RedirectResponse(url=session.url)
 
 @app.get("/api/precos")
@@ -997,7 +995,7 @@ def config():
     return {"stripe_pk": STRIPE_PUB}
 
 @app.get("/api/health")
-def health():
+def health_api():
     return {"status": "ok", "stripe": bool(STRIPE_KEY)}
 
 # ===== WEBHOOK STRIPE =====
