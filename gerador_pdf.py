@@ -1,7 +1,8 @@
 # gerador_pdf.py - A1ELOS Global Numerology
-# ORQUESTRADOR: escolhe o template certo, chama o pdf_service e entrega (PDF + QRCode).
-# Papel único: gerar_pdf(produto, dados, lang, nome, nascimento) -> {pdf, qr, url, pdf_ok}
-# Sem cálculo (calc_service), sem textos (dicionarios), sem renderização (pdf_service).
+# ORQUESTRADOR: escolhe o template certo, enriquece os dados com a semântica
+# (energias, vidas, formas/cores, números-mestre) e chama o pdf_service.
+# Papel: gerar_pdf(produto, dados, lang, nome, nascimento) -> caminho do PDF
+# Sem cálculo (produtos.*), sem textos (referencia.semantica), sem renderização (pdf_service).
 
 import os, uuid, base64, io, logging
 import qrcode
@@ -13,7 +14,36 @@ logger = logging.getLogger(__name__)
 
 BASE_URL = os.getenv("BASE_URL", os.getenv("SITE_URL", "https://global-numerology.onrender.com"))
 
-# ===== ENTREGA PDF + QRCODE (movida do main.py) =====
+# ===== SEMANTICA (energias, vidas, formas e cores) - IMPORT OPCIONAL =====
+# O gerador NUNCA quebra se o módulo ainda não existir.
+try:
+    from referencia.semantica import (obter_texto_energia, obter_texto_vida,
+                                      renderizar_forma_cor, obter_descricao_mestre)
+    SEMANTICA_OK = True
+except Exception:
+    SEMANTICA_OK = False
+
+# ===== ENRIQUECE OS DADOS COM A SEMANTICA (14 idiomas) =====
+def _enriquecer_semantica(data, lang):
+    """Injeta desc_life e forma_cor no dict de dados, se houver life_path."""
+    if not SEMANTICA_OK or not isinstance(data, dict) or not data.get("life_path"):
+        return data
+    try:
+        valor = data["life_path"]
+        if valor in (11, 22, 33):
+            desc = obter_descricao_mestre(valor, lang)
+        else:
+            desc = obter_texto_energia(valor, lang)
+        if desc:
+            data["desc_life"] = desc
+        fc = renderizar_forma_cor(valor, lang)
+        if fc.get("forma") and fc.get("cor"):
+            data["forma_cor"] = fc
+    except Exception as e:
+        logger.error(f"Falha semantica: {e}")
+    return data
+
+# ===== ENTREGA PDF + QRCODE =====
 def _entregar_arquivo(tipo, nome, lang="pt", extra=""):
     """Gera PDF + QRCode (sem email). Se o PDF falhar, entrega apenas o QRCode."""
     os.makedirs("static/relatorios", exist_ok=True)
@@ -45,7 +75,7 @@ def _entregar_arquivo(tipo, nome, lang="pt", extra=""):
         arquivo_qr = None
     return {"pdf": arquivo_pdf, "qr": arquivo_qr, "url": alvo, "pdf_ok": pdf_ok}
 
-# ===== PAGINA DE SUCESSO (movida do main.py) =====
+# ===== PAGINA DE SUCESSO =====
 def pagina_sucesso(pdf_path, nome, prod_nome, lang="pt"):
     T = PDF_TEXTS.get(lang, PDF_TEXTS["pt"])
     base = PDF_TEXTS["pt"]
@@ -94,6 +124,9 @@ def gerar_pdf(prod, data, lang="pt", nome="", bd="", dado=""):
     Para urna: data = {nome_completo, cargo_label, resultados, sugestoes}
     Para eleitoral: data = {sigla, cargo_label, sugestoes, numero_existente}
     """
+    # Enriquecimento semântico (desc_life + forma_cor) para produtos com life_path
+    _enriquecer_semantica(data, lang)
+
     if prod == "express":
         return pdf8(data, nome, bd, lang)
     if prod == "completo":
