@@ -2,7 +2,7 @@
 # main.py - A1ELOS Global Numerology API
 # VERSÃO CONSOLIDADA CORRIGIDA - TODAS AS ROTAS DOS 23 PRODUTOS
 import stripe
-from produtos.mapa import reduzir, calc_mapa, calc_grid, analisar_express, analisar_completo, analisar_vidaF
+from produtos.mapa import reduzir, calc_mapa, calc_grid, analisar_express, analisar_completo, analisar_vida
 from produtos.nome import analisar_nome
 from produtos.urna import validar_nomes_urna
 from produtos.eleitoral import gerar_numeros
