@@ -33,7 +33,15 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse, Response
 from referencia.precos import VALORES, SIMBOLO, PRECO_DISPLAY, PRODUTO_FAIXA, preco_local, preco_display
-
+# ===== SEMANTICA (energias, vidas, formas e cores) - IMPORT OPCIONAL =====
+# O main NUNCA quebra se o módulo ainda não existir: import protegido.
+try:
+    from referencia.semantica import (obter_texto_energia, obter_texto_vida,
+                                      renderizar_forma_cor)
+    SEMANTICA_OK = True
+except Exception:
+    SEMANTICA_OK = False
+    logger = None
 # ===== MOEDAS POR IDIOMA (ISO 4217, para o Stripe) =====
 MOEDA = {
     "pt": "brl", "en": "usd", "es": "eur", "it": "eur", "fr": "eur", "de": "eur",
