@@ -87,6 +87,13 @@ def pagina_sucesso(pdf_path, nome, prod_nome, lang="pt"):
             f'<p>{tx("gerado").format(nome=nome, prod=prod_nome)}</p>{btn}{qr_html}'
             f'<a href="/" style="color:#C9A94E">{tx("voltar")}</a></body></html>')
 
+try:
+    from referencia.semantica import (obter_texto_energia, obter_texto_vida,
+                                      renderizar_forma_cor, obter_descricao_mestre)
+    SEMANTICA_OK = True
+except Exception:
+    SEMANTICA_OK = False
+
 # ===== FUNÇÃO ÚNICA DO ORQUESTRADOR =====
 def gerar_pdf(prod, data, lang="pt", nome="", bd="", dado=""):
     """Gera o PDF do produto no idioma e retorna o caminho do arquivo.
