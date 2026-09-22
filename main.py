@@ -611,12 +611,12 @@ PRODUTOS_IA = [
     "ong", "nickname",
 ]
 
-def _criar_sessao(produto, lang="pt", nome="", birth="", meta_extra=None):
+def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=None):
     if lang not in PRICE_IDS or produto not in PRICE_IDS[lang]:
         raise HTTPException(status_code=400, detail="Idioma ou produto invalido")
     price_id = PRICE_IDS[lang].get(produto, "")
     nome_prod = PRODUTOS.get(lang, PRODUTOS["pt"]).get(produto, produto)
-    meta = {"tipo": produto, "lang": lang, "nome": nome, "birth": birth}
+    meta = {"tipo": produto, "lang": lang, "nome": nome, "birth": birth, "email": email}
     if meta_extra:
         meta.update(meta_extra)
     # Energia padrão: ideal (★) se existir; senão fixa; senão mantém a escolhida
