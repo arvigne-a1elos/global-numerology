@@ -1146,7 +1146,7 @@ window.ENERGIA_UI = {
   vi: { ideal: "Lý tưởng cho sản phẩm này", selecionada: "Năng lượng đã chọn", label: "Chức vụ + Năng lượng Tên", dica: "Năng lượng Lý tưởng 8" },
   ru: { ideal: "Идеально для этого продукта", selecionada: "Выбранная энергия", label: "Должность + Энергия имени", dica: "Идеальная энергия 8" },
   he: { ideal: "אידיאלי למוצר זה", selecionada: "האנרגיה שנבחרה", label: "תפקיד + אנרגיית שם", dica: "אנרגיה אידיאלית 8" },
-  hi: { ideal: "इस उत्पाद के लिए आदर्श", selecionada: "चयनित ऊर्जा", label: "पद + नाम ऊर्जा", dica: "आदर्श ऊर्जा 8" }
+  ar: { ideal: "الأمثل لهذا المنتج", selecionada: "الطاقة المحددة", label: "المنصب + طاقة الاسم", dica: "الطاقة المثالية 8" },
 };  
 
 function pagarUrna(){
