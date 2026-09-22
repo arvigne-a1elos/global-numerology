@@ -99,8 +99,6 @@ try:
 except Exception as e:
     logger.error(f"DB init adiado: {e}")
 
-
-
 # ===== FONTES PARA IDIOMAS (CJK + Cirílico) =====
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.cidfonts import UnicodeCIDFont
