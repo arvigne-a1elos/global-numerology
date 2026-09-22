@@ -253,13 +253,6 @@ PRODUTOS = {
 success_url=BASE_URL + "/static/sucesso.html?session_id={CHECKOUT_SESSION_ID}",
 cancel_url=BASE_URL + "/static/cancelado.html"
 
-# Energia ideal (★) por produto — padrão quando o cliente não escolhe
-IDEAL_ENERGIA = {
-    "urna": 8, "eleitoral": 8, "artistico": 2,
-    "nome_ong": 6, "assinatura": 8, "negocio": 8,
-}
-ENERGIA_FIXA = {}
-
 # ===== PRICE IDS STRIPE (23 produtos, 14 idiomas) =====
 PRICE_IDS = {
     "pt": {"express": "price_1TxocVBMLa84bVJ0EL0kb9Dn", "completo": "price_1TxohlBMLa84bVJ0jVj9307b",
