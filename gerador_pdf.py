@@ -87,12 +87,16 @@ def pagina_sucesso(pdf_path, nome, prod_nome, lang="pt"):
             f'<p>{tx("gerado").format(nome=nome, prod=prod_nome)}</p>{btn}{qr_html}'
             f'<a href="/" style="color:#C9A94E">{tx("voltar")}</a></body></html>')
 
-try:
-    from referencia.semantica import (obter_texto_energia, obter_texto_vida,
-                                      renderizar_forma_cor, obter_descricao_mestre)
-    SEMANTICA_OK = True
-except Exception:
-    SEMANTICA_OK = False
+    # Descrição do Caminho de Vida (usa a semântica em 14 idiomas)
+    if SEMANTICA_OK and isinstance(data, dict) and data.get("life_path"):
+        valor = data["life_path"]
+        if valor in (11, 22, 33):
+            desc = obter_descricao_mestre(valor, lang)
+        else:
+            desc = obter_texto_energia(valor, lang)
+        if desc:
+            e.append(Paragraph(f"<b>Caminho de Vida {valor}:</b> {desc}",
+                               estilo(10, False, DARK)))
 
 # ===== FUNÇÃO ÚNICA DO ORQUESTRADOR =====
 def gerar_pdf(prod, data, lang="pt", nome="", bd="", dado=""):
