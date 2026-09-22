@@ -37,11 +37,10 @@ from referencia.precos import VALORES, SIMBOLO, PRECO_DISPLAY, PRODUTO_FAIXA, pr
 # O main NUNCA quebra se o módulo ainda não existir: import protegido.
 try:
     from referencia.semantica import (obter_texto_energia, obter_texto_vida,
-                                      renderizar_forma_cor)
+                                      renderizar_forma_cor, obter_descricao_mestre)
     SEMANTICA_OK = True
 except Exception:
     SEMANTICA_OK = False
-    logger = None
 # ===== MOEDAS POR IDIOMA (ISO 4217, para o Stripe) =====
 MOEDA = {
     "pt": "brl", "en": "usd", "es": "eur", "it": "eur", "fr": "eur", "de": "eur",
@@ -585,20 +584,6 @@ def _enviar_email_simples(destinatario, assunto, corpo):
     except Exception as e:
         logger.error(f"SMTP: {e}")
         return False
-
-# ===== ENERGIA IDEAL / FIXA / PRODUTOS IA (nível de módulo) =====
-IDEAL_ENERGIA = {
-    "urna": "8",        # Nome de Urna
-    "eleitoral": "8",   # Número Eleitoral
-    "arte": "2",        # Artístico
-    "ong": "6",         # ONG/Associação/Instituto/Fundação
-    "assinatura": "8",  # Validação de Assinaturas
-    "negocio": "8",     # Nome para Negócio/Produto
-}
-
-ENERGIA_FIXA = {
-    "amor": "5",        # Mapa do Casal / Mapa da Família Premium
-}
 
 # ===== PRODUTOS DA PESQUISA IA (8 — Card da IA) =====
 PRODUTOS_IA = [
