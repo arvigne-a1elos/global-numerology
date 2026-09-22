@@ -250,9 +250,8 @@ PRODUTOS = {
         "nome_projeto": "Tên Dự Án", "nome_evento": "Tên Sự Kiện"}     
     }
 
-# Aliases para compatibilidade com o checkout coletivo e _criar_sessao
-PRODUCT_NAMES = PRODUTOS
-BASE_URL = SITE_URL
+success_url=BASE_URL + "/static/sucesso.html?session_id={CHECKOUT_SESSION_ID}",
+cancel_url=BASE_URL + "/static/cancelado.html"
 
 # Energia ideal (★) por produto — padrão quando o cliente não escolhe
 IDEAL_ENERGIA = {
