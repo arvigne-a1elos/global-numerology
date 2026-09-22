@@ -532,6 +532,26 @@ def _gerar_pdf_local(prod, data, lang, nome, bd, dado=""):
                 ("BACKGROUND", (0, 1), (-1, -1), LGRAY),
             ]))
             e.append(tbl)
+
+        # Descrição do Caminho de Vida (semântica em 14 idiomas)
+        if SEMANTICA_OK and data.get("life_path"):
+            valor = data["life_path"]
+            if valor in (11, 22, 33):
+                desc = obter_descricao_mestre(valor, lang)
+            else:
+                desc = obter_texto_energia(valor, lang)
+            if desc:
+                e.append(Spacer(1, 6))
+                e.append(Paragraph(
+                    f"<b>{rotulos[0][1]} {valor}:</b> {desc}",
+                    estilo(10, False, DARK)))
+        # Forma e Cor da energia pessoal (camada FORMAS_CORES)
+        if SEMANTICA_OK and data.get("life_path"):
+            fc = renderizar_forma_cor(data["life_path"], lang)
+            if fc.get("forma") and fc.get("cor"):
+                e.append(Paragraph(
+                    f"<b>Forma:</b> {fc['forma']}<br/><b>Cor:</b> {fc['cor']}<br/><b>Sentido:</b> {fc['texto']}",
+                    estilo(9, False, GRAY)))
     e.append(Spacer(1, 10))
     e.append(Paragraph("(c) A1ELOS", estilo(7, False, GRAY, TA_CENTER)))
     doc.build(e)
@@ -591,12 +611,12 @@ PRODUTOS_IA = [
     "ong", "nickname",
 ]
 
-def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=None):
+def _criar_sessao(produto, lang="pt", nome="", birth="", meta_extra=None):
     if lang not in PRICE_IDS or produto not in PRICE_IDS[lang]:
         raise HTTPException(status_code=400, detail="Idioma ou produto invalido")
     price_id = PRICE_IDS[lang].get(produto, "")
     nome_prod = PRODUTOS.get(lang, PRODUTOS["pt"]).get(produto, produto)
-    meta = {"tipo": produto, "lang": lang, "nome": nome, "birth": birth, "email": email}
+    meta = {"tipo": produto, "lang": lang, "nome": nome, "birth": birth}
     if meta_extra:
         meta.update(meta_extra)
     # Energia padrão: ideal (★) se existir; senão fixa; senão mantém a escolhida
