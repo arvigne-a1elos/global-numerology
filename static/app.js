@@ -82,6 +82,44 @@ window.pagarEleitoral = window.pagarEleitoral || function(){
     + '&numero=' + encodeURIComponent(sigla)
     + '&lang=' + getLang();
 };
+window.pagarArte = window.pagarArte || function(){
+  var nome = (document.getElementById('arteNome') ? document.getElementById('arteNome').value : '').trim();
+  var n1 = (document.getElementById('arteNome1') ? document.getElementById('arteNome1').value : '').trim();
+  var n2 = (document.getElementById('arteNome2') ? document.getElementById('arteNome2').value : '').trim();
+  var n3 = (document.getElementById('arteNome3') ? document.getElementById('arteNome3').value : '').trim();
+  var n4 = (document.getElementById('arteNome4') ? document.getElementById('arteNome4').value : '').trim();
+  var n5 = (document.getElementById('arteNome5') ? document.getElementById('arteNome5').value : '').trim();
+  if (!nome || (!n1 && !n2 && !n3 && !n4 && !n5)) { alert(t_preencha()); return; }
+  var sel = document.querySelector('#arteEnergiaSel .ativo');
+  var energia = sel ? sel.textContent : '';
+  location.href = '/criar-checkout?produto=artistico'
+    + '&nome_completo=' + encodeURIComponent(nome)
+    + '&nome=' + encodeURIComponent(nome)
+    + '&nome1=' + encodeURIComponent(n1) + '&nome2=' + encodeURIComponent(n2)
+    + '&nome3=' + encodeURIComponent(n3) + '&nome4=' + encodeURIComponent(n4)
+    + '&nome5=' + encodeURIComponent(n5)
+    + (energia ? '&energia=' + encodeURIComponent(energia) : '')
+    + '&lang=' + getLang();
+};
+window.pagarOng = window.pagarOng || function(){
+  var nome = (document.getElementById('ongNome') ? document.getElementById('ongNome').value : '').trim();
+  var n1 = (document.getElementById('ongNome1') ? document.getElementById('ongNome1').value : '').trim();
+  var n2 = (document.getElementById('ongNome2') ? document.getElementById('ongNome2').value : '').trim();
+  var n3 = (document.getElementById('ongNome3') ? document.getElementById('ongNome3').value : '').trim();
+  var n4 = (document.getElementById('ongNome4') ? document.getElementById('ongNome4').value : '').trim();
+  var n5 = (document.getElementById('ongNome5') ? document.getElementById('ongNome5').value : '').trim();
+  if (!nome || (!n1 && !n2 && !n3 && !n4 && !n5)) { alert(t_preencha()); return; }
+  var sel = document.querySelector('#ongEnergiaSel .ativo');
+  var energia = sel ? sel.textContent : '';
+  location.href = '/criar-checkout?produto=nome_ong'
+    + '&nome_completo=' + encodeURIComponent(nome)
+    + '&nome=' + encodeURIComponent(nome)
+    + '&nome1=' + encodeURIComponent(n1) + '&nome2=' + encodeURIComponent(n2)
+    + '&nome3=' + encodeURIComponent(n3) + '&nome4=' + encodeURIComponent(n4)
+    + '&nome5=' + encodeURIComponent(n5)
+    + (energia ? '&energia=' + encodeURIComponent(energia) : '')
+    + '&lang=' + getLang();
+};
 // ===== COMPRAR (abre modal do dado específico para os 8 produtos) =====
 var DADO_APLICA = ["nome_pet","nickname","nome_dominio","nome_canal","nome_equipe","nome_ong","nome_projeto","nome_evento"];
 function comprar(produto) {
@@ -204,6 +242,18 @@ function descontoBC(qtd) {
   if (qtd >= 10) return 10;
   return 0;
 }
+function precoUnitarioBC(id) {
+  var lang = (typeof getLang === 'function') ? getLang() : 'pt';
+  var faixa = (typeof PRODUTO_FAIXA !== 'undefined' && PRODUTO_FAIXA[id] !== undefined) ? PRODUTO_FAIXA[id] : null;
+  if (faixa === null || faixa === undefined) return 0;
+  var servidor = (typeof PRECO_VALORES !== 'undefined' && PRECO_VALORES[lang]);
+  var base = servidor ? PRECO_VALORES[lang]
+           : (typeof PRECO_BASE !== 'undefined' ? (PRECO_BASE[lang] || PRECO_BASE.pt) : null);
+  if (!base) return 0;
+  var unit = parseInt(base[faixa], 10) || 0;
+  if (servidor) unit = Math.round(unit / 100);
+  return unit;
+}
 function usarPlanoPronto(qExpress, qVida, qIa, qCompleto) {
   var mapa = { express: qExpress, vida: qVida, ia: qIa, completo: qCompleto };
   document.querySelectorAll("#bcTabelaCorpo input[data-prod]").forEach(function(inp) {
@@ -293,8 +343,6 @@ function toggleForm(formId) {
   el.style.display = escondido ? 'block' : 'none';
   if (escondido) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
-
-  if (window.atualizarGrafiasUrna) { atualizarGrafiasUrna(); }
 
 // ===== ENVIAR MENSAGEM / ATIVAR BÔNUS =====
 window.enviarMensagem = window.enviarMensagem || function(){
@@ -467,7 +515,6 @@ if (document.readyState === "loading") {
 } else {
   iniciarSeguro();
 }
-function pesquisar(produto){ comprar(produto); }
 
 // ===== ATUALIZAR PREÇOS DOS CARDS — FONTE ÚNICA: /api/precos =====
 // Busca a tabela de referência do servidor (referencia/precos.py).
@@ -537,14 +584,6 @@ fetch('/api/precos')
     if (typeof atualizarPrecos === 'function') atualizarPrecos();
   })
   .catch(function(e){ console.warn('[A1ELOS] /api/precos:', e); });
-
-/* ===== URNA - REATIVIDADE DE IDIOMA (corrige mistura de idiomas) ===== */
-function uraObterIdioma(){
-  var l = window.curLang || window.LANG || window.langAtual ||
-          document.documentElement.lang ||
-          localStorage.getItem('l') || localStorage.getItem('lang') || 'pt';
-  return String(l).slice(0,2).toLowerCase();
-}
 
 function uraPreencherSelectCargo(lang){
   var sel = document.getElementById('urnaCargo');
