@@ -283,44 +283,6 @@ def pdf17(data, nome, bd_str, lang="pt"):
     return path
 
 # ═══════════════════════════════════════════
-# NOME DE URNA (traduzido)
-# ═══════════════════════════════════════════
-def pdf_urna(nc, cl, resultados, sugestoes, lang="pt"):
-    T = PDF_TEXTS.get(lang, PDF_TEXTS["pt"])
-    E = ENERGIA_LBL.get(lang, "Energia")
-    path = os.path.join(TMP, f"u_{uuid.uuid4().hex[:8]}.pdf")
-    doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
-                            topMargin=45, bottomMargin=45)
-    e = []
-    e.append(Spacer(1, 25))
-    e.append(Paragraph(T.get("t_urna", "VALIDACAO DE NOME DE URNA"),
-                       _estilo("T", FN, TAM_T, GOLD, TA_CENTER, sa=ET * 0.5)))
-    e.append(Paragraph(nc.title(), _estilo("N", FN, TAM_C + 2, DARK, TA_CENTER, sa=4)))
-    e.append(Paragraph(f"{T.get('cargo', 'Cargo')}: {cl}",
-                       _estilo("D", FONTE, TAM_C - 2, GRAY, TA_CENTER, sa=LINHA)))
-    e.append(Paragraph(BOAS_VINDAS.get(lang, BOAS_VINDAS["pt"]),
-                       _estilo("BV", FONTE, 10, DARK, TA_JUSTIFY, sa=LINHA)))
-    for r in resultados:
-        ic = "✅" if r["eh_ideal"] else "❌"
-        e.append(Paragraph(f"{ic} {r['nome']} — {E} {r['energia']}",
-                           _estilo("B", FN, TAM_C - 1, DARK, TA_LEFT, sa=LINHA * 0.3)))
-        if r["letras"]:
-            ls = ", ".join(f'{l["letra"]}={l["valor"]}' for l in r["letras"])
-            e.append(Paragraph(f"{ls} → {r['soma']} → {r['energia']}",
-                               _estilo("C", FONTE, TAM_C - 2, GRAY, TA_LEFT, sa=LINHA * 0.2)))
-        e.append(Paragraph(r["explicacao"], _estilo("J", FONTE, TAM_C - 1, DARK,
-                                                    TA_JUSTIFY, sa=LINHA * 0.4)))
-    if sugestoes:
-        e.append(Paragraph(T.get("sugestoes", "Sugestões:"),
-                           _estilo("SU", FN, 18, GOLD, TA_LEFT, sb=LINHA, sa=LINHA)))
-        for s in sugestoes[:3]:
-            e.append(Paragraph(f'{s["nome"]} — {E} {s["energia"]}',
-                               _estilo("X", FONTE, TAM_C, DARK, TA_LEFT, sa=LINHA * 0.3)))
-    e.append(Paragraph("© A1ELOS", _estilo("F", FONTE, 8, GRAY, TA_CENTER)))
-    doc.build(e, onFirstPage=_cabecalho_pagina, onLaterPages=_cabecalho_pagina)
-    return path
-
-# ═══════════════════════════════════════════
 # NÚMERO ELEITORAL (traduzido)
 # ═══════════════════════════════════════════
 def pdf_eleitoral(ss, cl, sugestoes, ne=None, lang="pt"):
