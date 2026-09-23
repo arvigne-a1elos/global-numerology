@@ -542,7 +542,12 @@ window.ENERGIA_TRAD = window.ENERGIA_TRAD || {
 };
 window.ENERGIA_TITULOS = window.ENERGIA_TITULOS || {};
 if (!window.ENERGIA_TITULOS.pt) {
-  Object.keys(window.ENERGIA_TRAD).forEach(function(l){ window.ENERGIA_TITULOS[l] = window.ENERGIA_TRAD[l]; });
+  Object.keys(window.ENERGIA_TRAD).forEach(function(l) {
+    var src = window.ENERGIA_TRAD[l];
+    var out = {};
+    for (var k in src) { out[k.replace(/^e/, '')] = src[k]; }  // converte "e1" em "1"
+    window.ENERGIA_TITULOS[l] = out;
+  });
 }
 window.ENERGIAS_DESC = window.ENERGIAS_DESC || {};
 window.ENERGIAS_BTN = window.ENERGIAS_BTN || { pt:"Pesquisar", en:"Search", es:"Buscar", fr:"Rechercher", it:"Cerca", de:"Suchen", ru:"Поиск", zh:"搜索", ja:"検索", ar:"بحث", he:"חיפוש", id:"Cari", tr:"Ara", vi:"Tìm Kiếm" };
@@ -822,6 +827,7 @@ function montarPassoNome(produto, lang) {
 
 /* ===== CONFIRMAR BÔNUS COLETIVO ===== */
 function confirmarBC() {
+  var lang = getLang();
   var itens = [];
   for (var id in window.BC_QUANTIDADES) {
     if (window.BC_QUANTIDADES[id] > 0) {
@@ -886,8 +892,10 @@ function traduzirTudo() {
         if (feats[i]) li.innerText = feats[i];
       });
       var desc = card.querySelector('.desc');
-      if (desc && window.PRODUTOS_TRAD[lang] && window.PRODUTOS_TRAD[lang]['desc_' + prod]) {
-        desc.innerText = window.PRODUTOS_TRAD[lang]['desc_' + prod];
+      if (desc) {
+        var tradDesc = (window.CARDS_TRAD && window.CARDS_TRAD[lang] && window.CARDS_TRAD[lang][prod + '_desc'])
+                    || (window.CARDS_TRAD && window.CARDS_TRAD.pt && window.CARDS_TRAD.pt[prod + '_desc']);
+        if (tradDesc) desc.innerText = tradDesc;
       }
     });
     document.querySelectorAll('#bcTabelaCorpo tr[data-prod]').forEach(function(tr) {
@@ -1047,7 +1055,7 @@ function atualizarGrafiasUrna(){
     if(p){p.textContent=pref[i-1]; p.dataset.valor=pref[i-1];}
     if(inp){inp.placeholder=ph[i-1];}
   }  
-
+}
 /* ===== DESTAQUE DE ENERGIA UNIFICADO (urna, eleitoral, artístico, ong) ===== */
 function atualizarDestaqueCard(containerId, tipo) {
   var box = document.getElementById(containerId);
