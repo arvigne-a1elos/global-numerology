@@ -301,6 +301,14 @@
                     <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-bebe')" data-i18n="pesquisar_btn">pesquisar</button>
+                        <!-- Formulário Planejamento Nome de Bebê (aparece ao clicar) -->
+            <form id="form-bebe" class="hidden">
+              <label>Sobrenome da família</label>
+              <input id="bebeSobrenome" type="text" placeholder="Sobrenome que o bebê receberá">
+              <label>Energia desejada (1-9)</label>
+              <input id="bebeEnergia" type="number" min="1" max="9" placeholder="1 a 9">
+              <button class="btn btn-full" onclick="pagarBebe()">Pagar</button>
+            </form>
             </div>
         
             <!-- 11. Validação de Assinaturas -->
@@ -316,6 +324,12 @@
                     <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-assinatura')" data-i18n="pesquisar_btn">pesquisar</button>
+                        <!-- Formulário Validação de Assinaturas (aparece ao clicar) -->
+            <form id="form-assinatura" class="hidden">
+              <label>Texto da assinatura atual</label>
+              <input id="assinaturaTexto" type="text" placeholder="Ex.: Nome Sobrenome">
+              <button class="btn btn-full" onclick="pagarAssinatura()">Pagar</button>
+            </form>
             </div>
         
             <!-- 12. Nome para Negócio/Produto -->
@@ -331,6 +345,14 @@
                     <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-negocio')" data-i18n="pesquisar_btn">pesquisar</button>
+                       <!-- Formulário Nome para Negócio/Produto (aparece ao clicar) -->
+            <form id="form-negocio" class="hidden">
+              <label>Nome do negócio ou produto</label>
+              <input id="negocioNome" type="text" placeholder="Nome da empresa/produto">
+              <label>Energia desejada (1-9)</label>
+              <input id="negocioEnergia" type="number" min="1" max="9" placeholder="1 a 9">
+              <button class="btn btn-full" onclick="pagarNegocio()">Pagar</button>
+            </form>
             </div>
         
             <!-- 13. Mapa do Casal -->
@@ -346,6 +368,14 @@
                     <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-casal')" data-i18n="pesquisar_btn">pesquisar</button>
+                        <!-- Formulário Mapa do Casal (aparece ao clicar) -->
+            <form id="form-casal" class="hidden">
+              <label>Nome da primeira pessoa</label>
+              <input id="casalNome1" type="text" placeholder="Nome completo">
+              <label>Nome da segunda pessoa</label>
+              <input id="casalNome2" type="text" placeholder="Nome completo">
+              <button class="btn btn-full" onclick="pagarCasal()">Pagar</button>
+            </form>
             </div>
         
             <!-- 14. Mapa Família Premium -->
@@ -362,6 +392,12 @@
                     <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-familia')" data-i18n="pesquisar_btn">pesquisar</button>
+                        <!-- Formulário Mapa Família Premium (aparece ao clicar) -->
+            <form id="form-familia" class="hidden">
+              <label>Membros da família (um por linha)</label>
+              <textarea id="familiaMembros" rows="4" placeholder="Nome 1&#10;Nome 2&#10;Nome 3"></textarea>
+              <button class="btn btn-full" onclick="pagarFamilia()">Pagar</button>
+            </form>
             </div>
         
             <!-- 15. Bônus Coletivo/Empresarial -->
