@@ -6,6 +6,7 @@
     </div>
 
     <div class="cards-grid" id="produtosGrid">
+        
             <!-- 1. Mapa Express -->
             <div class="product-card" data-prod="express">
                 <div class="icon">🔮</div>
@@ -20,6 +21,7 @@
              </ul>
                 <button class="btn btn-full" onclick="comprar('express')" data-i18n="pesquisar_btn">pesquisar</button>
             </div>
+        
             <!-- 2. Qual Vida/Ano -->
             <div class="product-card" data-prod="vida">
                 <div class="icon">🔢</div>
@@ -34,6 +36,7 @@
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-vida')" data-i18n="pesquisar_btn">pesquisar</button>
             </div>
+        
             <!-- 3. Mapa Completo -->
             <div class="product-card" data-prod="completo">
                 <div class="icon">📘</div>
@@ -49,7 +52,16 @@
                     <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="comprar('completo')" data-i18n="pesquisar_btn">pesquisar</button>
+                            <!-- Formulário Qual Vida/Ano (aparece ao clicar) -->
+            <form id="form-vida" class="hidden">
+              <label>Nome completo</label>
+              <input id="vidaNome" type="text" placeholder="Nome completo">
+              <label>Data de nascimento</label>
+              <input id="vidaNasc" type="date">
+              <button class="btn btn-full" onclick="pagarVida()">Pagar</button>
+            </form>
             </div>
+        
             <!-- 4. Pesquisa IA de Nomes -->
             <div class="product-card" data-prod="ia">
                 <div class="icon">🤖</div>
@@ -63,6 +75,14 @@
                     <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-ia')" data-i18n="pesquisar_btn">pesquisar</button>
+                        <!-- Formulário Pesquisa IA de Nomes (aparece ao clicar) -->
+            <form id="form-ia" class="hidden">
+              <label>Nome completo</label>
+              <input id="iaNome" type="text" placeholder="Nome completo">
+              <label>Energia desejada (1-9)</label>
+              <input id="iaEnergia" type="number" min="1" max="9" placeholder="1 a 9">
+              <button class="btn btn-full" onclick="pagarIa()">Pagar</button>
+            </form>
             </div>
             
             <!-- 5. Validação Nome de Urna -->
@@ -78,8 +98,7 @@
                     <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-urna')" data-i18n="start_urna">Iniciar Validação</button>
-            </div>
-
+            
             <!-- Formulário do Nome de Urna (aparece ao clicar) -->
             <form id="form-urna" class="hidden">
              <label>Nome completo da pessoa</label>
@@ -88,11 +107,9 @@
              <label>Cargo</label>
              <select id="urnaCargo">
               <option value="vereador">Vereador</option>
-              <option value="prefeito">Prefeito</option>
-              <option value="deputado">Deputado</option>
-              <option value="governador">Governador</option>
+              <option value="dep_estadual">Deputado Estadual</option>
+              <option value="dep_federal">Deputado Federal</option>
               <option value="senador">Senador</option>
-              <option value="presidente">Presidente</option>
              </select>
 
              <label id="urnaGeneroLabel">Gênero</label>
@@ -130,7 +147,8 @@
 
              <button class="btn btn-full" onclick="pagarUrna()">Pagar</button>
             </form>
-        
+            </div>
+            
             <!-- 6. Número Eleitoral -->
             <div class="product-card" data-prod="eleitoral">
                  <div class="icon">🔢</div>
@@ -144,19 +162,28 @@
                      <li>📲 PDF + QRCode</li>
                  </ul>
                  <button class="btn btn-full" onclick="toggleForm('form-eleitoral')" data-i18n="start_eleitoral">Calcular Nº Eleitoral</button>
-            </div>
-
+            
             <!-- Formulário do Nº Eleitoral (aparece ao clicar) -->
             <form id="form-eleitoral" class="hidden">
               <label>Nome completo do candidato</label>
-              <input id="eleitoralNome" type="text" placeholder="Nome completo">
+              <input id="eleiNome" type="text" placeholder="Nome completo">
+              <label>Cargo</label>
+              <select id="eleiCargo">
+               <option value="vereador">Vereador</option>
+               <option value="dep_estadual">Deputado Estadual</option>
+               <option value="dep_federal">Deputado Federal</option>
+               <option value="senador">Senador</option>
+              </select>
               <label>Sigla do partido</label>
-              <input id="eleitoralSigla" type="text" placeholder="Sigla">
+              <input id="eleiSigla" type="text" placeholder="Sigla">
+              <label>Número atual (opcional — para análise de vibração)</label>
+              <input id="eleiExistente" type="text" placeholder="Ex.: 12345">
               <label id="eleitoralEnergiaLabel" class="urna-label"></label>
               <p id="eleitoralEnergiaDica" class="urna-dica"></p>
               <div id="eleitoralEnergiaSel" class="energia-selector"></div>
               <button class="btn btn-full" onclick="pagarEleitoral()">Pagar</button>
             </form>
+            </div>
         
             <!-- 7. Número do Imóvel -->
             <div class="product-card" data-prod="imovel">
@@ -171,7 +198,14 @@
                     <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-imovel')" data-i18n="pesquisar_btn">pesquisar</button>
+                        <!-- Formulário Número do Imóvel (aparece ao clicar) -->
+            <form id="form-imovel" class="hidden">
+              <label>Número do imóvel</label>
+              <input id="imovelNumero" type="text" placeholder="Ex.: 123 ou 12A">
+              <button class="btn btn-full" onclick="pagarImovel()">Pagar</button>
+            </form>
             </div>
+        
             <!-- 8. Calendário Mensal Energético -->
             <div class="product-card" data-prod="calendario">
                 <div class="icon">📅</div>
@@ -185,6 +219,27 @@
                     <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-calendario')" data-i18n="pesquisar_btn">pesquisar</button>
+                        <!-- Formulário Calendário Mensal Energético (aparece ao clicar) -->
+            <form id="form-calendario" class="hidden">
+              <label>Nome completo</label>
+              <input id="calNome" type="text" placeholder="Nome completo">
+              <label>Mês de referência</label>
+              <select id="calMes">
+                <option value="01">Janeiro</option>
+                <option value="02">Fevereiro</option>
+                <option value="03">Março</option>
+                <option value="04">Abril</option>
+                <option value="05">Maio</option>
+                <option value="06">Junho</option>
+                <option value="07">Julho</option>
+                <option value="08">Agosto</option>
+                <option value="09">Setembro</option>
+                <option value="10">Outubro</option>
+                <option value="11">Novembro</option>
+                <option value="12">Dezembro</option>
+              </select>
+              <button class="btn btn-full" onclick="pagarCalendario()">Pagar</button>
+            </form>
             </div>
         
             <!-- 9. Validação Nome Artístico -->
@@ -200,10 +255,9 @@
                     <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-artistico')" data-i18n="pesquisar_btn">Iniciar Validação</button>
-            </div>
-
+            
             <!-- Formulário do Artístico (aparece ao clicar) -->
-            <form id="form-form-artistico" class="hidden">
+            <form id="form-artistico" class="hidden">
              <label>Nome artístico completo</label>
              <input id="arteNome" type="text" placeholder="Nome artístico">
              <label>Grafias do nome artístico</label>
@@ -232,6 +286,7 @@
              <div id="arteEnergiaSel" class="energia-selector"></div>
              <button class="btn btn-full" onclick="pagarArte()">Pagar</button>
             </form>
+            </div>
         
             <!-- 10. Planejamento Nome de Bebê -->
             <div class="product-card" data-prod="bebe">
@@ -247,6 +302,7 @@
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-bebe')" data-i18n="pesquisar_btn">pesquisar</button>
             </div>
+        
             <!-- 11. Validação de Assinaturas -->
             <div class="product-card" data-prod="assinatura">
                 <div class="icon">✍️</div>
@@ -261,6 +317,7 @@
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-assinatura')" data-i18n="pesquisar_btn">pesquisar</button>
             </div>
+        
             <!-- 12. Nome para Negócio/Produto -->
             <div class="product-card" data-prod="negocio">
                 <div class="icon">🏪</div>
@@ -275,6 +332,7 @@
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-negocio')" data-i18n="pesquisar_btn">pesquisar</button>
             </div>
+        
             <!-- 13. Mapa do Casal -->
             <div class="product-card" data-prod="casal">
                 <div class="icon">💞</div>
@@ -289,6 +347,7 @@
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-casal')" data-i18n="pesquisar_btn">pesquisar</button>
             </div>
+        
             <!-- 14. Mapa Família Premium -->
             <div class="product-card" data-prod="familia">
                 <div class="icon">🌟</div>
@@ -304,6 +363,7 @@
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-familia')" data-i18n="pesquisar_btn">pesquisar</button>
             </div>
+        
             <!-- 15. Bônus Coletivo/Empresarial -->
             <div class="product-card" data-prod="coletivo" style="border:2px solid var(--gold)">
              <div class="icon">🏢</div>
@@ -318,6 +378,7 @@
              </ul>
              <button class="btn btn-full" onclick="document.getElementById('corporativo').scrollIntoView({behavior:'smooth'})" data-i18n="know_more">Saiba Mais</button>
             </div>
+        
            <!-- 16. Nome do Pet -->
            <div class="product-card" data-prod="nome_pet">
             <div class="icon">🐾</div>
@@ -332,6 +393,7 @@
             </ul>
             <button class="btn btn-full" onclick="pesquisar('nome_pet')" data-i18n="pesquisar_btn">pesquisar</button>
            </div>
+        
            <!-- 17. Nickname Digital -->
            <div class="product-card" data-prod="nickname">
             <div class="icon">💬</div>
@@ -346,6 +408,7 @@
             </ul>
             <button class="btn btn-full" onclick="pesquisar('nickname')" data-i18n="pesquisar_btn">pesquisar</button>
            </div>
+        
            <!-- 18. Nome do Domínio -->
            <div class="product-card" data-prod="nome_dominio">
             <div class="icon">🌐</div>
@@ -360,6 +423,7 @@
             </ul>
             <button class="btn btn-full" onclick="pesquisar('nome_dominio')" data-i18n="pesquisar_btn">pesquisar</button>
            </div>
+        
            <!-- 19. Nome do Canal -->
            <div class="product-card" data-prod="nome_canal">
             <div class="icon">📺</div>
@@ -374,6 +438,7 @@
             </ul>
             <button class="btn btn-full" onclick="pesquisar('nome_canal')" data-i18n="pesquisar_btn">pesquisar</button>
            </div>
+        
            <!-- 20. Nome da Equipe -->
            <div class="product-card" data-prod="nome_equipe">
             <div class="icon">👥</div>
@@ -402,8 +467,7 @@
              <li>📲 PDF + QRCode</li>
             </ul>
             <button class="btn btn-full" onclick="pesquisar('nome_ong')" data-i18n="pesquisar_btn">pesquisar</button>
-           </div>
-
+           
            <!-- Formulário da ONG (aparece ao clicar) -->
            <form id="form-ong" class="hidden">
             <label>Nome da ONG / Associação / Instituto / Fundação</label>
@@ -434,6 +498,7 @@
             <div id="ongEnergiaSel" class="energia-selector"></div>
             <button class="btn btn-full" onclick="pagarOng()">Pagar</button>
            </form>
+           </div>
         
            <!-- 22. Nome do Projeto -->
            <div class="product-card" data-prod="nome_projeto">
@@ -449,6 +514,7 @@
             </ul>
             <button class="btn btn-full" onclick="pesquisar('nome_projeto')" data-i18n="pesquisar_btn">pesquisar</button>
            </div>
+        
            <!-- 23. Nome do Evento -->
            <div class="product-card" data-prod="nome_evento">
             <div class="icon">🎉</div>
