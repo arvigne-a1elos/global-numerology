@@ -690,7 +690,7 @@ def pay_urna(req: UrnaPayReq):
         meta[f"nome{i}"] = n
     return _criar_sessao("urna", req.lang or "pt", req.email, req.nome_completo, "", meta)
     
-    # ===== CHECKOUT NUMERO ELEITORAL =====
+# ===== CHECKOUT NUMERO ELEITORAL =====
 @app.post("/pay/eleitoral")
 def pay_eleitoral(req: EleitoralPayReq):
     if not STRIPE_KEY:
@@ -853,8 +853,6 @@ def pay_urna_success(request: Request):
         nomes = [meta.get(f"nome{i}", "") for i in range(1, 6) if meta.get(f"nome{i}", "")]
         if not nomes:
             return HTMLResponse("ERRO")
-        res, _, sugs = validar_nomes_urna(nomes, cr)
-        cl = CARGO_INFO.get(cr, {}).get("label", cr)
         lang = meta.get("lang", "pt")
         genero = meta.get("genero", "masculino")
         res, ideal, sugs = validar_nomes_urna(nomes, cr, lang=lang, genero=genero, nome_base=nc)
