@@ -612,3 +612,4 @@ def pdf_urna(nome_completo, cargo_label, resultados, sugestoes, lang="pt"):
 
     doc.build(story)
     return arquivo
+
