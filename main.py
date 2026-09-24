@@ -1174,7 +1174,7 @@ async def receber_sugestao(req: SugestaoReq):
     return {"ok": True}
 
 # ===== SISTEMA DE PUBLICIDADE GEOLOCALIZADA (resgatado do main anterior) =====
-ARQ_BANNERS = "banners.json"
+ARQ_BANNERS = "static/banners.json"
 PAIS_CONTINENTE = {
     "BR":"SA","AR":"SA","CL":"SA","CO":"SA","PE":"SA","UY":"SA","PY":"SA","BO":"SA","EC":"SA","VE":"SA",
     "US":"NA","CA":"NA","MX":"NA",
