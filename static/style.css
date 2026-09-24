@@ -180,3 +180,5 @@ footer { padding: 60px 20px; text-align: center; border-top: 1px solid #222; col
 .energia-dica{color:#888;font-size:.8rem;margin-top:6px}
 .urna-grafia.bate-energia{border-color:#0b7a3b;background:rgba(11,122,59,.08)}
 .urna-grafia.bate-energia .urna-prefixo{border-color:#0b7a3b;color:#0b7a3b}
+/* ===== OCULTAR FORMULÁRIOS FECHADOS ===== */
+.hidden { display: none; }
