@@ -76,7 +76,7 @@ def pdf8(data, nome, bd, lang="pt"):
               ("destiny", "destino")]
     linhas = [[t("numero", lang), t("valor", lang), t("significado", lang)]]
     for k, lbl in chaves:
-        v = data[k]
+        v = data.get(k, 0)
         sig = SIG.get(v, (t("nenhum", lang), "", "", ""))
         linhas.append([t(lbl, lang), str(v), sig[0]])
     tbl = Table(linhas, colWidths=[180, 60, 220])  # 460pt <= 495pt
@@ -91,7 +91,7 @@ def pdf8(data, nome, bd, lang="pt"):
     e.append(tbl)
     e.append(Spacer(1, LINHA))
     for k, lbl in chaves:
-        v = data[k]
+        v = data.get(k, 0)
         sig = SIG.get(v, (t("nenhum", lang), "", "", ""))
         e.append(Paragraph(f"<b>{t(lbl, lang)}:</b> {v} — {sig[0]}",
                            _estilo("TX", FONTE, 10, DARK, TA_LEFT, sa=3)))
@@ -138,7 +138,7 @@ def pdf17(data, nome, bd_str, lang="pt"):
               ("destiny", "destino")]
     linhas = [[t("numero", lang), t("significado", lang), t("valor", lang)]]
     for k, lbl in chaves:
-        v = data[k]
+        v = data.get(k, 0)
         sig = SIG.get(v, (t("nenhum", lang), "", "", ""))
         linhas.append([t(lbl, lang), sig[0], str(v)])
     tbl = Table(linhas, colWidths=[180, 220, 80])  # 480pt <= 495pt
@@ -155,7 +155,7 @@ def pdf17(data, nome, bd_str, lang="pt"):
     # ANÁLISE DETALHADA
     e.append(Paragraph(t("analise", lang), _estilo("SEC", FN, 18, GOLD, TA_LEFT, sb=LINHA, sa=LINHA)))
     for k, lbl in chaves:
-        v = data[k]
+        v = data.get(k, 0)
         nm, pos, neg, licao = SIG.get(v, (t("nenhum", lang), "", "", ""))
         e.append(Paragraph(f"<b>{t(lbl, lang)} {v} — {nm}</b>",
                            _estilo("BL", FN, 10, DARK, TA_LEFT, sa=3)))
@@ -366,7 +366,7 @@ def pdf_produto(produto, dados, nome, bd_str, lang, dado=""):
               ("destiny", "destino")]
     linhas = [[t("numero", lang), t("valor", lang), t("significado", lang)]]
     for k, lbl in chaves:
-        v = dados[k]
+         v = dados.get(k, 0)
         sig = SIG.get(v, (t("nenhum", lang), "", "", ""))
         linhas.append([t(lbl, lang), str(v), sig[0]])
     tbl = Table(linhas, colWidths=[180, 60, 220])  # 460pt <= 495pt
@@ -383,7 +383,7 @@ def pdf_produto(produto, dados, nome, bd_str, lang, dado=""):
     # ANÁLISE DETALHADA — conteúdo do livro (SIG/CAM/DES/VIB)
     e.append(Paragraph(t("analise", lang), _estilo("SEC", FN, 18, GOLD, TA_LEFT, sb=LINHA, sa=LINHA)))
     for k, lbl in chaves:
-        v = dados[k]
+        v = dados.get(k, 0)
         nm, pos, neg, licao = SIG.get(v, (t("nenhum", lang), "", "", ""))
         e.append(Paragraph(f"<b>{t(lbl, lang)} {v} — {nm}</b>",
                            _estilo("BL", FN, 10, DARK, TA_LEFT, sa=3)))
