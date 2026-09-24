@@ -35,8 +35,10 @@
         div.className = "a1-banner";
         div.dataset.pos = pos;
         div.dataset.idx = String(i);
+        var mobile = (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf("Mobi") > -1);
+        var src = (mobile && b.imagem_url_mobile) ? b.imagem_url_mobile : b.imagem_url;
         div.innerHTML = '<a href="' + (b.url_anunciante || "#") + '" target="_blank" rel="noopener">'
-                      + '<img src="' + b.imagem_url + '" alt="' + (b.marca || "Banner") + '"></a>';
+                      + '<img src="' + src + '" alt="' + (b.marca || "Banner") + '"></a>';
         zona.appendChild(div);
       });
     });
@@ -57,14 +59,32 @@
   }
   function iniciar(){
     injetarCSS();
-    fetch("/static/banners.json")
-      .then(function(r){ return r.json(); })
-      .then(function(data){
-        LISTA = data || [];
+    var pais = paisVisitante();
+    var zonas = ["topo", "central", "base"];
+    Promise.all(zonas.map(function(pos){
+      return fetch("/api/banner?posicao=" + encodeURIComponent(pos) + "&pais=" + encodeURIComponent(pais))
+        .then(function(r){ return r.json(); })
+        .then(function(res){ return (res && res.ok && res.banners) ? res.banners : null; })
+        .catch(function(){ return null; });
+    })).then(function(resultados){
+      var servidorOk = resultados.every(function(r){ return r && r.length > 0; });
+      if (servidorOk) {
+        var lista = [];
+        resultados.forEach(function(banners){ lista = lista.concat(banners); });
+        LISTA = lista;
         render();
         setInterval(rotacionar, 8000);
-      })
-      .catch(function(){ /* banners fora do ar nunca derrubam o site */ });
+        return;
+      }
+      fetch("/static/banners.json")
+        .then(function(r){ return r.json(); })
+        .then(function(data){
+          LISTA = data || [];
+          render();
+          setInterval(rotacionar, 8000);
+        })
+        .catch(function(){ /* banners fora do ar nunca derrubam o site */ });
+    });
   }
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", iniciar);
