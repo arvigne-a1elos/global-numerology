@@ -3,6 +3,13 @@
    Se falhar, o site continua funcionando normalmente. */
 (function(){
   var LISTA = [];
+    function paisVisitante(){
+    try {
+      var li = (navigator.language || "pt-BR").toUpperCase();
+      var partes = li.split("-");
+      return partes.length > 1 ? partes[1].substring(0, 2) : "BR";
+    } catch (e) { return "BR"; }
+  } 
   var CSS = ".a1-zona{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;max-width:1200px;margin:18px auto;padding:0 16px}"
           + ".a1-banner{flex:1 1 340px;max-width:560px;min-height:90px;border-radius:10px;overflow:hidden;background:#111;display:flex;align-items:center;justify-content:center}"
           + ".a1-banner img{width:100%;height:auto;display:block;border-radius:10px}";
