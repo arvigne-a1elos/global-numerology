@@ -455,6 +455,20 @@ class BonusReq(BaseModel):
 class AtivarBonusReq(BaseModel):
     codigo: str
 
+class BannerContrato(BaseModel):
+    id: str
+    marca: str
+    url_anunciante: str
+    imagem_url: str
+    escopo: str  # "pais", "continente" ou "mundo"
+    pais: str = ""
+    continente: str = ""
+    posicao: str = "topo"  # topo, lateral, central
+    tipo: str = "fixo"     # fixo ou temporario
+    data_inicio: str = ""
+    data_fim: str = ""
+    ativo: bool = True
+
 # ===== CONSTANTES DE ESTILO (PDFs) =====
 GOLD = colors.HexColor("#B8860B")
 LGRAY = colors.HexColor("#f0f0f0")
@@ -1158,3 +1172,45 @@ async def receber_sugestao(req: SugestaoReq):
     corpo = f"Sugestão de {req.nome} ({req.email}):\n\n{req.mensagem}"
     _enviar_email_simples(ADMIN_EMAIL, "Nova Sugestão A1ELOS", corpo)
     return {"ok": True}
+
+# ===== SISTEMA DE PUBLICIDADE GEOLOCALIZADA (resgatado do main anterior) =====
+ARQ_BANNERS = "banners.json"
+PAIS_CONTINENTE = {
+    "BR":"SA","AR":"SA","CL":"SA","CO":"SA","PE":"SA","UY":"SA","PY":"SA","BO":"SA","EC":"SA","VE":"SA",
+    "US":"NA","CA":"NA","MX":"NA",
+    "PT":"EU","ES":"EU","FR":"EU","DE":"EU","IT":"EU","GB":"EU","RU":"EU","NL":"EU","BE":"EU","CH":"EU","AT":"EU","IE":"EU",
+    "CN":"AS","JP":"AS","IN":"AS","KR":"AS","SA":"AS","AE":"AS","IL":"AS","TR":"AS","ID":"AS","PK":"AS","BD":"AS",
+    "EG":"AF","NG":"AF","ZA":"AF","KE":"AF","MA":"AF",
+    "AU":"OC","NZ":"OC"
+}
+def _carregar_banners():
+    try:
+        with open(ARQ_BANNERS, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return []
+def _salvar_banners(banners):
+    with open(ARQ_BANNERS, "w", encoding="utf-8") as f:
+        json.dump(banners, f, ensure_ascii=False, indent=2)
+@app.get("/api/banner")
+async def get_banner(posicao: str = "topo", pais: str = "BR"):
+    banners = _carregar_banners()
+    if not banners:
+        return {"ok": False, "banner": None}
+    continente = PAIS_CONTINENTE.get(pais.upper(), "")
+    hoje = date.today().isoformat()
+    for b in banners:
+        if not b.get("ativo") or b.get("posicao") != posicao:
+            continue
+        if b.get("tipo") == "temporario":
+            if b.get("data_fim") and hoje > b["data_fim"]:
+                continue
+            if b.get("data_inicio") and hoje < b["data_inicio"]:
+                continue
+        if b.get("escopo") == "pais" and b.get("pais") == pais.upper():
+            return {"ok": True, "banner": b}
+        if b.get("escopo") == "continente" and b.get("continente") == continente:
+            return {"ok": True, "banner": b}
+        if b.get("escopo") == "mundo":
+            return {"ok": True, "banner": b}
+    return {"ok": False, "banner": None}
