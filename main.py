@@ -860,7 +860,36 @@ def pay_success(request: Request):
             db.close()
         pn = PRODUTOS.get(lang, PRODUTOS["pt"]).get(prod, prod)
         pf = gerar_pdf(prod, data, lang, nome_exib, bd, dado=dado)
+
+        # ===== QRCODE RECUPERADO: guarda o PDF em static/relatorios e gera QR =====
+        qr_b64 = ""
+        if pf and os.path.exists(pf):
+            try:
+                os.makedirs("static/relatorios", exist_ok=True)
+                novo = os.path.join("static/relatorios", f"{prod}_{uuid.uuid4().hex[:8]}.pdf")
+                with open(pf, "rb") as f_orig:
+                    with open(novo, "wb") as f_novo:
+                        f_novo.write(f_orig.read())
+                img = qrcode.make(f"{BASE_URL}/{novo}")
+                qr_path = novo.replace(".pdf", ".png")
+                img.save(qr_path)
+                with open(qr_path, "rb") as f_qr:
+                    qr_b64 = base64.b64encode(f_qr.read()).decode()
+            except Exception as qe:
+                logger.error(f"QRCode: {qe}")
+                qr_b64 = ""
+
         html = pagina_sucesso(pf, nome_exib, pn, lang)
+
+        # Injeta o QRCode junto do botão de download
+        if qr_b64:
+            html = html.replace(
+                "</body>",
+                f'<div style="margin:25px auto;text-align:center">'
+                f'<p style="color:#C9A94E;font-size:1rem">Ou escaneie para abrir o documento</p>'
+                f'<img src="data:image/png;base64,{qr_b64}" style="width:180px;height:180px;border-radius:12px"></div>'
+                f'</body>')
+
         if pf and os.path.exists(pf):
             os.remove(pf)
         return HTMLResponse(html)
