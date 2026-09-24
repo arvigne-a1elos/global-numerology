@@ -809,14 +809,44 @@ def pay_success(request: Request):
         dado = meta.get("dado", "")
         if not bd:
             bd = "2000-01-01"
-        if dado:
-            data = {"dado": dado}
-            nome_exib = dado or nome
-        elif prod in DADO_PRODUTOS:
-            data = {"dado": dado or nome}
-            nome_exib = dado or nome
+
+        # DISPATCH POR PRODUTO: cada produto usa o cálculo específico do
+        # esqueleto produtos/ (resgate do main anterior). Nada de forçar
+        # calc_mapa em produto que não pede mapa.
+        CALC_ESPECIFICO = {
+            "imovel":    lambda: analisar_imovel(dado or nome),
+            "calendario": lambda: analisar_calendario(nome, dado),
+            "casal":     lambda: (lambda p: analisar_casal(*[x.strip() for x in p.split("&")[:2]] if "&" in p else (p, "")))(dado or nome),
+            "familia":   lambda: analisar_familia(dado or nome),
+            "nome_pet":  lambda: analisar_nome(dado or nome, energia),
+            "nickname":  lambda: analisar_nome(dado or nome, energia),
+            "nome_dominio": lambda: analisar_nome(dado or nome, energia),
+            "nome_canal": lambda: analisar_nome(dado or nome, energia),
+            "nome_equipe": lambda: analisar_nome(dado or nome, energia),
+            "nome_ong":  lambda: analisar_nome(dado or nome, energia),
+            "nome_projeto": lambda: analisar_nome(dado or nome, energia),
+            "nome_evento": lambda: analisar_nome(dado or nome, energia),
+            "artistico": lambda: analisar_nome(dado or nome, energia),
+            "bebe":      lambda: analisar_nome(dado or nome, energia),
+            "assinatura": lambda: analisar_nome(dado or nome, energia),
+            "negocio":   lambda: analisar_nome(dado or nome, energia),
+        }
+
+        energia = meta.get("energia", "")
+        if prod in CALC_ESPECIFICO:
+            try:
+                data = CALC_ESPECIFICO[prod]()
+                if not isinstance(data, dict):
+                    data = {"resultado": data}
+                data["dado"] = dado or ""
+                nome_exib = dado or nome
+            except Exception as e:
+                logger.error(f"Calc especifico {prod}: {e}")
+                data = {"dado": dado or nome}
+                nome_exib = dado or nome
         else:
             data = calc_mapa(nome, bd)
+            data["dado"] = dado or ""
             nome_exib = nome
         db = SessionLocal()
         try:
