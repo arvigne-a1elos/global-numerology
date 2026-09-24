@@ -1192,13 +1192,15 @@ def _carregar_banners():
 def _salvar_banners(banners):
     with open(ARQ_BANNERS, "w", encoding="utf-8") as f:
         json.dump(banners, f, ensure_ascii=False, indent=2)
+
 @app.get("/api/banner")
 async def get_banner(posicao: str = "topo", pais: str = "BR"):
     banners = _carregar_banners()
     if not banners:
-        return {"ok": False, "banner": None}
+        return {"ok": False, "banners": []}
     continente = PAIS_CONTINENTE.get(pais.upper(), "")
     hoje = date.today().isoformat()
+    ativos = []
     for b in banners:
         if not b.get("ativo") or b.get("posicao") != posicao:
             continue
@@ -1207,10 +1209,16 @@ async def get_banner(posicao: str = "topo", pais: str = "BR"):
                 continue
             if b.get("data_inicio") and hoje < b["data_inicio"]:
                 continue
-        if b.get("escopo") == "pais" and b.get("pais") == pais.upper():
-            return {"ok": True, "banner": b}
-        if b.get("escopo") == "continente" and b.get("continente") == continente:
-            return {"ok": True, "banner": b}
-        if b.get("escopo") == "mundo":
-            return {"ok": True, "banner": b}
-    return {"ok": False, "banner": None}
+        ativos.append(b)
+    if not ativos:
+        return {"ok": False, "banners": []}
+    def grau(b):
+        if b.get("escopo") == "pais":
+            return 3 if b.get("pais") == pais.upper() else 0
+        if b.get("escopo") == "continente":
+            return 2 if b.get("continente") == continente else 0
+        return 1
+    ativos.sort(key=grau, reverse=True)
+    grau_max = grau(ativos[0])
+    ativos = [b for b in ativos if grau(b) == grau_max]
+    return {"ok": True, "banners": ativos, "banner": ativos[0]}
