@@ -504,9 +504,18 @@ IDEAL_ENERGIA = {
     "urna": "8",        # Validação Nome de Urna (poder)
     "eleitoral": "8",   # Número Eleitoral (poder)
     "artistico": "2",   # Validação Nome Artístico (cooperação, expressão)
-    "nome_ong": "6",    # ONG, Instituto, Associação, Fundação (amor altruísta/humanitário)
+    "nome_ong": "6",    # ONG, Instituto, Associação, Fundação (amor altruísta)
     "assinatura": "8",  # Validação de Assinaturas (poder)
     "negocio": "8",     # Nome para Negócio/Produto (poder)
+    "ia": "8",          # Pesquisa IA de Nomes (poder/assertividade)
+    "bebe": "8",        # Planejamento Nome de Bebê (poder/afirmação)
+    "nome_pet": "5",    # Nome do Pet (afeto, sensibilidade)
+    "nickname": "8",    # Nickname Digital (presença, autoridade)
+    "nome_dominio": "8",# Nome do Domínio (marca forte)
+    "nome_canal": "8",  # Nome do Canal (alcance, autoridade)
+    "nome_equipe": "8", # Nome da Equipe (união de propósito)
+    "nome_projeto": "8",# Nome do Projeto (execução, força)
+    "nome_evento": "3", # Nome do Evento (expressão, brilho)
 }
 # Fixa (sem seletor): energia gravada no metadata para o PDF usar na explicação.
 # O GRAU DE COMPATIBILIDADE de casal/família continua vindo SOMENTE da tabela Cissay.
