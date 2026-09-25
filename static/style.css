@@ -182,3 +182,123 @@ footer { padding: 60px 20px; text-align: center; border-top: 1px solid #222; col
 .urna-grafia.bate-energia .urna-prefixo{border-color:#0b7a3b;color:#0b7a3b}
 /* ===== OCULTAR FORMULÁRIOS FECHADOS ===== */
 .hidden { display: none; }
+
+/* ===== FORMULARIOS UNIFICADOS (estilo Nome do Pet) ===== */
+/* Aplica a todos os campos e botoes dentro dos cards dos produtos. */
+
+form label,
+.produto-form label,
+.card label {
+  display: block;
+  margin: 0 0 6px;
+  color: #E8D9A0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+form input[type="text"],
+form input[type="date"],
+form input[type="email"],
+form select,
+form textarea,
+.produto-form input,
+.produto-form select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  margin: 0 0 16px;
+  background: #111;
+  border: 1px solid #C9A94E;
+  border-radius: 8px;
+  color: #F5F5F5;
+  font-size: 1rem;
+  min-height: 44px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+form input:focus,
+form select:focus,
+form textarea:focus,
+.produto-form input:focus,
+.produto-form select:focus {
+  outline: none;
+  border-color: #E8D9A0;
+  box-shadow: 0 0 0 3px rgba(201, 169, 78, 0.25);
+}
+
+/* Grupos de campos: um abaixo do outro, sem apertar */
+form .form-group,
+.produto-form .form-group,
+form > div {
+  margin-bottom: 6px;
+}
+
+/* Botoes de selecao (tipo do pet, energia desejada) */
+form .opcoes,
+.produto-form .opcoes,
+.opcoes-energia,
+.botoes-energia {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 4px 0 16px;
+}
+
+form .opcoes button,
+.produto-form .opcoes button,
+.opcoes-energia button,
+.botoes-energia button,
+button.opcao-energia {
+  flex: 0 0 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid #C9A94E;
+  background: #111;
+  color: #E8D9A0;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.1s;
+}
+
+form .opcoes button:hover,
+.produto-form .opcoes button:hover,
+.opcoes-energia button:hover,
+.botoes-energia button:hover {
+  background: #1d1d1d;
+  transform: scale(1.06);
+}
+
+form .opcoes button.selecionado,
+.produto-form .opcoes button.selecionado,
+.opcoes-energia button.selecionado,
+.botoes-energia button.selecionado {
+  background: #C9A94E;
+  color: #0a0a0a;
+  box-shadow: 0 0 10px rgba(201, 169, 78, 0.5);
+}
+
+/* Botoes de acao (Comprar, Confirmar) */
+form button[type="submit"],
+.produto-form button,
+.btn-comprar {
+  width: 100%;
+  padding: 13px 16px;
+  margin-top: 4px;
+  background: linear-gradient(135deg, #C9A94E, #A8862F);
+  color: #0a0a0a;
+  font-size: 1.05rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: filter 0.2s, transform 0.1s;
+}
+
+form button[type="submit"]:hover,
+.produto-form button:hover,
+.btn-comprar:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
