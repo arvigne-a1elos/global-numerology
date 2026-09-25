@@ -194,6 +194,18 @@ function abrirModalDado(produto, lang) {
   document.getElementById("modalDadoLabel").textContent = label;
   window._modalDado = { produto: produto, lang: lang, tipo: "", energia: "" };
   montarPassoTipo(produto, lang);
+    // ===== TRADUÇÃO DOS BOTÕES Confirmar/Cancelar (14 idiomas) =====
+  var okBtn = document.getElementById("modalDadoOk");
+  var cancelBtn = document.getElementById("modalDadoCancel");
+  if (okBtn) {
+    okBtn.textContent = t.confirmar_btn || t.confirmar || "Confirmar";
+    okBtn.setAttribute("data-i18n", "confirmar_btn");
+  }
+  if (cancelBtn) {
+    cancelBtn.textContent = t.cancelar_btn || t.cancelar || "Cancelar";
+    cancelBtn.setAttribute("data-i18n", "cancelar_btn");
+  }
+  if (typeof traduzirFormularios === "function") traduzirFormularios();  
   overlay.classList.add("active");
 }
 function fecharModalDado() {
@@ -335,8 +347,12 @@ function irParaCompra(produto, lang, energia) {
   if (nasc) qs += '&nascimento=' + encodeURIComponent(nasc);
   window.location.href = '/criar-checkout?' + qs;
 }
-// ===== TOGGLE FORM (mostra/oculta um formulário) =====
+// ===== TOGGLE FORM (abre no modal genérico do produtos.js — padrão Nome do Pet) =====
 function toggleForm(formId) {
+  if (typeof abrirFormModal === 'function') {
+    abrirFormModal(formId);
+    return;
+  }
   var el = document.getElementById(formId);
   if (!el) return;
   var escondido = (el.style.display === 'none' || el.style.display === '');
