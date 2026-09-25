@@ -71,156 +71,6 @@ def pdf8(data, nome, bd, lang="pt"):
     e.append(Paragraph(bd, _estilo("D", FONTE, 10, GRAY, TA_CENTER, sa=EL)))
     e.append(Paragraph(BOAS_VINDAS.get(lang, BOAS_VINDAS["pt"]),
                        _estilo("BV", FONTE, 10, DARK, TA_JUSTIFY, sa=EL)))
-    # ===== SEÇÃO ESPECÍFICA DO PRODUTO (cálculo próprio) =====
-    # Ativada quando o pay_success usou analisar_imovel/calendario/casal/
-    # familia/nome. Cada produto renderiza os campos que a função devolveu.
-        L_ESP = {
-        "pt": {"mes": "Mês", "energia": "Energia", "soma": "Soma",
-               "compatibilidade": "Compatibilidade", "energia_desejada": "Energia desejada",
-               "numero": "Número", "membros": "Membros",
-               "match": "✓ MATCH: bate com a energia desejada",
-               "no_match": "✗ não bate com a energia desejada"},
-        "en": {"mes": "Month", "energia": "Energy", "soma": "Sum",
-               "compatibilidade": "Compatibility", "energia_desejada": "Desired energy",
-               "numero": "Number", "membros": "Members",
-               "match": "✓ MATCH: meets the desired energy",
-               "no_match": "✗ does not meet the desired energy"},
-        "es": {"mes": "Mes", "energia": "Energía", "soma": "Suma",
-               "compatibilidade": "Compatibilidad", "energia_desejada": "Energía deseada",
-               "numero": "Número", "membros": "Miembros",
-               "match": "✓ MATCH: coincide con la energía deseada",
-               "no_match": "✗ no coincide con la energía deseada"},
-        "it": {"mes": "Mese", "energia": "Energia", "soma": "Somma",
-               "compatibilidade": "Compatibilità", "energia_desejada": "Energia desiderata",
-               "numero": "Numero", "membros": "Membri",
-               "match": "✓ MATCH: corrisponde all'energia desiderata",
-               "no_match": "✗ non corrisponde all'energia desiderata"},
-        "fr": {"mes": "Mois", "energia": "Énergie", "soma": "Somme",
-               "compatibilidade": "Compatibilité", "energia_desejada": "Énergie souhaitée",
-               "numero": "Numéro", "membros": "Membres",
-               "match": "✓ MATCH: correspond à l'énergie souhaitée",
-               "no_match": "✗ ne correspond pas à l'énergie souhaitée"},
-        "de": {"mes": "Monat", "energia": "Energie", "soma": "Summe",
-               "compatibilidade": "Kompatibilität", "energia_desejada": "Gewünschte Energie",
-               "numero": "Nummer", "membros": "Mitglieder",
-               "match": "✓ MATCH: entspricht der gewünschten Energie",
-               "no_match": "✗ entspricht nicht der gewünschten Energie"},
-        "ja": {"mes": "月", "energia": "エネルギー", "soma": "合計",
-               "compatibilidade": "相性", "energia_desejada": "希望エネルギー",
-               "numero": "番号", "membros": "メンバー",
-               "match": "✓ MATCH: 希望するエネルギーと一致",
-               "no_match": "✗ 希望するエネルギーと一致しません"},
-        "zh": {"mes": "月份", "energia": "能量", "soma": "总和",
-               "compatibilidade": "兼容性", "energia_desejada": "期望能量",
-               "numero": "号码", "membros": "成员",
-               "match": "✓ 匹配：符合期望能量",
-               "no_match": "✗ 不符合期望能量"},
-        "ru": {"mes": "Месяц", "energia": "Энергия", "soma": "Сумма",
-               "compatibilidade": "Совместимость", "energia_desejada": "Желаемая энергия",
-               "numero": "Номер", "membros": "Члены",
-               "match": "✓ СОВПАДЕНИЕ: соответствует желаемой энергии",
-               "no_match": "✗ не соответствует желаемой энергии"},
-        "id": {"mes": "Bulan", "energia": "Energi", "soma": "Jumlah",
-               "compatibilidade": "Kompatibilitas", "energia_desejada": "Energi yang diinginkan",
-               "numero": "Nomor", "membros": "Anggota",
-               "match": "✓ COCOK: sesuai energi yang diinginkan",
-               "no_match": "✗ tidak sesuai energi yang diinginkan"},
-        "tr": {"mes": "Ay", "energia": "Enerji", "soma": "Toplam",
-               "compatibilidade": "Uyum", "energia_desejada": "İstenen enerji",
-               "numero": "Numara", "membros": "Üyeler",
-               "match": "✓ EŞLEŞME: istenen enerjiyle uyuşuyor",
-               "no_match": "✗ istenen enerjiyle uyuşmuyor"},
-        "vi": {"mes": "Tháng", "energia": "Năng lượng", "soma": "Tổng",
-               "compatibilidade": "Tương hợp", "energia_desejada": "Năng lượng mong muốn",
-               "numero": "Số", "membros": "Thành viên",
-               "match": "✓ KHỚP: khớp với năng lượng mong muốn",
-               "no_match": "✗ không khớp với năng lượng mong muốn"},
-        "he": {"mes": "חודש", "energia": "אנרגיה", "soma": "סכום",
-               "compatibilidade": "תאימות", "energia_desejada": "האנרגיה הרצויה",
-               "numero": "מספר", "membros": "חברים",
-               "match": "✓ תואם: מתאים לאנרגיה הרצויה",
-               "no_match": "✗ אינו מתאים לאנרגיה הרצויה"},
-        "ar": {"mes": "الشهر", "energia": "الطاقة", "soma": "المجموع",
-               "compatibilidade": "التوافق", "energia_desejada": "الطاقة المطلوبة",
-               "numero": "الرقم", "membros": "الأعضاء",
-               "match": "✓ تطابق: يطابق الطاقة المطلوبة",
-               "no_match": "✗ لا يطابق الطاقة المطلوبة"},
-    }
-    L = L_ESP.get(lang, L_ESP["en"])
-    _espec = None
-    if "energia_mes" in dados:
-        # Calendário Mensal Energético
-        _espec = [
-            f"<b>{L['mes']}:</b> {dados.get('mes', '')}",
-            f"<b>{L['energia']}:</b> {dados.get('energia_mes', '')}",
-        ]
-    elif "compatibilidade" in dados:
-        # Mapa do Casal
-        _espec = [
-            f"<b>{dados.get('nome1', '')}</b> → {L['energia']} {dados.get('energia1', '')}",
-            f"<b>{dados.get('nome2', '')}</b> → {L['energia']} {dados.get('energia2', '')}",
-            f"<b>{L['compatibilidade']}:</b> {dados.get('compatibilidade', '')}",
-        ]
-    elif "membros" in dados:
-        # Mapa Família Premium
-        _espec = [f"<b>{L['membros']}:</b> {dados.get('total', '')}"]
-        for m in dados.get("membros", []):
-            _espec.append(f"{m.get('membro', '')} — {L['energia']} {m.get('energia', '')}")
-    elif "numero" in dados and "soma" in dados:
-        # Número do Imóvel
-        _espec = [
-            f"<b>{L['numero']}:</b> {dados.get('numero', '')}",
-            f"<b>{L['soma']}:</b> {dados.get('soma', '')} — <b>{L['energia']}:</b> {dados.get('energia', '')}",
-        ]
-    elif "match" in dados or "energia_desejada" in dados:
-        # Produtos de Nome (pet, nickname, domínio, canal, equipe, ONG,
-        # projeto, evento, artístico, bebê, assinatura, negócio)
-        _espec = [
-            f"<b>{dados.get('nome', nome)}</b> — {L['soma']} {dados.get('soma', '')} — {L['energia']} {dados.get('energia', '')}",
-        ]
-        if dados.get("energia_desejada"):
-            _espec.append(
-                f"{L['energia_desejada']}: {dados.get('energia_desejada')} — "
-                + (L['match'] if dados.get('match') else L['no_match']))
-    if _espec is not None:
-        for linha in _espec:
-            e.append(Paragraph(linha, _estilo("ESP", FONTE, 11, DARK, TA_LEFT, sa=LINHA * 0.4)))
-        e.append(Spacer(1, LINHA))
-        e.append(Paragraph(T.get("entrega", ""), _estilo("J", FONTE, 8, GRAY, TA_CENTER, sa=6)))
-        e.append(Paragraph("© A1ELOS Assessoria e Consultoria",
-                           _estilo("F", FONTE, 8, GRAY, TA_CENTER)))
-        doc.build(e, onFirstPage=_cabecalho_pagina, onLaterPages=_cabecalho_pagina)
-        return path    
-    chaves = [("life_path", "caminho_vida"), ("expression", "expressao"),
-              ("soul_urge", "motivacao"), ("personality", "personalidade"),
-              ("destiny", "destino")]
-    linhas = [[t("numero", lang), t("valor", lang), t("significado", lang)]]
-    for k, lbl in chaves:
-        v = data.get(k, 0)
-        sig = SIG.get(v, (t("nenhum", lang), "", "", ""))
-        linhas.append([t(lbl, lang), str(v), sig[0]])
-    tbl = Table(linhas, colWidths=[180, 60, 220])  # 460pt <= 495pt
-    tbl.setStyle(TableStyle([
-        ("BACKGROUND", (0, 0), (-1, 0), GOLD), ("TEXTCOLOR", (0, 0), (-1, 0), WHITE),
-        ("FONTSIZE", (0, 0), (-1, -1), 9), ("FONTNAME", (0, 0), (-1, -1), FONTE),
-        ("GRID", (0, 0), (-1, -1), 0.5, colors.grey),
-        ("ALIGN", (1, 0), (1, -1), "CENTER"), ("ALIGN", (2, 0), (2, -1), "LEFT"),
-        ("BACKGROUND", (0, 1), (-1, -1), LGRAY), ("TEXTCOLOR", (0, 1), (-1, -1), DARK),
-        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-    ]))
-    e.append(tbl)
-    e.append(Spacer(1, LINHA))
-    for k, lbl in chaves:
-        v = data.get(k, 0)
-        sig = SIG.get(v, (t("nenhum", lang), "", "", ""))
-        e.append(Paragraph(f"<b>{t(lbl, lang)}:</b> {v} — {sig[0]}",
-                           _estilo("TX", FONTE, 10, DARK, TA_LEFT, sa=3)))
-    e.append(Spacer(1, LINHA))
-    e.append(Paragraph(T.get("entrega", ""), _estilo("J", FONTE, 8, GRAY, TA_CENTER, sa=6)))
-    e.append(Paragraph("© A1ELOS Assessoria e Consultoria",
-                       _estilo("F", FONTE, 8, GRAY, TA_CENTER)))
-    doc.build(e, onFirstPage=_cabecalho_pagina, onLaterPages=_cabecalho_pagina)
-    return path
 
 # ═══════════════════════════════════════════
 # MAPA COMPLETO (template premium, traduzido)
@@ -481,12 +331,126 @@ def pdf_produto(produto, dados, nome, bd_str, lang, dado=""):
         e.append(Paragraph(f"<b>{dado}</b>", _estilo("J", FONTE, 11, DARK, TA_CENTER, sa=LINHA)))
     e.append(Paragraph(BOAS_VINDAS.get(lang, BOAS_VINDAS["pt"]),
                        _estilo("BV", FONTE, 10, DARK, TA_JUSTIFY, sa=LINHA)))
+    # ===== SEÇÃO ESPECÍFICA DO PRODUTO (cálculo próprio) =====
+    # Ativada quando o pay_success usou analisar_imovel/calendario/casal/
+    # familia/nome. Cada produto renderiza os campos que a função devolveu.
+    L_ESP = {
+        "pt": {"mes": "Mês", "energia": "Energia", "soma": "Soma",
+               "compatibilidade": "Compatibilidade", "energia_desejada": "Energia desejada",
+               "numero": "Número", "membros": "Membros",
+               "match": "✓ MATCH: bate com a energia desejada",
+               "no_match": "✗ não bate com a energia desejada"},
+        "en": {"mes": "Month", "energia": "Energy", "soma": "Sum",
+               "compatibilidade": "Compatibility", "energia_desejada": "Desired energy",
+               "numero": "Number", "membros": "Members",
+               "match": "✓ MATCH: meets the desired energy",
+               "no_match": "✗ does not meet the desired energy"},
+        "es": {"mes": "Mes", "energia": "Energía", "soma": "Suma",
+               "compatibilidade": "Compatibilidad", "energia_desejada": "Energía deseada",
+               "numero": "Número", "membros": "Miembros",
+               "match": "✓ MATCH: coincide con la energía deseada",
+               "no_match": "✗ no coincide con la energía deseada"},
+        "it": {"mes": "Mese", "energia": "Energia", "soma": "Somma",
+               "compatibilidade": "Compatibilità", "energia_desejada": "Energia desiderata",
+               "numero": "Numero", "membros": "Membri",
+               "match": "✓ MATCH: corrisponde all'energia desiderata",
+               "no_match": "✗ non corrisponde all'energia desiderata"},
+        "fr": {"mes": "Mois", "energia": "Énergie", "soma": "Somme",
+               "compatibilidade": "Compatibilité", "energia_desejada": "Énergie souhaitée",
+               "numero": "Numéro", "membros": "Membres",
+               "match": "✓ MATCH: correspond à l'énergie souhaitée",
+               "no_match": "✗ ne correspond pas à l'énergie souhaitée"},
+        "de": {"mes": "Monat", "energia": "Energie", "soma": "Summe",
+               "compatibilidade": "Kompatibilität", "energia_desejada": "Gewünschte Energie",
+               "numero": "Nummer", "membros": "Mitglieder",
+               "match": "✓ MATCH: entspricht der gewünschten Energie",
+               "no_match": "✗ entspricht nicht der gewünschten Energie"},
+        "ja": {"mes": "月", "energia": "エネルギー", "soma": "合計",
+               "compatibilidade": "相性", "energia_desejada": "希望エネルギー",
+               "numero": "番号", "membros": "メンバー",
+               "match": "✓ MATCH: 希望するエネルギーと一致",
+               "no_match": "✗ 希望するエネルギーと一致しません"},
+        "zh": {"mes": "月份", "energia": "能量", "soma": "总和",
+               "compatibilidade": "兼容性", "energia_desejada": "期望能量",
+               "numero": "号码", "membros": "成员",
+               "match": "✓ 匹配：符合期望能量",
+               "no_match": "✗ 不符合期望能量"},
+        "ru": {"mes": "Месяц", "energia": "Энергия", "soma": "Сумма",
+               "compatibilidade": "Совместимость", "energia_desejada": "Желаемая энергия",
+               "numero": "Номер", "membros": "Члены",
+               "match": "✓ СОВПАДЕНИЕ: соответствует желаемой энергии",
+               "no_match": "✗ не соответствует желаемой энергии"},
+        "id": {"mes": "Bulan", "energia": "Energi", "soma": "Jumlah",
+               "compatibilidade": "Kompatibilitas", "energia_desejada": "Energi yang diinginkan",
+               "numero": "Nomor", "membros": "Anggota",
+               "match": "✓ COCOK: sesuai energi yang diinginkan",
+               "no_match": "✗ tidak sesuai energi yang diinginkan"},
+        "tr": {"mes": "Ay", "energia": "Enerji", "soma": "Toplam",
+               "compatibilidade": "Uyum", "energia_desejada": "İstenen enerji",
+               "numero": "Numara", "membros": "Üyeler",
+               "match": "✓ EŞLEŞME: istenen enerjiyle uyuşuyor",
+               "no_match": "✗ istenen enerjiyle uyuşmuyor"},
+        "vi": {"mes": "Tháng", "energia": "Năng lượng", "soma": "Tổng",
+               "compatibilidade": "Tương hợp", "energia_desejada": "Năng lượng mong muốn",
+               "numero": "Số", "membros": "Thành viên",
+               "match": "✓ KHỚP: khớp với năng lượng mong muốn",
+               "no_match": "✗ không khớp với năng lượng mong muốn"},
+        "he": {"mes": "חודש", "energia": "אנרגיה", "soma": "סכום",
+               "compatibilidade": "תאימות", "energia_desejada": "האנרגיה הרצויה",
+               "numero": "מספר", "membros": "חברים",
+               "match": "✓ תואם: מתאים לאנרגיה הרצויה",
+               "no_match": "✗ אינו מתאים לאנרגיה הרצויה"},
+        "ar": {"mes": "الشهر", "energia": "الطاقة", "soma": "المجموع",
+               "compatibilidade": "التوافق", "energia_desejada": "الطاقة المطلوبة",
+               "numero": "الرقم", "membros": "الأعضاء",
+               "match": "✓ تطابق: يطابق الطاقة المطلوبة",
+               "no_match": "✗ لا يطابق الطاقة المطلوبة"},
+    }
+    L = L_ESP.get(lang, L_ESP["en"])
+    _espec = None
+    if "energia_mes" in dados:
+        _espec = [
+            f"<b>{L['mes']}:</b> {dados.get('mes', '')}",
+            f"<b>{L['energia']}:</b> {dados.get('energia_mes', '')}",
+        ]
+    elif "compatibilidade" in dados:
+        _espec = [
+            f"<b>{dados.get('nome1', '')}</b> → {L['energia']} {dados.get('energia1', '')}",
+            f"<b>{dados.get('nome2', '')}</b> → {L['energia']} {dados.get('energia2', '')}",
+            f"<b>{L['compatibilidade']}:</b> {dados.get('compatibilidade', '')}",
+        ]
+    elif "membros" in dados:
+        _espec = [f"<b>{L['membros']}:</b> {dados.get('total', '')}"]
+        for m in dados.get("membros", []):
+            _espec.append(f"{m.get('membro', '')} — {L['energia']} {m.get('energia', '')}")
+    elif "numero" in dados and "soma" in dados:
+        _espec = [
+            f"<b>{L['numero']}:</b> {dados.get('numero', '')}",
+            f"<b>{L['soma']}:</b> {dados.get('soma', '')} — <b>{L['energia']}:</b> {dados.get('energia', '')}",
+        ]
+    elif "match" in dados or "energia_desejada" in dados:
+        _espec = [
+            f"<b>{dados.get('nome', nome)}</b> — {L['soma']} {dados.get('soma', '')} — {L['energia']} {dados.get('energia', '')}",
+        ]
+        if dados.get("energia_desejada"):
+            _espec.append(
+                f"{L['energia_desejada']}: {dados.get('energia_desejada')} — "
+                + (L['match'] if dados.get('match') else L['no_match']))
+    if _espec is not None:
+        for linha in _espec:
+            e.append(Paragraph(linha, _estilo("ESP", FONTE, 11, DARK, TA_LEFT, sa=LINHA * 0.4)))
+        e.append(Spacer(1, LINHA))
+        e.append(Paragraph(T.get("entrega", ""), _estilo("J", FONTE, 8, GRAY, TA_CENTER, sa=6)))
+        e.append(Paragraph("© A1ELOS Assessoria e Consultoria",
+                           _estilo("F", FONTE, 8, GRAY, TA_CENTER)))
+        doc.build(e, onFirstPage=_cabecalho_pagina, onLaterPages=_cabecalho_pagina)
+        return path    
     chaves = [("life_path", "caminho_vida"), ("expression", "expressao"),
               ("soul_urge", "motivacao"), ("personality", "personalidade"),
               ("destiny", "destino")]
     linhas = [[t("numero", lang), t("valor", lang), t("significado", lang)]]
     for k, lbl in chaves:
-         v = dados.get(k, 0)
+        v = dados.get(k, 0)
         sig = SIG.get(v, (t("nenhum", lang), "", "", ""))
         linhas.append([t(lbl, lang), str(v), sig[0]])
     tbl = Table(linhas, colWidths=[180, 60, 220])  # 460pt <= 495pt
