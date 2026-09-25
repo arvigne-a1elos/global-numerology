@@ -1232,3 +1232,52 @@ function montarSeletorEnergia(containerId, aoSelecionar, ideal){
   }
   return box;
 }
+/* ===== MODAL GENÉRICO DE FORMULÁRIOS =====
+   Abre qualquer form dentro de um box centralizado (estilo Nome do Pet),
+   isolado do card, com campos largos. Preserva IDs e handlers. */
+function abrirFormModal(idForm) {
+  var form = document.getElementById(idForm);
+  if (!form) return;
+  var overlay = document.getElementById('a1ModalOverlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'a1ModalOverlay';
+    overlay.className = 'a1-modal-overlay';
+    overlay.innerHTML = '<div class="a1-modal-box">'
+      + '<button type="button" class="a1-modal-fechar" onclick="fecharFormModal()" aria-label="Fechar">&times;</button>'
+      + '<div class="a1-modal-conteudo"></div>'
+      + '</div>';
+    document.body.appendChild(overlay);
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) fecharFormModal();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && overlay.classList.contains('aberto')) fecharFormModal();
+    });
+  }
+  // guarda a posição original para devolver o form ao fechar
+  form._origParent = form.parentNode;
+  form._origNext = form.nextSibling;
+  form.classList.remove('hidden');
+  overlay.querySelector('.a1-modal-conteudo').appendChild(form);
+  overlay.classList.add('aberto');
+  document.body.style.overflow = 'hidden';
+  if (typeof traduzirFormularios === 'function') traduzirFormularios();
+}
+function fecharFormModal() {
+  var overlay = document.getElementById('a1ModalOverlay');
+  if (!overlay) return;
+  var form = overlay.querySelector('.a1-modal-conteudo form');
+  if (form && form._origParent) {
+    form.classList.add('hidden');
+    if (form._origNext) form._origParent.insertBefore(form, form._origNext);
+    else form._origParent.appendChild(form);
+  }
+  overlay.classList.remove('aberto');
+  document.body.style.overflow = '';
+}
+/* Redefine o toggleForm: em vez de abrir dentro do card, abre em modal.
+   Os botões existentes (onclick="toggleForm('form-x')") passam a abrir o modal. */
+function toggleForm(idForm) {
+  abrirFormModal(idForm);
+}
