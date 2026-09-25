@@ -302,3 +302,22 @@ form button[type="submit"]:hover,
   filter: brightness(1.1);
   transform: translateY(-1px);
 }
+
+/* ===== FORMULÁRIOS DENTRO DOS CARDS (estilo modal do Pet) ===== */
+.product-card form {
+  background: #141414;
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  padding: 18px 16px;
+  margin-top: 14px;
+  text-align: left;
+  width: 100%;
+  box-sizing: border-box;
+}
+.product-card form:hover { border-color: rgba(201, 169, 78, 0.5); }
+.product-card form label { margin-top: 4px; }
+.product-card .urna-grafia {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+}
+.product-card .urna-grafia input { margin-bottom: 0; }
+.energia-selector { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 14px; }
