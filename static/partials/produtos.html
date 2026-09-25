@@ -74,8 +74,9 @@
                 <form id="form-ia" class="hidden">
                     <label data-i18n-form="calc_nome">Nome completo</label>
                     <input id="iaNome" type="text" data-i18n-ph="ph_nome_completo" placeholder="Nome completo">
-                    <label data-i18n-form="f_energia">Energia desejada (1-9)</label>
-                    <input id="iaEnergia" type="number" min="1" max="9" data-i18n-ph="ph_energia" placeholder="1 a 9">
+                    <label id="iaEnergiaLabel" class="urna-label" data-i18n-form="f_energia">Energia desejada</label>
+                    <p id="iaEnergiaDica" class="urna-dica"></p>
+                    <div id="iaEnergiaSel" class="energia-selector"></div>
                     <button class="btn btn-full" onclick="pagarIa()" data-i18n-form="pesquisar_btn">Pesquisar</button>
                 </form>
             </div>
@@ -286,8 +287,9 @@
                 <form id="form-bebe" class="hidden">
                     <label data-i18n-form="f_sobrenome_familia">Sobrenome da família</label>
                     <input id="bebeSobrenome" type="text" data-i18n-ph="ph_sobrenome" placeholder="Sobrenome que o bebê receberá">
-                    <label data-i18n-form="f_energia">Energia desejada (1-9)</label>
-                    <input id="bebeEnergia" type="number" min="1" max="9" data-i18n-ph="ph_energia" placeholder="1 a 9">
+                    <label id="bebeEnergiaLabel" class="urna-label" data-i18n-form="f_energia">Energia desejada</label>
+                    <p id="bebeEnergiaDica" class="urna-dica"></p>
+                    <div id="bebeEnergiaSel" class="energia-selector"></div>
                     <button class="btn btn-full" onclick="pagarBebe()" data-i18n-form="pesquisar_btn">Pesquisar</button>
                 </form>
             </div>
@@ -308,6 +310,9 @@
                 <form id="form-assinatura" class="hidden">
                     <label data-i18n-form="f_assinatura">Texto da assinatura atual</label>
                     <input id="assinaturaTexto" type="text" data-i18n-ph="ph_sua_assinatura" placeholder="Ex.: Nome Sobrenome">
+                    <label id="assinaturaEnergiaLabel" class="urna-label" data-i18n-form="f_energia">Energia desejada</label>
+                    <p id="assinaturaEnergiaDica" class="urna-dica"></p>
+                    <div id="assinaturaEnergiaSel" class="energia-selector"></div>
                     <button class="btn btn-full" onclick="pagarAssinatura()" data-i18n-form="pesquisar_btn">Pesquisar</button>
                 </form>
             </div>
@@ -328,8 +333,9 @@
                 <form id="form-negocio" class="hidden">
                     <label data-i18n-form="f_negocio">Nome do negócio ou produto</label>
                     <input id="negocioNome" type="text" data-i18n-ph="ph_nome_negocio" placeholder="Nome da empresa/produto">
-                    <label data-i18n-form="f_energia">Energia desejada (1-9)</label>
-                    <input id="negocioEnergia" type="number" min="1" max="9" data-i18n-ph="ph_energia" placeholder="1 a 9">
+                    <label id="negocioEnergiaLabel" class="urna-label" data-i18n-form="f_energia">Energia desejada</label>
+                    <p id="negocioEnergiaDica" class="urna-dica"></p>
+                    <div id="negocioEnergiaSel" class="energia-selector"></div>
                     <button class="btn btn-full" onclick="pagarNegocio()" data-i18n-form="pesquisar_btn">Pesquisar</button>
                 </form>
             </div>
