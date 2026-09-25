@@ -797,7 +797,23 @@ function abrirSeletorEnergia(produto, lang) {
 }
 
 /* ===== PASSOS DO MODAL (círculos de energia — padrão antigo) ===== */
-var ENERGIA_IDEAL = { urna: 8, eleitoral: 8, artistico: 2, nome_ong: 6 };
+var ENERGIA_IDEAL = {
+  urna: 8,
+  eleitoral: 8,
+  artistico: 2,
+  nome_ong: 6,
+  ia: 8,
+  bebe: 8,
+  negocio: 8,
+  assinatura: 8,
+  nome_pet: 5,
+  nickname: 8,
+  nome_dominio: 8,
+  nome_canal: 8,
+  nome_equipe: 8,
+  nome_projeto: 8,
+  nome_evento: 3
+};
 
 function montarPassoEnergia(produto, lang) {
   var t = translations[lang] || translations.pt;
