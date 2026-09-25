@@ -13,6 +13,87 @@ function setLanguage(lang) {
     // Re-traduz todos os textos, cards, preços, energias e tabela BC
     if (typeof traduzirTudo === "function") { traduzirTudo(); }
 }
+
+// ===== TRADUÇÃO DOS FORMULÁRIOS INLINE (14 IDIOMAS) =====
+// Processa data-i18n-form (rótulos/botões/opções), data-i18n-ph
+// (placeholders) e data-mes (meses do Calendário). Reaproveita o
+// dicionário translations existente e usa EXTRA_TRAD para chaves novas.
+(function () {
+  var EXTRA_TRAD = {
+    "pt": {"f_genero":"Gênero","f_grafias":"Grafias do nome","f_nome_org":"Nome da ONG / Associação / Instituto / Fundação","ph_nome_org":"Nome da organização","f_nome_candidato":"Nome completo do candidato","f_num_atual":"Número atual (opcional, para análise de vibração)","ph_sigla":"Sigla","f_sobrenome_familia":"Sobrenome da família","f_pessoa1":"Nome da primeira pessoa","f_pessoa2":"Nome da segunda pessoa","ph_energia":"1 a 9"},
+    "en": {"f_genero":"Gender","f_grafias":"Name spellings","f_nome_org":"NGO, Association, Institute or Foundation name","ph_nome_org":"Organization name","f_nome_candidato":"Candidate's full name","f_num_atual":"Current number (optional, for vibration analysis)","ph_sigla":"Abbreviation","f_sobrenome_familia":"Family surname","f_pessoa1":"First person's name","f_pessoa2":"Second person's name","ph_energia":"1 to 9"},
+    "es": {"f_genero":"Género","f_grafias":"Grafías del nombre","f_nome_org":"Nombre de la ONG, Asociación, Instituto o Fundación","ph_nome_org":"Nombre de la organización","f_nome_candidato":"Nombre completo del candidato","f_num_atual":"Número actual (opcional, para análisis de vibración)","ph_sigla":"Sigla","f_sobrenome_familia":"Apellido de la familia","f_pessoa1":"Nombre de la primera persona","f_pessoa2":"Nombre de la segunda persona","ph_energia":"1 a 9"},
+    "it": {"f_genero":"Genere","f_grafias":"Grafie del nome","f_nome_org":"Nome di ONG, Associazione, Istituto o Fondazione","ph_nome_org":"Nome dell'organizzazione","f_nome_candidato":"Nome completo del candidato","f_num_atual":"Numero attuale (facoltativo, per l'analisi della vibrazione)","ph_sigla":"Sigla","f_sobrenome_familia":"Cognome della famiglia","f_pessoa1":"Nome della prima persona","f_pessoa2":"Nome della seconda persona","ph_energia":"1 a 9"},
+    "fr": {"f_genero":"Genre","f_grafias":"Graphies du nom","f_nome_org":"Nom d'ONG, association, institut ou fondation","ph_nome_org":"Nom de l'organisation","f_nome_candidato":"Nom complet du candidat","f_num_atual":"Numéro actuel (facultatif, pour l'analyse de la vibration)","ph_sigla":"Sigle","f_sobrenome_familia":"Nom de famille","f_pessoa1":"Nom de la première personne","f_pessoa2":"Nom de la deuxième personne","ph_energia":"1 à 9"},
+    "de": {"f_genero":"Geschlecht","f_grafias":"Namensschreibweisen","f_nome_org":"Name von NGO, Verein, Institut oder Stiftung","ph_nome_org":"Name der Organisation","f_nome_candidato":"Vollständiger Name des Kandidaten","f_num_atual":"Aktuelle Nummer (optional, für die Schwingungsanalyse)","ph_sigla":"Kürzel","f_sobrenome_familia":"Familienname","f_pessoa1":"Name der ersten Person","f_pessoa2":"Name der zweiten Person","ph_energia":"1 bis 9"},
+    "ja": {"f_genero":"性別","f_grafias":"名前の表記","f_nome_org":"NGO・協会・研究所・財団の名前","ph_nome_org":"組織名","f_nome_candidato":"候補者のフルネーム","f_num_atual":"現在の番号（任意、振動分析用）","ph_sigla":"略称","f_sobrenome_familia":"家族の姓","f_pessoa1":"1人目の名前","f_pessoa2":"2人目の名前","ph_energia":"1〜9"},
+    "zh": {"f_genero":"性别","f_grafias":"名称写法","f_nome_org":"非政府组织、协会、研究所或基金会名称","ph_nome_org":"组织名称","f_nome_candidato":"候选人全名","f_num_atual":"当前号码（可选，用于振动分析）","ph_sigla":"缩写","f_sobrenome_familia":"家庭姓氏","f_pessoa1":"第一个人的名字","f_pessoa2":"第二个人的名字","ph_energia":"1到9"},
+    "ru": {"f_genero":"Пол","f_grafias":"Написания имени","f_nome_org":"Название НКО, ассоциации, института или фонда","ph_nome_org":"Название организации","f_nome_candidato":"Полное имя кандидата","f_num_atual":"Текущий номер (необязательно, для анализа вибрации)","ph_sigla":"Сокращение","f_sobrenome_familia":"Фамилия семьи","f_pessoa1":"Имя первого человека","f_pessoa2":"Имя второго человека","ph_energia":"от 1 до 9"},
+    "he": {"f_genero":"מגדר","f_grafias":"כתיב השם","f_nome_org":"שם עמותה, ארגון, מכון או קרן","ph_nome_org":"שם הארגון","f_nome_candidato":"שמו המלא של המועמד","f_num_atual":"המספר הנוכחי (אופציונלי, לניתוח תנודה)","ph_sigla":"ראשי תיבות","f_sobrenome_familia":"שם משפחה","f_pessoa1":"שמו של האדם הראשון","f_pessoa2":"שמו של האדם השני","ph_energia":"1-9"},
+    "ar": {"f_genero":"الجنس","f_grafias":"كتابة الاسم","f_nome_org":"اسم منظمة أو جمعية أو معهد أو مؤسسة","ph_nome_org":"اسم المنظمة","f_nome_candidato":"الاسم الكامل للمرشح","f_num_atual":"الرقم الحالي (اختياري، لتحليل الاهتزاز)","ph_sigla":"اختصار","f_sobrenome_familia":"لقب العائلة","f_pessoa1":"اسم الشخص الأول","f_pessoa2":"اسم الشخص الثاني","ph_energia":"1 إلى 9"},
+    "id": {"f_genero":"Jenis kelamin","f_grafias":"Ejaan nama","f_nome_org":"Nama LSM, Asosiasi, Lembaga atau Yayasan","ph_nome_org":"Nama organisasi","f_nome_candidato":"Nama lengkap kandidat","f_num_atual":"Nomor saat ini (opsional, untuk analisis getaran)","ph_sigla":"Singkatan","f_sobrenome_familia":"Nama belakang keluarga","f_pessoa1":"Nama orang pertama","f_pessoa2":"Nama orang kedua","ph_energia":"1 sampai 9"},
+    "tr": {"f_genero":"Cinsiyet","f_grafias":"İsim yazımları","f_nome_org":"STK, Dernek, Enstitü veya Vakıf Adı","ph_nome_org":"Kuruluş adı","f_nome_candidato":"Adayın tam adı","f_num_atual":"Mevcut numara (isteğe bağlı, titreşim analizi için)","ph_sigla":"Kısaltma","f_sobrenome_familia":"Aile soyadı","f_pessoa1":"Birinci kişinin adı","f_pessoa2":"İkinci kişinin adı","ph_energia":"1 ile 9"},
+    "vi": {"f_genero":"Giới tính","f_grafias":"Cách viết tên","f_nome_org":"Tên Tổ chức, Hiệp hội, Viện hoặc Quỹ","ph_nome_org":"Tên tổ chức","f_nome_candidato":"Họ tên đầy đủ của ứng viên","f_num_atual":"Số hiện tại (tùy chọn, để phân tích rung động)","ph_sigla":"Tên viết tắt","f_sobrenome_familia":"Họ của gia đình","f_pessoa1":"Tên người thứ nhất","f_pessoa2":"Tên người thứ hai","ph_energia":"1 đến 9"}
+  };
+  var MESES_TRAD = {
+    "pt": ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"],
+    "en": ["January","February","March","April","May","June","July","August","September","October","November","December"],
+    "es": ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"],
+    "it": ["Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"],
+    "fr": ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"],
+    "de": ["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"],
+    "ja": ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"],
+    "zh": ["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"],
+    "ru": ["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"],
+    "he": ["ינואר","פברואר","מרץ","אפריל","מאי","יוני","יולי","אוגוסט","ספטמבר","אוקטובר","נובמבר","דצמבר"],
+    "ar": ["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"],
+    "id": ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"],
+    "tr": ["Ocak","Şubat","Mart","Nisan","Mayıs","Haziran","Temmuz","Ağustos","Eylül","Ekim","Kasım","Aralık"],
+    "vi": ["Tháng 1","Tháng 2","Tháng 3","Tháng 4","Tháng 5","Tháng 6","Tháng 7","Tháng 8","Tháng 9","Tháng 10","Tháng 11","Tháng 12"]
+  };
+  function _pega(lg, ch, fb) {
+    var d = (typeof translations !== 'undefined' && translations[lg]) ? translations[lg] : {};
+    return d[ch] || (EXTRA_TRAD[lg] && EXTRA_TRAD[lg][ch]) || fb || ch;
+  }
+  function fTrad(ch, fb) {
+    var lg = (typeof getLang === 'function') ? getLang() : 'pt';
+    return _pega(lg, ch, fb);
+  }
+  function traduzirFormularios() {
+    document.querySelectorAll('[data-i18n-form]').forEach(function (el) {
+      var ch = el.getAttribute('data-i18n-form');
+      if (!ch) return;
+      if (el.tagName === 'OPTION') { el.textContent = fTrad(ch, el.textContent); }
+      else { el.innerHTML = fTrad(ch, el.innerHTML); }
+    });
+    document.querySelectorAll('[data-i18n-ph]').forEach(function (el) {
+      var ch = el.getAttribute('data-i18n-ph');
+      if (ch) el.setAttribute('placeholder', fTrad(ch, el.getAttribute('placeholder') || ''));
+    });
+    document.querySelectorAll('option[data-mes]').forEach(function (op) {
+      var i = parseInt(op.getAttribute('data-mes'), 10) - 1;
+      var lg = (typeof getLang === 'function') ? getLang() : 'pt';
+      var arr = MESES_TRAD[lg] || MESES_TRAD.pt;
+      if (arr && arr[i]) op.textContent = arr[i];
+    });
+  }
+  if (typeof setLanguage === 'function') {
+    var _orig = window.setLanguage;
+    window.setLanguage = function () {
+      var r = _orig.apply(this, arguments);
+      traduzirFormularios();
+      return r;
+    };
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', traduzirFormularios);
+  } else {
+    traduzirFormularios();
+  }
+  window.traduzirFormularios = traduzirFormularios;
+  window.fTrad = fTrad;
+})();
+
 // ===== IDIOMAS DISPONÍVEIS (14) =====
 const languages = [
     { code: 'pt', name: 'PT', flag: '🇧🇷' },
@@ -3889,3 +3970,4 @@ _langs14.forEach(function(l){
     if (window.PRODUTOS_TRAD[l][dk] === undefined && t[dk] !== undefined) window.PRODUTOS_TRAD[l][dk] = t[dk];
   });
 });
+
