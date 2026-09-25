@@ -4,24 +4,21 @@
         <h2 data-i18n="section_products_title">Produtos e Serviços</h2>
         <p data-i18n="section_products_subtitle">Escolha o produto ideal para sua análise numerológica</p>
     </div>
-
     <div class="cards-grid" id="produtosGrid">
-        
             <!-- 1. Mapa Express -->
             <div class="product-card" data-prod="express">
                 <div class="icon">🔮</div>
                 <h3 class="prod-nome" data-i18n="p_express">Mapa Express</h3>
                 <div class="price prod-preco">R$ 8</div>
-             <p class="desc" data-i18n="desc_express">1 página com os 5 números principais e seu significado resumido. Ideal para uma visão rápida.</p>
-             <ul class="features">
-              <li>✅ Caminho da Vida</li>
-              <li>✅ Expressão, Alma, Personalidade</li>
-              <li>✅ Destino</li>
-              <li>📲 PDF + QRCode</li>
-             </ul>
+                <p class="desc" data-i18n="desc_express">1 página com os 5 números principais e seu significado resumido. Ideal para uma visão rápida.</p>
+                <ul class="features">
+                    <li>✅ Caminho da Vida</li>
+                    <li>✅ Expressão, Alma, Personalidade</li>
+                    <li>✅ Destino</li>
+                    <li>📲 PDF + QRCode</li>
+                </ul>
                 <button class="btn btn-full" onclick="comprar('express')" data-i18n="pesquisar_btn">pesquisar</button>
             </div>
-        
             <!-- 2. Qual Vida/Ano -->
             <div class="product-card" data-prod="vida">
                 <div class="icon">🔢</div>
@@ -36,14 +33,13 @@
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-vida')" data-i18n="pesquisar_btn">pesquisar</button>
             </div>
-        
             <!-- 3. Mapa Completo -->
             <div class="product-card" data-prod="completo">
                 <div class="icon">📘</div>
                 <span class="badge" data-i18n="recommended">RECOMENDADO</span>
                 <h3 class="prod-nome" data-i18n="p_completo">Mapa Completo</h3>
                 <div class="price prod-preco">R$ 17</div>
-                <p class="desc" data-i18n="desc_completo">Análise completa com descrições positivas/negativas, ciclos de vida, desafios, grade de inclusão e nota final.</p> 
+                <p class="desc" data-i18n="desc_completo">Análise completa com descrições positivas/negativas, ciclos de vida, desafios, grade de inclusão e nota final.</p>
                 <ul class="features">
                     <li>✅ 5 números detalhados</li>
                     <li>✅ 3 Ciclos de Vida</li>
@@ -52,28 +48,21 @@
                     <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="comprar('completo')" data-i18n="pesquisar_btn">pesquisar</button>
-                            <!-- Formulário Qual Vida/Ano (aparece ao clicar) -->
-            <form id="form-vida" class="hidden">
-              <label>Nome completo</label>
-              <input id="vidaNome" type="text" placeholder="Nome completo">
-              <label>Data de nascimento</label>
-              <input id="vidaNasc" type="date">
-              <button class="btn btn-full" onclick="pagarVida()">Pesquisar</button>
-            </form>
-            <label>Nome completo</label>            → <label data-i18n-form="calc_nome">Nome completo</label>
-            <input id="vidaNome" type="text" placeholder="Nome completo">
-                                        → <input id="vidaNome" type="text" data-i18n-ph="ph_nome_completo" placeholder="Nome completo">
-            <label>Data de nascimento</label>       → <label data-i18n-form="calc_nasc">Data de nascimento</label>
-            <button class="btn btn-full" onclick="pagarVida()">Pesquisar</button>
-                                        → <button class="btn btn-full" onclick="pagarVida()" data-i18n-form="pesquisar_btn">Pesquisar</button>
+                <!-- Formulário Qual Vida/Ano (aparece ao clicar) -->
+                <form id="form-vida" class="hidden">
+                    <label data-i18n-form="calc_nome">Nome completo</label>
+                    <input id="vidaNome" type="text" data-i18n-ph="ph_nome_completo" placeholder="Nome completo">
+                    <label data-i18n-form="calc_nasc">Data de nascimento</label>
+                    <input id="vidaNasc" type="date">
+                    <button class="btn btn-full" onclick="pagarVida()" data-i18n-form="pesquisar_btn">Pesquisar</button>
+                </form>
             </div>
-        
             <!-- 4. Pesquisa IA de Nomes -->
             <div class="product-card" data-prod="ia">
                 <div class="icon">🤖</div>
                 <h3 class="prod-nome" data-i18n="p_ia">Pesquisa IA de Nomes</h3>
                 <div class="price prod-preco">R$ 17</div>
-                <p class="desc" data-i18n="desc_ia">Escolha o nome ideal com análise numerológica da energia do nome por IA.</p> 
+                <p class="desc" data-i18n="desc_ia">Escolha o nome ideal com análise numerológica da energia do nome por IA.</p>
                 <ul class="features">
                     <li>✅ Sugestões com IA</li>
                     <li>✅ Análise energética de nomes</li>
@@ -81,21 +70,15 @@
                     <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-ia')" data-i18n="pesquisar_btn">pesquisar</button>
-                        <!-- Formulário Pesquisa IA de Nomes (aparece ao clicar) -->
-            <form id="form-ia" class="hidden">
-              <label>Nome completo</label>
-              <input id="iaNome" type="text" placeholder="Nome completo">
-              <label>Energia desejada (1-9)</label>
-              <input id="iaEnergia" type="number" min="1" max="9" placeholder="1 a 9">
-              <button class="btn btn-full" onclick="pagarIa()">Pesquisar</button>
-            </form>
-            <label>Nome completo</label>            → <label data-i18n-form="calc_nome">Nome completo</label>
-            <input id="iaNome" ... placeholder="Nome completo"> → adicionar data-i18n-ph="ph_nome_completo"
-            <label>Energia desejada (1-9)</label>   → <label data-i18n-form="f_energia">Energia desejada (1-9)</label>
-            <input id="iaEnergia" ... placeholder="1 a 9"> → adicionar data-i18n-ph="ph_energia"
-            <button ... onclick="pagarIa()">Pesquisar</button> → <button ... onclick="pagarIa()" data-i18n-form="pesquisar_btn">Pesquisar</button>
+                <!-- Formulário Pesquisa IA de Nomes (aparece ao clicar) -->
+                <form id="form-ia" class="hidden">
+                    <label data-i18n-form="calc_nome">Nome completo</label>
+                    <input id="iaNome" type="text" data-i18n-ph="ph_nome_completo" placeholder="Nome completo">
+                    <label data-i18n-form="f_energia">Energia desejada (1-9)</label>
+                    <input id="iaEnergia" type="number" min="1" max="9" data-i18n-ph="ph_energia" placeholder="1 a 9">
+                    <button class="btn btn-full" onclick="pagarIa()" data-i18n-form="pesquisar_btn">Pesquisar</button>
+                </form>
             </div>
-            
             <!-- 5. Validação Nome de Urna -->
             <div class="product-card" data-prod="urna">
                 <div class="icon">🗳️</div>
@@ -109,116 +92,84 @@
                     <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-urna')" data-i18n="start_urna">Iniciar Validação</button>
-            
-            <!-- Formulário do Nome de Urna (aparece ao clicar) -->
-            <form id="form-urna" class="hidden">
-             <label>Nome completo da pessoa</label>
-             <input id="urnaNome" type="text" placeholder="Nome completo">
-
-             <label>Cargo</label>
-             <select id="urnaCargo">
-              <option value="vereador">Vereador</option>
-              <option value="dep_estadual">Deputado Estadual</option>
-              <option value="dep_federal">Deputado Federal</option>
-              <option value="senador">Senador</option>
-             </select>
-
-             <label id="urnaGeneroLabel">Gênero</label>
-             <select id="urnaGenero">
-              <option value="masculino" id="urnaGenMasc">Masculino</option>
-              <option value="feminino" id="urnaGenFem">Feminino</option>
-             </select>
-             <p id="urnaAviso" class="urna-aviso"></p>
-
-             <label>Grafias do nome de urna</label>
-             <div class="urna-grafia">
-              <span class="urna-prefixo" id="urnaPrefixo1" data-valor=""></span>
-              <input id="urnaNome1" type="text" placeholder="Grafia 1">
-             </div>
-             <div class="urna-grafia">
-              <span class="urna-prefixo" id="urnaPrefixo2" data-valor=""></span>
-              <input id="urnaNome2" type="text" placeholder="Grafia 2">
-             </div>
-             <div class="urna-grafia">
-              <span class="urna-prefixo" id="urnaPrefixo3" data-valor=""></span>
-              <input id="urnaNome3" type="text" placeholder="Grafia 3">
-             </div>
-             <div class="urna-grafia">
-              <span class="urna-prefixo" id="urnaPrefixo4" data-valor=""></span>
-              <input id="urnaNome4" type="text" placeholder="Grafia 4">
-             </div>
-             <div class="urna-grafia">
-              <span class="urna-prefixo" id="urnaPrefixo5" data-valor=""></span>
-              <input id="urnaNome5" type="text" placeholder="Grafia 5">
-             </div>
-
-             <label id="urnaEnergiaLabel" class="urna-label"></label>
-             <p id="urnaEnergiaDica" class="urna-dica"></p>
-             <div id="urnaEnergiaSel" class="energia-selector"></div>
-
-             <button class="btn btn-full" onclick="pagarUrna()">Iniciar Validação</button>
-            </form>
-            <label>Nome completo da pessoa</label>  → <label data-i18n-form="f_nome">Nome completo da pessoa</label>
-            <input id="urnaNome" ...> → adicionar data-i18n-ph="ph_nome_completo"
-            <label>Cargo</label>                    → <label data-i18n-form="f_cargo">Cargo</label>
-            <option value="vereador">Vereador</option>             → adicionar data-i18n-form="c_vereador"
-            <option value="dep_estadual">Deputado Estadual</option> → adicionar data-i18n-form="c_estadual"
-            <option value="dep_federal">Deputado Federal</option>  → adicionar data-i18n-form="c_federal"
-            <option value="senador">Senador</option>               → adicionar data-i18n-form="c_senador"
-            <label id="urnaGeneroLabel">Gênero</label> → <label id="urnaGeneroLabel" data-i18n-form="f_genero">Gênero</label>
-            <option value="masculino" id="urnaGenMasc">Masculino</option>  → adicionar data-i18n-form="f_masculino"
-            <option value="feminino" id="urnaGenFem">Feminino</option>     → adicionar data-i18n-form="f_feminino"
-            <label>Grafias do nome de urna</label>  → <label data-i18n-form="urna_options">Grafias do nome de urna</label>
-            <input id="urnaNome1" ... placeholder="Grafia 1"> → adicionar data-i18n-ph="ph_nome_1"
-            <input id="urnaNome2" ...> → data-i18n-ph="ph_nome_2"  (+ 3,4,5)
-            <button ... onclick="pagarUrna()">Iniciar Validação</button> → adicionar data-i18n-form="start_urna"
+                <!-- Formulário do Nome de Urna (aparece ao clicar) -->
+                <form id="form-urna" class="hidden">
+                    <label data-i18n-form="f_nome">Nome completo da pessoa</label>
+                    <input id="urnaNome" type="text" data-i18n-ph="ph_nome_completo" placeholder="Nome completo">
+                    <label data-i18n-form="f_cargo">Cargo</label>
+                    <select id="urnaCargo">
+                        <option value="vereador" data-i18n-form="c_vereador">Vereador</option>
+                        <option value="dep_estadual" data-i18n-form="c_estadual">Deputado Estadual</option>
+                        <option value="dep_federal" data-i18n-form="c_federal">Deputado Federal</option>
+                        <option value="senador" data-i18n-form="c_senador">Senador</option>
+                    </select>
+                    <label id="urnaGeneroLabel" data-i18n-form="f_genero">Gênero</label>
+                    <select id="urnaGenero">
+                        <option value="masculino" id="urnaGenMasc" data-i18n-form="f_masculino">Masculino</option>
+                        <option value="feminino" id="urnaGenFem" data-i18n-form="f_feminino">Feminino</option>
+                    </select>
+                    <p id="urnaAviso" class="urna-aviso"></p>
+                    <label data-i18n-form="urna_options">Grafias do nome de urna</label>
+                    <div class="urna-grafia">
+                        <span class="urna-prefixo" id="urnaPrefixo1" data-valor=""></span>
+                        <input id="urnaNome1" type="text" data-i18n-ph="ph_nome_1" placeholder="Grafia 1">
+                    </div>
+                    <div class="urna-grafia">
+                        <span class="urna-prefixo" id="urnaPrefixo2" data-valor=""></span>
+                        <input id="urnaNome2" type="text" data-i18n-ph="ph_nome_2" placeholder="Grafia 2">
+                    </div>
+                    <div class="urna-grafia">
+                        <span class="urna-prefixo" id="urnaPrefixo3" data-valor=""></span>
+                        <input id="urnaNome3" type="text" data-i18n-ph="ph_nome_3" placeholder="Grafia 3">
+                    </div>
+                    <div class="urna-grafia">
+                        <span class="urna-prefixo" id="urnaPrefixo4" data-valor=""></span>
+                        <input id="urnaNome4" type="text" data-i18n-ph="ph_nome_4" placeholder="Grafia 4">
+                    </div>
+                    <div class="urna-grafia">
+                        <span class="urna-prefixo" id="urnaPrefixo5" data-valor=""></span>
+                        <input id="urnaNome5" type="text" data-i18n-ph="ph_nome_5" placeholder="Grafia 5">
+                    </div>
+                    <label id="urnaEnergiaLabel" class="urna-label"></label>
+                    <p id="urnaEnergiaDica" class="urna-dica"></p>
+                    <div id="urnaEnergiaSel" class="energia-selector"></div>
+                    <button class="btn btn-full" onclick="pagarUrna()" data-i18n-form="start_urna">Iniciar Validação</button>
+                </form>
             </div>
-            
             <!-- 6. Número Eleitoral -->
             <div class="product-card" data-prod="eleitoral">
-                 <div class="icon">🔢</div>
-                 <h3 class="prod-nome" data-i18n="p_eleitoral">Número Eleitoral</h3>
-                 <div class="price prod-preco">R$ 26</div>
-                 <p class="desc" data-i18n="desc_eleitoral">Sugestões de números com energia 8 para sua candidatura política. Análise com PDF sigiloso.</p>
-                 <ul class="features">
-                     <li>✅ 5 números sugeridos</li>
-                     <li>✅ Prioridade energia 8 (Poder)</li>
-                     <li>✅ Cálculo completo</li>
-                     <li>📲 PDF + QRCode</li>
-                 </ul>
-                 <button class="btn btn-full" onclick="toggleForm('form-eleitoral')" data-i18n="start_eleitoral">Calcular Nº Eleitoral</button>
-            
-            <!-- Formulário do Nº Eleitoral (aparece ao clicar) -->
-            <form id="form-eleitoral" class="hidden">
-              <label>Nome completo do candidato</label>
-              <input id="eleiNome" type="text" placeholder="Nome completo">
-              <label>Cargo</label>
-              <select id="eleiCargo">
-               <option value="vereador">Vereador</option>
-               <option value="dep_estadual">Deputado Estadual</option>
-               <option value="dep_federal">Deputado Federal</option>
-               <option value="senador">Senador</option>
-              </select>
-              <label>Sigla do partido</label>
-              <input id="eleiSigla" type="text" placeholder="Sigla">
-              <label>Número atual (opcional — para análise de vibração)</label>
-              <input id="eleiExistente" type="text" placeholder="Ex.: 12345">
-              <label id="eleitoralEnergiaLabel" class="urna-label"></label>
-              <p id="eleitoralEnergiaDica" class="urna-dica"></p>
-              <div id="eleitoralEnergiaSel" class="energia-selector"></div>
-              <button class="btn btn-full" onclick="pagarEleitoral()">Calcular Nº Eleitoral</button>
-            </form>
-            <label>Nome completo do candidato</label> → <label data-i18n-form="f_nome_candidato">Nome completo do candidato</label>
-            <input id="eleiNome" ...> → data-i18n-ph="ph_nome_completo"
-            <label>Cargo</label>                    → <label data-i18n-form="f_cargo2">Cargo</label>
-            (4 options)                              → data-i18n-form="c_vereador"/"c_estadual"/"c_federal"/"c_senador"
-            <label>Sigla do partido</label>         → <label data-i18n-form="f_sigla">Sigla do partido</label>
-            <input id="eleiSigla" ... placeholder="Sigla"> → data-i18n-ph="ph_sigla"
-            <label>Número atual (opcional — para análise de vibração)</label> → <label data-i18n-form="f_num_atual">...</label>
-            <input id="eleiExistente" ... placeholder="Ex.: 12345"> → data-i18n-ph="ph_ex_45123"
-            <button ... onclick="pagarEleitoral()">Calcular Nº Eleitoral</button> → adicionar data-i18n-form="start_eleitoral"
+                <div class="icon">🔢</div>
+                <h3 class="prod-nome" data-i18n="p_eleitoral">Número Eleitoral</h3>
+                <div class="price prod-preco">R$ 26</div>
+                <p class="desc" data-i18n="desc_eleitoral">Sugestões de números com energia 8 para sua candidatura política. Análise com PDF sigiloso.</p>
+                <ul class="features">
+                    <li>✅ 5 números sugeridos</li>
+                    <li>✅ Prioridade energia 8 (Poder)</li>
+                    <li>✅ Cálculo completo</li>
+                    <li>📲 PDF + QRCode</li>
+                </ul>
+                <button class="btn btn-full" onclick="toggleForm('form-eleitoral')" data-i18n="start_eleitoral">Calcular Nº Eleitoral</button>
+                <!-- Formulário do Nº Eleitoral (aparece ao clicar) -->
+                <form id="form-eleitoral" class="hidden">
+                    <label data-i18n-form="f_nome_candidato">Nome completo do candidato</label>
+                    <input id="eleiNome" type="text" data-i18n-ph="ph_nome_completo" placeholder="Nome completo">
+                    <label data-i18n-form="f_cargo2">Cargo</label>
+                    <select id="eleiCargo">
+                        <option value="vereador" data-i18n-form="c_vereador">Vereador</option>
+                        <option value="dep_estadual" data-i18n-form="c_estadual">Deputado Estadual</option>
+                        <option value="dep_federal" data-i18n-form="c_federal">Deputado Federal</option>
+                        <option value="senador" data-i18n-form="c_senador">Senador</option>
+                    </select>
+                    <label data-i18n-form="f_sigla">Sigla do partido</label>
+                    <input id="eleiSigla" type="text" data-i18n-ph="ph_sigla" placeholder="Sigla">
+                    <label data-i18n-form="f_num_atual">Número atual (opcional, para análise de vibração)</label>
+                    <input id="eleiExistente" type="text" data-i18n-ph="ph_ex_45123" placeholder="Ex.: 12345">
+                    <label id="eleitoralEnergiaLabel" class="urna-label"></label>
+                    <p id="eleitoralEnergiaDica" class="urna-dica"></p>
+                    <div id="eleitoralEnergiaSel" class="energia-selector"></div>
+                    <button class="btn btn-full" onclick="pagarEleitoral()" data-i18n-form="start_eleitoral">Calcular Nº Eleitoral</button>
+                </form>
             </div>
-        
             <!-- 7. Número do Imóvel -->
             <div class="product-card" data-prod="imovel">
                 <div class="icon">🏠</div>
@@ -232,17 +183,13 @@
                     <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-imovel')" data-i18n="pesquisar_btn">pesquisar</button>
-                        <!-- Formulário Número do Imóvel (aparece ao clicar) -->
-            <form id="form-imovel" class="hidden">
-              <label>Número do imóvel</label>
-              <input id="imovelNumero" type="text" placeholder="Ex.: 123 ou 12A">
-              <button class="btn btn-full" onclick="pagarImovel()">Pesquisar</button>
-            </form>
-            <label>Número do imóvel</label>          → <label data-i18n-form="f_imovel">Número do imóvel</label>
-            <input id="imovelNumero" ... placeholder="Ex.: 123 ou 12A"> → data-i18n-ph="ph_ex_numero"
-            <button ... onclick="pagarImovel()">Pesquisar</button> → data-i18n-form="pesquisar_btn"
+                <!-- Formulário Número do Imóvel (aparece ao clicar) -->
+                <form id="form-imovel" class="hidden">
+                    <label data-i18n-form="f_imovel">Número do imóvel</label>
+                    <input id="imovelNumero" type="text" data-i18n-ph="ph_ex_numero" placeholder="Ex.: 123 ou 12A">
+                    <button class="btn btn-full" onclick="pagarImovel()" data-i18n-form="pesquisar_btn">Pesquisar</button>
+                </form>
             </div>
-        
             <!-- 8. Calendário Mensal Energético -->
             <div class="product-card" data-prod="calendario">
                 <div class="icon">📅</div>
@@ -256,34 +203,28 @@
                     <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-calendario')" data-i18n="pesquisar_btn">pesquisar</button>
-                        <!-- Formulário Calendário Mensal Energético (aparece ao clicar) -->
-            <form id="form-calendario" class="hidden">
-              <label>Nome completo</label>
-              <input id="calNome" type="text" placeholder="Nome completo">
-              <label>Mês de referência</label>
-              <select id="calMes">
-                <option value="01">Janeiro</option>
-                <option value="02">Fevereiro</option>
-                <option value="03">Março</option>
-                <option value="04">Abril</option>
-                <option value="05">Maio</option>
-                <option value="06">Junho</option>
-                <option value="07">Julho</option>
-                <option value="08">Agosto</option>
-                <option value="09">Setembro</option>
-                <option value="10">Outubro</option>
-                <option value="11">Novembro</option>
-                <option value="12">Dezembro</option>
-              </select>
-              <button class="btn btn-full" onclick="pagarCalendario()">Pesquisar</button>
-            </form>
-            <label>Nome completo</label>            → <label data-i18n-form="calc_nome">Nome completo</label>
-            <input id="calNome" ...> → data-i18n-ph="ph_nome_completo"
-            <label>Mês de referência</label>        → <label data-i18n-form="f_mes">Mês de referência</label>
-            <option value="01">Janeiro</option> ... <option value="12">Dezembro</option> → em cada option, adicionar data-mes="01" a data-mes="12"
-            <button ... onclick="pagarCalendario()">Pesquisar</button> → data-i18n-form="pesquisar_btn"
+                <!-- Formulário Calendário Mensal Energético (aparece ao clicar) -->
+                <form id="form-calendario" class="hidden">
+                    <label data-i18n-form="calc_nome">Nome completo</label>
+                    <input id="calNome" type="text" data-i18n-ph="ph_nome_completo" placeholder="Nome completo">
+                    <label data-i18n-form="f_mes">Mês de referência</label>
+                    <select id="calMes">
+                        <option value="01" data-mes="01">Janeiro</option>
+                        <option value="02" data-mes="02">Fevereiro</option>
+                        <option value="03" data-mes="03">Março</option>
+                        <option value="04" data-mes="04">Abril</option>
+                        <option value="05" data-mes="05">Maio</option>
+                        <option value="06" data-mes="06">Junho</option>
+                        <option value="07" data-mes="07">Julho</option>
+                        <option value="08" data-mes="08">Agosto</option>
+                        <option value="09" data-mes="09">Setembro</option>
+                        <option value="10" data-mes="10">Outubro</option>
+                        <option value="11" data-mes="11">Novembro</option>
+                        <option value="12" data-mes="12">Dezembro</option>
+                    </select>
+                    <button class="btn btn-full" onclick="pagarCalendario()" data-i18n-form="pesquisar_btn">Pesquisar</button>
+                </form>
             </div>
-        
             <!-- 9. Validação Nome Artístico -->
             <div class="product-card" data-prod="artistico">
                 <div class="icon">🎭</div>
@@ -297,44 +238,37 @@
                     <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-artistico')" data-i18n="pesquisar_btn">Iniciar Validação</button>
-            
-            <!-- Formulário do Artístico (aparece ao clicar) -->
-            <form id="form-artistico" class="hidden">
-             <label>Nome artístico completo</label>
-             <input id="arteNome" type="text" placeholder="Nome artístico">
-             <label>Grafias do nome artístico</label>
-             <div class="arte-grafia">
-              <span class="arte-prefixo" data-valor=""></span>
-              <input id="arteNome1" type="text" placeholder="Grafia 1">
-             </div>
-             <div class="arte-grafia">
-              <span class="arte-prefixo" data-valor=""></span>
-              <input id="arteNome2" type="text" placeholder="Grafia 2">
-             </div>
-             <div class="arte-grafia">
-              <span class="arte-prefixo" data-valor=""></span>
-              <input id="arteNome3" type="text" placeholder="Grafia 3">
-             </div>
-             <div class="arte-grafia">
-              <span class="arte-prefixo" data-valor=""></span>
-              <input id="arteNome4" type="text" placeholder="Grafia 4">
-             </div>
-             <div class="arte-grafia">
-              <span class="arte-prefixo" data-valor=""></span>
-              <input id="arteNome5" type="text" placeholder="Grafia 5">
-             </div>
-             <label id="arteEnergiaLabel" class="urna-label"></label>
-             <p id="arteEnergiaDica" class="urna-dica"></p>
-             <div id="arteEnergiaSel" class="energia-selector"></div>
-             <button class="btn btn-full" onclick="pagarArte()">Iniciar Validação</button>
-            </form>
-            <label>Nome artístico completo</label>  → <label data-i18n-form="f_artistico">Nome artístico completo</label>
-            <input id="arteNome" ... placeholder="Nome artístico"> → data-i18n-ph="ph_nome_artistico"
-            <label>Grafias do nome artístico</label> → <label data-i18n-form="f_grafias">Grafias do nome artístico</label>
-            <input id="arteNome1" ... placeholder="Grafia 1"> → data-i18n-ph="ph_nome_1"  (+ 2..5 → ph_nome_2..ph_nome_5)
-            <button ... onclick="pagarArte()">Iniciar Validação</button> → data-i18n-form="start_urna"
+                <!-- Formulário do Artístico (aparece ao clicar) -->
+                <form id="form-artistico" class="hidden">
+                    <label data-i18n-form="f_artistico">Nome artístico completo</label>
+                    <input id="arteNome" type="text" data-i18n-ph="ph_nome_artistico" placeholder="Nome artístico">
+                    <label data-i18n-form="f_grafias">Grafias do nome artístico</label>
+                    <div class="arte-grafia">
+                        <span class="arte-prefixo" data-valor=""></span>
+                        <input id="arteNome1" type="text" data-i18n-ph="ph_nome_1" placeholder="Grafia 1">
+                    </div>
+                    <div class="arte-grafia">
+                        <span class="arte-prefixo" data-valor=""></span>
+                        <input id="arteNome2" type="text" data-i18n-ph="ph_nome_2" placeholder="Grafia 2">
+                    </div>
+                    <div class="arte-grafia">
+                        <span class="arte-prefixo" data-valor=""></span>
+                        <input id="arteNome3" type="text" data-i18n-ph="ph_nome_3" placeholder="Grafia 3">
+                    </div>
+                    <div class="arte-grafia">
+                        <span class="arte-prefixo" data-valor=""></span>
+                        <input id="arteNome4" type="text" data-i18n-ph="ph_nome_4" placeholder="Grafia 4">
+                    </div>
+                    <div class="arte-grafia">
+                        <span class="arte-prefixo" data-valor=""></span>
+                        <input id="arteNome5" type="text" data-i18n-ph="ph_nome_5" placeholder="Grafia 5">
+                    </div>
+                    <label id="arteEnergiaLabel" class="urna-label"></label>
+                    <p id="arteEnergiaDica" class="urna-dica"></p>
+                    <div id="arteEnergiaSel" class="energia-selector"></div>
+                    <button class="btn btn-full" onclick="pagarArte()" data-i18n-form="start_urna">Iniciar Validação</button>
+                </form>
             </div>
-        
             <!-- 10. Planejamento Nome de Bebê -->
             <div class="product-card" data-prod="bebe">
                 <div class="icon">👶</div>
@@ -348,21 +282,15 @@
                     <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-bebe')" data-i18n="pesquisar_btn">pesquisar</button>
-                        <!-- Formulário Planejamento Nome de Bebê (aparece ao clicar) -->
-            <form id="form-bebe" class="hidden">
-              <label>Sobrenome da família</label>
-              <input id="bebeSobrenome" type="text" placeholder="Sobrenome que o bebê receberá">
-              <label>Energia desejada (1-9)</label>
-              <input id="bebeEnergia" type="number" min="1" max="9" placeholder="1 a 9">
-              <button class="btn btn-full" onclick="pagarBebe()">Pesquisar</button>
-            </form>
-            <label>Sobrenome da família</label>     → <label data-i18n-form="f_sobrenome_familia">Sobrenome da família</label>
-            <input id="bebeSobrenome" ... placeholder="Sobrenome que o bebê receberá"> → data-i18n-ph="ph_sobrenome"
-            <label>Energia desejada (1-9)</label>   → <label data-i18n-form="f_energia">Energia desejada (1-9)</label>
-            <input id="bebeEnergia" ... placeholder="1 a 9"> → data-i18n-ph="ph_energia"
-            <button ... onclick="pagarBebe()">Pesquisar</button> → data-i18n-form="pesquisar_btn"
+                <!-- Formulário Planejamento Nome de Bebê (aparece ao clicar) -->
+                <form id="form-bebe" class="hidden">
+                    <label data-i18n-form="f_sobrenome_familia">Sobrenome da família</label>
+                    <input id="bebeSobrenome" type="text" data-i18n-ph="ph_sobrenome" placeholder="Sobrenome que o bebê receberá">
+                    <label data-i18n-form="f_energia">Energia desejada (1-9)</label>
+                    <input id="bebeEnergia" type="number" min="1" max="9" data-i18n-ph="ph_energia" placeholder="1 a 9">
+                    <button class="btn btn-full" onclick="pagarBebe()" data-i18n-form="pesquisar_btn">Pesquisar</button>
+                </form>
             </div>
-        
             <!-- 11. Validação de Assinaturas -->
             <div class="product-card" data-prod="assinatura">
                 <div class="icon">✍️</div>
@@ -376,17 +304,13 @@
                     <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-assinatura')" data-i18n="pesquisar_btn">pesquisar</button>
-                        <!-- Formulário Validação de Assinaturas (aparece ao clicar) -->
-            <form id="form-assinatura" class="hidden">
-              <label>Texto da assinatura atual</label>
-              <input id="assinaturaTexto" type="text" placeholder="Ex.: Nome Sobrenome">
-              <button class="btn btn-full" onclick="pagarAssinatura()">Pesquisar</button>
-            </form>
-            <label>Texto da assinatura atual</label> → <label data-i18n-form="f_assinatura">Texto da assinatura atual</label>
-            <input id="assinaturaTexto" ... placeholder="Ex.: Nome Sobrenome"> → data-i18n-ph="ph_sua_assinatura"
-            <button ... onclick="pagarAssinatura()">Pesquisar</button> → data-i18n-form="pesquisar_btn"
+                <!-- Formulário Validação de Assinaturas (aparece ao clicar) -->
+                <form id="form-assinatura" class="hidden">
+                    <label data-i18n-form="f_assinatura">Texto da assinatura atual</label>
+                    <input id="assinaturaTexto" type="text" data-i18n-ph="ph_sua_assinatura" placeholder="Ex.: Nome Sobrenome">
+                    <button class="btn btn-full" onclick="pagarAssinatura()" data-i18n-form="pesquisar_btn">Pesquisar</button>
+                </form>
             </div>
-        
             <!-- 12. Nome para Negócio/Produto -->
             <div class="product-card" data-prod="negocio">
                 <div class="icon">🏪</div>
@@ -400,21 +324,15 @@
                     <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-negocio')" data-i18n="pesquisar_btn">pesquisar</button>
-                       <!-- Formulário Nome para Negócio/Produto (aparece ao clicar) -->
-            <form id="form-negocio" class="hidden">
-              <label>Nome do negócio ou produto</label>
-              <input id="negocioNome" type="text" placeholder="Nome da empresa/produto">
-              <label>Energia desejada (1-9)</label>
-              <input id="negocioEnergia" type="number" min="1" max="9" placeholder="1 a 9">
-              <button class="btn btn-full" onclick="pagarNegocio()">Pesquisar</button>
-            </form>
-            <label>Nome do negócio ou produto</label> → <label data-i18n-form="f_negocio">Nome do negócio ou produto</label>
-            <input id="negocioNome" ... placeholder="Nome da empresa/produto"> → data-i18n-ph="ph_nome_negocio"
-            <label>Energia desejada (1-9)</label>   → <label data-i18n-form="f_energia">Energia desejada (1-9)</label>
-            <input id="negocioEnergia" ... placeholder="1 a 9"> → data-i18n-ph="ph_energia"
-            <button ... onclick="pagarNegocio()">Pesquisar</button> → data-i18n-form="pesquisar_btn"
+                <!-- Formulário Nome para Negócio/Produto (aparece ao clicar) -->
+                <form id="form-negocio" class="hidden">
+                    <label data-i18n-form="f_negocio">Nome do negócio ou produto</label>
+                    <input id="negocioNome" type="text" data-i18n-ph="ph_nome_negocio" placeholder="Nome da empresa/produto">
+                    <label data-i18n-form="f_energia">Energia desejada (1-9)</label>
+                    <input id="negocioEnergia" type="number" min="1" max="9" data-i18n-ph="ph_energia" placeholder="1 a 9">
+                    <button class="btn btn-full" onclick="pagarNegocio()" data-i18n-form="pesquisar_btn">Pesquisar</button>
+                </form>
             </div>
-        
             <!-- 13. Mapa do Casal -->
             <div class="product-card" data-prod="casal">
                 <div class="icon">💞</div>
@@ -428,21 +346,15 @@
                     <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-casal')" data-i18n="pesquisar_btn">pesquisar</button>
-                        <!-- Formulário Mapa do Casal (aparece ao clicar) -->
-            <form id="form-casal" class="hidden">
-              <label>Nome da primeira pessoa</label>
-              <input id="casalNome1" type="text" placeholder="Nome completo">
-              <label>Nome da segunda pessoa</label>
-              <input id="casalNome2" type="text" placeholder="Nome completo">
-              <button class="btn btn-full" onclick="pagarCasal()">Pesquisar</button>
-            </form>
-            <label>Nome da primeira pessoa</label>  → <label data-i18n-form="f_pessoa1">Nome da primeira pessoa</label>
-            <input id="casalNome1" ... placeholder="Nome completo"> → data-i18n-ph="ph_nome_completo"
-            <label>Nome da segunda pessoa</label>   → <label data-i18n-form="f_pessoa2">Nome da segunda pessoa</label>
-            <input id="casalNome2" ...> → data-i18n-ph="ph_nome_completo"
-            <button ... onclick="pagarCasal()">Pesquisar</button> → data-i18n-form="pesquisar_btn"
+                <!-- Formulário Mapa do Casal (aparece ao clicar) -->
+                <form id="form-casal" class="hidden">
+                    <label data-i18n-form="f_pessoa1">Nome da primeira pessoa</label>
+                    <input id="casalNome1" type="text" data-i18n-ph="ph_nome_completo" placeholder="Nome completo">
+                    <label data-i18n-form="f_pessoa2">Nome da segunda pessoa</label>
+                    <input id="casalNome2" type="text" data-i18n-ph="ph_nome_completo" placeholder="Nome completo">
+                    <button class="btn btn-full" onclick="pagarCasal()" data-i18n-form="pesquisar_btn">Pesquisar</button>
+                </form>
             </div>
-        
             <!-- 14. Mapa Família Premium -->
             <div class="product-card" data-prod="familia">
                 <div class="icon">🌟</div>
@@ -457,182 +369,168 @@
                     <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-familia')" data-i18n="pesquisar_btn">pesquisar</button>
-                        <!-- Formulário Mapa Família Premium (aparece ao clicar) -->
-            <form id="form-familia" class="hidden">
-              <label>Membros da família (um por linha)</label>
-              <textarea id="familiaMembros" rows="4" placeholder="Nome 1&#10;Nome 2&#10;Nome 3"></textarea>
-              <button class="btn btn-full" onclick="pagarFamilia()">Pesquisar</button>
-            </form>
-            <label>Membros da família (um por linha)</label> → <label data-i18n-form="f_familia">Membros da família (um por linha)</label>
-            <textarea id="familiaMembros" rows="4" placeholder="Nome 1&#10;Nome 2&#10;Nome 3"></textarea> → adicionar data-i18n-ph="ph_membros"
-            <button ... onclick="pagarFamilia()">Pesquisar</button> → data-i18n-form="pesquisar_btn"
+                <!-- Formulário Mapa Família Premium (aparece ao clicar) -->
+                <form id="form-familia" class="hidden">
+                    <label data-i18n-form="f_familia">Membros da família (um por linha)</label>
+                    <textarea id="familiaMembros" rows="4" data-i18n-ph="ph_membros" placeholder="Nome 1&#10;Nome 2&#10;Nome 3"></textarea>
+                    <button class="btn btn-full" onclick="pagarFamilia()" data-i18n-form="pesquisar_btn">Pesquisar</button>
+                </form>
             </div>
-        
             <!-- 15. Bônus Coletivo/Empresarial -->
             <div class="product-card" data-prod="coletivo" style="border:2px solid var(--gold)">
-             <div class="icon">🏢</div>
-             <h3 class="prod-nome" data-i18n="p_coletivo">Bônus Coletivo/Empresarial</h3>
-             <div class="price" data-i18n="sob_consulta">Sob consulta</div>
-             <p class="desc" data-i18n="desc_coletivo">Contrate brindes numerológicos para seus clientes ou funcionários. Descontos de 10% a 70%.</p>
-             <ul class="features">
-              <li>✅ Planos prontos</li>
-              <li>✅ Sob medida</li>
-              <li>✅ Descontos progressivos</li>
-              <li>✅ Códigos de presente</li>
-             </ul>
-             <button class="btn btn-full" onclick="document.getElementById('corporativo').scrollIntoView({behavior:'smooth'})" data-i18n="know_more">Saiba Mais</button>
+                <div class="icon">🏢</div>
+                <h3 class="prod-nome" data-i18n="p_coletivo">Bônus Coletivo/Empresarial</h3>
+                <div class="price" data-i18n="sob_consulta">Sob consulta</div>
+                <p class="desc" data-i18n="desc_coletivo">Contrate brindes numerológicos para seus clientes ou funcionários. Descontos de 10% a 70%.</p>
+                <ul class="features">
+                    <li>✅ Planos prontos</li>
+                    <li>✅ Sob medida</li>
+                    <li>✅ Descontos progressivos</li>
+                    <li>✅ Códigos de presente</li>
+                </ul>
+                <button class="btn btn-full" onclick="document.getElementById('corporativo').scrollIntoView({behavior:'smooth'})" data-i18n="know_more">Saiba Mais</button>
             </div>
-        
-           <!-- 16. Nome do Pet -->
-           <div class="product-card" data-prod="nome_pet">
-            <div class="icon">🐾</div>
-            <h3 class="prod-nome" data-i18n="nome_pet">Nome do Pet</h3>
-            <div class="price prod-preco">R$ 8</div>
-            <p class="desc" data-i18n="desc_nome_pet">A energia do nome do seu animal de estimação e a sintonia que ele cria com a sua família.</p>
-            <ul class="features">
-             <li>✅ Nome do pet analisado</li>
-             <li>✅ Energia do nome</li>
-             <li>✅ Sintonia com a família</li>
-             <li>📲 PDF + QRCode</li>
-            </ul>
-            <button class="btn btn-full" onclick="pesquisar('nome_pet')" data-i18n="pesquisar_btn">pesquisar</button>
-           </div>
-        
-           <!-- 17. Nickname Digital -->
-           <div class="product-card" data-prod="nickname">
-            <div class="icon">💬</div>
-            <h3 class="prod-nome" data-i18n="nickname">Nickname Digital</h3>
-            <div class="price prod-preco">R$ 8</div>
-            <p class="desc" data-i18n="desc_nickname">A energia do seu apelido digital e como ele projeta a sua imagem no mundo online.</p>
-            <ul class="features">
-             <li>✅ Nickname analisado</li>
-             <li>✅ Energia do nome</li>
-             <li>✅ Imagem no mundo online</li>
-             <li>📲 PDF + QRCode</li>
-            </ul>
-            <button class="btn btn-full" onclick="pesquisar('nickname')" data-i18n="pesquisar_btn">pesquisar</button>
-           </div>
-        
-           <!-- 18. Nome do Domínio -->
-           <div class="product-card" data-prod="nome_dominio">
-            <div class="icon">🌐</div>
-            <h3 class="prod-nome" data-i18n="nome_dominio">Nome do Domínio</h3>
-            <div class="price prod-preco">R$ 8</div>
-            <p class="desc" data-i18n="desc_nome_dominio">A energia do nome do seu domínio e a força que ele transmite para a sua marca.</p>
-            <ul class="features">
-             <li>✅ Domínio analisado</li>
-             <li>✅ Energia do nome</li>
-             <li>✅ Força para a marca</li>
-             <li>📲 PDF + QRCode</li>
-            </ul>
-            <button class="btn btn-full" onclick="pesquisar('nome_dominio')" data-i18n="pesquisar_btn">pesquisar</button>
-           </div>
-        
-           <!-- 19. Nome do Canal -->
-           <div class="product-card" data-prod="nome_canal">
-            <div class="icon">📺</div>
-            <h3 class="prod-nome" data-i18n="nome_canal">Nome do Canal</h3>
-            <div class="price prod-preco">R$ 8</div>
-            <p class="desc" data-i18n="desc_nome_canal">A energia do nome do seu canal e a conexão que ele cria com a sua audiência.</p>
-            <ul class="features">
-             <li>✅ Canal analisado</li>
-             <li>✅ Energia do nome</li>
-             <li>✅ Conexão com a audiência</li>
-             <li>📲 PDF + QRCode</li>
-            </ul>
-            <button class="btn btn-full" onclick="pesquisar('nome_canal')" data-i18n="pesquisar_btn">pesquisar</button>
-           </div>
-        
-           <!-- 20. Nome da Equipe -->
-           <div class="product-card" data-prod="nome_equipe">
-            <div class="icon">👥</div>
-            <h3 class="prod-nome" data-i18n="nome_equipe">Nome da Equipe</h3>
-            <div class="price prod-preco">R$ 8</div>
-            <p class="desc" data-i18n="desc_nome_equipe">A energia do nome da sua equipe e a união que ele fortalece entre os membros.</p>
-            <ul class="features">
-             <li>✅ Equipe analisada</li>
-             <li>✅ Energia do nome</li>
-             <li>✅ União entre os membros</li>
-             <li>📲 PDF + QRCode</li>
-            </ul>
-            <button class="btn btn-full" onclick="pesquisar('nome_equipe')" data-i18n="pesquisar_btn">pesquisar</button>
-           </div>
-           
-           <!-- 21. Nome de ONG -->
-           <div class="product-card" data-prod="nome_ong">
-            <div class="icon">🤝</div>
-            <h3 class="prod-nome" data-i18n="nome_ong">Nome de ONG</h3>
-            <div class="price prod-preco">R$ 8</div>
-            <p class="desc" data-i18n="desc_nome_ong">A energia do nome da sua ONG e a causa que ele potencializa no mundo.</p>
-            <ul class="features">
-             <li>✅ ONG analisada</li>
-             <li>✅ Energia do nome</li>
-             <li>✅ Causa potencializada</li>
-             <li>📲 PDF + QRCode</li>
-            </ul>
-            <button class="btn btn-full" onclick="pesquisar('nome_ong')" data-i18n="pesquisar_btn">pesquisar</button>
-           
-           <!-- Formulário da ONG (aparece ao clicar) -->
-           <form id="form-ong" class="hidden">
-            <label>Nome da ONG / Associação / Instituto / Fundação</label>
-            <input id="ongNome" type="text" placeholder="Nome da organização">
-            <label>Grafias do nome</label>
-            <div class="ong-grafia">
-             <span class="ong-prefixo" data-valor=""></span>
-             <input id="ongNome1" type="text" placeholder="Grafia 1">
+            <!-- 16. Nome do Pet -->
+            <div class="product-card" data-prod="nome_pet">
+                <div class="icon">🐾</div>
+                <h3 class="prod-nome" data-i18n="nome_pet">Nome do Pet</h3>
+                <div class="price prod-preco">R$ 8</div>
+                <p class="desc" data-i18n="desc_nome_pet">A energia do nome do seu animal de estimação e a sintonia que ele cria com a sua família.</p>
+                <ul class="features">
+                    <li>✅ Nome do pet analisado</li>
+                    <li>✅ Energia do nome</li>
+                    <li>✅ Sintonia com a família</li>
+                    <li>📲 PDF + QRCode</li>
+                </ul>
+                <button class="btn btn-full" onclick="pesquisar('nome_pet')" data-i18n="pesquisar_btn">pesquisar</button>
             </div>
-            <div class="ong-grafia">
-             <span class="ong-prefixo" data-valor=""></span>
-             <input id="ongNome2" type="text" placeholder="Grafia 2">
+            <!-- 17. Nickname Digital -->
+            <div class="product-card" data-prod="nickname">
+                <div class="icon">💬</div>
+                <h3 class="prod-nome" data-i18n="nickname">Nickname Digital</h3>
+                <div class="price prod-preco">R$ 8</div>
+                <p class="desc" data-i18n="desc_nickname">A energia do seu apelido digital e como ele projeta a sua imagem no mundo online.</p>
+                <ul class="features">
+                    <li>✅ Nickname analisado</li>
+                    <li>✅ Energia do nome</li>
+                    <li>✅ Imagem no mundo online</li>
+                    <li>📲 PDF + QRCode</li>
+                </ul>
+                <button class="btn btn-full" onclick="pesquisar('nickname')" data-i18n="pesquisar_btn">pesquisar</button>
             </div>
-            <div class="ong-grafia">
-             <span class="ong-prefixo" data-valor=""></span>
-             <input id="ongNome3" type="text" placeholder="Grafia 3">
+            <!-- 18. Nome do Domínio -->
+            <div class="product-card" data-prod="nome_dominio">
+                <div class="icon">🌐</div>
+                <h3 class="prod-nome" data-i18n="nome_dominio">Nome do Domínio</h3>
+                <div class="price prod-preco">R$ 8</div>
+                <p class="desc" data-i18n="desc_nome_dominio">A energia do nome do seu domínio e a força que ele transmite para a sua marca.</p>
+                <ul class="features">
+                    <li>✅ Domínio analisado</li>
+                    <li>✅ Energia do nome</li>
+                    <li>✅ Força para a marca</li>
+                    <li>📲 PDF + QRCode</li>
+                </ul>
+                <button class="btn btn-full" onclick="pesquisar('nome_dominio')" data-i18n="pesquisar_btn">pesquisar</button>
             </div>
-            <div class="ong-grafia">
-             <span class="ong-prefixo" data-valor=""></span>
-             <input id="ongNome4" type="text" placeholder="Grafia 4">
+            <!-- 19. Nome do Canal -->
+            <div class="product-card" data-prod="nome_canal">
+                <div class="icon">📺</div>
+                <h3 class="prod-nome" data-i18n="nome_canal">Nome do Canal</h3>
+                <div class="price prod-preco">R$ 8</div>
+                <p class="desc" data-i18n="desc_nome_canal">A energia do nome do seu canal e a conexão que ele cria com a sua audiência.</p>
+                <ul class="features">
+                    <li>✅ Canal analisado</li>
+                    <li>✅ Energia do nome</li>
+                    <li>✅ Conexão com a audiência</li>
+                    <li>📲 PDF + QRCode</li>
+                </ul>
+                <button class="btn btn-full" onclick="pesquisar('nome_canal')" data-i18n="pesquisar_btn">pesquisar</button>
             </div>
-            <div class="ong-grafia">
-             <span class="ong-prefixo" data-valor=""></span>
-             <input id="ongNome5" type="text" placeholder="Grafia 5">
+            <!-- 20. Nome da Equipe -->
+            <div class="product-card" data-prod="nome_equipe">
+                <div class="icon">👥</div>
+                <h3 class="prod-nome" data-i18n="nome_equipe">Nome da Equipe</h3>
+                <div class="price prod-preco">R$ 8</div>
+                <p class="desc" data-i18n="desc_nome_equipe">A energia do nome da sua equipe e a união que ele fortalece entre os membros.</p>
+                <ul class="features">
+                    <li>✅ Equipe analisada</li>
+                    <li>✅ Energia do nome</li>
+                    <li>✅ União entre os membros</li>
+                    <li>📲 PDF + QRCode</li>
+                </ul>
+                <button class="btn btn-full" onclick="pesquisar('nome_equipe')" data-i18n="pesquisar_btn">pesquisar</button>
             </div>
-            <label id="ongEnergiaLabel" class="urna-label"></label>
-            <p id="ongEnergiaDica" class="urna-dica"></p>
-            <div id="ongEnergiaSel" class="energia-selector"></div>
-            <button class="btn btn-full" onclick="pagarOng()">Pesquisar</button>
-           </form>
-           </div>
-        
-           <!-- 22. Nome do Projeto -->
-           <div class="product-card" data-prod="nome_projeto">
-            <div class="icon">🚀</div>
-            <h3 class="prod-nome" data-i18n="nome_projeto">Nome do Projeto</h3>
-            <div class="price prod-preco">R$ 8</div>
-            <p class="desc" data-i18n="desc_nome_projeto">A energia do nome do seu projeto e o impulso que ele dá para o seu sucesso.</p>
-            <ul class="features">
-             <li>✅ Projeto analisado</li>
-             <li>✅ Energia do nome</li>
-             <li>✅ Impulso para o sucesso</li>
-             <li>📲 PDF + QRCode</li>
-            </ul>
-            <button class="btn btn-full" onclick="pesquisar('nome_projeto')" data-i18n="pesquisar_btn">pesquisar</button>
-           </div>
-        
-           <!-- 23. Nome do Evento -->
-           <div class="product-card" data-prod="nome_evento">
-            <div class="icon">🎉</div>
-            <h3 class="prod-nome" data-i18n="nome_evento">Nome do Evento</h3>
-            <div class="price prod-preco">R$ 8</div>
-            <p class="desc" data-i18n="desc_nome_evento">A energia do nome do seu evento e a atmosfera que ele cria para os participantes.</p>
-            <ul class="features">
-             <li>✅ Evento analisado</li>
-             <li>✅ Energia do nome</li>
-             <li>✅ Atmosfera para os participantes</li>
-             <li>📲 PDF + QRCode</li>
-            </ul>
-            <button class="btn btn-full" onclick="pesquisar('nome_evento')" data-i18n="pesquisar_btn">pesquisar</button>
-           </div>
-
+            <!-- 21. Nome de ONG -->
+            <div class="product-card" data-prod="nome_ong">
+                <div class="icon">🤝</div>
+                <h3 class="prod-nome" data-i18n="nome_ong">Nome de ONG</h3>
+                <div class="price prod-preco">R$ 8</div>
+                <p class="desc" data-i18n="desc_nome_ong">A energia do nome da sua ONG e a causa que ele potencializa no mundo.</p>
+                <ul class="features">
+                    <li>✅ ONG analisada</li>
+                    <li>✅ Energia do nome</li>
+                    <li>✅ Causa potencializada</li>
+                    <li>📲 PDF + QRCode</li>
+                </ul>
+                <button class="btn btn-full" onclick="pesquisar('nome_ong')" data-i18n="pesquisar_btn">pesquisar</button>
+                <!-- Formulário da ONG (aparece ao clicar) -->
+                <form id="form-ong" class="hidden">
+                    <label data-i18n-form="f_nome_org">Nome da ONG / Associação / Instituto / Fundação</label>
+                    <input id="ongNome" type="text" data-i18n-ph="ph_nome_org" placeholder="Nome da organização">
+                    <label data-i18n-form="f_grafias">Grafias do nome</label>
+                    <div class="ong-grafia">
+                        <span class="ong-prefixo" data-valor=""></span>
+                        <input id="ongNome1" type="text" data-i18n-ph="ph_nome_1" placeholder="Grafia 1">
+                    </div>
+                    <div class="ong-grafia">
+                        <span class="ong-prefixo" data-valor=""></span>
+                        <input id="ongNome2" type="text" data-i18n-ph="ph_nome_2" placeholder="Grafia 2">
+                    </div>
+                    <div class="ong-grafia">
+                        <span class="ong-prefixo" data-valor=""></span>
+                        <input id="ongNome3" type="text" data-i18n-ph="ph_nome_3" placeholder="Grafia 3">
+                    </div>
+                    <div class="ong-grafia">
+                        <span class="ong-prefixo" data-valor=""></span>
+                        <input id="ongNome4" type="text" data-i18n-ph="ph_nome_4" placeholder="Grafia 4">
+                    </div>
+                    <div class="ong-grafia">
+                        <span class="ong-prefixo" data-valor=""></span>
+                        <input id="ongNome5" type="text" data-i18n-ph="ph_nome_5" placeholder="Grafia 5">
+                    </div>
+                    <label id="ongEnergiaLabel" class="urna-label"></label>
+                    <p id="ongEnergiaDica" class="urna-dica"></p>
+                    <div id="ongEnergiaSel" class="energia-selector"></div>
+                    <button class="btn btn-full" onclick="pagarOng()" data-i18n-form="pesquisar_btn">Pesquisar</button>
+                </form>
+            </div>
+            <!-- 22. Nome do Projeto -->
+            <div class="product-card" data-prod="nome_projeto">
+                <div class="icon">🚀</div>
+                <h3 class="prod-nome" data-i18n="nome_projeto">Nome do Projeto</h3>
+                <div class="price prod-preco">R$ 8</div>
+                <p class="desc" data-i18n="desc_nome_projeto">A energia do nome do seu projeto e o impulso que ele dá para o seu sucesso.</p>
+                <ul class="features">
+                    <li>✅ Projeto analisado</li>
+                    <li>✅ Energia do nome</li>
+                    <li>✅ Impulso para o sucesso</li>
+                    <li>📲 PDF + QRCode</li>
+                </ul>
+                <button class="btn btn-full" onclick="pesquisar('nome_projeto')" data-i18n="pesquisar_btn">pesquisar</button>
+            </div>
+            <!-- 23. Nome do Evento -->
+            <div class="product-card" data-prod="nome_evento">
+                <div class="icon">🎉</div>
+                <h3 class="prod-nome" data-i18n="nome_evento">Nome do Evento</h3>
+                <div class="price prod-preco">R$ 8</div>
+                <p class="desc" data-i18n="desc_nome_evento">A energia do nome do seu evento e a atmosfera que ele cria para os participantes.</p>
+                <ul class="features">
+                    <li>✅ Evento analisado</li>
+                    <li>✅ Energia do nome</li>
+                    <li>✅ Atmosfera para os participantes</li>
+                    <li>📲 PDF + QRCode</li>
+                </ul>
+                <button class="btn btn-full" onclick="pesquisar('nome_evento')" data-i18n="pesquisar_btn">pesquisar</button>
+            </div>
     </div>
 </section>
