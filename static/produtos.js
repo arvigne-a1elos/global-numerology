@@ -796,7 +796,9 @@ function abrirSeletorEnergia(produto, lang) {
   overlay.classList.add("active");
 }
 
-/* ===== PASSOS DO MODAL ===== */
+/* ===== PASSOS DO MODAL (círculos de energia — padrão antigo) ===== */
+var ENERGIA_IDEAL = { urna: 8, eleitoral: 8, artistico: 2, nome_ong: 6 };
+
 function montarPassoEnergia(produto, lang) {
   var t = translations[lang] || translations.pt;
   document.getElementById("modalPassoTipo").style.display = "none";
@@ -804,14 +806,20 @@ function montarPassoEnergia(produto, lang) {
   document.getElementById("modalPassoNome").style.display = "none";
   document.getElementById("modalEnergiaLabel").textContent = (t.energia_label || "Energia") + " (1-9):";
   var box = document.getElementById("modalEnergiaOpcoes");
+  box.className = "energia-selector";   // fileira de círculos
   box.innerHTML = "";
+  var ideal = ENERGIA_IDEAL[produto] || 0;
   for (var i = 1; i <= 9; i++) {
-    var nomeE = (window.ENERGIA_TITULOS[lang] && window.ENERGIA_TITULOS[lang][String(i)]) ? window.ENERGIA_TITULOS[lang][String(i)] : String(i);
-    var b = document.createElement("button");
-    b.className = "btn btn-full";
-    b.textContent = i + " - " + nomeE;
-    b.onclick = function(){ if (window._modalDado) window._modalDado.energia = i; montarPassoNome(produto, lang); };
-    box.appendChild(b);
+    (function(n){
+      var nomeE = (window.ENERGIA_TITULOS[lang] && window.ENERGIA_TITULOS[lang][String(n)]) ? window.ENERGIA_TITULOS[lang][String(n)] : String(n);
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "energia-btn" + (n === ideal ? " ideal" : "");
+      b.textContent = String(n);
+      b.title = nomeE;
+      b.onclick = function(){ if (window._modalDado) window._modalDado.energia = n; montarPassoNome(produto, lang); };
+      box.appendChild(b);
+    })(i);
   }
 }
 function montarPassoNome(produto, lang) {
