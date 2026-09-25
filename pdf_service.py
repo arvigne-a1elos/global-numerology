@@ -71,7 +71,36 @@ def pdf8(data, nome, bd, lang="pt"):
     e.append(Paragraph(bd, _estilo("D", FONTE, 10, GRAY, TA_CENTER, sa=EL)))
     e.append(Paragraph(BOAS_VINDAS.get(lang, BOAS_VINDAS["pt"]),
                        _estilo("BV", FONTE, 10, DARK, TA_JUSTIFY, sa=EL)))
-
+    chaves = [("life_path", "caminho_vida"), ("expression", "expressao"),
+              ("soul_urge", "motivacao"), ("personality", "personalidade"),
+              ("destiny", "destino")]
+    linhas = [[t("numero", lang), t("valor", lang), t("significado", lang)]]
+    for k, lbl in chaves:
+        v = data.get(k, 0)
+        sig = SIG.get(v, (t("nenhum", lang), "", "", ""))
+        linhas.append([t(lbl, lang), str(v), sig[0]])
+    tbl = Table(linhas, colWidths=[180, 60, 220])  # 460pt <= 495pt
+    tbl.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (-1, 0), GOLD), ("TEXTCOLOR", (0, 0), (-1, 0), WHITE),
+        ("FONTSIZE", (0, 0), (-1, -1), 9), ("FONTNAME", (0, 0), (-1, -1), FONTE),
+        ("GRID", (0, 0), (-1, -1), 0.5, colors.grey),
+        ("ALIGN", (1, 0), (1, -1), "CENTER"), ("ALIGN", (2, 0), (2, -1), "LEFT"),
+        ("BACKGROUND", (0, 1), (-1, -1), LGRAY), ("TEXTCOLOR", (0, 1), (-1, -1), DARK),
+        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+    ]))
+    e.append(tbl)
+    e.append(Spacer(1, LINHA))
+    for k, lbl in chaves:
+        v = data.get(k, 0)
+        sig = SIG.get(v, (t("nenhum", lang), "", "", ""))
+        e.append(Paragraph(f"<b>{t(lbl, lang)}:</b> {v} — {sig[0]}",
+                           _estilo("TX", FONTE, 10, DARK, TA_LEFT, sa=3)))
+    e.append(Spacer(1, LINHA))
+    e.append(Paragraph(T.get("entrega", ""), _estilo("J", FONTE, 8, GRAY, TA_CENTER, sa=6)))
+    e.append(Paragraph("© A1ELOS Assessoria e Consultoria",
+                       _estilo("F", FONTE, 8, GRAY, TA_CENTER)))
+    doc.build(e, onFirstPage=_cabecalho_pagina, onLaterPages=_cabecalho_pagina)
+    return path
 # ═══════════════════════════════════════════
 # MAPA COMPLETO (template premium, traduzido)
 # ═══════════════════════════════════════════
