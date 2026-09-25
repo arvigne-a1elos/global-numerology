@@ -419,3 +419,106 @@ form button[type="submit"]:hover,
   background: #C9A94E !important;
   color: #000 !important;
 }
+
+/* ===== SELETOR DE ENERGIA: CÍRCULOS EM FILEIRA (padrão antigo) ===== */
+.energia-selector {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin: 10px 0 16px !important;
+}
+.energia-selector .energia-btn {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 50% !important;
+  border: 1px solid rgba(201, 169, 78, 0.4) !important;
+  background: transparent !important;
+  color: #C9A94E !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  transition: all .2s ease !important;
+  line-height: 1 !important;
+}
+.energia-selector .energia-btn:hover {
+  border-color: #C9A94E !important;
+  background: rgba(201, 169, 78, 0.12) !important;
+}
+.energia-selector .energia-btn.ideal {
+  border: 2px solid #0b7a3b !important;
+  color: #0b7a3b !important;
+  position: relative !important;
+}
+.energia-selector .energia-btn.ideal::after {
+  content: '★' !important;
+  position: absolute !important;
+  top: -6px !important;
+  right: -2px !important;
+  font-size: 10px !important;
+  color: #0b7a3b !important;
+}
+.energia-selector .energia-btn.selecionada {
+  background: #C9A94E !important;
+  color: #000 !important;
+}
+.energia-selector .energia-btn.selecionada.ideal {
+  background: #0b7a3b !important;
+  color: #fff !important;
+}
+/* ===== SELETOR DE ENERGIA: CÍRCULOS EM FILEIRA (padrão antigo) ===== */
+.energia-selector {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin: 10px 0 16px !important;
+}
+.energia-selector .energia-btn {
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  border-radius: 50% !important;
+  border: 1px solid rgba(201, 169, 78, 0.4) !important;
+  background: transparent !important;
+  color: #C9A94E !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  transition: all .2s ease !important;
+  line-height: 1 !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.energia-selector .energia-btn:hover {
+  border-color: #C9A94E !important;
+  background: rgba(201, 169, 78, 0.12) !important;
+}
+.energia-selector .energia-btn.ideal {
+  border: 2px solid #0b7a3b !important;
+  color: #0b7a3b !important;
+  position: relative !important;
+}
+.energia-selector .energia-btn.ideal::after {
+  content: '★' !important;
+  position: absolute !important;
+  top: -6px !important;
+  right: -2px !important;
+  font-size: 10px !important;
+  color: #0b7a3b !important;
+}
+.energia-selector .energia-btn.selecionada {
+  background: #C9A94E !important;
+  color: #000 !important;
+}
+.energia-selector .energia-btn.selecionada.ideal {
+  background: #0b7a3b !important;
+  color: #fff !important;
+}
