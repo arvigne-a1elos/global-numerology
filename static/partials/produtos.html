@@ -60,6 +60,12 @@
               <input id="vidaNasc" type="date">
               <button class="btn btn-full" onclick="pagarVida()">Pesquisar</button>
             </form>
+            <label>Nome completo</label>            → <label data-i18n-form="calc_nome">Nome completo</label>
+            <input id="vidaNome" type="text" placeholder="Nome completo">
+                                        → <input id="vidaNome" type="text" data-i18n-ph="ph_nome_completo" placeholder="Nome completo">
+            <label>Data de nascimento</label>       → <label data-i18n-form="calc_nasc">Data de nascimento</label>
+            <button class="btn btn-full" onclick="pagarVida()">Pesquisar</button>
+                                        → <button class="btn btn-full" onclick="pagarVida()" data-i18n-form="pesquisar_btn">Pesquisar</button>
             </div>
         
             <!-- 4. Pesquisa IA de Nomes -->
@@ -83,6 +89,11 @@
               <input id="iaEnergia" type="number" min="1" max="9" placeholder="1 a 9">
               <button class="btn btn-full" onclick="pagarIa()">Pesquisar</button>
             </form>
+            <label>Nome completo</label>            → <label data-i18n-form="calc_nome">Nome completo</label>
+            <input id="iaNome" ... placeholder="Nome completo"> → adicionar data-i18n-ph="ph_nome_completo"
+            <label>Energia desejada (1-9)</label>   → <label data-i18n-form="f_energia">Energia desejada (1-9)</label>
+            <input id="iaEnergia" ... placeholder="1 a 9"> → adicionar data-i18n-ph="ph_energia"
+            <button ... onclick="pagarIa()">Pesquisar</button> → <button ... onclick="pagarIa()" data-i18n-form="pesquisar_btn">Pesquisar</button>
             </div>
             
             <!-- 5. Validação Nome de Urna -->
@@ -147,6 +158,20 @@
 
              <button class="btn btn-full" onclick="pagarUrna()">Iniciar Validação</button>
             </form>
+            <label>Nome completo da pessoa</label>  → <label data-i18n-form="f_nome">Nome completo da pessoa</label>
+            <input id="urnaNome" ...> → adicionar data-i18n-ph="ph_nome_completo"
+            <label>Cargo</label>                    → <label data-i18n-form="f_cargo">Cargo</label>
+            <option value="vereador">Vereador</option>             → adicionar data-i18n-form="c_vereador"
+            <option value="dep_estadual">Deputado Estadual</option> → adicionar data-i18n-form="c_estadual"
+            <option value="dep_federal">Deputado Federal</option>  → adicionar data-i18n-form="c_federal"
+            <option value="senador">Senador</option>               → adicionar data-i18n-form="c_senador"
+            <label id="urnaGeneroLabel">Gênero</label> → <label id="urnaGeneroLabel" data-i18n-form="f_genero">Gênero</label>
+            <option value="masculino" id="urnaGenMasc">Masculino</option>  → adicionar data-i18n-form="f_masculino"
+            <option value="feminino" id="urnaGenFem">Feminino</option>     → adicionar data-i18n-form="f_feminino"
+            <label>Grafias do nome de urna</label>  → <label data-i18n-form="urna_options">Grafias do nome de urna</label>
+            <input id="urnaNome1" ... placeholder="Grafia 1"> → adicionar data-i18n-ph="ph_nome_1"
+            <input id="urnaNome2" ...> → data-i18n-ph="ph_nome_2"  (+ 3,4,5)
+            <button ... onclick="pagarUrna()">Iniciar Validação</button> → adicionar data-i18n-form="start_urna"
             </div>
             
             <!-- 6. Número Eleitoral -->
@@ -183,6 +208,15 @@
               <div id="eleitoralEnergiaSel" class="energia-selector"></div>
               <button class="btn btn-full" onclick="pagarEleitoral()">Calcular Nº Eleitoral</button>
             </form>
+            <label>Nome completo do candidato</label> → <label data-i18n-form="f_nome_candidato">Nome completo do candidato</label>
+            <input id="eleiNome" ...> → data-i18n-ph="ph_nome_completo"
+            <label>Cargo</label>                    → <label data-i18n-form="f_cargo2">Cargo</label>
+            (4 options)                              → data-i18n-form="c_vereador"/"c_estadual"/"c_federal"/"c_senador"
+            <label>Sigla do partido</label>         → <label data-i18n-form="f_sigla">Sigla do partido</label>
+            <input id="eleiSigla" ... placeholder="Sigla"> → data-i18n-ph="ph_sigla"
+            <label>Número atual (opcional — para análise de vibração)</label> → <label data-i18n-form="f_num_atual">...</label>
+            <input id="eleiExistente" ... placeholder="Ex.: 12345"> → data-i18n-ph="ph_ex_45123"
+            <button ... onclick="pagarEleitoral()">Calcular Nº Eleitoral</button> → adicionar data-i18n-form="start_eleitoral"
             </div>
         
             <!-- 7. Número do Imóvel -->
@@ -204,6 +238,9 @@
               <input id="imovelNumero" type="text" placeholder="Ex.: 123 ou 12A">
               <button class="btn btn-full" onclick="pagarImovel()">Pesquisar</button>
             </form>
+            <label>Número do imóvel</label>          → <label data-i18n-form="f_imovel">Número do imóvel</label>
+            <input id="imovelNumero" ... placeholder="Ex.: 123 ou 12A"> → data-i18n-ph="ph_ex_numero"
+            <button ... onclick="pagarImovel()">Pesquisar</button> → data-i18n-form="pesquisar_btn"
             </div>
         
             <!-- 8. Calendário Mensal Energético -->
@@ -240,6 +277,11 @@
               </select>
               <button class="btn btn-full" onclick="pagarCalendario()">Pesquisar</button>
             </form>
+            <label>Nome completo</label>            → <label data-i18n-form="calc_nome">Nome completo</label>
+            <input id="calNome" ...> → data-i18n-ph="ph_nome_completo"
+            <label>Mês de referência</label>        → <label data-i18n-form="f_mes">Mês de referência</label>
+            <option value="01">Janeiro</option> ... <option value="12">Dezembro</option> → em cada option, adicionar data-mes="01" a data-mes="12"
+            <button ... onclick="pagarCalendario()">Pesquisar</button> → data-i18n-form="pesquisar_btn"
             </div>
         
             <!-- 9. Validação Nome Artístico -->
@@ -286,6 +328,11 @@
              <div id="arteEnergiaSel" class="energia-selector"></div>
              <button class="btn btn-full" onclick="pagarArte()">Iniciar Validação</button>
             </form>
+            <label>Nome artístico completo</label>  → <label data-i18n-form="f_artistico">Nome artístico completo</label>
+            <input id="arteNome" ... placeholder="Nome artístico"> → data-i18n-ph="ph_nome_artistico"
+            <label>Grafias do nome artístico</label> → <label data-i18n-form="f_grafias">Grafias do nome artístico</label>
+            <input id="arteNome1" ... placeholder="Grafia 1"> → data-i18n-ph="ph_nome_1"  (+ 2..5 → ph_nome_2..ph_nome_5)
+            <button ... onclick="pagarArte()">Iniciar Validação</button> → data-i18n-form="start_urna"
             </div>
         
             <!-- 10. Planejamento Nome de Bebê -->
@@ -309,6 +356,11 @@
               <input id="bebeEnergia" type="number" min="1" max="9" placeholder="1 a 9">
               <button class="btn btn-full" onclick="pagarBebe()">Pesquisar</button>
             </form>
+            <label>Sobrenome da família</label>     → <label data-i18n-form="f_sobrenome_familia">Sobrenome da família</label>
+            <input id="bebeSobrenome" ... placeholder="Sobrenome que o bebê receberá"> → data-i18n-ph="ph_sobrenome"
+            <label>Energia desejada (1-9)</label>   → <label data-i18n-form="f_energia">Energia desejada (1-9)</label>
+            <input id="bebeEnergia" ... placeholder="1 a 9"> → data-i18n-ph="ph_energia"
+            <button ... onclick="pagarBebe()">Pesquisar</button> → data-i18n-form="pesquisar_btn"
             </div>
         
             <!-- 11. Validação de Assinaturas -->
@@ -330,6 +382,9 @@
               <input id="assinaturaTexto" type="text" placeholder="Ex.: Nome Sobrenome">
               <button class="btn btn-full" onclick="pagarAssinatura()">Pesquisar</button>
             </form>
+            <label>Texto da assinatura atual</label> → <label data-i18n-form="f_assinatura">Texto da assinatura atual</label>
+            <input id="assinaturaTexto" ... placeholder="Ex.: Nome Sobrenome"> → data-i18n-ph="ph_sua_assinatura"
+            <button ... onclick="pagarAssinatura()">Pesquisar</button> → data-i18n-form="pesquisar_btn"
             </div>
         
             <!-- 12. Nome para Negócio/Produto -->
@@ -353,6 +408,11 @@
               <input id="negocioEnergia" type="number" min="1" max="9" placeholder="1 a 9">
               <button class="btn btn-full" onclick="pagarNegocio()">Pesquisar</button>
             </form>
+            <label>Nome do negócio ou produto</label> → <label data-i18n-form="f_negocio">Nome do negócio ou produto</label>
+            <input id="negocioNome" ... placeholder="Nome da empresa/produto"> → data-i18n-ph="ph_nome_negocio"
+            <label>Energia desejada (1-9)</label>   → <label data-i18n-form="f_energia">Energia desejada (1-9)</label>
+            <input id="negocioEnergia" ... placeholder="1 a 9"> → data-i18n-ph="ph_energia"
+            <button ... onclick="pagarNegocio()">Pesquisar</button> → data-i18n-form="pesquisar_btn"
             </div>
         
             <!-- 13. Mapa do Casal -->
@@ -376,6 +436,11 @@
               <input id="casalNome2" type="text" placeholder="Nome completo">
               <button class="btn btn-full" onclick="pagarCasal()">Pesquisar</button>
             </form>
+            <label>Nome da primeira pessoa</label>  → <label data-i18n-form="f_pessoa1">Nome da primeira pessoa</label>
+            <input id="casalNome1" ... placeholder="Nome completo"> → data-i18n-ph="ph_nome_completo"
+            <label>Nome da segunda pessoa</label>   → <label data-i18n-form="f_pessoa2">Nome da segunda pessoa</label>
+            <input id="casalNome2" ...> → data-i18n-ph="ph_nome_completo"
+            <button ... onclick="pagarCasal()">Pesquisar</button> → data-i18n-form="pesquisar_btn"
             </div>
         
             <!-- 14. Mapa Família Premium -->
@@ -398,6 +463,9 @@
               <textarea id="familiaMembros" rows="4" placeholder="Nome 1&#10;Nome 2&#10;Nome 3"></textarea>
               <button class="btn btn-full" onclick="pagarFamilia()">Pesquisar</button>
             </form>
+            <label>Membros da família (um por linha)</label> → <label data-i18n-form="f_familia">Membros da família (um por linha)</label>
+            <textarea id="familiaMembros" rows="4" placeholder="Nome 1&#10;Nome 2&#10;Nome 3"></textarea> → adicionar data-i18n-ph="ph_membros"
+            <button ... onclick="pagarFamilia()">Pesquisar</button> → data-i18n-form="pesquisar_btn"
             </div>
         
             <!-- 15. Bônus Coletivo/Empresarial -->
