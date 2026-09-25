@@ -303,59 +303,36 @@ form button[type="submit"]:hover,
   transform: translateY(-1px);
 }
 
-/* ===== FORMULÁRIOS DENTRO DOS CARDS (estilo modal do Pet) ===== */
-.product-card form {
-  background: #141414;
-  border: 1px solid #2a2a2a;
-  border-radius: 12px;
-  padding: 18px 16px;
-  margin-top: 14px;
-  text-align: left;
-  width: 100%;
-  box-sizing: border-box;
-}
-.product-card form:hover { border-color: rgba(201, 169, 78, 0.5); }
-.product-card form label { margin-top: 4px; }
-.product-card .urna-grafia {
-  display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
-}
-.product-card .urna-grafia input { margin-bottom: 0; }
-.energia-selector { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 14px; }
-
-/* ===== MODAL GENÉRICO DE FORMULÁRIOS (estilo Nome do Pet) ===== */
+/* ===== MODAL GENÉRICO DE FORMULÁRIOS — PADRÃO NOME DO PET ===== */
 .a1-modal-overlay {
-  position: fixed;
-  inset: 0;
+  position: fixed; inset: 0;
   background: rgba(0, 0, 0, 0.78);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  padding: 20px;
+  display: none; align-items: center; justify-content: center;
+  z-index: 100000; padding: 20px;
 }
 .a1-modal-overlay.aberto { display: flex; }
 .a1-modal-box {
-  background: #141414;
-  border: 1px solid #C9A94E;
-  border-radius: 14px;
-  max-width: 540px;
-  width: 100%;
-  max-height: 90vh;
-  overflow-y: auto;
-  padding: 26px 24px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65);
-  position: relative;
+  background: #141414; border: 1px solid #C9A94E; border-radius: 14px;
+  max-width: 540px; width: 100%; max-height: 90vh; overflow-y: auto;
+  padding: 26px 24px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65);
+  position: relative; color: #fff;
 }
-.a1-modal-box form { width: 100%; margin: 0; }
-.a1-modal-box label { font-size: 1.05rem; }
+.a1-modal-box form,
+.a1-modal-box section,
+.a1-modal-box .form-container {
+  width: 100%; margin: 0; max-width: none;
+  background: transparent; border: none; padding: 0;
+}
+.a1-modal-box label { font-size: 1.02rem; }
 .a1-modal-box input,
 .a1-modal-box select,
-.a1-modal-box textarea { min-height: 48px; font-size: 1.05rem; }
+.a1-modal-box textarea {
+  width: 100%; box-sizing: border-box; min-height: 48px; font-size: 1.05rem;
+}
+.a1-modal-box .btn-full { width: 100%; }
 .a1-modal-fechar {
-  position: absolute;
-  top: 8px; right: 14px;
-  background: none; border: none;
-  color: #E8D9A0; font-size: 28px; line-height: 1;
-  cursor: pointer;
+  position: absolute; top: 8px; right: 14px;
+  background: none; border: none; color: #E8D9A0; font-size: 28px;
+  line-height: 1; cursor: pointer;
 }
 .a1-modal-fechar:hover { color: #fff; }
