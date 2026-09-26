@@ -1182,6 +1182,63 @@ async def receber_sugestao(req: SugestaoReq):
     _enviar_email_simples(ADMIN_EMAIL, "Nova Sugestão A1ELOS", corpo)
     return {"ok": True}
 
+COD_ALFABETO = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
+
+def _checksum(base: str) -> str:
+    soma = sum(COD_ALFABETO.index(ch) for ch in base)
+    return COD_ALFABETO[soma % len(COD_ALFABETO)]
+
+def _gerar_codigo_bonus() -> str:
+    base = "".join(secrets.choice(COD_ALFABETO) for _ in range(7))
+    cod = "A1-" + base[:4] + "-" + base[4:] + _checksum(base)
+    return cod
+
+def _cod_valido(codigo: str) -> bool:
+    c = "".join(ch for ch in (codigo or "").upper() if ch.isalnum())
+    if len(c) != 10 or c[:2] != "A1": return False
+    return _checksum(c[2:9]) == c[9]
+
+{
+  "A1-K7X2-M9P4": {
+    "produto": "nome_pet",
+    "energia": "5",
+    "liberacao": "colaboracao",
+    "idioma": "pt",
+    "usado": false,
+    "criado_em": "2026-09-26T15:30:00",
+    "data_uso": null
+  }
+}
+
+@app.post("/ativar-bonus")
+async def ativar_bonus(req: AtivarBonusReq):
+    cod = "".join(ch for ch in (req.codigo or "").upper() if ch.isalnum())
+    codigos = _carregar_codigos()
+    # aceita com ou sem hífens
+    info = codigos.get(req.codigo) or codigos.get(_formatar(cod))
+    if not info or info.get("usado"):
+        return {"ok": False, "msg": "Inválido ou já usado"}
+    return {
+        "ok": True,
+        "produto": info.get("produto"),
+        "energia": info.get("energia"),
+        "liberacao": info.get("liberacao"),
+        "idioma": info.get("idioma")
+    }
+
+@app.post("/admin/gerar-bonus")
+async def admin_gerar_bonus(req: AdminGerarBonusReq):
+    # valida chave admin (ex.: header X-ADMIN-KEY)
+    cod = _gerar_codigo_bonus()
+    codigos = _carregar_codigos()
+    codigos[cod] = {
+        "produto": req.produto, "energia": req.energia,
+        "liberacao": req.liberacao, "idioma": req.idioma,
+        "usado": False, "criado_em": datetime.now().isoformat(), "data_uso": None
+    }
+    _salvar_codigos(codigos)
+    return {"ok": True, "codigo": cod}
+
 # ===== SISTEMA DE PUBLICIDADE GEOLOCALIZADA (resgatado do main anterior) =====
 ARQ_BANNERS = "static/banners.json"
 PAIS_CONTINENTE = {
