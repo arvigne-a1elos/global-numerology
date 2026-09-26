@@ -1235,18 +1235,6 @@ def _cod_valido(codigo: str) -> bool:
     if len(c) != 10 or c[:2] != "A1": return False
     return _checksum(c[2:9]) == c[9]
 
-{
-  "A1-K7X2-M9P4": {
-    "produto": "nome_pet",
-    "energia": "5",
-    "liberacao": "colaboracao",
-    "idioma": "pt",
-    "usado": false,
-    "criado_em": "2026-09-26T15:30:00",
-    "data_uso": null
-  }
-}
-
 @app.post("/ativar-bonus")
 async def ativar_bonus(req: AtivarBonusReq):
     cod = "".join(ch for ch in (req.codigo or "").upper() if ch.isalnum())
