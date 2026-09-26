@@ -825,15 +825,18 @@ function montarPassoEnergia(produto, lang) {
   box.className = "energia-selector";   // fileira de círculos
   box.innerHTML = "";
   var ideal = ENERGIA_IDEAL[produto] || 0;
+  var preEscolhida = (window._modalDado && window._modalDado.energia) ? parseInt(window._modalDado.energia, 10) : 0;
   for (var i = 1; i <= 9; i++) {
     (function(n){
       var nomeE = (window.ENERGIA_TITULOS[lang] && window.ENERGIA_TITULOS[lang][String(n)]) ? window.ENERGIA_TITULOS[lang][String(n)] : String(n);
       var b = document.createElement("button");
       b.type = "button";
-      b.className = "energia-btn" + (n === ideal ? " ideal" : "");
+      var marcado = (preEscolhida > 0) ? (n === preEscolhida) : (n === ideal);
+      b.className = "energia-btn" + (n === ideal ? " ideal" : "") + (marcado ? " selecionada" : "");
       b.textContent = String(n);
       b.title = nomeE;
       b.onclick = function(){ if (window._modalDado) window._modalDado.energia = n; montarPassoNome(produto, lang); };
+      window._energiaPresel = null;
       box.appendChild(b);
     })(i);
   }
