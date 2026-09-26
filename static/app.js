@@ -686,3 +686,20 @@ fetch('/api/precos')
   }
   window.montarTodosSeletoresEnergia = montarTodos;
 })();
+
+var COD_ALFABETO = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+function codChecksum(base) {
+  var soma = 0;
+  for (var i = 0; i < base.length; i++) soma += COD_ALFABETO.indexOf(base[i]);
+  return COD_ALFABETO[soma % COD_ALFABETO.length];
+}
+function codNormalizar(codigo) {
+  return (codigo || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+}
+function codValido(codigo) {
+  var c = codNormalizar(codigo);
+  if (c.length !== 10 || c.slice(0, 2) !== "A1") return false;
+  var base = c.slice(2, 9);   // 7 chars
+  var check = c.slice(9, 10); // 8º char
+  return codChecksum(base) === check;
+}
