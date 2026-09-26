@@ -118,8 +118,7 @@ window.pagarArte = window.pagarArte || function(){
   var n4 = (document.getElementById('arteNome4') ? document.getElementById('arteNome4').value : '').trim();
   var n5 = (document.getElementById('arteNome5') ? document.getElementById('arteNome5').value : '').trim();
   if (!nome || (!n1 && !n2 && !n3 && !n4 && !n5)) { alert(t_preencha()); return; }
-  var sel = document.querySelector('#arteEnergiaSel .ativo');
-  var energia = sel ? sel.textContent : '';
+  var energia = _energiaSelecionada('arteEnergiaSel', 'artistico');
   location.href = '/criar-checkout?produto=artistico'
     + '&nome_completo=' + encodeURIComponent(nome)
     + '&nome=' + encodeURIComponent(nome)
@@ -137,8 +136,7 @@ window.pagarOng = window.pagarOng || function(){
   var n4 = (document.getElementById('ongNome4') ? document.getElementById('ongNome4').value : '').trim();
   var n5 = (document.getElementById('ongNome5') ? document.getElementById('ongNome5').value : '').trim();
   if (!nome || (!n1 && !n2 && !n3 && !n4 && !n5)) { alert(t_preencha()); return; }
-  var sel = document.querySelector('#ongEnergiaSel .ativo');
-  var energia = sel ? sel.textContent : '';
+  var energia = _energiaSelecionada('ongEnergiaSel', 'nome_ong');
   location.href = '/criar-checkout?produto=nome_ong'
     + '&nome_completo=' + encodeURIComponent(nome)
     + '&nome=' + encodeURIComponent(nome)
@@ -220,7 +218,8 @@ function abrirModalDado(produto, lang) {
   document.getElementById("modalDadoOk").onclick = function(){ confirmarModalDado(produto, lang); };
   document.getElementById("modalDadoTitulo").textContent = titulo;
   document.getElementById("modalDadoLabel").textContent = label;
-  window._modalDado = { produto: produto, lang: lang, tipo: "", energia: "" };
+  var energiaPre = (typeof window._energiaPresel !== "undefined" && window._energiaPresel) ? window._energiaPresel : "";
+  window._modalDado = { produto: produto, lang: lang, tipo: "", energia: energiaPre };
   montarPassoTipo(produto, lang);
     // ===== TRADUÇÃO DOS BOTÕES Confirmar/Cancelar (14 idiomas) =====
   var okBtn = document.getElementById("modalDadoOk");
