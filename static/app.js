@@ -629,3 +629,61 @@ fetch('/api/precos')
   })
   .catch(function(e){ console.warn('[A1ELOS] /api/precos:', e); });
   
+/* ===== AUTO-MONTAGEM DOS SELETORES DE ENERGIA (círculos) ===== */
+/* Varre todos os .energia-selector VAZIOS e monta os círculos 1-9,
+   marcando a energia ideal (★ verde) de cada produto. Idempotente. */
+(function () {
+  var IDEAL = {
+    urna: 8, eleitoral: 8, artistico: 2, nome_ong: 6,
+    ia: 8, bebe: 8, negocio: 8, assinatura: 8,
+    nome_pet: 5, nickname: 8, nome_dominio: 8, nome_canal: 8,
+    nome_equipe: 8, nome_projeto: 8, nome_evento: 3
+  };
+  var MAPA_ID_PROD = {
+    urna: "urna", eleitoral: "eleitoral", arte: "artistico", ong: "nome_ong",
+    ia: "ia", bebe: "bebe", negocio: "negocio", assinatura: "assinatura"
+  };
+  function montarSeletor(el) {
+    if (el.children.length > 0) return;   // já montado por outra função? não mexe
+    var m = (el.id || "").match(/^(.+?)EnergiaSel$/);
+    if (!m) return;
+    var prod = MAPA_ID_PROD[m[1]];
+    if (!prod) return;
+    var ideal = (window.ENERGIA_IDEAL && window.ENERGIA_IDEAL[prod]) || IDEAL[prod] || 0;
+    var titulos = (window.ENERGIA_TITULOS && window.ENERGIA_TITULOS[getLang()]) || {};
+    el.innerHTML = "";
+    for (var i = 1; i <= 9; i++) {
+      (function (n) {
+        var b = document.createElement("button");
+        b.type = "button";
+        b.className = "energia-btn" + (n === ideal ? " ideal selecionada" : "");
+        b.textContent = String(n);
+        b.title = titulos[String(n)] || String(n);
+        b.onclick = function () {
+          var btns = el.querySelectorAll(".energia-btn");
+          for (var k = 0; k < btns.length; k++) btns[k].classList.remove("selecionada");
+          b.classList.add("selecionada");
+        };
+        el.appendChild(b);
+      })(i);
+    }
+  }
+  function montarTodos() {
+    var sels = document.querySelectorAll(".energia-selector");
+    for (var i = 0; i < sels.length; i++) montarSeletor(sels[i]);
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", function () { setTimeout(montarTodos, 300); });
+  } else {
+    setTimeout(montarTodos, 300);
+  }
+  if (typeof window.montarTudo === "function") {
+    var _origMT = window.montarTudo;
+    window.montarTudo = function () {
+      var r = _origMT.apply(this, arguments);
+      montarTodos();
+      return r;
+    };
+  }
+  window.montarTodosSeletoresEnergia = montarTodos;
+})();
