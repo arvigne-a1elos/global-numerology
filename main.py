@@ -633,7 +633,60 @@ def _enviar_email_simples(destinatario, assunto, corpo):
         logger.error(f"SMTP: {e}")
         return False
 
-# ===== PRODUTOS DA PESQUISA IA (8 — Card da IA) =====
+def gerar_pdf_ong(dados, lang="pt", nome_exib=""):
+    path = f"/tmp/p_ong_{uuid.uuid4().hex[:8]}.pdf"
+    doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
+                            topMargin=40, bottomMargin=30)
+    e = []
+    e.append(Spacer(1, 15))
+    e.append(Paragraph("VALIDAÇÃO DE NOME DE ENTIDADE", estilo(16, True, GOLD, TA_CENTER, 0, 6)))
+    nat = (dados.get("natureza") or "ong").upper()
+    tip = (dados.get("tipo") or "").replace("_", " ").upper()
+    esc = (dados.get("escopo") or "nacional").upper()
+    e.append(Paragraph(f"Natureza: {nat}  |  Tipo: {tip}  |  Escopo: {esc}",
+                       estilo(9, False, GRAY, TA_CENTER, 0, 4)))
+    e.append(Paragraph(f"Energia pesquisada: {dados.get('energia_alvo', 6)}  |  "
+                       f"Ideal do produto: {dados.get('energia_ideal', 6)} ★",
+                       estilo(10, True, DARK, TA_CENTER, 0, 10)))
+    linhas = [["Item", "Nome", "E. Nome", "Sigla", "E. Sigla", "Melhor"]]
+    for i, it in enumerate(dados.get("nomes", []), 1):
+        linhas.append([
+            str(i),
+            it.get("nome") or "-",
+            str(it.get("energia_nome") or "-"),
+            it.get("sigla") or "-",
+            str(it.get("energia_sigla") or "-"),
+            (it.get("melhor") or "-").upper(),
+        ])
+    for i, it in enumerate(dados.get("sugestoes", []), 1):
+        linhas.append([
+            f"IA {i}",
+            it.get("nome") or "-",
+            str(it.get("energia_nome") or "-"),
+            it.get("sigla") or "-",
+            str(it.get("energia_sigla") or "-"),
+            "SUGESTÃO",
+        ])
+    tbl = Table(linhas, colWidths=[45, 185, 60, 90, 60, 85])
+    tbl.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (-1, 0), GOLD),
+        ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+        ("FONTSIZE", (0, 0), (-1, -1), 8),
+        ("GRID", (0, 0), (-1, -1), 0.4, colors.grey),
+        ("BACKGROUND", (0, 1), (-1, -1), LGRAY),
+        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+    ]))
+    e.append(tbl)
+    if dados.get("recomendacao"):
+        e.append(Spacer(1, 10))
+        e.append(Paragraph("<b>Recomendação:</b> " + dados["recomendacao"],
+                           estilo(10, False, DARK)))
+    e.append(Spacer(1, 10))
+    e.append(Paragraph("(c) A1ELOS", estilo(7, False, GRAY, TA_CENTER)))
+    doc.build(e)
+    return path
+
+# ===== PRODUTOS DA PESQUISA IA (7 — Card da IA) =====
 PRODUTOS_IA = [
     "pet", "dominio", "canal", "equipe", "projeto", "evento", "nickname",
 ]
