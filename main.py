@@ -604,11 +604,6 @@ def _entregar_arquivo_local(tipo, nome, lang="pt"):
         logger.error(f"Falha entrega: {e}")
         return {"pdf": None, "url": "", "pdf_ok": False}
 
-if prod == "nome_ong":
-        pf = gerar_pdf_ong(data, lang, nome_exib)
-else:
-        pf = gerar_pdf(prod, data, lang, nome_exib, bd, dado=dado)
-
 try:
     from gerador_pdf import gerar_pdf, pagina_sucesso, _entregar_arquivo
 except Exception:
@@ -904,7 +899,18 @@ def pay_success(request: Request):
             "nome_dominio": lambda: analisar_nome(dado or nome, energia),
             "nome_canal": lambda: analisar_nome(dado or nome, energia),
             "nome_equipe": lambda: analisar_nome(dado or nome, energia),
-            "nome_ong":  lambda: analisar_nome(dado or nome, energia),
+                        "nome_ong":  lambda: analisar_ong({
+                "nome1": meta.get("nome1") or meta.get("dado", ""),
+                "sigla1": meta.get("sigla1", ""),
+                "nome2": meta.get("nome2", ""),
+                "sigla2": meta.get("sigla2", ""),
+                "nome3": meta.get("nome3", ""),
+                "sigla3": meta.get("sigla3", ""),
+                "natureza": meta.get("natureza", "ong"),
+                "tipo_entidade": meta.get("tipo_entidade", ""),
+                "escopo": meta.get("escopo", "nacional"),
+                "energia": energia,
+            }),
             "nome_projeto": lambda: analisar_nome(dado or nome, energia),
             "nome_evento": lambda: analisar_nome(dado or nome, energia),
             "artistico": lambda: analisar_nome(dado or nome, energia),
@@ -940,7 +946,10 @@ def pay_success(request: Request):
         finally:
             db.close()
         pn = PRODUTOS.get(lang, PRODUTOS["pt"]).get(prod, prod)
-        pf = gerar_pdf(prod, data, lang, nome_exib, bd, dado=dado)
+        if prod == "nome_ong":
+            pf = gerar_pdf_ong(data, lang, nome_exib)
+        else:
+            pf = gerar_pdf(prod, data, lang, nome_exib, bd, dado=dado)
 
         # ===== QRCODE RECUPERADO: guarda o PDF em static/relatorios e gera QR =====
         qr_b64 = ""
@@ -1082,39 +1091,7 @@ async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
         return await criar_checkout_coletivo(lang=lang, items=itens or "[]")
     if produto not in PRODUTO_FAIXA:
         raise HTTPException(400, "Produto invalido")
-    meta = {}
-    if produto == "urna":
-        meta = {"nome_completo": nome_completo, "cargo": cargo, "nome": nome_completo,
-                "nome1": nome1, "nome2": nome2, "nome3": nome3,
-                "nome4": nome4, "nome5": nome5}
-    elif produto == "eleitoral":
-        meta = {"sigla": numero, "cargo": cargo,
-                "nome_completo": nome_completo, "numero_existente": numero_existente}
-    else:
-        meta = {"energia": energia, "dado": dado, "tipo": tipo,
-                "area": area, "detalhe": detalhe}
-        s = _criar_sessao(produto, lang, email, nome, nascimento, meta)
-    return RedirectResponse(url=s["url"])
-    elif produto == "nome_ong":
-        n_principal = nome1 or nome2 or nome3
-        meta = {"nome": n_principal, "dado": n_principal,
-                "nome1": nome1, "sigla1": sigla1,
-                "nome2": nome2, "sigla2": sigla2,
-                "nome3": nome3, "sigla3": sigla3,
-                "natureza": natureza, "tipo_entidade": tipo_entidade,
-                "escopo": escopo}    
-"nome_ong": lambda: analisar_ong({
-    "nome1": meta.get("nome1") or meta.get("dado", ""),
-    "sigla1": meta.get("sigla1", ""),
-    "nome2": meta.get("nome2", ""),
-    "sigla2": meta.get("sigla2", ""),
-    "nome3": meta.get("nome3", ""),
-    "sigla3": meta.get("sigla3", ""),
-    "natureza": meta.get("natureza", "ong"),
-    "tipo_entidade": meta.get("tipo_entidade", ""),
-    "escopo": meta.get("escopo", "nacional"),
-    "energia": energia,
-}),
+    
 # ===== SUCESSO POS-PAGAMENTO =====
 DADO_PRODUTOS = {"nome_pet", "nickname", "nome_dominio", "nome_canal",
                  "nome_equipe", "nome_ong", "nome_projeto", "nome_evento"}
