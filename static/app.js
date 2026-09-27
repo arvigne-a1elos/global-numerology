@@ -211,7 +211,11 @@ function abrirModalDado(produto, lang) {
       + '<p id="modalDadoLabel"></p>'
       + '<div id="modalPassoTipo"><p id="modalTipoLabel" style="color:#ccc;margin-bottom:8px"></p><div id="modalTipoOpcoes" class="modal-grid"></div></div>'
       + '<div id="modalPassoEnergia" style="display:none"><p id="modalEnergiaLabel" style="color:#ccc;margin-bottom:8px"></p><div id="modalEnergiaOpcoes" class="modal-grid"></div></div>'
-      + '<div id="modalPassoNome" style="display:none"><p id="modalNomeLabel" style="color:#ccc;margin-bottom:8px"></p><input id="modalDadoInput" type="text" class="modal-input"></div>'
+      + '<div id="modalPassoNome" style="display:none"><p id="modalNomeLabel" style="color:#ccc;margin-bottom:8px"></p>'
+      + '<input id="modalDadoInput" type="text" class="modal-input" placeholder="Nome 1">'
+      + '<input id="modalDadoInput2" type="text" class="modal-input" placeholder="Nome 2 (opcional)" style="margin-top:8px">'
+      + '<p style="color:#888;font-size:.75rem;margin-top:6px">Você sugere 2 nomes; a IA adiciona 1 sugestão de bônus.</p>'
+      + '</div>'
       + '<div class="modal-actions">'
       + '<button id="modalDadoOk" class="btn">' + (t.confirmar || "Confirmar") + '</button>'
       + '<button id="modalDadoCancel" class="btn btn-outline">' + (t.cancelar || "Cancelar") + '</button>'
@@ -245,8 +249,9 @@ function fecharModalDado() {
   if (o) o.classList.remove("active");
 }
 function confirmarModalDado(produto, lang) {
-  var dado = document.getElementById("modalDadoInput").value.trim();
-  if (!dado) {
+  var dado1 = (document.getElementById("modalDadoInput") ? document.getElementById("modalDadoInput").value : "").trim();
+  var dado2 = (document.getElementById("modalDadoInput2") ? document.getElementById("modalDadoInput2").value : "").trim();
+  if (!dado1 && !dado2) {
     alert((translations[lang] || translations.pt).preencha_dado || "Preencha o dado solicitado.");
     return;
   }
@@ -254,7 +259,8 @@ function confirmarModalDado(produto, lang) {
   var energia = _modalDado.energia || "";
   fecharModalDado();
   window.location.href = '/criar-checkout?lang=' + lang + '&produto=' + produto
-    + '&dado=' + encodeURIComponent(dado)
+    + '&dado=' + encodeURIComponent(dado1)
+    + '&dado2=' + encodeURIComponent(dado2)
     + '&tipo=' + encodeURIComponent(tipo)
     + '&energia=' + encodeURIComponent(energia);
 }
