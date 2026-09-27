@@ -1091,7 +1091,7 @@ async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
         return await criar_checkout_coletivo(lang=lang, items=itens or "[]")
     if produto not in PRODUTO_FAIXA:
         raise HTTPException(400, "Produto invalido")
-        meta = {}
+    meta = {}
     if produto == "urna":
         meta = {"nome_completo": nome_completo, "cargo": cargo, "nome": nome_completo,
                 "nome1": nome1, "nome2": nome2, "nome3": nome3,
