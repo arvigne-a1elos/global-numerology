@@ -44,37 +44,20 @@
                 </form>
             </div>
         
-            
-<!-- 3. Pesquisa IA de Nomes (HUB) -->
-<div class="product-card" data-prod="ia">
-    <div class="icon">🤖</div>
-    <h3 class="prod-nome" data-i18n="p_ia">Pesquisa IA de Nomes</h3>
-    <div class="price prod-preco">R$ 8</div>
-    <p class="desc" data-i18n="desc_ia">Escolha o nome ideal com análise numerológica da energia do nome por IA.</p>
-    <ul class="features">
-        <li>✅ 7 tipos de nome</li>
-        <li>✅ Análise energética</li>
-        <li>✅ Sugestões com IA</li>
-        <li>📲 PDF + QRCode</li>
-    </ul>
-    <!-- HUB: links para os 7 produtos (abrem o modal por produto) -->
-    <div class="ia-hub">
-        <button class="btn btn-full" onclick="comprar('nome_pet')" data-i18n="nome_pet">Nome do Pet</button>
-        <button class="btn btn-full" onclick="comprar('nickname')" data-i18n="nickname">Nickname Digital</button>
-        <button class="btn btn-full" onclick="comprar('nome_dominio')" data-i18n="nome_dominio">Nome do Domínio</button>
-        <button class="btn btn-full" onclick="comprar('nome_canal')" data-i18n="nome_canal">Nome do Canal</button>
-        <button class="btn btn-full" onclick="comprar('nome_equipe')" data-i18n="nome_equipe">Nome da Equipe</button>
-        <button class="btn btn-full" onclick="comprar('nome_projeto')" data-i18n="nome_projeto">Nome do Projeto</button>
-        <button class="btn btn-full" onclick="comprar('nome_evento')" data-i18n="nome_evento">Nome do Evento</button>
-    </div>
-    <!-- Campo de código de bônus -->
-    <div class="ia-bonus">
-        <label data-i18n-form="f_codigo_bonus">Código de bônus</label>
-        <input type="text" id="iaCodigoBonus" data-i18n-ph="ph_codigo_bonus" placeholder="Ex: A1-XXXX-XXXX" style="text-align:center;letter-spacing:2px;font-weight:bold" autocomplete="off">
-        <button class="btn btn-full" onclick="ativarBonusIA()">🎁 Ativar Código</button>
-        <p id="iaBonusStatus" class="hint" style="text-align:center;margin-top:8px;color:var(--gold)"></p>
-    </div>
-</div>
+            <!-- 3. Pesquisa IA de Nomes (HUB) -->
+            <div class="product-card" data-prod="ia">
+                <div class="icon">🤖</div>
+                <h3 class="prod-nome" data-i18n="p_ia">Pesquisa IA de Nomes</h3>
+                <div class="price prod-preco">R$ 8</div>
+                <p class="desc" data-i18n="desc_ia">Escolha o nome ideal com análise numerológica da energia do nome por IA.</p>
+                <ul class="features">
+                    <li>✅ 7 tipos de nome</li>
+                    <li>✅ Análise energética</li>
+                    <li>✅ Sugestões com IA</li>
+                    <li>📲 PDF + QRCode</li>
+                </ul>
+                <button class="btn btn-full" onclick="abrirHubIA()" data-i18n="pesquisar_btn">pesquisar</button>
+            </div>
         
             <!-- 4. Nome do Pet -->
             <div class="product-card" data-prod="nome_pet">
