@@ -17,6 +17,7 @@ from typing import Optional
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi import UploadFile, File, Form
 from pydantic import BaseModel
 from sqlalchemy import create_engine, Column, String, Integer, Float, DateTime
 from sqlalchemy.orm import sessionmaker, declarative_base
@@ -681,6 +682,43 @@ def gerar_pdf_ong(dados, lang="pt", nome_exib=""):
     doc.build(e)
     return path
 
+def gerar_sugestao_ia(produto, energia, lang="pt"):
+    """Gera 1 nome de bônus cuja energia bate com a escolhida."""
+    BASES = {
+        "nome_pet": ["Luna", "Thor", "Mel", "Bidu", "Nina", "Aiko"],
+        "nickname": ["Nova", "Zyon", "Kira", "Aura", "Lux", "Vega"],
+        "nome_dominio": ["Nova", "Prime", "Aura", "Vera", "Zen", "Core"],
+        "nome_canal": ["Vibe", "Flow", "Pulse", "Echo", "Lume", "Nexo"],
+        "nome_equipe": ["Nexo", "Vetta", "Alfa", "Core", "Sintra", "Orbe"],
+        "nome_projeto": ["Aurora", "Horizonte", "Lume", "Raiz", "Prisma", "Vetta"],
+        "nome_evento": ["Gala", "Festa", "Lume", "Viva", "Aurora", "Pulse"],
+        "artistico": ["Aurora", "Lume", "Vega", "Nina", "Aiko", "Zyon"],
+        "bebe": ["Luna", "Aurora", "Nina", "Aiko", "Vega", "Lux"],
+        "assinatura": ["Vega", "Core", "Alfa", "Nexo", "Lux", "Orbe"],
+        "negocio": ["Prime", "Core", "Vetta", "Alfa", "Zen", "Nexo"],
+    }
+    alvo = int(energia or 0)
+    base = BASES.get(produto, ["A1ELOS"])
+    for nome in base:
+        if energia_texto(nome) == alvo:
+            return {"nome": nome, "energia": energia_texto(nome), "bonus": True}
+    return {"nome": base[0], "energia": energia_texto(base[0]), "bonus": True}
+
+def energia_texto(texto):
+    LETRAS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    if not texto:
+        return None
+    soma = 0
+    for ch in texto.upper():
+        idx = LETRAS.find(ch)
+        if idx >= 0:
+            soma += (idx % 9) + 1
+    if soma == 0:
+        return None
+    while soma > 9 and soma not in (11, 22, 33):
+        soma = sum(int(d) for d in str(soma))
+    return soma
+
 # ===== PRODUTOS DA PESQUISA IA (7 — Card da IA) =====
 PRODUTOS_IA = [
     "pet", "dominio", "canal", "equipe", "projeto", "evento", "nickname",
@@ -883,6 +921,7 @@ def pay_success(request: Request):
         prod = meta.get("tipo", "express")
         lang = meta.get("lang", "pt")
         dado = meta.get("dado", "")
+        dado2 = meta.get("dado2", "")
         if not bd:
             bd = "2000-01-01"
 
@@ -894,11 +933,41 @@ def pay_success(request: Request):
             "calendario": lambda: analisar_calendario(nome, dado),
             "casal":     lambda: (lambda p: analisar_casal(*[x.strip() for x in p.split("&")[:2]] if "&" in p else (p, "")))(dado or nome),
             "familia":   lambda: analisar_familia(dado or nome),
-            "nome_pet":  lambda: analisar_nome(dado or nome, energia),
-            "nickname":  lambda: analisar_nome(dado or nome, energia),
-            "nome_dominio": lambda: analisar_nome(dado or nome, energia),
-            "nome_canal": lambda: analisar_nome(dado or nome, energia),
-            "nome_equipe": lambda: analisar_nome(dado or nome, energia),
+            "nome_pet":  lambda:         
+            def _analisar_nome_duplo():
+            nomes = [n for n in (dado, dado2) if n] or [nome]
+            res = analisar_nome(nomes[0], energia)
+            res["nomes"] = nomes
+            res["sugestao_ia"] = gerar_sugestao_ia(prod, energia, lang)
+            return res,
+            "nickname":  lambda: 
+            def _analisar_nome_duplo():
+            nomes = [n for n in (dado, dado2) if n] or [nome]
+            res = analisar_nome(nomes[0], energia)
+            res["nomes"] = nomes
+            res["sugestao_ia"] = gerar_sugestao_ia(prod, energia, lang)
+            return res,
+            "nome_dominio": lambda: 
+            def _analisar_nome_duplo():
+            nomes = [n for n in (dado, dado2) if n] or [nome]
+            res = analisar_nome(nomes[0], energia)
+            res["nomes"] = nomes
+            res["sugestao_ia"] = gerar_sugestao_ia(prod, energia, lang)
+            return res,
+            "nome_canal": lambda: 
+            def _analisar_nome_duplo():
+            nomes = [n for n in (dado, dado2) if n] or [nome]
+            res = analisar_nome(nomes[0], energia)
+            res["nomes"] = nomes
+            res["sugestao_ia"] = gerar_sugestao_ia(prod, energia, lang)
+            return res,    
+            "nome_equipe": lambda: 
+            def _analisar_nome_duplo():
+            nomes = [n for n in (dado, dado2) if n] or [nome]
+            res = analisar_nome(nomes[0], energia)
+            res["nomes"] = nomes
+            res["sugestao_ia"] = gerar_sugestao_ia(prod, energia, lang)
+            return res,
                         "nome_ong":  lambda: analisar_ong({
                 "nome1": meta.get("nome1") or meta.get("dado", ""),
                 "sigla1": meta.get("sigla1", ""),
@@ -911,12 +980,48 @@ def pay_success(request: Request):
                 "escopo": meta.get("escopo", "nacional"),
                 "energia": energia,
             }),
-            "nome_projeto": lambda: analisar_nome(dado or nome, energia),
-            "nome_evento": lambda: analisar_nome(dado or nome, energia),
-            "artistico": lambda: analisar_nome(dado or nome, energia),
-            "bebe":      lambda: analisar_nome(dado or nome, energia),
-            "assinatura": lambda: analisar_nome(dado or nome, energia),
-            "negocio":   lambda: analisar_nome(dado or nome, energia),
+            "nome_projeto": lambda: 
+            def _analisar_nome_duplo():
+            nomes = [n for n in (dado, dado2) if n] or [nome]
+            res = analisar_nome(nomes[0], energia)
+            res["nomes"] = nomes
+            res["sugestao_ia"] = gerar_sugestao_ia(prod, energia, lang)
+            return res,
+            "nome_evento": lambda:
+            def _analisar_nome_duplo():
+            nomes = [n for n in (dado, dado2) if n] or [nome]
+            res = analisar_nome(nomes[0], energia)
+            res["nomes"] = nomes
+            res["sugestao_ia"] = gerar_sugestao_ia(prod, energia, lang)
+            return res,    
+            "artistico": lambda: 
+            def _analisar_nome_duplo():
+            nomes = [n for n in (dado, dado2) if n] or [nome]
+            res = analisar_nome(nomes[0], energia)
+            res["nomes"] = nomes
+            res["sugestao_ia"] = gerar_sugestao_ia(prod, energia, lang)
+            return res,
+            "bebe": lambda: 
+            def _analisar_nome_duplo():
+            nomes = [n for n in (dado, dado2) if n] or [nome]
+            res = analisar_nome(nomes[0], energia)
+            res["nomes"] = nomes
+            res["sugestao_ia"] = gerar_sugestao_ia(prod, energia, lang)
+            return res,
+            "assinatura": lambda: 
+            def _analisar_nome_duplo():
+            nomes = [n for n in (dado, dado2) if n] or [nome]
+            res = analisar_nome(nomes[0], energia)
+            res["nomes"] = nomes
+            res["sugestao_ia"] = gerar_sugestao_ia(prod, energia, lang)
+            return res,
+            "negocio": lambda: 
+            def _analisar_nome_duplo():
+            nomes = [n for n in (dado, dado2) if n] or [nome]
+            res = analisar_nome(nomes[0], energia)
+            res["nomes"] = nomes
+            res["sugestao_ia"] = gerar_sugestao_ia(prod, energia, lang)
+            return res,
         }
 
         energia = meta.get("energia", "")
@@ -1083,8 +1188,9 @@ async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
                                 sigla1: str = "", sigla2: str = "", sigla3: str = "",
                                 natureza: str = "ong", tipo_entidade: str = "",
                                 escopo: str = "nacional",
-                                energia: str = "", dado: str = "", tipo: str = "",
-                                numero_existente: str = "", area: str = "", detalhe: str = ""):
+                                energia: str = "", dado: str = "", dado2: str = "",
+                                tipo: str = "", numero_existente: str = "",
+                                area: str = "", detalhe: str = ""):
     if not stripe.api_key:
         raise HTTPException(503, "Stripe nao configurado")
     if produto == "coletivo":
@@ -1108,13 +1214,13 @@ async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
                 "natureza": natureza, "tipo_entidade": tipo_entidade,
                 "escopo": escopo}
     else:
-        meta = {"energia": energia, "dado": dado, "tipo": tipo,
+        meta = {"energia": energia, "dado": dado, "dado2": dado2, "tipo": tipo,
                 "area": area, "detalhe": detalhe}
     s = _criar_sessao(produto, lang, email, nome, nascimento, meta)
     return RedirectResponse(url=s["url"])
 # ===== SUCESSO POS-PAGAMENTO =====
 DADO_PRODUTOS = {"nome_pet", "nickname", "nome_dominio", "nome_canal",
-                 "nome_equipe", "nome_ong", "nome_projeto", "nome_evento"}
+                 "nome_equipe", "nome_projeto", "nome_evento"}
 
 @app.get("/api/pay/cancel")
 def pay_cancel():
@@ -1214,10 +1320,8 @@ def _salvar_codigos(dados):
         json.dump(dados, f, ensure_ascii=False, indent=2)
 
 def _gerar_codigo_bonus():
-    chars = string.ascii_uppercase + string.digits
-    p1 = "".join(secrets.choice(chars) for _ in range(4))
-    p2 = "".join(secrets.choice(chars) for _ in range(4))
-    return f"A1-{p1}-{p2}"
+    base = "".join(secrets.choice(COD_ALFABETO) for _ in range(7))
+    return f"A1-{base[:4]}-{base[4:]}{_checksum(base)}"
 
 def _gerar_codigos_para_itens(itens):
     codigos = _carregar_codigos()
@@ -1244,7 +1348,8 @@ async def ativar_bonus(req: AtivarBonusReq):
     info["data_uso"] = datetime.now().isoformat()
     _salvar_codigos(codigos)
     target = PRODUTO_TARGET.get(info.get("produto"), "inicio")
-    return {"ok": True, "target": target, "produto": info.get("produto")}
+    return {"ok": True, "target": target, "produto": info.get("produto"),
+            "energia": info.get("energia", ""), "liberacao": info.get("liberacao", "compra")}
 
 async def gerar_codigos_coletivo(req: BonusReq):
     if not req.motivo:
@@ -1254,58 +1359,22 @@ async def gerar_codigos_coletivo(req: BonusReq):
     return {"ok": True, "gerados": gerados, "motivo": req.motivo}
 
 @app.post("/sugestao")
-async def receber_sugestao(req: SugestaoReq):
-    corpo = f"Sugestão de {req.nome} ({req.email}):\n\n{req.mensagem}"
+async def receber_sugestao(
+    nome: str = Form(...),
+    email: str = Form(...),
+    mensagem: str = Form(...),
+    documento: UploadFile = File(None),
+):
+    if not email or "@" not in email:
+        raise HTTPException(status_code=400, detail="E-mail obrigatório para resposta e envio do bônus.")
+    anexo = None
+    if documento and documento.filename:
+        if not documento.filename.lower().endswith(".pdf"):
+            raise HTTPException(status_code=400, detail="Apenas PDF é aceito.")
+        anexo = await documento.read()
+    corpo = f"Sugestão de {nome} ({email}):\n\n{mensagem}"
     _enviar_email_simples(ADMIN_EMAIL, "Nova Sugestão A1ELOS", corpo)
     return {"ok": True}
-
-# gerar_codigos.py — roda LOCALMENTE, não vai para a internet
-# Uso: python gerar_codigos.py --produto nome_pet --energia 5 --liberacao colaboracao --idioma pt --qtd 3
-import json, secrets, argparse, os
-
-COD_ALFABETO = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
-
-def _checksum(base):
-    soma = sum(COD_ALFABETO.index(ch) for ch in base)
-    return COD_ALFABETO[soma % len(COD_ALFABETO)]
-
-def _gerar():
-    base = "".join(secrets.choice(COD_ALFABETO) for _ in range(7))
-    return f"A1-{base[:4]}-{base[4:]}{_checksum(base)}"
-
-def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--produto", required=True)
-    ap.add_argument("--energia", default="")
-    ap.add_argument("--liberacao", default="colaboracao")
-    ap.add_argument("--idioma", default="pt")
-    ap.add_argument("--qtd", type=int, default=1)
-    args = ap.parse_args()
-
-    arq = "bonus_codes.json"
-    dados = {}
-    if os.path.exists(arq):
-        with open(arq) as f: dados = json.load(f)
-
-    for _ in range(args.qtd):
-        cod = _gerar()
-        dados[cod] = {
-            "produto": args.produto,
-            "energia": args.energia,
-            "liberacao": args.liberacao,
-            "idioma": args.idioma,
-            "usado": False,
-            "criado_em": "",
-            "data_uso": None
-        }
-        print(cod)
-
-    with open(arq, "w") as f:
-        json.dump(dados, f, indent=2, ensure_ascii=False)
-    print(f"\n{args.qtd} código(s) gravado(s) em {arq}")
-
-if __name__ == "__main__":
-    main()
 
 def _cod_valido(codigo: str) -> bool:
     c = "".join(ch for ch in (codigo or "").upper() if ch.isalnum())
