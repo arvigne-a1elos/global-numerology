@@ -448,6 +448,29 @@
         <p id="msgStatus" style="text-align:center;margin-top:12px;color:var(--gold)"></p>
     </div>
 </section>
+
+<!-- MODAL HUB PESQUISA IA -->
+<div id="modalHubIA" class="modal-overlay" style="display:none">
+  <div class="modal-box">
+    <button type="button" class="modal-fechar" onclick="fecharHubIA()">✕</button>
+    <h3 class="coleta-titulo" data-i18n="p_ia">Pesquisa IA de Nomes</h3>
+    <p class="section-sub" style="text-align:center;margin-bottom:14px">Escolha o tipo de nome para pesquisar</p>
+    <div class="ia-hub">
+      <button class="btn btn-full" onclick="comprar('nome_pet')" data-i18n="nome_pet">Nome do Pet</button>
+      <button class="btn btn-full" onclick="comprar('nickname')" data-i18n="nickname">Nickname Digital</button>
+      <button class="btn btn-full" onclick="comprar('nome_dominio')" data-i18n="nome_dominio">Nome do Domínio</button>
+      <button class="btn btn-full" onclick="comprar('nome_canal')" data-i18n="nome_canal">Nome do Canal</button>
+      <button class="btn btn-full" onclick="comprar('nome_equipe')" data-i18n="nome_equipe">Nome da Equipe</button>
+      <button class="btn btn-full" onclick="comprar('nome_projeto')" data-i18n="nome_projeto">Nome do Projeto</button>
+      <button class="btn btn-full" onclick="comprar('nome_evento')" data-i18n="nome_evento">Nome do Evento</button>
+    </div>
+    <hr style="border-color:#333;margin:16px 0">
+    <label data-i18n-form="f_codigo_bonus">Código de bônus</label>
+    <input type="text" id="iaCodigoBonus" data-i18n-ph="ph_codigo_bonus" placeholder="Ex: A1-XXXX-XXXX" style="text-align:center;letter-spacing:2px;font-weight:bold" autocomplete="off">
+    <button class="btn btn-full" onclick="ativarBonusIA()">🎁 Ativar Código</button>
+    <p id="iaBonusStatus" class="hint" style="text-align:center;margin-top:8px;color:var(--gold)"></p>
+  </div>
+</div>
     
   <footer>
     <p data-i18n="footer_text">© 2026 A1ELOS Assessoria e Consultoria. Todos os direitos reservados.</p>
