@@ -722,3 +722,24 @@ function codValido(codigo) {
   var check = c.slice(9, 10); // 8º char
   return codChecksum(base) === check;
 }
+
+window.abrirHubIA = window.abrirHubIA || function(){
+  var o = document.getElementById('modalHubIA');
+  if (o) o.style.display = 'flex';
+};
+window.fecharHubIA = window.fecharHubIA || function(){
+  var o = document.getElementById('modalHubIA');
+  if (o) o.style.display = 'none';
+};
+window.ativarBonusIA = window.ativarBonusIA || function(){
+  var cod = (document.getElementById('iaCodigoBonus') ? document.getElementById('iaCodigoBonus').value : '').trim();
+  var st = document.getElementById('iaBonusStatus');
+  if (!cod) { if (st) st.textContent = t_preencha(); return; }
+  fetch('/ativar-bonus', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ codigo: cod })
+  }).then(function(r){ return r.json(); }).then(function(res){
+    if (st) st.textContent = (res && res.ok) ? '🎁 Código ativado!' : 'Código inválido ou já usado.';
+  }).catch(function(){ if (st) st.textContent = 'Erro ao validar o código.'; });
+};
