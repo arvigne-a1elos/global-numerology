@@ -928,47 +928,32 @@ def pay_success(request: Request):
         # DISPATCH POR PRODUTO: cada produto usa o cálculo específico do
         # esqueleto produtos/ (resgate do main anterior). Nada de forçar
         # calc_mapa em produto que não pede mapa.
+        energia = meta.get("energia", "")
+
+        def _analisar_nome_duplo():
+            nomes = [n for n in (dado, dado2) if n] or [nome]
+            res = analisar_nome(nomes[0], energia)
+            res["nomes"] = nomes
+            res["sugestao_ia"] = gerar_sugestao_ia(prod, energia, lang)
+            return res
+
         CALC_ESPECIFICO = {
             "imovel":    lambda: analisar_imovel(dado or nome),
             "calendario": lambda: analisar_calendario(nome, dado),
             "casal":     lambda: (lambda p: analisar_casal(*[x.strip() for x in p.split("&")[:2]] if "&" in p else (p, "")))(dado or nome),
             "familia":   lambda: analisar_familia(dado or nome),
-            "nome_pet":  lambda:         
-            def _analisar_nome_duplo():
-            nomes = [n for n in (dado, dado2) if n] or [nome]
-            res = analisar_nome(nomes[0], energia)
-            res["nomes"] = nomes
-            res["sugestao_ia"] = gerar_sugestao_ia(prod, energia, lang)
-            return res,
-            "nickname":  lambda: 
-            def _analisar_nome_duplo():
-            nomes = [n for n in (dado, dado2) if n] or [nome]
-            res = analisar_nome(nomes[0], energia)
-            res["nomes"] = nomes
-            res["sugestao_ia"] = gerar_sugestao_ia(prod, energia, lang)
-            return res,
-            "nome_dominio": lambda: 
-            def _analisar_nome_duplo():
-            nomes = [n for n in (dado, dado2) if n] or [nome]
-            res = analisar_nome(nomes[0], energia)
-            res["nomes"] = nomes
-            res["sugestao_ia"] = gerar_sugestao_ia(prod, energia, lang)
-            return res,
-            "nome_canal": lambda: 
-            def _analisar_nome_duplo():
-            nomes = [n for n in (dado, dado2) if n] or [nome]
-            res = analisar_nome(nomes[0], energia)
-            res["nomes"] = nomes
-            res["sugestao_ia"] = gerar_sugestao_ia(prod, energia, lang)
-            return res,    
-            "nome_equipe": lambda: 
-            def _analisar_nome_duplo():
-            nomes = [n for n in (dado, dado2) if n] or [nome]
-            res = analisar_nome(nomes[0], energia)
-            res["nomes"] = nomes
-            res["sugestao_ia"] = gerar_sugestao_ia(prod, energia, lang)
-            return res,
-                        "nome_ong":  lambda: analisar_ong({
+            "nome_pet":  _analisar_nome_duplo,
+            "nickname":  _analisar_nome_duplo,
+            "nome_dominio": _analisar_nome_duplo,
+            "nome_canal": _analisar_nome_duplo,
+            "nome_equipe": _analisar_nome_duplo,
+            "nome_projeto": _analisar_nome_duplo,
+            "nome_evento": _analisar_nome_duplo,
+            "artistico": _analisar_nome_duplo,
+            "bebe":      _analisar_nome_duplo,
+            "assinatura": _analisar_nome_duplo,
+            "negocio":   _analisar_nome_duplo,
+            "nome_ong":  lambda: analisar_ong({
                 "nome1": meta.get("nome1") or meta.get("dado", ""),
                 "sigla1": meta.get("sigla1", ""),
                 "nome2": meta.get("nome2", ""),
@@ -980,48 +965,6 @@ def pay_success(request: Request):
                 "escopo": meta.get("escopo", "nacional"),
                 "energia": energia,
             }),
-            "nome_projeto": lambda: 
-            def _analisar_nome_duplo():
-            nomes = [n for n in (dado, dado2) if n] or [nome]
-            res = analisar_nome(nomes[0], energia)
-            res["nomes"] = nomes
-            res["sugestao_ia"] = gerar_sugestao_ia(prod, energia, lang)
-            return res,
-            "nome_evento": lambda:
-            def _analisar_nome_duplo():
-            nomes = [n for n in (dado, dado2) if n] or [nome]
-            res = analisar_nome(nomes[0], energia)
-            res["nomes"] = nomes
-            res["sugestao_ia"] = gerar_sugestao_ia(prod, energia, lang)
-            return res,    
-            "artistico": lambda: 
-            def _analisar_nome_duplo():
-            nomes = [n for n in (dado, dado2) if n] or [nome]
-            res = analisar_nome(nomes[0], energia)
-            res["nomes"] = nomes
-            res["sugestao_ia"] = gerar_sugestao_ia(prod, energia, lang)
-            return res,
-            "bebe": lambda: 
-            def _analisar_nome_duplo():
-            nomes = [n for n in (dado, dado2) if n] or [nome]
-            res = analisar_nome(nomes[0], energia)
-            res["nomes"] = nomes
-            res["sugestao_ia"] = gerar_sugestao_ia(prod, energia, lang)
-            return res,
-            "assinatura": lambda: 
-            def _analisar_nome_duplo():
-            nomes = [n for n in (dado, dado2) if n] or [nome]
-            res = analisar_nome(nomes[0], energia)
-            res["nomes"] = nomes
-            res["sugestao_ia"] = gerar_sugestao_ia(prod, energia, lang)
-            return res,
-            "negocio": lambda: 
-            def _analisar_nome_duplo():
-            nomes = [n for n in (dado, dado2) if n] or [nome]
-            res = analisar_nome(nomes[0], energia)
-            res["nomes"] = nomes
-            res["sugestao_ia"] = gerar_sugestao_ia(prod, energia, lang)
-            return res,
         }
 
         energia = meta.get("energia", "")
@@ -1318,6 +1261,13 @@ def _carregar_codigos():
 def _salvar_codigos(dados):
     with open(ARQ_BONUS, "w", encoding="utf-8") as f:
         json.dump(dados, f, ensure_ascii=False, indent=2)
+
+# ===== VALIDAÇÃO DE CÓDIGOS (Opção C - base-32 + check digit) =====
+COD_ALFABETO = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
+
+def _checksum(base):
+    soma = sum(COD_ALFABETO.index(ch) for ch in base)
+    return COD_ALFABETO[soma % len(COD_ALFABETO)]
 
 def _gerar_codigo_bonus():
     base = "".join(secrets.choice(COD_ALFABETO) for _ in range(7))
