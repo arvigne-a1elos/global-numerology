@@ -31,7 +31,6 @@ window.BC_QUANTIDADES = window.BC_QUANTIDADES || {};
 window.CONF_COLETA = window.CONF_COLETA || {
   nome_canal:   { labelTipo:"f_tipo_canal",   tipos:["youtube","podcast","tiktok","twitch"],        temArea:true,  areas:["esporte","noticias","politica","beleza"], temDetalhe:false },
   nickname:     { labelTipo:"f_tipo_nickname", tipos:["gamer","profissional","criador","artista"],  temArea:false, areas:[], temDetalhe:false },
-  nome_ong:     { labelTipo:"f_tipo_ong",      tipos:["ong","instituto","associacao","fundacao"],   temArea:false, areas:[], temDetalhe:false },
   nome_evento:  { labelTipo:"f_tipo_evento",   tipos:["show","congresso","festa","curso","palestra"],temArea:true,  areas:["musica","esporte","cultura","politica","beleza"], temDetalhe:false },
   nome_projeto: { labelTipo:"f_tipo_projeto",  tipos:["pessoal","social","empresarial","cultural"], temArea:false, areas:[], temDetalhe:false },
   nome_equipe:  { labelTipo:"f_tipo_equipe",   tipos:["empresarial","projeto","esportiva","banda"], temArea:false, areas:[], temDetalhe:false },
@@ -119,9 +118,9 @@ window.PRODUTOS_TRAD = window.PRODUTOS_TRAD || {
 
 /* ===== PRODUTO_FAIXA ===== */
 window.PRODUTO_FAIXA = window.PRODUTO_FAIXA || {
-  express:0, vida:0, nome_pet:0, nickname:0, nome_dominio:0, nome_canal:0, nome_equipe:0, nome_ong:0, nome_projeto:0, nome_evento:0,
+  express:0, vida:0, nome_pet:0, nickname:0, nome_dominio:0, nome_canal:0, nome_equipe:0, nome_projeto:0, nome_evento:0,
   completo:1, ia:1, urna:2, eleitoral:2, imovel:2, calendario:2,
-  artistico:3, bebe:3, assinatura:3, negocio:4, casal:4, familia:5, coletivo:5
+  artistico:3, bebe:3, assinatura:3, nome_ong:3,negocio:4, casal:4, familia:5, coletivo:5
 };
 
 /* ===== FEAT_TRAD v1 — FEATURES DOS 23 CARDS EM 14 IDIOMAS ===== */
@@ -630,11 +629,10 @@ window.BC_PRODUTOS = window.BC_PRODUTOS || [
   ["express","Mapa Express",8,"🔮"],["vida","Qual Vida/Ano",8,"🔢"],["completo","Mapa Completo",17,"📘"],
   ["ia","Pesquisa IA de Nomes",17,"🤖"],["urna","Validação Nome de Urna",26,"🗳️"],["eleitoral","Número Eleitoral",26,"🔢"],
   ["imovel","Número do Imóvel",26,"🏠"],["calendario","Calendário Mensal Energético",26,"📅"],
-  ["artistico","Validação Nome Artístico",35,"🎭"],["bebe","Planejamento Nome de Bebê",35,"👶"],["assinatura","Validação de Assinaturas",35,"✍️"],
+  ["artistico","Validação Nome Artístico",35,"🎭"],["bebe","Planejamento Nome de Bebê",35,"👶"],["assinatura","Validação de Assinaturas",35,"✍️"], ["nome_ong","Nome de ONG, Associação, Instituto ou Fundação",35,"🏛️"],
   ["negocio","Nome para Negócio/Produto",44,"🏪"],["casal","Mapa do Casal",44,"💞"],["familia","Mapa Família Premium",98,"🌟"],
   ["nome_pet","Nome do Pet",8,"🐾"],["nickname","Nickname Digital",8,"🎮"],["nome_dominio","Nome do Domínio",8,"🌐"],
-  ["nome_canal","Nome do Canal",8,"🎥"],["nome_equipe","Nome da Equipe",8,"🧭"],["nome_ong","Nome de ONG, Associação, Instituto ou Fundação",8,"🏛️"],
-  ["nome_projeto","Nome do Projeto",8,"📋"],["nome_evento","Nome do Evento",8,"🎪"]
+  ["nome_canal","Nome do Canal",8,"🎥"],["nome_equipe","Nome da Equipe",8,"🧭"], ["nome_projeto","Nome do Projeto",8,"📋"],["nome_evento","Nome do Evento",8,"🎪"]
 ];
 
 function montarTabelaBC() {
