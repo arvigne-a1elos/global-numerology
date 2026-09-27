@@ -1091,7 +1091,27 @@ async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
         return await criar_checkout_coletivo(lang=lang, items=itens or "[]")
     if produto not in PRODUTO_FAIXA:
         raise HTTPException(400, "Produto invalido")
-    
+        meta = {}
+    if produto == "urna":
+        meta = {"nome_completo": nome_completo, "cargo": cargo, "nome": nome_completo,
+                "nome1": nome1, "nome2": nome2, "nome3": nome3,
+                "nome4": nome4, "nome5": nome5}
+    elif produto == "eleitoral":
+        meta = {"sigla": numero, "cargo": cargo,
+                "nome_completo": nome_completo, "numero_existente": numero_existente}
+    elif produto == "nome_ong":
+        n_principal = nome1 or nome2 or nome3
+        meta = {"nome": n_principal, "dado": n_principal,
+                "nome1": nome1, "sigla1": sigla1,
+                "nome2": nome2, "sigla2": sigla2,
+                "nome3": nome3, "sigla3": sigla3,
+                "natureza": natureza, "tipo_entidade": tipo_entidade,
+                "escopo": escopo}
+    else:
+        meta = {"energia": energia, "dado": dado, "tipo": tipo,
+                "area": area, "detalhe": detalhe}
+    s = _criar_sessao(produto, lang, email, nome, nascimento, meta)
+    return RedirectResponse(url=s["url"])
 # ===== SUCESSO POS-PAGAMENTO =====
 DADO_PRODUTOS = {"nome_pet", "nickname", "nome_dominio", "nome_canal",
                  "nome_equipe", "nome_ong", "nome_projeto", "nome_evento"}
