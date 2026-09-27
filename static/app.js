@@ -129,25 +129,30 @@ window.pagarArte = window.pagarArte || function(){
     + '&lang=' + getLang();
 };
 window.pagarOng = window.pagarOng || function(){
-  var nome = (document.getElementById('ongNome') ? document.getElementById('ongNome').value : '').trim();
   var n1 = (document.getElementById('ongNome1') ? document.getElementById('ongNome1').value : '').trim();
   var n2 = (document.getElementById('ongNome2') ? document.getElementById('ongNome2').value : '').trim();
   var n3 = (document.getElementById('ongNome3') ? document.getElementById('ongNome3').value : '').trim();
-  var n4 = (document.getElementById('ongNome4') ? document.getElementById('ongNome4').value : '').trim();
-  var n5 = (document.getElementById('ongNome5') ? document.getElementById('ongNome5').value : '').trim();
-  if (!nome || (!n1 && !n2 && !n3 && !n4 && !n5)) { alert(t_preencha()); return; }
+  if (!n1 && !n2 && !n3) { alert(t_preencha()); return; }
+  var natureza = (document.getElementById('ongNatureza') ? document.getElementById('ongNatureza').value : 'ong');
+  var tipo = (document.getElementById('ongTipo') ? document.getElementById('ongTipo').value : '');
+  var escopo = (document.getElementById('ongEscopo') ? document.getElementById('ongEscopo').value : 'nacional');
+  var s1 = (document.getElementById('ongSigla1') ? document.getElementById('ongSigla1').value : '').trim();
+  var s2 = (document.getElementById('ongSigla2') ? document.getElementById('ongSigla2').value : '').trim();
+  var s3 = (document.getElementById('ongSigla3') ? document.getElementById('ongSigla3').value : '').trim();
   var energia = _energiaSelecionada('ongEnergiaSel', 'nome_ong');
-  location.href = '/criar-checkout?produto=nome_ong'
-    + '&nome_completo=' + encodeURIComponent(nome)
-    + '&nome=' + encodeURIComponent(nome)
-    + '&nome1=' + encodeURIComponent(n1) + '&nome2=' + encodeURIComponent(n2)
-    + '&nome3=' + encodeURIComponent(n3) + '&nome4=' + encodeURIComponent(n4)
-    + '&nome5=' + encodeURIComponent(n5)
+  var qs = '/criar-checkout?produto=nome_ong'
+    + '&nome1=' + encodeURIComponent(n1) + '&sigla1=' + encodeURIComponent(s1)
+    + '&nome2=' + encodeURIComponent(n2) + '&sigla2=' + encodeURIComponent(s2)
+    + '&nome3=' + encodeURIComponent(n3) + '&sigla3=' + encodeURIComponent(s3)
+    + '&natureza=' + encodeURIComponent(natureza)
+    + '&tipo_entidade=' + encodeURIComponent(tipo)
+    + '&escopo=' + encodeURIComponent(escopo)
     + (energia ? '&energia=' + encodeURIComponent(energia) : '')
     + '&lang=' + getLang();
+  window.location.href = qs;
 };
-// ===== COMPRAR (abre modal do dado específico para os 8 produtos) =====
-var DADO_APLICA = ["nome_pet","nickname","nome_dominio","nome_canal","nome_equipe","nome_ong","nome_projeto","nome_evento"];
+// ===== COMPRAR (abre modal do dado específico para os 7 produtos) =====
+var DADO_APLICA = ["nome_pet","nickname","nome_dominio","nome_canal","nome_equipe","nome_projeto","nome_evento"];
 function comprar(produto) {
   var lang = getLang();
   var t = translations[lang] || translations.pt;
