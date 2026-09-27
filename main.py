@@ -30,6 +30,7 @@ import dateutil.parser as dp
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from produtos.ong import analisar_ong
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse, Response
 from referencia.precos import VALORES, SIMBOLO, PRECO_DISPLAY, PRODUTO_FAIXA, preco_local, preco_display
 # ===== SEMANTICA (energias, vidas, formas e cores) - IMPORT OPCIONAL =====
@@ -603,6 +604,11 @@ def _entregar_arquivo_local(tipo, nome, lang="pt"):
         logger.error(f"Falha entrega: {e}")
         return {"pdf": None, "url": "", "pdf_ok": False}
 
+if prod == "nome_ong":
+        pf = gerar_pdf_ong(data, lang, nome_exib)
+else:
+        pf = gerar_pdf(prod, data, lang, nome_exib, bd, dado=dado)
+
 try:
     from gerador_pdf import gerar_pdf, pagina_sucesso, _entregar_arquivo
 except Exception:
@@ -629,8 +635,7 @@ def _enviar_email_simples(destinatario, assunto, corpo):
 
 # ===== PRODUTOS DA PESQUISA IA (8 — Card da IA) =====
 PRODUTOS_IA = [
-    "pet", "dominio", "canal", "equipe", "projeto", "evento",
-    "ong", "nickname",
+    "pet", "dominio", "canal", "equipe", "projeto", "evento", "nickname",
 ]
 
 def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=None):
@@ -1013,6 +1018,9 @@ async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
                                 numero: str = "", email: str = "",
                                 nome1: str = "", nome2: str = "", nome3: str = "",
                                 nome4: str = "", nome5: str = "",
+                                sigla1: str = "", sigla2: str = "", sigla3: str = "",
+                                natureza: str = "ong", tipo_entidade: str = "",
+                                escopo: str = "nacional",
                                 energia: str = "", dado: str = "", tipo: str = "",
                                 numero_existente: str = "", area: str = "", detalhe: str = ""):
     if not stripe.api_key:
@@ -1032,9 +1040,28 @@ async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
     else:
         meta = {"energia": energia, "dado": dado, "tipo": tipo,
                 "area": area, "detalhe": detalhe}
-    s = _criar_sessao(produto, lang, email, nome, nascimento, meta)
+        s = _criar_sessao(produto, lang, email, nome, nascimento, meta)
     return RedirectResponse(url=s["url"])
-
+    elif produto == "nome_ong":
+        n_principal = nome1 or nome2 or nome3
+        meta = {"nome": n_principal, "dado": n_principal,
+                "nome1": nome1, "sigla1": sigla1,
+                "nome2": nome2, "sigla2": sigla2,
+                "nome3": nome3, "sigla3": sigla3,
+                "natureza": natureza, "tipo_entidade": tipo_entidade,
+                "escopo": escopo}    
+"nome_ong": lambda: analisar_ong({
+    "nome1": meta.get("nome1") or meta.get("dado", ""),
+    "sigla1": meta.get("sigla1", ""),
+    "nome2": meta.get("nome2", ""),
+    "sigla2": meta.get("sigla2", ""),
+    "nome3": meta.get("nome3", ""),
+    "sigla3": meta.get("sigla3", ""),
+    "natureza": meta.get("natureza", "ong"),
+    "tipo_entidade": meta.get("tipo_entidade", ""),
+    "escopo": meta.get("escopo", "nacional"),
+    "energia": energia,
+}),
 # ===== SUCESSO POS-PAGAMENTO =====
 DADO_PRODUTOS = {"nome_pet", "nickname", "nome_dominio", "nome_canal",
                  "nome_equipe", "nome_ong", "nome_projeto", "nome_evento"}
