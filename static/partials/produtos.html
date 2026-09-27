@@ -408,7 +408,14 @@
                     <li>✅ Sintonia com a família</li>
                     <li>📲 PDF + QRCode</li>
                 </ul>
-                <button class="btn btn-full" onclick="pesquisar('nome_pet')" data-i18n="pesquisar_btn">pesquisar</button>
+                <form id="form-nome_pet" class="hidden">
+                 <label data-i18n-form="f_nome_pet">Nome do Pet</label>
+                 <input id="nomePetNome" type="text" data-i18n-ph="ph_nome_pet" placeholder="Nome do pet">
+                 <label id="nomePetEnergiaLabel" class="urna-label" data-i18n-form="f_energia">Energia desejada</label>
+                 <p id="nomePetEnergiaDica" class="urna-dica"></p>
+                 <div id="nomePetEnergiaSel" class="energia-selector"></div>
+                 <button class="btn btn-full" onclick="pagarNomePet()" data-i18n-form="pesquisar_btn">Pesquisar</button>
+                </form>
             </div>
             <!-- 17. Nickname Digital -->
             <div class="product-card" data-prod="nickname">
@@ -422,7 +429,14 @@
                     <li>✅ Imagem no mundo online</li>
                     <li>📲 PDF + QRCode</li>
                 </ul>
-                <button class="btn btn-full" onclick="pesquisar('nickname')" data-i18n="pesquisar_btn">pesquisar</button>
+                <form id="form-nickname" class="hidden">
+                 <label data-i18n-form="f_nickname">Nickname Digital</label>
+                 <input id="nicknameNome" type="text" data-i18n-ph="ph_nickname" placeholder="Seu nickname">
+                 <label id="nicknameEnergiaLabel" class="urna-label" data-i18n-form="f_energia">Energia desejada</label>
+                 <p id="nicknameEnergiaDica" class="urna-dica"></p>
+                 <div id="nicknameEnergiaSel" class="energia-selector"></div>
+                 <button class="btn btn-full" onclick="pagarNickname()" data-i18n-form="pesquisar_btn">Pesquisar</button>
+                </form>
             </div>
             <!-- 18. Nome do Domínio -->
             <div class="product-card" data-prod="nome_dominio">
@@ -436,7 +450,14 @@
                     <li>✅ Força para a marca</li>
                     <li>📲 PDF + QRCode</li>
                 </ul>
-                <button class="btn btn-full" onclick="pesquisar('nome_dominio')" data-i18n="pesquisar_btn">pesquisar</button>
+                <form id="form-nome_dominio" class="hidden">
+                 <label data-i18n-form="f_nome_dominio">Nome do Domínio</label>
+                 <input id="dominioNome" type="text" data-i18n-ph="ph_dominio" placeholder="meusite.com.br">
+                 <label id="dominioEnergiaLabel" class="urna-label" data-i18n-form="f_energia">Energia desejada</label>
+                 <p id="dominioEnergiaDica" class="urna-dica"></p>
+                 <div id="dominioEnergiaSel" class="energia-selector"></div>
+                 <button class="btn btn-full" onclick="pagarDominio()" data-i18n-form="pesquisar_btn">Pesquisar</button>
+                </form>
             </div>
             <!-- 19. Nome do Canal -->
             <div class="product-card" data-prod="nome_canal">
@@ -450,7 +471,14 @@
                     <li>✅ Conexão com a audiência</li>
                     <li>📲 PDF + QRCode</li>
                 </ul>
-                <button class="btn btn-full" onclick="pesquisar('nome_canal')" data-i18n="pesquisar_btn">pesquisar</button>
+                <form id="form-nome_canal" class="hidden">
+                 <label data-i18n-form="f_nome_canal">Nome do Canal</label>
+                 <input id="canalNome" type="text" data-i18n-ph="ph_canal" placeholder="Nome do canal">
+                 <label id="canalEnergiaLabel" class="urna-label" data-i18n-form="f_energia">Energia desejada</label>
+                 <p id="canalEnergiaDica" class="urna-dica"></p>
+                 <div id="canalEnergiaSel" class="energia-selector"></div>
+                 <button class="btn btn-full" onclick="pagarCanal()" data-i18n-form="pesquisar_btn">Pesquisar</button>
+                </form>
             </div>
             <!-- 20. Nome da Equipe -->
             <div class="product-card" data-prod="nome_equipe">
@@ -464,7 +492,14 @@
                     <li>✅ União entre os membros</li>
                     <li>📲 PDF + QRCode</li>
                 </ul>
-                <button class="btn btn-full" onclick="pesquisar('nome_equipe')" data-i18n="pesquisar_btn">pesquisar</button>
+                <form id="form-nome_equipe" class="hidden">
+                 <label data-i18n-form="f_nome_equipe">Nome da Equipe</label>
+                 <input id="equipeNome" type="text" data-i18n-ph="ph_equipe" placeholder="Nome da equipe">
+                 <label id="equipeEnergiaLabel" class="urna-label" data-i18n-form="f_energia">Energia desejada</label>
+                 <p id="equipeEnergiaDica" class="urna-dica"></p>
+                 <div id="equipeEnergiaSel" class="energia-selector"></div>
+                 <button class="btn btn-full" onclick="pagarEquipe()" data-i18n-form="pesquisar_btn">Pesquisar</button>
+                </form>
             </div>
             <!-- 21. Nome de ONG -->
             <div class="product-card" data-prod="nome_ong">
@@ -478,36 +513,43 @@
                     <li>✅ Causa potencializada</li>
                     <li>📲 PDF + QRCode</li>
                 </ul>
-                <button class="btn btn-full" onclick="pesquisar('nome_ong')" data-i18n="pesquisar_btn">pesquisar</button>
                 <!-- Formulário da ONG (aparece ao clicar) -->
-                <form id="form-ong" class="hidden">
-                    <label data-i18n-form="f_nome_org">Nome da ONG / Associação / Instituto / Fundação</label>
-                    <input id="ongNome" type="text" data-i18n-ph="ph_nome_org" placeholder="Nome da organização">
-                    <label data-i18n-form="f_grafias">Grafias do nome</label>
-                    <div class="ong-grafia">
-                        <span class="ong-prefixo" data-valor=""></span>
-                        <input id="ongNome1" type="text" data-i18n-ph="ph_nome_1" placeholder="Grafia 1">
-                    </div>
-                    <div class="ong-grafia">
-                        <span class="ong-prefixo" data-valor=""></span>
-                        <input id="ongNome2" type="text" data-i18n-ph="ph_nome_2" placeholder="Grafia 2">
-                    </div>
-                    <div class="ong-grafia">
-                        <span class="ong-prefixo" data-valor=""></span>
-                        <input id="ongNome3" type="text" data-i18n-ph="ph_nome_3" placeholder="Grafia 3">
-                    </div>
-                    <div class="ong-grafia">
-                        <span class="ong-prefixo" data-valor=""></span>
-                        <input id="ongNome4" type="text" data-i18n-ph="ph_nome_4" placeholder="Grafia 4">
-                    </div>
-                    <div class="ong-grafia">
-                        <span class="ong-prefixo" data-valor=""></span>
-                        <input id="ongNome5" type="text" data-i18n-ph="ph_nome_5" placeholder="Grafia 5">
-                    </div>
-                    <label id="ongEnergiaLabel" class="urna-label"></label>
-                    <p id="ongEnergiaDica" class="urna-dica"></p>
-                    <div id="ongEnergiaSel" class="energia-selector"></div>
-                    <button class="btn btn-full" onclick="pagarOng()" data-i18n-form="pesquisar_btn">Pesquisar</button>
+                <button class="btn btn-full" onclick="toggleForm('form-nome_ong')" data-i18n="pesquisar_btn">pesquisar</button>
+                <form id="form-nome_ong" class="hidden">
+                 <label data-i18n-form="f_natureza">Natureza da entidade</label>
+                 <select id="ongNatureza">
+                  <option value="ong" data-i18n-form="f_ong">ONG — Organização Não Governamental</option>
+                  <option value="oscip" data-i18n-form="f_oscip">OSCIP — Organização da Sociedade Civil de Interesse Público</option>
+                 </select>
+                 <label data-i18n-form="f_tipo_entidade">Tipo de entidade</label>
+                 <select id="ongTipo">
+                  <option value="associacao" data-i18n-form="f_associacao">Associação (Ass)</option>
+                  <option value="fundacao" data-i18n-form="f_fundacao">Fundação (Fund)</option>
+                  <option value="instituto" data-i18n-form="f_instituto">Instituto (Inst)</option>
+                  <option value="confraria" data-i18n-form="f_confraria">Confraria (Conf)</option>
+                  <option value="clube" data-i18n-form="f_clube">Clube</option>
+                  <option value="outro" data-i18n-form="f_outro">Outro</option>
+                 </select>
+                 <label data-i18n-form="f_escopo">Escopo de atuação</label>
+                 <select id="ongEscopo">
+                  <option value="nacional" data-i18n-form="f_nacional">Nacional</option>
+                  <option value="internacional" data-i18n-form="f_internacional">Internacional</option>
+                 </select>
+
+                 <h4 style="margin:10px 0 6px;color:var(--gold)" data-i18n-form="f_pesq1">Pesquisa 1 — nome principal</h4>
+                 <input id="ongNome1" type="text" data-i18n-ph="ph_nome_org" placeholder="Nome da entidade">
+                 <input id="ongSigla1" type="text" data-i18n-ph="ph_sigla" placeholder="Sigla (ex.: FGV, CONEXIS)">
+                 <h4 style="margin:10px 0 6px;color:var(--gold)" data-i18n-form="f_pesq2">Pesquisa 2 — variação</h4>
+                 <input id="ongNome2" type="text" data-i18n-ph="ph_nome_org" placeholder="Nome da entidade">
+                 <input id="ongSigla2" type="text" data-i18n-ph="ph_sigla" placeholder="Sigla">
+                 <h4 style="margin:10px 0 6px;color:var(--gold)" data-i18n-form="f_pesq3">Pesquisa 3 — variação</h4>
+                 <input id="ongNome3" type="text" data-i18n-ph="ph_nome_org" placeholder="Nome da entidade">
+                 <input id="ongSigla3" type="text" data-i18n-ph="ph_sigla" placeholder="Sigla">
+
+                 <label id="ongEnergiaLabel" class="urna-label" data-i18n-form="f_energia">Energia desejada</label>
+                 <p id="ongEnergiaDica" class="urna-dica"></p>
+                 <div id="ongEnergiaSel" class="energia-selector"></div>
+                 <button class="btn btn-full" onclick="pagarOng()" data-i18n-form="pesquisar_btn">Pesquisar</button>
                 </form>
             </div>
             <!-- 22. Nome do Projeto -->
@@ -522,7 +564,14 @@
                     <li>✅ Impulso para o sucesso</li>
                     <li>📲 PDF + QRCode</li>
                 </ul>
-                <button class="btn btn-full" onclick="pesquisar('nome_projeto')" data-i18n="pesquisar_btn">pesquisar</button>
+                <form id="form-nome_projeto" class="hidden">
+                 <label data-i18n-form="f_nome_projeto">Nome do Projeto</label>
+                 <input id="projetoNome" type="text" data-i18n-ph="ph_projeto" placeholder="Nome do projeto">
+                 <label id="projetoEnergiaLabel" class="urna-label" data-i18n-form="f_energia">Energia desejada</label>
+                 <p id="projetoEnergiaDica" class="urna-dica"></p>
+                 <div id="projetoEnergiaSel" class="energia-selector"></div>
+                 <button class="btn btn-full" onclick="pagarProjeto()" data-i18n-form="pesquisar_btn">Pesquisar</button>
+                </form>
             </div>
             <!-- 23. Nome do Evento -->
             <div class="product-card" data-prod="nome_evento">
@@ -536,7 +585,14 @@
                     <li>✅ Atmosfera para os participantes</li>
                     <li>📲 PDF + QRCode</li>
                 </ul>
-                <button class="btn btn-full" onclick="pesquisar('nome_evento')" data-i18n="pesquisar_btn">pesquisar</button>
+                <form id="form-nome_evento" class="hidden">
+                 <label data-i18n-form="f_nome_evento">Nome do Evento</label>
+                 <input id="eventoNome" type="text" data-i18n-ph="ph_evento" placeholder="Nome do evento">
+                 <label id="eventoEnergiaLabel" class="urna-label" data-i18n-form="f_energia">Energia desejada</label>
+                 <p id="eventoEnergiaDica" class="urna-dica"></p>
+                 <div id="eventoEnergiaSel" class="energia-selector"></div>
+                 <button class="btn btn-full" onclick="pagarEvento()" data-i18n-form="pesquisar_btn">Pesquisar</button>
+                </form>
             </div>
     </div>
 </section>
