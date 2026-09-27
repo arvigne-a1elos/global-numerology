@@ -44,29 +44,37 @@
                 </form>
             </div>
         
-            <!-- 3. Pesquisa IA de Nomes -->
-            <div class="product-card" data-prod="ia">
-                <div class="icon">🤖</div>
-                <h3 class="prod-nome" data-i18n="p_ia">Pesquisa IA de Nomes</h3>
-                <div class="price prod-preco">R$ 8</div>
-                <p class="desc" data-i18n="desc_ia">Escolha o nome ideal com análise numerológica da energia do nome por IA.</p>
-                <ul class="features">
-                    <li>✅ Sugestões com IA</li>
-                    <li>✅ Análise energética de nomes</li>
-                    <li>✅ Comparativo de opções</li>
-                    <li>📲 PDF + QRCode</li>
-                </ul>
-                <button class="btn btn-full" onclick="toggleForm('form-ia')" data-i18n="pesquisar_btn">pesquisar</button>
-                <!-- Formulário Pesquisa IA de Nomes (aparece ao clicar) -->
-                <form id="form-ia" class="hidden">
-                    <label data-i18n-form="calc_nome">Nome completo</label>
-                    <input id="iaNome" type="text" data-i18n-ph="ph_nome_completo" placeholder="Nome completo">
-                    <label id="iaEnergiaLabel" class="urna-label" data-i18n-form="f_energia">Energia desejada</label>
-                    <p id="iaEnergiaDica" class="urna-dica"></p>
-                    <div id="iaEnergiaSel" class="energia-selector"></div>
-                    <button class="btn btn-full" onclick="pagarIa()" data-i18n-form="pesquisar_btn">Pesquisar</button>
-                </form>
-            </div>            
+            
+<!-- 3. Pesquisa IA de Nomes (HUB) -->
+<div class="product-card" data-prod="ia">
+    <div class="icon">🤖</div>
+    <h3 class="prod-nome" data-i18n="p_ia">Pesquisa IA de Nomes</h3>
+    <div class="price prod-preco">R$ 8</div>
+    <p class="desc" data-i18n="desc_ia">Escolha o nome ideal com análise numerológica da energia do nome por IA.</p>
+    <ul class="features">
+        <li>✅ 7 tipos de nome</li>
+        <li>✅ Análise energética</li>
+        <li>✅ Sugestões com IA</li>
+        <li>📲 PDF + QRCode</li>
+    </ul>
+    <!-- HUB: links para os 7 produtos (abrem o modal por produto) -->
+    <div class="ia-hub">
+        <button class="btn btn-full" onclick="comprar('nome_pet')" data-i18n="nome_pet">Nome do Pet</button>
+        <button class="btn btn-full" onclick="comprar('nickname')" data-i18n="nickname">Nickname Digital</button>
+        <button class="btn btn-full" onclick="comprar('nome_dominio')" data-i18n="nome_dominio">Nome do Domínio</button>
+        <button class="btn btn-full" onclick="comprar('nome_canal')" data-i18n="nome_canal">Nome do Canal</button>
+        <button class="btn btn-full" onclick="comprar('nome_equipe')" data-i18n="nome_equipe">Nome da Equipe</button>
+        <button class="btn btn-full" onclick="comprar('nome_projeto')" data-i18n="nome_projeto">Nome do Projeto</button>
+        <button class="btn btn-full" onclick="comprar('nome_evento')" data-i18n="nome_evento">Nome do Evento</button>
+    </div>
+    <!-- Campo de código de bônus -->
+    <div class="ia-bonus">
+        <label data-i18n-form="f_codigo_bonus">Código de bônus</label>
+        <input type="text" id="iaCodigoBonus" data-i18n-ph="ph_codigo_bonus" placeholder="Ex: A1-XXXX-XXXX" style="text-align:center;letter-spacing:2px;font-weight:bold" autocomplete="off">
+        <button class="btn btn-full" onclick="ativarBonusIA()">🎁 Ativar Código</button>
+        <p id="iaBonusStatus" class="hint" style="text-align:center;margin-top:8px;color:var(--gold)"></p>
+    </div>
+</div>
         
             <!-- 4. Nome do Pet -->
             <div class="product-card" data-prod="nome_pet">
@@ -80,7 +88,7 @@
                     <li>✅ Sintonia com a família</li>
                     <li>📲 PDF + QRCode</li>
                 </ul>
-                <button class="btn btn-full" onclick="toggleForm('form-nome_pet')" data-i18n="pesquisar_btn">pesquisar</button>
+                <button class="btn btn-full" onclick="comprar('nome_pet')" data-i18n="pesquisar_btn">pesquisar</button>
                 <form id="form-nome_pet" class="hidden">
                  <label data-i18n-form="f_nome_pet">Nome do Pet</label>
                  <input id="nomePetNome" type="text" data-i18n-ph="ph_nome_pet" placeholder="Nome do pet">
@@ -103,7 +111,7 @@
                     <li>✅ Imagem no mundo online</li>
                     <li>📲 PDF + QRCode</li>
                 </ul>
-                <button class="btn btn-full" onclick="toggleForm('form-nickname')" data-i18n="pesquisar_btn">pesquisar</button>
+                <button class="btn btn-full" onclick="comprar('nickname')" data-i18n="pesquisar_btn">pesquisar</button>
                 <form id="form-nickname" class="hidden">
                  <label data-i18n-form="f_nickname">Nickname Digital</label>
                  <input id="nicknameNome" type="text" data-i18n-ph="ph_nickname" placeholder="Seu nickname">
@@ -126,7 +134,7 @@
                     <li>✅ Força para a marca</li>
                     <li>📲 PDF + QRCode</li>
                 </ul>
-                <button class="btn btn-full" onclick="toggleForm('form-nome_dominio')" data-i18n="pesquisar_btn">pesquisar</button>
+                <button class="btn btn-full" onclick="comprar('nome_dominio')" data-i18n="pesquisar_btn">pesquisar</button>
                 <form id="form-nome_dominio" class="hidden">
                  <label data-i18n-form="f_nome_dominio">Nome do Domínio</label>
                  <input id="dominioNome" type="text" data-i18n-ph="ph_dominio" placeholder="meusite.com.br">
@@ -149,7 +157,7 @@
                     <li>✅ Conexão com a audiência</li>
                     <li>📲 PDF + QRCode</li>
                 </ul>
-                <button class="btn btn-full" onclick="toggleForm('form-nome_canal')" data-i18n="pesquisar_btn">pesquisar</button>
+                <button class="btn btn-full" onclick="comprar('nome_canal')" data-i18n="pesquisar_btn">pesquisar</button>
                 <form id="form-nome_canal" class="hidden">
                  <label data-i18n-form="f_nome_canal">Nome do Canal</label>
                  <input id="canalNome" type="text" data-i18n-ph="ph_canal" placeholder="Nome do canal">
@@ -172,7 +180,7 @@
                     <li>✅ União entre os membros</li>
                     <li>📲 PDF + QRCode</li>
                 </ul>
-                <button class="btn btn-full" onclick="toggleForm('form-nome_equipe')" data-i18n="pesquisar_btn">pesquisar</button>
+                <button class="btn btn-full" onclick="comprar('nome_equipe')" data-i18n="pesquisar_btn">pesquisar</button>
                 <form id="form-nome_equipe" class="hidden">
                  <label data-i18n-form="f_nome_equipe">Nome da Equipe</label>
                  <input id="equipeNome" type="text" data-i18n-ph="ph_equipe" placeholder="Nome da equipe">
@@ -195,7 +203,7 @@
                     <li>✅ Impulso para o sucesso</li>
                     <li>📲 PDF + QRCode</li>
                 </ul>
-                <button class="btn btn-full" onclick="toggleForm('form-nome_projeto')" data-i18n="pesquisar_btn">pesquisar</button>
+                <button class="btn btn-full" onclick="comprar('nome_projeto')" data-i18n="pesquisar_btn">pesquisar</button>
                 <form id="form-nome_projeto" class="hidden">
                  <label data-i18n-form="f_nome_projeto">Nome do Projeto</label>
                  <input id="projetoNome" type="text" data-i18n-ph="ph_projeto" placeholder="Nome do projeto">
@@ -218,7 +226,7 @@
                     <li>✅ Atmosfera para os participantes</li>
                     <li>📲 PDF + QRCode</li>
                 </ul>
-                <button class="btn btn-full" onclick="toggleForm('form-nome_evento')" data-i18n="pesquisar_btn">pesquisar</button>
+                <button class="btn btn-full" onclick="comprar('nome_evento')" data-i18n="pesquisar_btn">pesquisar</button>
                 <form id="form-nome_evento" class="hidden">
                  <label data-i18n-form="f_nome_evento">Nome do Evento</label>
                  <input id="eventoNome" type="text" data-i18n-ph="ph_evento" placeholder="Nome do evento">
