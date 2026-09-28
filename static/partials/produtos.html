@@ -604,8 +604,28 @@
                     <button class="btn btn-full" onclick="pagarFamilia()" data-i18n-form="pesquisar_btn">Pesquisar</button>
                 </form>
             </div>
+
+            <!-- 23. Compatibilidade de Equipes (RH) -->
+            <div class="product-card" data-prod="coletivo_empresarial">
+                <div class="icon">🏢</div>
+                <h3 class="prod-nome" data-i18n="p_coletivo_empresarial">Compatibilidade de Equipes</h3>
+                <div class="price prod-preco">R$ 98</div>
+                <p class="desc" data-i18n="desc_coletivo_empresarial">Análise da compatibilidade entre chefes e membros e entre os membros da equipe, ideal para RH.</p>
+                <ul class="features">
+                   <li>✅ Chefe × membros</li>
+                   <li>✅ Membros × membros</li>
+                   <li>✅ Compatibilidade Cissay</li>
+                   <li>📲 PDF + QRCode</li>
+                </ul>
+                <button class="btn btn-full" onclick="toggleForm('form-coletivo_empresarial')" data-i18n="pesquisar_btn">pesquisar</button>
+                <form id="form-coletivo_empresarial" class="hidden">
+                   <label data-i18n-form="f_equipe">Membros da equipe (um por linha)</label>
+                   <textarea id="equipeMembros" rows="4" data-i18n-ph="ph_membros" placeholder="Chefe; 01/01/1980; CHEFE&#10;Nome 2; 15/03/1985&#10;Nome 3; 22/07/1990"></textarea>
+                   <button class="btn btn-full" onclick="pagarEquipe()" data-i18n-form="pesquisar_btn">Pesquisar</button>
+                </form>
+            </div>
         
-            <!-- 23. Bônus Coletivo/Empresarial -->
+            <!-- 24. Bônus Coletivo/Empresarial -->
             <div class="product-card" data-prod="coletivo" style="border:2px solid var(--gold)">
                 <div class="icon">🏢</div>
                 <h3 class="prod-nome" data-i18n="p_coletivo">Bônus Coletivo/Empresarial</h3>
