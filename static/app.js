@@ -80,8 +80,15 @@ function pagarNegocio(){
   location.href = '/criar-checkout?produto=negocio&dado=' + encodeURIComponent(n)
     + '&energia=' + encodeURIComponent(_energiaSelecionada('negocioEnergiaSel', 'negocio')) + '&lang=' + getLang();
 }
-function pagarCasal(){var n1=document.getElementById('casalNome1').value.trim(),n2=document.getElementById('casalNome2').value.trim();if(!n1||!n2){alert(t_preencha());return;}location.href='/criar-checkout?produto=casal&dado='+encodeURIComponent(n1+' & '+n2)+'&lang='+getLang();}
-function pagarFamilia(){var n=document.getElementById('familiaMembros').value.trim();if(!n){alert(t_preencha());return;}location.href='/criar-checkout?produto=familia&dado='+encodeURIComponent(n)+'&lang='+getLang();}
+function pagarCasal(){
+  var n1 = document.getElementById('casalNome1').value.trim();
+  var n2 = document.getElementById('casalNome2').value.trim();
+  var d1 = (document.getElementById('casalNasc1') ? document.getElementById('casalNasc1').value : '').trim();
+  var d2 = (document.getElementById('casalNasc2') ? document.getElementById('casalNasc2').value : '').trim();
+  if (!n1 || !n2 || !d1 || !d2) { alert(t_preencha()); return; }
+  location.href = '/criar-checkout?produto=casal&dado=' + encodeURIComponent(n1 + ' & ' + n2)
+    + '&detalhe=' + encodeURIComponent(d1 + ' & ' + d2) + '&lang=' + getLang();
+}function pagarFamilia(){var n=document.getElementById('familiaMembros').value.trim();if(!n){alert(t_preencha());return;}location.href='/criar-checkout?produto=familia&dado='+encodeURIComponent(n)+'&lang='+getLang();}
 function t_preencha(){var t=translations[getLang()]||translations.pt;return t.preencha_dado||'Preencha os dados solicitados.';}
 window.pagarUrna = window.pagarUrna || function(){
   var nomeCompleto = (document.getElementById('urnaNome') ? document.getElementById('urnaNome').value : '').trim();
