@@ -817,23 +817,6 @@ def pay_eleitoral(req: EleitoralPayReq):
             "nome_completo": req.nome_completo}
     return _criar_sessao("eleitoral", req.lang or "pt", req.email, req.nome_completo, "", meta)
 
-# -*- coding: utf-8 -*-
-# produtos/casal.py - Mapa do Casal (compatibilidade de 2 nomes + datas)
-from .mapa import reduzir, _LETRAS
-
-def _energia_nome(nome):
-    s = sum(_LETRAS.get(c, 0) for c in nome.upper().replace(" ", ""))
-    return reduzir(s), s
-
-def _caminho_vida(nasc):
-    # nasc no formato YYYY-MM-DD
-    try:
-        d, m, a = nasc.split("-")
-        s = sum(int(x) for x in d + m + a)
-        return reduzir(s), s
-    except Exception:
-        return None, 0
-
 # ============================================================
 # ROTAS DE APRESENTAÇÃO (PDF por idioma — sob demanda)
 # ============================================================
