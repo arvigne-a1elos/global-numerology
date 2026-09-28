@@ -427,7 +427,6 @@ PRICE_IDS = {
            "nome_dominio": "PRICE_ID_VI_NOME_DOMINIO", "nome_canal": "PRICE_ID_VI_NOME_CANAL",
            "nome_equipe": "PRICE_ID_VI_NOME_EQUIPE", "nome_ong": "PRICE_ID_VI_NOME_ONG",
            "nome_projeto": "PRICE_ID_VI_NOME_PROJETO", "nome_evento": "PRICE_ID_VI_NOME_EVENTO",
-           "coletivo_empresarial": "PRICE_ID_TR_COLETIVO_EMPRESARIAL",
            "coletivo_empresarial": "PRICE_ID_VI_COLETIVO_EMPRESARIAL"},
 }
 
