@@ -68,7 +68,7 @@ PRODUTO_FAIXA = {
     "nome_projeto": 0, "nome_evento": 0, "completo": 1, "calendario": 2,         
     "urna": 2, "eleitoral": 2, "imovel": 2, "nome_ong": 3,
     "artistico": 3, "bebe": 3, "assinatura": 3, "negocio": 4,
-    "casal": 4, "familia": 5, "coletivo": 5,
+    "casal": 4, "familia": 5, "coletivo_empresarial": 5, "coletivo": 5, 
 }
 
 def preco_local(produto, lang):
