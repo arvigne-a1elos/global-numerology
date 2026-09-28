@@ -10,6 +10,7 @@ from produtos.imovel import analisar_imovel
 from produtos.calendario import analisar_calendario
 from produtos.casal import analisar_casal
 from produtos.familia import analisar_familia
+from produtos.equipe import analisar_equipe
 from produtos.coletivo import desconto_bc
 import os, json, uuid, logging, secrets, string, base64, traceback
 from datetime import date, datetime
@@ -959,6 +960,7 @@ def pay_success(request: Request):
             "calendario": lambda: analisar_calendario(nome, dado),
             "casal":     lambda: _analisar_casal_com_datas(),
             "familia":   lambda: _analisar_familia_com_datas(),
+            "coletivo_empresarial": lambda: analisar_equipe(dado or nome),
             "nome_pet":  _analisar_nome_duplo,
             "nickname":  _analisar_nome_duplo,
             "nome_dominio": _analisar_nome_duplo,
