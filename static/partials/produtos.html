@@ -575,6 +575,10 @@
                     <input id="casalNome1" type="text" data-i18n-ph="ph_nome_completo" placeholder="Nome completo">
                     <label data-i18n-form="f_pessoa2">Nome da segunda pessoa</label>
                     <input id="casalNome2" type="text" data-i18n-ph="ph_nome_completo" placeholder="Nome completo">
+                    <label data-i18n-form="f_nasc1">Data de nascimento da primeira pessoa</label>
+                    <input id="casalNasc1" type="date">
+                    <label data-i18n-form="f_nasc2">Data de nascimento da segunda pessoa</label>
+                    <input id="casalNasc2" type="date">
                     <button class="btn btn-full" onclick="pagarCasal()" data-i18n-form="pesquisar_btn">Pesquisar</button>
                 </form>
             </div>
@@ -596,7 +600,7 @@
                 <!-- Formulário Mapa Família Premium (aparece ao clicar) -->
                 <form id="form-familia" class="hidden">
                     <label data-i18n-form="f_familia">Membros da família (um por linha)</label>
-                    <textarea id="familiaMembros" rows="4" data-i18n-ph="ph_membros" placeholder="Nome 1&#10;Nome 2&#10;Nome 3"></textarea>
+                    <textarea id="familiaMembros" rows="4" data-i18n-ph="ph_membros" placeholder="Nome 1; 01/01/1990&#10;Nome 2; 15/03/1985&#10;Nome 3; 22/07/2010"></textarea>
                     <button class="btn btn-full" onclick="pagarFamilia()" data-i18n-form="pesquisar_btn">Pesquisar</button>
                 </form>
             </div>
