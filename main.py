@@ -527,6 +527,103 @@ ENERGIA_FIXA = {
     "familia": "5",  # Mapa Família Premium: idem
 }
 
+# -*- coding: utf-8 -*-
+# produtos/casal.py - Mapa do Casal (compatibilidade de 2 nomes + datas)
+from .mapa import reduzir, _LETRAS
+
+def _energia_nome(nome):
+    s = sum(_LETRAS.get(c, 0) for c in nome.upper().replace(" ", ""))
+    return reduzir(s), s
+
+def _caminho_vida(nasc):
+    # nasc no formato YYYY-MM-DD
+    try:
+        d, m, a = nasc.split("-")
+        s = sum(int(x) for x in d + m + a)
+        return reduzir(s), s
+    except Exception:
+        return None, 0
+
+# Tabela de compatibilidade Cissay (energia 1 a 9).
+# ⚠️ CONFIRMAR estes valores com docs/referencias.md antes de subir.
+CISSAY = {
+    1: {1: 5, 2: 4, 3: 6, 4: 3, 5: 7, 6: 4, 7: 5, 8: 6, 9: 4},
+    2: {1: 4, 2: 6, 3: 5, 4: 4, 5: 5, 6: 6, 7: 4, 8: 5, 9: 6},
+    3: {1: 6, 2: 5, 3: 7, 4: 5, 5: 6, 6: 5, 7: 6, 8: 5, 9: 7},
+    4: {1: 3, 2: 4, 3: 5, 4: 6, 5: 4, 6: 5, 7: 4, 8: 5, 9: 4},
+    5: {1: 7, 2: 5, 3: 6, 4: 4, 5: 7, 6: 4, 7: 6, 8: 5, 9: 6},
+    6: {1: 4, 2: 6, 3: 5, 4: 5, 5: 4, 6: 7, 7: 5, 8: 6, 9: 5},
+    7: {1: 5, 2: 4, 3: 6, 4: 4, 5: 6, 6: 5, 7: 7, 8: 4, 9: 6},
+    8: {1: 6, 2: 5, 3: 5, 4: 5, 5: 5, 6: 6, 7: 4, 8: 7, 9: 5},
+    9: {1: 4, 2: 6, 3: 7, 4: 4, 5: 6, 6: 5, 7: 6, 8: 5, 9: 7},
+}
+
+def analisar_casal(nome1, nasc1, nome2, nasc2):
+    e1n, s1n = _energia_nome(nome1)
+    e2n, s2n = _energia_nome(nome2)
+    e1v, s1v = _caminho_vida(nasc1)
+    e2v, s2v = _caminho_vida(nasc2)
+    # Cruzamento principal pela tabela Cissay (energia do nome)
+    comp_nome = CISSAY.get(e1n, {}).get(e2n, 0)
+    # Cruzamento secundário pelo caminho de vida (se datas presentes)
+    comp_vida = CISSAY.get(e1v or 0, {}).get(e2v or 0, 0) if e1v and e2v else None
+    comp_final = comp_nome if comp_vida is None else (comp_nome + comp_vida) // 2
+    return {
+        "nome1": nome1, "nasc1": nasc1, "energia_nome1": e1n, "caminho1": e1v,
+        "nome2": nome2, "nasc2": nasc2, "energia_nome2": e2n, "caminho2": e2v,
+        "soma1": s1n, "soma2": s2n,
+        "compatibilidade_nome": comp_nome,
+        "compatibilidade_vida": comp_vida,
+        "compatibilidade": comp_final,
+    }
+
+# -*- coding: utf-8 -*-
+# produtos/familia.py - Mapa Família Premium (membros com nome + data)
+from .mapa import reduzir, _LETRAS
+from .casal import CISSAY
+
+def _energia_nome(nome):
+    s = sum(_LETRAS.get(c, 0) for c in nome.upper().replace(" ", ""))
+    return reduzir(s), s
+
+def _caminho_vida(nasc):
+    try:
+        d, m, a = nasc.split("-")
+        s = sum(int(x) for x in d + m + a)
+        return reduzir(s), s
+    except Exception:
+        return None, 0
+
+def analisar_familia(texto):
+    # Formato por linha: "Nome; DD/MM/AAAA"  (ou "Nome; AAAA-MM-DD")
+    membros = [m.strip() for m in str(texto).replace(";", "\n").splitlines() if m.strip()]
+    resultados = []
+    for m in membros:
+        partes = [p.strip() for p in m.split(",")] if "," in m else [m]
+        nome = partes[0]
+        nasc = partes[1] if len(partes) > 1 else ""
+        # converte DD/MM/AAAA -> AAAA-MM-DD se preciso
+        if nasc and "/" in nasc:
+            dd, mm, aa = nasc.split("/")
+            nasc = f"{aa}-{mm}-{dd}"
+        en, sn = _energia_nome(nome)
+        ev, sv = _caminho_vida(nasc)
+        resultados.append({"membro": nome, "nascimento": nasc,
+                           "soma": sn, "energia": en,
+                           "caminho_vida": ev})
+    # Compatibilidade média entre todos os pares
+    pares = []
+    n = len(resultados)
+    for i in range(n):
+        for j in range(i + 1, n):
+            a = resultados[i]["energia"]
+            b = resultados[j]["energia"]
+            grau = CISSAY.get(a, {}).get(b, 0)
+            pares.append({"membro1": resultados[i]["membro"],
+                          "membro2": resultados[j]["membro"],
+                          "compatibilidade": grau})
+    return {"membros": resultados, "total": n, "pares": pares}
+
 # ===== GERADOR DE PDF (usa gerador_pdf.py se existir; senão fallback interno) =====
 def _gerar_pdf_local(prod, data, lang, nome, bd, dado=""):
     path = f"/tmp/p_{prod}_{uuid.uuid4().hex[:8]}.pdf"
@@ -940,8 +1037,8 @@ def pay_success(request: Request):
         CALC_ESPECIFICO = {
             "imovel":    lambda: analisar_imovel(dado or nome),
             "calendario": lambda: analisar_calendario(nome, dado),
-            "casal":     lambda: (lambda p: analisar_casal(*[x.strip() for x in p.split("&")[:2]] if "&" in p else (p, "")))(dado or nome),
-            "familia":   lambda: analisar_familia(dado or nome),
+            "casal":     lambda: _analisar_casal_com_datas(),
+            "familia":   lambda: _analisar_familia_com_datas(),
             "nome_pet":  _analisar_nome_duplo,
             "nickname":  _analisar_nome_duplo,
             "nome_dominio": _analisar_nome_duplo,
@@ -967,6 +1064,19 @@ def pay_success(request: Request):
             }),
         }
 
+        def _analisar_casal_com_datas():
+            # dado = "Nome1 & Nome2" ; detalhe = "AAAA-MM-DD & AAAA-MM-DD"
+            nomes = [x.strip() for x in (dado or nome).split("&")[:2]]
+            datas = [x.strip() for x in (meta.get("detalhe", "") or "").split("&")[:2]]
+            n1 = nomes[0] if len(nomes) > 0 else ""
+            n2 = nomes[1] if len(nomes) > 1 else ""
+            d1 = datas[0] if len(datas) > 0 else ""
+            d2 = datas[1] if len(datas) > 1 else ""
+            return analisar_casal(n1, d1, n2, d2)
+
+        def _analisar_familia_com_datas():
+            return analisar_familia(dado or nome)        
+        
         energia = meta.get("energia", "")
         if prod in CALC_ESPECIFICO:
             try:
