@@ -34,6 +34,13 @@ ENERGIA_LBL = {
     "ru": "Энергия", "hi": "ऊर्जा", "he": "אנרגיה", "ar": "الطاقة",
 }
 
+ALERTA_DUALIDADE = (
+    "A dualidade da relação permite convergência e divergência e a "
+    "instabilidade é uma situação permanente, não havendo uma condição única "
+    "e estável nessa relação, mas um cenário de permanente condicionamento "
+    "de posturas individuais de ambas as partes."
+)
+
 def _estilo(nome, fonte, tam, cor, alinhamento, sa=0, sb=0):
     return ParagraphStyle(nome, fontName=fonte, fontSize=tam, textColor=cor,
                           alignment=alinhamento, spaceAfter=sa, spaceBefore=sb,
@@ -444,14 +451,37 @@ def pdf_produto(produto, dados, nome, bd_str, lang, dado=""):
         ]
     elif "compatibilidade" in dados:
         _espec = [
-            f"<b>{dados.get('nome1', '')}</b> → {L['energia']} {dados.get('energia1', '')}",
-            f"<b>{dados.get('nome2', '')}</b> → {L['energia']} {dados.get('energia2', '')}",
-            f"<b>{L['compatibilidade']}:</b> {dados.get('compatibilidade', '')}",
+            f"<b>{dados.get('nome1', '')}</b> → {L['energia']} "
+            f"{dados.get('energia_nome1', dados.get('energia1', ''))}",
+            f"<b>{dados.get('nome2', '')}</b> → {L['energia']} "
+            f"{dados.get('energia_nome2', dados.get('energia2', ''))}",
+            f"<b>{L['compatibilidade']}:</b> {dados.get('compatibilidade', '')} "
+            f"({dados.get('rotulo_nome', '')})",
         ]
+        if dados.get("dual_nome"):
+            _espec.append(
+                f"<font color='#8a6d1f'><b>Nota:</b> "
+                f"{dados.get('alerta_dualidade_nome', ALERTA_DUALIDADE)}</font>")
+        if dados.get("compatibilidade_vida") is not None:
+            _espec.append(
+                f"<b>{L['compatibilidade']} ({L['energia']} de vida):</b> "
+                f"{dados.get('compatibilidade_vida')} ({dados.get('rotulo_vida', '')})")
+            if dados.get("dual_vida"):
+                _espec.append(
+                    f"<font color='#8a6d1f'><b>Nota:</b> "
+                    f"{dados.get('alerta_dualidade_vida', ALERTA_DUALIDADE)}</font>")
     elif "membros" in dados:
         _espec = [f"<b>{L['membros']}:</b> {dados.get('total', '')}"]
         for m in dados.get("membros", []):
             _espec.append(f"{m.get('membro', '')} — {L['energia']} {m.get('energia', '')}")
+        for p in dados.get("pares", []):
+            _espec.append(
+                f"{p.get('membro1', '')} × {p.get('membro2', '')}: "
+                f"{L['compatibilidade']} {p.get('compatibilidade', '')} ({p.get('rotulo', '')})")
+            if p.get("dual"):
+                _espec.append(
+                    f"<font color='#8a6d1f'><b>Nota:</b> "
+                    f"{p.get('alerta_dualidade', ALERTA_DUALIDADE)}</font>")
     elif "numero" in dados and "soma" in dados:
         _espec = [
             f"<b>{L['numero']}:</b> {dados.get('numero', '')}",
