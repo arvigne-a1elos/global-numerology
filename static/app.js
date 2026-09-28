@@ -756,3 +756,9 @@ window.ativarBonusIA = window.ativarBonusIA || function(){
     if (st) st.textContent = (res && res.ok) ? '🎁 Código ativado!' : 'Código inválido ou já usado.';
   }).catch(function(){ if (st) st.textContent = 'Erro ao validar o código.'; });
 };
+
+function pagarEquipe(){
+  var n = document.getElementById('equipeMembros').value.trim();
+  if (!n) { alert(t_preencha()); return; }
+  location.href = '/criar-checkout?produto=coletivo_empresarial&dado=' + encodeURIComponent(n) + '&lang=' + getLang();
+}
