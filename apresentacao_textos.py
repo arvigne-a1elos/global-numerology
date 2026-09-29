@@ -33,10 +33,13 @@ except Exception:
 
 FONTE_POR_IDIOMA = {'ja': 'HeiseiMin-W3', 'zh': 'STSong-Light',
                     'ru': 'DejaVu', 'tr': 'DejaVu', 'vi': 'DejaVu'}
+
 FONTES_RTL = {
     "ar": ("NotoNaskhArabic", "static/fonts/NotoNaskhArabic-Regular.ttf", "static/fonts/NotoNaskhArabic-Bold.ttf"),
     "he": ("NotoSansHebrew", "static/fonts/NotoSansHebrew-Regular.ttf", "static/fonts/NotoSansHebrew-Bold.ttf"),
 }
+
+_registrar_fontes_rtl()   # ← chamada única, DEPOIS da definição da função
 
 COR_AZUL = colors.HexColor("#1a3a6b")
 COR_DOURADO = colors.HexColor("#B8860B")
@@ -57,10 +60,13 @@ LOGO_DIR = os.path.join(STATIC_DIR, "A1ELOS.png")      # logo à direita
 
 def _fonte(lang, bold=False):
     if lang in FONTES_RTL:
-        nome = FONTES_RTL[lang][0]
-        if nome in pdfmetrics.getRegisteredFontNames():
+        nome = FONTES_RTL[lang][0]                       # "NotoNaskhArabic" / "NotoSansHebrew"
+        alvo = nome + ("-Bold" if bold else "")          # "NotoNaskhArabic-Bold" etc.
+        if alvo in pdfmetrics.getRegisteredFontNames():
+            return alvo
+        if nome in pdfmetrics.getRegisteredFontNames():  # fallback: regular se bold não registrado
             return nome
-        return "DejaVu"
+        return "Helvetica"                               # fallback final
     base = FONTE_POR_IDIOMA.get(lang, "Helvetica")
     if base == "Helvetica":
         return "Helvetica-Bold" if bold else "Helvetica"
