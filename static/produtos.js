@@ -149,7 +149,8 @@ if (!window.FEAT_TRAD.pt) {
         canal_anal:"✅ Canal analisado", conexao_audiencia:"✅ Conexão com a audiência", equipe_anal:"✅ Equipe analisada",
         uniao_membros:"✅ União entre os membros", ong_anal:"✅ ONG analisada", causa_potencial:"✅ Causa potencializada",
         projeto_anal:"✅ Projeto analisado", impulso_sucesso:"✅ Impulso para o sucesso", evento_anal:"✅ Evento analisado",
-        atmosfera:"✅ Atmosfera para os participantes", pdf:"📲 PDF + QRCode"
+        atmosfera:"✅ Atmosfera para os participantes", pdf:"📲 PDF + QRCode",
+        coletivo_empresarial: "✅ Chefe × membros", "✅ Membros × membros", "✅ Compatibilidade Cissay", "📲 PDF + QRCode"
       },
       en: {
         cam_vida:"✅ Life Path", expr_alma_pers:"✅ Expression, Soul, Personality", destino:"✅ Destiny",
@@ -172,7 +173,8 @@ if (!window.FEAT_TRAD.pt) {
         canal_anal:"✅ Channel analyzed", conexao_audiencia:"✅ Audience connection", equipe_anal:"✅ Team analyzed",
         uniao_membros:"✅ Unity among members", ong_anal:"✅ NGO analyzed", causa_potencial:"✅ Amplified cause",
         projeto_anal:"✅ Project analyzed", impulso_sucesso:"✅ Success boost", evento_anal:"✅ Event analyzed",
-        atmosfera:"✅ Atmosphere for participants", pdf:"📲 PDF + QR Code"
+        atmosfera:"✅ Atmosphere for participants", pdf:"📲 PDF + QR Code",
+        coletivo_empresarial:"✅ Boss × members", "✅ Members × members", "✅ Cissay compatibility", "📲 PDF + QRCode"
       },
       es: {
         cam_vida:"✅ Camino de Vida", expr_alma_pers:"✅ Expresión, Alma, Personalidad", destino:"✅ Destino",
@@ -195,7 +197,8 @@ if (!window.FEAT_TRAD.pt) {
         canal_anal:"✅ Canal analizado", conexao_audiencia:"✅ Conexión con la audiencia", equipe_anal:"✅ Equipo analizado",
         uniao_membros:"✅ Unión entre los miembros", ong_anal:"✅ ONG analizada", causa_potencial:"✅ Causa potenciada",
         projeto_anal:"✅ Proyecto analizado", impulso_sucesso:"✅ Impulso para el éxito", evento_anal:"✅ Evento analizado",
-        atmosfera:"✅ Ambiente para los participantes", pdf:"📲 PDF + Código QR"
+        atmosfera:"✅ Ambiente para los participantes", pdf:"📲 PDF + Código QR",
+        coletivo_empresarial:"✅ Jefe × miembros", "✅ Miembros × miembros", "✅ Compatibilidad Cissay", "📲 PDF + QRCode"
       },
       it: {
         cam_vida:"✅ Percorso di Vita", expr_alma_pers:"✅ Espressione, Anima, Personalità", destino:"✅ Destino",
@@ -218,7 +221,8 @@ if (!window.FEAT_TRAD.pt) {
         canal_anal:"✅ Canale analizzato", conexao_audiencia:"✅ Connessione con il pubblico", equipe_anal:"✅ Team analizzato",
         uniao_membros:"✅ Unione tra i membri", ong_anal:"✅ ONG analizzata", causa_potencial:"✅ Causa potenziata",
         projeto_anal:"✅ Progetto analizzato", impulso_sucesso:"✅ Spinta verso il successo", evento_anal:"✅ Evento analizzato",
-        atmosfera:"✅ Atmosfera per i partecipanti", pdf:"📲 PDF + Codice QR"
+        atmosfera:"✅ Atmosfera per i partecipanti", pdf:"📲 PDF + Codice QR",
+        coletivo_empresarial:"✅ Capo × membri", "✅ Membri × membri", "✅ Compatibilità Cissay", "📲 PDF + QRCode"
       },
       fr: {
         cam_vida:"✅ Chemin de Vie", expr_alma_pers:"✅ Expression, Âme, Personnalité", destino:"✅ Destinée",
@@ -241,7 +245,8 @@ if (!window.FEAT_TRAD.pt) {
         canal_anal:"✅ Chaîne analysée", conexao_audiencia:"✅ Connexion avec l'audience", equipe_anal:"✅ Équipe analysée",
         uniao_membros:"✅ Union entre les membres", ong_anal:"✅ ONG analysée", causa_potencial:"✅ Cause amplifiée",
         projeto_anal:"✅ Projet analysé", impulso_sucesso:"✅ Élan vers le succès", evento_anal:"✅ Événement analysé",
-        atmosfera:"✅ Atmosphère pour les participants", pdf:"📲 PDF + Code QR"
+        atmosfera:"✅ Atmosphère pour les participants", pdf:"📲 PDF + Code QR",
+        coletivo_empresarial:"✅ Chef × membres", "✅ Membres × membres", "✅ Compatibilité Cissay", "📲 PDF + QRCode"
       },
       de: {
         cam_vida:"✅ Lebensweg", expr_alma_pers:"✅ Ausdruck, Seele, Persönlichkeit", destino:"✅ Schicksal",
@@ -264,7 +269,8 @@ if (!window.FEAT_TRAD.pt) {
         canal_anal:"✅ Kanal analysiert", conexao_audiencia:"✅ Verbindung zum Publikum", equipe_anal:"✅ Team analysiert",
         uniao_membros:"✅ Zusammenhalt der Mitglieder", ong_anal:"✅ NGO analysiert", causa_potencial:"✅ Verstärkte Wirkung der Sache",
         projeto_anal:"✅ Projekt analysiert", impulso_sucesso:"✅ Schub für den Erfolg", evento_anal:"✅ Veranstaltung analysiert",
-        atmosfera:"✅ Atmosphäre für die Teilnehmer", pdf:"📲 PDF + QR-Code"
+        atmosfera:"✅ Atmosphäre für die Teilnehmer", pdf:"📲 PDF + QR-Code",
+        coletivo_empresarial:"✅ Chef × Mitglieder", "✅ Mitglieder × Mitglieder", "✅ Cissay-Kompatibilität", "📲 PDF + QRCode"
       },
       ru: {
         cam_vida:"✅ Путь Жизни", expr_alma_pers:"✅ Экспрессия, Душа, Личность", destino:"✅ Судьба",
@@ -287,7 +293,8 @@ if (!window.FEAT_TRAD.pt) {
         canal_anal:"✅ Канал проанализирован", conexao_audiencia:"✅ Связь с аудиторией", equipe_anal:"✅ Команда проанализирована",
         uniao_membros:"✅ Единство между членами", ong_anal:"✅ НКО проанализирована", causa_potencial:"✅ Дело усилено",
         projeto_anal:"✅ Проект проанализирован", impulso_sucesso:"✅ Импульс к успеху", evento_anal:"✅ Событие проанализировано",
-        atmosfera:"✅ Атмосфера для участников", pdf:"📲 PDF + QR-код"
+        atmosfera:"✅ Атмосфера для участников", pdf:"📲 PDF + QR-код",
+        coletivo_empresarial:"✅ Руководитель × члены", "✅ Члены × члены", "✅ Совместимость Cissay", "📲 PDF + QRCode"
       },
       zh: {
         cam_vida:"✅ 生命道路", expr_alma_pers:"✅ 表现、灵魂、个性", destino:"✅ 命运",
@@ -310,7 +317,8 @@ if (!window.FEAT_TRAD.pt) {
         canal_anal:"✅ 频道分析", conexao_audiencia:"✅ 与观众连接", equipe_anal:"✅ 团队分析",
         uniao_membros:"✅ 成员团结", ong_anal:"✅ 组织分析", causa_potencial:"✅ 事业增强",
         projeto_anal:"✅ 项目分析", impulso_sucesso:"✅ 成功助推", evento_anal:"✅ 活动分析",
-        atmosfera:"✅ 参与者氛围", pdf:"📲 PDF + 二维码"
+        atmosfera:"✅ 参与者氛围", pdf:"📲 PDF + 二维码",
+        coletivo_empresarial:"✅ 主管×成员", "✅ 成员×成员", "✅ Cissay兼容性", "📲 PDF + QRCode"
       },
       ja: {
         cam_vida:"✅ ライフパス", expr_alma_pers:"✅ 表現・魂・性格", destino:"✅ 運命",
@@ -333,7 +341,8 @@ if (!window.FEAT_TRAD.pt) {
         canal_anal:"✅ チャンネルを分析", conexao_audiencia:"✅ 視聴者とのつながり", equipe_anal:"✅ チームを分析",
         uniao_membros:"✅ メンバー間の結束", ong_anal:"✅ NGOを分析", causa_potencial:"✅ 活動を強化",
         projeto_anal:"✅ プロジェクトを分析", impulso_sucesso:"✅ 成功への後押し", evento_anal:"✅ イベントを分析",
-        atmosfera:"✅ 参加者のための雰囲気", pdf:"📲 PDF + QRコード"
+        atmosfera:"✅ 参加者のための雰囲気", pdf:"📲 PDF + QRコード",
+        coletivo_empresarial:"✅ 上司×メンバー", "✅ メンバー×メンバー", "✅ シセーの相性", "📲 PDF + QRCode"
       },
       id: {
         cam_vida:"✅ Jalan Hidup", expr_alma_pers:"✅ Ekspresi, Jiwa, Kepribadian", destino:"✅ Takdir",
@@ -356,7 +365,8 @@ if (!window.FEAT_TRAD.pt) {
         canal_anal:"✅ Kanal dianalisis", conexao_audiencia:"✅ Koneksi dengan audiens", equipe_anal:"✅ Tim dianalisis",
         uniao_membros:"✅ Persatuan antar anggota", ong_anal:"✅ LSM dianalisis", causa_potencial:"✅ Penyebab diperkuat",
         projeto_anal:"✅ Proyek dianalisis", impulso_sucesso:"✅ Dorongan menuju sukses", evento_anal:"✅ Acara dianalisis",
-        atmosfera:"✅ Atmosfer untuk peserta", pdf:"📲 PDF + Kode QR"
+        atmosfera:"✅ Atmosfer untuk peserta", pdf:"📲 PDF + Kode QR",
+        coletivo_empresarial:"✅ Atasan × anggota", "✅ Anggota × anggota", "✅ Kompatibilitas Cissay", "📲 PDF + QRCode"
       },
       tr: {
         cam_vida:"✅ Yaşam Yolu", expr_alma_pers:"✅ İfade, Ruh, Kişilik", destino:"✅ Kader",
@@ -379,7 +389,8 @@ if (!window.FEAT_TRAD.pt) {
         canal_anal:"✅ Kanal analiz edildi", conexao_audiencia:"✅ İzleyiciyle bağ", equipe_anal:"✅ Ekip analiz edildi",
         uniao_membros:"✅ Üyeler arası birlik", ong_anal:"✅ STK analiz edildi", causa_potencial:"✅ Dava güçlendirildi",
         projeto_anal:"✅ Proje analiz edildi", impulso_sucesso:"✅ Başarı için itici güç", evento_anal:"✅ Etkinlik analiz edildi",
-        atmosfera:"✅ Katılımcılar için atmosfer", pdf:"📲 PDF + QR Kod"
+        atmosfera:"✅ Katılımcılar için atmosfer", pdf:"📲 PDF + QR Kod",
+        coletivo_empresarial:"✅ Patron × üyeler", "✅ Üyeler × üyeler", "✅ Cissay uyumu", "📲 PDF + QRCode"
       },
       vi: {
         cam_vida:"✅ Đường Đời", expr_alma_pers:"✅ Biểu Đạt, Tâm Hồn, Tính Cách", destino:"✅ Định Mệnh",
@@ -402,7 +413,8 @@ if (!window.FEAT_TRAD.pt) {
         canal_anal:"✅ Kênh được phân tích", conexao_audiencia:"✅ Kết nối với khán giả", equipe_anal:"✅ Đội nhóm được phân tích",
         uniao_membros:"✅ Đoàn kết giữa các thành viên", ong_anal:"✅ Tổ chức được phân tích", causa_potencial:"✅ Sứ mệnh được khuếch đại",
         projeto_anal:"✅ Dự án được phân tích", impulso_sucesso:"✅ Động lực cho thành công", evento_anal:"✅ Sự kiện được phân tích",
-        atmosfera:"✅ Không khí cho người tham dự", pdf:"📲 PDF + Mã QR"
+        atmosfera:"✅ Không khí cho người tham dự", pdf:"📲 PDF + Mã QR",
+        coletivo_empresarial:"✅ Sếp × thành viên", "✅ Thành viên × thành viên", "✅ Tương thích Cissay", "📲 PDF + QRCode"
       },
       he: {
         cam_vida:"✅ מסלול חיים", expr_alma_pers:"✅ ביטוי, נשמה, אישיות", destino:"✅ גורל",
@@ -425,7 +437,8 @@ if (!window.FEAT_TRAD.pt) {
         canal_anal:"✅ הערוץ נותח", conexao_audiencia:"✅ קשר עם הקהל", equipe_anal:"✅ הצוות נותח",
         uniao_membros:"✅ אחדות בין החברים", ong_anal:"✅ הארגון נותח", causa_potencial:"✅ המטרה מוגברת",
         projeto_anal:"✅ הפרויקט נותח", impulso_sucesso:"✅ דחיפה להצלחה", evento_anal:"✅ האירוע נותח",
-        atmosfera:"✅ אווירה למשתתפים", pdf:"📲 PDF + קוד QR"
+        atmosfera:"✅ אווירה למשתתפים", pdf:"📲 PDF + קוד QR",
+        coletivo_empresarial:"✅ בוס × חברים", "✅ חברים × חברים", "✅ תאימות Cissay", "📲 PDF + QRCode"
       },
       ar: {
         cam_vida:"✅ مسار الحياة", expr_alma_pers:"✅ التعبير والروح والشخصية", destino:"✅ القدر",
@@ -448,7 +461,8 @@ if (!window.FEAT_TRAD.pt) {
         canal_anal:"✅ تم تحليل القناة", conexao_audiencia:"✅ التواصل مع الجمهور", equipe_anal:"✅ تم تحليل الفريق",
         uniao_membros:"✅ الوحدة بين الأعضاء", ong_anal:"✅ تم تحليل المنظمة", causa_potencial:"✅ تعزيز القضية",
         projeto_anal:"✅ تم تحليل المشروع", impulso_sucesso:"✅ دفع نحو النجاح", evento_anal:"✅ تم تحليل الحدث",
-        atmosfera:"✅ أجواء للمشاركين", pdf:"📲 PDF + رمز QR"
+        atmosfera:"✅ أجواء للمشاركين", pdf:"📲 PDF + رمز QR",
+        coletivo_empresarial:"✅ رئيس × أعضاء", "✅ أعضاء × أعضاء", "✅ توافق Cissay", "📲 PDF + QRCode"
       }
     };
     var M = {
@@ -626,15 +640,37 @@ function tradCard(chave){ var l=getLang(); var t=window.CARDS_TRAD[l]||window.CA
 function tradMontar(chave){ var l=getLang(); var t=window.MONTAR_TRAD[l]||window.MONTAR_TRAD.pt; return t[chave]||chave; }
 function tradEnergia(n){ var l=getLang(); var t=window.ENERGIA_TRAD[l]||window.ENERGIA_TRAD.pt; return t["e"+n]||"Energia "+n; }
 
-/* ===== BÔNUS COLETIVO (22 produtos) ===== */
+/* ===== BÔNUS COLETIVO (Montar Sob Medida) — ordenado por preço crescente ===== */
 window.BC_PRODUTOS = window.BC_PRODUTOS || [
-  ["express","Mapa Express",8,"🔮"],["vida","Qual Vida/Ano",8,"🔢"],["completo","Mapa Completo",17,"📘"],
-  ["ia","Pesquisa IA de Nomes",17,"🤖"],["urna","Validação Nome de Urna",26,"🗳️"],["eleitoral","Número Eleitoral",26,"🔢"],
-  ["imovel","Número do Imóvel",26,"🏠"],["calendario","Calendário Mensal Energético",26,"📅"],
-  ["artistico","Validação Nome Artístico",35,"🎭"],["bebe","Planejamento Nome de Bebê",35,"👶"],["assinatura","Validação de Assinaturas",35,"✍️"], ["nome_ong","Nome de ONG, Associação, Instituto ou Fundação",35,"🏛️"],
-  ["negocio","Nome para Negócio/Produto",44,"🏪"],["casal","Mapa do Casal",44,"💞"],["familia","Mapa Família Premium",98,"🌟"],
-  ["nome_pet","Nome do Pet",8,"🐾"],["nickname","Nickname Digital",8,"🎮"],["nome_dominio","Nome do Domínio",8,"🌐"],
-  ["nome_canal","Nome do Canal",8,"🎥"],["nome_equipe","Nome da Equipe",8,"🧭"], ["nome_projeto","Nome do Projeto",8,"📋"],["nome_evento","Nome do Evento",8,"🎪"]
+  // --- Faixa R$ 8 (entrada) ---
+  ["express", "Mapa Express", 8, "🔮"],
+  ["vida", "Qual Vida/Ano", 8, "🔢"],
+  ["ia", "Pesquisa IA de Nomes", 8, "🤖"],
+  ["nome_pet", "Nome do Pet", 8, "🐾"],
+  ["nickname", "Nickname Digital", 8, "💬"],
+  ["nome_dominio", "Nome do Domínio", 8, "🌐"],
+  ["nome_canal", "Nome do Canal", 8, "📺"],
+  ["nome_equipe", "Nome da Equipe", 8, "👥"],
+  ["nome_projeto", "Nome do Projeto", 8, "🚀"],
+  ["nome_evento", "Nome do Evento", 8, "🎉"],
+  // --- Faixa R$ 17 ---
+  ["completo", "Mapa Completo", 17, "📘"],
+  // --- Faixa R$ 26 ---
+  ["urna", "Validação Nome de Urna", 26, "🗳️"],
+  ["eleitoral", "Número Eleitoral", 26, "🔢"],
+  ["imovel", "Número do Imóvel", 26, "🏠"],
+  ["calendario", "Calendário Mensal Energético", 26, "📅"],
+  // --- Faixa R$ 35 ---
+  ["artistico", "Validação Nome Artístico", 35, "🎭"],
+  ["bebe", "Planejamento Nome de Bebê", 35, "👶"],
+  ["assinatura", "Validação de Assinaturas", 35, "✍️"],
+  ["nome_ong", "Nome de ONG", 35, "🏛️"],
+  // --- Faixa R$ 44 ---
+  ["negocio", "Nome para Negócio/Produto", 44, "🏪"],
+  ["casal", "Mapa do Casal", 44, "💞"],
+  // --- Faixa R$ 98 ---
+  ["familia", "Mapa Família Premium", 98, "🌟"],
+  ["coletivo_empresarial", "Compatibilidade de Equipes", 98, "🏢"]
 ];
 
 function montarTabelaBC() {
