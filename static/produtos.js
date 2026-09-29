@@ -454,8 +454,15 @@ if (!window.FEAT_TRAD.pt) {
     var M = {
       express:["cam_vida","expr_alma_pers","destino","pdf"],
       vida:["fase_atual","ano_pessoal","tendencias","pdf"],
-      completo:["n5_detalhados","ciclos3","desafios_real","grade_inclusao","pdf"],
       ia:["sug_ia","analise_energ_nomes","comparativo","pdf"],
+      nome_pet:["pet_anal","energia_nome","sintonia_familia","pdf"],
+      nickname:["nick_anal","energia_nome","imagem_online","pdf"],
+      nome_dominio:["dominio_anal","energia_nome","forca_marca","pdf"],
+      nome_canal:["canal_anal","energia_nome","conexao_audiencia","pdf"],
+      nome_equipe:["equipe_anal","energia_nome","uniao_membros","pdf"],
+      nome_projeto:["projeto_anal","energia_nome","impulso_sucesso","pdf"],
+      nome_evento:["evento_anal","energia_nome","atmosfera","pdf"],
+      completo:["n5_detalhados","ciclos3","desafios_real","grade_inclusao","pdf"],
       urna:["n5_nomes_test","sug_energia8","calc_letra","pdf"],
       eleitoral:["n5_sugeridos","prior_energia8","calc_completo","pdf"],
       imovel:["imovel_anal","energia_ambiente","sug_harmon","pdf"],
@@ -463,19 +470,13 @@ if (!window.FEAT_TRAD.pt) {
       artistico:["nomes_testados","sug_palco","energia_nome","pdf"],
       bebe:["sug_nomes","analise_energ","comp_sobrenome","pdf"],
       assinatura:["assin_atual","variacoes","energia_assin","pdf"],
+      nome_ong:["ong_anal","energia_nome","causa_potencial","pdf"],
       negocio:["nomes_testados","sug_empresariais","energia_nome","pdf"],
       casal:["compatibilidade","pontos_fortes","desafios_relacao","pdf"],
       familia:["todos_membros","sinergia","orient_membro","pdf"],
-      coletivo:["planos_prontos","sob_medida","descontos_prog","codigos_presente"],
-      nome_pet:["pet_anal","energia_nome","sintonia_familia","pdf"],
-      nickname:["nick_anal","energia_nome","imagem_online","pdf"],
-      nome_dominio:["dominio_anal","energia_nome","forca_marca","pdf"],
-      nome_canal:["canal_anal","energia_nome","conexao_audiencia","pdf"],
-      nome_equipe:["equipe_anal","energia_nome","uniao_membros","pdf"],
-      nome_ong:["ong_anal","energia_nome","causa_potencial","pdf"],
-      nome_projeto:["projeto_anal","energia_nome","impulso_sucesso","pdf"],
-      nome_evento:["evento_anal","energia_nome","atmosfera","pdf"]
-    };
+      coletivo:["planos_prontos","sob_medida","descontos_prog","codigos_presente"]
+      };
+    
     Object.keys(F).forEach(function (lang) {
       var f = F[lang];
       window.FEAT_TRAD[lang] = {};
