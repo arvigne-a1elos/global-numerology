@@ -150,7 +150,7 @@ if (!window.FEAT_TRAD.pt) {
         uniao_membros:"✅ União entre os membros", ong_anal:"✅ ONG analisada", causa_potencial:"✅ Causa potencializada",
         projeto_anal:"✅ Projeto analisado", impulso_sucesso:"✅ Impulso para o sucesso", evento_anal:"✅ Evento analisado",
         atmosfera:"✅ Atmosfera para os participantes", pdf:"📲 PDF + QRCode",
-        coletivo_empresarial: "✅ Chefe × membros", "✅ Membros × membros", "✅ Compatibilidade Cissay", "📲 PDF + QRCode"
+        coletivo_empresarial:"✅ Chefe × membros", "✅ Membros × membros", "✅ Compatibilidade Cissay", "📲 PDF + QRCode"
       },
       en: {
         cam_vida:"✅ Life Path", expr_alma_pers:"✅ Expression, Soul, Personality", destino:"✅ Destiny",
