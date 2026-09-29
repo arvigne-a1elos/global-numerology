@@ -476,7 +476,7 @@ if (!window.FEAT_TRAD.pt) {
       familia:["todos_membros","sinergia","orient_membro","pdf"],
       coletivo_empresarial:["chefe_membros","membros_membros","compat_cissay","pdf"],
       coletivo:["planos_prontos","sob_medida","descontos_prog","codigos_presente"]
-      };
+    };
     
     Object.keys(F).forEach(function (lang) {
       var f = F[lang];
