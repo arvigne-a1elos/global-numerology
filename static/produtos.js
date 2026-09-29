@@ -474,6 +474,7 @@ if (!window.FEAT_TRAD.pt) {
       negocio:["nomes_testados","sug_empresariais","energia_nome","pdf"],
       casal:["compatibilidade","pontos_fortes","desafios_relacao","pdf"],
       familia:["todos_membros","sinergia","orient_membro","pdf"],
+      coletivo_empresarial:["chefe_membros","membros_membros","compat_cissay","pdf"],
       coletivo:["planos_prontos","sob_medida","descontos_prog","codigos_presente"]
       };
     
