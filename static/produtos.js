@@ -684,10 +684,8 @@ function montarTabelaBC() {
 // ordena os produtos por preço crescente antes de montar as linhas
   var lista = (typeof BC_PRODUTOS !== 'undefined' ? BC_PRODUTOS : []).slice();
   lista.sort(function(a, b) {
-    var fa = (typeof PRODUTO_FAIXA !== 'undefined' && PRODUTO_FAIXA[a] !== undefined) ? PRODUTO_FAIXA[a] : 99;
-    var fb = (typeof PRODUTO_FAIXA !== 'undefined' && PRODUTO_FAIXA[b] !== undefined) ? PRODUTO_FAIXA[b] : 99;
-    var pa = (base[fa] !== undefined) ? base[fa] : 0;
-    var pb = (base[fb] !== undefined) ? base[fb] : 0;
+    var pa = parseInt(a[2], 10) || 0;
+    var pb = parseInt(b[2], 10) || 0;
     return pa - pb;
   });
   // 1) Cabeçalhos traduzidos nos 14 idiomas
@@ -928,6 +926,22 @@ function confirmarBC() {
     + (t.bc_confirmar_pag || "Confirmar e ir para pagamento?");
   if (!confirm(msg)) return;
   window.location.href = '/criar-checkout?lang=' + getLang() + '&produto=coletivo&qtd=' + qtdTotal + '&total=' + final + '&itens=' + encodeURIComponent(JSON.stringify(itens));
+}
+
+function ordenarTabelaBC() {
+  var mapa = {};
+  if (typeof BC_PRODUTOS !== 'undefined') {
+    BC_PRODUTOS.forEach(function(p) { if (p && p[0]) mapa[p[0]] = parseInt(p[2], 10) || 0; });
+  }
+  var corpo = document.getElementById('bcTabelaCorpo');
+  if (!corpo) return;
+  var trs = Array.prototype.slice.call(corpo.querySelectorAll('tr[data-prod]'));
+  trs.sort(function(x, y) {
+    var px = mapa[x.getAttribute('data-prod')] !== undefined ? mapa[x.getAttribute('data-prod')] : 999;
+    var py = mapa[y.getAttribute('data-prod')] !== undefined ? mapa[y.getAttribute('data-prod')] : 999;
+    return px - py;
+  });
+  trs.forEach(function(tr) { corpo.appendChild(tr); });
 }
 
 /* ===== TRADUZIR TUDO ===== */
