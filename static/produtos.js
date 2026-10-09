@@ -70,16 +70,23 @@ function atualizarResumoBC() {
   var base = servidor ? PRECO_VALORES[lang]
            : (typeof PRECO_BASE !== 'undefined' ? (PRECO_BASE[lang] || PRECO_BASE.pt) : null);
   if (!base) return;
+    // ordena os produtos por preço crescente antes de montar as linhas
+  var lista = (typeof BC_PRODUTOS !== 'undefined' ? BC_PRODUTOS : []).slice();
+  lista.sort(function(a, b) {
+    var fa = (typeof PRODUTO_FAIXA !== 'undefined' && PRODUTO_FAIXA[a[0]] !== undefined) ? PRODUTO_FAIXA[a[0]] : 99;
+    var fb = (typeof PRODUTO_FAIXA !== 'undefined' && PRODUTO_FAIXA[b[0]] !== undefined) ? PRODUTO_FAIXA[b[0]] : 99;
+    var pa = parseInt(base[fa], 10) || 0;
+    var pb = parseInt(base[fb], 10) || 0;
+    return pa - pb;
+  });
   var qtdTotal = 0, total = 0;
   var inps = document.querySelectorAll('#bcTabelaCorpo input[data-prod]');
   for (var i = 0; i < inps.length; i++) {
     var q = parseInt(inps[i].value, 10) || 0;
     if (q <= 0) continue;
     var prod = inps[i].getAttribute('data-prod');
-    var faixa = (typeof PRODUTO_FAIXA !== 'undefined' && PRODUTO_FAIXA) ? PRODUTO_FAIXA[prod] : null;
-    if (faixa === null || faixa === undefined) continue;
-    var unit = parseInt(base[faixa], 10) || 0;
-    if (servidor) unit = Math.round(unit / 100);
+    var unit = precoUnitarioBC(prod);
+    if (!unit) continue;
     total += unit * q;
     qtdTotal += q;
   }
@@ -674,13 +681,15 @@ window.BC_PRODUTOS = window.BC_PRODUTOS || [
 ];
 
 function montarTabelaBC() {
-  var lang = (typeof getLang === 'function') ? getLang() : 'pt';
-  var t = (window.PRODUTOS_TRAD && window.PRODUTOS_TRAD[lang]) ? window.PRODUTOS_TRAD[lang] : {};
-  var tp = (window.PRODUTOS_TRAD && window.PRODUTOS_TRAD.pt) ? window.PRODUTOS_TRAD.pt : {};
-  var simb = (window.SIMB && window.SIMB[lang]) ? window.SIMB[lang] : 'R$';
-  var base = (window.PRECO_BASE && window.PRECO_BASE[lang]) ? window.PRECO_BASE[lang]
-           : (window.PRECO_BASE ? window.PRECO_BASE.pt : null);
-  if (!base) return;
+// ordena os produtos por preço crescente antes de montar as linhas
+  var lista = (typeof BC_PRODUTOS !== 'undefined' ? BC_PRODUTOS : []).slice();
+  lista.sort(function(a, b) {
+    var fa = (typeof PRODUTO_FAIXA !== 'undefined' && PRODUTO_FAIXA[a] !== undefined) ? PRODUTO_FAIXA[a] : 99;
+    var fb = (typeof PRODUTO_FAIXA !== 'undefined' && PRODUTO_FAIXA[b] !== undefined) ? PRODUTO_FAIXA[b] : 99;
+    var pa = (base[fa] !== undefined) ? base[fa] : 0;
+    var pb = (base[fb] !== undefined) ? base[fb] : 0;
+    return pa - pb;
+  });
   // 1) Cabeçalhos traduzidos nos 14 idiomas
   var rotulos = {
     pt:{s:'Serviço',p:'Preço',q:'Quantidade'},
@@ -983,38 +992,6 @@ function traduzirTudo() {
     window._traduzindo = false;
   }
   if (typeof atualizarMesesData === "function") atualizarMesesData();
-}
-
-function forcarTraducaoBC() {
-  var lang = (typeof getLang === 'function') ? getLang() : 'pt';
-  var dict = (window.PRODUTOS_TRAD && window.PRODUTOS_TRAD[lang])
-           ? window.PRODUTOS_TRAD[lang]
-           : (window.PRODUTOS_TRAD ? window.PRODUTOS_TRAD.pt : null);
-  if (!dict) return;
-  var linhas = document.querySelectorAll('#bcTabelaCorpo tr');
-  for (var i = 0; i < linhas.length; i++) {
-    var inp = linhas[i].querySelector('input[data-prod]');
-    if (!inp) continue;
-    var prod = inp.getAttribute('data-prod');
-    if (!dict[prod]) continue;
-    var td = linhas[i].querySelector('td');
-    if (td) td.textContent = dict[prod]; // SÓ o nome — a moeda fica intacta
-  }
-}
-
-function traduzirNomesBC() {
-  var lang = (typeof getLang === 'function') ? getLang() : 'pt';
-  var d = (window.PRODUTOS_TRAD && window.PRODUTOS_TRAD[lang]) ? window.PRODUTOS_TRAD[lang] : null;
-  if (!d) return;
-  var linhas = document.querySelectorAll('#bcTabelaCorpo tr');
-  for (var i = 0; i < linhas.length; i++) {
-    var inp = linhas[i].querySelector('input[data-prod]');
-    if (!inp) continue;
-    var chave = inp.getAttribute('data-prod');
-    if (!d[chave]) continue;
-    var tdNome = linhas[i].querySelector('td');
-    if (tdNome) tdNome.textContent = d[chave]; // SÓ o nome. A cifra nem é tocada.
-  }
 }
 
 /* ===== URNA - 5 GRAFIAS (14 idiomas) ===== */
