@@ -438,7 +438,7 @@ if (!window.FEAT_TRAD.pt) {
         uniao_membros:"✅ אחדות בין החברים", ong_anal:"✅ הארגון נותח", causa_potencial:"✅ המטרה מוגברת",
         projeto_anal:"✅ הפרויקט נותח", impulso_sucesso:"✅ דחיפה להצלחה", evento_anal:"✅ האירוע נותח",
         atmosfera:"✅ אווירה למשתתפים", pdf:"📲 PDF + קוד QR",
-        "coletivo_empresarial": ["✅ תאימות זוגות", "✅ חברים × חברים", "✅ תאימות", "📲 PDF + QRCode"],
+        "coletivo_empresarial": ["✅ תאימות זוגות", "✅ חברים × חברים", "✅ תאימות", "📲 PDF + QRCode"]
       },
       ar: {
         cam_vida:"✅ مسار الحياة", expr_alma_pers:"✅ التعبير والروح والشخصية", destino:"✅ القدر",
@@ -462,7 +462,7 @@ if (!window.FEAT_TRAD.pt) {
         uniao_membros:"✅ الوحدة بين الأعضاء", ong_anal:"✅ تم تحليل المنظمة", causa_potencial:"✅ تعزيز القضية",
         projeto_anal:"✅ تم تحليل المشروع", impulso_sucesso:"✅ دفع نحو النجاح", evento_anal:"✅ تم تحليل الحدث",
         atmosfera:"✅ أجواء للمشاركين", pdf:"📲 PDF + رمز QR",
-        "coletivo_empresarial": ["✅ توافق الأزواج", "✅ أعضاء × أعضاء", "✅ توافق ", "📲 PDF + QRCode"]
+        "coletivo_empresarial": ["✅ توافق الأزواج", "✅ أعضاء × أعضاء", "✅ توافق", "📲 PDF + QRCode"]
       }
     };
     var M = {
