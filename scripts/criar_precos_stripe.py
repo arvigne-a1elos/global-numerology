@@ -50,8 +50,6 @@ ZERO_DECIMAL = {"jpy", "vnd", "idr", "krw", "clp", "pyg",
                 "ugx", "isk", "xof", "xaf", "xpf", "bif",
                 "djf", "gnf", "kmf", "rwf", "vuv"}
 
-unit = int(round(float(preco))) if moeda in ZERO_DECIMAL else int(round(float(preco) * 100))
-
 # ---------------------------------------------------------------
 # 2. NORMALIZAÇÃO (bate 1:1 com os arquivos do GitHub)
 # ---------------------------------------------------------------
@@ -141,9 +139,10 @@ def main():
                         images=[url],
                         metadata={"idioma": prefixo, "produto": produto, "faixa": faixa},
                     )
+                    unit = int(round(float(preco))) if moeda in ZERO_DECIMAL else int(round(float(preco) * 100))
                     stripe.Price.create(
                         product=prod["id"],
-                        unit_amount=int(round(float(preco) * 100)),
+                        unit_amount=unit,
                         currency=moeda,
                     )
                     print(f"  OK  {produto:28s} | {moeda.upper()} {preco:>8} | {url}")
