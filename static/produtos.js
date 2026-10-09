@@ -51,6 +51,7 @@ function pesquisar(produto) {
   }
   var alvo = document.getElementById("form-" + produto);
   if (alvo) {
+    if (typeof toggleForm === "function" && alvo.style.display === "none") toggleForm(produto);
     alvo.scrollIntoView({ behavior: "smooth", block: "center" });
     alvo.style.transition = "box-shadow .5s";
     alvo.style.boxShadow = "0 0 0 3px var(--gold)";
@@ -69,16 +70,8 @@ function atualizarResumoBC() {
   var servidor = (typeof PRECO_VALORES !== 'undefined' && PRECO_VALORES[lang]);
   var base = servidor ? PRECO_VALORES[lang]
            : (typeof PRECO_BASE !== 'undefined' ? (PRECO_BASE[lang] || PRECO_BASE.pt) : null);
-  if (!base) return;
-    // ordena os produtos por preço crescente antes de montar as linhas
-  var lista = (typeof BC_PRODUTOS !== 'undefined' ? BC_PRODUTOS : []).slice();
-  lista.sort(function(a, b) {
-    var fa = (typeof PRODUTO_FAIXA !== 'undefined' && PRODUTO_FAIXA[a[0]] !== undefined) ? PRODUTO_FAIXA[a[0]] : 99;
-    var fb = (typeof PRODUTO_FAIXA !== 'undefined' && PRODUTO_FAIXA[b[0]] !== undefined) ? PRODUTO_FAIXA[b[0]] : 99;
-    var pa = parseInt(base[fa], 10) || 0;
-    var pb = parseInt(base[fb], 10) || 0;
-    return pa - pb;
-  });
+    if (!base) return;
+  ordenarTabelaBC();
   var qtdTotal = 0, total = 0;
   var inps = document.querySelectorAll('#bcTabelaCorpo input[data-prod]');
   for (var i = 0; i < inps.length; i++) {
@@ -1334,5 +1327,59 @@ function fecharFormModal() {
 /* Redefine o toggleForm: em vez de abrir dentro do card, abre em modal.
    Os botões existentes (onclick="toggleForm('form-x')") passam a abrir o modal. */
 function toggleForm(idForm) {
-  abrirFormModal(idForm);
+  var alvo = document.getElementById(idForm);
+  if (!alvo) alvo = document.getElementById('form-' + idForm); // cobre 'form-form-x' do HTML
+  if (!alvo) return;
+
+  if (window._formModal && window._formModal.form === alvo) { fecharModalForm(); return; }
+  if (window._formModal) fecharModalForm(); // trocou de formulário: devolve o anterior
+
+  var overlay = document.getElementById('modalFormOverlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'modalFormOverlay';
+    overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;z-index:9999;padding:16px;';
+
+    var caixa = document.createElement('div');
+    caixa.id = 'modalFormCaixa';
+    caixa.style.cssText = 'position:relative;background:#1a1a1a;color:#f5f5f5;border:1px solid #C9A94E;border-radius:14px;max-width:520px;width:100%;max-height:90vh;overflow-y:auto;padding:28px;box-shadow:0 20px 60px rgba(0,0,0,.5);';
+
+    var fechar = document.createElement('button');
+    fechar.type = 'button';
+    fechar.innerHTML = '&times;';
+    fechar.setAttribute('aria-label', 'Fechar');
+    fechar.style.cssText = 'position:absolute;top:8px;right:14px;background:none;border:none;color:#C9A94E;font-size:26px;line-height:1;cursor:pointer;';
+    fechar.addEventListener('click', fecharModalForm);
+    caixa.appendChild(fechar);
+
+    overlay.appendChild(caixa);
+    document.body.appendChild(overlay);
+
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) fecharModalForm();
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') fecharModalForm();
+    });
+  }
+
+window._formModal = { form: alvo, pai: alvo.parentNode, prox: alvo.nextSibling, antes: alvo.style.display };
+var caixa = document.getElementById('modalFormCaixa');
+caixa.appendChild(alvo);
+alvo.style.display = 'block';
+overlay.style.display = 'flex';
+document.body.style.overflow = 'hidden';
+
+function fecharModalForm() {
+  var overlay = document.getElementById('modalFormOverlay');
+  if (!overlay) return;
+  if (window._formModal && window._formModal.form) {
+    var fm = window._formModal;
+    if (fm.prox) fm.pai.insertBefore(fm.form, fm.prox);
+    else fm.pai.appendChild(fm.form);
+    fm.form.style.display = fm.antes || '';
+    window._formModal = null;
+  }
+  overlay.style.display = 'none';
+  document.body.style.overflow = '';
 }
