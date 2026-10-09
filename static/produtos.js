@@ -246,7 +246,7 @@ if (!window.FEAT_TRAD.pt) {
         uniao_membros:"✅ Union entre les membres", ong_anal:"✅ ONG analysée", causa_potencial:"✅ Cause amplifiée",
         projeto_anal:"✅ Projet analysé", impulso_sucesso:"✅ Élan vers le succès", evento_anal:"✅ Événement analysé",
         atmosfera:"✅ Atmosphère pour les participants", pdf:"📲 PDF + Code QR",
-        "coletivo_empresarial": ["✅ Chef × membres", "✅ Membres × membres", "✅ Compatibilité de paires" "📲 PDF + QRCode"]
+        "coletivo_empresarial": ["✅ Chef × membres", "✅ Membres × membres", "✅ Compatibilité de paires", "📲 PDF + QRCode"]
       },
       de: {
         cam_vida:"✅ Lebensweg", expr_alma_pers:"✅ Ausdruck, Seele, Persönlichkeit", destino:"✅ Schicksal",
