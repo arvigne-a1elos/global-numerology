@@ -46,6 +46,12 @@ MOEDA_PADRAO = {
     "turco": "try", "vietnamita": "vnd",
 }
 
+ZERO_DECIMAL = {"jpy", "vnd", "idr", "krw", "clp", "pyg",
+                "ugx", "isk", "xof", "xaf", "xpf", "bif",
+                "djf", "gnf", "kmf", "rwf", "vuv"}
+
+unit = int(round(float(preco))) if moeda in ZERO_DECIMAL else int(round(float(preco) * 100))
+
 # ---------------------------------------------------------------
 # 2. NORMALIZAÇÃO (bate 1:1 com os arquivos do GitHub)
 # ---------------------------------------------------------------
