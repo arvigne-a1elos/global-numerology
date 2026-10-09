@@ -62,6 +62,19 @@ function pesquisar(produto) {
   if (calc) calc.scrollIntoView({ behavior: "smooth" });
 }
 
+function precoUnitarioBC(id) {
+  var lang = (typeof getLang === 'function') ? getLang() : 'pt';
+  var servidor = (typeof PRECO_VALORES !== 'undefined' && PRECO_VALORES[lang]);
+  var base = servidor ? PRECO_VALORES[lang]
+           : (typeof PRECO_BASE !== 'undefined' ? (PRECO_BASE[lang] || PRECO_BASE.pt) : null);
+  if (!base) return 0;
+  var faixa = (typeof PRODUTO_FAIXA !== 'undefined' && PRODUTO_FAIXA[id] !== undefined) ? PRODUTO_FAIXA[id] : null;
+  if (faixa === null || faixa === undefined) return 0;
+  var unit = parseInt(base[faixa], 10) || 0;
+  if (servidor) unit = Math.round(unit / 100); // servidor manda em centavos
+  return unit;
+}
+
 function atualizarResumoBC() {
   var lang = (typeof getLang === 'function') ? getLang() : 'pt';
   var simbolo = (typeof SIMBOLO !== 'undefined' && SIMBOLO[lang]) ? SIMBOLO[lang]
@@ -98,7 +111,7 @@ function atualizarResumoBC() {
   }
 }
 
-/* ===== PRODUTOS_TRAD (23 produtos, 14 idiomas) ===== */
+/* ===== PRODUTOS_TRAD (24 produtos, 14 idiomas) ===== */
 window.PRODUTOS_TRAD = window.PRODUTOS_TRAD || {
  pt:{express:"Mapa Express",vida:"Qual Vida/Ano",completo:"Mapa Completo",ia:"Pesquisa IA de Nomes",urna:"Validação Nome de Urna",eleitoral:"Número Eleitoral",imovel:"Número do Imóvel",calendario:"Calendário Mensal Energético",artistico:"Validação Nome Artístico",bebe:"Planejamento Nome de Bebê",assinatura:"Validação de Assinaturas",negocio:"Nome para Negócio/Produto",casal:"Mapa do Casal",familia:"Mapa Família Premium",coletivo:"Bônus Coletivo/Empresarial",nome_pet:"Nome do Pet",nickname:"Nickname Digital",nome_dominio:"Nome do Domínio",nome_canal:"Nome do Canal",nome_equipe:"Nome da Equipe",nome_ong:"Nome de ONG, Associação, Instituto ou Fundação",nome_projeto:"Nome do Projeto",nome_evento:"Nome do Evento"},
  en:{express:"Express Map",vida:"Life Phase & Year",completo:"Complete Map",ia:"AI Name Search",urna:"Ballot Name Validation",eleitoral:"Electoral Number",imovel:"Property Number",calendario:"Monthly Energy Calendar",artistico:"Artistic Name Validation",bebe:"Baby Name Planning",assinatura:"Signature Validation",negocio:"Business & Product Name",casal:"Couple Map",familia:"Premium Family Map",coletivo:"Corporate Bonus",nome_pet:"Pet Name",nickname:"Digital Nickname",nome_dominio:"Domain Name",nome_canal:"Channel Name",nome_equipe:"Team Name",nome_ong:"NGO, Association, Institute or Foundation Name",nome_projeto:"Project Name",nome_evento:"Event Name"},
@@ -123,7 +136,7 @@ window.PRODUTO_FAIXA = window.PRODUTO_FAIXA || {
   artistico:3, bebe:3, assinatura:3, nome_ong:3, negocio:4, casal:4, familia:5, coletivo_empresarial:5, coletivo:5
 };
 
-/* ===== FEAT_TRAD v1 — FEATURES DOS 23 CARDS EM 14 IDIOMAS ===== */
+/* ===== FEAT_TRAD v1 — FEATURES DOS 24 CARDS EM 14 IDIOMAS ===== */
 window.FEAT_TRAD = window.FEAT_TRAD || {};
 if (!window.FEAT_TRAD.pt) {
   (function () {
@@ -675,6 +688,7 @@ window.BC_PRODUTOS = window.BC_PRODUTOS || [
 
 function montarTabelaBC() {
 // ordena os produtos por preço crescente antes de montar as linhas
+  var lang = (typeof getLang === 'function') ? getLang() : 'pt';
   var lista = (typeof BC_PRODUTOS !== 'undefined' ? BC_PRODUTOS : []).slice();
   lista.sort(function(a, b) {
     var pa = parseInt(a[2], 10) || 0;
@@ -1369,7 +1383,7 @@ caixa.appendChild(alvo);
 alvo.style.display = 'block';
 overlay.style.display = 'flex';
 document.body.style.overflow = 'hidden';
-
+  } 
 function fecharModalForm() {
   var overlay = document.getElementById('modalFormOverlay');
   if (!overlay) return;
