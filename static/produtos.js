@@ -683,7 +683,8 @@ window.BC_PRODUTOS = window.BC_PRODUTOS || [
   ["casal", "Mapa do Casal", 44, "💞"],
   // --- Faixa R$ 98 ---
   ["familia", "Mapa Família Premium", 98, "🌟"],
-  ["coletivo", "Compatibilidade de Equipes", 98, "🏢"]
+  ["coletivo", "Bônus Coletivo", 98, "🎁"],          // o Bônus
+  ["compatibilidade_equipes", "Compatibilidade de Equipes", 98, "🏢"]
 ];
 
 function montarTabelaBC() {
