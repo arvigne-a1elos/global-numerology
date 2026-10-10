@@ -606,29 +606,29 @@
             </div>
 
             <!-- 23. Compatibilidade de Equipes (RH) -->
-            <div class="product-card" data-prod="compatibilidade_equipes">
-                <div class="icon">🏢</div>
-                <h3 class="prod-nome" data-i18n="p_compatibilidade_equipes">Compatibilidade de Equipes</h3>
-                <div class="price prod-preco">R$ 98</div>
-                <p class="desc" data-i18n="desc_compatibilidade_equipes">Análise da compatibilidade entre chefes e membros e entre os membros da equipe, ideal para RH.</p>
-                <label id="equipeEnergiaLabel" class="urna-label" data-i18n-form="f_energia">Energia desejada</label>
-                <p id="equipeEnergiaDica" class="urna-dica"></p>
-                <div id="equipeEnergiaSel" class="energia-selector"></div>   
-                <ul class="features">
-                   <li>✅ Chefe × membros</li>
-                   <li>✅ Membros × membros</li>
-                   <li>✅ Compatibilidade de pares</li>
-                   <li>📲 PDF + QRCode</li>
-                </ul>
-                <button class="btn btn-full" onclick="toggleForm('form-compatibilidade_equipes')" data-i18n="pesquisar_btn">pesquisar</button>
-                <form id="form-compatibilidade_equipes" class="hidden">
-                   <label data-i18n-form="f_equipe">Membros da equipe (um por linha)</label>
-                   <textarea id="equipeMembros" rows="4" data-i18n-ph="ph_membros" placeholder="Chefe; 01/01/1980; CHEFE&#10;Nome 2; 15/03/1985&#10;Nome 3; 22/07/1990"></textarea>
-                   <button class="btn btn-full" onclick="pagarEquipe()" data-i18n-form="pesquisar_btn">Pesquisar</button>
-                </form>
-            </div>
+<div class="product-card" data-prod="compatibilidade_equipes">
+    <div class="icon">🏢</div>
+    <h3 class="prod-nome" data-i18n="p_compatibilidade_equipes">Compatibilidade de Equipes</h3>
+    <div class="price prod-preco">R$ 98</div>
+    <p class="desc" data-i18n="desc_compatibilidade_equipes">Análise da compatibilidade entre chefes e membros e entre os membros da equipe, ideal para RH.</p>
+    <ul class="features">
+       <li>✅ Chefe × membros</li>
+       <li>✅ Membros × membros</li>
+       <li>✅ Compatibilidade de pares</li>
+       <li>📲 PDF + QRCode</li>
+    </ul>
+    <button class="btn btn-full" onclick="toggleForm('form-compatibilidade_equipes')" data-i18n="pesquisar_btn">pesquisar</button>
+    <form id="form-compatibilidade_equipes" class="hidden">
+       <label data-i18n-form="f_equipe">Membros da equipe (um por linha)</label>
+       <textarea id="equipeMembros" rows="4" data-i18n-ph="ph_membros" placeholder="Chefe; 01/01/1980; CHEFE&#10;Nome 2; 15/03/1985&#10;Nome 3; 22/07/1990"></textarea>
+       <label id="equipeEnergiaLabel" class="urna-label" data-i18n-form="f_energia">Energia desejada</label>
+       <p id="equipeEnergiaDica" class="urna-dica"></p>
+       <div id="equipeEnergiaSel" class="energia-selector"></div>
+       <button class="btn btn-full" onclick="pagarEquipe()" data-i18n-form="pesquisar_btn">Pesquisar</button>
+    </form>
+</div>
         
-            <!-- 24. Bônus Coletivo/Empresarial -->
+             <!-- 24. Bônus Coletivo/Empresarial -->
             <div class="product-card" data-prod="coletivo" style="border:2px solid var(--gold)">
                 <div class="icon">🏢</div>
                 <h3 class="prod-nome" data-i18n="p_coletivo">Bônus Coletivo/Empresarial</h3>
@@ -655,6 +655,6 @@
                     <button class="btn btn-full" onclick="enviarPedidoNegociacao()">Solicitar proposta</button>
                  <p id="negStatus" style="color:#C9A94E;font-size:.85rem;margin:8px 0 0;"></p>
                </div>
-            </div>
+            </div>            
        </div>
 </section>
