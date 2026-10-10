@@ -3,104 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A1ELOS Global Numerology — Relatório</title>
+<title>A1ELOS Global Numerology — 24 Produtos e Serviços</title>
 <style>
-  /* ===== ESTILO FIEL AO MOCKUP PREMIUM ===== */
   :root{
-    --ouro:#D4AF37;          /* dourado metálico quente */
-    --ouro-escuro:#C5A059;   /* dourado/ocre */
-    --preto:#1a1a1a;         /* título */
-    --cinza:#333333;         /* corpo */
-    --cinza-claro:#555555;
-    --branco:#FFFFFF;
+    --ouro:#D4AF37; --ouro-escuro:#C5A059; --preto:#1a1a1a;
+    --cinza:#333333; --cinza-claro:#555555; --branco:#FFFFFF;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
-  body{
-    font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
-    color:var(--cinza);
-    background:var(--branco);
-    line-height:1.6;
-  }
-  /* ===== MARCA D'ÁGUA DE GEOMETRIA SAGRADA ===== */
-  .page{
-    position:relative;
-    width:100%;
-    min-height:100vh;
-    padding:60px 56px 80px;
-    background:
-      url('watermark-vitruviano.png') no-repeat left center / 420px auto,
-      var(--branco);
-    background-blend-mode:multiply;
-  }
-  /* fallback: marca d'água em CSS puro (círculo + números 1-9) */
-  .page::before{
-    content:"";
-    position:absolute;left:-60px;top:50%;transform:translateY(-50%);
-    width:420px;height:420px;
-    border:1px solid rgba(212,175,55,.15);
-    border-radius:50%;
-    background:
-      radial-gradient(circle at center, transparent 40%, rgba(212,175,55,.10) 41%, transparent 42%),
+  body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:var(--cinza);background:var(--branco);line-height:1.6;}
+
+  /* ===== PÁGINA + MARCA D'ÁGUA A1ELOS ===== */
+  .page{position:relative;width:100%;min-height:100vh;padding:60px 56px 80px;
+    background:url('watermark-a1elos.png') no-repeat left center / 420px auto, var(--branco);
+    background-blend-mode:multiply;}
+  .page::before{content:"";position:absolute;left:-60px;top:50%;transform:translateY(-50%);
+    width:420px;height:420px;border:1px solid rgba(212,175,55,.15);border-radius:50%;
+    background:radial-gradient(circle at center, transparent 40%, rgba(212,175,55,.10) 41%, transparent 42%),
       radial-gradient(circle at center, transparent 46%, rgba(212,175,55,.08) 47%, transparent 48%);
-    opacity:.5;
-    pointer-events:none;
-  }
-  .page::after{
-    content:"1 2 3 4 5 6 7 8 9";
-    position:absolute;left:150px;top:50%;transform:translateY(-50%);
-    width:0;height:0;color:rgba(212,175,55,.35);
-    font-family:Georgia,serif;font-size:13px;letter-spacing:30px;
-    white-space:nowrap;
-    pointer-events:none;
-  }
+    opacity:.5;pointer-events:none;}
+  .page::after{content:"1 2 3 4 5 6 7 8 9";position:absolute;left:150px;top:50%;transform:translateY(-50%);
+    width:0;height:0;color:rgba(212,175,55,.35);font-family:Georgia,serif;font-size:13px;letter-spacing:30px;
+    white-space:nowrap;pointer-events:none;}
 
   /* ===== CABEÇALHO (DUAS LOGOS) ===== */
-  .header{
-    display:flex;align-items:center;justify-content:space-between;
-    padding-bottom:14px;
-    border-bottom:1px solid var(--ouro);
-    margin-bottom:36px;
-  }
-  .header-left{display:flex;align-items:center;gap:14px;}
-  .header-right{display:flex;align-items:center;gap:14px;}
+  .header{display:flex;align-items:center;justify-content:space-between;padding-bottom:14px;
+    border-bottom:1px solid var(--ouro);margin-bottom:30px;}
+  .header-left{display:flex;align-items:center;}
+  .header-right{display:flex;align-items:center;}
   .header img{height:46px;width:auto;}
 
-  /* ===== TÍTULO SERIFADO DOURADO ===== */
-  .section-title{
-    font-family:Georgia,'Times New Roman',serif;
-    font-size:26px;font-weight:700;color:var(--ouro-escuro);
-    text-transform:uppercase;letter-spacing:.02em;
-    margin-bottom:18px;
-  }
+  /* ===== TÍTULO ===== */
+  .section-title{font-family:Georgia,'Times New Roman',serif;font-size:26px;font-weight:700;
+    color:var(--ouro-escuro);text-transform:uppercase;letter-spacing:.02em;margin-bottom:18px;}
+  .subtitle{font-size:14px;color:var(--cinza-claro);margin-bottom:26px;}
 
-  /* ===== TEXTO EXPLICATIVO ===== */
-  .body-text{
-    font-size:15px;color:var(--cinza);
-    text-align:justify;max-width:640px;margin-bottom:28px;
-  }
+  /* ===== TEXTO ===== */
+  .body-text{font-size:15px;color:var(--cinza);text-align:justify;max-width:640px;margin-bottom:24px;}
 
-  /* ===== LAYOUT EM COLUNAS ASSIMÉTRICAS ===== */
+  /* ===== COLUNAS ===== */
   .cols{display:flex;gap:40px;align-items:flex-start;}
   .col-text{flex:1.4;}
   .col-visual{flex:1;display:flex;flex-direction:column;gap:22px;align-items:center;}
 
-  /* ===== DIAGRAMA CIRCULAR 1-9 (ROSCA) ===== */
-  .wheel{
-    width:180px;height:180px;border-radius:50%;
-    border:3px solid var(--ouro);
-    position:relative;
-    background:conic-gradient(
-      var(--ouro) 0deg 40deg, transparent 40deg 80deg,
-      var(--ouro) 80deg 120deg, transparent 120deg 160deg,
-      var(--ouro) 160deg 200deg, transparent 200deg 240deg,
-      var(--ouro) 240deg 280deg, transparent 280deg 320deg,
-      var(--ouro) 320deg 360deg);
-    box-shadow:0 0 18px rgba(212,175,55,.25);
-  }
-  .wheel span{
-    position:absolute;font-family:Georgia,serif;color:var(--ouro-escuro);
-    font-size:14px;font-weight:700;
-  }
+  /* ===== DIAGRAMA CIRCULAR 1-9 ===== */
+  .wheel{width:180px;height:180px;border-radius:50%;border:3px solid var(--ouro);position:relative;
+    background:conic-gradient(var(--ouro) 0deg 40deg, transparent 40deg 80deg, var(--ouro) 80deg 120deg,
+      transparent 120deg 160deg, var(--ouro) 160deg 200deg, transparent 200deg 240deg,
+      var(--ouro) 240deg 280deg, transparent 280deg 320deg, var(--ouro) 320deg 360deg);
+    box-shadow:0 0 18px rgba(212,175,55,.25);}
+  .wheel span{position:absolute;font-family:Georgia,serif;color:var(--ouro-escuro);font-size:14px;font-weight:700;}
   .wheel .n1{top:8px;left:50%;transform:translateX(-50%);}
   .wheel .n2{top:26px;right:22px;}
   .wheel .n3{top:50%;right:6px;transform:translateY(-50%);}
@@ -111,118 +62,323 @@
   .wheel .n8{top:26px;left:22px;}
   .wheel .n9{top:50%;left:50%;transform:translate(-50%,-50%);font-size:20px;}
 
-  /* ===== ÍCONES TEMÁTICOS (estrela, lua, sol) ===== */
+  /* ===== ÍCONES ===== */
   .icons{display:flex;gap:18px;font-size:26px;color:var(--ouro);}
 
-  /* ===== CAIXA DE DESTAQUE (borda dourada) ===== */
-  .callout{
-    border:2px solid var(--ouro);
-    border-radius:12px;
-    padding:18px 20px;
-    max-width:560px;
-    background:#fffdf7;
-    box-shadow:0 4px 14px rgba(212,175,55,.15);
-  }
+  /* ===== CAIXA DE DESTAQUE ===== */
+  .callout{border:2px solid var(--ouro);border-radius:12px;padding:18px 20px;max-width:560px;
+    background:#fffdf7;box-shadow:0 4px 14px rgba(212,175,55,.15);}
   .callout .ico{font-size:22px;color:var(--ouro);margin-bottom:6px;}
   .callout p{font-size:14px;color:var(--preto);font-style:italic;}
 
-  /* ===== INFOGRÁFICO DE BARRAS (gradiente dourado/terroso) ===== */
-  .infograph{margin-top:30px;max-width:640px;}
-  .infograph .label{
-    font-size:12px;letter-spacing:.12em;text-transform:uppercase;
-    color:var(--cinza-claro);margin-bottom:10px;
-  }
-  .bar{
-    height:16px;border-radius:8px;margin-bottom:10px;
-    background:linear-gradient(90deg,#D4AF37,#C5A059,#8B6914);
-    position:relative;
-  }
-  .bar span{
-    position:absolute;right:8px;top:50%;transform:translateY(-50%);
-    font-size:10px;color:#fff;font-weight:700;
-  }
+  /* ===== INFOGRÁFICO ===== */
+  .infograph{margin-top:26px;max-width:640px;}
+  .infograph .label{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--cinza-claro);margin-bottom:10px;}
+  .bar{height:16px;border-radius:8px;margin-bottom:10px;
+    background:linear-gradient(90deg,#D4AF37,#C5A059,#8B6914);position:relative;}
+  .bar span{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:10px;color:#fff;font-weight:700;}
 
-  /* ===== RODAPÉ (contato + página numerada) ===== */
-  .footer{
-    position:absolute;left:56px;right:56px;bottom:24px;
-    display:flex;align-items:center;justify-content:space-between;
-    padding-top:12px;border-top:1px solid var(--ouro);
-    font-size:12px;color:var(--cinza-claro);
-  }
+  /* ===== TABELA ===== */
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13px;}
+  th{text-align:left;padding:10px 12px;color:var(--ouro-escuro);border-bottom:2px solid var(--ouro);
+    font-family:Georgia,serif;text-transform:uppercase;letter-spacing:.06em;font-size:12px;}
+  td{padding:9px 12px;border-bottom:1px solid #e8e0c8;}
+  tr:last-child td{border-bottom:none;}
+
+  /* ===== RODAPÉ ===== */
+  .footer{position:absolute;left:56px;right:56px;bottom:24px;display:flex;align-items:center;
+    justify-content:space-between;padding-top:12px;border-top:1px solid var(--ouro);
+    font-size:12px;color:var(--cinza-claro);}
   .footer .contact{letter-spacing:.04em;}
   .footer .page-num{font-family:Georgia,serif;color:var(--ouro-escuro);font-weight:700;}
 
-  /* ===== TABELA ESTÁVEL (para produtos/mercado) ===== */
-  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13px;}
-  th{
-    text-align:left;padding:10px 12px;color:var(--ouro-escuro);
-    border-bottom:2px solid var(--ouro);font-family:Georgia,serif;
-    text-transform:uppercase;letter-spacing:.06em;font-size:12px;
-  }
-  td{padding:9px 12px;border-bottom:1px solid #e8e0c8;}
-  tr:last-child td{border-bottom:none;}
+  /* ===== CAPA ===== */
+  .cover{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:70vh;}
+  .cover .wheel{width:240px;height:240px;margin-bottom:26px;}
+  .cover h1{font-family:Georgia,serif;font-size:40px;color:var(--ouro-escuro);text-transform:uppercase;letter-spacing:.04em;}
+  .cover .tagline{font-size:16px;color:var(--cinza);margin-top:12px;letter-spacing:.06em;}
+
+  .section{margin-bottom:30px;}
+  .section h2{font-family:Georgia,serif;font-size:19px;color:var(--ouro-escuro);text-transform:uppercase;margin-bottom:10px;}
+  .feature-list{list-style:none;margin:12px 0;}
+  .feature-list li{padding:6px 0;border-bottom:1px solid #eee;font-size:14px;}
 </style>
 </head>
 <body>
 
-<!-- ===== PÁGINA 1-8 ===== -->
+<!-- ============================================================ -->
+<!-- PÁGINA 1-8 · CAPA -->
+<!-- ============================================================ -->
 <div class="page">
-
-  <!-- CABEÇALHO: DUAS LOGOS (no BODY, dentro da página) -->
   <header class="header">
-    <div class="header-left">
-      <img src="A1ELOS.png" alt="A1ELOS Global Numerology">
-    </div>
-    <div class="header-right">
-      <img src="logo.png" alt="Símbolo A1ELOS">
-    </div>
+    <div class="header-left"><img src="A1ELOS.png" alt="A1ELOS Global Numerology"></div>
+    <div class="header-right"><img src="logo.png" alt="Símbolo A1ELOS"></div>
   </header>
 
-  <!-- TÍTULO -->
-  <h1 class="section-title">O Seu Caminho de Vida</h1>
+  <div class="cover">
+    <div class="wheel">
+      <span class="n1">1</span><span class="n2">2</span><span class="n3">3</span>
+      <span class="n4">4</span><span class="n5">5</span><span class="n6">6</span>
+      <span class="n7">7</span><span class="n8">8</span><span class="n9">9</span>
+    </div>
+    <h1>A1ELOS Global Numerology</h1>
+    <p class="tagline">24 Produtos e Serviços · 14 Idiomas · Mercado Global</p>
+  </div>
 
-  <!-- CONTEÚDO EM COLUNAS ASSIMÉTRICAS -->
+  <footer class="footer">
+    <span class="contact">arvigne@gmail.com · global-numerology.onrender.com</span>
+    <span class="page-num">1-8</span>
+  </footer>
+</div>
+
+<!-- ============================================================ -->
+<!-- PÁGINA 2-8 · SOBRE A A1ELOS -->
+<!-- ============================================================ -->
+<div class="page">
+  <header class="header">
+    <div class="header-left"><img src="A1ELOS.png" alt="A1ELOS Global Numerology"></div>
+    <div class="header-right"><img src="logo.png" alt="Símbolo A1ELOS"></div>
+  </header>
+
+  <h1 class="section-title">Sobre a A1ELOS</h1>
   <div class="cols">
     <div class="col-text">
-      <p class="body-text">
-        Bem-vindo(a) ao seu Relatório de Numerologia Global! Aqui, desvendamos
-        os segredos do seu Caminho de Vida, explorando as energias cósmicas que
-        moldam a sua jornada e o seu potencial único neste mundo em constante mudança.
-      </p>
-
-      <!-- CAIXA DE DESTAQUE -->
-      <div class="callout">
-        <div class="ico">🧭</div>
-        <p>A intuição é a sua bússola. Confie nela para navegar pelos ciclos da sua vida.</p>
-      </div>
-
-      <!-- INFOGRÁFICO -->
+      <p class="body-text">A A1ELOS Global Numerology une a geometria sagrada, a numerologia e a inteligência artificial para entregar relatórios personalizados de alta qualidade, com presença global em 14 idiomas e um modelo de preço social que torna os produtos acessíveis em economias de renda diferente.</p>
+      <div class="callout"><div class="ico">🎯</div><p>Missão: desvendar o potencial único de cada pessoa e de cada equipe por meio da sabedoria dos números.</p></div>
       <div class="infograph">
-        <div class="label">Infográfico de seus ciclos</div>
-        <div class="bar" style="width:72%;"><span>72</span></div>
-        <div class="bar" style="width:48%;"><span>48</span></div>
-        <div class="bar" style="width:90%;"><span>90</span></div>
+        <div class="label">Presença global — 14 idiomas</div>
+        <div class="bar" style="width:100%;"><span>14</span></div>
       </div>
     </div>
-
     <div class="col-visual">
-      <!-- DIAGRAMA CIRCULAR 1-9 -->
       <div class="wheel">
         <span class="n1">1</span><span class="n2">2</span><span class="n3">3</span>
         <span class="n4">4</span><span class="n5">5</span><span class="n6">6</span>
         <span class="n7">7</span><span class="n8">8</span><span class="n9">9</span>
       </div>
-      <!-- ÍCONES TEMÁTICOS -->
       <div class="icons">★ ☾ ☀</div>
     </div>
   </div>
 
-  <!-- RODAPÉ: CONTATO + PÁGINA NUMERADA -->
   <footer class="footer">
     <span class="contact">arvigne@gmail.com · global-numerology.onrender.com</span>
-    <span class="page-num">1-8</span>
+    <span class="page-num">2-8</span>
   </footer>
+</div>
 
+<!-- ============================================================ -->
+<!-- PÁGINA 3-8 · OS 24 PRODUTOS -->
+<!-- ============================================================ -->
+<div class="page">
+  <header class="header">
+    <div class="header-left"><img src="A1ELOS.png" alt="A1ELOS Global Numerology"></div>
+    <div class="header-right"><img src="logo.png" alt="Símbolo A1ELOS"></div>
+  </header>
+
+  <h1 class="section-title">Os 24 Produtos</h1>
+  <p class="body-text">Uma linha completa de análises numerológicas, do Mapa Express ao Bônus Coletivo empresarial, organizada em faixas de preço acessíveis.</p>
+  <table>
+    <thead><tr><th>Faixa</th><th>Produtos</th></tr></thead>
+    <tbody>
+      <tr><td><strong>R$ 8</strong></td><td>Mapa Express, Qual Vida/Ano, Pesquisa IA, Nome do Pet, Nickname, Domínio, Canal, Equipe, Projeto, Evento</td></tr>
+      <tr><td><strong>R$ 17</strong></td><td>Mapa Completo</td></tr>
+      <tr><td><strong>R$ 26</strong></td><td>Nome de Urna, Número Eleitoral, Número do Imóvel, Calendário Mensal</td></tr>
+      <tr><td><strong>R$ 35</strong></td><td>Nome Artístico, Nome de Bebê, Assinaturas, Nome de ONG</td></tr>
+      <tr><td><strong>R$ 44</strong></td><td>Nome para Negócio, Mapa do Casal</td></tr>
+      <tr><td><strong>R$ 98</strong></td><td>Premium Family Map, Bônus Coletivo, Compatibilidade de Equipes (RH)</td></tr>
+    </tbody>
+  </table>
+
+  <footer class="footer">
+    <span class="contact">arvigne@gmail.com · global-numerology.onrender.com</span>
+    <span class="page-num">3-8</span>
+  </footer>
+</div>
+
+<!-- ============================================================ -->
+<!-- PÁGINA 4-8 · DESTAQUE RH — COMPATIBILIDADE DE EQUIPES -->
+<!-- ============================================================ -->
+<div class="page">
+  <header class="header">
+    <div class="header-left"><img src="A1ELOS.png" alt="A1ELOS Global Numerology"></div>
+    <div class="header-right"><img src="logo.png" alt="Símbolo A1ELOS"></div>
+  </header>
+
+  <h1 class="section-title">Destaque · Compatibilidade de Equipes</h1>
+  <div class="cols">
+    <div class="col-text">
+      <p class="body-text">Análise da compatibilidade entre chefes e membros e entre os membros da equipe — ideal para Departamentos de Recursos Humanos que buscam alinhar quadros e melhorar a sinergia do time.</p>
+      <ul class="feature-list">
+        <li>✅ Chefe × membros</li>
+        <li>✅ Membros × membros</li>
+        <li>✅ Compatibilidade de pares</li>
+        <li>📲 PDF + QRCode</li>
+      </ul>
+      <div class="callout"><div class="ico">🏢</div><p>Preço R$ 98 · Energia ideal 8 · Feito para o RH</p></div>
+    </div>
+    <div class="col-visual">
+      <div class="wheel">
+        <span class="n1">1</span><span class="n2">2</span><span class="n3">3</span>
+        <span class="n4">4</span><span class="n5">5</span><span class="n6">6</span>
+        <span class="n7">7</span><span class="n8">8</span><span class="n9">9</span>
+      </div>
+      <div class="icons">★ ☾ ☀</div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <span class="contact">arvigne@gmail.com · global-numerology.onrender.com</span>
+    <span class="page-num">4-8</span>
+  </footer>
+</div>
+
+<!-- ============================================================ -->
+<!-- PÁGINA 5-8 · BÔNUS COLETIVO -->
+<!-- ============================================================ -->
+<div class="page">
+  <header class="header">
+    <div class="header-left"><img src="A1ELOS.png" alt="A1ELOS Global Numerology"></div>
+    <div class="header-right"><img src="logo.png" alt="Símbolo A1ELOS"></div>
+  </header>
+
+  <h1 class="section-title">Bônus Coletivo</h1>
+  <p class="body-text">Descontos progressivos para empresas e brindes em grande escala, com códigos de presente e condições sob consulta para volumes acima de 2.000 unidades.</p>
+  <table>
+    <thead><tr><th>Unidades</th><th>Desconto</th></tr></thead>
+    <tbody>
+      <tr><td>10+</td><td>10%</td></tr>
+      <tr><td>50+</td><td>20%</td></tr>
+      <tr><td>100+</td><td>25%</td></tr>
+      <tr><td>200+</td><td>30%</td></tr>
+      <tr><td>500+</td><td>40%</td></tr>
+      <tr><td>1.000+</td><td>45%</td></tr>
+      <tr><td>2.000+</td><td>50%</td></tr>
+      <tr><td>Acima de 2.000</td><td>Sob consulta (até 70%)</td></tr>
+    </tbody>
+  </table>
+  <div class="infograph">
+    <div class="label">Desconto progressivo</div>
+    <div class="bar" style="width:20%;"><span>10%</span></div>
+    <div class="bar" style="width:40%;"><span>25%</span></div>
+    <div class="bar" style="width:70%;"><span>45%</span></div>
+    <div class="bar" style="width:100%;"><span>50%</span></div>
+  </div>
+
+  <footer class="footer">
+    <span class="contact">arvigne@gmail.com · global-numerology.onrender.com</span>
+    <span class="page-num">5-8</span>
+  </footer>
+</div>
+
+<!-- ============================================================ -->
+<!-- PÁGINA 6-8 · PREÇO SOCIAL E MERCADO GLOBAL -->
+<!-- ============================================================ -->
+<div class="page">
+  <header class="header">
+    <div class="header-left"><img src="A1ELOS.png" alt="A1ELOS Global Numerology"></div>
+    <div class="header-right"><img src="logo.png" alt="Símbolo A1ELOS"></div>
+  </header>
+
+  <h1 class="section-title">Preço Social e Mercado Global</h1>
+  <p class="body-text"><strong>Preço social:</strong> os preços são calibrados à economia de cada moeda (paridade de poder de compra), tornando os produtos acessíveis em mercados de renda diferente sem perder o valor premium.</p>
+  <div class="section">
+    <h2>Mercado para investidores</h2>
+    <table>
+      <thead><tr><th>Segmento</th><th>Valor</th><th>Crescimento</th></tr></thead>
+      <tbody>
+        <tr><td>Brindes corporativos</td><td>~US$ 956 bi (2026)</td><td>CAGR ~7,9%</td></tr>
+        <tr><td>Team building</td><td>~US$ 9,46 bi (2025)</td><td>→ US$ 15,3 bi (2035)</td></tr>
+        <tr><td>Presentes personalizados</td><td>~US$ 34 bi (2026)</td><td>CAGR ~6,7%</td></tr>
+        <tr><td>Bem-estar corporativo (EUA)</td><td>~US$ 9,8 bi</td><td>CAGR ~10,1%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="section">
+    <h2>Aplicações práticas</h2>
+    <ul class="feature-list">
+      <li>🎁 Brindes específicos terceirizados — mapas personalizados como brinde de marca</li>
+      <li>💳 Bônus funcional ou para clientes — códigos de presente e descontos progressivos</li>
+      <li>🤝 Alinhamento de quadros — compatibilidade de equipes para RH</li>
+      <li>📅 Organização de agendas — calendário mensal energético e dias favoráveis</li>
+    </ul>
+  </div>
+
+  <footer class="footer">
+    <span class="contact">arvigne@gmail.com · global-numerology.onrender.com</span>
+    <span class="page-num">6-8</span>
+  </footer>
+</div>
+
+<!-- ============================================================ -->
+<!-- PÁGINA 7-8 · TECNOLOGIA E SEGURANÇA -->
+<!-- ============================================================ -->
+<div class="page">
+  <header class="header">
+    <div class="header-left"><img src="A1ELOS.png" alt="A1ELOS Global Numerology"></div>
+    <div class="header-right"><img src="logo.png" alt="Símbolo A1ELOS"></div>
+  </header>
+
+  <h1 class="section-title">Tecnologia e Segurança</h1>
+  <div class="cols">
+    <div class="col-text">
+      <ul class="feature-list">
+        <li>💳 Pagamentos via Stripe (cartão e boleto)</li>
+        <li>📄 Geração de PDF + QRCode por pedido</li>
+        <li>🤖 Análise com inteligência artificial</li>
+        <li>✨ Relatórios premium com marca d'água dourada</li>
+        <li>🌍 Suporte a 14 moedas e 14 idiomas</li>
+      </ul>
+      <div class="callout"><div class="ico">🛡️</div><p>Segurança e qualidade em cada relatório entregue.</p></div>
+    </div>
+    <div class="col-visual">
+      <div class="wheel">
+        <span class="n1">1</span><span class="n2">2</span><span class="n3">3</span>
+        <span class="n4">4</span><span class="n5">5</span><span class="n6">6</span>
+        <span class="n7">7</span><span class="n8">8</span><span class="n9">9</span>
+      </div>
+      <div class="icons">★ ☾ ☀</div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <span class="contact">arvigne@gmail.com · global-numerology.onrender.com</span>
+    <span class="page-num">7-8</span>
+  </footer>
+</div>
+
+<!-- ============================================================ -->
+<!-- PÁGINA 8-8 · CONTATO E PRÓXIMOS PASSOS -->
+<!-- ============================================================ -->
+<div class="page">
+  <header class="header">
+    <div class="header-left"><img src="A1ELOS.png" alt="A1ELOS Global Numerology"></div>
+    <div class="header-right"><img src="logo.png" alt="Símbolo A1ELOS"></div>
+  </header>
+
+  <h1 class="section-title">Contato e Próximos Passos</h1>
+  <div class="cols">
+    <div class="col-text">
+      <p class="body-text">Convidamos investidores, parceiros empresariais e departamentos de RH a conhecer o ecossistema A1ELOS.</p>
+      <div class="callout">
+        <div class="ico">📧</div>
+        <p>E-mail: arvigne@gmail.com</p>
+        <p style="margin-top:4px;">Site: global-numerology.onrender.com</p>
+      </div>
+    </div>
+    <div class="col-visual">
+      <div class="wheel">
+        <span class="n1">1</span><span class="n2">2</span><span class="n3">3</span>
+        <span class="n4">4</span><span class="n5">5</span><span class="n6">6</span>
+        <span class="n7">7</span><span class="n8">8</span><span class="n9">9</span>
+      </div>
+      <div class="icons">★ ☾ ☀</div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <span class="contact">arvigne@gmail.com · global-numerology.onrender.com</span>
+    <span class="page-num">8-8</span>
+  </footer>
 </div>
 
 </body>
