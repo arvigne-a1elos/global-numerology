@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A1ELOS Global Numerology — Relatório</title>
+<style>
+  /* ===== ESTILO FIEL AO MOCKUP PREMIUM ===== */
+  :root{
+    --ouro:#D4AF37;          /* dourado metálico quente */
+    --ouro-escuro:#C5A059;   /* dourado/ocre */
+    --preto:#1a1a1a;         /* título */
+    --cinza:#333333;         /* corpo */
+    --cinza-claro:#555555;
+    --branco:#FFFFFF;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+    color:var(--cinza);
+    background:var(--branco);
+    line-height:1.6;
+  }
+  /* ===== MARCA D'ÁGUA DE GEOMETRIA SAGRADA ===== */
+  .page{
+    position:relative;
+    width:100%;
+    min-height:100vh;
+    padding:60px 56px 80px;
+    background:
+      url('watermark-vitruviano.png') no-repeat left center / 420px auto,
+      var(--branco);
+    background-blend-mode:multiply;
+  }
+  /* fallback: marca d'água em CSS puro (Homem Vitruviano + números 1-9) */
+  .page::before{
+    content:"";
+    position:absolute;left:-60px;top:50%;transform:translateY(-50%);
+    width:420px;height:420px;
+    border:1px solid rgba(212,175,55,.15);
+    border-radius:50%;
+    background:
+      radial-gradient(circle at center, transparent 40%, rgba(212,175,55,.10) 41%, transparent 42%),
+      radial-gradient(circle at center, transparent 46%, rgba(212,175,55,.08) 47%, transparent 48%);
+    opacity:.5;
+    pointer-events:none;
+  }
+  /* números 1-9 orbitando (posicionados no círculo) */
+  .page::after{
+    content:"1 2 3 4 5 6 7 8 9";
+    position:absolute;left:150px;top:50%;transform:translateY(-50%);
+    width:0;height:0;color:rgba(212,175,55,.35);
+    font-family:Georgia,serif;font-size:13px;letter-spacing:30px;
+    white-space:nowrap;
+    pointer-events:none;
+  }
+
+  /* ===== CABEÇALHO (DUAS LOGOS) ===== */
+  .header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding-bottom:14px;
+    border-bottom:1px solid var(--ouro);
+    margin-bottom:36px;
+  }
+  .header-left{display:flex;align-items:center;gap:14px;}
+  .logo-wordmark{
+    font-family:Georgia,'Times New Roman',serif;
+    font-size:15px;letter-spacing:.18em;color:var(--ouro-escuro);
+    text-transform:uppercase;font-weight:700;
+  }
+  .logo-symbol{
+    width:46px;height:46px;
+    border:1.5px solid var(--ouro);
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:Georgia,serif;color:var(--ouro);font-size:12px;
+    background:radial-gradient(circle, transparent 55%, rgba(212,175,55,.12) 56%);
+  }
+
+  /* ===== TÍTULO SERIFADO DOURADO ===== */
+  .section-title{
+    font-family:Georgia,'Times New Roman',serif;
+    font-size:26px;font-weight:700;color:var(--ouro-escuro);
+    text-transform:uppercase;letter-spacing:.02em;
+    margin-bottom:18px;
+  }
+
+  /* ===== TEXTO EXPLICATIVO ===== */
+  .body-text{
+    font-size:15px;color:var(--cinza);
+    text-align:justify;max-width:640px;margin-bottom:28px;
+  }
+
+  /* ===== LAYOUT EM COLUNAS ASSIMÉTRICAS ===== */
+  .cols{display:flex;gap:40px;align-items:flex-start;}
+  .col-text{flex:1.4;}
+  .col-visual{flex:1;display:flex;flex-direction:column;gap:22px;align-items:center;}
+
+  /* ===== DIAGRAMA CIRCULAR 1-9 (ROSCA) ===== */
+  .wheel{
+    width:180px;height:180px;border-radius:50%;
+    border:3px solid var(--ouro);
+    position:relative;
+    background:conic-gradient(
+      var(--ouro) 0deg 40deg, transparent 40deg 80deg,
+      var(--ouro) 80deg 120deg, transparent 120deg 160deg,
+      var(--ouro) 160deg 200deg, transparent 200deg 240deg,
+      var(--ouro) 240deg 280deg, transparent 280deg 320deg,
+      var(--ouro) 320deg 360deg);
+    box-shadow:0 0 18px rgba(212,175,55,.25);
+  }
+  .wheel span{
+    position:absolute;font-family:Georgia,serif;color:var(--ouro-escuro);
+    font-size:14px;font-weight:700;
+  }
+  .wheel .n1{top:8px;left:50%;transform:translateX(-50%);}
+  .wheel .n2{top:26px;right:22px;}
+  .wheel .n3{top:50%;right:6px;transform:translateY(-50%);}
+  .wheel .n4{bottom:26px;right:22px;}
+  .wheel .n5{bottom:8px;left:50%;transform:translateX(-50%);}
+  .wheel .n6{bottom:26px;left:22px;}
+  .wheel .n7{top:50%;left:6px;transform:translateY(-50%);}
+  .wheel .n8{top:26px;left:22px;}
+  .wheel .n9{top:50%;left:50%;transform:translate(-50%,-50%);font-size:20px;}
+
+  /* ===== ÍCONES TEMÁTICOS (estrela, lua, sol) ===== */
+  .icons{display:flex;gap:18px;font-size:26px;color:var(--ouro);}
+
+  /* ===== CAIXA DE DESTAQUE (borda dourada) ===== */
+  .callout{
+    border:2px solid var(--ouro);
+    border-radius:12px;
+    padding:18px 20px;
+    max-width:560px;
+    background:#fffdf7;
+    box-shadow:0 4px 14px rgba(212,175,55,.15);
+  }
+  .callout .ico{font-size:22px;color:var(--ouro);margin-bottom:6px;}
+  .callout p{font-size:14px;color:var(--preto);font-style:italic;}
+
+  /* ===== INFOGRÁFICO DE BARRAS (gradiente dourado/terroso) ===== */
+  .infograph{margin-top:30px;max-width:640px;}
+  .infograph .label{
+    font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--cinza-claro);margin-bottom:10px;
+  }
+  .bar{
+    height:16px;border-radius:8px;margin-bottom:10px;
+    background:linear-gradient(90deg,#D4AF37,#C5A059,#8B6914);
+    position:relative;
+  }
+  .bar span{
+    position:absolute;right:8px;top:50%;transform:translateY(-50%);
+    font-size:10px;color:#fff;font-weight:700;
+  }
+
+  /* ===== RODAPÉ (contato + página numerada) ===== */
+  .footer{
+    position:absolute;left:56px;right:56px;bottom:24px;
+    display:flex;align-items:center;justify-content:space-between;
+    padding-top:12px;border-top:1px solid var(--ouro);
+    font-size:12px;color:var(--cinza-claro);
+  }
+  .footer .contact{letter-spacing:.04em;}
+  .footer .page-num{font-family:Georgia,serif;color:var(--ouro-escuro);font-weight:700;}
+
+  /* ===== TABELA ESTÁVEL (para produtos/mercado) ===== */
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13px;}
+  th{
+    text-align:left;padding:10px 12px;color:var(--ouro-escuro);
+    border-bottom:2px solid var(--ouro);font-family:Georgia,serif;
+    text-transform:uppercase;letter-spacing:.06em;font-size:12px;
+  }
+  td{padding:9px 12px;border-bottom:1px solid #e8e0c8;}
+  tr:last-child td{border-bottom:none;}
+</style>
+</head>
+<body>
+
+<!-- ===== PÁGINA 1-8 ===== -->
+<div class="page">
+
+  <!-- CABEÇALHO: DUAS LOGOS -->
+  <header class="header">
+    <div class="header-left">
+      <div class="logo-symbol">☉</div>
+      <div class="logo-wordmark">A1ELOS<br>Global Numerology</div>
+    </div>
+    <div class="logo-symbol">1–9</div>
+  </header>
+
+  <!-- TÍTULO -->
+  <h1 class="section-title">O Seu Caminho de Vida</h1>
+
+  <!-- CONTEÚDO EM COLUNAS ASSIMÉTRICAS -->
+  <div class="cols">
+    <div class="col-text">
+      <p class="body-text">
+        Bem-vindo(a) ao seu Relatório de Numerologia Global! Aqui, desvendamos
+        os segredos do seu Caminho de Vida, explorando as energias cósmicas que
+        moldam a sua jornada e o seu potencial único neste mundo em constante mudança.
+      </p>
+
+      <!-- CAIXA DE DESTAQUE -->
+      <div class="callout">
+        <div class="ico">🧭</div>
+        <p>A intuição é a sua bússola. Confie nela para navegar pelos ciclos da sua vida.</p>
+      </div>
+
+      <!-- INFOGRÁFICO -->
+      <div class="infograph">
+        <div class="label">Infográfico de seus ciclos</div>
+        <div class="bar" style="width:72%;"><span>72</span></div>
+        <div class="bar" style="width:48%;"><span>48</span></div>
+        <div class="bar" style="width:90%;"><span>90</span></div>
+      </div>
+    </div>
+
+    <div class="col-visual">
+      <!-- DIAGRAMA CIRCULAR 1-9 -->
+      <div class="wheel">
+        <span class="n1">1</span><span class="n2">2</span><span class="n3">3</span>
+        <span class="n4">4</span><span class="n5">5</span><span class="n6">6</span>
+        <span class="n7">7</span><span class="n8">8</span><span class="n9">9</span>
+      </div>
+      <!-- ÍCONES TEMÁTICOS -->
+      <div class="icons">★ ☾ ☀</div>
+    </div>
+  </div>
+
+  <!-- RODAPÉ: CONTATO + PÁGINA NUMERADA -->
+  <footer class="footer">
+    <span class="contact">arvigne@gmail.com · global-numerology.onrender.com</span>
+    <span class="page-num">1-8</span>
+  </footer>
+
+</div>
+
+</body>
+</html>
