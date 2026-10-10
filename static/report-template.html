@@ -56,13 +56,16 @@
   }
 
   /* ===== CABEÇALHO (DUAS LOGOS) ===== */
-  .header{
-    display:flex;align-items:center;justify-content:space-between;
-    padding-bottom:14px;
-    border-bottom:1px solid var(--ouro);
-    margin-bottom:36px;
-  }
-  .header-left{display:flex;align-items:center;gap:14px;}
+<header class="header">
+  <div class="header-left">
+    <!-- LOGO DO SITE (raiz, junto ao index) -->
+    <img src="logo-site.png" alt="Símbolo A1ELOS" style="height:46px;width:auto;">
+    <!-- LOGO A1ELOS (dentro de partials) -->
+    <img src="partials/logo-a1elos.png" alt="A1ELOS Global Numerology" style="height:46px;width:auto;">
+  </div>
+  <!-- segunda logo no lado direito, se quiser as duas separadas -->
+  <img src="logo-site.png" alt="A1ELOS" style="height:46px;width:auto;">
+</header>
   .logo-wordmark{
     font-family:Georgia,'Times New Roman',serif;
     font-size:15px;letter-spacing:.18em;color:var(--ouro-escuro);
