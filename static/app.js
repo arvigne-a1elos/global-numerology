@@ -752,7 +752,8 @@ fetch('/api/precos')
   };
   var MAPA_ID_PROD = {
     urna: "urna", eleitoral: "eleitoral", arte: "artistico", ong: "nome_ong",
-    ia: "ia", bebe: "bebe", negocio: "negocio", assinatura: "assinatura"
+    ia: "ia", bebe: "bebe", negocio: "negocio", assinatura: "assinatura",
+    equipe: "compatibilidade_equipes"
   };
   function montarSeletor(el) {
     if (el.children.length > 0) return;   // já montado por outra função? não mexe
@@ -840,5 +841,6 @@ window.ativarBonusIA = window.ativarBonusIA || function(){
 function pagarEquipe(){
   var n = document.getElementById('equipeMembros').value.trim();
   if (!n) { alert(t_preencha()); return; }
-  location.href = '/criar-checkout?produto=compatibilidade_equipes&dado=' + encodeURIComponent(n) + '&lang=' + getLang();
+  location.href = '/criar-checkout?produto=compatibilidade_equipes&dado=' + encodeURIComponent(n)
+    + '&energia=' + encodeURIComponent(_energiaSelecionada('equipeEnergiaSel', 'compatibilidade_equipes')) + '&lang=' + getLang();
 }
