@@ -747,7 +747,7 @@ function montarTabelaBC() {
 }
 
 /* ===== MENU DE ENERGIAS ===== */
-window.ENERGIA_PRODUTOS = window.ENERGIA_PRODUTOS || [["ia","🤖"],["nome_pet","🐾"],["nickname","🎮"],["nome_dominio","🌐"],["nome_canal","🎥"],["nome_equipe","🧭"],["nome_ong","🏛️"],["nome_projeto","📋"],["nome_evento","🎪"],["bebe","👶"],["assinatura","✍️"],["imovel","🏠"],["negocio","💼"]];
+window.ENERGIA_PRODUTOS = window.ENERGIA_PRODUTOS || [["ia","🤖"],["nome_pet","🐾"],["nickname","🎮"],["nome_dominio","🌐"],["nome_canal","🎥"],["nome_equipe","🧭"],["nome_ong","🏛️"],["nome_projeto","📋"],["nome_evento","🎪"],["bebe","👶"],["assinatura","✍️"],["imovel","🏠"],["negocio","💼"],["compatibilidade_equipes","🏢"]];
 function pesquisarEnergia(n) {
   abrirMenuEnergia(n, getLang());
 }
@@ -864,8 +864,7 @@ var ENERGIA_IDEAL = {
   nome_equipe: 8,
   nome_projeto: 8,
   nome_evento: 3,
-  coletivo: 8,
-  compatibilidade_equipes: 8, 
+  compatibilidade_equipes: 8 
 };
 
 function montarPassoEnergia(produto, lang) {
