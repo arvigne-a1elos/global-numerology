@@ -606,19 +606,19 @@
             </div>
 
             <!-- 23. Compatibilidade de Equipes (RH) -->
-            <div class="product-card" data-prod="coletivo_empresarial">
+            <div class="product-card" data-prod="compatibilidade_equipes">
                 <div class="icon">🏢</div>
-                <h3 class="prod-nome" data-i18n="p_coletivo_empresarial">Compatibilidade de Equipes</h3>
+                <h3 class="prod-nome" data-i18n="p_compatibilidade_equipes">Compatibilidade de Equipes</h3>
                 <div class="price prod-preco">R$ 98</div>
-                <p class="desc" data-i18n="desc_coletivo_empresarial">Análise da compatibilidade entre chefes e membros e entre os membros da equipe, ideal para RH.</p>
+                <p class="desc" data-i18n="desc_compatibilidade_equipes">Análise da compatibilidade entre chefes e membros e entre os membros da equipe, ideal para RH.</p>
                 <ul class="features">
                    <li>✅ Chefe × membros</li>
                    <li>✅ Membros × membros</li>
                    <li>✅ Compatibilidade de pares</li>
                    <li>📲 PDF + QRCode</li>
                 </ul>
-                <button class="btn btn-full" onclick="toggleForm('form-coletivo_empresarial')" data-i18n="pesquisar_btn">pesquisar</button>
-                <form id="form-coletivo_empresarial" class="hidden">
+                <button class="btn btn-full" onclick="toggleForm('form-compatibilidade_equipes')" data-i18n="pesquisar_btn">pesquisar</button>
+                <form id="form-compatibilidade_equipes" class="hidden">
                    <label data-i18n-form="f_equipe">Membros da equipe (um por linha)</label>
                    <textarea id="equipeMembros" rows="4" data-i18n-ph="ph_membros" placeholder="Chefe; 01/01/1980; CHEFE&#10;Nome 2; 15/03/1985&#10;Nome 3; 22/07/1990"></textarea>
                    <button class="btn btn-full" onclick="pagarEquipe()" data-i18n-form="pesquisar_btn">Pesquisar</button>
@@ -630,14 +630,28 @@
                 <div class="icon">🏢</div>
                 <h3 class="prod-nome" data-i18n="p_coletivo">Bônus Coletivo/Empresarial</h3>
                 <div class="price" data-i18n="sob_consulta">Sob consulta</div>
-                <p class="desc" data-i18n="desc_coletivo">Contrate brindes numerológicos para seus clientes ou funcionários. Descontos de 10% a 70%.</p>
-                <ul class="features">
+                <p class="desc" data-i18n="desc_coletivo">Contrate brindes numerológicos para seus clientes ou funcionários. Descontos automáticos de 10% a 50%. Acima de 2.000 unidades, condições sob consulta.</p>                <ul class="features">
                     <li>✅ Planos prontos</li>
                     <li>✅ Sob medida</li>
                     <li>✅ Descontos progressivos</li>
                     <li>✅ Códigos de presente</li>
                 </ul>
                 <button class="btn btn-full" onclick="document.getElementById('corporativo').scrollIntoView({behavior:'smooth'})" data-i18n="know_more">Saiba Mais</button>
+                <!-- ===== NEGOCIAÇÃO SOB CONSULTA (pedidos acima de 2.000 unidades) ===== -->
+                <div id="bcAvisoConsulta" style="display:none;margin-top:12px;padding:10px 14px;border:1px solid #C9A94E;border-radius:10px;background:#1a1a1a;color:#f5f5f5;font-size:.9rem;">
+                  ⚡ Este pedido ultrapassa o desconto automático (10% a 50%). Preencha o formulário abaixo e receba uma proposta personalizada.
+                </div>
+                <div id="formNegociacao" style="display:none;margin-top:16px;padding:18px;border:1px solid #C9A94E;border-radius:12px;background:#111;">
+                    <h4 style="color:#C9A94E;margin:0 0 6px;">Desconto sob consulta</h4>
+                    <p style="color:#ccc;font-size:.85rem;margin:0 0 12px;">Grandes volumes merecem atenção especial. Fale conosco.</p>
+                    <input id="negNome" type="text" placeholder="Seu nome" style="width:100%;margin-bottom:8px;padding:8px;border:1px solid #333;border-radius:6px;background:#0a0a0a;color:#fff;">
+                    <input id="negEmpresa" type="text" placeholder="Empresa" style="width:100%;margin-bottom:8px;padding:8px;border:1px solid #333;border-radius:6px;background:#0a0a0a;color:#fff;">
+                    <input id="negEmail" type="email" placeholder="Seu e-mail" style="width:100%;margin-bottom:8px;padding:8px;border:1px solid #333;border-radius:6px;background:#0a0a0a;color:#fff;">
+                    <input id="negQtd" type="number" min="2001" placeholder="Quantidade estimada" style="width:100%;margin-bottom:8px;padding:8px;border:1px solid #333;border-radius:6px;background:#0a0a0a;color:#fff;">
+                    <textarea id="negMsg" rows="3" placeholder="Mensagem (opcional)" style="width:100%;margin-bottom:12px;padding:8px;border:1px solid #333;border-radius:6px;background:#0a0a0a;color:#fff;"></textarea>
+                    <button class="btn btn-full" onclick="enviarPedidoNegociacao()">Solicitar proposta</button>
+                 <p id="negStatus" style="color:#C9A94E;font-size:.85rem;margin:8px 0 0;"></p>
+               </div>
             </div>
        </div>
 </section>
