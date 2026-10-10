@@ -95,6 +95,7 @@ function atualizarResumoBC() {
     if (!unit) continue;
     total += unit * q;
     qtdTotal += q;
+    aplicarEstadoBC(qtdTotal);
   }
   var descPct = (typeof descontoBC === 'function') ? descontoBC(qtdTotal) : 0;
   var desc = Math.round(total * descPct / 100);
@@ -916,6 +917,14 @@ function montarPassoNome(produto, lang) {
 
 /* ===== CONFIRMAR BÔNUS COLETIVO ===== */
 function confirmarBC() {
+  var qtdTotal = 0;
+  for (var id in window.BC_QUANTIDADES) { qtdTotal += parseInt(window.BC_QUANTIDADES[id], 10) || 0; }
+  if (bcSobConsulta(qtdTotal)) {
+    aplicarEstadoBC(qtdTotal);
+    var av = document.getElementById('bcAvisoConsulta');
+    if (av) av.style.display = 'block';
+    return;  // NÃO abre pagamento — vai para negociação
+  }
   var lang = getLang();
   var itens = [];
   for (var id in window.BC_QUANTIDADES) {
