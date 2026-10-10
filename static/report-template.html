@@ -32,7 +32,7 @@
       var(--branco);
     background-blend-mode:multiply;
   }
-  /* fallback: marca d'água em CSS puro (Homem Vitruviano + números 1-9) */
+  /* fallback: marca d'água em CSS puro (círculo + números 1-9) */
   .page::before{
     content:"";
     position:absolute;left:-60px;top:50%;transform:translateY(-50%);
@@ -45,7 +45,6 @@
     opacity:.5;
     pointer-events:none;
   }
-  /* números 1-9 orbitando (posicionados no círculo) */
   .page::after{
     content:"1 2 3 4 5 6 7 8 9";
     position:absolute;left:150px;top:50%;transform:translateY(-50%);
@@ -56,27 +55,15 @@
   }
 
   /* ===== CABEÇALHO (DUAS LOGOS) ===== */
-<header class="header">
-  <div class="header-left">
-    <img src="A1ELOS.png" alt="A1ELOS Global Numerology" style="height:46px;width:auto;">
-  </div>
-  <div class="header-right">
-    <img src="logo.png" alt="Símbolo A1ELOS" style="height:46px;width:auto;">
-  </div>
-</header>
-  .logo-wordmark{
-    font-family:Georgia,'Times New Roman',serif;
-    font-size:15px;letter-spacing:.18em;color:var(--ouro-escuro);
-    text-transform:uppercase;font-weight:700;
+  .header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding-bottom:14px;
+    border-bottom:1px solid var(--ouro);
+    margin-bottom:36px;
   }
-  .logo-symbol{
-    width:46px;height:46px;
-    border:1.5px solid var(--ouro);
-    border-radius:50%;
-    display:flex;align-items:center;justify-content:center;
-    font-family:Georgia,serif;color:var(--ouro);font-size:12px;
-    background:radial-gradient(circle, transparent 55%, rgba(212,175,55,.12) 56%);
-  }
+  .header-left{display:flex;align-items:center;gap:14px;}
+  .header-right{display:flex;align-items:center;gap:14px;}
+  .header img{height:46px;width:auto;}
 
   /* ===== TÍTULO SERIFADO DOURADO ===== */
   .section-title{
@@ -181,13 +168,14 @@
 <!-- ===== PÁGINA 1-8 ===== -->
 <div class="page">
 
-  <!-- CABEÇALHO: DUAS LOGOS -->
+  <!-- CABEÇALHO: DUAS LOGOS (no BODY, dentro da página) -->
   <header class="header">
     <div class="header-left">
-      <div class="logo-symbol">☉</div>
-      <div class="logo-wordmark">A1ELOS<br>Global Numerology</div>
+      <img src="A1ELOS.png" alt="A1ELOS Global Numerology">
     </div>
-    <div class="logo-symbol">1–9</div>
+    <div class="header-right">
+      <img src="logo.png" alt="Símbolo A1ELOS">
+    </div>
   </header>
 
   <!-- TÍTULO -->
