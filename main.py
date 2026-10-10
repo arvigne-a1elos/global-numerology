@@ -72,6 +72,17 @@ ADMIN_EMAIL = "arvigne@gmail.com"
 if STRIPE_KEY:
     stripe.api_key = STRIPE_KEY
 
+# ===== CONFIG DE DESCONTO DO BÔNUS COLETIVO (espelho do app.js) =====
+CONFIG_DESCONTO = {
+    "faixas": [
+        {"min": 10, "pct": 10}, {"min": 50, "pct": 20}, {"min": 100, "pct": 25},
+        {"min": 200, "pct": 30}, {"min": 500, "pct": 40}, {"min": 1000, "pct": 45},
+        {"min": 2000, "pct": 50},
+    ],
+    "teto_automatico": 2000,
+    "pct_teto_negociacao": 70,
+}
+
 # ===== BANCO DE DADOS =====
 engine_kwargs = {}
 if DB_URL.startswith("sqlite"):
@@ -139,7 +150,7 @@ PRODUTOS = {
         "casal": "Mapa do Casal", "familia": "Mapa Familia Premium", "coletivo": "Bonus Coletivo/Empresarial",
         "nome_pet": "Nome do Pet", "nickname": "Nickname Digital", "nome_dominio": "Nome do Dominio",
         "nome_canal": "Nome do Canal", "nome_equipe": "Nome da Equipe", 
-        "nome_ong": "Nome de ONG, Associacao, Instituto ou Fundacao", "coletivo_empresarial": "Compatibilidade de Equipes",
+        "nome_ong": "Nome de ONG, Associacao, Instituto ou Fundacao", "compatibilidade_equipes": "Compatibilidade de Equipes",
         "nome_projeto": "Nome do Projeto", "nome_evento": "Nome do Evento"},
     "en": {"express": "Express Map", "vida": "Life Phase & Year", "completo": "Complete Map",
         "ia": "AI Name Search", "urna": "Ballot Name Validation", "eleitoral": "Electoral Number",
@@ -149,7 +160,7 @@ PRODUTOS = {
         "casal": "Couple Map", "familia": "Premium Family Map", "coletivo": "Corporate Bonus",
         "nome_pet": "Pet Name", "nickname": "Digital Nickname", "nome_dominio": "Domain Name",
         "nome_canal": "Channel Name", "nome_equipe": "Team Name", "nome_projeto": "Project Name", "nome_evento": "Event Name",
-        "nome_ong": "NGO, Association, Institute or Foundation Name", "coletivo_empresarial": "Team Compatibility"},
+        "nome_ong": "NGO, Association, Institute or Foundation Name", "compatibilidade_equipes": "Team Compatibility"},
     "es": {"express": "Mapa Exprés", "vida": "Ciclo de Vida y Año", "completo": "Mapa Completo",
         "ia": "Búsqueda IA de Nombres", "urna": "Validación Nombre de Urna", "eleitoral": "Número Electoral",
         "imovel": "Número de la Propiedad", "calendario": "Calendario Mensual Energético",
@@ -159,7 +170,7 @@ PRODUTOS = {
         "nome_pet": "Nombre de la Mascota", "nickname": "Apodo Digital", "nome_dominio": "Nombre de Dominio",
         "nome_canal": "Nombre del Canal", "nome_equipe": "Nombre del Equipo", 
         "nome_projeto": "Nombre del Proyecto", "nome_evento": "Nombre del Evento",
-        "nome_ong": "Nombre de ONG, Asociacion, Instituto o Fundacion", "coletivo_empresarial": "Compatibilidad de Equipos"}, 
+        "nome_ong": "Nombre de ONG, Asociacion, Instituto o Fundacion", "compatibilidade_equipes": "Compatibilidad de Equipos"}, 
     "it": {"express": "Mappa Espressa", "vida": "Fase di Vita e Anno", "completo": "Mappa Completa",
         "ia": "Ricerca IA Nomi", "urna": "Validazione Nome della Scheda", "eleitoral": "Numero Elettorale",
         "imovel": "Numero dell'Immobile", "calendario": "Calendario Mensile Energetico",
@@ -169,7 +180,7 @@ PRODUTOS = {
         "nome_pet": "Nome dell'Animale", "nickname": "Nickname Digitale", "nome_dominio": "Nome del Dominio",
         "nome_canal": "Nome del Canale", "nome_equipe": "Nome della Squadra", 
         "nome_projeto": "Nome del Progetto", "nome_evento": "Nome dell'Evento",
-        "nome_ong": "Nome di ONG, Associazione, Istituto o Fondazione", "coletivo_empresarial": "Compatibilità di Squadra"},
+        "nome_ong": "Nome di ONG, Associazione, Istituto o Fondazione", "compatibilidade_equipes": "Compatibilità di Squadra"},
     "fr": {"express": "Carte Express", "vida": "Phase de Vie et Année", "completo": "Carte Complète",
         "ia": "Recherche IA de Noms", "urna": "Validation Nom du Bulletin", "eleitoral": "Numéro Électoral",
         "imovel": "Numéro du Bien", "calendario": "Calendrier Mensuel Énergétique",
@@ -179,7 +190,7 @@ PRODUTOS = {
         "nome_pet": "Nom de l'Animal", "nickname": "Pseudo Numerique", "nome_dominio": "Nom de Domaine",
         "nome_canal": "Nom de la Chaine", "nome_equipe": "Nom de l'Equipe", 
         "nome_projeto": "Nom du Projet", "nome_evento": "Nom de l'Evenement",
-        "nome_ong": "Nom d'ONG, Association, Institut ou Fondation", "coletivo_empresarial": "Compatibilité d'Équipe"},
+        "nome_ong": "Nom d'ONG, Association, Institut ou Fondation", "compatibilidade_equipes": "Compatibilité d'Équipe"},
     "de": {"express": "Express-Karte", "vida": "Lebensphase & Jahr", "completo": "Vollständige Karte",
         "ia": "KI-Namenssuche", "urna": "Stimmzettelname-Validierung", "eleitoral": "Wahlnummer",
         "imovel": "Immobiliennummer", "calendario": "Monatlicher Energiekalender",
@@ -189,7 +200,7 @@ PRODUTOS = {
         "nome_pet": "Haustiername", "nickname": "Digitaler Spitzname", "nome_dominio": "Domainname",
         "nome_canal": "Kanalname", "nome_equipe": "Teamname", 
         "nome_projeto": "Projektname", "nome_evento": "Veranstaltungsname", 
-        "nome_ong": "Name von NGO, Verein, Institut oder Stiftung", "coletivo_empresarial": "Team-Kompatibilität"},
+        "nome_ong": "Name von NGO, Verein, Institut oder Stiftung", "compatibilidade_equipes": "Team-Kompatibilität"},
     "ja": {"express": "エクスプレスマップ", "vida": "ライフステージと年", "completo": "完全マップ",
         "ia": "AI名前検索", "urna": "投票用紙名の検証", "eleitoral": "選挙番号",
         "imovel": "不動産番号", "calendario": "月間エネルギーカレンダー",
@@ -199,7 +210,7 @@ PRODUTOS = {
         "nome_pet": "ペットの名前", "nickname": "デジタルニックネーム", "nome_dominio": "ドメイン名",
         "nome_canal": "チャンネル名", "nome_equipe": "チーム名", 
         "nome_projeto": "プロジェクト名", "nome_evento": "イベント名", 
-        "nome_ong": "NGO・協会・研究所・財団の名前", "coletivo_empresarial": "チーム相性診断"},
+        "nome_ong": "NGO・協会・研究所・財団の名前", "compatibilidade_equipes": "チーム相性診断"},
     "zh": {"express": "快速地图", "vida": "生命阶段与年份", "completo": "完整地图",
         "ia": "AI名字搜索", "urna": "选票名称验证", "eleitoral": "选举号码",
         "imovel": "房产号码", "calendario": "每月能量日历",
@@ -209,7 +220,7 @@ PRODUTOS = {
         "nome_pet": "宠物名字", "nickname": "数字昵称", "nome_dominio": "域名",
         "nome_canal": "频道名称", "nome_equipe": "团队名称", 
         "nome_projeto": "项目名称", "nome_evento": "活动名称", 
-        "nome_ong": "非政府组织、协会、研究所或基金会名称", "coletivo_empresarial": "团队兼容性"},
+        "nome_ong": "非政府组织、协会、研究所或基金会名称", "compatibilidade_equipes": "团队兼容性"},
     "ru": {"express": "Экспресс-карта", "vida": "Жизненный этап и год", "completo": "Полная карта",
         "ia": "ИИ-поиск имён", "urna": "Проверка названия бюллетеня", "eleitoral": "Избирательный номер",
         "imovel": "Номер недвижимости", "calendario": "Ежемесячный энергетический календарь",
@@ -219,7 +230,7 @@ PRODUTOS = {
         "nome_pet": "Имя питомца", "nickname": "Цифровой никнейм", "nome_dominio": "Имя домена",
         "nome_canal": "Название канала", "nome_equipe": "Название команды", 
         "nome_projeto": "Название проекта", "nome_evento": "Название события", 
-        "nome_ong": "Название НКО, ассоциации, института или фонда", "coletivo_empresarial": "Совместимость команды"},
+        "nome_ong": "Название НКО, ассоциации, института или фонда", "compatibilidade_equipes": "Совместимость команды"},
     "he": {"express": "מפה מהירה", "vida": "שלב חיים ושנה", "completo": "מפה מלאה",
         "ia": "חיפוש שמות AI", "urna": "אימות שם פתק", "eleitoral": "מספר בחירות",
         "imovel": "מספר נכס", "calendario": "לוח אנרגיה חודשי",
@@ -229,7 +240,7 @@ PRODUTOS = {
         "nome_canal": "שם הערוץ", "nome_equipe": "שם הצוות", 
         "nome_projeto": "שם הפרויקט", "nome_evento": "שם האירוע",
         "casal": "מפת זוג", "familia": "מפת משפחה פרימיום", "coletivo": "בונוס ארגוני",
-        "nome_ong": "שם עמותה, ארגון, מכון או קרן", "coletivo_empresarial": "תאימות צוות"},
+        "nome_ong": "שם עמותה, ארגון, מכון או קרן", "compatibilidade_equipes": "תאימות צוות"},
     "ar": {"express": "خريطة سريعة", "vida": "مرحلة الحياة والسنة", "completo": "خريطة كاملة",
         "ia": "بحث الأسماء بالذكاء الاصطناعي", "urna": "التحقق من اسم الاقتراع", "eleitoral": "الرقم الانتخابي",
         "imovel": "رقم العقار", "calendario": "التقويم الشهري للطاقة",
@@ -239,7 +250,7 @@ PRODUTOS = {
         "nome_pet": "اسم الحيوان الأليف", "nickname": "اللقب الرقمي", "nome_dominio": "اسم النطاق",
         "nome_canal": "اسم القناة", "nome_equipe": "اسم الفريق", 
         "nome_projeto": "اسم المشروع", "nome_evento": "اسم الفعالية",
-        "nome_ong": "اسم منظمة أو جمعية أو معهد أو مؤسسة", "coletivo_empresarial": "توافق الفريق"},
+        "nome_ong": "اسم منظمة أو جمعية أو معهد أو مؤسسة", "compatibilidade_equipes": "توافق الفريق"},
     "id": {"express": "Peta Ekspres", "vida": "Fase Kehidupan & Tahun", "completo": "Peta Lengkap",
         "ia": "Pencarian Nama AI", "urna": "Validasi Nama Surat Suara", "eleitoral": "Nomor Elektoral",
         "imovel": "Nomor Properti", "calendario": "Kalender Energi Bulanan",
@@ -249,7 +260,7 @@ PRODUTOS = {
         "nome_pet": "Nama Hewan Peliharaan", "nickname": "Nama Panggilan Digital", "nome_dominio": "Nama Domain",
         "nome_canal": "Nama Kanal", "nome_equipe": "Nama Tim", 
         "nome_projeto": "Nama Proyek", "nome_evento": "Nama Acara",
-        "nome_ong": "Nama LSM, Asosiasi, Lembaga atau Yayasan", "coletivo_empresarial": "Kompatibilitas Tim"},     
+        "nome_ong": "Nama LSM, Asosiasi, Lembaga atau Yayasan", "compatibilidade_equipes": "Kompatibilitas Tim"},     
     "tr": {"express": "Ekspres Harita", "vida": "Yaşam Evresi ve Yıl", "completo": "Tam Harita",
         "ia": "AI İsim Arama", "urna": "Oy Pusulası İsim Doğrulama", "eleitoral": "Seçim Numarası",
         "imovel": "Mülk Numarası", "calendario": "Aylık Enerji Takvimi",
@@ -259,7 +270,7 @@ PRODUTOS = {
         "nome_pet": "Evcil Hayvan Adı", "nickname": "Dijital Takma Ad", "nome_dominio": "Alan Adı",
         "nome_canal": "Kanal Adı", "nome_equipe": "Ekip Adı", 
         "nome_projeto": "Proje Adı", "nome_evento": "Etkinlik Adı",
-        "nome_ong": "STK, Dernek, Enstitü veya Vakıf Adı", "coletivo_empresarial": "Ekip Uyumu"},     
+        "nome_ong": "STK, Dernek, Enstitü veya Vakıf Adı", "compatibilidade_equipes": "Ekip Uyumu"},     
     "vi": {"express": "Bản Đồ Nhanh", "vida": "Giai Đoạn Cuộc Đời & Năm", "completo": "Bản Đồ Đầy Đủ",
         "ia": "Tìm Kiếm Tên AI", "urna": "Xác Minh Tên Phiếu Bầu", "eleitoral": "Số Bầu Cử",
         "imovel": "Số Bất Động Sản", "calendario": "Lịch Năng Lượng Hàng Tháng",
@@ -269,7 +280,7 @@ PRODUTOS = {
         "nome_pet": "Tên Thú Cưng", "nickname": "Biệt Danh Kỹ Thuật Số", "nome_dominio": "Tên Miền",
         "nome_canal": "Tên Kênh", "nome_equipe": "Tên Đội Nhóm", 
         "nome_projeto": "Tên Dự Án", "nome_evento": "Tên Sự Kiện",
-        "nome_ong": "Tên Tổ Chức, Hiệp Hội, Viện hoặc Quỹ", "coletivo_empresarial": "Tương hợp đội nhóm"}     
+        "nome_ong": "Tên Tổ Chức, Hiệp Hội, Viện hoặc Quỹ", "compatibilidade_equipes": "Tương hợp đội nhóm"}     
     }
 
 # ===== PRICE IDS STRIPE (23 produtos, 14 idiomas) =====
@@ -284,7 +295,7 @@ PRICE_IDS = {
            "nome_dominio": "PRICE_ID_PT_NOME_DOMINIO", "nome_canal": "PRICE_ID_PT_NOME_CANAL",
            "nome_equipe": "PRICE_ID_PT_NOME_EQUIPE", "nome_ong": "PRICE_ID_PT_NOME_ONG",
            "nome_projeto": "PRICE_ID_PT_NOME_PROJETO", "nome_evento": "PRICE_ID_PT_NOME_EVENTO",
-           "coletivo_empresarial": "PRICE_ID_PT_COLETIVO_EMPRESARIAL"},
+           "compatibilidade_equipes": "PRICE_ID_PT_compatibilidade_equipes" },
     "en": {"express": "price_1TxotnBMLa84bVJ00SGo4kjO", "completo": "price_1TxoxfBMLa84bVJ0VgQVddZX",
            "urna": "price_1Txp1jBMLa84bVJ06W4559rN", "eleitoral": "price_1Txp5aBMLa84bVJ0GqrvBrIk",
            "vida": "PRICE_ID_EN_VIDA", "ia": "PRICE_ID_EN_IA", "imovel": "PRICE_ID_EN_IMOVEL",
@@ -295,7 +306,7 @@ PRICE_IDS = {
            "nome_dominio": "PRICE_ID_EN_NOME_DOMINIO", "nome_canal": "PRICE_ID_EN_NOME_CANAL",
            "nome_equipe": "PRICE_ID_EN_NOME_EQUIPE", "nome_ong": "PRICE_ID_EN_NOME_ONG",
            "nome_projeto": "PRICE_ID_EN_NOME_PROJETO", "nome_evento": "PRICE_ID_EN_NOME_EVENTO",
-           "coletivo_empresarial": "PRICE_ID_EN_COLETIVO_EMPRESARIAL"},
+           "compatibilidade_equipes": "PRICE_ID_EN_compatibilidade_equipes"},
     "es": {"express": "price_1TyD2oBMLa84bVJ0HvSTMozS", "completo": "price_1TyD6NBMLa84bVJ0s5y2OtSr",
            "urna": "price_1TyDB0BMLa84bVJ0baUEGa2P", "eleitoral": "price_1TyDCsBMLa84bVJ0NRp5uOKU",
            "vida": "PRICE_ID_ES_VIDA", "ia": "PRICE_ID_ES_IA", "imovel": "PRICE_ID_ES_IMOVEL",
@@ -306,7 +317,7 @@ PRICE_IDS = {
            "nome_dominio": "PRICE_ID_ES_NOME_DOMINIO", "nome_canal": "PRICE_ID_ES_NOME_CANAL",
            "nome_equipe": "PRICE_ID_ES_NOME_EQUIPE", "nome_ong": "PRICE_ID_ES_NOME_ONG",
            "nome_projeto": "PRICE_ID_ES_NOME_PROJETO", "nome_evento": "PRICE_ID_ES_NOME_EVENTO",
-           "coletivo_empresarial": "PRICE_ID_ES_COLETIVO_EMPRESARIAL"},
+           "compatibilidade_equipes": "PRICE_ID_ES_compatibilidade_equipes"},
     "it": {"express": "PRICE_ID_IT_EXPRESS", "completo": "PRICE_ID_IT_COMPLETO",
            "urna": "PRICE_ID_IT_URNA", "eleitoral": "PRICE_ID_IT_ELEITORAL",
            "vida": "PRICE_ID_IT_VIDA", "ia": "PRICE_ID_IT_IA", "imovel": "PRICE_ID_IT_IMOVEL",
@@ -317,7 +328,7 @@ PRICE_IDS = {
            "nome_dominio": "PRICE_ID_IT_NOME_DOMINIO", "nome_canal": "PRICE_ID_IT_NOME_CANAL",
            "nome_equipe": "PRICE_ID_IT_NOME_EQUIPE", "nome_ong": "PRICE_ID_IT_NOME_ONG",
            "nome_projeto": "PRICE_ID_IT_NOME_PROJETO", "nome_evento": "PRICE_ID_IT_NOME_EVENTO",
-           "coletivo_empresarial": "PRICE_ID_IT_COLETIVO_EMPRESARIAL"},
+           "compatibilidade_equipes": "PRICE_ID_IT_compatibilidade_equipes"},
     "fr": {"express": "price_1TyDnQBMLa84bVJ0K9DBz2mk", "completo": "price_1TyDrjBMLa84bVJ0cstgcPbY",
            "urna": "price_1TyDw1BMLa84bVJ0EV0OnINW", "eleitoral": "price_1TyDxsBMLa84bVJ0n2t4jOfZ",
            "vida": "PRICE_ID_FR_VIDA", "ia": "PRICE_ID_FR_IA", "imovel": "PRICE_ID_FR_IMOVEL",
@@ -328,7 +339,7 @@ PRICE_IDS = {
            "nome_dominio": "PRICE_ID_FR_NOME_DOMINIO", "nome_canal": "PRICE_ID_FR_NOME_CANAL",
            "nome_equipe": "PRICE_ID_FR_NOME_EQUIPE", "nome_ong": "PRICE_ID_FR_NOME_ONG",
            "nome_projeto": "PRICE_ID_FR_NOME_PROJETO", "nome_evento": "PRICE_ID_FR_NOME_EVENTO",
-           "coletivo_empresarial": "PRICE_ID_FR_COLETIVO_EMPRESARIAL"},
+           "compatibilidade_equipes": "PRICE_ID_FR_compatibilidade_equipes"},
     "de": {"express": "price_1TyFJaBMLa84bVJ0BDPNQUjz", "completo": "price_1TyFLKBMLa84bVJ0RT0bkKpW",
            "urna": "price_1TyFO2BMLa84bVJ0FIoh7co1", "eleitoral": "price_1TyFTxBMLa84bVJ0qw6LQvVI",
            "vida": "PRICE_ID_DE_VIDA", "ia": "PRICE_ID_DE_IA", "imovel": "PRICE_ID_DE_IMOVEL",
@@ -339,7 +350,7 @@ PRICE_IDS = {
            "nome_dominio": "PRICE_ID_DE_NOME_DOMINIO", "nome_canal": "PRICE_ID_DE_NOME_CANAL",
            "nome_equipe": "PRICE_ID_DE_NOME_EQUIPE", "nome_ong": "PRICE_ID_DE_NOME_ONG",
            "nome_projeto": "PRICE_ID_DE_NOME_PROJETO", "nome_evento": "PRICE_ID_DE_NOME_EVENTO",
-           "coletivo_empresarial": "PRICE_ID_DE_COLETIVO_EMPRESARIAL"},
+           "compatibilidade_equipes": "PRICE_ID_DE_compatibilidade_equipes"},
     "ja": {"express": "price_1TyJ5HBMLa84bVJ00nZLnuV1", "completo": "price_1TyJJgBMLa84bVJ0fkO5nSFT",
            "urna": "price_1TyJOzBMLa84bVJ0BAPegYVD", "eleitoral": "price_1TyJRwBMLa84bVJ0PLA1CIuH",
            "vida": "PRICE_ID_JA_VIDA", "ia": "PRICE_ID_JA_IA", "imovel": "PRICE_ID_JA_IMOVEL",
@@ -350,7 +361,7 @@ PRICE_IDS = {
            "nome_dominio": "PRICE_ID_JA_NOME_DOMINIO", "nome_canal": "PRICE_ID_JA_NOME_CANAL",
            "nome_equipe": "PRICE_ID_JA_NOME_EQUIPE", "nome_ong": "PRICE_ID_JA_NOME_ONG",
            "nome_projeto": "PRICE_ID_JA_NOME_PROJETO", "nome_evento": "PRICE_ID_JA_NOME_EVENTO",
-           "coletivo_empresarial": "PRICE_ID_JA_COLETIVO_EMPRESARIAL"},
+           "compatibilidade_equipes": "PRICE_ID_JA_compatibilidade_equipes"},
     "zh": {"express": "price_1TyKXeBMLa84bVJ07Q6w0j6G", "completo": "price_1TyKZfBMLa84bVJ0bgYSm8e2",
            "urna": "price_1TyKdWBMLa84bVJ0TIP0Knbi", "eleitoral": "price_1TyKitBMLa84bVJ0lFgyKya0",
            "vida": "PRICE_ID_ZH_VIDA", "ia": "PRICE_ID_ZH_IA", "imovel": "PRICE_ID_ZH_IMOVEL",
@@ -361,7 +372,7 @@ PRICE_IDS = {
            "nome_dominio": "PRICE_ID_ZH_NOME_DOMINIO", "nome_canal": "PRICE_ID_ZH_NOME_CANAL",
            "nome_equipe": "PRICE_ID_ZH_NOME_EQUIPE", "nome_ong": "PRICE_ID_ZH_NOME_ONG",
            "nome_projeto": "PRICE_ID_ZH_NOME_PROJETO", "nome_evento": "PRICE_ID_ZH_NOME_EVENTO",
-           "coletivo_empresarial": "PRICE_ID_ZH_COLETIVO_EMPRESARIAL"},
+           "compatibilidade_equipes": "PRICE_ID_ZH_compatibilidade_equipes"},
     "ru": {"express": "PRICE_ID_RU_EXPRESS", "completo": "PRICE_ID_RU_COMPLETO",
            "urna": "PRICE_ID_RU_URNA", "eleitoral": "PRICE_ID_RU_ELEITORAL",
            "vida": "PRICE_ID_RU_VIDA", "ia": "PRICE_ID_RU_IA", "imovel": "PRICE_ID_RU_IMOVEL",
@@ -372,7 +383,7 @@ PRICE_IDS = {
            "nome_dominio": "PRICE_ID_RU_NOME_DOMINIO", "nome_canal": "PRICE_ID_RU_NOME_CANAL",
            "nome_equipe": "PRICE_ID_RU_NOME_EQUIPE", "nome_ong": "PRICE_ID_RU_NOME_ONG",
            "nome_projeto": "PRICE_ID_RU_NOME_PROJETO", "nome_evento": "PRICE_ID_RU_NOME_EVENTO",
-           "coletivo_empresarial": "PRICE_ID_RU_COLETIVO_EMPRESARIAL"},
+           "compatibilidade_equipes": "PRICE_ID_RU_compatibilidade_equipes"},
     "he": {"express": "price_1TyIKeBMLa84bVJ0W02dbXOt", "completo": "price_1TyIO0BMLa84bVJ08P0j9THk",
            "urna": "price_1TyIPbBMLa84bVJ08GnGksRk", "eleitoral": "price_1TyISQBMLa84bVJ0sb7xjIyV",
            "vida": "PRICE_ID_HE_VIDA", "ia": "PRICE_ID_HE_IA", "imovel": "PRICE_ID_HE_IMOVEL",
@@ -383,7 +394,7 @@ PRICE_IDS = {
            "nome_dominio": "PRICE_ID_HE_NOME_DOMINIO", "nome_canal": "PRICE_ID_HE_NOME_CANAL",
            "nome_equipe": "PRICE_ID_HE_NOME_EQUIPE", "nome_ong": "PRICE_ID_HE_NOME_ONG",
            "nome_projeto": "PRICE_ID_HE_NOME_PROJETO", "nome_evento": "PRICE_ID_HE_NOME_EVENTO",
-           "coletivo_empresarial": "PRICE_ID_HE_COLETIVO_EMPRESARIAL"},
+           "compatibilidade_equipes": "PRICE_ID_HE_compatibilidade_equipes"},
     "ar": {"express": "PRICE_ID_AR_EXPRESS", "completo": "PRICE_ID_AR_COMPLETO",
            "urna": "PRICE_ID_AR_URNA", "eleitoral": "PRICE_ID_AR_ELEITORAL",
            "vida": "PRICE_ID_AR_VIDA", "ia": "PRICE_ID_AR_IA", "imovel": "PRICE_ID_AR_IMOVEL",
@@ -394,7 +405,7 @@ PRICE_IDS = {
            "nome_dominio": "PRICE_ID_AR_NOME_DOMINIO", "nome_canal": "PRICE_ID_AR_NOME_CANAL",
            "nome_equipe": "PRICE_ID_AR_NOME_EQUIPE", "nome_ong": "PRICE_ID_AR_NOME_ONG",
            "nome_projeto": "PRICE_ID_AR_NOME_PROJETO", "nome_evento": "PRICE_ID_AR_NOME_EVENTO",
-           "coletivo_empresarial": "PRICE_ID_AR_COLETIVO_EMPRESARIAL"},
+           "compatibilidade_equipes": "PRICE_ID_AR_compatibilidade_equipes"},
     "id": {"express": "PRICE_ID_ID_EXPRESS", "completo": "PRICE_ID_ID_COMPLETO",
            "urna": "PRICE_ID_ID_URNA", "eleitoral": "PRICE_ID_ID_ELEITORAL",
            "vida": "PRICE_ID_ID_VIDA", "ia": "PRICE_ID_ID_IA", "imovel": "PRICE_ID_ID_IMOVEL",
@@ -405,7 +416,7 @@ PRICE_IDS = {
            "nome_dominio": "PRICE_ID_ID_NOME_DOMINIO", "nome_canal": "PRICE_ID_ID_NOME_CANAL",
            "nome_equipe": "PRICE_ID_ID_NOME_EQUIPE", "nome_ong": "PRICE_ID_ID_NOME_ONG",
            "nome_projeto": "PRICE_ID_ID_NOME_PROJETO", "nome_evento": "PRICE_ID_ID_NOME_EVENTO",
-           "coletivo_empresarial": "PRICE_ID_ID_COLETIVO_EMPRESARIAL"},
+           "compatibilidade_equipes": "PRICE_ID_ID_compatibilidade_equipes"},
     "tr": {"express": "PRICE_ID_TR_EXPRESS", "completo": "PRICE_ID_TR_COMPLETO",
            "urna": "PRICE_ID_TR_URNA", "eleitoral": "PRICE_ID_TR_ELEITORAL",
            "vida": "PRICE_ID_TR_VIDA", "ia": "PRICE_ID_TR_IA", "imovel": "PRICE_ID_TR_IMOVEL",
@@ -416,7 +427,7 @@ PRICE_IDS = {
            "nome_dominio": "PRICE_ID_TR_NOME_DOMINIO", "nome_canal": "PRICE_ID_TR_NOME_CANAL",
            "nome_equipe": "PRICE_ID_TR_NOME_EQUIPE", "nome_ong": "PRICE_ID_TR_NOME_ONG",
            "nome_projeto": "PRICE_ID_TR_NOME_PROJETO", "nome_evento": "PRICE_ID_TR_NOME_EVENTO",
-           "coletivo_empresarial": "PRICE_ID_TR_COLETIVO_EMPRESARIAL"},
+           "compatibilidade_equipes": "PRICE_ID_TR_compatibilidade_equipes"},
     "vi": {"express": "PRICE_ID_VI_EXPRESS", "completo": "PRICE_ID_VI_COMPLETO",
            "urna": "PRICE_ID_VI_URNA", "eleitoral": "PRICE_ID_VI_ELEITORAL",
            "vida": "PRICE_ID_VI_VIDA", "ia": "PRICE_ID_VI_IA", "imovel": "PRICE_ID_VI_IMOVEL",
@@ -427,7 +438,7 @@ PRICE_IDS = {
            "nome_dominio": "PRICE_ID_VI_NOME_DOMINIO", "nome_canal": "PRICE_ID_VI_NOME_CANAL",
            "nome_equipe": "PRICE_ID_VI_NOME_EQUIPE", "nome_ong": "PRICE_ID_VI_NOME_ONG",
            "nome_projeto": "PRICE_ID_VI_NOME_PROJETO", "nome_evento": "PRICE_ID_VI_NOME_EVENTO",
-           "coletivo_empresarial": "PRICE_ID_VI_COLETIVO_EMPRESARIAL"},
+           "compatibilidade_equipes": "PRICE_ID_VI_compatibilidade_equipes"},
 }
 
 PRODUTO_TARGET = {
@@ -436,7 +447,7 @@ PRODUTO_TARGET = {
     "imovel": "produtos", "calendario": "produtos", "artistico": "produtos",
     "bebe": "produtos", "assinatura": "produtos", "negocio": "produtos",
     "casal": "produtos", "familia": "produtos", "coletivo": "corporativo",
-    "coletivo_empresarial": "produtos",   # ← NOVO 24º produto (mesmo padrão de casal/família)
+    "compatibilidade_equipes": "produtos",   # ← NOVO 24º produto (mesmo padrão de casal/família)
     "nome_pet": "calculadora", "nickname": "calculadora", "nome_dominio": "calculadora",
     "nome_canal": "calculadora", "nome_equipe": "calculadora", "nome_ong": "calculadora",
     "nome_projeto": "calculadora", "nome_evento": "calculadora"
@@ -482,6 +493,13 @@ class BonusReq(BaseModel):
     nome: str
     email: Optional[str] = ""
     motivo: str
+
+class NegociacaoReq(BaseModel):
+    nome: str
+    empresa: str = ""
+    email: str
+    quantidade: str = ""
+    mensagem: str = ""
 
 class AtivarBonusReq(BaseModel):
     codigo: str
@@ -898,7 +916,14 @@ async def criar_checkout_coletivo(lang: str = "pt", items: str = "[]"):
     if not itens:
         raise HTTPException(400, "Nenhum item")
     qtd_total = sum(int(it.get("qtd", 0)) for it in itens if it.get("qtd"))
+    if qtd_total > CONFIG_DESCONTO["teto_automatico"]:
+        raise HTTPException(400, "Quantidade acima do limite automatico de desconto. "
+                                 "Entre em contato para negociar condicoes especiais.")
     desc = desconto_bc(qtd_total)
+    if desc is None:
+        desc = 0
+    else:
+        desc = min(desc, CONFIG_DESCONTO["faixas"][-1]["pct"])  # nunca acima de 50%
     line_items = []
     for it in itens:
         pid = it.get("id")
@@ -971,7 +996,7 @@ def pay_success(request: Request):
             "calendario": lambda: analisar_calendario(nome, dado),
             "casal":     lambda: _analisar_casal_com_datas(),
             "familia":   lambda: _analisar_familia_com_datas(),
-            "coletivo_empresarial": lambda: analisar_equipe(dado or nome),
+            "compatibilidade_equipes": lambda: analisar_equipe(dado or nome),
             "nome_pet":  _analisar_nome_duplo,
             "nickname":  _analisar_nome_duplo,
             "nome_dominio": _analisar_nome_duplo,
@@ -1373,6 +1398,15 @@ def _cod_valido(codigo: str) -> bool:
     c = "".join(ch for ch in (codigo or "").upper() if ch.isalnum())
     if len(c) != 10 or c[:2] != "A1": return False
     return _checksum(c[2:9]) == c[9]
+
+@app.post("/api/negociacao")
+async def negociar_bonus(req: NegociacaoReq):
+    corpo = (f"PEDIDO SOB CONSULTA — BÔNUS COLETIVO (desconto progressivo)\n\n"
+             f"Nome: {req.nome}\nEmpresa: {req.empresa}\nE-mail: {req.email}\n"
+             f"Quantidade estimada: {req.quantidade}\n\n"
+             f"Mensagem: {req.mensagem or '-'}")
+    ok = _enviar_email_simples(ADMIN_EMAIL, "Novo pedido sob consulta - Bônus Coletivo A1ELOS", corpo)
+    return {"ok": ok}
 
 # ===== SISTEMA DE PUBLICIDADE GEOLOCALIZADA (resgatado do main anterior) =====
 ARQ_BANNERS = "static/banners.json"
