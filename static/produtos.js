@@ -688,8 +688,20 @@ window.BC_PRODUTOS = window.BC_PRODUTOS || [
 ];
 
 function montarTabelaBC() {
-// ordena os produtos por preço crescente antes de montar as linhas
   var lang = (typeof getLang === 'function') ? getLang() : 'pt';
+  // Moeda
+  var simb = (typeof SIMBOLO !== 'undefined' && SIMBOLO[lang]) ? SIMBOLO[lang]
+           : ((typeof SIMB !== 'undefined' && SIMB[lang]) ? SIMB[lang]
+           : ((window.MOEDAS && window.MOEDAS[lang]) ? window.MOEDAS[lang] : 'R$'));
+  // Base de preços
+  var servidor = (typeof PRECO_VALORES !== 'undefined' && PRECO_VALORES[lang]);
+  var base = servidor ? PRECO_VALORES[lang]
+           : (typeof PRECO_BASE !== 'undefined' ? (PRECO_BASE[lang] || PRECO_BASE.pt) : null);
+  if (!base) return;
+  // Traduções de nomes
+  var t  = (window.PRODUTOS_TRAD && window.PRODUTOS_TRAD[lang]) ? window.PRODUTOS_TRAD[lang] : {};
+  var tp = (window.PRODUTOS_TRAD && window.PRODUTOS_TRAD.pt) ? window.PRODUTOS_TRAD.pt : {};
+  // Ordena por preço crescente
   var lista = (typeof BC_PRODUTOS !== 'undefined' ? BC_PRODUTOS : []).slice();
   lista.sort(function(a, b) {
     var pa = parseInt(a[2], 10) || 0;
@@ -711,17 +723,14 @@ function montarTabelaBC() {
     tr:{s:'Hizmet',p:'Fiyat',q:'Adet'},
     vi:{s:'Dịch vụ',p:'Giá',q:'Số lượng'},
     he:{s:'שירות',p:'מחיר',q:'כמות'},
-    ar:{s:'الخدمة',p:'السعر',q:'الكمية'}
+    ar:{s:'الخدمة',p:'السعر',p:'الكمية'}
   };
   var rt = rotulos[lang] || rotulos.pt;
   var thS = document.querySelector('th[data-i18n-bc="servico"]'); if (thS) thS.textContent = rt.s;
   var thP = document.querySelector('th[data-i18n-bc="preco"]');   if (thP) thP.textContent = rt.p;
   var thQ = document.querySelector('th[data-i18n-bc="qtd"]');     if (thQ) thQ.textContent = rt.q;
-  // 2) Linhas montadas dinamicamente (ignora o HTML estático)
-  var produtos = ['express','vida','completo','ia','urna','eleitoral','imovel','calendario',
-                  'artistico','bebe','assinatura','negocio','casal','familia','coletivo',
-                  'nome_pet','nickname','nome_dominio','nome_canal','nome_equipe','nome_ong',
-                  'nome_projeto','nome_evento'];
+  // 2) Linhas montadas dinamicamente — DERIVADAS do BC_PRODUTOS (nunca desatualiza)
+  var produtos = lista.map(function(p){ return p[0]; });
   var corpo = document.getElementById('bcTabelaCorpo');
   if (!corpo) return;
   corpo.innerHTML = '';
@@ -730,6 +739,7 @@ function montarTabelaBC() {
     var faixa = (window.PRODUTO_FAIXA && window.PRODUTO_FAIXA[prod] !== undefined) ? window.PRODUTO_FAIXA[prod] : null;
     if (faixa === null) return;
     var precoUnit = parseInt(base[faixa], 10) || 0;
+    if (servidor) precoUnit = Math.round(precoUnit / 100); // servidor manda em centavos
     var nome = t[prod] || tp[prod] || prod;
     var tr = document.createElement('tr');
     tr.innerHTML = '<td>' + nome + '</td>'
