@@ -289,15 +289,58 @@ function montarPassoTipo(produto, lang) {
     box.appendChild(b);
   });
 }
+
+// ===== CONFIG DE DESCONTO DO BÔNUS COLETIVO — FONTE ÚNICA =====
+// Zona automática: até 2.000 unidades, o site calcula o desconto sozinho (10% a 50%).
+// Acima disso: NÃO calcula — entra em "sob consulta" (negociação manual).
+window.CONFIG_DESCONTO = {
+  faixas: [
+    { min: 10,   pct: 10 },
+    { min: 50,   pct: 20 },
+    { min: 100,  pct: 25 },
+    { min: 200,  pct: 30 },
+    { min: 500,  pct: 40 },
+    { min: 1000, pct: 45 },
+    { min: 2000, pct: 50 }
+  ],
+  teto_automatico: 2000,   // acima desta quantidade = sob consulta
+  pct_teto_negociacao: 70  // máximo negociável (só você decide)
+};
+function obterConfigDesconto() {
+  return (typeof window.CONFIG_DESCONTO !== 'undefined') ? window.CONFIG_DESCONTO : null;
+}
+// Desconto automático (%). Retorna o % aplicável; em zona de negociação retorna 0.
 function descontoBC(qtd) {
-  if (qtd >= 2000) return 50;
-  if (qtd >= 1000) return 45;
-  if (qtd >= 500) return 40;
-  if (qtd >= 200) return 30;
-  if (qtd >= 100) return 25;
-  if (qtd >= 50) return 20;
-  if (qtd >= 10) return 10;
-  return 0;
+  return calcDescontoBC(qtd).pct;
+}
+
+// Cálculo completo: distingue zona automática da zona de negociação.
+// Retorno: { modo: 'auto'|'consulta', pct, qtd, teto }
+function calcDescontoBC(qtd) {
+  qtd = parseInt(qtd, 10) || 0;
+  var cfg = obterConfigDesconto();
+  if (!cfg) { // fallback = tabela antiga (segurança)
+    var pct = 0;
+    if (qtd >= 2000) pct = 50; else if (qtd >= 1000) pct = 45;
+    else if (qtd >= 500) pct = 40; else if (qtd >= 200) pct = 30;
+    else if (qtd >= 100) pct = 25; else if (qtd >= 50) pct = 20;
+    else if (qtd >= 10) pct = 10;
+    return { modo: 'auto', pct: pct, qtd: qtd, teto: 2000 };
+  }
+  if (qtd > cfg.teto_automatico) {
+    return { modo: 'consulta', pct: 0, qtd: qtd, teto: cfg.teto_automatico };
+  }
+  var melhor = 0;
+  var faixas = cfg.faixas.slice().sort(function(a, b) { return b.min - a.min; });
+  for (var i = 0; i < faixas.length; i++) {
+    if (qtd >= faixas[i].min) { melhor = faixas[i].pct; break; }
+  }
+  return { modo: 'auto', pct: melhor, qtd: qtd, teto: cfg.teto_automatico };
+}
+
+// True quando a quantidade exige negociação manual (acima de 2.000)
+function bcSobConsulta(qtd) {
+  return calcDescontoBC(qtd).modo === 'consulta';
 }
 function precoUnitarioBC(id) {
   var lang = (typeof getLang === 'function') ? getLang() : 'pt';
@@ -563,6 +606,43 @@ function montarValorData() {
   if (hidden && d && m && a) hidden.value = a + "-" + m + "-" + d;
 }
 
+// Interruptor automático: acima do teto, oculta o botão de pagamento
+// e exibe o formulário de negociação sob consulta.
+function aplicarEstadoBC(qtdTotal) {
+  qtdTotal = parseInt(qtdTotal, 10) || 0;
+  var consulta = bcSobConsulta(qtdTotal);
+  var btn = document.getElementById('bcBtnConfirmar');
+  if (!btn) btn = document.querySelector('#bcResumo button, #bcoResumo button, .bc-confirmar, [data-bc="confirmar"]');
+  var formLead = document.getElementById('formNegociacao');
+  var aviso = document.getElementById('bcAvisoConsulta');
+  if (consulta) {
+    if (btn) btn.style.display = 'none';
+    if (formLead) formLead.style.display = 'block';
+    if (aviso) aviso.style.display = 'block';
+  } else {
+    if (btn) btn.style.display = '';
+    if (formLead) formLead.style.display = 'none';
+    if (aviso) aviso.style.display = 'none';
+  }
+}
+
+window.enviarPedidoNegociacao = window.enviarPedidoNegociacao || function(){
+  var nome = (document.getElementById('negNome') ? document.getElementById('negNome').value : '').trim();
+  var empresa = (document.getElementById('negEmpresa') ? document.getElementById('negEmpresa').value : '').trim();
+  var email = (document.getElementById('negEmail') ? document.getElementById('negEmail').value : '').trim();
+  var qtd = (document.getElementById('negQtd') ? document.getElementById('negQtd').value : '').trim();
+  var msg = (document.getElementById('negMsg') ? document.getElementById('negMsg').value : '').trim();
+  var st = document.getElementById('negStatus');
+  if (!nome || !email || !qtd) { if (st) st.textContent = t_preencha(); return; }
+  fetch('/api/negociacao', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ nome: nome, empresa: empresa, email: email, quantidade: qtd, mensagem: msg })
+  }).then(function(r){ return r.json(); }).then(function(res){
+    if (st) st.textContent = (res && res.ok) ? '✅ Pedido enviado! Entraremos em contato.' : 'Erro ao enviar. Tente novamente.';
+  }).catch(function(){ if (st) st.textContent = 'Erro ao enviar. Tente novamente.'; });
+};
+
 // ===== INICIALIZAÇÃO =====
 function init() {
   var savedLang = localStorage.getItem('lang');
@@ -760,5 +840,5 @@ window.ativarBonusIA = window.ativarBonusIA || function(){
 function pagarEquipe(){
   var n = document.getElementById('equipeMembros').value.trim();
   if (!n) { alert(t_preencha()); return; }
-  location.href = '/criar-checkout?produto=coletivo_empresarial&dado=' + encodeURIComponent(n) + '&lang=' + getLang();
+  location.href = '/criar-checkout?produto=compatibilidade_equipes&dado=' + encodeURIComponent(n) + '&lang=' + getLang();
 }
