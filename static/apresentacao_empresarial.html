@@ -3,111 +3,137 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A1ELOS Global Numerology — Apresentação Estratégica</title>
+<title>A1ELOS Global Numerology — Apresentação Estratégica (16 folhas)</title>
 <style>
   :root{
-    --ouro:#C9A94E; --ouro-claro:#E0C878; --preto:#0a0a0a;
-    --preto-2:#141414; --branco:#FFFFFF; --cinza:#B8B8B8; --cinza-2:#8A8A8A;
+    --ouro:#C9A94E; --ouro-escuro:#8a6d2f; --ouro-claro:#E0C878;
+    --branco:#FFFFFF; --preto:#1A1A1A; --cinza:#555555; --cinza-2:#8A8A8A;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
-  body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:var(--preto);color:var(--branco);}
+  body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:var(--branco);color:var(--cinza);}
 
-  /* ===== SLIDE / PÁGINA ===== */
-  .slide{
-    position:relative;width:100%;min-height:100vh;
-    padding:34px 56px 96px;
-    background:linear-gradient(160deg,#0a0a0a 0%,#101010 60%,#0a0a0a 100%);
-    overflow:hidden;
+  /* ===== FOLHA / PÁGINA ===== */
+  .page{
+    position:relative;width:100%;min-height:100vh;padding:26px 56px 92px;
+    background:var(--branco);overflow:hidden;
   }
-  /* marca d'água de geometria sagrada sutil */
-  .slide::before{
-    content:"";position:absolute;right:-120px;top:50%;transform:translateY(-50%);
-    width:520px;height:520px;border:1px solid rgba(201,169,78,.10);border-radius:50%;
-    background:radial-gradient(circle, transparent 38%, rgba(201,169,78,.07) 39%, transparent 40%),
-      radial-gradient(circle, transparent 46%, rgba(201,169,78,.05) 47%, transparent 48%);
-    opacity:.6;pointer-events:none;
+  /* marca d'água de geometria sagrada sutil (dourado 15%) */
+  .page::before{
+    content:"";position:absolute;right:-140px;top:50%;transform:translateY(-50%);
+    width:520px;height:520px;border:1px solid rgba(201,169,78,.12);border-radius:50%;
+    background:radial-gradient(circle, transparent 38%, rgba(201,169,78,.08) 39%, transparent 40%),
+      radial-gradient(circle, transparent 46%, rgba(201,169,78,.06) 47%, transparent 48%);
+    opacity:.5;pointer-events:none;
   }
 
-  /* ===== CABEÇALHO (fiel ao modelo anterior) ===== */
+  /* ===== CABEÇALHO (duas logos + DUNS) ===== */
   .header{
     display:flex;align-items:center;justify-content:space-between;
-    padding-bottom:12px;border-bottom:1px solid rgba(201,169,78,.4);margin-bottom:30px;
+    padding-bottom:12px;border-bottom:1.5px solid var(--ouro);margin-bottom:26px;
   }
-  .header .brand{font-family:Georgia,'Times New Roman',serif;font-size:15px;letter-spacing:.14em;color:var(--ouro);text-transform:uppercase;font-weight:700;}
-  .header .duns{font-size:11px;letter-spacing:.12em;color:var(--ouro-claro);text-transform:uppercase;}
+  .header .logos{display:flex;align-items:center;gap:12px;}
+  .header .logos img{height:42px;width:auto;}
+  .header .duns{font-size:11px;letter-spacing:.12em;color:var(--ouro-escuro);text-transform:uppercase;font-weight:600;}
 
   /* ===== TÍTULO ===== */
-  .title{font-family:Georgia,serif;font-size:30px;color:var(--ouro);text-transform:uppercase;letter-spacing:.02em;margin-bottom:8px;}
-  .subtitle{font-size:14px;color:var(--cinza);margin-bottom:26px;}
+  .title{font-family:Georgia,'Times New Roman',serif;font-size:26px;color:var(--ouro-escuro);text-transform:uppercase;letter-spacing:.02em;margin-bottom:8px;}
+  .subtitle{font-size:14px;color:var(--cinza);margin-bottom:22px;}
 
   /* ===== CONTEÚDO ===== */
-  .lead{font-size:15px;color:var(--cinza);line-height:1.65;max-width:760px;margin-bottom:24px;text-align:justify;}
-  .lead strong{color:var(--ouro-claro);}
+  .lead{font-size:14.5px;color:var(--cinza);line-height:1.65;max-width:820px;margin-bottom:20px;text-align:justify;}
+  .lead strong{color:var(--ouro-escuro);}
 
   /* ===== CARDS DE MÉTRICAS ===== */
-  .metrics{display:flex;gap:18px;flex-wrap:wrap;margin:22px 0;}
+  .metrics{display:flex;gap:16px;flex-wrap:wrap;margin:20px 0;}
   .metric{
-    flex:1;min-width:150px;background:var(--preto-2);border:1px solid rgba(201,169,78,.35);
-    border-radius:10px;padding:18px 16px;text-align:center;
+    flex:1;min-width:150px;background:#fffdf7;border:1px solid rgba(201,169,78,.45);
+    border-radius:10px;padding:16px 14px;text-align:center;
   }
-  .metric .num{font-family:Georgia,serif;font-size:30px;color:var(--ouro);font-weight:700;}
-  .metric .lbl{font-size:12px;color:var(--cinza);letter-spacing:.06em;text-transform:uppercase;margin-top:6px;}
+  .metric .num{font-family:Georgia,serif;font-size:28px;color:var(--ouro-escuro);font-weight:700;}
+  .metric .lbl{font-size:11px;color:var(--cinza);letter-spacing:.06em;text-transform:uppercase;margin-top:6px;}
 
   /* ===== TABELA ===== */
-  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13px;}
-  th{text-align:left;padding:10px 12px;color:var(--ouro);border-bottom:2px solid var(--ouro);font-family:Georgia,serif;text-transform:uppercase;letter-spacing:.06em;font-size:12px;}
-  td{padding:9px 12px;border-bottom:1px solid rgba(201,169,78,.18);color:var(--cinza);}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px;}
+  th{text-align:left;padding:9px 12px;color:var(--ouro-escuro);border-bottom:2px solid var(--ouro);font-family:Georgia,serif;text-transform:uppercase;letter-spacing:.05em;font-size:12px;}
+  td{padding:8px 12px;border-bottom:1px solid rgba(201,169,78,.18);color:var(--cinza);}
   tr:last-child td{border-bottom:none;}
-  td strong{color:var(--ouro-claro);}
+  td strong{color:var(--ouro-escuro);}
 
   /* ===== DESTAQUE / CALLOUT ===== */
-  .callout{border:1px solid var(--ouro);border-left:4px solid var(--ouro);border-radius:8px;padding:16px 18px;background:rgba(201,169,78,.06);margin:20px 0;max-width:760px;}
-  .callout p{font-size:14px;color:var(--branco);font-style:italic;}
+  .callout{border:1px solid var(--ouro);border-left:4px solid var(--ouro);border-radius:8px;padding:14px 18px;background:#fffdf7;margin:18px 0;max-width:820px;}
+  .callout p{font-size:13.5px;color:var(--preto);}
 
-  /* ===== GRÁFICO DE BARRAS (contido no slide) ===== */
-  .chart{max-width:760px;margin:22px 0;}
-  .chart .legend{display:flex;gap:18px;font-size:12px;color:var(--cinza);margin-bottom:10px;}
-  .chart .legend .cons{color:var(--ouro);}
-  .chart .legend .otim{color:var(--ouro-claro);}
-  .bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12px;color:var(--cinza);}
-  .bar-row .yr{width:60px;text-align:right;}
-  .bar-track{flex:1;background:#1a1a1a;border-radius:4px;height:18px;display:flex;overflow:hidden;}
+  /* ===== LISTA ===== */
+  ul.feature{list-style:none;margin:14px 0;max-width:820px;}
+  ul.feature li{padding:7px 0;border-bottom:1px solid rgba(201,169,78,.15);font-size:14px;color:var(--cinza);}
+  ul.feature li strong{color:var(--ouro-escuro);}
+
+  /* ===== FOLHA 15 · PROJEÇÕES (curto + longo prazo) ===== */
+  .proj-wrap{max-width:860px;margin:0 auto;}
+  .proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:start;}
+  .proj-col h3{
+    font-family:Georgia,serif;font-size:15px;color:var(--ouro-escuro);
+    text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px;
+    border-bottom:1px solid rgba(201,169,78,.4);padding-bottom:6px;
+  }
+  .chart-short .legend{display:flex;gap:16px;font-size:11px;color:var(--cinza);margin-bottom:8px;}
+  .chart-short .legend .cons{color:var(--ouro-escuro);}
+  .chart-short .legend .otim{color:var(--ouro);}
+  .bar-row{display:flex;align-items:center;gap:8px;margin-bottom:5px;font-size:11px;color:var(--cinza);}
+  .bar-row .yr{width:46px;text-align:right;flex-shrink:0;}
+  .bar-track{flex:1;background:#f0ead6;border-radius:4px;height:13px;display:flex;overflow:hidden;}
   .bar-track .cons{background:linear-gradient(90deg,#C9A94E,#8a6d2f);height:100%;}
   .bar-track .otim{background:linear-gradient(90deg,#E0C878,#C9A94E);height:100%;}
+  table.proj{width:100%;border-collapse:collapse;font-size:12px;}
+  table.proj th{text-align:left;padding:5px 8px;color:var(--ouro-escuro);border-bottom:1.5px solid var(--ouro);font-family:Georgia,serif;font-size:11px;text-transform:uppercase;letter-spacing:.04em;}
+  table.proj td{padding:4px 8px;border-bottom:1px solid rgba(201,169,78,.15);color:var(--cinza);}
+  table.proj tr:last-child td{border-bottom:none;}
+  .proj-note{margin-top:16px;font-size:11px;color:var(--cinza-2);font-style:italic;text-align:center;}
 
-  /* ===== RODAPÉ (fiel ao modelo anterior) ===== */
+  /* ===== RODAPÉ (contatos + numeração) ===== */
   .footer{
-    position:absolute;left:56px;right:56px;bottom:26px;
-    display:flex;align-items:center;justify-content:space-between;
-    padding-top:10px;border-top:1px solid rgba(201,169,78,.4);font-size:11px;color:var(--cinza-2);
+    position:absolute;left:56px;right:56px;bottom:24px;
+    display:flex;align-items:center;justify-content:space-between;gap:20px;
+    padding-top:10px;border-top:1.5px solid var(--ouro);font-size:11px;color:var(--cinza-2);
   }
-  .footer .page{font-family:Georgia,serif;color:var(--ouro);letter-spacing:.04em;}
+  .footer .contacts{letter-spacing:.03em;}
+  .footer .page-num{font-family:Georgia,serif;color:var(--ouro-escuro);font-weight:700;white-space:nowrap;}
+
+  /* ===== CAPA ===== */
+  .cover{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:64vh;}
+  .cover h1{font-family:Georgia,serif;font-size:40px;color:var(--ouro-escuro);text-transform:uppercase;letter-spacing:.04em;}
+  .cover .tagline{font-family:Georgia,serif;font-size:19px;color:var(--ouro);margin-top:14px;}
+  .cover .sub{font-size:14px;color:var(--cinza);margin-top:18px;letter-spacing:.06em;}
+  .cover .conf{font-size:12px;color:var(--cinza-2);margin-top:26px;letter-spacing:.08em;}
+  .cover .logos-big{display:flex;gap:16px;margin-bottom:24px;}
+  .cover .logos-big img{height:54px;width:auto;}
 </style>
 </head>
 <body>
 
-<!-- ================= SLIDE 1 · CAPA ================= -->
-<div class="slide">
+<!-- ============ FOLHA 1 · CAPA ============ -->
+<div class="page">
   <header class="header">
-    <span class="brand">A1ELOS Global Numerology</span>
+    <div class="logos"><img src="A1ELOS.png" alt="A1ELOS Global Numerology"><img src="logo.png" alt="Símbolo A1ELOS"></div>
     <span class="duns">DUNS 942242668 · CONFIDENCIAL</span>
   </header>
-  <div style="min-height:60vh;display:flex;flex-direction:column;justify-content:center;text-align:center;">
-    <h1 class="title" style="font-size:42px;">A1ELOS Global Numerology</h1>
-    <p style="font-family:Georgia,serif;font-size:20px;color:var(--ouro-claro);margin-top:14px;">A ciência dos números aplicada ao seu sucesso</p>
-    <p style="font-size:14px;color:var(--cinza);margin-top:18px;letter-spacing:.06em;">Apresentação Estratégica para Investidores e Parceiros</p>
-    <p style="font-size:12px;color:var(--cinza-2);margin-top:26px;">DUNS 942242668 · CONFIDENCIAL 2026</p>
+  <div class="cover">
+    <div class="logos-big"><img src="A1ELOS.png" alt="A1ELOS"><img src="logo.png" alt="Símbolo"></div>
+    <h1>A1ELOS Global Numerology</h1>
+    <p class="tagline">A ciência dos números aplicada ao seu sucesso</p>
+    <p class="sub">Apresentação Estratégica para Investidores e Parceiros</p>
+    <p class="conf">DUNS 942242668 · CONFIDENCIAL 2026</p>
   </div>
   <footer class="footer">
-    <span>A1ELOS Global Numerology · DUNS 942242668 · CONFIDENCIAL 2026 · 1 de 7</span>
-    <span class="page">a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.br/contato</span>
+    <span class="contacts">A1ELOS Global Numerology · DUNS 942242668 · CONFIDENCIAL 2026</span>
+    <span class="page-num">1 de 16</span>
   </footer>
 </div>
 
-<!-- ================= SLIDE 2 · SUMÁRIO ================= -->
-<div class="slide">
+<!-- ============ FOLHA 2 · SUMÁRIO EXECUTIVO ============ -->
+<div class="page">
   <header class="header">
-    <span class="brand">A1ELOS Global Numerology</span>
+    <div class="logos"><img src="A1ELOS.png" alt="A1ELOS"><img src="logo.png" alt="Símbolo"></div>
     <span class="duns">DUNS 942242668 · CONFIDENCIAL</span>
   </header>
   <h1 class="title">Sumário Executivo</h1>
@@ -124,15 +150,15 @@
     </tbody>
   </table>
   <footer class="footer">
-    <span>A1ELOS Global Numerology · DUNS 942242668 · CONFIDENCIAL 2026 · 2 de 7</span>
-    <span class="page">a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.br/contato</span>
+    <span class="contacts">a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.br/contato</span>
+    <span class="page-num">2 de 16</span>
   </footer>
 </div>
 
-<!-- ================= SLIDE 3 · SOBRE A A1ELOS ================= -->
-<div class="slide">
+<!-- ============ FOLHA 3 · SOBRE A A1ELOS ============ -->
+<div class="page">
   <header class="header">
-    <span class="brand">A1ELOS Global Numerology</span>
+    <div class="logos"><img src="A1ELOS.png" alt="A1ELOS"><img src="logo.png" alt="Símbolo"></div>
     <span class="duns">DUNS 942242668 · CONFIDENCIAL</span>
   </header>
   <h1 class="title">Sobre a A1ELOS</h1>
@@ -143,17 +169,40 @@
     <div class="metric"><div class="num">5,3B</div><div class="lbl">Falantes</div></div>
     <div class="metric"><div class="num">IA</div><div class="lbl">Integrada</div></div>
   </div>
-  <div class="callout"><p>DUNS 942242668 — Certificação Dun &amp; Bradstreet válida em 190+ países, habilitando contratos B2B e joint ventures internacionais.</p></div>
+  <div class="callout"><p><strong>DUNS 942242668</strong> — Certificação Dun &amp; Bradstreet válida em 190+ países, habilitando contratos B2B e joint ventures internacionais.</p></div>
   <footer class="footer">
-    <span>A1ELOS Global Numerology · DUNS 942242668 · CONFIDENCIAL 2026 · 3 de 7</span>
-    <span class="page">a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.br/contato</span>
+    <span class="contacts">a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.br/contato</span>
+    <span class="page-num">3 de 16</span>
   </footer>
 </div>
 
-<!-- ================= SLIDE 4 · OPORTUNIDADE DE MERCADO ================= -->
-<div class="slide">
+<!-- ============ FOLHA 4 · CREDIBILIDADE INTERNACIONAL ============ -->
+<div class="page">
   <header class="header">
-    <span class="brand">A1ELOS Global Numerology</span>
+    <div class="logos"><img src="A1ELOS.png" alt="A1ELOS"><img src="logo.png" alt="Símbolo"></div>
+    <span class="duns">DUNS 942242668 · CONFIDENCIAL</span>
+  </header>
+  <h1 class="title">Credibilidade Internacional</h1>
+  <p class="lead">O número DUNS é o passaporte corporativo da A1ELOS no cenário internacional. Ele sinaliza a parceiros, clientes corporativos e investidores que a empresa possui identidade verificável, histórico rastreável e capacidade contratual em qualquer jurisdição.</p>
+  <div class="metrics">
+    <div class="metric"><div class="num">942242668</div><div class="lbl">DUNS</div></div>
+    <div class="metric"><div class="num">190+</div><div class="lbl">Países</div></div>
+  </div>
+  <ul class="feature">
+    <li><strong>Contratos B2B</strong> — Habilitação para licitações e fornecedores globais</li>
+    <li><strong>Joint Ventures</strong> — Parcerias internacionais com due diligence facilitada</li>
+    <li><strong>Credibilidade Imediata</strong> — Sinal de seriedade para investidores institucionais</li>
+  </ul>
+  <footer class="footer">
+    <span class="contacts">a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.br/contato</span>
+    <span class="page-num">4 de 16</span>
+  </footer>
+</div>
+
+<!-- ============ FOLHA 5 · OPORTUNIDADE DE MERCADO ============ -->
+<div class="page">
+  <header class="header">
+    <div class="logos"><img src="A1ELOS.png" alt="A1ELOS"><img src="logo.png" alt="Símbolo"></div>
     <span class="duns">DUNS 942242668 · CONFIDENCIAL</span>
   </header>
   <h1 class="title">Oportunidade de Mercado</h1>
@@ -165,15 +214,131 @@
     <div class="metric"><div class="num">74%</div><div class="lbl">Usuários Online (~6 bi)</div></div>
   </div>
   <footer class="footer">
-    <span>A1ELOS Global Numerology · DUNS 942242668 · CONFIDENCIAL 2026 · 4 de 7</span>
-    <span class="page">a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.br/contato</span>
+    <span class="contacts">a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.br/contato</span>
+    <span class="page-num">5 de 16</span>
   </footer>
 </div>
 
-<!-- ================= SLIDE 5 · PORTFÓLIO 24 PRODUTOS ================= -->
-<div class="slide">
+<!-- ============ FOLHA 6 · O PROBLEMA QUE RESOLVEMOS ============ -->
+<div class="page">
   <header class="header">
-    <span class="brand">A1ELOS Global Numerology</span>
+    <div class="logos"><img src="A1ELOS.png" alt="A1ELOS"><img src="logo.png" alt="Símbolo"></div>
+    <span class="duns">DUNS 942242668 · CONFIDENCIAL</span>
+  </header>
+  <h1 class="title">O Problema que Resolvemos</h1>
+  <p class="lead"><strong>Falhas do Mercado Atual</strong></p>
+  <ul class="feature">
+    <li><strong>Barreira de Idioma</strong> — A esmagadora maioria das ferramentas de numerologia opera apenas em inglês, excluindo bilhões de falantes nativos em outros idiomas.</li>
+    <li><strong>Preços Descolados da Realidade</strong> — Produtos cobrados em dólar para mercados emergentes geram exclusão econômica — o usuário não rejeita o produto, rejeita o preço inacessível.</li>
+    <li><strong>Ausência de Profundidade</strong> — Ferramentas genéricas entregam respostas superficiais sem personalização, sem contexto cultural e sem aplicação prática ao dia a dia.</li>
+  </ul>
+  <div class="callout"><p><strong>O Custo da Exclusão:</strong> plataformas que ignoram poder aquisitivo local perdem acesso a mais de 60% do mercado endereçável global.</p></div>
+  <footer class="footer">
+    <span class="contacts">a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.br/contato</span>
+    <span class="page-num">6 de 16</span>
+  </footer>
+</div>
+
+<!-- ============ FOLHA 7 · SOLUÇÃO: 3 PILARES ============ -->
+<div class="page">
+  <header class="header">
+    <div class="logos"><img src="A1ELOS.png" alt="A1ELOS"><img src="logo.png" alt="Símbolo"></div>
+    <span class="duns">DUNS 942242668 · CONFIDENCIAL</span>
+  </header>
+  <h1 class="title">Nossa Solução: 3 Pilares Estratégicos</h1>
+  <p class="lead">A A1ELOS construiu uma plataforma integrada que combina ciência numérica, inteligência artificial e sensibilidade cultural. A solução opera em três frentes complementares, garantindo receita diversificada e alta retenção.</p>
+  <ul class="feature">
+    <li><strong>Mapas Pessoais</strong> — Análises numéricas profundas e personalizadas para o usuário final — identidade, missão, ciclos de vida e compatibilidade — entregues em 14 idiomas com IA integrada.</li>
+    <li><strong>Numerologia Empresarial</strong> — Diagnósticos numerológicos aplicados a marcas, CNPJs, datas de fundação e estratégia corporativa. Produto diferenciado de alto valor percebido pelo mercado B2B.</li>
+    <li><strong>White-Label B2B</strong> — Licenciamento da plataforma para empresas parceiras que desejam oferecer numerologia sob sua própria marca — com suporte multilíngue e personalização completa.</li>
+  </ul>
+  <footer class="footer">
+    <span class="contacts">a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.br/contato</span>
+    <span class="page-num">7 de 16</span>
+  </footer>
+</div>
+
+<!-- ============ FOLHA 8 · ALCANCE GLOBAL (14 IDIOMAS) ============ -->
+<div class="page">
+  <header class="header">
+    <div class="logos"><img src="A1ELOS.png" alt="A1ELOS"><img src="logo.png" alt="Símbolo"></div>
+    <span class="duns">DUNS 942242668 · CONFIDENCIAL</span>
+  </header>
+  <h1 class="title">Alcance Global: 14 Idiomas · ~5,3 Bi de Falantes</h1>
+  <p class="lead">A A1ELOS cobre ~67% da população mundial com uma plataforma genuinamente multilíngue. Cada idioma representa um mercado cultural distinto, com precificação calibrada ao poder aquisitivo local.</p>
+  <table>
+    <thead><tr><th>Idioma</th><th>Falantes (mi)</th></tr></thead>
+    <tbody>
+      <tr><td>Inglês</td><td>1.528</td></tr>
+      <tr><td>Mandarim</td><td>1.184</td></tr>
+      <tr><td>Espanhol</td><td>558</td></tr>
+      <tr><td>Francês</td><td>396</td></tr>
+      <tr><td>Árabe</td><td>335</td></tr>
+      <tr><td>Português</td><td>270</td></tr>
+      <tr><td>Russo</td><td>255</td></tr>
+      <tr><td>Indonésio</td><td>255</td></tr>
+      <tr><td>Alemão</td><td>134</td></tr>
+      <tr><td>Japonês</td><td>123</td></tr>
+      <tr><td>Vietnamita</td><td>97</td></tr>
+      <tr><td>Turco</td><td>90</td></tr>
+      <tr><td>Italiano</td><td>85</td></tr>
+      <tr><td>Hebraico</td><td>9</td></tr>
+      <tr><td><strong>TOTAL</strong></td><td><strong>~5.320</strong></td></tr>
+    </tbody>
+  </table>
+  <footer class="footer">
+    <span class="contacts">a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.br/contato</span>
+    <span class="page-num">8 de 16</span>
+  </footer>
+</div>
+
+<!-- ============ FOLHA 9 · OS 3 NOVOS MERCADOS ============ -->
+<div class="page">
+  <header class="header">
+    <div class="logos"><img src="A1ELOS.png" alt="A1ELOS"><img src="logo.png" alt="Símbolo"></div>
+    <span class="duns">DUNS 942242668 · CONFIDENCIAL</span>
+  </header>
+  <h1 class="title">Os 3 Novos Mercados: +442 Mi de Falantes</h1>
+  <p class="lead">A expansão estratégica para Indonésia, Turquia e Vietnã representa um salto qualitativo: mercados com alto crescimento econômico, penetração digital crescente e demanda comprovada por soluções de bem-estar digital acessíveis.</p>
+  <table>
+    <thead><tr><th>Mercado</th><th>Dados</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Indonésia</strong></td><td>285 mi habitantes · 80,5% internet · ~255 mi falantes · Bem-estar US$ 51,2 bi (2025) → US$ 72,8 bi (2034)</td></tr>
+      <tr><td><strong>Turquia</strong></td><td>85,9 mi habitantes · PIB PPP per capita US$ 37.301 · ~90 mi falantes · Acima da média mundial (US$ 27.211)</td></tr>
+      <tr><td><strong>Vietnã</strong></td><td>~100 mi habitantes · PIB per capita ~US$ 5.066 (+7,4%/ano) · ~97 mi falantes · Bem-estar US$ 303 mi (2025) → US$ 485 mi (2030)</td></tr>
+    </tbody>
+  </table>
+  <div class="callout"><p>3 mercados novos = <strong>+442 milhões de novos falantes endereçáveis</strong> — incorporados à plataforma com precificação culturalmente calibrada.</p></div>
+  <footer class="footer">
+    <span class="contacts">a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.br/contato</span>
+    <span class="page-num">9 de 16</span>
+  </footer>
+</div>
+
+<!-- ============ FOLHA 10 · FILOSOFIA DE PREÇO CONSCIENTE ============ -->
+<div class="page">
+  <header class="header">
+    <div class="logos"><img src="A1ELOS.png" alt="A1ELOS"><img src="logo.png" alt="Símbolo"></div>
+    <span class="duns">DUNS 942242668 · CONFIDENCIAL</span>
+  </header>
+  <h1 class="title">Filosofia de Preço Consciente</h1>
+  <p class="lead">Respeito cultural + respeito ao poder aquisitivo = mercado endereçável real. Mesma proporção de valor. Preços diferentes. Dignidade igual para todos os mercados.</p>
+  <p class="lead">A A1ELOS aplica <strong>Paridade de Poder de Compra (PPC)</strong> como critério central de precificação. O mesmo produto entrega o mesmo valor relativo ao usuário em Lagos, Jacarta, Hanói ou Nova York — o preço é calibrado para que o esforço financeiro seja proporcional à renda local.</p>
+  <ul class="feature">
+    <li><strong>Calibração por PPC</strong> — Preços ajustados ao índice de poder aquisitivo de cada país</li>
+    <li><strong>Respeito Cultural</strong> — Idioma, moeda e contexto local integrados ao produto</li>
+    <li><strong>Conversão Superior</strong> — Preço justo gera mais conversão e maior retenção de longo prazo</li>
+  </ul>
+  <footer class="footer">
+    <span class="contacts">a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.br/contato</span>
+    <span class="page-num">10 de 16</span>
+  </footer>
+</div>
+
+<!-- ============ FOLHA 11 · PORTFÓLIO 24 PRODUTOS ============ -->
+<div class="page">
+  <header class="header">
+    <div class="logos"><img src="A1ELOS.png" alt="A1ELOS"><img src="logo.png" alt="Símbolo"></div>
     <span class="duns">DUNS 942242668 · CONFIDENCIAL</span>
   </header>
   <h1 class="title">Portfólio: 24 Produtos em 4 Níveis</h1>
@@ -190,64 +355,150 @@
   </table>
   <div class="callout"><p><strong>Novo produto de RH:</strong> Compatibilidade de Equipes (R$ 98) — análise de compatibilidade entre chefes e membros e entre membros da equipe, ideal para Departamentos de Recursos Humanos. Energia ideal 8 · PDF + QRCode.</p></div>
   <footer class="footer">
-    <span>A1ELOS Global Numerology · DUNS 942242668 · CONFIDENCIAL 2026 · 5 de 7</span>
-    <span class="page">a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.br/contato</span>
+    <span class="contacts">a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.br/contato</span>
+    <span class="page-num">11 de 16</span>
   </footer>
 </div>
 
-<!-- ================= SLIDE 6 · PROJEÇÕES 50 ANOS (gráfico contido) ================= -->
-<div class="slide">
+<!-- ============ FOLHA 12 · MODELO DE NEGÓCIO ============ -->
+<div class="page">
   <header class="header">
-    <span class="brand">A1ELOS Global Numerology</span>
+    <div class="logos"><img src="A1ELOS.png" alt="A1ELOS"><img src="logo.png" alt="Símbolo"></div>
     <span class="duns">DUNS 942242668 · CONFIDENCIAL</span>
   </header>
-  <h1 class="title">Projeções Financeiras: Horizonte de 50 Anos</h1>
-  <p class="lead">Projeções construídas com base em dois cenários — conservador e otimista — refletindo diferentes taxas de penetração de mercado e crescimento orgânico por idioma.</p>
+  <h1 class="title">Modelo de Negócio: 3 Fontes de Receita</h1>
+  <p class="lead">A A1ELOS foi desenhada com receita diversificada e escalável: vendas diretas ao consumidor final em escala global, contratos B2B de alto valor e publicidade geolocalizada recorrente — três motores que se alimentam mutuamente.</p>
+  <ul class="feature">
+    <li><strong>B2C — 14 Idiomas (60%)</strong> — Venda direta de produtos digitais em todas as moedas, com precificação adaptada por PPC. Escala automática via IA.</li>
+    <li><strong>B2B — Descontos Progressivos (25%)</strong> — Pacotes corporativos para RH, employer branding e brindes institucionais. Descontos de 10% a 70% conforme volume. Contratos respaldados pelo DUNS 942242668.</li>
+    <li><strong>Publicidade Geolocalizada (15%)</strong> — Banners segmentados por país, continente ou mundial com rotação automatizada. Receita recorrente mensal de alto valor.</li>
+  </ul>
+  <footer class="footer">
+    <span class="contacts">a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.br/contato</span>
+    <span class="page-num">12 de 16</span>
+  </footer>
+</div>
+
+<!-- ============ FOLHA 13 · BANNERS PUBLICITÁRIOS ============ -->
+<div class="page">
+  <header class="header">
+    <div class="logos"><img src="A1ELOS.png" alt="A1ELOS"><img src="logo.png" alt="Símbolo"></div>
+    <span class="duns">DUNS 942242668 · CONFIDENCIAL</span>
+  </header>
+  <h1 class="title">Banners Publicitários — Receita Recorrente Mensal</h1>
+  <p class="lead">Espaços publicitários premium com segmentação precisa por geolocalização — país, continente ou mundial. Rotação automática a cada 8 segundos, formatos otimizados para desktop e mobile.</p>
   <table>
-    <thead><tr><th>Horizonte</th><th>Conservador (R$)</th><th>Otimista (R$)</th></tr></thead>
+    <thead><tr><th>Segmentação</th><th>Fixo (R$/mês)</th><th>Temporário (R$/mês)</th><th>Perfil</th></tr></thead>
     <tbody>
-      <tr><td>Ano 1</td><td>R$ 33k</td><td>R$ 130k</td></tr>
-      <tr><td>Ano 5</td><td>R$ 500k</td><td>R$ 1,5M</td></tr>
-      <tr><td>Ano 10</td><td>R$ 3M</td><td>R$ 8M</td></tr>
-      <tr><td>Ano 20</td><td>R$ 15M</td><td>R$ 40M</td></tr>
-      <tr><td>Ano 50</td><td>R$ 75M</td><td>R$ 250M</td></tr>
+      <tr><td>País</td><td>R$ 800</td><td>R$ 500</td><td>PMEs locais, comércio regional</td></tr>
+      <tr><td>Continente</td><td>R$ 1.800</td><td>R$ 1.200</td><td>Marcas regionais, expansão continental</td></tr>
+      <tr><td>Mundo</td><td>R$ 3.500</td><td>R$ 2.500</td><td>Empresas globais, apps internacionais</td></tr>
+      <tr><td>Patrocínio Exclusivo</td><td>R$ 6.000</td><td>R$ 4.500/campanha</td><td>Patrocinadores master, lançamentos</td></tr>
     </tbody>
   </table>
-  <div class="chart">
-    <div class="legend"><span class="cons">■ Conservador</span><span class="otim">■ Otimista</span></div>
-    <div class="bar-row"><span class="yr">Ano 1</span><div class="bar-track"><div class="cons" style="width:3%;"></div><div class="otim" style="width:6%;"></div></div></div>
-    <div class="bar-row"><span class="yr">Ano 5</span><div class="bar-track"><div class="cons" style="width:8%;"></div><div class="otim" style="width:14%;"></div></div></div>
-    <div class="bar-row"><span class="yr">Ano 10</span><div class="bar-track"><div class="cons" style="width:20%;"></div><div class="otim" style="width:30%;"></div></div></div>
-    <div class="bar-row"><span class="yr">Ano 20</span><div class="bar-track"><div class="cons" style="width:45%;"></div><div class="otim" style="width:60%;"></div></div></div>
-    <div class="bar-row"><span class="yr">Ano 50</span><div class="bar-track"><div class="cons" style="width:75%;"></div><div class="otim" style="width:100%;"></div></div></div>
-  </div>
+  <p class="lead" style="font-size:12.5px;">728×90 px — Banner central desktop · 320×100 px — Formato mobile otimizado · 8 segundos — Rotação automática · Geo-alvo — País, continente ou alcance mundial</p>
   <footer class="footer">
-    <span>A1ELOS Global Numerology · DUNS 942242668 · CONFIDENCIAL 2026 · 6 de 7</span>
-    <span class="page">a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.br/contato</span>
+    <span class="contacts">a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.br/contato</span>
+    <span class="page-num">13 de 16</span>
   </footer>
 </div>
 
-<!-- ================= SLIDE 7 · INVESTIMENTO + CONTATO ================= -->
-<div class="slide">
+<!-- ============ FOLHA 14 · PACOTES B2B + DESCONTOS ============ -->
+<div class="page">
   <header class="header">
-    <span class="brand">A1ELOS Global Numerology</span>
+    <div class="logos"><img src="A1ELOS.png" alt="A1ELOS"><img src="logo.png" alt="Símbolo"></div>
     <span class="duns">DUNS 942242668 · CONFIDENCIAL</span>
   </header>
-  <h1 class="title">Investimento &amp; Contato</h1>
-  <p class="lead">Estamos prontos para apresentações privadas, due diligence e negociações. Entre em contato pelo canal de sua preferência.</p>
-  <div class="metrics">
-    <div class="metric"><div class="num">R$ 3,5M</div><div class="lbl">Rodada Seed</div></div>
-    <div class="metric"><div class="num">R$ 14M</div><div class="lbl">Valuation Pré-Money</div></div>
-    <div class="metric"><div class="num">20%</div><div class="lbl">Equity Ofertado</div></div>
+  <h1 class="title">Pacotes Empresariais B2B + Descontos Progressivos</h1>
+  <p class="lead">Os Pacotes B2B transformam a A1ELOS em uma ferramenta de employer branding e bem-estar corporativo. Empresas adquirem códigos de acesso em volume para distribuir como brindes a colaboradores ou clientes.</p>
+  <ul class="feature">
+    <li><strong>Plano Básico · 50 códigos</strong> — 50× Mapa Express (R$ 8 cada). Ideal para programas de benefícios a colaboradores e ações de integração.</li>
+    <li><strong>Plano Intermediário · 100 códigos</strong> — 50× Mapa Express + 50× Pesquisa IA (R$ 17). Perfeito para equipes e estratégia de marca empregadora.</li>
+    <li><strong>Plano Premium · 200 códigos</strong> — 100× Mapa Express + 100× Mapa Completo (R$ 17). Máxima profundidade analítica para grandes grupos.</li>
+  </ul>
+  <table>
+    <thead><tr><th>A partir de</th><th>Desconto</th><th>Perfil</th><th>Uso Recomendado</th></tr></thead>
+    <tbody>
+      <tr><td>10 códigos</td><td>10%</td><td>Pequenas equipes</td><td>Ação pontual de bem-estar</td></tr>
+      <tr><td>100 códigos</td><td>30%</td><td>PMEs</td><td>Programa de benefícios trimestral</td></tr>
+      <tr><td>500 códigos</td><td>50%</td><td>Médias empresas</td><td>Brinde anual a colaboradores</td></tr>
+      <tr><td>1.000 códigos</td><td>70%</td><td>Grandes corporações</td><td>Programa de fidelização de clientes</td></tr>
+    </tbody>
+  </table>
+  <footer class="footer">
+    <span class="contacts">a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.br/contato</span>
+    <span class="page-num">14 de 16</span>
+  </footer>
+</div>
+
+<!-- ============ FOLHA 15 · PROJEÇÕES (curto + longo prazo, enquadrada) ============ -->
+<div class="page">
+  <header class="header">
+    <div class="logos"><img src="A1ELOS.png" alt="A1ELOS"><img src="logo.png" alt="Símbolo"></div>
+    <span class="duns">DUNS 942242668 · CONFIDENCIAL</span>
+  </header>
+  <h1 class="title">Projeções Financeiras</h1>
+  <p class="lead">Crescimento a curto prazo (o ramp que decide a rodada Seed) complementado pelo horizonte de longo prazo, que amplia o mercado e mostra o teto do negócio.</p>
+  <div class="proj-wrap">
+    <div class="proj-grid">
+      <div class="proj-col">
+        <h3>Crescimento a Curto Prazo</h3>
+        <div class="chart-short">
+          <div class="legend"><span class="cons">■ Conservador</span><span class="otim">■ Otimista</span></div>
+          <div class="bar-row"><span class="yr">Ano 1</span><div class="bar-track"><div class="cons" style="width:3%;"></div><div class="otim" style="width:6%;"></div></div></div>
+          <div class="bar-row"><span class="yr">Ano 3</span><div class="bar-track"><div class="cons" style="width:6%;"></div><div class="otim" style="width:11%;"></div></div></div>
+          <div class="bar-row"><span class="yr">Ano 5</span><div class="bar-track"><div class="cons" style="width:9%;"></div><div class="otim" style="width:18%;"></div></div></div>
+        </div>
+      </div>
+      <div class="proj-col">
+        <h3>Horizonte de 50 Anos</h3>
+        <table class="proj">
+          <thead><tr><th>Horizonte</th><th>Conservador</th><th>Otimista</th></tr></thead>
+          <tbody>
+            <tr><td>Ano 1</td><td>R$ 33k</td><td>R$ 130k</td></tr>
+            <tr><td>Ano 5</td><td>R$ 500k</td><td>R$ 1,5M</td></tr>
+            <tr><td>Ano 10</td><td>R$ 3M</td><td>R$ 8M</td></tr>
+            <tr><td>Ano 20</td><td>R$ 15M</td><td>R$ 40M</td></tr>
+            <tr><td>Ano 50</td><td>R$ 75M</td><td>R$ 250M</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
+  <p class="proj-note">Visão completa: o ramp de curto prazo sustenta a rodada Seed; o horizonte de 50 anos amplia o mercado e define o teto. Planilha Excel completa disponível para due diligence.</p>
+  <footer class="footer">
+    <span class="contacts">a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.br/contato</span>
+    <span class="page-num">15 de 16</span>
+  </footer>
+</div>
+
+<!-- ============ FOLHA 16 · TRAÇÃO + ROTEIRO + INVESTIMENTO + CONTATO ============ -->
+<div class="page">
+  <header class="header">
+    <div class="logos"><img src="A1ELOS.png" alt="A1ELOS"><img src="logo.png" alt="Símbolo"></div>
+    <span class="duns">DUNS 942242668 · CONFIDENCIAL</span>
+  </header>
+  <h1 class="title">Tração, Roteiro e Investimento</h1>
+  <div class="metrics">
+    <div class="metric"><div class="num">12K+</div><div class="lbl">Usuários Ativos</div></div>
+    <div class="metric"><div class="num">87%</div><div class="lbl">Retenção</div></div>
+    <div class="metric"><div class="num">4,8★</div><div class="lbl">Avaliação Média</div></div>
+    <div class="metric"><div class="num">23</div><div class="lbl">Parceiros B2B</div></div>
+  </div>
+  <ul class="feature">
+    <li><strong>Fase 1 · Consolidação</strong> — Fortalecimento da base de usuários nos idiomas já ativos. Otimização de conversão, retenção e LTV. Rodada Seed concluída.</li>
+    <li><strong>Fase 2 · Expansão</strong> — Lançamento oficial nos 3 novos mercados: Indonésia, Turquia e Vietnã. Aceleração do canal B2B e publicidade geolocalizada.</li>
+    <li><strong>Fase 3 · Entrada Global</strong> — Presença ativa em todos os 14 idiomas com campanhas localizadas. Parcerias white-label em 5+ continentes. Série A.</li>
+    <li><strong>Fase 4 · Liderança</strong> — 20+ países com operações consolidadas. Plataforma SaaS de referência global em numerologia aplicada. IPO ou exit estratégico.</li>
+  </ul>
   <div class="callout">
-    <p>E-mail Investidores: a1elos.consultoria@gmail.com · E-mail Geral: contato@a1elos.com</p>
-    <p style="margin-top:6px;">Website: www.a1elos.com · DUNS: 942242668 — Dun &amp; Bradstreet</p>
+    <p><strong>Rodada Seed:</strong> R$ 3,5M · <strong>Valuation Pré-Money:</strong> R$ 14M · <strong>Equity Ofertado:</strong> até 20%</p>
     <p style="margin-top:6px;">Alocação do Capital: 45% Tecnologia · 30% Marketing · 25% Operações</p>
+    <p style="margin-top:6px;">Contato: a1elos.consultoria@gmail.com · contato@a1elos.com · www.a1elos.com · DUNS 942242668</p>
   </div>
   <footer class="footer">
-    <span>A1ELOS Global Numerology · DUNS 942242668 · CONFIDENCIAL 2026 · 7 de 7</span>
-    <span class="page">a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.br/contato</span>
+    <span class="contacts">a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.br/contato</span>
+    <span class="page-num">16 de 16</span>
   </footer>
 </div>
 
