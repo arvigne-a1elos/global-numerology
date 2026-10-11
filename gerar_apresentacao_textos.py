@@ -177,6 +177,24 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
         ]))
         story.append(t)
 
+  # ---- PROJEÇÕES (curto prazo) ----
+if c.get("projecoes_tabela"):
+    ... (tabela atual, agora curto prazo) ...
+# ---- HORIZONTE COMPLETO 50 ANOS (abaixo) ----
+if c.get("projecoes_tabela_50"):
+    story.append(Paragraph("Horizonte Completo — 50 Anos (detalhamento)",
+                           _estilo(lang, 13, True, COR_AZUL, antes=10)))
+    linhas = [list(r) for r in c["projecoes_tabela_50"]]
+    t = Table(linhas, colWidths=[90, 110, 110])
+    t.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (-1, 0), COR_AZUL),
+        ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+        ("GRID", (0, 0), (-1, -1), 0.4, colors.grey),
+        ("FONTSIZE", (0, 0), (-1, -1), 8.5),
+        ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, COR_CINZA_CLARO]),
+    ]))
+    story.append(t)
+
     # ---- INVESTIMENTO & CONTATO ----
     if c.get("invest_dados"):
         story.append(Paragraph(c.get("invest_titulo", "Investimento & Contato"),
