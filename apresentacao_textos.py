@@ -949,6 +949,16 @@ APRESENTACAO_TEXTOS = {
             ["Ano 40", "R$ 202M", "R$ 606M"],
             ["Ano 50", "R$ 276M", "R$ 869M"],
         ],
+        "projecoes_curto_titulo": "Projeções Financeiras: Curto Prazo (Anos 1–5)",
+        "projecoes_curto_texto": "O curto prazo evidencia o crescimento acelerado da nova frente B2B de RH (Compatibilidade de Equipes + Bônus Coletivo), quase 12x em 5 anos no cenário conservador — antes da estabilização de longo prazo.",
+        "projecoes_curto_tabela": [
+            ["Horizonte", "Conservador (R$)", "Otimista (R$)"],
+            ["Ano 1", "R$ 318k", "R$ 810k"],
+            ["Ano 2", "R$ 630k", "R$ 1,8M"],
+            ["Ano 3", "R$ 1,20M", "R$ 3,50M"],
+            ["Ano 4", "R$ 2,2M", "R$ 6,2M"],
+            ["Ano 5", "R$ 3,70M", "R$ 9,6M"],
+         ],   
         "tracao_titulo": "Tração e Resultados Comprovados",
         "tracao_texto": "A A1ELOS já opera com métricas de produto que validam o modelo — alta retenção, avaliação premium e uma base crescente de parceiros B2B demonstram que a plataforma entrega valor real ao usuário final e ao mercado corporativo.",
         "tracao_kpis": [
