@@ -14,7 +14,6 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.cidfonts import UnicodeCIDFont
 from reportlab.pdfbase.ttfonts import TTFont
-
 STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
 IDIOMAS = ["pt", "en", "es", "it", "fr", "de", "ja", "zh",
            "ru", "he", "ar", "id", "tr", "vi"]
@@ -36,6 +35,21 @@ COR_PRETO = colors.HexColor("#1a1a1a")
 COR_CINZA = colors.HexColor("#555555")
 COR_CINZA_CLARO = colors.HexColor("#f0f0f0")
 CONTATOS = "a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.br/contato"
+
+def _registrar_fontes_rtl():
+    """Registra fontes para idiomas especiais (RTL, CJK e cirílico)."""
+    # CJK — chinês (zh) e japonês (ja)
+    try:
+        pdfmetrics.registerFont(UnicodeCIDFont('STSong-Light'))
+        pdfmetrics.registerFont(UnicodeCIDFont('HeiseiMin-W3'))
+    except Exception:
+        pass
+    # DejaVu — cobre cirílico (ru), turco (tr), vietnamita (vi)
+    # e também árabe (ar) e hebraico (he), que usam escrita RTL
+    try:
+        pdfmetrics.registerFont(TTFont('DejaVu', 'fonts/DejaVuSans.ttf'))
+    except Exception:
+        pass
 
 def _campo(item, chave=None, idx=None, default=""):
     """Lê um campo de um item que pode ser dict OU tuple/list."""
@@ -74,16 +88,19 @@ def _render_bloco_juridico(story, c, lang):
 
 def gerar_pdf_texto(lang="pt", caminho_saida=None):
     """Gera o PDF editorial A4 retrato. RETORNA o caminho do arquivo."""
+    lang_arquivo = lang  # guarda o idioma pedido para o NOME do arquivo
     try:
         from apresentacao_textos import CONTEUDO
-    except Exception:
+    except Exception as e:
+        print(f"[AVISO] Falha ao importar CONTEUDO: {e}")
         CONTEUDO = {}
     if lang not in CONTEUDO:
+        print(f"[AVISO] '{lang}' não encontrado — conteúdo cai para 'pt'")
         lang = "pt"
     c = CONTEUDO.get(lang, CONTEUDO.get("pt", {}))
     if not caminho_saida:
         os.makedirs(STATIC_DIR, exist_ok=True)
-        caminho_saida = os.path.join(STATIC_DIR, f"apresentacao_empresarial_{lang}.pdf")
+        caminho_saida = os.path.join(STATIC_DIR, f"apresentacao_empresarial_{lang_arquivo}.pdf")
 
     doc = SimpleDocTemplate(caminho_saida, pagesize=A4,
                             leftMargin=45, rightMargin=45,
