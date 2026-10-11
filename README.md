@@ -2,7 +2,7 @@
 
 API multidioma de numerologia pitagórica com geração de PDF e pagamentos via Stripe.
 
-## 23 Funcionalidades, entre elas:
+## 24 Funcionalidades, entre elas:
 
 - ✅ Cálculo de numerologia (Caminho da Vida, Expressão, Alma, Personalidade, Destino)
 - ✅ Geração de PDFs (Mapa Express R$8 e Mapa Completo R$17)
