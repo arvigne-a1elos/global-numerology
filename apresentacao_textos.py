@@ -5078,3 +5078,4 @@ def _texto_wrap_centrado_v(doc, texto, fonte, tam, x, y, largura, cor, entrelinh
         doc.drawCentredString(x + larg_interna / 2, y_ini, ln)
         y_ini -= entrelinha
     return y_ini + entrelinha
+CONTEUDO = APRESENTACAO_TEXTOS
