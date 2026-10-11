@@ -838,6 +838,13 @@ APRESENTACAO_TEXTOS = {
             ("Apps de Bem-Estar", "CAGR 14,9% → US$ 26,2 bi em 2030"),
             ("Usuários Online", "74% do mundo · ~6 bilhões de pessoas"),
         ],
+        "mercado_rh_titulo": "Novo Mercado: RH Corporativo — o 24º Produto",
+        "mercado_rh_texto": "O 24º produto — Compatibilidade de Equipes RH (R$ 98) — abre o principal mercado B2B da A1ELOS: o RH corporativo. A análise de compatibilidade energética entre gestores e colaboradores (energia ideal: número 8) posiciona a plataforma como ferramenta pioneira de employer branding e bem-estar corporativo, com descontos progressivos de 10% a 50% e negociação direta acima de 2.000 códigos (Plano Diamante).",
+        "mercado_rh_cards": [
+            ["HR Tech", "US$ 42,34 bi (2025) → US$ 77,74 bi (2031)", "CAGR 10,35% · Mordor Intelligence"],
+            ["Employer Branding", "US$ 1,89 bi (2025) → US$ 3,62 bi (2031)", "CAGR 11,19% · Mordor Intelligence"],
+            ["Corporate Wellness", "US$ 66,31 bi (2025) → US$ 94,5 bi (2031)", "CAGR 6,12% · Mordor Intelligence"],
+        ],   
         "problema_titulo": "O Problema que Resolvemos",
         "problema_col_esq_titulo": "Falhas do Mercado Atual",
         "problema_col_esq": [
@@ -4706,15 +4713,6 @@ def gerar_pdf_slides(lang):
     rodape(pagina)
     doc.showPage()
     pagina += 1
-
-        # Novo mercado: RH Corporativo (24º produto)
-        "mercado_rh_titulo": "Novo Mercado: RH Corporativo — o 24º Produto",
-        "mercado_rh_texto": "O 24º produto — Compatibilidade de Equipes RH (R$ 98) — abre o principal mercado B2B da A1ELOS: o RH corporativo. A análise de compatibilidade energética entre gestores e colaboradores (energia ideal: número 8) posiciona a plataforma como ferramenta pioneira de employer branding e bem-estar corporativo, com descontos progressivos de 10% a 50% e negociação direta acima de 2.000 códigos (Plano Diamante).",
-        "mercado_rh_cards": [
-            ["HR Tech", "US$ 42,34 bi (2025) → US$ 77,74 bi (2031)", "CAGR 10,35% · Mordor Intelligence"],
-            ["Employer Branding", "US$ 1,89 bi (2025) → US$ 3,62 bi (2031)", "CAGR 11,19% · Mordor Intelligence"],
-            ["Corporate Wellness", "US$ 66,31 bi (2025) → US$ 94,5 bi (2031)", "CAGR 6,12% · Mordor Intelligence"],
-        ],
 
     # SLIDE 10 — FILOSOFIA DE PREÇO
     cab(c["preco_titulo"], 9)
