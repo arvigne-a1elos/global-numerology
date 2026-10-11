@@ -34,13 +34,25 @@ except Exception:
 FONTE_POR_IDIOMA = {'ja': 'HeiseiMin-W3', 'zh': 'STSong-Light',
                     'ru': 'DejaVu', 'tr': 'DejaVu', 'vi': 'DejaVu'}
 
+# Fontes RTL (árabe e hebraico) — registro direto, sem depender de função externa
 FONTES_RTL = {
     "ar": ("NotoNaskhArabic", "static/fonts/NotoNaskhArabic-Regular.ttf", "static/fonts/NotoNaskhArabic-Bold.ttf"),
     "he": ("NotoSansHebrew", "static/fonts/NotoSansHebrew-Regular.ttf", "static/fonts/NotoSansHebrew-Bold.ttf"),
 }
 
-_registrar_fontes_rtl()   # ← chamada única, DEPOIS da definição da função
+def _registrar_fontes_rtl():
+    """Registra fontes RTL (árabe e hebraico)."""
+    for nome, regular, bold in FONTES_RTL.values():
+        try:
+            pdfmetrics.registerFont(TTFont(nome, regular))
+        except Exception:
+            pass
+        try:
+            pdfmetrics.registerFont(TTFont(nome + "-Bold", bold))
+        except Exception:
+            pass
 
+_registrar_fontes_rtl()
 COR_AZUL = colors.HexColor("#1a3a6b")
 COR_DOURADO = colors.HexColor("#B8860B")
 COR_PRETO = colors.HexColor("#1a1a1a")
