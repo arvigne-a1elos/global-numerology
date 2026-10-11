@@ -14,6 +14,22 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.cidfonts import UnicodeCIDFont
 from reportlab.pdfbase.ttfonts import TTFont
+# Registro de fontes especiais (CJK, cirílico, RTL) — bloco à prova de erro
+try:
+    from reportlab.pdfbase import pdfmetrics
+    from reportlab.pdfbase.cidfonts import UnicodeCIDFont
+    from reportlab.pdfbase.ttfonts import TTFont
+    try:
+        pdfmetrics.registerFont(UnicodeCIDFont('STSong-Light'))
+        pdfmetrics.registerFont(UnicodeCIDFont('HeiseiMin-W3'))
+    except Exception:
+        pass
+    try:
+        pdfmetrics.registerFont(TTFont('DejaVu', 'fonts/DejaVuSans.ttf'))
+    except Exception:
+        pass
+except Exception:
+    pass
 STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
 IDIOMAS = ["pt", "en", "es", "it", "fr", "de", "ja", "zh",
            "ru", "he", "ar", "id", "tr", "vi"]
