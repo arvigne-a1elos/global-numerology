@@ -34,25 +34,38 @@ except Exception:
 FONTE_POR_IDIOMA = {'ja': 'HeiseiMin-W3', 'zh': 'STSong-Light',
                     'ru': 'DejaVu', 'tr': 'DejaVu', 'vi': 'DejaVu'}
 
-# Fontes RTL (árabe e hebraico) — registro direto, sem depender de função externa
+# Fontes RTL (árabe e hebraico) — registro robusto, procura em qualquer pasta
 FONTES_RTL = {
     "ar": ("NotoNaskhArabic", "static/fonts/NotoNaskhArabic-Regular.ttf", "static/fonts/NotoNaskhArabic-Bold.ttf"),
     "he": ("NotoSansHebrew", "static/fonts/NotoSansHebrew-Regular.ttf", "static/fonts/NotoSansHebrew-Bold.ttf"),
 }
 
 def _registrar_fontes_rtl():
-    """Registra fontes RTL (árabe e hebraico)."""
-    for nome, regular, bold in FONTES_RTL.values():
-        try:
-            pdfmetrics.registerFont(TTFont(nome, regular))
-        except Exception:
-            pass
-        try:
-            pdfmetrics.registerFont(TTFont(nome + "-Bold", bold))
-        except Exception:
-            pass
+    """Procura as fontes árabe/hebraico em qualquer pasta do projeto e registra."""
+    raiz = os.path.dirname(os.path.abspath(__file__))
+    for lang, (nome, reg, bold) in FONTES_RTL.items():
+        arq_reg = os.path.basename(reg)
+        arq_bold = os.path.basename(bold)
+        achou_reg = None
+        achou_bold = None
+        for pasta_atual, subpastas, arquivos in os.walk(raiz):
+            if arq_reg in arquivos:
+                achou_reg = os.path.join(pasta_atual, arq_reg)
+            if arq_bold in arquivos:
+                achou_bold = os.path.join(pasta_atual, arq_bold)
+        if achou_reg:
+            try:
+                pdfmetrics.registerFont(TTFont(nome, achou_reg))
+            except Exception as e:
+                print(f"[RTL {lang}] erro regular: {e}")
+        if achou_bold:
+            try:
+                pdfmetrics.registerFont(TTFont(nome + "-Bold", achou_bold))
+            except Exception as e:
+                print(f"[RTL {lang}] erro bold: {e}")
 
-_registrar_fontes_rtl()
+_registrar_fontes_rtl()   # ← chamada DEPOIS da definição (essencial!)
+
 COR_AZUL = colors.HexColor("#1a3a6b")
 COR_DOURADO = colors.HexColor("#B8860B")
 COR_PRETO = colors.HexColor("#1a1a1a")
@@ -83,30 +96,6 @@ def _fonte(lang, bold=False):
     if base == "Helvetica":
         return "Helvetica-Bold" if bold else "Helvetica"
     return base
-
-def _registrar_fontes_rtl():
-    """Procura as fontes árabe/hebraico em qualquer pasta do projeto e registra."""
-    raiz = os.path.dirname(os.path.abspath(__file__))
-    for lang, (nome, reg, bold) in FONTES_RTL.items():
-        arq_reg = os.path.basename(reg)
-        arq_bold = os.path.basename(bold)
-        achou_reg = None
-        achou_bold = None
-        for pasta_atual, subpastas, arquivos in os.walk(raiz):
-            if arq_reg in arquivos:
-                achou_reg = os.path.join(pasta_atual, arq_reg)
-            if arq_bold in arquivos:
-                achou_bold = os.path.join(pasta_atual, arq_bold)
-        if achou_reg:
-            try:
-                pdfmetrics.registerFont(TTFont(nome, achou_reg))
-            except Exception:
-                pass
-        if achou_bold:
-            try:
-                pdfmetrics.registerFont(TTFont(nome + "-Bold", achou_bold))
-            except Exception:
-                pass
 
 def _estilo(lang, tam, bold, cor, alinh=TA_LEFT, antes=0, depois=6):
     return ParagraphStyle("s", fontName=_fonte(lang, bold), fontSize=tam,
