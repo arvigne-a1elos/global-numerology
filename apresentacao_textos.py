@@ -4829,6 +4829,54 @@ def gerar_pdf_slides(lang):
     _slide_projecoes_v2(pagina)
     pagina += 1
 
+    # SLIDE 15b — PROJEÇÕES CURTO PRAZO (1–5 anos)
+    cab(c["projecoes_curto_titulo"], 15)
+    y = altura - 32 * mm
+    y = _texto_wrap(doc, c["projecoes_curto_texto"], _fonte(lang), 11, 18 * mm, y,
+                largura - 36 * mm, COR_CINZA, 5.5 * mm)
+    y -= 8 * mm
+    # Tabela curto prazo
+    tbl = Table(c["projecoes_curto_tabela"], colWidths=[40*mm, 55*mm, 55*mm])
+    tbl.setStyle(TableStyle([
+        ("BACKGROUND", (0,0), (-1,0), COR_DOURADO),
+        ("TEXTCOLOR", (0,0), (-1,0), white),
+        ("FONTNAME", (0,0), (-1,0), _fonte(lang, True)),
+        ("FONTSIZE", (0,0), (-1,0), 10),
+        ("FONTNAME", (0,1), (-1,-1), _fonte(lang)),
+        ("FONTSIZE", (0,1), (-1,-1), 9),
+        ("GRID", (0,0), (-1,-1), 0.5, COR_DOURADO),
+        ("ALIGN", (1,0), (-1,-1), "CENTER"),
+        ("BACKGROUND", (0,1), (-1,-1), COR_FUNDO),
+    ]))
+    tbl.wrapOn(doc, largura - 36*mm, 60*mm)
+    tbl.drawOn(doc, 18*mm, y - 60*mm)
+    # Gráfico de barras (conservador x otimista)
+    by = y - 70 * mm
+    doc.setFillColor(COR_CINZA)
+    doc.setFont(_fonte(lang), 9)
+    doc.drawString(18 * mm, by, "Conservador")
+    doc.setFillColor(COR_DOURADO)
+    doc.drawRightString(largura - 18 * mm, by, "Otimista")
+    by -= 6 * mm
+    maximo = 9.6  # R$ M (ano 5 otimista)
+    for i, (ano, cons, otim) in enumerate(c["projecoes_curto_tabela"][1:]):
+        by -= 12 * mm
+        doc.setFillColor(COR_CINZA)
+        doc.setFont(_fonte(lang), 9)
+        doc.drawString(18 * mm, by, ano)
+        cons_m = float(cons.replace("R$ ", "").replace("k", "e3").replace(",", "").replace("M", "e6"))
+        otim_m = float(otim.replace("R$ ", "").replace("k", "e3").replace(",", "").replace("M", "e6"))
+        barra_w = (largura - 90 * mm) / 2
+        # barra conservador
+        doc.setFillColor(HexColor("#8a6d2f"))
+        doc.rect(45 * mm, by, barra_w * (cons_m / (maximo * 1e6)), 6 * mm, fill=1, stroke=0)
+        # barra otimista
+        doc.setFillColor(HexColor("#C9A94E"))
+        doc.rect(45 * mm + barra_w + 10 * mm, by, barra_w * (otim_m / (maximo * 1e6)), 6 * mm, fill=1, stroke=0)
+    rodape(pagina)
+    doc.showPage()
+    pagina += 1
+           
     # SLIDE 16 — TRAÇÃO E RESULTADOS
     cab(c["tracao_titulo"], 15)
     y = altura - 32 * mm
