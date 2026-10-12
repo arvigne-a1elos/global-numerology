@@ -917,7 +917,7 @@ APRESENTACAO_TEXTOS = {
         ],
         "banners_formatos": "728×90 px — Banner central desktop · 320×100 px — Formato mobile otimizado · 8 segundos — Rotação automática · Geo-alvo — País, continente ou alcance mundial",
         "b2b_titulo": "Pacotes Empresariais B2B — Alto Valor, Alto Volume",
-        "b2b_texto": "Os Pacotes B2B transformam a A1ELOS em uma ferramenta de employer branding e bem-estar corporativo. Empresas adquirem códigos de acesso em volume para distribuir como brindes a colaboradores ou clientes — respaldadas pelo DUNS 942242668 para contratos corporativos formais.",
+        "b2b_texto": "Os Pacotes B2B transformam a A1ELOS em uma ferramenta de employer branding e bem-estar corporativo. No centro dessa estratégia está o produto exclusivo e contínuo: a Compatibilidade de Equipes RH (R$ 98). Diferente de brindes pontuais, a análise de compatibilidade é uma ferramenta de gestão de pessoas que a empresa incorpora ao seu dia a dia — calculando setores e equipes com a energia desejada e sincronizando todos os membros de um setor na mesma sintonia e harmonia. Ideal para pequenas e grandes empresas, é o serviço que o Departamento de Recursos Humanos usa de forma constante, apoiado em mercados em forte crescimento: HR Tech (CAGR 10,35%), Employer Branding (CAGR 11,19%) e Corporate Wellness (CAGR 6,12%).",
         "b2b_planos": [
             ("Plano Básico · 50 códigos", "50× Mapa Express (R$ 8 cada). Ideal para programas de benefícios a colaboradores e ações de integração."),
             ("Plano Intermediário · 100 códigos", "50× Mapa Express + 50× Pesquisa IA (R$ 17). Perfeito para equipes e estratégia de marca empregadora."),
@@ -934,6 +934,8 @@ APRESENTACAO_TEXTOS = {
             ["2.000 códigos", "50%", "Grandes grupos", "Larga escala"],
             ["Acima de 2.000", "Negociável", "Plano Diamante sob medida", "Distribuição de bônus em volume"],
         ],
+        "rh_destaque_titulo": "Compatibilidade de Equipes RH — O Produto Exclusivo",
+        "rh_destaque_texto": "A análise de compatibilidade energética entre gestores e colaboradores, e entre membros de uma mesma equipe (energia ideal: número 8 — poder, liderança e equilíbrio material), posiciona a A1ELOS como pioneira no mercado de RH corporativo. A harmonia energética do setor reduz atritos interpessoais, alinha posturas e pensamentos, diminui a rotatividade (turnover), fortalece o clima organizacional e eleva a produtividade — um valor que o Bônus Coletivo, como brinde pontual, não entrega. É o produto que sustenta o crescimento de curto prazo e a receita B2B recorrente.",   
         "projecoes_titulo": "Projeções Financeiras: Horizonte de 50 Anos",
         "projecoes_texto": "As projeções foram construídas com base em estimativas percentuais de penetração sobre o mercado potencial de ~5,32 bilhões de falantes, com conversão conservadora de 3% e resgate de bônus entre 70% e 90%. Com o 24º produto — Compatibilidade de Equipes RH (R$ 98) e o canal Bônus Coletivo/Empresarial —, a receita B2B de RH passa a compor a projeção, ancorada em mercados verificados: HR Tech (CAGR 10,35%), Employer Branding (CAGR 11,19%) e Corporate Wellness (CAGR 6,12%). O curto prazo (anos 1–5) evidencia o crescimento acelerado da nova frente B2B; o longo prazo reflete a estabilidade contínua do modelo até a assimilação plena do mercado endereçável.",
         "projecoes_tabela": [
