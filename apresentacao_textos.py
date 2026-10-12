@@ -846,6 +846,7 @@ APRESENTACAO_TEXTOS = {
             "Menor rotatividade (turnover) e maior retenção de talentos",
             "Clima organizacional positivo → ganho de produtividade e bem-estar",
             "Employer branding fortalecido → atração de talentos alinhados à cultura",
+        ],            
         "mercado_rh_cards": [
             ["HR Tech", "US$ 42,34 bi (2025) → US$ 77,74 bi (2031)", "CAGR 10,35% · Mordor Intelligence"],
             ["Employer Branding", "US$ 1,89 bi (2025) → US$ 3,62 bi (2031)", "CAGR 11,19% · Mordor Intelligence"],
