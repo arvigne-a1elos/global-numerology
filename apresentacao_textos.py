@@ -840,6 +840,12 @@ APRESENTACAO_TEXTOS = {
         ],
         "mercado_rh_titulo": "Novo Mercado: RH Corporativo — o 24º Produto",
         "mercado_rh_texto": "O 24º produto — Compatibilidade de Equipes RH (R$ 98) — abre o principal mercado B2B da A1ELOS: o RH corporativo. A análise de compatibilidade energética entre gestores e colaboradores (energia ideal: número 8) posiciona a plataforma como ferramenta pioneira de employer branding e bem-estar corporativo, com descontos progressivos de 10% a 50% e negociação direta acima de 2.000 códigos (Plano Diamante).",
+        "mercado_rh_vantagens": [
+            "Harmonia energética do setor → redução de atritos interpessoais e maior coesão da equipe",
+            "Alinhamento de posturas e pensamentos entre gestores e colaboradores → comunicação mais fluida",
+            "Menor rotatividade (turnover) e maior retenção de talentos",
+            "Clima organizacional positivo → ganho de produtividade e bem-estar",
+            "Employer branding fortalecido → atração de talentos alinhados à cultura",
         "mercado_rh_cards": [
             ["HR Tech", "US$ 42,34 bi (2025) → US$ 77,74 bi (2031)", "CAGR 10,35% · Mordor Intelligence"],
             ["Employer Branding", "US$ 1,89 bi (2025) → US$ 3,62 bi (2031)", "CAGR 11,19% · Mordor Intelligence"],
