@@ -690,7 +690,13 @@ window.BC_PRODUTOS = window.BC_PRODUTOS || [
 
 function montarTabelaBC() {
   var lang = (typeof getLang === 'function') ? getLang() : 'pt';
-  // Moeda
+  try {
+    /* corpo atual da função, sem alteração */
+  } catch (e) {
+    console.error('[A1ELOS] ERRO em montarTabelaBC:', e);
+  }
+}
+// Moeda
   var simb = (typeof SIMBOLO !== 'undefined' && SIMBOLO[lang]) ? SIMBOLO[lang]
            : ((typeof SIMB !== 'undefined' && SIMB[lang]) ? SIMB[lang]
            : ((window.MOEDAS && window.MOEDAS[lang]) ? window.MOEDAS[lang] : 'R$'));
