@@ -123,18 +123,22 @@ window.PRODUTOS_TRAD = window.PRODUTOS_TRAD || {
  ja:{express:"エクスプレスマップ",vida:"ライフステージと年",completo:"完全マップ",ia:"AI名前検索",urna:"投票用紙名の検証",eleitoral:"選挙番号",imovel:"不動産番号",calendario:"月間エネルギーカレンダー",artistico:"芸名の検証",bebe:"赤ちゃんの名前計画",assinatura:"署名の検証",negocio:"ビジネス・商品名",casal:"カップルマップ",familia:"プレミアム家族マップ",coletivo:"法人ボーナス",nome_pet:"ペットの名前",nickname:"デジタルニックネーム",nome_dominio:"ドメイン名",nome_canal:"チャンネル名",nome_equipe:"チーム名",nome_ong:"NGO・協会・研究所・財団の名前",nome_projeto:"プロジェクト名",nome_evento:"イベント名", compatibilidade_equipes: "チーム相性診断"},
  zh:{express:"快速地图",vida:"生命阶段与年份",completo:"完整地图",ia:"AI名字搜索",urna:"选票名称验证",eleitoral:"选举号码",imovel:"房产号码",calendario:"每月能量日历",artistico:"艺名验证",bebe:"宝宝取名规划",assinatura:"签名验证",negocio:"企业/产品名称",casal:"情侣地图",familia:"高级家庭地图",coletivo:"企业奖励",nome_pet:"宠物名字",nickname:"数字昵称",nome_dominio:"域名",nome_canal:"频道名称",nome_equipe:"团队名称",nome_ong:"非政府组织、协会、研究所或基金会名称",nome_projeto:"项目名称",nome_evento:"活动名称", compatibilidade_equipes: "团队兼容性"},
  ru:{express:"Экспресс-карта",vida:"Жизненный этап и год",completo:"Полная карта",ia:"ИИ-поиск имён",urna:"Проверка названия бюллетеня",eleitoral:"Избирательный номер",imovel:"Номер недвижимости",calendario:"Ежемесячный энергетический календарь",artistico:"Проверка сценического имени",bebe:"Планирование имени ребёнка",assinatura:"Проверка подписей",negocio:"Название для бизнеса/продукта",casal:"Карта пары",familia:"Премиальная семейная карта",coletivo:"Корпоративный бонус",nome_pet:"Имя питомца",nickname:"Цифровой никнейм",nome_dominio:"Имя домена",nome_canal:"Название канала",nome_equipe:"Название команды",nome_ong:"Название НКО, ассоциации, института или фонда",nome_projeto:"Название проекта",nome_evento:"Название события", compatibilidade_equipes: "Совместимость команды", compatibilidade_equipes: "Kompatibilitas Tim"},
- id:{express:"Peta Ekspres",vida:"Fase Kehidupan & Tahun",completo:"Peta Lengkap",ia:"Pencarian Nama AI",urna:"Validasi Nama Surat Suara",eleitoral:"Nomor Elektoral",imovel:"Nomor Properti",calendario:"Kalender Energi Bulanan",artistico:"Validasi Nama Artistik",bebe:"Perencanaan Nama Bayi",assinatura:"Validasi Tanda Tangan",negocio:"Nama untuk Bisnis/Produk",casal:"Peta Pasangan",familia:"Peta Keluarga Premium",coletivo:"Bonus Kolektif/Perusahaan",nome_pet:"Nama Hewan Peliharaan",nickname:"Nama Panggilan Digital",nome_dominio:"Nama Domain",nome_canal:"Nama Kanal",nome_equipe:"Nama Tim",nome_ong:"Nama LSM, Asosiasi, Lembaga atau Yayasan",nome_projeto:"Nama Proyek",nome_evento:"Nama Acara"},
+ id:{express:"Peta Ekspres",vida:"Fase Kehidupan & Tahun",completo:"Peta Lengkap",ia:"Pencarian Nama AI",urna:"Validasi Nama Surat Suara",eleitoral:"Nomor Elektoral",imovel:"Nomor Properti",calendario:"Kalender Energi Bulanan",artistico:"Validasi Nama Artistik",bebe:"Perencanaan Nama Bayi",assinatura:"Validasi Tanda Tangan",negocio:"Nama untuk Bisnis/Produk",casal:"Peta Pasangan",familia:"Peta Keluarga Premium",coletivo:"Bonus Kolektif/Perusahaan",nome_pet:"Nama Hewan Peliharaan",nickname:"Nama Panggilan Digital",nome_dominio:"Nama Domain",nome_canal:"Nama Kanal",nome_equipe:"Nama Tim",nome_ong:"Nama LSM, Asosiasi, Lembaga atau Yayasan",nome_projeto:"Nama Proyek",nome_evento:"Nama Acara", compatibilidade_equipes: "Kompatibilitas Tim"},
  tr:{express:"Ekspres Harita",vida:"Yaşam Evresi ve Yıl",completo:"Tam Harita",ia:"AI İsim Arama",urna:"Oy Pusulası İsim Doğrulama",eleitoral:"Seçim Numarası",imovel:"Mülk Numarası",calendario:"Aylık Enerji Takvimi",artistico:"Sahne Adı Doğrulama",bebe:"Bebek İsmi Planlama",assinatura:"İmza Doğrulama",negocio:"İşletme/Ürün Adı",casal:"Çift Haritası",familia:"Premium Aile Haritası",coletivo:"Kurumsal Bonus",nome_pet:"Evcil Hayvan Adı",nickname:"Dijital Takma Ad",nome_dominio:"Alan Adı",nome_canal:"Kanal Adı",nome_equipe:"Ekip Adı",nome_ong:"STK, Dernek, Enstitü veya Vakıf Adı",nome_projeto:"Proje Adı",nome_evento:"Etkinlik Adı", compatibilidade_equipes: "Ekip Uyumu"},
  vi:{express:"Bản Đồ Nhanh",vida:"Giai Đoạn Cuộc Đời & Năm",completo:"Bản Đồ Đầy Đủ",ia:"Tìm Kiếm Tên AI",urna:"Xác Minh Tên Phiếu Bầu",eleitoral:"Số Bầu Cử",imovel:"Số Bất Động Sản",calendario:"Lịch Năng Lượng Hàng Tháng",artistico:"Xác Minh Nghệ Danh",bebe:"Lên Kế Hoạch Tên Cho Bé",assinatura:"Xác Minh Chữ Ký",negocio:"Tên Cho Doanh Nghiệp/Sản Phẩm",casal:"Bản Đồ Cặp Đôi",familia:"Bản Đồ Gia Đình Cao Cấp",coletivo:"Thưởng Tập Thể/Doanh Nghiệp",nome_pet:"Tên Thú Cưng",nickname:"Biệt Danh Kỹ Thuật Số",nome_dominio:"Tên Miền",nome_canal:"Tên Kênh",nome_equipe:"Tên Đội Nhóm",nome_ong:"Tên Tổ Chức, Hiệp Hội, Viện hoặc Quỹ",nome_projeto:"Tên Dự Án",nome_evento:"Tên Sự Kiện", compatibilidade_equipes: "Khả năng Tương thích Đội nhóm"},
  he:{express:"מפה מהירה",vida:"שלב חיים ושנה",completo:"מפה מלאה",ia:"חיפוש שמות AI",urna:"אימות שם פתק",eleitoral:"מספר בחירות",imovel:"מספר נכס",calendario:"לוח אנרגיה חודשי",artistico:"אימות שם במה",bebe:"תכנון שם לתינוק",assinatura:"אימות חתימות",negocio:"שם לעסק/מוצר",casal:"מפת זוג",familia:"מפת משפחה פרימיום",coletivo:"בונוס ארגוני",nome_pet:"שם חיית המחמד",nickname:"כינוי דיגיטלי",nome_dominio:"שם דומיין",nome_canal:"שם הערוץ",nome_equipe:"שם הצוות",nome_ong:"שם עמותה, ארגון, מכון או קרן",nome_projeto:"שם הפרויקט",nome_evento:"שם האירוע", compatibilidade_equipes: "תאימות צוות"},
  ar:{express:"خريطة سريعة",vida:"مرحلة الحياة والسنة",completo:"خريطة كاملة",ia:"بحث الأسماء بالذكاء الاصطناعي",urna:"التحقق من اسم الاقتراع",eleitoral:"الرقم الانتخابي",imovel:"رقم العقار",calendario:"التقويم الشهري للطاقة",artistico:"التحقق من الاسم الفني",bebe:"تخطيط اسم الطفل",assinatura:"التحقق من التوقيعات",negocio:"اسم للأعمال/المنتج",casal:"خريطة الزوجين",familia:"خريطة العائلة المميزة",coletivo:"مكافأة الشركات",nome_pet:"اسم الحيوان الأليف",nickname:"اللقب الرقمي",nome_dominio:"اسم النطاق",nome_canal:"اسم القناة",nome_equipe:"اسم الفريق",nome_ong:"اسم منظمة أو جمعية أو معهد أو مؤسسة",nome_projeto:"اسم المشروع",nome_evento:"اسم الفعالية", compatibilidade_equipes: "توافق الفريق"}
 };
 
-/* ===== PRODUTO_FAIXA ===== */
-window.PRODUTO_FAIXA = window.PRODUTO_FAIXA || {
-  express:0, vida:0, nome_pet:0, nickname:0, nome_dominio:0, nome_canal:0, nome_equipe:0, nome_projeto:0, nome_evento:0, ia:0,
-  completo:1, urna:2, eleitoral:2, imovel:2, calendario:2,
-  artistico:3, bebe:3, assinatura:3, nome_ong:3, negocio:4, casal:4, familia:5, compatibilidade_equipes:5, coletivo:5
+/* ===== PRODUTO_FAIXA (24 produtos — sincronizado com referencia/precos.py) ===== */
+window.PRODUTO_FAIXA = {
+  express: 0, vida: 0, completo: 1, ia: 0,
+  urna: 2, eleitoral: 2, imovel: 2, calendario: 2,
+  artistico: 3, bebe: 3, assinatura: 3, nome_ong: 3,
+  negocio: 4, casal: 4,
+  familia: 5, coletivo: 5, compatibilidade_equipes: 5,
+  nome_pet: 0, nickname: 0, nome_dominio: 0, nome_canal: 0,
+  nome_equipe: 0, nome_projeto: 0, nome_evento: 0
 };
 
 /* ===== FEAT_TRAD v1 — FEATURES DOS 24 CARDS EM 14 IDIOMAS ===== */
@@ -164,7 +168,7 @@ if (!window.FEAT_TRAD.pt) {
         uniao_membros:"✅ União entre os membros", ong_anal:"✅ ONG analisada", causa_potencial:"✅ Causa potencializada",
         projeto_anal:"✅ Projeto analisado", impulso_sucesso:"✅ Impulso para o sucesso", evento_anal:"✅ Evento analisado",
         atmosfera:"✅ Atmosfera para os participantes", pdf:"📲 PDF + QRCode",
-        "compatibilidade_equipes": ["✅ Chefe × membros", "✅ Membros × membros", "✅ Compatibilidade de pares", "📲 PDF + QRCode"],
+        compatibilidade_equipes: "✅ Chefe × membros", "✅ Membros × membros", "✅ Compatibilidade de pares", "📲 PDF + QRCode",
       },
       en: {
         cam_vida:"✅ Life Path", expr_alma_pers:"✅ Expression, Soul, Personality", destino:"✅ Destiny",
@@ -188,7 +192,7 @@ if (!window.FEAT_TRAD.pt) {
         uniao_membros:"✅ Unity among members", ong_anal:"✅ NGO analyzed", causa_potencial:"✅ Amplified cause",
         projeto_anal:"✅ Project analyzed", impulso_sucesso:"✅ Success boost", evento_anal:"✅ Event analyzed",
         atmosfera:"✅ Atmosphere for participants", pdf:"📲 PDF + QR Code",
-        "compatibilidade_equipes": ["✅ Boss × members", "✅ Members × members", "✅ Pair compatibility", "📲 PDF + QRCode"]
+        compatibilidade_equipes: "✅ Boss × members", "✅ Members × members", "✅ Pair compatibility", "📲 PDF + QRCode"
       },
       es: {
         cam_vida:"✅ Camino de Vida", expr_alma_pers:"✅ Expresión, Alma, Personalidad", destino:"✅ Destino",
@@ -212,7 +216,7 @@ if (!window.FEAT_TRAD.pt) {
         uniao_membros:"✅ Unión entre los miembros", ong_anal:"✅ ONG analizada", causa_potencial:"✅ Causa potenciada",
         projeto_anal:"✅ Proyecto analizado", impulso_sucesso:"✅ Impulso para el éxito", evento_anal:"✅ Evento analizado",
         atmosfera:"✅ Ambiente para los participantes", pdf:"📲 PDF + Código QR",
-        "compatibilidade_equipes": ["✅ Jefe × miembros", "✅ Miembros × miembros", "✅ Compatibilidad de pares", "📲 PDF + QRCode"]
+        compatibilidade_equipes: "✅ Jefe × miembros", "✅ Miembros × miembros", "✅ Compatibilidad de pares", "📲 PDF + QRCode"
       },
       it: {
         cam_vida:"✅ Percorso di Vita", expr_alma_pers:"✅ Espressione, Anima, Personalità", destino:"✅ Destino",
@@ -236,7 +240,7 @@ if (!window.FEAT_TRAD.pt) {
         uniao_membros:"✅ Unione tra i membri", ong_anal:"✅ ONG analizzata", causa_potencial:"✅ Causa potenziata",
         projeto_anal:"✅ Progetto analizzato", impulso_sucesso:"✅ Spinta verso il successo", evento_anal:"✅ Evento analizzato",
         atmosfera:"✅ Atmosfera per i partecipanti", pdf:"📲 PDF + Codice QR",
-        "compatibilidade_equipes": ["✅ Capo × membri", "✅ Membri × membri", "✅ Compatibilità di coppia", "📲 PDF + QRCode"]
+        compatibilidade_equipes: "✅ Capo × membri", "✅ Membri × membri", "✅ Compatibilità di coppia", "📲 PDF + QRCode"
       },
       fr: {
         cam_vida:"✅ Chemin de Vie", expr_alma_pers:"✅ Expression, Âme, Personnalité", destino:"✅ Destinée",
@@ -260,7 +264,7 @@ if (!window.FEAT_TRAD.pt) {
         uniao_membros:"✅ Union entre les membres", ong_anal:"✅ ONG analysée", causa_potencial:"✅ Cause amplifiée",
         projeto_anal:"✅ Projet analysé", impulso_sucesso:"✅ Élan vers le succès", evento_anal:"✅ Événement analysé",
         atmosfera:"✅ Atmosphère pour les participants", pdf:"📲 PDF + Code QR",
-        "compatibilidade_equipes": ["✅ Chef × membres", "✅ Membres × membres", "✅ Compatibilité de paires", "📲 PDF + QRCode"]
+        compatibilidade_equipes: "✅ Chef × membres", "✅ Membres × membres", "✅ Compatibilité de paires", "📲 PDF + QRCode"
       },
       de: {
         cam_vida:"✅ Lebensweg", expr_alma_pers:"✅ Ausdruck, Seele, Persönlichkeit", destino:"✅ Schicksal",
@@ -284,7 +288,7 @@ if (!window.FEAT_TRAD.pt) {
         uniao_membros:"✅ Zusammenhalt der Mitglieder", ong_anal:"✅ NGO analysiert", causa_potencial:"✅ Verstärkte Wirkung der Sache",
         projeto_anal:"✅ Projekt analysiert", impulso_sucesso:"✅ Schub für den Erfolg", evento_anal:"✅ Veranstaltung analysiert",
         atmosfera:"✅ Atmosphäre für die Teilnehmer", pdf:"📲 PDF + QR-Code",
-        "compatibilidade_equipes": ["✅ Chef × Mitglieder", "✅ Mitglieder × Mitglieder", "✅ Paarkompatibilität", "📲 PDF + QRCode"]
+        compatibilidade_equipes: "✅ Chef × Mitglieder", "✅ Mitglieder × Mitglieder", "✅ Paarkompatibilität", "📲 PDF + QRCode",
       },
       ru: {
         cam_vida:"✅ Путь Жизни", expr_alma_pers:"✅ Экспрессия, Душа, Личность", destino:"✅ Судьба",
@@ -308,7 +312,7 @@ if (!window.FEAT_TRAD.pt) {
         uniao_membros:"✅ Единство между членами", ong_anal:"✅ НКО проанализирована", causa_potencial:"✅ Дело усилено",
         projeto_anal:"✅ Проект проанализирован", impulso_sucesso:"✅ Импульс к успеху", evento_anal:"✅ Событие проанализировано",
         atmosfera:"✅ Атмосфера для участников", pdf:"📲 PDF + QR-код",
-        "compatibilidade_equipes": ["✅ Руководитель × члены", "✅ Члены × члены", "✅ Совместимость пар", "📲 PDF + QRCode"]
+        compatibilidade_equipes: "✅ Руководитель × члены", "✅ Члены × члены", "✅ Совместимость пар", "📲 PDF + QRCode",
       },
       zh: {
         cam_vida:"✅ 生命道路", expr_alma_pers:"✅ 表现、灵魂、个性", destino:"✅ 命运",
@@ -332,7 +336,7 @@ if (!window.FEAT_TRAD.pt) {
         uniao_membros:"✅ 成员团结", ong_anal:"✅ 组织分析", causa_potencial:"✅ 事业增强",
         projeto_anal:"✅ 项目分析", impulso_sucesso:"✅ 成功助推", evento_anal:"✅ 活动分析",
         atmosfera:"✅ 参与者氛围", pdf:"📲 PDF + 二维码",
-        "compatibilidade_equipes": ["✅ 主管×成员", "✅ 成员×成员", "✅ 配对兼容性", "📲 PDF + QRCode"]
+        compatibilidade_equipes: "✅ 主管×成员", "✅ 成员×成员", "✅ 配对兼容性", "📲 PDF + QRCode",
       },
       ja: {
         cam_vida:"✅ ライフパス", expr_alma_pers:"✅ 表現・魂・性格", destino:"✅ 運命",
@@ -356,7 +360,7 @@ if (!window.FEAT_TRAD.pt) {
         uniao_membros:"✅ メンバー間の結束", ong_anal:"✅ NGOを分析", causa_potencial:"✅ 活動を強化",
         projeto_anal:"✅ プロジェクトを分析", impulso_sucesso:"✅ 成功への後押し", evento_anal:"✅ イベントを分析",
         atmosfera:"✅ 参加者のための雰囲気", pdf:"📲 PDF + QRコード",
-        "compatibilidade_equipes": ["✅ 上司×メンバー", "✅ メンバー×メンバー", "✅ ペア相性", "📲 PDF + QRCode"]
+        compatibilidade_equipes: "✅ 上司×メンバー", "✅ メンバー×メンバー", "✅ ペア相性", "📲 PDF + QRCode",
       },
       id: {
         cam_vida:"✅ Jalan Hidup", expr_alma_pers:"✅ Ekspresi, Jiwa, Kepribadian", destino:"✅ Takdir",
@@ -380,7 +384,7 @@ if (!window.FEAT_TRAD.pt) {
         uniao_membros:"✅ Persatuan antar anggota", ong_anal:"✅ LSM dianalisis", causa_potencial:"✅ Penyebab diperkuat",
         projeto_anal:"✅ Proyek dianalisis", impulso_sucesso:"✅ Dorongan menuju sukses", evento_anal:"✅ Acara dianalisis",
         atmosfera:"✅ Atmosfer untuk peserta", pdf:"📲 PDF + Kode QR",
-        "compatibilidade_equipes": ["✅ Atasan × anggota", "✅ Anggota × anggota", "✅ Kompatibilitas pasangan", "📲 PDF + QRCode"]
+        compatibilidade_equipes: "✅ Atasan × anggota", "✅ Anggota × anggota", "✅ Kompatibilitas pasangan", "📲 PDF + QRCode",
       },
       tr: {
         cam_vida:"✅ Yaşam Yolu", expr_alma_pers:"✅ İfade, Ruh, Kişilik", destino:"✅ Kader",
@@ -404,7 +408,7 @@ if (!window.FEAT_TRAD.pt) {
         uniao_membros:"✅ Üyeler arası birlik", ong_anal:"✅ STK analiz edildi", causa_potencial:"✅ Dava güçlendirildi",
         projeto_anal:"✅ Proje analiz edildi", impulso_sucesso:"✅ Başarı için itici güç", evento_anal:"✅ Etkinlik analiz edildi",
         atmosfera:"✅ Katılımcılar için atmosfer", pdf:"📲 PDF + QR Kod",
-        "compatibilidade_equipes": ["✅ Patron × üyeler", "✅ Üyeler × üyeler", "✅ Çift uyumu", "📲 PDF + QRCode"]
+        compatibilidade_equipes: "✅ Patron × üyeler", "✅ Üyeler × üyeler", "✅ Çift uyumu", "📲 PDF + QRCode",
       },
       vi: {
         cam_vida:"✅ Đường Đời", expr_alma_pers:"✅ Biểu Đạt, Tâm Hồn, Tính Cách", destino:"✅ Định Mệnh",
@@ -428,7 +432,7 @@ if (!window.FEAT_TRAD.pt) {
         uniao_membros:"✅ Đoàn kết giữa các thành viên", ong_anal:"✅ Tổ chức được phân tích", causa_potencial:"✅ Sứ mệnh được khuếch đại",
         projeto_anal:"✅ Dự án được phân tích", impulso_sucesso:"✅ Động lực cho thành công", evento_anal:"✅ Sự kiện được phân tích",
         atmosfera:"✅ Không khí cho người tham dự", pdf:"📲 PDF + Mã QR",
-        "compatibilidade_equipes": ["✅ Sếp × thành viên", "✅ Thành viên × thành viên", "✅ Tương thích cặp", "📲 PDF + QRCode"]
+        compatibilidade_equipes: "✅ Sếp × thành viên", "✅ Thành viên × thành viên", "✅ Tương thích cặp", "📲 PDF + QRCode",
       },
       he: {
         cam_vida:"✅ מסלול חיים", expr_alma_pers:"✅ ביטוי, נשמה, אישיות", destino:"✅ גורל",
@@ -452,7 +456,7 @@ if (!window.FEAT_TRAD.pt) {
         uniao_membros:"✅ אחדות בין החברים", ong_anal:"✅ הארגון נותח", causa_potencial:"✅ המטרה מוגברת",
         projeto_anal:"✅ הפרויקט נותח", impulso_sucesso:"✅ דחיפה להצלחה", evento_anal:"✅ האירוע נותח",
         atmosfera:"✅ אווירה למשתתפים", pdf:"📲 PDF + קוד QR",
-        "compatibilidade_equipes": ["✅ תאימות זוגות", "✅ חברים × חברים", "✅ תאימות", "📲 PDF + QRCode"]
+        compatibilidade_equipes: "✅ תאימות זוגות", "✅ חברים × חברים", "✅ תאימות", "📲 PDF + QRCode",
       },
       ar: {
         cam_vida:"✅ مسار الحياة", expr_alma_pers:"✅ التعبير والروح والشخصية", destino:"✅ القدر",
@@ -476,7 +480,7 @@ if (!window.FEAT_TRAD.pt) {
         uniao_membros:"✅ الوحدة بين الأعضاء", ong_anal:"✅ تم تحليل المنظمة", causa_potencial:"✅ تعزيز القضية",
         projeto_anal:"✅ تم تحليل المشروع", impulso_sucesso:"✅ دفع نحو النجاح", evento_anal:"✅ تم تحليل الحدث",
         atmosfera:"✅ أجواء للمشاركين", pdf:"📲 PDF + رمز QR",
-        "compatibilidade_equipes": ["✅ توافق الأزواج", "✅ أعضاء × أعضاء", "✅ توافق", "📲 PDF + QRCode"]
+        compatibilidade_equipes: "✅ توافق الأزواج", "✅ أعضاء × أعضاء", "✅ توافق", "📲 PDF + QRCode",
       }
     };
     var M = {
@@ -526,7 +530,7 @@ window.CARDS_TRAD = window.CARDS_TRAD || {
   de:{ nome_pet:"Haustiername", nome_pet_desc:"Die Energie des Namens Ihres Haustiers.", nickname:"Digitaler Spitzname", nickname_desc:"Die Schwingung Ihres Spitznamens online.", nome_dominio:"Domainname", nome_dominio_desc:"Die Energie Ihres Domainnamens.", nome_canal:"Kanalname", nome_canal_desc:"Die Energie Ihres Kanalnamens.", nome_equipe:"Teamname", nome_equipe_desc:"Die Schwingung des Namens Ihres Teams.", nome_ong:"NGO-Name", nome_ong_desc:"Die Energie des Namens Ihrer Organisation.", nome_projeto:"Projektname", nome_projeto_desc:"Die Energie Ihres Projektnamens.", nome_evento:"Veranstaltungsname", nome_evento_desc:"Die Schwingung des Namens Ihrer Veranstaltung.", buscar:"Suchen" },
   ru:{ nome_pet:"Имя питомца", nome_pet_desc:"Энергия имени вашего питомца.", nickname:"Цифровой никнейм", nickname_desc:"Вибрация вашего никнейма в сети.", nome_dominio:"Доменное имя", nome_dominio_desc:"Энергия вашего доменного имени.", nome_canal:"Название канала", nome_canal_desc:"Энергия названия вашего канала.", nome_equipe:"Название команды", nome_equipe_desc:"Вибрация названия вашей команды.", nome_ong:"Название НПО", nome_ong_desc:"Энергия названия вашей организации.", nome_projeto:"Название проекта", nome_projeto_desc:"Энергия названия вашего проекта.", nome_evento:"Название события", nome_evento_desc:"Вибрация названия вашего события.", buscar:"Поиск" },
   zh:{ nome_pet:"宠物名称", nome_pet_desc:"您的宠物名字的能量。", nickname:"数字昵称", nickname_desc:"您的网络昵称的振动。", nome_dominio:"域名", nome_dominio_desc:"您的域名的能量。", nome_canal:"频道名称", nome_canal_desc:"您的频道名称的能量。", nome_equipe:"团队名称", nome_equipe_desc:"您的团队名称的振动。", nome_ong:"非政府组织名称", nome_ong_desc:"您的组织名称的能量。", nome_projeto:"项目名称", nome_projeto_desc:"您的项目名称的能量。", nome_evento:"活动名称", nome_evento_desc:"您的活动名称的振动。", buscar:"搜索" },
-  ja:{ nome_pet:"ペット名", nome_pet_desc:"ペットの名前のエネルギー。", nickname:"デジタルニックネーム", nickname_desc:"オンラインのニックネームの振動。", nome_dominio:"ドメイン名", nome_dominio_desc:"ドメイン名のエネルギー。", nome_canal:"チャンネル名", nome_canal_desc:"チャンネル名のエネルギー。", nome_equipe:"チーム名", nome_equipe_desc:"チーム名の振動。", nome_ong:"NGO名", nome_ong_desc:"組織名のエネルギー。", nome_projeto:"プロジェクト名", nome_projeto_desc:"プロジェクト名のエネルギー。", nome_evento:"イベント名", nome_evento_desc:"イベント名の振動。", buscar:"検索" },
+  ja:{ nome_pet:"ペット名", nome_pet_desc:"ペットの名前のエネルギー。", nickname:"デジタルニックネーム", nickname_desc:"オンラインのニックネームの振動。", nome_dominio:"ドメイン名", nome_dominio_desc:"ドメイン名のエネルギー。", nome_canal:"チャンネル名", nome_canal_desc:"チャンネル名のエネルギー。", nome_equipe:"チーム名", nome_equipe_desc:"チーム名の振動。", nome_ong:"NGO名", nome_ong_desc:"組織名のエネルギー。", nome_projeto:"プロジェクト名", nome_projeto_desc:"プロジェクト名のエネルギー。", nome_evento:"イベント名", nome_evento_desc:"イベント名の振動。", buscar:"検索" }, 
   ar:{ nome_pet:"اسم الحيوان الأليف", nome_pet_desc:"طاقة اسم حيوانك الأليف.", nickname:"الاسم المستعار الرقمي", nickname_desc:"اهتزاز اسمك المستعار على الإنترنت.", nome_dominio:"اسم النطاق", nome_dominio_desc:"طاقة اسم النطاق الخاص بك.", nome_canal:"اسم القناة", nome_canal_desc:"طاقة اسم قناتك.", nome_equipe:"اسم الفريق", nome_equipe_desc:"اهتزاز اسم فريقك.", nome_ong:"اسم المنظمة", nome_ong_desc:"طاقة اسم مؤسستك.", nome_projeto:"اسم المشروع", nome_projeto_desc:"طاقة اسم مشروعك.", nome_evento:"اسم الفعالية", nome_evento_desc:"اهتزاز اسم فعاليتك.", buscar:"بحث" },
   he:{ nome_pet:"שם חיית המחמד", nome_pet_desc:"האנרגיה של שם חיית המחמד שלך.", nickname:"כינוי דיגיטלי", nickname_desc:"הרטט של הכינוי שלך ברשת.", nome_dominio:"שם הדומיין", nome_dominio_desc:"האנרגיה של שם הדומיין שלך.", nome_canal:"שם הערוץ", nome_canal_desc:"האנרגיה של שם הערוץ שלך.", nome_equipe:"שם הצוות", nome_equipe_desc:"הרטט של שם הצוות שלך.", nome_ong:"שם הארגון", nome_ong_desc:"האנרגיה של שם הארגון שלך.", nome_projeto:"שם הפרויקט", nome_projeto_desc:"האנרגיה של שם הפרויקט שלך.", nome_evento:"שם האירוע", nome_evento_desc:"הרטט של שם האירוע שלך.", buscar:"חיפוש" },
   id:{ nome_pet:"Nama Hewan Peliharaan", nome_pet_desc:"Energi dari nama hewan peliharaan Anda.", nickname:"Nama Panggilan Digital", nickname_desc:"Getaran nama panggilan Anda di media sosial.", nome_dominio:"Nama Domain", nome_dominio_desc:"Energi dari nama domain Anda.", nome_canal:"Nama Kanal", nome_canal_desc:"Energi dari nama kanal Anda.", nome_equipe:"Nama Tim", nome_equipe_desc:"Getaran dari nama tim Anda.", nome_ong:"Nama LSM", nome_ong_desc:"Energi dari nama organisasi Anda.", nome_projeto:"Nama Proyek", nome_projeto_desc:"Energi dari nama proyek Anda.", nome_evento:"Nama Acara", nome_evento_desc:"Getaran dari nama acara Anda.", buscar:"Cari" },
@@ -583,20 +587,20 @@ window.ENERGIAS_BTN = window.ENERGIAS_BTN || { pt:"Pesquisar", en:"Search", es:"
 
 /* ===== DADO_LABEL ===== */
 window.DADO_LABEL = window.DADO_LABEL || {
-  pt:{nome_pet:"Nome do Pet",nickname:"Nickname Digital",nome_dominio:"Nome do Domínio",nome_canal:"Nome do Canal",nome_equipe:"Nome da Equipe",nome_ong:"Nome da ONG",nome_projeto:"Nome do Projeto",nome_evento:"Nome do Evento"},
-  en:{nome_pet:"Pet Name",nickname:"Digital Nickname",nome_dominio:"Domain Name",nome_canal:"Channel Name",nome_equipe:"Team Name",nome_ong:"NGO Name",nome_projeto:"Project Name",nome_evento:"Event Name"},
-  es:{nome_pet:"Nombre de Mascota",nickname:"Nickname Digital",nome_dominio:"Nombre de Dominio",nome_canal:"Nombre de Canal",nome_equipe:"Nombre del Equipo",nome_ong:"Nombre de la ONG",nome_projeto:"Nombre del Proyecto",nome_evento:"Nombre del Evento"},
-  it:{nome_pet:"Nome dell'Animale",nickname:"Nickname Digitale",nome_dominio:"Nome del Dominio",nome_canal:"Nome del Canale",nome_equipe:"Nome del Team",nome_ong:"Nome dell'ONG",nome_projeto:"Nome del Progetto",nome_evento:"Nome dell'Evento"},
-  fr:{nome_pet:"Nom de l'Animal",nickname:"Pseudo Digital",nome_dominio:"Nom de Domaine",nome_canal:"Nom de Chaîne",nome_equipe:"Nom de l'Équipe",nome_ong:"Nom de l'ONG",nome_projeto:"Nom du Projet",nome_evento:"Nom de l'Événement"},
-  de:{nome_pet:"Haustiername",nickname:"Digitaler Nickname",nome_dominio:"Domainname",nome_canal:"Kanalname",nome_equipe:"Teamname",nome_ong:"NGO-Name",nome_projeto:"Projektname",nome_evento:"Veranstaltungsname"},
-  ja:{nome_pet:"ペットの名前",nickname:"デジタルニックネーム",nome_dominio:"ドメイン名",nome_canal:"チャンネル名",nome_equipe:"チーム名",nome_ong:"NGO名",nome_projeto:"プロジェクト名",nome_evento:"イベント名"},
-  zh:{nome_pet:"宠物名字",nickname:"数字昵称",nome_dominio:"域名",nome_canal:"频道名称",nome_equipe:"团队名称",nome_ong:"NGO名称",nome_projeto:"项目名称",nome_evento:"活动名称"},
-  ru:{nome_pet:"Имя питомца",nickname:"Цифровой никнейм",nome_dominio:"Имя домена",nome_canal:"Название канала",nome_equipe:"Название команды",nome_ong:"Название НКО",nome_projeto:"Название проекта",nome_evento:"Название события"},
-  he:{nome_pet:"שם חיית המחמד",nickname:"כינוי דיגיטלי",nome_dominio:"שם דומיין",nome_canal:"שם הערוץ",nome_equipe:"שם הצוות",nome_ong:"שם העמותה",nome_projeto:"שם הפרויקט",nome_evento:"שם האירוע"},
-  ar:{nome_pet:"اسم الحيوان الأليف",nickname:"اللقب الرقمي",nome_dominio:"اسم النطاق",nome_canal:"اسم القناة",nome_equipe:"اسم الفريق",nome_ong:"اسم المنظمة",nome_projeto:"اسم المشروع",nome_evento:"اسم الفعالية"},
-  id:{nome_pet:"Nama Hewan Peliharaan",nickname:"Nama Panggilan Digital",nome_dominio:"Nama Domain",nome_canal:"Nama Kanal",nome_equipe:"Nama Tim",nome_ong:"Nama LSM",nome_projeto:"Nama Proyek",nome_evento:"Nama Acara"},
-  tr:{nome_pet:"Evcil Hayvan Adı",nickname:"Dijital Takma Ad",nome_dominio:"Alan Adı",nome_canal:"Kanal Adı",nome_equipe:"Ekip Adı",nome_ong:"STK Adı",nome_projeto:"Proje Adı",nome_evento:"Etkinlik Adı"},
-  vi:{nome_pet:"Tên Thú Cưng",nickname:"Biệt Danh Kỹ Thuật Số",nome_dominio:"Tên Miền",nome_canal:"Tên Kênh",nome_equipe:"Tên Đội Nhóm",nome_ong:"Tên Tổ Chức",nome_projeto:"Tên Dự Án",nome_evento:"Tên Sự Kiện"}
+  pt:{nome_pet:"Nome do Pet",nickname:"Nickname Digital",nome_dominio:"Nome do Domínio",nome_canal:"Nome do Canal",nome_equipe:"Nome da Equipe",nome_ong:"Nome da ONG",nome_projeto:"Nome do Projeto",nome_evento:"Nome do Evento", compatibilidade_equipes: "Membros da equipe" },
+  en:{nome_pet:"Pet Name",nickname:"Digital Nickname",nome_dominio:"Domain Name",nome_canal:"Channel Name",nome_equipe:"Team Name",nome_ong:"NGO Name",nome_projeto:"Project Name",nome_evento:"Event Name", compatibilidade_equipes: "Team members"},
+  es:{nome_pet:"Nombre de Mascota",nickname:"Nickname Digital",nome_dominio:"Nombre de Dominio",nome_canal:"Nombre de Canal",nome_equipe:"Nombre del Equipo",nome_ong:"Nombre de la ONG",nome_projeto:"Nombre del Proyecto",nome_evento:"Nombre del Evento", compatibilidade_equipes: "Miembros del equipo" },
+  it:{nome_pet:"Nome dell'Animale",nickname:"Nickname Digitale",nome_dominio:"Nome del Dominio",nome_canal:"Nome del Canale",nome_equipe:"Nome del Team",nome_ong:"Nome dell'ONG",nome_projeto:"Nome del Progetto",nome_evento:"Nome dell'Evento", compatibilidade_equipes: "Membri del team" },
+  fr:{nome_pet:"Nom de l'Animal",nickname:"Pseudo Digital",nome_dominio:"Nom de Domaine",nome_canal:"Nom de Chaîne",nome_equipe:"Nom de l'Équipe",nome_ong:"Nom de l'ONG",nome_projeto:"Nom du Projet",nome_evento:"Nom de l'Événement", compatibilidade_equipes: "Membres de l'équipe" },
+  de:{nome_pet:"Haustiername",nickname:"Digitaler Nickname",nome_dominio:"Domainname",nome_canal:"Kanalname",nome_equipe:"Teamname",nome_ong:"NGO-Name",nome_projeto:"Projektname",nome_evento:"Veranstaltungsname", compatibilidade_equipes: "Teammitglieder"},
+  ja:{nome_pet:"ペットの名前",nickname:"デジタルニックネーム",nome_dominio:"ドメイン名",nome_canal:"チャンネル名",nome_equipe:"チーム名",nome_ong:"NGO名",nome_projeto:"プロジェクト名",nome_evento:"イベント名", compatibilidade_equipes: "チームメンバー"},
+  zh:{nome_pet:"宠物名字",nickname:"数字昵称",nome_dominio:"域名",nome_canal:"频道名称",nome_equipe:"团队名称",nome_ong:"NGO名称",nome_projeto:"项目名称",nome_evento:"活动名称", compatibilidade_equipes: "团队成员" },
+  ru:{nome_pet:"Имя питомца",nickname:"Цифровой никнейм",nome_dominio:"Имя домена",nome_canal:"Название канала",nome_equipe:"Название команды",nome_ong:"Название НКО",nome_projeto:"Название проекта",nome_evento:"Название события", compatibilidade_equipes: "Члены команды"},
+  he:{nome_pet:"שם חיית המחמד",nickname:"כינוי דיגיטלי",nome_dominio:"שם דומיין",nome_canal:"שם הערוץ",nome_equipe:"שם הצוות",nome_ong:"שם העמותה",nome_projeto:"שם הפרויקט",nome_evento:"שם האירוע", compatibilidade_equipes: "חברי הצוות" },
+  ar:{nome_pet:"اسم الحيوان الأليف",nickname:"اللقب الرقمي",nome_dominio:"اسم النطاق",nome_canal:"اسم القناة",nome_equipe:"اسم الفريق",nome_ong:"اسم المنظمة",nome_projeto:"اسم المشروع",nome_evento:"اسم الفعالية", compatibilidade_equipes: "أعضاء الفريق" },
+  id:{nome_pet:"Nama Hewan Peliharaan",nickname:"Nama Panggilan Digital",nome_dominio:"Nama Domain",nome_canal:"Nama Kanal",nome_equipe:"Nama Tim",nome_ong:"Nama LSM",nome_projeto:"Nama Proyek",nome_evento:"Nama Acara", compatibilidade_equipes: "Anggota tim" },
+  tr:{nome_pet:"Evcil Hayvan Adı",nickname:"Dijital Takma Ad",nome_dominio:"Alan Adı",nome_canal:"Kanal Adı",nome_equipe:"Ekip Adı",nome_ong:"STK Adı",nome_projeto:"Proje Adı",nome_evento:"Etkinlik Adı", compatibilidade_equipes: "Ekip üyeleri" },
+  vi:{nome_pet:"Tên Thú Cưng",nickname:"Biệt Danh Kỹ Thuật Số",nome_dominio:"Tên Miền",nome_canal:"Tên Kênh",nome_equipe:"Tên Đội Nhóm",nome_ong:"Tên Tổ Chức",nome_projeto:"Tên Dự Án",nome_evento:"Tên Sự Kiện", compatibilidade_equipes: "Thành viên nhóm"}
 };
 
 /* ===== DADO_TIPOS ===== */
