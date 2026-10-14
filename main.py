@@ -767,9 +767,7 @@ def energia_texto(texto):
     return soma
 
 # ===== PRODUTOS DA PESQUISA IA (7 — Card da IA) =====
-PRODUTOS_IA = [
-    "pet", "dominio", "canal", "equipe", "projeto", "evento", "nickname",
-]
+PRODUTOS_IA = ["pet", "dominio", "canal", "equipe", "projeto", "evento", "nickname"]
 
 def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=None):
     if lang not in PRICE_IDS or produto not in PRICE_IDS[lang]:
