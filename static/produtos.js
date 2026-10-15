@@ -695,76 +695,74 @@ window.BC_PRODUTOS = window.BC_PRODUTOS || [
 function montarTabelaBC() {
   var lang = (typeof getLang === 'function') ? getLang() : 'pt';
   try {
-    /* corpo atual da função, sem alteração */
+    // Moeda
+    var simb = (typeof SIMBOLO !== 'undefined' && SIMBOLO[lang]) ? SIMBOLO[lang]
+             : ((typeof SIMB !== 'undefined' && SIMB[lang]) ? SIMB[lang]
+             : ((window.MOEDAS && window.MOEDAS[lang]) ? window.MOEDAS[lang] : 'R$'));
+    // Base de preços
+    var servidor = (typeof PRECO_VALORES !== 'undefined' && PRECO_VALORES[lang]);
+    var base = servidor ? PRECO_VALORES[lang]
+             : (typeof PRECO_BASE !== 'undefined' ? (PRECO_BASE[lang] || PRECO_BASE.pt) : null);
+    if (!base) return;
+    // Traduções de nomes
+    var t  = (window.PRODUTOS_TRAD && window.PRODUTOS_TRAD[lang]) ? window.PRODUTOS_TRAD[lang] : {};
+    var tp = (window.PRODUTOS_TRAD && window.PRODUTOS_TRAD.pt) ? window.PRODUTOS_TRAD.pt : {};
+    // Ordena por preço crescente
+    var lista = (typeof BC_PRODUTOS !== 'undefined' ? BC_PRODUTOS : []).slice();
+    lista.sort(function(a, b) {
+      var pa = parseInt(a[2], 10) || 0;
+      var pb = parseInt(b[2], 10) || 0;
+      return pa - pb;
+    });
+    // 1) Cabeçalhos traduzidos nos 14 idiomas
+    var rotulos = {
+      pt:{s:'Serviço',p:'Preço',q:'Quantidade'},
+      en:{s:'Service',p:'Price',q:'Quantity'},
+      es:{s:'Servicio',p:'Precio',q:'Cantidad'},
+      it:{s:'Servizio',p:'Prezzo',q:'Quantità'},
+      fr:{s:'Service',p:'Prix',q:'Quantité'},
+      de:{s:'Leistung',p:'Preis',q:'Menge'},
+      ja:{s:'サービス',p:'価格',q:'数量'},
+      zh:{s:'服务',p:'价格',q:'数量'},
+      ru:{s:'Услуга',p:'Цена',q:'Кол-во'},
+      id:{s:'Layanan',p:'Harga',q:'Jumlah'},
+      tr:{s:'Hizmet',p:'Fiyat',q:'Adet'},
+      vi:{s:'Dịch vụ',p:'Giá',q:'Số lượng'},
+      he:{s:'שירות',p:'מחיר',q:'כמות'},
+      ar:{s:'الخدمة',p:'السعر',q:'الكمية'}
+    };
+    var rt = rotulos[lang] || rotulos.pt;
+    var thS = document.querySelector('th[data-i18n-bc="servico"]'); if (thS) thS.textContent = rt.s;
+    var thP = document.querySelector('th[data-i18n-bc="preco"]');   if (thP) thP.textContent = rt.p;
+    var thQ = document.querySelector('th[data-i18n-bc="qtd"]');     if (thQ) thQ.textContent = rt.q;
+    // 2) Linhas montadas dinamicamente — DERIVADAS do BC_PRODUTOS
+    var produtos = lista.map(function(p){ return p[0]; });
+    var corpo = document.getElementById('bcTabelaCorpo');
+    if (!corpo) return;
+    corpo.innerHTML = '';
+    var qtds = window.BC_QUANTIDADES || (window.BC_QUANTIDADES = {});
+    produtos.forEach(function(prod) {
+      var faixa = (window.PRODUTO_FAIXA && window.PRODUTO_FAIXA[prod] !== undefined) ? window.PRODUTO_FAIXA[prod] : null;
+      if (faixa === null) return;
+      var precoUnit = parseInt(base[faixa], 10) || 0;
+      if (servidor) precoUnit = Math.round(precoUnit / 100); // servidor manda em centavos
+      var nome = t[prod] || tp[prod] || prod;
+      var tr = document.createElement('tr');
+      tr.innerHTML = '<td>' + nome + '</td>'
+        + '<td>' + simb + ' ' + String(precoUnit).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + '</td>'
+        + '<td><input type="number" min="0" value="' + (qtds[prod] || 0) + '" data-prod="' + prod + '" style="width:70px;padding:4px;border:1px solid #333;border-radius:4px;background:#111;color:#fff;text-align:center"></td>';
+      var inp = tr.querySelector('input');
+      inp.oninput = inp.onchange = function() {
+        qtds[prod] = parseInt(inp.value, 10) || 0;
+        atualizarResumoBC();
+      };
+      corpo.appendChild(tr);
+    });
+    // 3) Resumo no idioma/moeda ativos
+    if (typeof atualizarResumoBC === 'function') atualizarResumoBC();
   } catch (e) {
     console.error('[A1ELOS] ERRO em montarTabelaBC:', e);
   }
-}
-// Moeda
-  var simb = (typeof SIMBOLO !== 'undefined' && SIMBOLO[lang]) ? SIMBOLO[lang]
-           : ((typeof SIMB !== 'undefined' && SIMB[lang]) ? SIMB[lang]
-           : ((window.MOEDAS && window.MOEDAS[lang]) ? window.MOEDAS[lang] : 'R$'));
-  // Base de preços
-  var servidor = (typeof PRECO_VALORES !== 'undefined' && PRECO_VALORES[lang]);
-  var base = servidor ? PRECO_VALORES[lang]
-           : (typeof PRECO_BASE !== 'undefined' ? (PRECO_BASE[lang] || PRECO_BASE.pt) : null);
-  if (!base) return;
-  // Traduções de nomes
-  var t  = (window.PRODUTOS_TRAD && window.PRODUTOS_TRAD[lang]) ? window.PRODUTOS_TRAD[lang] : {};
-  var tp = (window.PRODUTOS_TRAD && window.PRODUTOS_TRAD.pt) ? window.PRODUTOS_TRAD.pt : {};
-  // Ordena por preço crescente
-  var lista = (typeof BC_PRODUTOS !== 'undefined' ? BC_PRODUTOS : []).slice();
-  lista.sort(function(a, b) {
-    var pa = parseInt(a[2], 10) || 0;
-    var pb = parseInt(b[2], 10) || 0;
-    return pa - pb;
-  });
-  // 1) Cabeçalhos traduzidos nos 14 idiomas
-  var rotulos = {
-    pt:{s:'Serviço',p:'Preço',q:'Quantidade'},
-    en:{s:'Service',p:'Price',q:'Quantity'},
-    es:{s:'Servicio',p:'Precio',q:'Cantidad'},
-    it:{s:'Servizio',p:'Prezzo',q:'Quantità'},
-    fr:{s:'Service',p:'Prix',q:'Quantité'},
-    de:{s:'Leistung',p:'Preis',q:'Menge'},
-    ja:{s:'サービス',p:'価格',q:'数量'},
-    zh:{s:'服务',p:'价格',q:'数量'},
-    ru:{s:'Услуга',p:'Цена',q:'Кол-во'},
-    id:{s:'Layanan',p:'Harga',q:'Jumlah'},
-    tr:{s:'Hizmet',p:'Fiyat',q:'Adet'},
-    vi:{s:'Dịch vụ',p:'Giá',q:'Số lượng'},
-    he:{s:'שירות',p:'מחיר',q:'כמות'},
-    ar:{s:'الخدمة',p:'السعر',p:'الكمية'}
-  };
-  var rt = rotulos[lang] || rotulos.pt;
-  var thS = document.querySelector('th[data-i18n-bc="servico"]'); if (thS) thS.textContent = rt.s;
-  var thP = document.querySelector('th[data-i18n-bc="preco"]');   if (thP) thP.textContent = rt.p;
-  var thQ = document.querySelector('th[data-i18n-bc="qtd"]');     if (thQ) thQ.textContent = rt.q;
-  // 2) Linhas montadas dinamicamente — DERIVADAS do BC_PRODUTOS (nunca desatualiza)
-  var produtos = lista.map(function(p){ return p[0]; });
-  var corpo = document.getElementById('bcTabelaCorpo');
-  if (!corpo) return;
-  corpo.innerHTML = '';
-  var qtds = window.BC_QUANTIDADES || (window.BC_QUANTIDADES = {});
-  produtos.forEach(function(prod) {
-    var faixa = (window.PRODUTO_FAIXA && window.PRODUTO_FAIXA[prod] !== undefined) ? window.PRODUTO_FAIXA[prod] : null;
-    if (faixa === null) return;
-    var precoUnit = parseInt(base[faixa], 10) || 0;
-    if (servidor) precoUnit = Math.round(precoUnit / 100); // servidor manda em centavos
-    var nome = t[prod] || tp[prod] || prod;
-    var tr = document.createElement('tr');
-    tr.innerHTML = '<td>' + nome + '</td>'
-      + '<td>' + simb + ' ' + String(precoUnit).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + '</td>'
-      + '<td><input type="number" min="0" value="' + (qtds[prod] || 0) + '" data-prod="' + prod + '" style="width:70px;padding:4px;border:1px solid #333;border-radius:4px;background:#111;color:#fff;text-align:center"></td>';
-    var inp = tr.querySelector('input');
-    inp.oninput = inp.onchange = function() {
-      qtds[prod] = parseInt(inp.value, 10) || 0;
-      atualizarResumoBC();
-    };
-    corpo.appendChild(tr);
-  });
-  // 3) Resumo no idioma/moeda ativos
-  if (typeof atualizarResumoBC === 'function') atualizarResumoBC();
 }
 
 /* ===== MENU DE ENERGIAS ===== */
