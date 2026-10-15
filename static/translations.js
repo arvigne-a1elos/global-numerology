@@ -4286,8 +4286,10 @@ window.PRODUTOS_TRAD.id = {
   casal:"Peta Pasangan", familia:"Peta Keluarga Premium", coletivo:"Bonus Kolektif/Perusahaan",
   nome_pet:"Nama Hewan Peliharaan", nickname:"Nama Panggilan Digital", nome_dominio:"Nama Domain",
   nome_canal:"Nama Kanal", nome_equipe:"Nama Tim",
-  nome_ong:"Nama LSM, Asosiasi, Lembaga atau Yayasan", nome_projeto:"Nama Proyek", nome_evento:"Nama Acara"
+  nome_ong:"Nama LSM, Asosiasi, Lembaga atau Yayasan", nome_projeto:"Nama Proyek", nome_evento:"Nama Acara",
+  compatibilidade_equipes:"Kompatibilitas Tim (HR)"
 };
+
 window.PRODUTOS_TRAD.tr = {
   express:"Ekspres Harita", vida:"Yaşam Evresi ve Yıl", completo:"Tam Harita",
   ia:"AI İsim Arama", urna:"Oy Pusulası İsim Doğrulama", eleitoral:"Seçim Numarası",
@@ -4296,8 +4298,10 @@ window.PRODUTOS_TRAD.tr = {
   casal:"Çift Haritası", familia:"Premium Aile Haritası", coletivo:"Kurumsal Bonus",
   nome_pet:"Evcil Hayvan Adı", nickname:"Dijital Takma Ad", nome_dominio:"Alan Adı",
   nome_canal:"Kanal Adı", nome_equipe:"Ekip Adı",
-  nome_ong:"STK, Dernek, Enstitü veya Vakıf Adı", nome_projeto:"Proje Adı", nome_evento:"Etkinlik Adı"
+  nome_ong:"STK, Dernek, Enstitü veya Vakıf Adı", nome_projeto:"Proje Adı", nome_evento:"Etkinlik Adı",
+  compatibilidade_equipes:"Ekip Uyumu (İK)"
 };
+
 window.PRODUTOS_TRAD.vi = {
   express:"Bản Đồ Nhanh", vida:"Giai Đoạn Cuộc Đời & Năm", completo:"Bản Đồ Đầy Đủ",
   ia:"Tìm Kiếm Tên AI", urna:"Xác Minh Tên Phiếu Bầu", eleitoral:"Số Bầu Cử",
@@ -4306,7 +4310,8 @@ window.PRODUTOS_TRAD.vi = {
   casal:"Bản Đồ Cặp Đôi", familia:"Bản Đồ Gia Đình Cao Cấp", coletivo:"Thưởng Tập Thể/Doanh Nghiệp",
   nome_pet:"Tên Thú Cưng", nickname:"Biệt Danh Kỹ Thuật Số", nome_dominio:"Tên Miền",
   nome_canal:"Tên Kênh", nome_equipe:"Tên Đội Nhóm",
-  nome_ong:"Tên Tổ Chức, Hiệp Hội, Viện hoặc Quỹ", nome_projeto:"Tên Dự Án", nome_evento:"Tên Sự Kiện"
+  nome_ong:"Tên Tổ Chức, Hiệp Hội, Viện hoặc Quỹ", nome_projeto:"Tên Dự Án", nome_evento:"Tên Sự Kiện",
+  compatibilidade_equipes:"Tương Hợp Đội Nhóm (Nhân sự)"
 };
 
 // ===== SHIM DE SEGURANÇA: reconstrói PRODUTOS_TRAD se ausente =====
