@@ -3706,13 +3706,13 @@ const translations = {
     };
 
 PRODUTO_FAIXA = {
-    "express": 0, "vida": 0, "completo": 1, "ia": 1,
+    "express": 0, "vida": 0, "ia": 0, "completo": 1,
     "urna": 2, "eleitoral": 2, "imovel": 2, "calendario": 2,
-    "artistico": 3, "bebe": 3, "assinatura": 3,
-    "negocio": 4, "casal": 4, "familia": 5,
-    // --- 8 produtos novos (todos na faixa R$ 8, mesma do Mapa Express) ---
+    "artistico": 3, "bebe": 3, "assinatura": 3, "nome_ong": 3,
+    "negocio": 4, "casal": 4, "familia": 5, "compatibilidade_equipes": 5,
+    // --- 7 produtos novos (todos na faixa R$ 8, mesma do Mapa Express) ---
     "nome_pet": 0, "nickname": 0, "nome_dominio": 0, "nome_canal": 0,
-    "nome_equipe": 0, "nome_ong": 0, "nome_projeto": 0, "nome_evento": 0
+    "nome_equipe": 0, "nome_projeto": 0, "nome_evento": 0
     // coletivo: usa "Sob consulta" (data-i18n="sob_consulta") → sem faixa de preço fixa
 };
 // ===== DESCRIÇÕES DAS ENERGIAS 1-9 (12 IDIOMAS) =====
