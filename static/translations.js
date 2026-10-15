@@ -1,6 +1,6 @@
 // ===== A1ELOS GLOBAL NUMEROLOGY - TRANSLATIONS.JS =====
-// Versão Consolidada e Corrigida - 29/08/2026
-// 14 idiomas, 23 serviços, tradução de ponta a ponta
+// Versão Consolidada e Corrigida - 15/10/2026
+// 14 idiomas, 24 serviços, tradução de ponta a ponta
 // Entrega em PDF e QRCode (sem email, sigilo total)
 // ===== FUNÇÕES DE IDIOMA =====
 function getLang() {
