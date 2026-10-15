@@ -3794,7 +3794,8 @@ const FEAT_TRAD = {
         nome_equipe:["✅ Equipe analisada","✅ Energia do grupo","✅ Sinergia do time","📲 PDF + QRCode"],
         nome_ong:["✅ Instituição analisada","✅ Energia da causa","✅ Impacto social","📲 PDF + QRCode"],
         nome_projeto:["✅ Projeto analisado","✅ Energia da iniciativa","✅ Atração de apoio","📲 PDF + QRCode"],
-        nome_evento:["✅ Evento analisado","✅ Energia do público","✅ Engajamento","📲 PDF + QRCode"]
+        nome_evento:["✅ Evento analisado","✅ Energia do público","✅ Engajamento","📲 PDF + QRCode"],
+        compatibilidade_equipes:["✅ Compatibilidade gestor-equipe","✅ Energia ideal do setor (nº 8)","✅ Relatório de harmonia do time","📲 PDF + QRCode"],
     },
     en: {
         express:["✅ Life Path","✅ Expression, Soul, Personality","✅ Destiny","📲 PDF + QRCode"],
@@ -3819,7 +3820,8 @@ const FEAT_TRAD = {
         nome_equipe:["✅ Team analyzed","✅ Group energy","✅ Team synergy","📲 PDF + QRCode"],
         nome_ong:["✅ Institution analyzed","✅ Cause energy","✅ Social impact","📲 PDF + QRCode"],
         nome_projeto:["✅ Project analyzed","✅ Initiative energy","✅ Support attraction","📲 PDF + QRCode"],
-        nome_evento:["✅ Event analyzed","✅ Audience energy","✅ Engagement","📲 PDF + QRCode"]
+        nome_evento:["✅ Event analyzed","✅ Audience energy","✅ Engagement","📲 PDF + QRCode"],
+        compatibilidade_equipes:["✅ Manager-team compatibility","✅ Ideal department energy (No. 8)","✅ Team harmony report","📲 PDF + QRCode"],
     },
     es: {
         express:["✅ Camino de Vida","✅ Expresión, Alma, Personalidad","✅ Destino","📲 PDF + Código QR"],
@@ -3844,7 +3846,8 @@ const FEAT_TRAD = {
         nome_equipe:["✅ Equipo analizado","✅ Energía del grupo","✅ Sinergia del equipo","📲 PDF + Código QR"],
         nome_ong:["✅ Institución analizada","✅ Energía de la causa","✅ Impacto social","📲 PDF + Código QR"],
         nome_projeto:["✅ Proyecto analizado","✅ Energía de la iniciativa","✅ Atracción de apoyo","📲 PDF + Código QR"],
-        nome_evento:["✅ Evento analizado","✅ Energía del público","✅ Compromiso","📲 PDF + Código QR"]
+        nome_evento:["✅ Evento analizado","✅ Energía del público","✅ Compromiso","📲 PDF + Código QR"],
+        compatibilidade_equipes:["✅ Compatibilidad gestor-equipo","✅ Energía ideal del sector (nº 8)","✅ Informe de armonía del equipo","📲 PDF + QRCode"],
     },
     it: {
         express:["✅ Percorso di Vita","✅ Espressione, Anima, Personalità","✅ Destino","📲 PDF + QR Code"],
@@ -3869,7 +3872,8 @@ const FEAT_TRAD = {
         nome_equipe:["✅ Squadra analizzata","✅ Energia del gruppo","✅ Sinergia del team","📲 PDF + QR Code"],
         nome_ong:["✅ Istituzione analizzata","✅ Energia della causa","✅ Impatto sociale","📲 PDF + QR Code"],
         nome_projeto:["✅ Progetto analizzato","✅ Energia dell'iniziativa","✅ Attrazione di supporto","📲 PDF + QR Code"],
-        nome_evento:["✅ Evento analizzato","✅ Energia del pubblico","✅ Coinvolgimento","📲 PDF + QR Code"]
+        nome_evento:["✅ Evento analizzato","✅ Energia del pubblico","✅ Coinvolgimento","📲 PDF + QR Code"],
+        compatibilidade_equipes:["✅ Compatibilità manager-squadra","✅ Energia ideale del reparto (n. 8)","✅ Report di armonia del team","📲 PDF + QRCode"],
     },
     fr: {
         express:["✅ Chemin de Vie","✅ Expression, Âme, Personnalité","✅ Destin","📲 PDF + Code QR"],
@@ -3894,7 +3898,8 @@ const FEAT_TRAD = {
         nome_equipe:["✅ Équipe analysée","✅ Énergie du groupe","✅ Synergie de l'équipe","📲 PDF + Code QR"],
         nome_ong:["✅ Institution analysée","✅ Énergie de la cause","✅ Impact social","📲 PDF + Code QR"],
         nome_projeto:["✅ Projet analysé","✅ Énergie de l'initiative","✅ Attraction de soutien","📲 PDF + Code QR"],
-        nome_evento:["✅ Événement analysé","✅ Énergie du public","✅ Engagement","📲 PDF + Code QR"]
+        nome_evento:["✅ Événement analysé","✅ Énergie du public","✅ Engagement","📲 PDF + Code QR"],
+        compatibilidade_equipes:["✅ Compatibilité manager-équipe","✅ Énergie idéale du service (n° 8)","✅ Rapport d'harmonie de l'équipe","📲 PDF + QRCode"],
     },
     de: {
         express:["✅ Lebensweg","✅ Ausdruck, Seele, Persönlichkeit","✅ Schicksal","📲 PDF + QR-Code"],
@@ -3919,7 +3924,8 @@ const FEAT_TRAD = {
         nome_equipe:["✅ Team analysiert","✅ Gruppenenergie","✅ Team-Synergie","📲 PDF + QR-Code"],
         nome_ong:["✅ Institution analysiert","✅ Energie der Sache","✅ Soziale Wirkung","📲 PDF + QR-Code"],
         nome_projeto:["✅ Projekt analysiert","✅ Energie der Initiative","✅ Unterstützung anziehen","📲 PDF + QR-Code"],
-        nome_evento:["✅ Veranstaltung analysiert","✅ Publikumsenergie","✅ Engagement","📲 PDF + QR-Code"]
+        nome_evento:["✅ Veranstaltung analysiert","✅ Publikumsenergie","✅ Engagement","📲 PDF + QR-Code"],
+        compatibilidade_equipes:["✅ Kompatibilität Führungskraft-Team","✅ Ideale Abteilungsenergie (Nr. 8)","✅ Harmoniebericht des Teams","📲 PDF + QRCode"],
     },
     ja: {
         express:["✅ ライフパス","✅ 表現・魂・性格","✅ 運命","📲 PDF + QRコード"],
@@ -3944,7 +3950,8 @@ const FEAT_TRAD = {
         nome_equipe:["✅ チーム名を分析","✅ グループのエネルギー","✅ チームの相乗効果","📲 PDF + QRコード"],
         nome_ong:["✅ 団体名を分析","✅ 活動のエネルギー","✅ 社会的インパクト","📲 PDF + QRコード"],
         nome_projeto:["✅ プロジェクト名を分析","✅ 取り組みのエネルギー","✅ 支援を引き寄せる","📲 PDF + QRコード"],
-        nome_evento:["✅ イベント名を分析","✅ 参加者のエネルギー","✅ エンゲージメント","📲 PDF + QRコード"]
+        nome_evento:["✅ イベント名を分析","✅ 参加者のエネルギー","✅ エンゲージメント","📲 PDF + QRコード"],
+        compatibilidade_equipes:["✅ 管理者とチームの相性","✅ 部門の理想のエネルギー（8）","✅ チーム調和レポート","📲 PDF + QRCode"],
     },
         zh: {
         express:["✅ 生命之路","✅ 表现、灵魂、个性","✅ 命运","📲 PDF + 二维码"],
@@ -3969,7 +3976,8 @@ const FEAT_TRAD = {
         nome_equipe:["✅ 团队名称已分析","✅ 团体能量","✅ 团队协同","📲 PDF + 二维码"],
         nome_ong:["✅ 机构名称已分析","✅ 事业能量","✅ 社会影响","📲 PDF + 二维码"],
         nome_projeto:["✅ 项目名称已分析","✅ 倡议能量","✅ 吸引支持","📲 PDF + 二维码"],
-        nome_evento:["✅ 活动名称已分析","✅ 观众能量","✅ 参与度","📲 PDF + 二维码"]
+        nome_evento:["✅ 活动名称已分析","✅ 观众能量","✅ 参与度","📲 PDF + 二维码"],
+        compatibilidade_equipes:["✅ 管理者与团队兼容性","✅ 部门理想能量（8号）","✅ 团队和谐报告","📲 PDF + QRCode"],    
     },
     ru: {
         express:["✅ Жизненный путь","✅ Выражение, Душа, Личность","✅ Судьба","📲 PDF + QR-код"],
@@ -3994,7 +4002,8 @@ const FEAT_TRAD = {
         nome_equipe:["✅ Команда проанализирована","✅ Энергия группы","✅ Синергия команды","📲 PDF + QR-код"],
         nome_ong:["✅ Организация проанализирована","✅ Энергия дела","✅ Социальное влияние","📲 PDF + QR-код"],
         nome_projeto:["✅ Проект проанализирован","✅ Энергия инициативы","✅ Привлечение поддержки","📲 PDF + QR-код"],
-        nome_evento:["✅ Событие проанализировано","✅ Энергия публики","✅ Вовлечённость","📲 PDF + QR-код"]
+        nome_evento:["✅ Событие проанализировано","✅ Энергия публики","✅ Вовлечённость","📲 PDF + QR-код"],
+        compatibilidade_equipes:["✅ Совместимость руководителя и команды","✅ Идеальная энергия отдела (№ 8)","✅ Отчёт о гармонии команды","📲 PDF + QRCode"],
     },
     he: {
         express:["✅ נתיב החיים","✅ ביטוי, נשמה, אישיות","✅ גורל","📲 PDF + קוד QR"],
@@ -4019,7 +4028,8 @@ const FEAT_TRAD = {
         nome_equipe:["✅ שם הצוות נותח","✅ אנרגיית הקבוצה","✅ סינרגיה צוותית","📲 PDF + קוד QR"],
         nome_ong:["✅ שם העמותה נותח","✅ אנרגיית המטרה","✅ השפעה חברתית","📲 PDF + קוד QR"],
         nome_projeto:["✅ שם הפרויקט נותח","✅ אנרגיית היוזמה","✅ משיכת תמיכה","📲 PDF + קוד QR"],
-        nome_evento:["✅ שם האירוע נותח","✅ אנרגיית הקהל","✅ מעורבות","📲 PDF + קוד QR"]
+        nome_evento:["✅ שם האירוע נותח","✅ אנרגיית הקהל","✅ מעורבות","📲 PDF + קוד QR"],
+        compatibilidade_equipes:["✅ התאמה בין מנהל לצוות","✅ האנרגיה האידיאלית של המחלקה (מס' 8)","✅ דוח הרמוניה של הצוות","📲 PDF + QRCode"],
     },
     ar: {
         express:["✅ مسار الحياة","✅ التعبير، الروح، الشخصية","✅ المصير","📲 PDF + رمز QR"],
@@ -4044,7 +4054,8 @@ const FEAT_TRAD = {
         nome_equipe:["✅ تم تحليل اسم الفريق","✅ طاقة المجموعة","✅ تآزر الفريق","📲 PDF + رمز QR"],
         nome_ong:["✅ تم تحليل اسم المؤسسة","✅ طاقة القضية","✅ الأثر الاجتماعي","📲 PDF + رمز QR"],
         nome_projeto:["✅ تم تحليل اسم المشروع","✅ طاقة المبادرة","✅ جذب الدعم","📲 PDF + رمز QR"],
-        nome_evento:["✅ تم تحليل اسم الفعالية","✅ طاقة الجمهور","✅ التفاعل","📲 PDF + رمز QR"]
+        nome_evento:["✅ تم تحليل اسم الفعالية","✅ طاقة الجمهور","✅ التفاعل","📲 PDF + رمز QR"],
+        compatibilidade_equipes:["✅ توافق المدير والفريق","✅ الطاقة المثالية للقسم (الرقم 8)","✅ تقرير انسجام الفريق","📲 PDF + QRCode"],
     },
     id: {
         express:["✅ Jalan Hidup","✅ Ekspresi, Jiwa, Kepribadian","✅ Takdir","📲 PDF + QRCode"],
@@ -4069,7 +4080,8 @@ const FEAT_TRAD = {
         nome_equipe:["✅ Tim dianalisis","✅ Energi kelompok","✅ Sinergi tim","📲 PDF + QRCode"],
         nome_ong:["✅ Lembaga dianalisis","✅ Energi tujuan","✅ Dampak sosial","📲 PDF + QRCode"],
         nome_projeto:["✅ Proyek dianalisis","✅ Energi inisiatif","✅ Menarik dukungan","📲 PDF + QRCode"],
-        nome_evento:["✅ Acara dianalisis","✅ Energi audiens","✅ Keterlibatan","📲 PDF + QRCode"]
+        nome_evento:["✅ Acara dianalisis","✅ Energi audiens","✅ Keterlibatan","📲 PDF + QRCode"],
+        compatibilidade_equipes:["✅ Kompatibilitas manajer-tim","✅ Energi ideal sektor (no. 8)","✅ Laporan harmoni tim","📲 PDF + QRCode"],
     },
     tr: {
         express:["✅ Yaşam Yolu","✅ İfade, Ruh, Kişilik","✅ Kader","📲 PDF + QRCode"],
@@ -4094,7 +4106,8 @@ const FEAT_TRAD = {
         nome_equipe:["✅ Ekip analiz edildi","✅ Grup enerjisi","✅ Takım sinerjisi","📲 PDF + QRCode"],
         nome_ong:["✅ Kurum analiz edildi","✅ Amacın enerjisi","✅ Sosyal etki","📲 PDF + QRCode"],
         nome_projeto:["✅ Proje analiz edildi","✅ Girişimin enerjisi","✅ Destek çekme","📲 PDF + QRCode"],
-        nome_evento:["✅ Etkinlik analiz edildi","✅ İzleyici enerjisi","✅ Katılım","📲 PDF + QRCode"]
+        nome_evento:["✅ Etkinlik analiz edildi","✅ İzleyici enerjisi","✅ Katılım","📲 PDF + QRCode"],
+        compatibilidade_equipes:["✅ Yönetici-ekip uyumu","✅ Sektörün ideal enerjisi (8 numara)","✅ Takım uyum raporu","📲 PDF + QRCode"],
     },
     vi: {
         express:["✅ Đường Đời","✅ Biểu cảm, Tâm hồn, Cá tính","✅ Định mệnh","📲 PDF + QRCode"],
@@ -4119,7 +4132,8 @@ const FEAT_TRAD = {
         nome_equipe:["✅ Đội nhóm được phân tích","✅ Năng lượng nhóm","✅ Sức mạnh tổng hợp đội","📲 PDF + QRCode"],
         nome_ong:["✅ Tổ chức được phân tích","✅ Năng lượng mục tiêu","✅ Tác động xã hội","📲 PDF + QRCode"],
         nome_projeto:["✅ Dự án được phân tích","✅ Năng lượng sáng kiến","✅ Thu hút hỗ trợ","📲 PDF + QRCode"],
-        nome_evento:["✅ Sự kiện được phân tích","✅ Năng lượng khán giả","✅ Tương tác","📲 PDF + QRCode"]
+        nome_evento:["✅ Sự kiện được phân tích","✅ Năng lượng khán giả","✅ Tương tác","📲 PDF + QRCode"],
+        compatibilidade_equipes:["✅ Sự tương hợp giữa quản lý và đội nhóm","✅ Năng lượng lý tưởng của ngành (số 8)","✅ Báo cáo hài hòa đội nhóm","📲 PDF + QRCode"],
     }
 };
 
@@ -4299,7 +4313,7 @@ window.PRODUTOS_TRAD.vi = {
 // ===== GARANTIA: popula window.PRODUTOS_TRAD para os 14 idiomas =====
 if (typeof window.PRODUTOS_TRAD === "undefined" || !window.PRODUTOS_TRAD) window.PRODUTOS_TRAD = {};
 var _langs14 = ["pt","en","es","it","fr","de","ja","zh","ru","he","ar","id","tr","vi"];
-var _chavesBC = ["express","vida","completo","ia","urna","eleitoral","imovel","calendario","artistico","bebe","assinatura","negocio","casal","familia","coletivo","nome_pet","nickname","nome_dominio","nome_canal","nome_equipe","nome_ong","nome_projeto","nome_evento"];
+var _chavesBC = ["express","vida","completo","ia","urna","eleitoral","imovel","calendario","artistico","bebe","assinatura","negocio","casal","familia","coletivo","nome_pet","nickname","nome_dominio","nome_canal","nome_equipe","nome_ong","nome_projeto","nome_evento","compatibilidade_equipes"];
 _langs14.forEach(function(l){
   if (!window.PRODUTOS_TRAD[l]) window.PRODUTOS_TRAD[l] = {};
   var t = (typeof translations !== "undefined" && translations[l]) ? translations[l] : {};
