@@ -688,8 +688,8 @@ window.BC_PRODUTOS = window.BC_PRODUTOS || [
   ["casal", "Mapa do Casal", 44, "💞"],
   // --- Faixa R$ 98 ---
   ["familia", "Mapa Família Premium", 98, "🌟"],
+  ["compatibilidade_equipes", "Compatibilidade de Equipes", 98, "🏢"],
   ["coletivo", "Bônus Coletivo", 98, "🎁"],          // o Bônus
-  ["compatibilidade_equipes", "Compatibilidade de Equipes", 98, "🏢"]
 ];
 
 function montarTabelaBC() {
@@ -1217,6 +1217,7 @@ function montarEnergias() {
   montarSeletorEnergia('eleitoralEnergiaSel', atualizarDestaqueEleitoral, 8); // Eleitoral ★8
   montarSeletorEnergia('arteEnergiaSel', atualizarDestaqueArte, 2);        // Artístico ★2
   montarSeletorEnergia('ongEnergiaSel', atualizarDestaqueOng, 6);          // ONG ★6
+  montarSeletorEnergia('compEquipeEnergiaSel', 'compatibilidade_equipes', '8');
   // Amor: sem seletor, energia fixa 5
   // Estudos: sem seletor, energia livre
   for(var k=1;k<=5;k++){
@@ -1246,6 +1247,17 @@ window.ENERGIA_UI = {
   he: { ideal: "אידיאלי למוצר זה", selecionada: "האנרגיה שנבחרה", label: "תפקיד + אנרגיית שם", dica: "אנרגיה אידיאלית 8" },
   ar: { ideal: "الأمثل لهذا المنتج", selecionada: "الطاقة المحددة", label: "المنصب + طاقة الاسم", dica: "الطاقة المثالية 8" },
 };  
+
+window.pagarCompatibilidade = window.pagarCompatibilidade || function(){
+  var membros = (document.getElementById('equipeMembros') ? document.getElementById('equipeMembros').value : '').trim();
+  var t = (typeof translations !== 'undefined' && translations[getLang()]) ? translations[getLang()] : translations.pt;
+  if (!membros) { alert(t.preencha_dado || 'Preencha o dado solicitado.'); return; }
+  var energia = window._compEnergia || '8';
+  var lang = (typeof getLang === 'function') ? getLang() : 'pt';
+  window.location.href = '/criar-checkout?lang=' + lang + '&produto=compatibilidade_equipes'
+    + '&dado=' + encodeURIComponent(membros)
+    + '&energia=' + encodeURIComponent(energia);
+};
 
 function pagarUrna(){
   var lang=localStorage.getItem('l')||'pt';
