@@ -1249,14 +1249,24 @@ window.ENERGIA_UI = {
 };  
 
 window.pagarCompatibilidade = window.pagarCompatibilidade || function(){
-  var membros = (document.getElementById('equipeMembros') ? document.getElementById('equipeMembros').value : '').trim();
-  var t = (typeof translations !== 'undefined' && translations[getLang()]) ? translations[getLang()] : translations.pt;
-  if (!membros) { alert(t.preencha_dado || 'Preencha o dado solicitado.'); return; }
-  var energia = window._compEnergia || '8';
-  var lang = (typeof getLang === 'function') ? getLang() : 'pt';
-  window.location.href = '/criar-checkout?lang=' + lang + '&produto=compatibilidade_equipes'
-    + '&dado=' + encodeURIComponent(membros)
-    + '&energia=' + encodeURIComponent(energia);
+  try {
+    var lang = (typeof getLang === 'function') ? getLang() : 'pt';
+    var membros = (document.getElementById('equipeMembros') ? document.getElementById('equipeMembros').value : '').trim();
+    var t = (typeof translations !== 'undefined') ? (translations[lang] || translations.pt) : null;
+    if (!membros) {
+      alert((t && t.preencha_dado) ? t.preencha_dado : 'Preencha o dado solicitado.');
+      return;
+    }
+    var energia = (window._compEnergia && window._compEnergia !== '' && window._compEnergia !== '0')
+                ? window._compEnergia : '8';
+    window.location.href = '/criar-checkout?lang=' + encodeURIComponent(lang)
+      + '&produto=compatibilidade_equipes'
+      + '&dado=' + encodeURIComponent(membros)
+      + '&energia=' + encodeURIComponent(energia);
+  } catch(e) {
+    console.error('pagarCompatibilidade:', e);
+    alert('Erro ao iniciar o pagamento. Recarregue a página.');
+  }
 };
 
 function pagarUrna(){
