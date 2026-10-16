@@ -481,7 +481,8 @@ if (!window.FEAT_TRAD.pt) {
         projeto_anal:"✅ تم تحليل المشروع", impulso_sucesso:"✅ دفع نحو النجاح", evento_anal:"✅ تم تحليل الحدث",
         atmosfera:"✅ أجواء للمشاركين", pdf:"📲 PDF + رمز QR",
         chefe_membros:"✅ المدير × أعضاء الفريق", membros_membros:"✅ الأعضاء × الأعضاء", compat_cissay:"✅ التوافق بين الأزواج", pdf:"📲 PDF + رمز QR",
-      };
+      },   
+     };
     var M = {
       express:["cam_vida","expr_alma_pers","destino","pdf"],
       vida:["fase_atual","ano_pessoal","tendencias","pdf"],
