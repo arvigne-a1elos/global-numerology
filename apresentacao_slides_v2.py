@@ -343,6 +343,8 @@ def _tabela(lang, dados, larguras=None, tam=8, zebra=True):
            ("VALIGN",(0,0),(-1,-1),"MIDDLE"),
            ("LEFTPADDING",(0,0),(-1,-1),2*mm),("RIGHTPADDING",(0,0),(-1,-1),2*mm),
            ("TOPPADDING",(0,0),(-1,-1),1.4*mm),("BOTTOMPADDING",(0,0),(-1,-1),1.4*mm)]
+    if larguras and len(larguras) != len(dados[0]):
+       larguras = None  # cai para larguras iguais
     if zebra:
         for i in range(1, len(corpo)):
             if i % 2 == 0: est.append(("BACKGROUND",(0,i),(-1,i),ZEBRA))
@@ -579,11 +581,15 @@ def _render_capa(lang):
     c = []
     c.append(Spacer(1, 30*mm))
     larg_logo = 60*mm
-    t_logo = Table([[Image(_primeiro(_LOGO_CANDIDATOS) or "static/logo.png", larg_logo, larg_logo*0.32)
-                     if _primeiro(_LOGO_CANDIDATOS) else _para(lang, "A1ELOS", 26, OURO, TA_CENTER, True)]],
-                   colWidths=[LARG_UTIL], hAlign="CENTER")
-    try: c.append(t_logo)
-    except Exception: c.append(_para(lang, "A1ELOS", 26, OURO, TA_CENTER, True))
+try:
+    p_logo = _primeiro(_LOGO_CANDIDATOS)
+    if p_logo:
+        c.append(Image(p_logo, larg_logo, larg_logo * 0.32,
+                       preserveAspectRatio=True, mask="auto"))
+    else:
+        c.append(_para(lang, "A1ELOS", 26, OURO, TA_CENTER, True))
+except Exception:
+    c.append(_para(lang, "A1ELOS", 26, OURO, TA_CENTER, True))
     c.append(Spacer(1, 8*mm))
     c.append(Paragraph(_rtl(C(lang,"capa_titulo"), lang), _estilo(f, 26, TINTA, TA_CENTER, True, 32)))
     c.append(Spacer(1, 4*mm))
@@ -627,10 +633,13 @@ def gerar_apresentacao_slides(lang="pt", caminho=None):
         elif spec["tipo"] == "final":   historia += _render_final(lang)
         else:                           historia += _render_pagina(lang, spec)
         if spec is not plano[-1]: historia.append(PageBreak())
-    doc.build(historia, onFirstPage=lambda c,d: _page_decor(c,d,lang),
-              onLaterPages=lambda c,d: _page_decor(c,d,lang))
-    return caminho
-
+    try:
+        doc.build(historia, onFirstPage=lambda c,d: _page_decor(c,d,lang),
+                  onLaterPages=lambda c,d: _page_decor(c,d,lang))
+    except Exception:
+        logging.getLogger(__name__).exception("A1ELOS slides — falha (lang=%s)" % lang)
+        raise
+        
 if __name__ == "__main__":
     for l in IDIOMAS:
         print(gerar_apresentacao_slides(l))
