@@ -302,6 +302,7 @@ def _para(lang, texto, tam=9.5, cor=TINTA, al=TA_LEFT, bold=False, esp=None):
 
 def _cards(lang, itens, colunas=2, tam_titulo=10, tam_desc=8):
     """Grade de cartões dourados. Última linha com item ímpar ocupa largura total."""
+    itens = _norm_pairs(itens)  
     f, _, rtl = FONTES_IDIOMA.get(lang, (REG, BOLD, False))
     al = TA_RIGHT if rtl else TA_LEFT
     larg_col = (LARG_UTIL - 6 * mm) / colunas
@@ -327,6 +328,7 @@ def _cards(lang, itens, colunas=2, tam_titulo=10, tam_desc=8):
 
 def _tabela(lang, dados, larguras=None, tam=8, zebra=True):
     """Tabela com larguras proporcionais — nunca sai do slide."""
+    dados = _norm_rows(dados)
     f, _, rtl = FONTES_IDIOMA.get(lang, (REG, BOLD, False))
     al = TA_RIGHT if rtl else TA_LEFT
     if not larguras:
@@ -348,6 +350,7 @@ def _tabela(lang, dados, larguras=None, tam=8, zebra=True):
     return KeepInFrame(LARG_UTIL, ALT_UTIL * 0.9, [t], mode="shrink")
 
 def _metricas(lang, itens, tam_num=17, tam_lab=7.5):
+    itens = _norm_pairs(itens)
     f, _, rtl = FONTES_IDIOMA.get(lang, (REG, BOLD, False))
     larg = LARG_UTIL / len(itens)
     linha = [Table([[Paragraph(_rtl(v, lang), _estilo(f, tam_num, OURO_ESC, TA_CENTER, True))],
@@ -370,6 +373,7 @@ def _duas_colunas(lang, esq_t, esq_fluxo, dir_t, dir_fluxo):
     return KeepInFrame(LARG_UTIL, ALT_UTIL * 0.85, [g], mode="shrink")
 
 def _lista_pares(lang, itens, tam=8.5):
+    itens = _norm_pairs(itens)
     f, _, rtl = FONTES_IDIOMA.get(lang, (REG, BOLD, False))
     fluxo = []
     for t, d in itens:
@@ -380,6 +384,7 @@ def _lista_pares(lang, itens, tam=8.5):
 
 def _barras(lang, projecoes):
     """Gráfico de barras determinístico (sem reportlab.graphics — zero risco)."""
+    projecoes = _norm_metrics3(projecoes)
     f, _, rtl = FONTES_IDIOMA.get(lang, (REG, BOLD, False))
     def _num(s):
         s = s.replace("R$","").replace("k","000").replace(",","").replace(".","")
