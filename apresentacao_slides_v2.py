@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 # apresentacao_slides_v2.py — Gerador estável de slides para A1ELOS Global Numerology
 # 16 páginas fixas · 14 idiomas · sem sobreposição · sem tabela evadindo · numeração correta
+# VERSÃO COMPLETA COM HOTFIXES 1 e 2 JÁ INTEGRADOS (substituição integral — não colar nada por cima)
 # Dependências: reportlab (opcional p/ árabe: arabic-reshaper python-bidi)
 
-import os
+import os, logging
 from reportlab.lib.pagesizes import A4, landscape
 from reportlab.lib.units import mm
 from reportlab.lib import colors
@@ -55,7 +56,7 @@ def _registrar_fontes():
 REG, BOLD, F_CJK, F_AR, F_HE = _registrar_fontes()
 REG = REG or "Helvetica"; BOLD = BOLD or "Helvetica-Bold"
 
-FONTES_IDIOMA = {  # lang -> (fonte_regular, fonte_bold, rtl)
+FONTES_IDIOMA = {
     "pt": (REG, BOLD, False), "en": (REG, BOLD, False), "es": (REG, BOLD, False),
     "it": (REG, BOLD, False), "fr": (REG, BOLD, False), "de": (REG, BOLD, False),
     "id": (REG, BOLD, False), "tr": (REG, BOLD, False), "vi": (REG, BOLD, False),
@@ -65,7 +66,6 @@ FONTES_IDIOMA = {  # lang -> (fonte_regular, fonte_bold, rtl)
 IDIOMAS = list(FONTES_IDIOMA.keys())
 
 def _rtl(texto, lang):
-    """Formata árabe para ligaduras corretas (se bibliotecas presentes)."""
     if lang != "ar": return texto
     try:
         import arabic_reshaper
@@ -75,11 +75,11 @@ def _rtl(texto, lang):
         return texto
 
 # ===== 2. GEOMETRIA =====
-LARG, ALT = landscape(A4)          # 841.9 x 595.3
+LARG, ALT = landscape(A4)
 MARG = 13 * mm
 LARG_UTIL = LARG - 2 * MARG
-TOPO_BANDA = 16 * mm               # altura do cabeçalho
-PE_BANDA = 13 * mm                 # altura do rodapé
+TOPO_BANDA = 16 * mm
+PE_BANDA = 13 * mm
 ALT_UTIL = ALT - TOPO_BANDA - PE_BANDA - 6 * mm
 
 # ===== 3. CORES =====
@@ -221,9 +221,9 @@ PADRAO_PT = {
     "final_linha": "DUNS 942242668 · 24 PRODUTOS · 14 IDIOMAS · ~5,3 BI FALANTES",
 }
 
-# ===== HARDENING: aceita 2 ou 3 campos e tabelas de larguras variáveis =====
+# ===== HARDENING (HOTFIX 1): aceita 2 ou 3 campos e tabelas de larguras variáveis =====
 def _norm_pairs(itens):
-    """Converte (título, valor[, fonte]) | string | dict -> pares (título, descrição)."""
+    """Converte (titulo, valor[, fonte]) | string | dict -> pares (titulo, descricao)."""
     saida = []
     for it in (itens or []):
         if isinstance(it, str):
@@ -241,7 +241,7 @@ def _norm_pairs(itens):
     return saida
 
 def _norm_rows(dados):
-    """Uniforma todas as linhas da tabela para o mesmo número de colunas."""
+    """Uniforma todas as linhas da tabela para o mesmo numero de colunas."""
     if not dados:
         return [[""]]
     ncol = max(len(r) if isinstance(r, (list, tuple)) else 1 for r in dados)
@@ -255,7 +255,7 @@ def _norm_rows(dados):
     return out
 
 def _norm_metrics3(p):
-    """Garante (ano, conservador, otimista) em cada linha das projeções."""
+    """Garante (ano, conservador, otimista) em cada linha das projecoes."""
     saida = []
     for it in (p or []):
         if isinstance(it, (list, tuple)):
@@ -264,10 +264,9 @@ def _norm_metrics3(p):
         elif isinstance(it, str):
             saida.append((it, "", ""))
     return saida
-           
 
 def C(lang, chave):
-    """Prioridade: idioma atual > português > padrão interno. Nunca quebra."""
+    """Prioridade: idioma atual > portugues > padrao interno. Nunca quebra."""
     try:
         from apresentacao_textos import CONTEUDO
         v = CONTEUDO.get(lang, {}).get(chave)
@@ -284,7 +283,7 @@ def _estilo(fonte, tam, cor=TINTA, al=TA_LEFT, bold=False, leading=None, rtl=Fal
                           leading=leading or tam * 1.25, textColor=cor, alignment=al,
                           wordWrap=("RTL" if rtl else "CJK" if fonte == F_CJK else None))
 
-# ===== 6. COMPONENTES (todos em KeepInFrame = impossível evadir/sobrepor) =====
+# ===== 6. COMPONENTES (todos em KeepInFrame = impossivel evadir/sobrepor) =====
 def _kif(fluxo): return KeepInFrame(LARG_UTIL, ALT_UTIL - 8 * mm, fluxo, mode="shrink")
 
 def _titulo(lang, texto):
@@ -301,8 +300,8 @@ def _para(lang, texto, tam=9.5, cor=TINTA, al=TA_LEFT, bold=False, esp=None):
     return Paragraph(_rtl(texto, lang), _estilo(f, tam, cor, al, bold, esp))
 
 def _cards(lang, itens, colunas=2, tam_titulo=10, tam_desc=8):
-    """Grade de cartões dourados. Última linha com item ímpar ocupa largura total."""
-    itens = _norm_pairs(itens)  
+    """Grade de cartoes dourados. Ultima linha com item impar ocupa largura total."""
+    itens = _norm_pairs(itens)
     f, _, rtl = FONTES_IDIOMA.get(lang, (REG, BOLD, False))
     al = TA_RIGHT if rtl else TA_LEFT
     larg_col = (LARG_UTIL - 6 * mm) / colunas
@@ -331,6 +330,8 @@ def _tabela(lang, dados, larguras=None, tam=8, zebra=True):
     dados = _norm_rows(dados)
     f, _, rtl = FONTES_IDIOMA.get(lang, (REG, BOLD, False))
     al = TA_RIGHT if rtl else TA_LEFT
+    if larguras and len(larguras) != len(dados[0]):
+        larguras = None
     if not larguras:
         larguras = [LARG_UTIL / len(dados[0])] * len(dados[0])
     escala = LARG_UTIL / sum(larguras); larguras = [w * escala for w in larguras]
@@ -343,8 +344,6 @@ def _tabela(lang, dados, larguras=None, tam=8, zebra=True):
            ("VALIGN",(0,0),(-1,-1),"MIDDLE"),
            ("LEFTPADDING",(0,0),(-1,-1),2*mm),("RIGHTPADDING",(0,0),(-1,-1),2*mm),
            ("TOPPADDING",(0,0),(-1,-1),1.4*mm),("BOTTOMPADDING",(0,0),(-1,-1),1.4*mm)]
-    if larguras and len(larguras) != len(dados[0]):
-       larguras = None  # cai para larguras iguais
     if zebra:
         for i in range(1, len(corpo)):
             if i % 2 == 0: est.append(("BACKGROUND",(0,i),(-1,i),ZEBRA))
@@ -385,7 +384,7 @@ def _lista_pares(lang, itens, tam=8.5):
     return fluxo
 
 def _barras(lang, projecoes):
-    """Gráfico de barras determinístico (sem reportlab.graphics — zero risco)."""
+    """Grafico de barras deterministico (sem reportlab.graphics — zero risco)."""
     projecoes = _norm_metrics3(projecoes)
     f, _, rtl = FONTES_IDIOMA.get(lang, (REG, BOLD, False))
     def _num(s):
@@ -408,7 +407,7 @@ def _barras(lang, projecoes):
     d.add(String(x_bar, 2*mm, _rtl("◼ Conservador   ◼ Otimista", lang), fontName=f, fontSize=7, fillColor=CINZA))
     return d
 
-# ===== 7. CABEÇALHO / RODAPÉ (padrão do site: duas logos + DUNS + contatos) =====
+# ===== 7. CABECALHO / RODAPE (padrao do site: duas logos + DUNS + contatos) =====
 _LOGO_CANDIDATOS = ["static/logo.png", "static/Logo-A1ELOS.png", "static/logo-a1elos.png",
                     "static/img/logo.png", "logo.png"]
 
@@ -427,7 +426,6 @@ def _page_decor(canvas, doc, lang):
     canvas.saveState()
     total = getattr(doc, "_total_paginas", 16)
     pagina = canvas.getPageNumber()
-    # Cabeçalho (páginas 2..N): logo A1ELOS + marca · logo DUNS
     if pagina > 1:
         _logo(canvas, MARG, ALT - TOPO_BANDA + 1.5*mm)
         canvas.setFillColor(TINTA); canvas.setFont(BOLD, 11)
@@ -438,7 +436,6 @@ def _page_decor(canvas, doc, lang):
         canvas.drawRightString(LARG - MARG, ALT - TOPO_BANDA + 2.8*mm, "D&B · 190+ PAÍSES")
         canvas.setStrokeColor(OURO); canvas.setLineWidth(1)
         canvas.line(MARG, ALT - TOPO_BANDA, LARG - MARG, ALT - TOPO_BANDA)
-    # Rodapé (todas)
     canvas.setStrokeColor(LINHA); canvas.setLineWidth(0.6)
     canvas.line(MARG, PE_BANDA + 4*mm, LARG - MARG, PE_BANDA + 4*mm)
     canvas.setFillColor(CINZA); canvas.setFont(REG, 6.8)
@@ -450,69 +447,53 @@ def _page_decor(canvas, doc, lang):
     canvas.drawRightString(LARG - MARG, PE_BANDA + 1.2*mm, "%d de %d" % (pagina, total))
     canvas.restoreState()
 
-# ===== 8. PLANO DE PÁGINAS (16 fixas — idêntico em todos os idiomas) =====
+# ===== 8. PLANO DE PAGINAS (16 fixas — identico em todos os idiomas) =====
 def _plano(lang):
     P = []
-    # 1 CAPA
     P.append({"tipo":"capa"})
-    # 2 SUMÁRIO
     P.append({"tipo":"geral","titulo":C(lang,"sum_titulo"),"intro":C(lang,"sum_intro"),
               "corpo":[("tabela",[["#","Seção","Conteúdo"]] + [list(x) for x in C(lang,"sum_itens")],
                        [1.2, 3.2, 7.0], 8.5)]})
-    # 3 SOBRE
     P.append({"tipo":"geral","titulo":C(lang,"sobre_titulo"),"intro":C(lang,"sobre_texto"),
               "corpo":[("metricas",C(lang,"sobre_metricas")),
                        ("texto",C(lang,"sobre_duns"))]})
-    # 4 OPORTUNIDADE (global + RH)
     P.append({"tipo":"geral","titulo":C(lang,"mercado_titulo"),"intro":C(lang,"mercado_texto"),
               "corpo":[("cards",C(lang,"mercado_cards"),4),
                        ("subtitulo",C(lang,"mercado_rh_titulo")),
                        ("cards",C(lang,"mercado_rh_cards"),3)]})
-    # 5 PROBLEMA
     P.append({"tipo":"duas","titulo":C(lang,"problema_titulo"),
               "esq_titulo":C(lang,"problema_col_esq_titulo"),"esq_itens":C(lang,"problema_col_esq"),
               "dir_titulo":C(lang,"problema_col_dir_titulo"),"dir_texto":C(lang,"problema_col_dir")})
-    # 6 SOLUÇÃO 3 PILARES
     P.append({"tipo":"geral","titulo":C(lang,"pilares_titulo"),"intro":C(lang,"pilares_texto"),
               "corpo":[("cards",C(lang,"pilares"),3)]})
-    # 7 ALCANCE GLOBAL (tabela compacta em 2 colunas de idiomas)
     P.append({"tipo":"geral","titulo":C(lang,"alcance_titulo"),"intro":C(lang,"alcance_texto"),
               "corpo":[("tabela",[["Idioma","Falantes (mi)","Idioma","Falantes (mi)"]] +
                        [list(x) for x in C(lang,"alcance_tabela")], [3,2,3,2], 8)]})
-    # 8 NOVOS MERCADOS
     P.append({"tipo":"geral","titulo":C(lang,"novos_titulo"),"intro":C(lang,"novos_texto"),
               "corpo":[("cards",C(lang,"novos_cards"),3)]})
-    # 9 PREÇO CONSCIENTE
     P.append({"tipo":"geral","titulo":C(lang,"preco_titulo"),"intro":C(lang,"preco_texto"),
               "corpo":[("cards",C(lang,"preco_cards"),3)]})
-    # 10 PORTFÓLIO
     P.append({"tipo":"geral","titulo":C(lang,"portfolio_titulo"),"intro":C(lang,"portfolio_texto"),
               "corpo":[("tabela",[list(x) for x in C(lang,"portfolio_tabela")],
                        [1.7, 5.4, 1.6, 2.2], 8)]})
-    # 11 DESTAQUE RH
     P.append({"tipo":"destaque","titulo":C(lang,"destaque_titulo"),"selo":C(lang,"destaque_selo"),
               "texto":C(lang,"destaque_texto"),"cards":C(lang,"destaque_cards")})
-    # 12 MODELO + BANNERS
     P.append({"tipo":"geral","titulo":C(lang,"modelo_titulo"),"intro":None,
               "corpo":[("pares",C(lang,"modelo_itens")),
                        ("subtitulo",C(lang,"banners_titulo")),
                        ("tabela",[list(x) for x in C(lang,"banners_tabela")],
                         [2.6, 1.6, 2.0, 3.2], 7.5),
                        ("texto",C(lang,"banners_nota"),7,CINZA)]})
-    # 13 PACOTES B2B
     P.append({"tipo":"geral","titulo":C(lang,"b2b_titulo"),"intro":C(lang,"b2b_texto"),
               "corpo":[("tabela",[list(x) for x in C(lang,"b2b_tabela")],
                        [2.2, 1.6, 2.6, 3.4], 7.5)]})
-    # 14 PROJEÇÕES + TRAÇÃO
     P.append({"tipo":"geral","titulo":C(lang,"projecoes_titulo"),"intro":C(lang,"projecoes_texto"),
               "corpo":[("barras",C(lang,"projecoes")),
                        ("tabela",[["Horizonte","Conservador (R$)","Otimista (R$)"]] +
                         [list(x) for x in C(lang,"projecoes")], [2, 2.4, 2.4], 8),
                        ("metricas",C(lang,"tracao_metricas"))]})
-    # 15 ROTEIRO
     P.append({"tipo":"geral","titulo":C(lang,"roteiro_titulo"),"intro":None,
               "corpo":[("pares",C(lang,"roteiro_itens"))]})
-    # 16 INVESTIMENTO + PIX + REFERÊNCIAS
     P.append({"tipo":"geral","titulo":C(lang,"invest_titulo"),"intro":None,
               "corpo":[("metricas",C(lang,"invest_metricas")),
                        ("duas_listas",C(lang,"invest_contato"),C(lang,"ref_itens")),
@@ -520,11 +501,10 @@ def _plano(lang):
                        ("texto",C(lang,"pix_texto"),7.5),
                        ("metricas",C(lang,"pix_metricas"),14),
                        ("texto",C(lang,"pix_fontes"),6.5,CINZA)]})
-    # ENCERRAMENTO
     P.append({"tipo":"final"})
     return P
 
-# ===== 9. RENDERIZAÇÃO =====
+# ===== 9. RENDERIZACAO =====
 def _render_corpo(lang, corpo):
     fluxo = [Spacer(1, 2*mm)]
     for item in corpo:
@@ -544,7 +524,6 @@ def _render_corpo(lang, corpo):
         elif tipo == "pares":    fluxo.extend(_lista_pares(lang, item[1]))
         elif tipo == "barras":   fluxo.append(_barras(lang, item[1])); fluxo.append(Spacer(1, 2*mm))
         elif tipo == "duas_listas":
-            f, _, rtl = FONTES_IDIOMA.get(lang, (REG, BOLD, False))
             fe = _lista_pares(lang, item[1], 7.5); fd = _lista_pares(lang, item[2], 7.5)
             fluxo.append(_duas_colunas(lang, None, fe, None, fd)); fluxo.append(Spacer(1, 2*mm))
     return fluxo
@@ -562,14 +541,12 @@ def _render_pagina(lang, spec):
                 _para(lang, spec["texto"], 9.5), Spacer(1,4*mm),
                 _cards(lang, spec["cards"], 2)]
     if spec["tipo"] == "duas":
-        f, _, rtl = FONTES_IDIOMA.get(lang, (REG, BOLD, False))
         fe = [_para(lang, spec["esq_titulo"], 11, OURO_ESC, True), Spacer(1,2*mm)] + \
              _lista_pares(lang, spec["esq_itens"], 8.5)
         fd = [_para(lang, spec["dir_titulo"], 11, OURO_ESC, True), Spacer(1,2*mm),
               _para(lang, spec["dir_texto"], 8.5)]
         return _titulo(lang, spec["titulo"]) + [Spacer(1,3*mm),
                 _duas_colunas(lang, None, fe, None, fd)]
-    # geral
     saida = _titulo(lang, spec["titulo"])
     if spec.get("intro"):
         saida += [_para(lang, spec["intro"], 9), Spacer(1, 2.5*mm)]
@@ -581,15 +558,15 @@ def _render_capa(lang):
     c = []
     c.append(Spacer(1, 30*mm))
     larg_logo = 60*mm
-try:
-    p_logo = _primeiro(_LOGO_CANDIDATOS)
-    if p_logo:
-        c.append(Image(p_logo, larg_logo, larg_logo * 0.32,
-                       preserveAspectRatio=True, mask="auto"))
-    else:
+    try:
+        p_logo = _primeiro(_LOGO_CANDIDATOS)
+        if p_logo:
+            c.append(Image(p_logo, larg_logo, larg_logo * 0.32,
+                           preserveAspectRatio=True, mask="auto"))
+        else:
+            c.append(_para(lang, "A1ELOS", 26, OURO, TA_CENTER, True))
+    except Exception:
         c.append(_para(lang, "A1ELOS", 26, OURO, TA_CENTER, True))
-except Exception:
-    c.append(_para(lang, "A1ELOS", 26, OURO, TA_CENTER, True))
     c.append(Spacer(1, 8*mm))
     c.append(Paragraph(_rtl(C(lang,"capa_titulo"), lang), _estilo(f, 26, TINTA, TA_CENTER, True, 32)))
     c.append(Spacer(1, 4*mm))
@@ -618,7 +595,7 @@ def gerar_apresentacao_slides(lang="pt", caminho=None):
     lang = lang if lang in IDIOMAS else "pt"
     caminho = caminho or "/tmp/apresentacao_slides_%s.pdf" % lang
     plano = _plano(lang)
-    total = len(plano)  # numeração correta: fim do "X de N+1"
+    total = len(plano)
 
     class _Doc(SimpleDocTemplate):
         def afterInit(self): self._total_paginas = total
@@ -639,7 +616,8 @@ def gerar_apresentacao_slides(lang="pt", caminho=None):
     except Exception:
         logging.getLogger(__name__).exception("A1ELOS slides — falha (lang=%s)" % lang)
         raise
-        
+    return caminho
+
 if __name__ == "__main__":
     for l in IDIOMAS:
         print(gerar_apresentacao_slides(l))
