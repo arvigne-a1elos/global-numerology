@@ -1314,6 +1314,7 @@ function energiaNumero(num){
 }
 
 function montarSeletorEnergia(containerId, aoSelecionar, ideal){
+  if (typeof aoSelecionar !== "function") aoSelecionar = function(){};
   var lang = localStorage.getItem('l') || 'pt';
   var ui = window.ENERGIA_UI[lang] || window.ENERGIA_UI.pt;
   var box = document.getElementById(containerId);
