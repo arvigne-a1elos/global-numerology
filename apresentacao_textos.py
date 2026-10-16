@@ -1012,7 +1012,50 @@ APRESENTACAO_TEXTOS = {
             ("IBGE", "População e indicadores socioeconômicos do Brasil."),
         ],
         },
+# ===== HARDENING: aceita 2 ou 3 campos e tabelas de larguras variáveis =====
+def _norm_pairs(itens):
+    """Converte (título, valor[, fonte]) | string | dict -> pares (título, descrição)."""
+    saida = []
+    for it in (itens or []):
+        if isinstance(it, str):
+            saida.append((it, ""))
+        elif isinstance(it, (list, tuple)):
+            if len(it) >= 3:
+                saida.append((str(it[0]), "%s · %s" % (it[1], it[2])))
+            elif len(it) == 2:
+                saida.append((str(it[0]), str(it[1])))
+            elif len(it) == 1:
+                saida.append((str(it[0]), ""))
+        elif isinstance(it, dict):
+            saida.append((str(it.get("titulo") or it.get("nome") or ""),
+                          str(it.get("texto") or it.get("valor") or it.get("desc") or "")))
+    return saida
 
+def _norm_rows(dados):
+    """Uniforma todas as linhas da tabela para o mesmo número de colunas."""
+    if not dados:
+        return [[""]]
+    ncol = max(len(r) if isinstance(r, (list, tuple)) else 1 for r in dados)
+    out = []
+    for r in dados:
+        if isinstance(r, (list, tuple)):
+            r = [str(c) for c in r] + [""] * (ncol - len(r))
+        else:
+            r = [str(r)] + [""] * (ncol - 1)
+        out.append(r[:ncol])
+    return out
+
+def _norm_metrics3(p):
+    """Garante (ano, conservador, otimista) em cada linha das projeções."""
+    saida = []
+    for it in (p or []):
+        if isinstance(it, (list, tuple)):
+            saida.append((str(it[0]), str(it[1]) if len(it) > 1 else "",
+                          str(it[2]) if len(it) > 2 else ""))
+        elif isinstance(it, str):
+            saida.append((it, "", ""))
+    return saida
+           
 "en": {
         "titulo": "A1ELOS Global Numerology",
         "subtitulo": "The science of numbers applied to your success",
