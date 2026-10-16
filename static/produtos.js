@@ -1486,3 +1486,43 @@ function montarSeletorEnergia(containerId, aoSelecionar, ideal){
   setTimeout(function(){ try { clearInterval(t); } catch(e){} }, 15000);
 })();
 // ===== FIM DO BLOCO 22 =====
+
+// ===== BLOCO 13 — insere o 24º produto na tabela do Montar Sob Medida =====
+// Posição: logo após o Mapa Família Premium (entre Família e Bônus Coletivo).
+// Clona a linha do 'familia' e troca apenas slug e ícone: herda o valor numérico
+// do campo de preço/faixa e quaisquer colunas extras, em qualquer formato.
+(function(){
+  if (typeof BC_PRODUTOS === 'undefined' || !BC_PRODUTOS || !BC_PRODUTOS.length) return;
+  for (var i = 0; i < BC_PRODUTOS.length; i++) {
+    if (BC_PRODUTOS[i] && BC_PRODUTOS[i][0] === 'compatibilidade_equipes') return; // já existe
+  }
+  var idxFam = -1;
+  for (var j = 0; j < BC_PRODUTOS.length; j++) {
+    if (BC_PRODUTOS[j] && BC_PRODUTOS[j][0] === 'familia') { idxFam = j; break; }
+  }
+  if (idxFam < 0) return;
+  var linha = BC_PRODUTOS[idxFam].slice();
+  linha[0] = 'compatibilidade_equipes';
+  linha[1] = '🏢';
+  BC_PRODUTOS.splice(idxFam + 1, 0, linha);
+})();
+
+// ===== BLOCO 13b — garante faixa e preço do 24º produto em todos os idiomas =====
+// Clona por idioma o valor do Mapa Família (mesma faixa 5), sem inventar valores.
+// É o que faz a capa do card trocar valor e moeda conforme o idioma.
+(function(){
+  function clonarPreco(base){
+    if (!base) return;
+    for (var lang in base) {
+      var d = base[lang];
+      if (d && typeof d === 'object' && d['familia'] != null && d['compatibilidade_equipes'] == null) {
+        d['compatibilidade_equipes'] = d['familia'];
+      }
+    }
+  }
+  if (typeof PRECO_BASE !== 'undefined') clonarPreco(PRECO_BASE);
+  if (typeof window.PRECO_VALORES !== 'undefined') clonarPreco(window.PRECO_VALORES);
+  if (typeof PRODUTO_FAIXA !== 'undefined' && PRODUTO_FAIXA['compatibilidade_equipes'] == null) {
+    PRODUTO_FAIXA['compatibilidade_equipes'] = (PRODUTO_FAIXA['familia'] != null) ? PRODUTO_FAIXA['familia'] : 5;
+  }
+})();
