@@ -1217,7 +1217,9 @@ function montarEnergias() {
   montarSeletorEnergia('eleitoralEnergiaSel', atualizarDestaqueEleitoral, 8); // Eleitoral ★8
   montarSeletorEnergia('arteEnergiaSel', atualizarDestaqueArte, 2);        // Artístico ★2
   montarSeletorEnergia('ongEnergiaSel', atualizarDestaqueOng, 6);          // ONG ★6
-  montarSeletorEnergia('compEquipeEnergiaSel', 'compatibilidade_equipes', '8');
+  montarSeletorEnergia('compEquipeEnergiaSel', function(n){ window._compEnergia = n; }, 8);
+  var dicaCE = document.getElementById('compEquipeEnergiaDica');
+  if(dicaCE) dicaCE.textContent = uiE.dica;
   // Amor: sem seletor, energia fixa 5
   // Estudos: sem seletor, energia livre
   for(var k=1;k<=5;k++){
@@ -1345,109 +1347,92 @@ function montarSeletorEnergia(containerId, aoSelecionar, ideal){
   }
   return box;
 }
-/* ===== MODAL GENÉRICO DE FORMULÁRIOS =====
-   Abre qualquer form dentro de um box centralizado (estilo Nome do Pet),
-   isolado do card, com campos largos. Preserva IDs e handlers. */
-function abrirFormModal(idForm) {
-  var form = document.getElementById(idForm);
-  if (!form) return;
-  var overlay = document.getElementById('a1ModalOverlay');
-  if (!overlay) {
-    overlay = document.createElement('div');
-    overlay.id = 'a1ModalOverlay';
-    overlay.className = 'a1-modal-overlay';
-    overlay.innerHTML = '<div class="a1-modal-box">'
-      + '<button type="button" class="a1-modal-fechar" onclick="fecharFormModal()" aria-label="Fechar">&times;</button>'
-      + '<div class="a1-modal-conteudo"></div>'
-      + '</div>';
-    document.body.appendChild(overlay);
-    overlay.addEventListener('click', function (e) {
-      if (e.target === overlay) fecharFormModal();
-    });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && overlay.classList.contains('aberto')) fecharFormModal();
-    });
-  }
-  // guarda a posição original para devolver o form ao fechar
-  form._origParent = form.parentNode;
-  form._origNext = form.nextSibling;
-  form.classList.remove('hidden');
-  overlay.querySelector('.a1-modal-conteudo').appendChild(form);
-  overlay.classList.add('aberto');
-  document.body.style.overflow = 'hidden';
-  if (typeof traduzirFormularios === 'function') traduzirFormularios();
-}
-function fecharFormModal() {
-  var overlay = document.getElementById('a1ModalOverlay');
-  if (!overlay) return;
-  var form = overlay.querySelector('.a1-modal-conteudo form');
-  if (form && form._origParent) {
-    form.classList.add('hidden');
-    if (form._origNext) form._origParent.insertBefore(form, form._origNext);
-    else form._origParent.appendChild(form);
-  }
-  overlay.classList.remove('aberto');
-  document.body.style.overflow = '';
-}
-/* Redefine o toggleForm: em vez de abrir dentro do card, abre em modal.
-   Os botões existentes (onclick="toggleForm('form-x')") passam a abrir o modal. */
-function toggleForm(idForm) {
-  var alvo = document.getElementById(idForm);
-  if (!alvo) alvo = document.getElementById('form-' + idForm); // cobre 'form-form-x' do HTML
-  if (!alvo) return;
 
-  if (window._formModal && window._formModal.form === alvo) { fecharModalForm(); return; }
-  if (window._formModal) fecharModalForm(); // trocou de formulário: devolve o anterior
+/* ===== MODAL GENÉRICO DE FORMULÁRIOS (SISTEMA ÚNICO, CONSOLIDADO) =====
+   Um só overlay, um só estado, um só fechamento.
+   toggleForm e abrirFormModal apontam para o mesmo caminho. */
+(function(){
+  var OVERLAY_ID = 'a1ModalOverlay';
+  var BOX_ID = 'a1ModalBox';
 
-  var overlay = document.getElementById('modalFormOverlay');
-  if (!overlay) {
+  function garantirOverlay() {
+    var overlay = document.getElementById(OVERLAY_ID);
+    if (overlay) return overlay;
     overlay = document.createElement('div');
-    overlay.id = 'modalFormOverlay';
+    overlay.id = OVERLAY_ID;
     overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;z-index:9999;padding:16px;';
-
     var caixa = document.createElement('div');
-    caixa.id = 'modalFormCaixa';
+    caixa.id = BOX_ID;
     caixa.style.cssText = 'position:relative;background:#1a1a1a;color:#f5f5f5;border:1px solid #C9A94E;border-radius:14px;max-width:520px;width:100%;max-height:90vh;overflow-y:auto;padding:28px;box-shadow:0 20px 60px rgba(0,0,0,.5);';
-
-    var fechar = document.createElement('button');
-    fechar.type = 'button';
-    fechar.innerHTML = '&times;';
-    fechar.setAttribute('aria-label', 'Fechar');
-    fechar.style.cssText = 'position:absolute;top:8px;right:14px;background:none;border:none;color:#C9A94E;font-size:26px;line-height:1;cursor:pointer;';
-    fechar.addEventListener('click', fecharModalForm);
-    caixa.appendChild(fechar);
-
+    var x = document.createElement('button');
+    x.type = 'button';
+    x.innerHTML = '&times;';
+    x.setAttribute('aria-label', 'Fechar');
+    x.style.cssText = 'position:absolute;top:8px;right:14px;background:none;border:none;color:#C9A94E;font-size:26px;line-height:1;cursor:pointer;';
+    x.addEventListener('click', fecharFormModal);
+    caixa.appendChild(x);
     overlay.appendChild(caixa);
     document.body.appendChild(overlay);
-
-    overlay.addEventListener('click', function(e) {
-      if (e.target === overlay) fecharModalForm();
+    overlay.addEventListener('click', function(e){ if (e.target === overlay) fecharFormModal(); });
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape' && overlay.style.display === 'flex') fecharFormModal();
     });
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') fecharModalForm();
-    });
+    return overlay;
   }
 
-window._formModal = { form: alvo, pai: alvo.parentNode, prox: alvo.nextSibling, antes: alvo.style.display };
-var caixa = document.getElementById('modalFormCaixa');
-caixa.appendChild(alvo);
-alvo.style.display = 'block';
-overlay.style.display = 'flex';
-document.body.style.overflow = 'hidden';
-  } 
-function fecharModalForm() {
-  var overlay = document.getElementById('modalFormOverlay');
-  if (!overlay) return;
-  if (window._formModal && window._formModal.form) {
-    var fm = window._formModal;
-    if (fm.prox) fm.pai.insertBefore(fm.form, fm.prox);
-    else fm.pai.appendChild(fm.form);
-    fm.form.style.display = fm.antes || '';
-    window._formModal = null;
+  function abrirForm(idForm) {
+    var alvo = document.getElementById(idForm);
+    if (!alvo) alvo = document.getElementById('form-' + idForm);
+    if (!alvo) return;
+    var overlay = garantirOverlay();
+
+    if (window._formModal && window._formModal.form === alvo) { fecharFormModal(); return; }
+    if (window._formModal) fecharFormModal();
+
+    window._formModal = {
+      form: alvo,
+      pai: alvo.parentNode,
+      prox: alvo.nextSibling,
+      antes: alvo.style.display,
+      oculto: alvo.classList.contains('hidden')
+    };
+    document.getElementById(BOX_ID).appendChild(alvo);
+    alvo.classList.remove('hidden');
+    alvo.style.display = 'block';
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    if (typeof traduzirFormularios === 'function') traduzirFormularios();
   }
-  overlay.style.display = 'none';
-  document.body.style.overflow = '';
-}
+
+  window.fecharFormModal = function() {
+    var overlay = document.getElementById(OVERLAY_ID);
+    if (window._formModal) {
+      var fm = window._formModal;
+      if (fm.prox) fm.pai.insertBefore(fm.form, fm.prox);
+      else if (fm.pai) fm.pai.appendChild(fm.form);
+      fm.form.style.display = fm.antes || '';
+      if (fm.oculto) fm.form.classList.add('hidden');
+      window._formModal = null;
+    }
+    if (overlay) overlay.style.display = 'none';
+    document.body.style.overflow = '';
+  };
+
+  // Aliases: qualquer chamada antiga cai no mesmo sistema
+  window.abrirFormModal = abrirForm;
+  window.toggleForm = abrirForm;
+  window.fecharModalForm = window.fecharFormModal;
+
+  // Re-aplica após o load para vencer qualquer redefinição posterior em outros arquivos
+  function reinstalar() {
+    window.abrirFormModal = abrirForm;
+    window.toggleForm = abrirForm;
+    window.fecharModalForm = window.fecharFormModal;
+  }
+  if (document.readyState === 'complete') reinstalar();
+  else window.addEventListener('load', reinstalar);
+})();
+
 // ===== INJEÇÃO FINAL: compatibilidade_equipes nos 14 idiomas (não sobrescreve nada) =====
 (function(){
   if (!window.PRODUTOS_TRAD) window.PRODUTOS_TRAD = {};
@@ -1472,3 +1457,32 @@ function fecharModalForm() {
     window.PRODUTOS_TRAD[l].compatibilidade_equipes = NOMES[l];
   }
 })();
+// ===== INÍCIO DO BLOCO 22: PONTE DO PREÇO UNITÁRIO DO MONTAR SOB MEDIDA =====
+(function(){
+  function instalar(){
+    if (typeof window.precoUnitarioBC !== "function") return false;
+    if (window._bcPrecoPonte) return true;
+    window._bcPrecoPonte = true;
+    var orig = window.precoUnitarioBC;
+    window.precoUnitarioBC = function(chave){
+      var v = 0;
+      try { v = orig(chave); } catch(e){ v = 0; }
+      if (typeof v !== "number" || !v || v <= 0) {
+        v = 0;
+        try {
+          var lista = window.BC_PRODUTOS || [];
+          for (var i = 0; i < lista.length; i++) {
+            if (lista[i] && lista[i][0] === chave && typeof lista[i][2] === "number") { v = lista[i][2]; break; }
+          }
+        } catch(e){}
+      }
+      return v;
+    };
+    try { if (typeof window.montarTabelaBC === "function") window.montarTabelaBC(); } catch(e){}
+    return true;
+  }
+  try { instalar(); } catch(e){}
+  var t = setInterval(function(){ try { if (instalar()) clearInterval(t); } catch(e){} }, 300);
+  setTimeout(function(){ try { clearInterval(t); } catch(e){} }, 15000);
+})();
+// ===== FIM DO BLOCO 22 =====
