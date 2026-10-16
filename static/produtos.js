@@ -168,7 +168,7 @@ if (!window.FEAT_TRAD.pt) {
         uniao_membros:"✅ União entre os membros", ong_anal:"✅ ONG analisada", causa_potencial:"✅ Causa potencializada",
         projeto_anal:"✅ Projeto analisado", impulso_sucesso:"✅ Impulso para o sucesso", evento_anal:"✅ Evento analisado",
         atmosfera:"✅ Atmosfera para os participantes", pdf:"📲 PDF + QRCode",
-        compatibilidade_equipes:["✅ Chefe × membros","✅ Membros × membros","✅ Compatibilidade de pares","📲 PDF + QRCode"],
+        chefe_membros:"✅ Chefe × membros", membros_membros:"✅ Membros × membros", compat_cissay:"✅ Compatibilidade de pares", pdf:"📲 PDF + QRCode",
       },
       en: {
         cam_vida:"✅ Life Path", expr_alma_pers:"✅ Expression, Soul, Personality", destino:"✅ Destiny",
@@ -192,7 +192,7 @@ if (!window.FEAT_TRAD.pt) {
         uniao_membros:"✅ Unity among members", ong_anal:"✅ NGO analyzed", causa_potencial:"✅ Amplified cause",
         projeto_anal:"✅ Project analyzed", impulso_sucesso:"✅ Success boost", evento_anal:"✅ Event analyzed",
         atmosfera:"✅ Atmosphere for participants", pdf:"📲 PDF + QR Code",
-        compatibilidade_equipes:["✅ Boss × members","✅ Members × members","✅ Pair compatibility","📲 PDF + QRCode"],
+        chefe_membros:"✅ Manager × members", membros_membros:"✅ Members × members", compat_cissay:"✅ Pair compatibility", pdf:"📲 PDF + QRCode",
       },
       es: {
         cam_vida:"✅ Camino de Vida", expr_alma_pers:"✅ Expresión, Alma, Personalidad", destino:"✅ Destino",
@@ -216,7 +216,7 @@ if (!window.FEAT_TRAD.pt) {
         uniao_membros:"✅ Unión entre los miembros", ong_anal:"✅ ONG analizada", causa_potencial:"✅ Causa potenciada",
         projeto_anal:"✅ Proyecto analizado", impulso_sucesso:"✅ Impulso para el éxito", evento_anal:"✅ Evento analizado",
         atmosfera:"✅ Ambiente para los participantes", pdf:"📲 PDF + Código QR",
-        compatibilidade_equipes:["✅ Jefe × miembros","✅ Miembros × miembros","✅ Compatibilidad de pares","📲 PDF + QRCode"],
+        chefe_membros:"✅ Jefe × miembros", membros_membros:"✅ Miembros × miembros", compat_cissay:"✅ Compatibilidad de pares", pdf:"📲 PDF + QRCode",
       },
       it: {
         cam_vida:"✅ Percorso di Vita", expr_alma_pers:"✅ Espressione, Anima, Personalità", destino:"✅ Destino",
@@ -240,7 +240,7 @@ if (!window.FEAT_TRAD.pt) {
         uniao_membros:"✅ Unione tra i membri", ong_anal:"✅ ONG analizzata", causa_potencial:"✅ Causa potenziata",
         projeto_anal:"✅ Progetto analizzato", impulso_sucesso:"✅ Spinta verso il successo", evento_anal:"✅ Evento analizzato",
         atmosfera:"✅ Atmosfera per i partecipanti", pdf:"📲 PDF + Codice QR",
-        compatibilidade_equipes:["✅ Capo × membri","✅ Membri × membri","✅ Compatibilità di coppia","📲 PDF + QRCode"],
+        chefe_membros:"✅ Responsabile × membri", membros_membros:"✅ Membri × membri", compat_cissay:"✅ Compatibilità di coppie", pdf:"📲 PDF + QRCode",
       },
       fr: {
         cam_vida:"✅ Chemin de Vie", expr_alma_pers:"✅ Expression, Âme, Personnalité", destino:"✅ Destinée",
@@ -264,7 +264,7 @@ if (!window.FEAT_TRAD.pt) {
         uniao_membros:"✅ Union entre les membres", ong_anal:"✅ ONG analysée", causa_potencial:"✅ Cause amplifiée",
         projeto_anal:"✅ Projet analysé", impulso_sucesso:"✅ Élan vers le succès", evento_anal:"✅ Événement analysé",
         atmosfera:"✅ Atmosphère pour les participants", pdf:"📲 PDF + Code QR",
-        compatibilidade_equipes:["✅ Chef × membres","✅ Membres × membres","✅ Compatibilité de paires","📲 PDF + QRCode"],
+        chefe_membros:"✅ Chef × membres", membros_membros:"✅ Membres × membres", compat_cissay:"✅ Compatibilité de paires", pdf:"📲 PDF + QRCode",
       },
       de: {
         cam_vida:"✅ Lebensweg", expr_alma_pers:"✅ Ausdruck, Seele, Persönlichkeit", destino:"✅ Schicksal",
@@ -288,7 +288,7 @@ if (!window.FEAT_TRAD.pt) {
         uniao_membros:"✅ Zusammenhalt der Mitglieder", ong_anal:"✅ NGO analysiert", causa_potencial:"✅ Verstärkte Wirkung der Sache",
         projeto_anal:"✅ Projekt analysiert", impulso_sucesso:"✅ Schub für den Erfolg", evento_anal:"✅ Veranstaltung analysiert",
         atmosfera:"✅ Atmosphäre für die Teilnehmer", pdf:"📲 PDF + QR-Code",
-        compatibilidade_equipes:["✅ Chef × Mitglieder","✅ Mitglieder × Mitglieder","✅ Paarkompatibilität","📲 PDF + QRCode"],
+        chefe_membros:"✅ Leitung × Mitglieder", membros_membros:"✅ Mitglieder × Mitglieder", compat_cissay:"✅ Paarkompatibilität", pdf:"📲 PDF + QRCode",
       },
       ru: {
         cam_vida:"✅ Путь Жизни", expr_alma_pers:"✅ Экспрессия, Душа, Личность", destino:"✅ Судьба",
@@ -312,7 +312,7 @@ if (!window.FEAT_TRAD.pt) {
         uniao_membros:"✅ Единство между членами", ong_anal:"✅ НКО проанализирована", causa_potencial:"✅ Дело усилено",
         projeto_anal:"✅ Проект проанализирован", impulso_sucesso:"✅ Импульс к успеху", evento_anal:"✅ Событие проанализировано",
         atmosfera:"✅ Атмосфера для участников", pdf:"📲 PDF + QR-код",
-        compatibilidade_equipes:["✅ Руководитель × члены","✅ Члены × члены","✅ Совместимость пар","📲 PDF + QRCode"],
+        chefe_membros:"✅ Руководитель × участники", membros_membros:"✅ Участники × участники", compat_cissay:"✅ Совместимость пар", pdf:"📲 PDF + QR-код",
       },
       zh: {
         cam_vida:"✅ 生命道路", expr_alma_pers:"✅ 表现、灵魂、个性", destino:"✅ 命运",
@@ -336,7 +336,7 @@ if (!window.FEAT_TRAD.pt) {
         uniao_membros:"✅ 成员团结", ong_anal:"✅ 组织分析", causa_potencial:"✅ 事业增强",
         projeto_anal:"✅ 项目分析", impulso_sucesso:"✅ 成功助推", evento_anal:"✅ 活动分析",
         atmosfera:"✅ 参与者氛围", pdf:"📲 PDF + 二维码",
-        compatibilidade_equipes:["✅ 主管×成员","✅ 成员×成员","✅ 配对兼容性","📲 PDF + QRCode"],
+        chefe_membros:"✅ 管理者 × 成员", membros_membros:"✅ 成员 × 成员", compat_cissay:"✅ 两两兼容性", pdf:"📲 PDF + 二维码",
       },
       ja: {
         cam_vida:"✅ ライフパス", expr_alma_pers:"✅ 表現・魂・性格", destino:"✅ 運命",
@@ -360,7 +360,7 @@ if (!window.FEAT_TRAD.pt) {
         uniao_membros:"✅ メンバー間の結束", ong_anal:"✅ NGOを分析", causa_potencial:"✅ 活動を強化",
         projeto_anal:"✅ プロジェクトを分析", impulso_sucesso:"✅ 成功への後押し", evento_anal:"✅ イベントを分析",
         atmosfera:"✅ 参加者のための雰囲気", pdf:"📲 PDF + QRコード",
-        compatibilidade_equipes:["✅ 上司×メンバー","✅ メンバー×メンバー","✅ ペア相性","📲 PDF + QRCode"],
+        chefe_membros:"✅ 上司 × メンバー", membros_membros:"✅ メンバー × メンバー", compat_cissay:"✅ ペアの相性", pdf:"📲 PDF + QRコード",
       },
       id: {
         cam_vida:"✅ Jalan Hidup", expr_alma_pers:"✅ Ekspresi, Jiwa, Kepribadian", destino:"✅ Takdir",
@@ -384,7 +384,7 @@ if (!window.FEAT_TRAD.pt) {
         uniao_membros:"✅ Persatuan antar anggota", ong_anal:"✅ LSM dianalisis", causa_potencial:"✅ Penyebab diperkuat",
         projeto_anal:"✅ Proyek dianalisis", impulso_sucesso:"✅ Dorongan menuju sukses", evento_anal:"✅ Acara dianalisis",
         atmosfera:"✅ Atmosfer untuk peserta", pdf:"📲 PDF + Kode QR",
-        compatibilidade_equipes:["✅ Atasan × anggota","✅ Anggota × anggota","✅ Kompatibilitas pasangan","📲 PDF + QRCode"],
+        chefe_membros:"✅ Manajer × anggota tim", membros_membros:"✅ Anggota × anggota", compat_cissay:"✅ Kompatibilitas antar-pasangan", pdf:"📲 PDF + kode QR",
       },
       tr: {
         cam_vida:"✅ Yaşam Yolu", expr_alma_pers:"✅ İfade, Ruh, Kişilik", destino:"✅ Kader",
@@ -408,7 +408,7 @@ if (!window.FEAT_TRAD.pt) {
         uniao_membros:"✅ Üyeler arası birlik", ong_anal:"✅ STK analiz edildi", causa_potencial:"✅ Dava güçlendirildi",
         projeto_anal:"✅ Proje analiz edildi", impulso_sucesso:"✅ Başarı için itici güç", evento_anal:"✅ Etkinlik analiz edildi",
         atmosfera:"✅ Katılımcılar için atmosfer", pdf:"📲 PDF + QR Kod",
-        compatibilidade_equipes:["✅ Patron × üyeler","✅ Üyeler × üyeler","✅ Çift uyumu","📲 PDF + QRCode"]
+        chefe_membros:"✅ Yönetici × ekip üyeleri", membros_membros:"✅ Üyeler × üyeler", compat_cissay:"✅ Çiftler arası uyum", pdf:"📲 PDF + QR kod",
       },
       vi: {
         cam_vida:"✅ Đường Đời", expr_alma_pers:"✅ Biểu Đạt, Tâm Hồn, Tính Cách", destino:"✅ Định Mệnh",
@@ -432,7 +432,7 @@ if (!window.FEAT_TRAD.pt) {
         uniao_membros:"✅ Đoàn kết giữa các thành viên", ong_anal:"✅ Tổ chức được phân tích", causa_potencial:"✅ Sứ mệnh được khuếch đại",
         projeto_anal:"✅ Dự án được phân tích", impulso_sucesso:"✅ Động lực cho thành công", evento_anal:"✅ Sự kiện được phân tích",
         atmosfera:"✅ Không khí cho người tham dự", pdf:"📲 PDF + Mã QR",
-        compatibilidade_equipes:["✅ Sếp × thành viên","✅ Thành viên × thành viên","✅ Tương thích cặp","📲 PDF + QRCode"],
+        chefe_membros:"✅ Quản lý × thành viên", membros_membros:"✅ Thành viên × thành viên", compat_cissay:"✅ Tương hợp theo cặp", pdf:"📲 PDF + mã QR",
       },
       he: {
         cam_vida:"✅ מסלול חיים", expr_alma_pers:"✅ ביטוי, נשמה, אישיות", destino:"✅ גורל",
@@ -456,7 +456,7 @@ if (!window.FEAT_TRAD.pt) {
         uniao_membros:"✅ אחדות בין החברים", ong_anal:"✅ הארגון נותח", causa_potencial:"✅ המטרה מוגברת",
         projeto_anal:"✅ הפרויקט נותח", impulso_sucesso:"✅ דחיפה להצלחה", evento_anal:"✅ האירוע נותח",
         atmosfera:"✅ אווירה למשתתפים", pdf:"📲 PDF + קוד QR",
-        compatibilidade_equipes:["✅ תאימות זוגות", "✅ חברים × חברים", "✅ תאימות","📲 PDF + QRCode"],
+        chefe_membros:"✅ מנהל × חברי צוות", membros_membros:"✅ חברי צוות × חברי צוות", compat_cissay:"✅ תאימות בין זוגות", pdf:"📲 PDF + קוד QR",
       },
       ar: {
         cam_vida:"✅ مسار الحياة", expr_alma_pers:"✅ التعبير والروح والشخصية", destino:"✅ القدر",
@@ -480,9 +480,8 @@ if (!window.FEAT_TRAD.pt) {
         uniao_membros:"✅ الوحدة بين الأعضاء", ong_anal:"✅ تم تحليل المنظمة", causa_potencial:"✅ تعزيز القضية",
         projeto_anal:"✅ تم تحليل المشروع", impulso_sucesso:"✅ دفع نحو النجاح", evento_anal:"✅ تم تحليل الحدث",
         atmosfera:"✅ أجواء للمشاركين", pdf:"📲 PDF + رمز QR",
-        compatibilidade_equipes:["✅ توافق الأزواج", "✅ أعضاء × أعضاء", "✅ توافق","📲 PDF + QRCode"],
-      }
-    };
+        chefe_membros:"✅ المدير × أعضاء الفريق", membros_membros:"✅ الأعضاء × الأعضاء", compat_cissay:"✅ التوافق بين الأزواج", pdf:"📲 PDF + رمز QR",
+      };
     var M = {
       express:["cam_vida","expr_alma_pers","destino","pdf"],
       vida:["fase_atual","ano_pessoal","tendencias","pdf"],
