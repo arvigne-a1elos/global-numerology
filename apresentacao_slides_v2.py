@@ -1,7 +1,14 @@
 # -*- coding: utf-8 -*-
-# apresentacao_slides_v2.py — Gerador estável de slides para A1ELOS Global Numerology
-# 16 páginas fixas · 14 idiomas · sem sobreposição · sem tabela evadindo · numeração correta
-# VERSÃO COMPLETA COM HOTFIXES 1 e 2 JÁ INTEGRADOS (substituição integral — não colar nada por cima)
+# apresentacao_slides_v2.py — Gerador estável de slides A1ELOS Global Numerology
+# VERSÃO 2.1 — 16/10/2026
+# Correções desta versão (nada de conteúdo muda):
+#   1) Cards em 2 linhas (título em cima, descrição embaixo) + grid de largura exata
+#      => fim dos cortes na borda direita (págs. 4, 6, 8, 9, 11)
+#   2) Gráfico de projeções com altura calculada (fim da sobreposição na pág. 14);
+#      Tração migrou para a pág. 15; Referências migraram para a pág. 17
+#   3) SEGUNDA LOGO no cabeçalho: static/A1ELOS.png no lado direito
+#   4) Textos lidos do apresentacao_textos.py (prioridade: idioma > pt > padrão interno)
+# 17 páginas fixas · 14 idiomas · numeração "X de 17" · sem sobreposição · sem evasão
 # Dependências: reportlab (opcional p/ árabe: arabic-reshaper python-bidi)
 
 import os, logging
@@ -16,7 +23,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.graphics.shapes import Drawing, Rect, String
 
-# ===== 1. FONTES (com fallback robusto em qualquer servidor) =====
+# ===== 1. FONTES =====
 _CAND = {
     "dejavu":   ["/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
                  "/usr/share/fonts/dejavu/DejaVuSans.ttf"],
@@ -91,11 +98,11 @@ LINHA     = colors.HexColor("#D9CFA8")
 ZEBRA     = colors.HexColor("#F7F3E6")
 FUNDO_BOX = colors.HexColor("#FBF7EA")
 
-# ===== 4. TEXTOS PADRÃO (pt) — CONTEÚDO UNIFICADO DOS TRÊS MODELOS =====
-# Prioridade: CONTEUDO[lang][chave] > CONTEUDO['pt'][chave] > PADRAO_PT[chave]
+# ===== 4. PADRÃO INTERNO (pt) — usado SOMENTE quando o apresentacao_textos não tem a chave =====
 PADRAO_PT = {
     "capa_titulo": "A1ELOS Global Numerology",
     "capa_sub": "A ciência dos números aplicada ao seu sucesso",
+    "capa_nota": "Apresentação Estratégica para Investidores e Parceiros",
     "capa_linha": "24 Produtos · 14 Idiomas · ~5,3 bilhões de falantes · IA integrada",
     "capa_conf": "CONFIDENCIAL · DUNS 942242668 · 2026",
     "sum_titulo": "Sumário Executivo",
@@ -109,7 +116,7 @@ PADRAO_PT = {
                   ("07","Projeções e Investimento","Anos 1–5 · Rodada Seed R$ 3,5M")],
     "sobre_titulo": "Sobre a A1ELOS",
     "sobre_texto": "A A1ELOS é uma holding de tecnologia e conhecimento que une inteligência artificial, numerologia aplicada e estratégia cultural para criar produtos digitais de alto impacto em escala global. Missão: democratizar o autoconhecimento numérico com respeito cultural e ao poder aquisitivo de cada mercado.",
-    "sobre_metricas": [("24","Produtos Ativos"),("14","Idiomas"),("5,3B","Falantes"),("IA","Integrada")],
+    "sobre_kpis": [("24","Produtos Ativos"),("14","Idiomas"),("5,3B","Falantes"),("IA","Integrada")],
     "sobre_duns": "DUNS 942242668 — Certificação Dun & Bradstreet válida em 190+ países, habilitando contratos B2B e joint ventures internacionais.",
     "mercado_titulo": "Oportunidade de Mercado",
     "mercado_texto": "Vivemos a convergência perfeita: o bem-estar digital explode globalmente enquanto a numerologia e astrologia migram para apps de alto engajamento. A A1ELOS está posicionada exatamente nessa interseção, com 74% da população mundial já online (~6 bilhões de pessoas).",
@@ -127,39 +134,43 @@ PADRAO_PT = {
                          ("Preços Descolados da Realidade","Cobrança em dólar exclui mercados emergentes — o usuário não rejeita o produto, rejeita o preço inacessível."),
                          ("Ausência de Profundidade","Ferramentas genéricas entregam respostas superficiais, sem contexto cultural e sem aplicação prática.")],
     "problema_col_dir_titulo": "O Custo da Exclusão",
-    "problema_col_dir": "Quando uma plataforma ignora idioma e poder aquisitivo, ela abandona o maior mercado do mundo: os 4+ bilhões de pessoas em economias emergentes. Plataformas que ignoram o poder aquisitivo local perdem acesso a mais de 60% do mercado endereçável global.",
-    "pilares_titulo": "Nossa Solução: 3 Pilares Estratégicos",
-    "pilares_texto": "A A1ELOS combina ciência numérica, inteligência artificial e sensibilidade cultural em uma plataforma integrada, com receita diversificada e alta retenção.",
-    "pilares": [("Mapas Pessoais","Análises numéricas profundas e personalizadas — identidade, missão, ciclos de vida e compatibilidade — em 14 idiomas com IA integrada."),
+    "problema_col_dir": "Quando uma plataforma ignora idioma e poder aquisitivo, ela abandona o maior mercado do mundo: os 4+ bilhões de pessoas em economias emergentes.",
+    "problema_destaque": "Plataformas que ignoram poder aquisitivo local perdem acesso a mais de 60% do mercado endereçável global.",
+    "solucao_titulo": "Nossa Solução: 3 Pilares Estratégicos",
+    "solucao_texto": "A A1ELOS combina ciência numérica, inteligência artificial e sensibilidade cultural em uma plataforma integrada, com receita diversificada e alta retenção.",
+    "solucao_colunas": [("Mapas Pessoais","Análises numéricas profundas e personalizadas — identidade, missão, ciclos de vida e compatibilidade — em 14 idiomas com IA integrada."),
                 ("Numerologia Empresarial","Diagnósticos aplicados a marcas, CNPJs, datas de fundação e estratégia corporativa — alto valor percebido no B2B."),
                 ("White-Label B2B","Licenciamento da plataforma para empresas parceiras oferecerem numerologia sob sua própria marca.")],
     "alcance_titulo": "Alcance Global: 14 Idiomas · ~5,3 Bilhões de Falantes",
     "alcance_texto": "A A1ELOS cobre ~67% da população mundial com uma plataforma genuinamente multilíngue, com precificação calibrada ao poder aquisitivo local.",
-    "alcance_tabela": [["Inglês","1.528","Mandarim","1.184"],["Espanhol","558","Francês","396"],
-                       ["Árabe","335","Português","270"],["Russo","255","Indonésio","255"],
-                       ["Alemão","134","Japonês","123"],["Vietnamita","97","Turco","90"],
-                       ["Italiano","85","Hebraico","9"],["TOTAL","~5.320 (milhões)","Falantes","—"]],
+    "idioma_col": "Idioma", "falantes_col": "Falantes (mi)", "total_linha": "TOTAL",
+    "linhas_idiomas": [["Inglês","1.528"],["Mandarim","1.184"],["Espanhol","558"],["Francês","396"],
+                       ["Árabe","335"],["Português","270"],["Russo","255"],["Indonésio","255"],
+                       ["Alemão","134"],["Japonês","123"],["Vietnamita","97"],["Turco","90"],
+                       ["Italiano","85"],["Hebraico","9"]],
     "novos_titulo": "Os 3 Novos Mercados: +442 Milhões de Falantes",
     "novos_texto": "Expansão para mercados com alto crescimento econômico, penetração digital crescente e demanda comprovada por bem-estar digital acessível.",
     "novos_cards": [("Indonésia","285 mi habitantes · 80,5% de internet · ~255 mi falantes · Bem-estar: US$ 51,2 bi → US$ 72,8 bi (2034)"),
                     ("Turquia","85,9 mi habitantes · PIB PPP per capita US$ 37.301 (acima da média mundial) · ~90 mi falantes"),
                     ("Vietnã","~100 mi habitantes · PIB per capita ~US$ 5.066 (+7,4%/ano) · ~97 mi falantes · Bem-estar: US$ 303 mi → US$ 485 mi (2030)")],
+    "mercados_rodape": "3 mercados novos = +442 milhões de novos falantes endereçáveis — incorporados com precificação culturalmente calibrada.",
     "preco_titulo": "Filosofia de Preço Consciente",
-    "preco_texto": "Respeito cultural + respeito ao poder aquisitivo = mercado endereçável real. O mesmo produto entrega o mesmo valor relativo ao usuário em Lagos, Jacarta, Hanói ou Nova York — o esforço financeiro é proporcional à renda local (Paridade de Poder de Compra).",
+    "preco_texto": "Respeito cultural + respeito ao poder aquisitivo = mercado endereçável real. O esforço financeiro é proporcional à renda local (Paridade de Poder de Compra).",
     "preco_cards": [("Calibração por PPC","Preços ajustados ao índice de poder aquisitivo de cada país"),
                     ("Respeito Cultural","Idioma, moeda e contexto local integrados ao produto"),
                     ("Conversão Superior","Preço justo gera mais conversão e maior retenção de longo prazo")],
     "portfolio_titulo": "Portfólio: 24 Produtos em 4 Níveis",
-    "portfolio_texto": "Cada perfil de usuário — do curioso ao profissional — encontra uma oferta adequada ao seu nível de engajamento e capacidade financeira. Relatórios PDF premium com QRCode e análise IA.",
+    "portfolio_texto": "Cada perfil de usuário encontra uma oferta adequada ao seu nível de engajamento e capacidade financeira. Relatórios PDF premium com QRCode e análise IA.",
     "portfolio_tabela": [["Nível","Produtos","Faixa","Perfil"],
                          ["Básico","Mapa Express, Mapa Completo","R$ 8–17","Primeiro contato"],
                          ["Intermediário","Pesquisa IA, Nome de Urna, Nº Eleitoral","R$ 26–53","Usuário engajado"],
                          ["Avançado","Nome de ONG, Artístico, Bebê, Assinatura, Negócio","R$ 35–44","Profissional"],
                          ["Premium","Casal, Família, Compatibilidade de Equipes RH ★, Coletivo","R$ 98","Corporativo"],
                          ["B2B","Pacotes Empresariais, licenças, brindes","Sob consulta","Empresas"]],
+    "portfolio_rodape": "24 produtos cobrem toda a jornada do usuário — maximizando LTV por idioma e mercado. Destaque: Compatibilidade de Equipes RH (R$ 98), energia ideal 8.",
     "destaque_titulo": "Destaque: Compatibilidade de Equipes (RH)",
     "destaque_selo": "NOVO PRODUTO · RH · R$ 98 · ENERGIA IDEAL: 8",
-    "destaque_texto": "Desenvolvido para Departamentos de Recursos Humanos que buscam alinhar líderes e colaboradores, aumentar a produtividade e reduzir conflitos internos — calculando setores e equipes com a energia desejada e sincronizando todos os membros na mesma sintonia.",
+    "destaque_texto": "Desenvolvido para Departamentos de Recursos Humanos que buscam alinhar líderes e colaboradores, aumentar a produtividade e reduzir conflitos internos.",
     "destaque_cards": [("Chefe × Membros","Compatibilidade energética entre o líder e cada membro individualmente."),
                        ("Membros × Membros","Afinidades e tensões energéticas entre todos os colaboradores."),
                        ("Compatibilidade de Pares","Relatório para duplas estratégicas: parceiros, sócios ou co-líderes."),
@@ -187,18 +198,21 @@ PADRAO_PT = {
                    ["2.000 códigos","50%","Grandes grupos","Larga escala"],
                    ["Acima de 2.000","Negociável","Plano Diamante","Distribuição em volume"]],
     "projecoes_titulo": "Projeções Financeiras: Curto Prazo (Anos 1–5)",
-    "projecoes_texto": "Base: penetração percentual sobre ~5,32 bilhões de falantes, conversão conservadora de 3% e resgate de bônus entre 70% e 90%. A receita B2B de RH (Compatibilidade de Equipes + Bônus Coletivo) ancora o crescimento em mercados verificados: HR Tech, Employer Branding e Corporate Wellness.",
+    "projecoes_texto": "Base: penetração percentual sobre ~5,32 bilhões de falantes, conversão conservadora de 3% e resgate de bônus entre 70% e 90%. Ancorada em mercados verificados: HR Tech, Employer Branding e Corporate Wellness.",
     "projecoes": [("Ano 1","R$ 318k","R$ 810k"),("Ano 2","R$ 630k","R$ 1,8M"),
                   ("Ano 3","R$ 1,20M","R$ 3,50M"),("Ano 4","R$ 2,2M","R$ 6,2M"),
                   ("Ano 5","R$ 3,70M","R$ 9,6M")],
+    "graf_cons": "Conservador", "graf_otim": "Otimista",
     "tracao_titulo": "Tração e Resultados Comprovados",
     "tracao_metricas": [("12K+","Usuários Ativos"),("87%","Retenção"),("4,8★","Avaliação Média"),("23","Parceiros B2B")],
     "roteiro_titulo": "Roteiro Estratégico",
+    "roteiro_texto": "Um plano em quatro fases progressivas — da consolidação da base atual à liderança global de mercado.",
     "roteiro_itens": [("Fase 1 · Consolidação","Base de usuários nos idiomas ativos. Otimização de conversão, retenção e LTV. Rodada Seed concluída."),
                       ("Fase 2 · Expansão","Lançamento em Indonésia, Turquia e Vietnã. Aceleração do canal B2B e publicidade."),
                       ("Fase 3 · Entrada Global","Presença nos 14 idiomas com campanhas localizadas. White-label em 5+ continentes. Série A."),
                       ("Fase 4 · Liderança","20+ países consolidados. SaaS de referência global. IPO ou exit estratégico.")],
     "invest_titulo": "Investimento & Contato",
+    "invest_texto": "Prontos para apresentações privadas, due diligence e negociações.",
     "invest_metricas": [("R$ 3,5 mi","Rodada Seed"),("R$ 14 mi","Valuation Pré-Money"),("Até 20%","Equity Ofertado")],
     "invest_contato": [("E-mail Investidores","a1elos.consultoria@gmail.com"),
                        ("E-mail Geral","contato@a1elos.com"),
@@ -206,11 +220,12 @@ PADRAO_PT = {
                        ("DUNS","942242668 — Dun & Bradstreet")],
     "invest_aloc": "Alocação do Capital: 45% Tecnologia · 30% Marketing · 25% Operações",
     "pix_titulo": "Brasil: A Infraestrutura Pix",
-    "pix_texto": "O Pix garante cobrança imediata, baixo custo e aceitação universal — o alicerce da operação B2C no Brasil e porta de entrada para a expansão internacional.",
+    "pix_texto": "O Pix garante cobrança imediata, baixo custo e aceitação universal — o alicerce da operação B2C no Brasil.",
     "pix_metricas": [("30,1 bi","Transações em 2025"),("76,4%","da população usa Pix"),
                      ("R$ 68,2 tri","movimentados no 2º sem. 2025"),("~80 bi","transações em 2025")],
     "pix_fontes": "Fontes: Banco Central do Brasil (Pix em Números) e Febraban (Pesquisa de Tecnologia Bancária).",
     "ref_titulo": "Referências Bibliográficas",
+    "ref_intro": "Fontes utilizadas para os dados de mercado, projeções e indicadores desta apresentação.",
     "ref_itens": [("Global Wellness Institute","Bem-estar global: US$ 6,8 tri (2024) → US$ 9,8 tri (2029)."),
                   ("MarkNtel Advisors","Apps de astrologia/numerologia: US$ 3 bi → US$ 9 bi até 2030 (CAGR ~20%)."),
                   ("FMI · Banco Mundial","PIB e paridade do poder de compra (PPP) por país."),
@@ -221,9 +236,33 @@ PADRAO_PT = {
     "final_linha": "DUNS 942242668 · 24 PRODUTOS · 14 IDIOMAS · ~5,3 BI FALANTES",
 }
 
-# ===== HARDENING (HOTFIX 1): aceita 2 ou 3 campos e tabelas de larguras variáveis =====
+# ===== 4b. LEITURA DOS TEXTOS: apresentacao_textos.py > PADRAO_PT =====
+_CONTEUDO = None
+def _conteudo():
+    global _CONTEUDO
+    if _CONTEUDO is None:
+        try:
+            from apresentacao_textos import CONTEUDO as _C
+            _CONTEUDO = _C
+        except Exception:
+            _CONTEUDO = {}
+    return _CONTEUDO
+
+def C(lang, *chaves):
+    """Tenta cada chave em CONTEUDO[lang], depois CONTEUDO['pt']; fallback PADRAO_PT na última chave."""
+    cd = _conteudo()
+    for ch in chaves:
+        v = cd.get(lang, {}).get(ch)
+        if v is not None: return v
+        v = cd.get("pt", {}).get(ch)
+        if v is not None: return v
+    return PADRAO_PT.get(chaves[-1], "")
+
+def _seq(v):
+    return list(v) if isinstance(v, (list, tuple)) else []
+
+# ===== HARDENING =====
 def _norm_pairs(itens):
-    """Converte (titulo, valor[, fonte]) | string | dict -> pares (titulo, descricao)."""
     saida = []
     for it in (itens or []):
         if isinstance(it, str):
@@ -232,7 +271,10 @@ def _norm_pairs(itens):
             if len(it) >= 3:
                 saida.append((str(it[0]), "%s · %s" % (it[1], it[2])))
             elif len(it) == 2:
-                saida.append((str(it[0]), str(it[1])))
+                v = it[1]
+                if isinstance(v, (list, tuple)):
+                    v = " · ".join(str(x) for x in v)
+                saida.append((str(it[0]), str(v)))
             elif len(it) == 1:
                 saida.append((str(it[0]), ""))
         elif isinstance(it, dict):
@@ -240,8 +282,18 @@ def _norm_pairs(itens):
                           str(it.get("texto") or it.get("valor") or it.get("desc") or "")))
     return saida
 
+def _norm_metrics(itens):
+    saida = []
+    for it in (itens or []):
+        if isinstance(it, str):
+            saida.append((it, ""))
+        elif isinstance(it, (list, tuple)) and len(it) >= 2:
+            saida.append((str(it[0]), str(it[1])))
+        elif isinstance(it, (list, tuple)) and len(it) == 1:
+            saida.append((str(it[0]), ""))
+    return saida
+
 def _norm_rows(dados):
-    """Uniforma todas as linhas da tabela para o mesmo numero de colunas."""
     if not dados:
         return [[""]]
     ncol = max(len(r) if isinstance(r, (list, tuple)) else 1 for r in dados)
@@ -255,7 +307,6 @@ def _norm_rows(dados):
     return out
 
 def _norm_metrics3(p):
-    """Garante (ano, conservador, otimista) em cada linha das projecoes."""
     saida = []
     for it in (p or []):
         if isinstance(it, (list, tuple)):
@@ -265,17 +316,28 @@ def _norm_metrics3(p):
             saida.append((it, "", ""))
     return saida
 
-def C(lang, chave):
-    """Prioridade: idioma atual > portugues > padrao interno. Nunca quebra."""
-    try:
-        from apresentacao_textos import CONTEUDO
-        v = CONTEUDO.get(lang, {}).get(chave)
-        if v is not None: return v
-        v = CONTEUDO.get("pt", {}).get(chave)
-        if v is not None: return v
-    except Exception:
-        pass
-    return PADRAO_PT.get(chave, "")
+def _anos_proj(lang):
+    dados = _seq(C(lang, "projecoes_curto_tabela", "projecoes_tabela", "projecoes"))
+    saida = []
+    for r in dados:
+        if isinstance(r, (list, tuple)) and len(r) >= 3 and str(r[0]).lower().startswith("ano"):
+            saida.append([str(r[0]), str(r[1]), str(r[2])])
+    return saida or [list(x) for x in PADRAO_PT["projecoes"]]
+
+def _tabela_alcance(lang):
+    idi = _seq(C(lang, "linhas_idiomas"))
+    if idi and all(isinstance(x, (list, tuple)) and len(x) >= 2 for x in idi):
+        ci = str(C(lang, "idioma_col") or "Idioma")
+        cf = str(C(lang, "falantes_col") or "Falantes (mi)")
+        linhas, i = [], 0
+        while i < len(idi):
+            a = idi[i]
+            b = idi[i + 1] if i + 1 < len(idi) else ["", ""]
+            linhas.append([str(a[0]), str(a[1]), str(b[0]), str(b[1])])
+            i += 2
+        linhas.append([str(C(lang, "total_linha") or "TOTAL"), "~5.320 (milhões)", "Falantes", "—"])
+        return [[ci, cf, ci, cf]] + linhas
+    return PADRAO_PT["alcance_tabela"]
 
 # ===== 5. ESTILOS =====
 def _estilo(fonte, tam, cor=TINTA, al=TA_LEFT, bold=False, leading=None, rtl=False):
@@ -283,37 +345,36 @@ def _estilo(fonte, tam, cor=TINTA, al=TA_LEFT, bold=False, leading=None, rtl=Fal
                           leading=leading or tam * 1.25, textColor=cor, alignment=al,
                           wordWrap=("RTL" if rtl else "CJK" if fonte == F_CJK else None))
 
-# ===== 6. COMPONENTES (todos em KeepInFrame = impossivel evadir/sobrepor) =====
+# ===== 6. COMPONENTES =====
 def _kif(fluxo): return KeepInFrame(LARG_UTIL, ALT_UTIL - 8 * mm, fluxo, mode="shrink")
 
 def _titulo(lang, texto):
     f, _, rtl = FONTES_IDIOMA.get(lang, (REG, BOLD, False))
-    t = _rtl(texto, lang)
-    return [Paragraph(t, _estilo(f, 20, OURO_ESC, bold=True, rtl=rtl)),
+    return [Paragraph(_rtl(str(texto), lang), _estilo(f, 20, OURO_ESC, bold=True, rtl=rtl)),
             Table([[""]], colWidths=[LARG_UTIL], rowHeights=[1.2],
-                  style=TableStyle([("BACKGROUND",(0,0),(-1,-1),OURO),
-                                    ("LINEBELOW",(0,0),(-1,-1),0,colors.white)])),
+                  style=TableStyle([("BACKGROUND",(0,0),(-1,-1),OURO)])),
             Spacer(1, 4 * mm)]
 
 def _para(lang, texto, tam=9.5, cor=TINTA, al=TA_LEFT, bold=False, esp=None):
     f, _, rtl = FONTES_IDIOMA.get(lang, (REG, BOLD, False))
-    return Paragraph(_rtl(texto, lang), _estilo(f, tam, cor, al, bold, esp))
+    return Paragraph(_rtl(str(texto or ""), lang), _estilo(f, tam, cor, al, bold, esp))
 
 def _cards(lang, itens, colunas=2, tam_titulo=10, tam_desc=8):
-    """Grade de cartoes dourados. Ultima linha com item impar ocupa largura total."""
+    # CORREÇÃO v2.1: cartão em 2 LINHAS (título / descrição) e grid de largura exata.
     itens = _norm_pairs(itens)
     f, _, rtl = FONTES_IDIOMA.get(lang, (REG, BOLD, False))
     al = TA_RIGHT if rtl else TA_LEFT
-    larg_col = (LARG_UTIL - 6 * mm) / colunas
+    larg_col = LARG_UTIL / colunas
     linhas, linha = [], []
     for t, d in itens:
-        cel = Table([[Paragraph(_rtl(t, lang), _estilo(f, tam_titulo, OURO_ESC, al, True)),
-                      Paragraph(_rtl(d, lang), _estilo(f, tam_desc, TINTA, al, leading=tam_desc*1.3))]],
+        cel = Table([[Paragraph(_rtl(t, lang), _estilo(f, tam_titulo, OURO_ESC, al, True))],
+                     [Paragraph(_rtl(d, lang), _estilo(f, tam_desc, TINTA, al, leading=tam_desc*1.35))]],
                     colWidths=[larg_col - 3*mm], style=TableStyle([
                         ("BACKGROUND",(0,0),(-1,-1),FUNDO_BOX),
                         ("BOX",(0,0),(-1,-1),0.8,OURO),
-                        ("LEFTPADDING",(0,0),(-1,-1),3*mm),("RIGHTPADDING",(0,0),(-1,-1),3*mm),
-                        ("TOPPADDING",(0,0),(-1,-1),2.5*mm),("BOTTOMPADDING",(0,0),(-1,-1),2.5*mm)]))
+                        ("LEFTPADDING",(0,0),(-1,-1),2.5*mm),("RIGHTPADDING",(0,0),(-1,-1),2.5*mm),
+                        ("TOPPADDING",(0,0),(-1,0),2.2*mm),("BOTTOMPADDING",(0,0),(-1,0),1.0*mm),
+                        ("TOPPADDING",(0,1),(-1,1),0.4*mm),("BOTTOMPADDING",(0,1),(-1,1),2.2*mm)]))
         linha.append(cel)
         if len(linha) == colunas: linhas.append(linha); linha = []
     if linha:
@@ -321,12 +382,11 @@ def _cards(lang, itens, colunas=2, tam_titulo=10, tam_desc=8):
         linhas.append(linha)
     g = Table(linhas, colWidths=[larg_col] * colunas, hAlign="LEFT",
               style=TableStyle([("VALIGN",(0,0),(-1,-1),"TOP"),
-                                ("LEFTPADDING",(0,0),(-1,-1),0),("RIGHTPADDING",(0,0),(-1,-1),1.5*mm),
-                                ("TOPPADDING",(0,0),(-1,-1),0),("BOTTOMPADDING",(0,0),(-1,-1),1.5*mm)]))
+                                ("LEFTPADDING",(0,0),(-1,-1),0),("RIGHTPADDING",(0,0),(-1,-1),0),
+                                ("TOPPADDING",(0,0),(-1,-1),0),("BOTTOMPADDING",(0,0),(-1,-1),1.8*mm)]))
     return KeepInFrame(LARG_UTIL, ALT_UTIL * 0.9, [g], mode="shrink")
 
 def _tabela(lang, dados, larguras=None, tam=8, zebra=True):
-    """Tabela com larguras proporcionais — nunca sai do slide."""
     dados = _norm_rows(dados)
     f, _, rtl = FONTES_IDIOMA.get(lang, (REG, BOLD, False))
     al = TA_RIGHT if rtl else TA_LEFT
@@ -351,7 +411,8 @@ def _tabela(lang, dados, larguras=None, tam=8, zebra=True):
     return KeepInFrame(LARG_UTIL, ALT_UTIL * 0.9, [t], mode="shrink")
 
 def _metricas(lang, itens, tam_num=17, tam_lab=7.5):
-    itens = _norm_pairs(itens)
+    itens = _norm_metrics(itens)
+    if not itens: return Spacer(1, 0)
     f, _, rtl = FONTES_IDIOMA.get(lang, (REG, BOLD, False))
     larg = LARG_UTIL / len(itens)
     linha = [Table([[Paragraph(_rtl(v, lang), _estilo(f, tam_num, OURO_ESC, TA_CENTER, True))],
@@ -379,37 +440,47 @@ def _lista_pares(lang, itens, tam=8.5):
     fluxo = []
     for t, d in itens:
         fluxo.append(Paragraph(_rtl("◆ " + t, lang), _estilo(f, tam, OURO_ESC, bold=True)))
-        fluxo.append(Paragraph(_rtl(d, lang), _estilo(f, tam - 0.5, TINTA)))
+        if d:
+            fluxo.append(Paragraph(_rtl(d, lang), _estilo(f, tam - 0.5, TINTA)))
         fluxo.append(Spacer(1, 2*mm))
     return fluxo
 
 def _barras(lang, projecoes):
-    """Grafico de barras deterministico (sem reportlab.graphics — zero risco)."""
+    # CORREÇÃO v2.1: altura calculada a partir do nº de anos (fim da sobreposição).
     projecoes = _norm_metrics3(projecoes)
+    if not projecoes: return Spacer(1, 0)
     f, _, rtl = FONTES_IDIOMA.get(lang, (REG, BOLD, False))
     def _num(s):
-        s = s.replace("R$","").replace("k","000").replace(",","").replace(".","")
+        s = str(s).replace("R$","").replace("k","000").replace(",","").replace(".","")
         s = s.replace("M","000000").replace(" ","")
         try: return float(s)
         except Exception: return 0.0
     maximo = max(max(_num(c), _num(o)) for _, c, o in projecoes) or 1.0
-    d = Drawing(LARG_UTIL, 30*mm)
-    alt_barra, gap = 3.4*mm, 1.6*mm
-    y = 30*mm - 4*mm
-    x_lab = 22*mm; x_bar = 26*mm; larg_max = LARG_UTIL - x_bar - 40*mm
+    alt_barra, gap_ano, entre = 3.2*mm, 2.2*mm, 1
+    bloco = alt_barra + entre + alt_barra
+    h = 4*mm + len(projecoes) * (bloco + gap_ano) + 6*mm
+    d = Drawing(LARG_UTIL, h)
+    y = h - 4*mm - alt_barra
+    x_lab = 24*mm; x_bar = 28*mm; larg_max = LARG_UTIL - x_bar - 42*mm
     for ano, cons, otim in projecoes:
-        d.add(String(x_lab - 4, y + 1, _rtl(ano, lang), fontName=f, fontSize=7, textAnchor="end", fillColor=TINTA))
-        for (txt, cor, desloc) in ((cons, CINZA, 0), (otim, OURO, -alt_barra - 1)):
-            w = max(2*mm, larg_max * _num(txt) / maximo)
-            d.add(Rect(x_bar, y + desloc, w, alt_barra, fillColor=cor, strokeColor=None))
-            d.add(String(x_bar + w + 2, y + desloc + 1, txt, fontName=f, fontSize=6.5, fillColor=TINTA))
-        y -= (alt_barra + gap) * 2 + 1.2*mm
-    d.add(String(x_bar, 2*mm, _rtl("◼ Conservador   ◼ Otimista", lang), fontName=f, fontSize=7, fillColor=CINZA))
+        d.add(String(x_lab - 3, y + 1, _rtl(ano, lang), fontName=f, fontSize=7.5,
+                     textAnchor="end", fillColor=TINTA))
+        w1 = max(2*mm, larg_max * _num(cons) / maximo)
+        d.add(Rect(x_bar, y, w1, alt_barra, fillColor=CINZA, strokeColor=None))
+        d.add(String(x_bar + w1 + 2, y + 1, cons, fontName=f, fontSize=6.5, fillColor=TINTA))
+        w2 = max(2*mm, larg_max * _num(otim) / maximo)
+        d.add(Rect(x_bar, y - alt_barra - entre, w2, alt_barra, fillColor=OURO, strokeColor=None))
+        d.add(String(x_bar + w2 + 2, y - alt_barra - entre + 1, otim, fontName=f, fontSize=6.5, fillColor=TINTA))
+        y -= bloco + gap_ano
+    legenda = "◼ %s   ◼ %s" % (C(lang,"graf_cons"), C(lang,"graf_otim"))
+    d.add(String(x_bar, 1.5*mm, _rtl(legenda, lang), fontName=f, fontSize=7, fillColor=CINZA))
     return d
 
-# ===== 7. CABECALHO / RODAPE (padrao do site: duas logos + DUNS + contatos) =====
+# ===== 7. CABEÇALHO / RODAPÉ — DUAS LOGOS =====
 _LOGO_CANDIDATOS = ["static/logo.png", "static/Logo-A1ELOS.png", "static/logo-a1elos.png",
                     "static/img/logo.png", "logo.png"]
+_LOGO2_CANDIDATOS = ["static/A1ELOS.png", "static/Logo-A1ELOS.png", "static/logo-a1elos.png",
+                     "static/logo.png", "logo.png"]
 
 def _logo(canvas, x, y, tam=9*mm):
     for p in _LOGO_CANDIDATOS:
@@ -422,18 +493,36 @@ def _logo(canvas, x, y, tam=9*mm):
     canvas.drawCentredString(x + tam/2, y + tam/2 - 2.6, "A1")
     canvas.restoreState()
 
+def _logo2(canvas, tam=8*mm):
+    """SEGUNDA LOGO — lado direito do cabeçalho (static/A1ELOS.png)."""
+    x = LARG - MARG - tam
+    y = ALT - TOPO_BANDA + 1.5*mm
+    for p in _LOGO2_CANDIDATOS:
+        if os.path.exists(p):
+            try:
+                canvas.drawImage(p, x, y, tam, tam, preserveAspectRatio=True, mask="auto")
+                return
+            except Exception:
+                break
+    canvas.saveState()
+    canvas.setFillColor(OURO); canvas.circle(x + tam/2, y + tam/2, tam/2, fill=1, stroke=0)
+    canvas.setFillColor(colors.white); canvas.setFont(BOLD, 7)
+    canvas.drawCentredString(x + tam/2, y + tam/2 - 2.2, "A1")
+    canvas.restoreState()
+
 def _page_decor(canvas, doc, lang):
     canvas.saveState()
-    total = getattr(doc, "_total_paginas", 16)
+    total = getattr(doc, "_total_paginas", 17)
     pagina = canvas.getPageNumber()
     if pagina > 1:
-        _logo(canvas, MARG, ALT - TOPO_BANDA + 1.5*mm)
+        _logo(canvas, MARG, ALT - TOPO_BANDA + 1.5*mm)          # logo 1 (esquerda)
         canvas.setFillColor(TINTA); canvas.setFont(BOLD, 11)
         canvas.drawString(MARG + 12*mm, ALT - TOPO_BANDA + 4.2*mm, "A1ELOS Global Numerology")
         canvas.setFillColor(CINZA); canvas.setFont(REG, 7.5)
         canvas.drawString(MARG + 12*mm, ALT - TOPO_BANDA + 1.2*mm, "DUNS 942242668 · CONFIDENCIAL")
+        _logo2(canvas)                                          # logo 2 (direita) — A1ELOS.png
         canvas.setFillColor(OURO_ESC); canvas.setFont(BOLD, 7.5)
-        canvas.drawRightString(LARG - MARG, ALT - TOPO_BANDA + 2.8*mm, "D&B · 190+ PAÍSES")
+        canvas.drawRightString(LARG - MARG - 11*mm, ALT - TOPO_BANDA + 2.8*mm, "D&B · 190+ PAÍSES")
         canvas.setStrokeColor(OURO); canvas.setLineWidth(1)
         canvas.line(MARG, ALT - TOPO_BANDA, LARG - MARG, ALT - TOPO_BANDA)
     canvas.setStrokeColor(LINHA); canvas.setLineWidth(0.6)
@@ -447,64 +536,73 @@ def _page_decor(canvas, doc, lang):
     canvas.drawRightString(LARG - MARG, PE_BANDA + 1.2*mm, "%d de %d" % (pagina, total))
     canvas.restoreState()
 
-# ===== 8. PLANO DE PAGINAS (16 fixas — identico em todos os idiomas) =====
+# ===== 8. PLANO DE PÁGINAS (17 fixas) =====
 def _plano(lang):
     P = []
     P.append({"tipo":"capa"})
-    P.append({"tipo":"geral","titulo":C(lang,"sum_titulo"),"intro":C(lang,"sum_intro"),
-              "corpo":[("tabela",[["#","Seção","Conteúdo"]] + [list(x) for x in C(lang,"sum_itens")],
-                       [1.2, 3.2, 7.0], 8.5)]})
+    P.append({"tipo":"geral","titulo":C(lang,"sumario_titulo","sum_titulo"),
+              "intro":C(lang,"sumario_intro","sum_intro"),
+              "corpo":[("tabela",[["#","Seção","Conteúdo"]] + _seq(C(lang,"sumario_cards","sum_itens")),
+                       [1.0, 3.2, 7.2], 8.5)]})
     P.append({"tipo":"geral","titulo":C(lang,"sobre_titulo"),"intro":C(lang,"sobre_texto"),
-              "corpo":[("metricas",C(lang,"sobre_metricas")),
+              "corpo":[("metricas",C(lang,"sobre_kpis","sobre_metricas")),
                        ("texto",C(lang,"sobre_duns"))]})
     P.append({"tipo":"geral","titulo":C(lang,"mercado_titulo"),"intro":C(lang,"mercado_texto"),
-              "corpo":[("cards",C(lang,"mercado_cards"),4),
+              "corpo":[("cards",_seq(C(lang,"mercado_cards")),4),
                        ("subtitulo",C(lang,"mercado_rh_titulo")),
-                       ("cards",C(lang,"mercado_rh_cards"),3)]})
+                       ("cards",_seq(C(lang,"mercado_rh_cards")),3)]})
     P.append({"tipo":"duas","titulo":C(lang,"problema_titulo"),
-              "esq_titulo":C(lang,"problema_col_esq_titulo"),"esq_itens":C(lang,"problema_col_esq"),
-              "dir_titulo":C(lang,"problema_col_dir_titulo"),"dir_texto":C(lang,"problema_col_dir")})
-    P.append({"tipo":"geral","titulo":C(lang,"pilares_titulo"),"intro":C(lang,"pilares_texto"),
-              "corpo":[("cards",C(lang,"pilares"),3)]})
+              "esq_titulo":C(lang,"problema_col_esq_titulo"),
+              "esq_itens":_seq(C(lang,"problema_col_esq")),
+              "dir_titulo":C(lang,"problema_col_dir_titulo"),
+              "dir_texto":C(lang,"problema_col_dir"),
+              "destaque":C(lang,"problema_destaque")})
+    P.append({"tipo":"geral","titulo":C(lang,"solucao_titulo"),"intro":C(lang,"solucao_texto"),
+              "corpo":[("cards",_seq(C(lang,"solucao_colunas")),3)]})
     P.append({"tipo":"geral","titulo":C(lang,"alcance_titulo"),"intro":C(lang,"alcance_texto"),
-              "corpo":[("tabela",[["Idioma","Falantes (mi)","Idioma","Falantes (mi)"]] +
-                       [list(x) for x in C(lang,"alcance_tabela")], [3,2,3,2], 8)]})
-    P.append({"tipo":"geral","titulo":C(lang,"novos_titulo"),"intro":C(lang,"novos_texto"),
-              "corpo":[("cards",C(lang,"novos_cards"),3)]})
-    P.append({"tipo":"geral","titulo":C(lang,"preco_titulo"),"intro":C(lang,"preco_texto"),
-              "corpo":[("cards",C(lang,"preco_cards"),3)]})
+              "corpo":[("tabela",_tabela_alcance(lang),[3,2,3,2],8)]})
+    P.append({"tipo":"geral","titulo":C(lang,"mercados_titulo","novos_titulo"),
+              "intro":C(lang,"mercados_texto","novos_texto"),
+              "corpo":[("cards",_seq(C(lang,"mercados_cards","novos_cards")),3),
+                       ("texto",C(lang,"mercados_rodape"),8,TINTA)]})
+    P.append({"tipo":"geral","titulo":C(lang,"preco_titulo"),
+              "intro":C(lang,"preco_esq","preco_texto"),
+              "corpo":[("cards",_seq(C(lang,"preco_pilares","preco_cards")),3)]})
     P.append({"tipo":"geral","titulo":C(lang,"portfolio_titulo"),"intro":C(lang,"portfolio_texto"),
-              "corpo":[("tabela",[list(x) for x in C(lang,"portfolio_tabela")],
-                       [1.7, 5.4, 1.6, 2.2], 8)]})
-    P.append({"tipo":"destaque","titulo":C(lang,"destaque_titulo"),"selo":C(lang,"destaque_selo"),
-              "texto":C(lang,"destaque_texto"),"cards":C(lang,"destaque_cards")})
-    P.append({"tipo":"geral","titulo":C(lang,"modelo_titulo"),"intro":None,
-              "corpo":[("pares",C(lang,"modelo_itens")),
+              "corpo":[("tabela",_seq(C(lang,"portfolio_tabela")),[1.7, 5.4, 1.6, 2.2],8),
+                       ("texto",C(lang,"portfolio_rodape"),7.5,CINZA)]})
+    P.append({"tipo":"destaque","titulo":C(lang,"rh_destaque_titulo","destaque_titulo"),
+              "selo":C(lang,"destaque_selo"),
+              "texto":C(lang,"rh_destaque_texto","destaque_texto"),
+              "cards":_seq(C(lang,"destaque_cards"))})
+    P.append({"tipo":"geral","titulo":C(lang,"negocio_titulo","modelo_titulo"),"intro":None,
+              "corpo":[("pares",_seq(C(lang,"negocio_colunas","modelo_itens"))),
                        ("subtitulo",C(lang,"banners_titulo")),
-                       ("tabela",[list(x) for x in C(lang,"banners_tabela")],
-                        [2.6, 1.6, 2.0, 3.2], 7.5),
-                       ("texto",C(lang,"banners_nota"),7,CINZA)]})
+                       ("tabela",_seq(C(lang,"banners_tabela")),[2.6, 1.6, 2.0, 3.2],7.5),
+                       ("texto",C(lang,"banners_formatos","banners_nota"),7,CINZA)]})
     P.append({"tipo":"geral","titulo":C(lang,"b2b_titulo"),"intro":C(lang,"b2b_texto"),
-              "corpo":[("tabela",[list(x) for x in C(lang,"b2b_tabela")],
-                       [2.2, 1.6, 2.6, 3.4], 7.5)]})
-    P.append({"tipo":"geral","titulo":C(lang,"projecoes_titulo"),"intro":C(lang,"projecoes_texto"),
-              "corpo":[("barras",C(lang,"projecoes")),
-                       ("tabela",[["Horizonte","Conservador (R$)","Otimista (R$)"]] +
-                        [list(x) for x in C(lang,"projecoes")], [2, 2.4, 2.4], 8),
-                       ("metricas",C(lang,"tracao_metricas"))]})
-    P.append({"tipo":"geral","titulo":C(lang,"roteiro_titulo"),"intro":None,
-              "corpo":[("pares",C(lang,"roteiro_itens"))]})
-    P.append({"tipo":"geral","titulo":C(lang,"invest_titulo"),"intro":None,
-              "corpo":[("metricas",C(lang,"invest_metricas")),
-                       ("duas_listas",C(lang,"invest_contato"),C(lang,"ref_itens")),
+              "corpo":[("tabela",_seq(C(lang,"b2b_tabela")),[2.2, 1.6, 2.6, 3.4],7.5)]})
+    P.append({"tipo":"geral","titulo":C(lang,"projecoes_curto_titulo","projecoes_titulo"),
+              "intro":C(lang,"projecoes_curto_texto","projecoes_texto"),
+              "corpo":[("barras",_anos_proj(lang)),
+                       ("tabela",[["Horizonte","Conservador (R$)","Otimista (R$)"]] + _anos_proj(lang),
+                        [2, 2.6, 2.6], 8)]})
+    P.append({"tipo":"geral","titulo":C(lang,"roteiro_titulo"),"intro":C(lang,"roteiro_texto"),
+              "corpo":[("pares",_seq(C(lang,"roteiro_fases","roteiro_itens"))),
+                       ("subtitulo",C(lang,"tracao_titulo")),
+                       ("metricas",_seq(C(lang,"tracao_kpis","tracao_metricas")))]})
+    P.append({"tipo":"geral","titulo":C(lang,"invest_titulo"),"intro":C(lang,"invest_texto"),
+              "corpo":[("metricas",_seq(C(lang,"invest_dados","invest_metricas"))),
+                       ("pares",_seq(C(lang,"invest_contato"))),
+                       ("texto",C(lang,"invest_alocacao","invest_aloc"),7.2,CINZA),
                        ("subtitulo",C(lang,"pix_titulo")),
                        ("texto",C(lang,"pix_texto"),7.5),
-                       ("metricas",C(lang,"pix_metricas"),14),
-                       ("texto",C(lang,"pix_fontes"),6.5,CINZA)]})
-    P.append({"tipo":"final"})
+                       ("metricas",_seq(C(lang,"pix_kpis","pix_metricas"))),
+                       ("texto",C(lang,"pix_fonte","pix_fontes"),6.5,CINZA)]})
+    P.append({"tipo":"refs_final"})
     return P
 
-# ===== 9. RENDERIZACAO =====
+# ===== 9. RENDERIZAÇÃO =====
 def _render_corpo(lang, corpo):
     fluxo = [Spacer(1, 2*mm)]
     for item in corpo:
@@ -516,24 +614,47 @@ def _render_corpo(lang, corpo):
                                                       item[2] if len(item)>2 else 17)); fluxo.append(Spacer(1, 3*mm))
         elif tipo == "texto":
             t, tam, cor = item[1], (item[2] if len(item)>2 else 8.5), (item[3] if len(item)>3 else TINTA)
-            fluxo.append(_para(lang, t, tam, cor)); fluxo.append(Spacer(1, 2*mm))
+            if t:
+                fluxo.append(_para(lang, t, tam, cor)); fluxo.append(Spacer(1, 2*mm))
         elif tipo == "subtitulo":
             f, _, rtl = FONTES_IDIOMA.get(lang, (REG, BOLD, False))
-            fluxo.append(Paragraph(_rtl(item[1], lang), _estilo(f, 12, OURO_ESC, bold=True)))
+            fluxo.append(Paragraph(_rtl(str(item[1]), lang), _estilo(f, 12, OURO_ESC, bold=True)))
             fluxo.append(Spacer(1, 2*mm))
         elif tipo == "pares":    fluxo.extend(_lista_pares(lang, item[1]))
-        elif tipo == "barras":   fluxo.append(_barras(lang, item[1])); fluxo.append(Spacer(1, 2*mm))
-        elif tipo == "duas_listas":
-            fe = _lista_pares(lang, item[1], 7.5); fd = _lista_pares(lang, item[2], 7.5)
-            fluxo.append(_duas_colunas(lang, None, fe, None, fd)); fluxo.append(Spacer(1, 2*mm))
+        elif tipo == "barras":   fluxo.append(_barras(lang, item[1])); fluxo.append(Spacer(1, 3*mm))
     return fluxo
 
 def _render_pagina(lang, spec):
     if spec["tipo"] == "capa": return []
-    if spec["tipo"] == "final": return []
+    if spec["tipo"] == "refs_final":
+        f, _, rtl = FONTES_IDIOMA.get(lang, (REG, BOLD, False))
+        saida = _titulo(lang, C(lang,"ref_titulo"))
+        intro = C(lang,"ref_intro")
+        if isinstance(intro, str) and intro:
+            saida += [_para(lang, intro, 8.5, CINZA), Spacer(1, 2.5*mm)]
+        refs = _seq(C(lang,"ref_lista","ref_itens"))
+        if refs:
+            meio = (len(refs)+1)//2
+            fe = _lista_pares(lang, refs[:meio], 7.5)
+            fd = _lista_pares(lang, refs[meio:], 7.5)
+            saida += [_duas_colunas(lang, None, fe, None, fd)]
+        selo = C(lang, "selo_final")
+        selo_txt = " · ".join(str(x) for x in selo) if isinstance(selo, (list, tuple)) and selo \
+                   else str(C(lang, "final_linha") or PADRAO_PT["final_linha"])
+        saida += [Spacer(1, 9*mm),
+                  Table([[""]], colWidths=[LARG_UTIL*0.5], rowHeights=[1], hAlign="CENTER",
+                        style=TableStyle([("BACKGROUND",(0,0),(-1,-1),OURO)])),
+                  Spacer(1, 9*mm),
+                  Paragraph(_rtl(str(C(lang,"frase_final","final_frase")), lang),
+                            _estilo(f, 22, OURO_ESC, TA_CENTER, True, 27)),
+                  Spacer(1, 7*mm),
+                  Paragraph(_rtl(selo_txt, lang), _estilo(f, 9.5, TINTA, TA_CENTER, True)),
+                  Spacer(1, 6*mm),
+                  Paragraph("1 · 2 · 3 · 4 · 5 · 6 · 7 · 8 · 9", _estilo(f, 9, OURO, TA_CENTER))]
+        return [_kif(saida)]
     if spec["tipo"] == "destaque":
         f, _, rtl = FONTES_IDIOMA.get(lang, (REG, BOLD, False))
-        selo = Table([[Paragraph(_rtl(spec["selo"], lang), _estilo(f, 9, colors.white, TA_CENTER, True))]],
+        selo = Table([[Paragraph(_rtl(str(spec["selo"]), lang), _estilo(f, 9, colors.white, TA_CENTER, True))]],
                      colWidths=[LARG_UTIL*0.6], style=TableStyle([
                          ("BACKGROUND",(0,0),(-1,-1),OURO_ESC),
                          ("TOPPADDING",(0,0),(-1,-1),2*mm),("BOTTOMPADDING",(0,0),(-1,-1),2*mm)]))
@@ -545,6 +666,9 @@ def _render_pagina(lang, spec):
              _lista_pares(lang, spec["esq_itens"], 8.5)
         fd = [_para(lang, spec["dir_titulo"], 11, OURO_ESC, True), Spacer(1,2*mm),
               _para(lang, spec["dir_texto"], 8.5)]
+        dest = spec.get("destaque")
+        if isinstance(dest, str) and dest:
+            fd += [Spacer(1, 3*mm), _para(lang, dest, 8.5, OURO_ESC, True)]
         return _titulo(lang, spec["titulo"]) + [Spacer(1,3*mm),
                 _duas_colunas(lang, None, fe, None, fd)]
     saida = _titulo(lang, spec["titulo"])
@@ -556,39 +680,33 @@ def _render_pagina(lang, spec):
 def _render_capa(lang):
     f, fb, rtl = FONTES_IDIOMA.get(lang, (REG, BOLD, False))
     c = []
-    c.append(Spacer(1, 30*mm))
-    larg_logo = 60*mm
+    c.append(Spacer(1, 26*mm))
     try:
         p_logo = _primeiro(_LOGO_CANDIDATOS)
         if p_logo:
-            c.append(Image(p_logo, larg_logo, larg_logo * 0.32,
-                           preserveAspectRatio=True, mask="auto"))
+            c.append(Image(p_logo, 60*mm, 60*mm * 0.32, preserveAspectRatio=True, mask="auto"))
         else:
             c.append(_para(lang, "A1ELOS", 26, OURO, TA_CENTER, True))
     except Exception:
         c.append(_para(lang, "A1ELOS", 26, OURO, TA_CENTER, True))
-    c.append(Spacer(1, 8*mm))
-    c.append(Paragraph(_rtl(C(lang,"capa_titulo"), lang), _estilo(f, 26, TINTA, TA_CENTER, True, 32)))
-    c.append(Spacer(1, 4*mm))
-    c.append(Paragraph(_rtl(C(lang,"capa_sub"), lang), _estilo(f, 14, OURO_ESC, TA_CENTER)))
-    c.append(Spacer(1, 10*mm))
+    c.append(Spacer(1, 7*mm))
+    c.append(Paragraph(_rtl(str(C(lang,"titulo","capa_titulo")), lang),
+                       _estilo(f, 26, TINTA, TA_CENTER, True, 32)))
+    c.append(Spacer(1, 3*mm))
+    c.append(Paragraph(_rtl(str(C(lang,"subtitulo","capa_sub")), lang),
+                       _estilo(f, 14, OURO_ESC, TA_CENTER)))
+    nota = C(lang, "capa_nota")
+    if isinstance(nota, str) and nota:
+        c.append(Spacer(1, 3*mm))
+        c.append(Paragraph(_rtl(nota, lang), _estilo(f, 10.5, TINTA, TA_CENTER)))
+    c.append(Spacer(1, 9*mm))
     c.append(Table([[""]], colWidths=[LARG_UTIL*0.5], rowHeights=[1], hAlign="CENTER",
                    style=TableStyle([("BACKGROUND",(0,0),(-1,-1),OURO)])))
-    c.append(Spacer(1, 10*mm))
-    c.append(Paragraph(_rtl(C(lang,"capa_linha"), lang), _estilo(f, 10.5, TINTA, TA_CENTER)))
-    c.append(Spacer(1, 14*mm))
-    c.append(Paragraph(_rtl(C(lang,"capa_conf"), lang), _estilo(f, 9, CINZA, TA_CENTER, True)))
+    c.append(Spacer(1, 9*mm))
+    c.append(Paragraph(_rtl(str(C(lang,"capa_linha")), lang), _estilo(f, 10.5, TINTA, TA_CENTER)))
+    c.append(Spacer(1, 12*mm))
+    c.append(Paragraph(_rtl(str(C(lang,"capa_conf")), lang), _estilo(f, 9, CINZA, TA_CENTER, True)))
     return c
-
-def _render_final(lang):
-    f, fb, rtl = FONTES_IDIOMA.get(lang, (REG, BOLD, False))
-    return [Spacer(1, 60*mm),
-            Paragraph(_rtl(C(lang,"final_frase"), lang),
-                      _estilo(f, 24, OURO_ESC, TA_CENTER, True, 30)),
-            Spacer(1, 10*mm),
-            Paragraph(_rtl(C(lang,"final_linha"), lang), _estilo(f, 10, TINTA, TA_CENTER, True)),
-            Spacer(1, 8*mm),
-            Paragraph("1 · 2 · 3 · 4 · 5 · 6 · 7 · 8 · 9", _estilo(f, 9, OURO, TA_CENTER))]
 
 # ===== 10. GERADOR PRINCIPAL =====
 def gerar_apresentacao_slides(lang="pt", caminho=None):
@@ -607,7 +725,6 @@ def gerar_apresentacao_slides(lang="pt", caminho=None):
     historia = []
     for spec in plano:
         if spec["tipo"] == "capa":      historia += _render_capa(lang)
-        elif spec["tipo"] == "final":   historia += _render_final(lang)
         else:                           historia += _render_pagina(lang, spec)
         if spec is not plano[-1]: historia.append(PageBreak())
     try:
