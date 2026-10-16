@@ -895,13 +895,20 @@ async def api_apresentacao(lang: str = "pt"):
                     headers={"Content-Disposition": f'attachment; filename="{nome}"',
                              "Cache-Control": "no-store"})
 
+from fastapi.responses import FileResponse, JSONResponse
 from apresentacao_slides_v2 import gerar_apresentacao_slides
 
 @app.get("/api/apresentacao-slides")
 async def apresentacao_slides(lang: str = "pt"):
-    caminho = gerar_apresentacao_slides(lang)
-    return FileResponse(caminho, media_type="application/pdf",
-                        filename=f"apresentacao_slides_{lang}.pdf")
+    try:
+        caminho = gerar_apresentacao_slides(lang)
+        return FileResponse(caminho, media_type="application/pdf",
+                            filename="apresentacao_slides_%s.pdf" % lang)
+    except Exception as e:
+        import traceback
+        logging.getLogger("uvicorn.error").error(traceback.format_exc())
+        return JSONResponse(status_code=500,
+                            content={"detail": "Erro ao gerar slides: %s" % e})
   
 # ===== CHECKOUT COLETIVO (desconto progressivo) =====
 @app.get("/criar-checkout-coletivo")
