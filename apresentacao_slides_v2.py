@@ -73,7 +73,7 @@ FONTES_IDIOMA = {
 IDIOMAS = list(FONTES_IDIOMA.keys())
 
 def _rtl(texto, lang):
-    if lang != "ar": return texto
+    if lang not in ("ar", "he"): return texto
     try:
         import arabic_reshaper
         from bidi.algorithm import get_display
