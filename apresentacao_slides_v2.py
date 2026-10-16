@@ -320,7 +320,7 @@ def _anos_proj(lang):
     dados = _seq(C(lang, "projecoes_curto_tabela", "projecoes_tabela", "projecoes"))
     saida = []
     for r in dados:
-        if isinstance(r, (list, tuple)) and len(r) >= 3 and str(r[0]).lower().startswith("ano"):
+        if isinstance(r, (list, tuple)) and len(r) >= 3 and str(r[0]).lower() != "horizonte":
             saida.append([str(r[0]), str(r[1]), str(r[2])])
     return saida or [list(x) for x in PADRAO_PT["projecoes"]]
 
