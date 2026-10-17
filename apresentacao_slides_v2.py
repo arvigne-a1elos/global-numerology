@@ -44,6 +44,10 @@ _CAND = {
                  os.path.join(_PASTA_FONTES, "NotoNaskhArabic-Regular.ttf")],
     "hebr":     ["/usr/share/fonts/truetype/noto/NotoSansHebrew-Regular.ttf",
                  os.path.join(_PASTA_FONTES, "NotoSansHebrew-Regular.ttf")],
+    "cjk_b":    [os.path.join(_PASTA_FONTES, "NotoSansJP-Bold.ttf")],
+    "cjk2_b":   [os.path.join(_PASTA_FONTES, "NotoSansSC-Bold.ttf")],
+    "arab_b":   [os.path.join(_PASTA_FONTES, "NotoNaskhArabic-Bold.ttf")],
+    "hebr_b":   [os.path.join(_PASTA_FONTES, "NotoSansHebrew-Bold.ttf")],
 }
 
 def _primeiro(cands):
@@ -58,6 +62,15 @@ def _registrar_fontes():
     p = _primeiro(_CAND["dejavu_b"])
     if p: pdfmetrics.registerFont(TTFont("A1BaseB", p)); bold = "A1BaseB"
     p = _primeiro(_CAND["cjk"])
+      cjk_b = cjk2_b = arab_b = hebr_b = None
+    p = _primeiro(_CAND["cjk_b"])
+    if p: pdfmetrics.registerFont(TTFont("A1CJKB", p)); cjk_b = "A1CJKB"
+    p = _primeiro(_CAND["cjk2_b"])
+    if p: pdfmetrics.registerFont(TTFont("A1CJK2B", p)); cjk2_b = "A1CJK2B"
+    p = _primeiro(_CAND["arab_b"])
+    if p: pdfmetrics.registerFont(TTFont("A1ARB", p)); arab_b = "A1ARB"
+    p = _primeiro(_CAND["hebr_b"])
+    if p: pdfmetrics.registerFont(TTFont("A1HEB", p)); hebr_b = "A1HEB"
     if p:
         try:
             pdfmetrics.registerFont(TTFont("A1CJK", p, subfontIndex=0)); cjk = "A1CJK"
@@ -81,6 +94,8 @@ def _registrar_fontes():
 
 REG, BOLD, F_CJK, F_AR, F_HE, F_CJK2 = _registrar_fontes()
 REG = REG or "Helvetica"; BOLD = BOLD or "Helvetica-Bold"
+_BOLD_DE = {"A1CJK": "A1CJKB", "A1CJK2": "A1CJK2B", "A1AR": "A1ARB",
+            "A1HE": "A1HEB", "A1Base": "A1BaseB"}
 
 FONTES_IDIOMA = {
     "pt": (REG, BOLD, False), "en": (REG, BOLD, False), "es": (REG, BOLD, False),
@@ -366,10 +381,10 @@ def _tabela_alcance(lang):
 
 # ===== 5. ESTILOS =====
 def _estilo(fonte, tam, cor=TINTA, al=TA_LEFT, bold=False, leading=None, rtl=False):
-    return ParagraphStyle("s", fontName=(BOLD if bold else fonte), fontSize=tam,
+    bf = _BOLD_DE.get(fonte) or BOLD
+    return ParagraphStyle("s", fontName=(bf if bold else fonte), fontSize=tam,
                           leading=leading or tam * 1.25, textColor=cor, alignment=al,
-                          wordWrap=("RTL" if rtl else "CJK" if fonte == F_CJK else None))
-
+                          wordWrap=("RTL" if rtl else "CJK" if fonte in ("A1CJK", "A1CJK2") else None))
 # ===== 6. COMPONENTES =====
 def _kif(fluxo):
     fluxo = [f for f in fluxo if f is not None]
