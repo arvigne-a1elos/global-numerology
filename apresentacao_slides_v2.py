@@ -62,7 +62,6 @@ def _registrar_fontes():
     p = _primeiro(_CAND["dejavu_b"])
     if p: pdfmetrics.registerFont(TTFont("A1BaseB", p)); bold = "A1BaseB"
     p = _primeiro(_CAND["cjk"])
-      cjk_b = cjk2_b = arab_b = hebr_b = None
     if p:
         try:
             pdfmetrics.registerFont(TTFont("A1CJK", p, subfontIndex=0)); cjk = "A1CJK"
@@ -82,9 +81,7 @@ def _registrar_fontes():
     if p: pdfmetrics.registerFont(TTFont("A1AR", p)); arab = "A1AR"
     p = _primeiro(_CAND["hebr"])
     if p: pdfmetrics.registerFont(TTFont("A1HE", p)); hebr = "A1HE"
-    return reg, bold, cjk, arab, hebr, cjk2
-
-    # NOVO: negritos CJK/árabe/hebraico para títulos
+    # NOVO: negritos CJK/árabe/hebraico para títulos (ANTES do return)
     _dir = globals().get("_PASTA_FONTES", "fonts")
     for registro, nomes in (
         ("A1CJKB", ["NotoSansJP-Bold.ttf"]),
@@ -97,7 +94,8 @@ def _registrar_fontes():
             if os.path.exists(caminho):
                 pdfmetrics.registerFont(TTFont(registro, caminho))
                 break
-  
+    return reg, bold, cjk, arab, hebr, cjk2
+
 REG, BOLD, F_CJK, F_AR, F_HE, F_CJK2 = _registrar_fontes()
 REG = REG or "Helvetica"; BOLD = BOLD or "Helvetica-Bold"
 _BOLD_DE = {"A1CJK": "A1CJKB", "A1CJK2": "A1CJK2B", "A1AR": "A1ARB",
