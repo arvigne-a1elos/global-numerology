@@ -24,24 +24,35 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.graphics.shapes import Drawing, Rect, String
 
 # ===== 1. FONTES =====
+_PASTA_FONTES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fonts")
+
 _CAND = {
     "dejavu":   ["/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-                 "/usr/share/fonts/dejavu/DejaVuSans.ttf"],
+                 "/usr/share/fonts/dejavu/DejaVuSans.ttf",
+                 os.path.join(_PASTA_FONTES, "DejaVuSans.ttf")],
     "dejavu_b": ["/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
-                 "/usr/share/fonts/dejavu/DejaVuSans-Bold.ttf"],
-    "cjk":      ["/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
+                 "/usr/share/fonts/dejavu/DejaVuSans-Bold.ttf",
+                 os.path.join(_PASTA_FONTES, "DejaVuSans-Bold.ttf")],
+    "cjk":      [os.path.join(_PASTA_FONTES, "NotoSansJP-Regular.ttf"),
+                 os.path.join(_PASTA_FONTES, "NotoSansSC-Regular.ttf"),
+                 "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
                  "/usr/share/fonts/truetype/noto/NotoSansCJK-Regular.ttc"],
+    "cjk2":     [os.path.join(_PASTA_FONTES, "NotoSansSC-Regular.ttf"),
+                 os.path.join(_PASTA_FONTES, "NotoSansJP-Regular.ttf")],
     "arab":     ["/usr/share/fonts/truetype/noto/NotoNaskhArabic-Regular.ttf",
-                 "/usr/share/fonts/truetype/noto/NotoSansArabic-Regular.ttf"],
-    "hebr":     ["/usr/share/fonts/truetype/noto/NotoSansHebrew-Regular.ttf"],
+                 "/usr/share/fonts/truetype/noto/NotoSansArabic-Regular.ttf",
+                 os.path.join(_PASTA_FONTES, "NotoNaskhArabic-Regular.ttf")],
+    "hebr":     ["/usr/share/fonts/truetype/noto/NotoSansHebrew-Regular.ttf",
+                 os.path.join(_PASTA_FONTES, "NotoSansHebrew-Regular.ttf")],
 }
+
 def _primeiro(cands):
     for p in cands:
         if os.path.exists(p): return p
     return None
 
 def _registrar_fontes():
-    reg = bold = cjk = arab = hebr = None
+    reg = bold = cjk = cjk2 = arab = hebr = None
     p = _primeiro(_CAND["dejavu"])
     if p: pdfmetrics.registerFont(TTFont("A1Base", p)); reg = "A1Base"
     p = _primeiro(_CAND["dejavu_b"])
@@ -54,20 +65,28 @@ def _registrar_fontes():
             try:
                 pdfmetrics.registerFont(TTFont("A1CJK", p)); cjk = "A1CJK"
             except Exception: cjk = None
+    p = _primeiro(_CAND["cjk2"])
+    if p:
+        try:
+            pdfmetrics.registerFont(TTFont("A1CJK2", p, subfontIndex=0)); cjk2 = "A1CJK2"
+        except Exception:
+            try:
+                pdfmetrics.registerFont(TTFont("A1CJK2", p)); cjk2 = "A1CJK2"
+            except Exception: cjk2 = None
     p = _primeiro(_CAND["arab"])
     if p: pdfmetrics.registerFont(TTFont("A1AR", p)); arab = "A1AR"
     p = _primeiro(_CAND["hebr"])
     if p: pdfmetrics.registerFont(TTFont("A1HE", p)); hebr = "A1HE"
-    return reg, bold, cjk, arab, hebr
+    return reg, bold, cjk, arab, hebr, cjk2
 
-REG, BOLD, F_CJK, F_AR, F_HE = _registrar_fontes()
+REG, BOLD, F_CJK, F_AR, F_HE, F_CJK2 = _registrar_fontes()
 REG = REG or "Helvetica"; BOLD = BOLD or "Helvetica-Bold"
 
 FONTES_IDIOMA = {
     "pt": (REG, BOLD, False), "en": (REG, BOLD, False), "es": (REG, BOLD, False),
     "it": (REG, BOLD, False), "fr": (REG, BOLD, False), "de": (REG, BOLD, False),
     "id": (REG, BOLD, False), "tr": (REG, BOLD, False), "vi": (REG, BOLD, False),
-    "ja": (F_CJK or REG, F_CJK or REG, False), "zh": (F_CJK or REG, F_CJK or REG, False),
+    "ja": (F_CJK or REG, F_CJK or REG, False), "zh": (F_CJK2 or REG, F_CJK2 or REG, False),
     "he": (F_HE or REG, F_HE or REG, True), "ar": (F_AR or REG, F_AR or REG, True),
 }
 IDIOMAS = list(FONTES_IDIOMA.keys())
