@@ -104,6 +104,7 @@ _BOLD_DE = {"A1CJK": "A1CJKB", "A1CJK2": "A1CJK2B", "A1AR": "A1ARB",
 FONTES_IDIOMA = {
     "pt": (REG, BOLD, False), "en": (REG, BOLD, False), "es": (REG, BOLD, False),
     "it": (REG, BOLD, False), "fr": (REG, BOLD, False), "de": (REG, BOLD, False),
+    "ru": (REG, BOLD, False),
     "id": (REG, BOLD, False), "tr": (REG, BOLD, False), "vi": (REG, BOLD, False),
     "ja": (F_CJK or REG, F_CJK or REG, False), "zh": (F_CJK2 or REG, F_CJK2 or REG, False),
     "he": (F_HE or REG, F_HE or REG, True), "ar": (F_AR or REG, F_AR or REG, True),
