@@ -724,12 +724,12 @@ def gerar_apresentacao_slides(lang="pt", caminho=None):
                leftMargin=MARG, rightMargin=MARG,
                topMargin=TOPO_BANDA + 4*mm, bottomMargin=PE_BANDA + 6*mm,
                title="A1ELOS Global Numerology — Apresentação", author="A1ELOS")
-historia = []
+    historia = []
     for spec in plano:
         if spec["tipo"] == "capa":      historia += _render_capa(lang)
         else:                           historia += _render_pagina(lang, spec)
         if spec is not plano[-1]: historia.append(PageBreak())
-    historia = [f for f in historia if f is not None]   # ← F1h: aqui, FORA do for, alinhado com "for"
+    historia = [f for f in historia if f is not None]
     try:
         doc.build(historia, onFirstPage=lambda c,d: _page_decor(c,d,lang),
                   onLaterPages=lambda c,d: _page_decor(c,d,lang))
