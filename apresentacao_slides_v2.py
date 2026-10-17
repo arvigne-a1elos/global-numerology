@@ -163,7 +163,7 @@ PADRAO_PT = {
     "portfolio_texto": "Cada perfil de usuário encontra uma oferta adequada ao seu nível de engajamento e capacidade financeira. Relatórios PDF premium com QRCode e análise IA.",
     "portfolio_tabela": [["Nível","Produtos","Faixa","Perfil"],
                          ["Básico","Mapa Express, Mapa Completo","R$ 8–17","Primeiro contato"],
-                         ["Intermediário","Pesquisa IA, Nome de Urna, Nº Eleitoral","R$ 26–53","Usuário engajado"],
+                         ["Intermediário","Pesquisa IA, Nome de Urna, Nº Eleitoral","R$ 8–26","Usuário engajado"],
                          ["Avançado","Nome de ONG, Artístico, Bebê, Assinatura, Negócio","R$ 35–44","Profissional"],
                          ["Premium","Casal, Família, Compatibilidade de Equipes RH ★, Coletivo","R$ 98","Corporativo"],
                          ["B2B","Pacotes Empresariais, licenças, brindes","Sob consulta","Empresas"]],
@@ -243,9 +243,15 @@ def _conteudo():
     if _CONTEUDO is None:
         try:
             from apresentacao_textos import CONTEUDO as _C
-            _CONTEUDO = _C
+            _CONTEUDO = dict(_C)
         except Exception:
             _CONTEUDO = {}
+        try:
+            from apresentacao_traducoes_v2 import TRADUCOES as _T
+            for _l, _b in _T.items():
+                _CONTEUDO[_l] = {**_CONTEUDO.get(_l, {}), **_b}
+        except Exception:
+            pass
     return _CONTEUDO
 
 def C(lang, *chaves):
@@ -335,7 +341,7 @@ def _tabela_alcance(lang):
             b = idi[i + 1] if i + 1 < len(idi) else ["", ""]
             linhas.append([str(a[0]), str(a[1]), str(b[0]), str(b[1])])
             i += 2
-        linhas.append([str(C(lang, "total_linha") or "TOTAL"), "~5.320 (milhões)", "Falantes", "—"])
+        linhas.append([str(C(lang, "total_linha") or "TOTAL"), str(C(lang, "total_dado") or "~5.320 (milhões)"), str(C(lang, "falantes_col") or "Falantes"), "—"])
         return [[ci, cf, ci, cf]] + linhas
     return PADRAO_PT["alcance_tabela"]
 
@@ -542,7 +548,7 @@ def _plano(lang):
     P.append({"tipo":"capa"})
     P.append({"tipo":"geral","titulo":C(lang,"sumario_titulo","sum_titulo"),
               "intro":C(lang,"sumario_intro","sum_intro"),
-              "corpo":[("tabela",[["#","Seção","Conteúdo"]] + _seq(C(lang,"sumario_cards","sum_itens")),
+              "corpo":[("tabela",(_seq(C(lang,"sumario_header")) or [["#","Seção","Conteúdo"]]) + _seq(C(lang,"sumario_cards","sum_itens")),
                        [1.0, 3.2, 7.2], 8.5)]})
     P.append({"tipo":"geral","titulo":C(lang,"sobre_titulo"),"intro":C(lang,"sobre_texto"),
               "corpo":[("metricas",C(lang,"sobre_kpis","sobre_metricas")),
@@ -585,7 +591,7 @@ def _plano(lang):
     P.append({"tipo":"geral","titulo":C(lang,"projecoes_curto_titulo","projecoes_titulo"),
               "intro":C(lang,"projecoes_curto_texto","projecoes_texto"),
               "corpo":[("barras",_anos_proj(lang)),
-                       ("tabela",[["Horizonte","Conservador (R$)","Otimista (R$)"]] + _anos_proj(lang),
+                       ("tabela",(_seq(C(lang,"projecoes_header")) or [["Horizonte","Conservador (R$)","Otimista (R$)"]]) + _anos_proj(lang),
                         [2, 2.6, 2.6], 8)]})
     P.append({"tipo":"geral","titulo":C(lang,"roteiro_titulo"),"intro":C(lang,"roteiro_texto"),
               "corpo":[("pares",_seq(C(lang,"roteiro_fases","roteiro_itens"))),
