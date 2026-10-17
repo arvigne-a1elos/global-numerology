@@ -352,7 +352,11 @@ def _estilo(fonte, tam, cor=TINTA, al=TA_LEFT, bold=False, leading=None, rtl=Fal
                           wordWrap=("RTL" if rtl else "CJK" if fonte == F_CJK else None))
 
 # ===== 6. COMPONENTES =====
-def _kif(fluxo): return KeepInFrame(LARG_UTIL, ALT_UTIL - 8 * mm, fluxo, mode="shrink")
+def _kif(fluxo):
+    fluxo = [f for f in fluxo if f is not None]
+    if not fluxo:
+        fluxo = [Spacer(1, 1)]
+    return KeepInFrame(LARG_UTIL, ALT_UTIL - 8 * mm, fluxo, mode="shrink")
 
 def _titulo(lang, texto):
     f, _, rtl = FONTES_IDIOMA.get(lang, (REG, BOLD, False))
