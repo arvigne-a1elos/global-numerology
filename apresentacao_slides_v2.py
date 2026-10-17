@@ -457,30 +457,26 @@ def _barras(lang, projecoes):
     if not projecoes: return Spacer(1, 0)
     f, _, rtl = FONTES_IDIOMA.get(lang, (REG, BOLD, False))
     def _num(s):
-        s = str(s).replace("R$","").replace("k","000").replace(",","").replace(".","")
-        s = s.replace("M","000000").replace(" ","")
-        try: return float(s)
-        except Exception: return 0.0
-    maximo = max(max(_num(c), _num(o)) for _, c, o in projecoes) or 1.0
-    alt_barra, gap_ano, entre = 3.2*mm, 2.2*mm, 1
-    bloco = alt_barra + entre + alt_barra
-    h = 4*mm + len(projecoes) * (bloco + gap_ano) + 6*mm
-    d = Drawing(LARG_UTIL, h)
-    y = h - 4*mm - alt_barra
-    x_lab = 24*mm; x_bar = 28*mm; larg_max = LARG_UTIL - x_bar - 42*mm
-    for ano, cons, otim in projecoes:
-        d.add(String(x_lab - 3, y + 1, _rtl(ano, lang), fontName=f, fontSize=7.5,
-                     textAnchor="end", fillColor=TINTA))
-        w1 = max(2*mm, larg_max * _num(cons) / maximo)
-        d.add(Rect(x_bar, y, w1, alt_barra, fillColor=CINZA, strokeColor=None))
-        d.add(String(x_bar + w1 + 2, y + 1, cons, fontName=f, fontSize=6.5, fillColor=TINTA))
-        w2 = max(2*mm, larg_max * _num(otim) / maximo)
-        d.add(Rect(x_bar, y - alt_barra - entre, w2, alt_barra, fillColor=OURO, strokeColor=None))
-        d.add(String(x_bar + w2 + 2, y - alt_barra - entre + 1, otim, fontName=f, fontSize=6.5, fillColor=TINTA))
-        y -= bloco + gap_ano
-    legenda = "◼ %s   ◼ %s" % (C(lang,"graf_cons"), C(lang,"graf_otim"))
-    d.add(String(x_bar, 1.5*mm, _rtl(legenda, lang), fontName=f, fontSize=7, fillColor=CINZA))
-    return d
+        s = str(s).strip()
+        limpo = "".join(ch for ch in s if ch.isdigit() or ch in "kKmM,.")
+        mult = 1.0
+        if ("M" in limpo) or ("m" in limpo):
+            mult = 1000000.0
+            limpo = limpo.replace("M", "").replace("m", "")
+        elif ("k" in limpo) or ("K" in limpo):
+            mult = 1000.0
+            limpo = limpo.replace("k", "").replace("K", "")
+        if mult > 1.0 and ("," in limpo or "." in limpo):
+            pos = max(limpo.rfind(","), limpo.rfind("."))
+            inteiro = limpo[:pos].replace(".", "").replace(",", "")
+            frac = limpo[pos + 1:]
+            limpo = inteiro + "." + frac
+        else:
+            limpo = limpo.replace(".", "").replace(",", "")
+        try:
+            return float(limpo) * mult
+        except Exception:
+            return 0.0
 
 # ===== 7. CABEÇALHO / RODAPÉ — DUAS LOGOS =====
 _LOGO_CANDIDATOS = ["static/logo.png", "static/Logo-A1ELOS.png", "static/logo-a1elos.png",
