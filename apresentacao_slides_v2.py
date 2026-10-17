@@ -63,14 +63,6 @@ def _registrar_fontes():
     if p: pdfmetrics.registerFont(TTFont("A1BaseB", p)); bold = "A1BaseB"
     p = _primeiro(_CAND["cjk"])
       cjk_b = cjk2_b = arab_b = hebr_b = None
-    p = _primeiro(_CAND["cjk_b"])
-    if p: pdfmetrics.registerFont(TTFont("A1CJKB", p)); cjk_b = "A1CJKB"
-    p = _primeiro(_CAND["cjk2_b"])
-    if p: pdfmetrics.registerFont(TTFont("A1CJK2B", p)); cjk2_b = "A1CJK2B"
-    p = _primeiro(_CAND["arab_b"])
-    if p: pdfmetrics.registerFont(TTFont("A1ARB", p)); arab_b = "A1ARB"
-    p = _primeiro(_CAND["hebr_b"])
-    if p: pdfmetrics.registerFont(TTFont("A1HEB", p)); hebr_b = "A1HEB"
     if p:
         try:
             pdfmetrics.registerFont(TTFont("A1CJK", p, subfontIndex=0)); cjk = "A1CJK"
@@ -92,6 +84,20 @@ def _registrar_fontes():
     if p: pdfmetrics.registerFont(TTFont("A1HE", p)); hebr = "A1HE"
     return reg, bold, cjk, arab, hebr, cjk2
 
+    # NOVO: negritos CJK/árabe/hebraico para títulos
+    _dir = globals().get("_PASTA_FONTES", "fonts")
+    for registro, nomes in (
+        ("A1CJKB", ["NotoSansJP-Bold.ttf"]),
+        ("A1CJK2B", ["NotoSansSC-Bold.ttf"]),
+        ("A1ARB", ["NotoNaskhArabic-Bold.ttf"]),
+        ("A1HEB", ["NotoSansHebrew-Bold.ttf"]),
+    ):
+        for nome in nomes:
+            caminho = os.path.join(_dir, nome)
+            if os.path.exists(caminho):
+                pdfmetrics.registerFont(TTFont(registro, caminho))
+                break
+  
 REG, BOLD, F_CJK, F_AR, F_HE, F_CJK2 = _registrar_fontes()
 REG = REG or "Helvetica"; BOLD = BOLD or "Helvetica-Bold"
 _BOLD_DE = {"A1CJK": "A1CJKB", "A1CJK2": "A1CJK2B", "A1AR": "A1ARB",
