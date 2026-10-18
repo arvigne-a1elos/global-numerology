@@ -447,8 +447,14 @@ def pdf_produto(produto, dados, nome, bd_str, lang, dado=""):
     if "energia_mes" in dados:
         _espec = [
             f"<b>{L['mes']}:</b> {dados.get('mes', '')}",
-            f"<b>{L['energia']}:</b> {dados.get('energia_mes', '')}",
+            f"<b>{L.get('energia_pessoal_mes', 'Energia Pessoal do Mês')}:</b> "
+            f"{dados.get('energia_pessoal_mes', dados.get('energia_mes', ''))}",
+            f"<b>{L['energia']}:</b> {dados.get('energia_mes', '')} ({L.get('mes_universal', 'Mês Universal')})",
         ]
+        if dados.get("caminho_vida"):
+            _espec.append(f"<b>{L.get('caminho_vida', 'Caminho de Vida')}:</b> {dados.get('caminho_vida')}")
+        if dados.get("ano_pessoal"):
+            _espec.append(f"<b>{L.get('ano_pessoal', 'Ano Pessoal')}:</b> {dados.get('ano_pessoal')}")
     elif "compatibilidade" in dados:
         _espec = [
             f"<b>{dados.get('nome1', '')}</b> → {L['energia']} "
