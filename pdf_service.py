@@ -443,6 +443,38 @@ def pdf_produto(produto, dados, nome, bd_str, lang, dado=""):
                "no_match": "✗ لا يطابق الطاقة المطلوبة"},
     }
     L = L_ESP.get(lang, L_ESP["en"])
+        # ===== RÓTULOS DO CALENDÁRIO (v3) — injeta as 4 chaves nos 14 idiomas =====
+    ROTULOS_CAL = {
+        "pt": {"energia_pessoal_mes": "Energia Pessoal do Mês", "mes_universal": "Mês Universal",
+               "caminho_vida": "Caminho de Vida", "ano_pessoal": "Ano Pessoal"},
+        "en": {"energia_pessoal_mes": "Personal Month Energy", "mes_universal": "Universal Month",
+               "caminho_vida": "Life Path", "ano_pessoal": "Personal Year"},
+        "es": {"energia_pessoal_mes": "Energía Personal del Mes", "mes_universal": "Mes Universal",
+               "caminho_vida": "Camino de Vida", "ano_pessoal": "Año Personal"},
+        "it": {"energia_pessoal_mes": "Energia Personale del Mese", "mes_universal": "Mese Universale",
+               "caminho_vida": "Percorso di Vita", "ano_pessoal": "Anno Personale"},
+        "fr": {"energia_pessoal_mes": "Énergie Personnelle du Mois", "mes_universal": "Mois Universel",
+               "caminho_vida": "Chemin de Vie", "ano_pessoal": "Année Personnelle"},
+        "de": {"energia_pessoal_mes": "Persönliche Monatsenergie", "mes_universal": "Universeller Monat",
+               "caminho_vida": "Lebensweg", "ano_pessoal": "Persönliches Jahr"},
+        "ja": {"energia_pessoal_mes": "月の個人エネルギー", "mes_universal": "ユニバーサル月",
+               "caminho_vida": "ライフパス", "ano_pessoal": "パーソナルイヤー"},
+        "zh": {"energia_pessoal_mes": "月度个人能量", "mes_universal": "宇宙月",
+               "caminho_vida": "生命之路", "ano_pessoal": "个人年"},
+        "ru": {"energia_pessoal_mes": "Личная энергия месяца", "mes_universal": "Универсальный месяц",
+               "caminho_vida": "Путь жизни", "ano_pessoal": "Личный год"},
+        "he": {"energia_pessoal_mes": "אנרגיה אישית של החודש", "mes_universal": "חודש אוניברסלי",
+               "caminho_vida": "דרך החיים", "ano_pessoal": "שנה אישית"},
+        "ar": {"energia_pessoal_mes": "الطاقة الشخصية للشهر", "mes_universal": "الشهر الكوني",
+               "caminho_vida": "طريق الحياة", "ano_pessoal": "السنة الشخصية"},
+        "id": {"energia_pessoal_mes": "Energi Pribadi Bulan", "mes_universal": "Bulan Universal",
+               "caminho_vida": "Jalur Kehidupan", "ano_pessoal": "Tahun Pribadi"},
+        "tr": {"energia_pessoal_mes": "Kişisel Ay Enerjisi", "mes_universal": "Evrensel Ay",
+               "caminho_vida": "Yaşam Yolu", "ano_pessoal": "Kişisel Yıl"},
+        "vi": {"energia_pessoal_mes": "Năng lượng Cá nhân của Tháng", "mes_universal": "Tháng Phổ quát",
+               "caminho_vida": "Đường đời", "ano_pessoal": "Năm Cá nhân"},
+    }
+    L.update(ROTULOS_CAL.get(lang, ROTULOS_CAL["pt"]))
     _espec = None
     if "energia_mes" in dados:
         _espec = [
