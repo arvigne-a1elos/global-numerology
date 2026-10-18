@@ -60,7 +60,79 @@ function pagarIa(){
     + '&energia=' + encodeURIComponent(_energiaSelecionada('iaEnergiaSel', 'ia')) + '&lang=' + getLang();
 }
 function pagarImovel(){var n=document.getElementById('imovelNumero').value.trim();if(!n){alert(t_preencha());return;}location.href='/criar-checkout?produto=imovel&dado='+encodeURIComponent(n)+'&lang='+getLang();}
-function pagarCalendario(){var n=document.getElementById('calNome').value.trim(),m=document.getElementById('calMes').value;if(!n||!m){alert(t_preencha());return;}location.href='/criar-checkout?produto=calendario&nome='+encodeURIComponent(n)+'&dado='+encodeURIComponent(m)+'&lang='+getLang();}
+// ===== CALENDÁRIO MENSAL — leitura robusta (modal aberto ou formulário da home) =====
+function _calValor(ids){
+  for (var i = 0; i < ids.length; i++){
+    var e = document.getElementById(ids[i]);
+    if (e && String(e.value || '').trim()) return String(e.value).trim();
+  }
+  return '';
+}
+function _calVisiveis(lista){
+  var r = [];
+  for (var i = 0; i < lista.length; i++){
+    if (lista[i].getClientRects().length > 0) r.push(lista[i]);
+  }
+  return r;
+}
+function _calModalAberto(){
+  var cand = document.querySelectorAll('[class*="modal"], [class*="overlay"]');
+  for (var i = 0; i < cand.length; i++){
+    if (cand[i].getClientRects().length === 0) continue;
+    if (cand[i].querySelector('input, select')) return cand[i];
+  }
+  return null;
+}
+function _calMesNum(v){
+  v = String(v || '').trim();
+  if (/^\d{1,2}$/.test(v)) return parseInt(v, 10);
+  var s = v.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  var nomes = {
+    janeiro:1, january:1, enero:1, gennaio:1, janvier:1, januar:1,
+    fevereiro:2, february:2, febrero:2, febbraio:2, fevrier:2, februar:2,
+    marco:3, march:3, marzo:3, mars:3, marz:3,
+    abril:4, april:4, aprile:4, avril:4,
+    maio:5, may:5, mayo:5, maggio:5, mai:5,
+    junho:6, june:6, junio:6, giugno:6, juin:6,
+    julho:7, july:7, julio:7, luglio:7,
+    agosto:8, august:8,
+    setembro:9, september:9, septiembre:9, settembre:9, septembre:9,
+    outubro:10, october:10, octubre:10, ottobre:10, octobre:10, oktober:10,
+    novembro:11, november:11, noviembre:11, novembre:11,
+    dezembro:12, december:12, diciembre:12, dicembre:12, decembre:12, dezember:12
+  };
+  return nomes[s] || 0;
+}
+function pagarCalendario(){
+  // 1) modal aberto tem prioridade — lê os campos visíveis pela ordem da tela
+  var nome = '', nasc = '', ano = '', mes = '';
+  var modal = _calModalAberto();
+  if (modal){
+    var inputs  = _calVisiveis(modal.querySelectorAll('input:not([type=hidden]):not([type=button]):not([type=submit]):not([type=checkbox]):not([type=radio]):not([type=file])'));
+    var selects = _calVisiveis(modal.querySelectorAll('select'));
+    nome = (inputs[0] && inputs[0].value) ? inputs[0].value.trim() : '';
+    nasc = (inputs[1] && inputs[1].value) ? inputs[1].value.trim() : '';
+    ano  = selects[0] ? String(selects[0].value || '').trim() : '';
+    mes  = selects[1] ? String(selects[1].value || '').trim() : '';
+  }
+  // 2) fallback: formulário da home (ids clássicos)
+  if (!nome) nome = _calValor(['calNome']);
+  if (!nasc) nasc = _calValor(['calNascimento', 'calNasc', 'calData']);
+  if (!ano)  ano  = _calValor(['calAno']);
+  if (!mes)  mes  = _calValor(['calMes']);
+
+  // 3) valida e normaliza (mês aceita número ou nome do mês)
+  var mesN = _calMesNum(mes);
+  if (!nome || !mesN || !/^\d{4}$/.test(ano)){ alert(t_preencha()); return; }
+
+  // 4) dado no formato exigido pelo backend: 'AAAA-MM'
+  var dado = ano + '-' + ('0' + mesN).slice(-2);
+  location.href = '/criar-checkout?produto=calendario&nome=' + encodeURIComponent(nome)
+    + '&nascimento=' + encodeURIComponent(nasc)
+    + '&ano=' + encodeURIComponent(ano)
+    + '&dado=' + encodeURIComponent(dado)
+    + '&lang=' + getLang();
+}
 function pagarArtistico(){var n=document.getElementById('artNome').value.trim();if(!n){alert(t_preencha());return;}location.href='/criar-checkout?produto=artistico&dado='+encodeURIComponent(n)+'&lang='+getLang();}
 function pagarBebe(){
   var n = (document.getElementById('bebeSobrenome') ? document.getElementById('bebeSobrenome').value : '').trim();
