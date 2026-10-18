@@ -237,41 +237,55 @@
                 <button class="btn btn-full" onclick="comprar('completo')" data-i18n="pesquisar_btn">pesquisar</button>
             </div>
     
-            <!-- 12. Calendário Mensal Energético -->
-            <div class="product-card" data-prod="calendario">
-                <div class="icon">📅</div>
-                <h3 class="prod-nome" data-i18n="p_calendario">Calendário Mensal Energético</h3>
-                <div class="price prod-preco">R$ 26</div>
-                <p class="desc" data-i18n="desc_calendario">Previsão energética dia a dia para o mês, com os melhores momentos para decisões importantes.</p>
-                <ul class="features">
-                    <li>✅ Vibração diária</li>
-                    <li>✅ Dias favoráveis</li>
-                    <li>✅ Orientação mensal</li>
-                    <li>📲 PDF + QRCode</li>
-                </ul>
-                <button class="btn btn-full" onclick="toggleForm('form-calendario')" data-i18n="pesquisar_btn">pesquisar</button>
-                <!-- Formulário Calendário Mensal Energético (aparece ao clicar) -->
-                <form id="form-calendario" class="hidden">
-                    <label data-i18n-form="calc_nome">Nome completo</label>
-                    <input id="calNome" type="text" data-i18n-ph="ph_nome_completo" placeholder="Nome completo">
-                    <label data-i18n-form="f_mes">Mês de referência</label>
-                    <select id="calMes">
-                        <option value="01" data-mes="01">Janeiro</option>
-                        <option value="02" data-mes="02">Fevereiro</option>
-                        <option value="03" data-mes="03">Março</option>
-                        <option value="04" data-mes="04">Abril</option>
-                        <option value="05" data-mes="05">Maio</option>
-                        <option value="06" data-mes="06">Junho</option>
-                        <option value="07" data-mes="07">Julho</option>
-                        <option value="08" data-mes="08">Agosto</option>
-                        <option value="09" data-mes="09">Setembro</option>
-                        <option value="10" data-mes="10">Outubro</option>
-                        <option value="11" data-mes="11">Novembro</option>
-                        <option value="12" data-mes="12">Dezembro</option>
-                    </select>
-                    <button class="btn btn-full" onclick="pagarCalendario()" data-i18n-form="pesquisar_btn">Pesquisar</button>
-                </form>
-            </div>
+<!-- 12. Calendário Mensal Energético -->
+<div class="product-card" data-prod="calendario">
+    <div class="icon">📅</div>
+    <h3 class="prod-nome" data-i18n="p_calendario">Calendário Mensal Energético</h3>
+    <div class="price prod-preco">R$ 26</div>
+    <p class="desc" data-i18n="desc_calendario">Energia do mês + a SUA energia pessoal naquele mês, com o Ano Pessoal embutido na pesquisa. Descubra os melhores períodos para decisões importantes.</p>
+    <ul class="features">
+        <li data-i18n="f_cal_univ">✅ Energia do mês</li>
+        <li data-i18n="f_cal_pess">✅ Sua energia no mês</li>
+        <li data-i18n="f_cal_ano_emb">✅ Ano Pessoal embutido</li>
+        <li>📲 PDF + QRCode</li>
+    </ul>
+    <button class="btn btn-full" onclick="toggleForm('form-calendario')" data-i18n="pesquisar_btn">pesquisar</button>
+    <form id="form-calendario" class="hidden">
+        <label data-i18n-form="calc_nome">Nome completo</label>
+        <input id="calNome" type="text" data-i18n-ph="ph_nome_completo" placeholder="Nome completo">
+        <label data-i18n-form="f_cal_data">Data de nascimento</label>
+        <input id="calNascimento" type="date">
+        <label data-i18n-form="f_cal_ano">Ano de pesquisa</label>
+        <select id="calAno">
+            <option value="2026" selected>2026</option>
+            <option value="2027">2027</option>
+            <option value="2028">2028</option>
+            <option value="2029">2029</option>
+            <option value="2030">2030</option>
+            <option value="2031">2031</option>
+            <option value="2032">2032</option>
+            <option value="2033">2033</option>
+            <option value="2034">2034</option>
+            <option value="2035">2035</option>
+        </select>
+        <label data-i18n-form="f_mes">Mês de referência</label>
+        <select id="calMes">
+            <option value="01" data-mes="01" data-i18n-form="mes_01">Janeiro</option>
+            <option value="02" data-mes="02" data-i18n-form="mes_02">Fevereiro</option>
+            <option value="03" data-mes="03" data-i18n-form="mes_03">Março</option>
+            <option value="04" data-mes="04" data-i18n-form="mes_04">Abril</option>
+            <option value="05" data-mes="05" data-i18n-form="mes_05">Maio</option>
+            <option value="06" data-mes="06" data-i18n-form="mes_06">Junho</option>
+            <option value="07" data-mes="07" data-i18n-form="mes_07">Julho</option>
+            <option value="08" data-mes="08" data-i18n-form="mes_08">Agosto</option>
+            <option value="09" data-mes="09" data-i18n-form="mes_09">Setembro</option>
+            <option value="10" data-mes="10" data-i18n-form="mes_10">Outubro</option>
+            <option value="11" data-mes="11" data-i18n-form="mes_11">Novembro</option>
+            <option value="12" data-mes="12" data-i18n-form="mes_12">Dezembro</option>
+        </select>
+        <button class="btn btn-full" onclick="pagarCalendario()" data-i18n-form="pesquisar_btn">Pesquisar</button>
+    </form>
+</div>
 
             <!-- 13. Validação Nome de Urna -->
             <div class="product-card" data-prod="urna">
