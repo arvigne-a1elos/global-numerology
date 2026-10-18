@@ -8,7 +8,6 @@ from produtos.nome import analisar_nome
 from produtos.urna import validar_nomes_urna
 from produtos.eleitoral import gerar_numeros
 from produtos.imovel import analisar_imovel
-from produtos.calendario import analisar_calendario
 from produtos.casal import analisar_casal
 from produtos.familia import analisar_familia
 from produtos.equipe import analisar_equipe
