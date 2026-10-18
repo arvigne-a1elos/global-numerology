@@ -3,6 +3,7 @@
 # VERSÃO CONSOLIDADA CORRIGIDA - TODAS AS ROTAS DOS 23 PRODUTOS
 import stripe
 from produtos.mapa import reduzir, calc_mapa, calc_grid, analisar_express, analisar_completo, analisar_vida
+from produtos.calendario import analisar_calendario
 from produtos.nome import analisar_nome
 from produtos.urna import validar_nomes_urna
 from produtos.eleitoral import gerar_numeros
@@ -999,7 +1000,7 @@ def pay_success(request: Request):
 
         CALC_ESPECIFICO = {
             "imovel":    lambda: analisar_imovel(dado or nome),
-            "calendario": lambda: analisar_calendario(nome, dado),
+            "calendario": lambda: analisar_calendario(meta.get("nome", ""), meta.get("dado", ""), meta.get("nascimento", "")),
             "casal":     lambda: _analisar_casal_com_datas(),
             "familia":   lambda: _analisar_familia_com_datas(),
             "compatibilidade_equipes": lambda: analisar_equipe(dado or nome),
