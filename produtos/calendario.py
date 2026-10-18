@@ -57,6 +57,7 @@ def analisar_calendario(nome, mes, nascimento=""):
         e_ano = _reduz9(sum(int(c) for c in ano))
         universal = _reduz9(e_mes + e_ano)
     except (ValueError, TypeError):
+        import logging; logging.getLogger(__name__).warning("Calendario: dado invalido: %s", str(mes)[:20])
         universal = 1
 
     # 2) Caminho de Vida (energia pessoal da pessoa)
