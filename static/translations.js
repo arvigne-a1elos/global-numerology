@@ -4329,3 +4329,45 @@ _langs14.forEach(function(l){
   });
 });
 
+// ===== BLOCO 2: CALENDÁRIO MENSAL — tradução integral em 14 idiomas =====
+(function(){
+  var TXT = {
+    pt:{p_calendario:"Calendário Mensal Energético",desc_calendario:"Energia do mês + a SUA energia pessoal naquele mês, com o Ano Pessoal embutido na pesquisa. Descubra os melhores períodos para decisões importantes.",f_cal_univ:"✅ Energia do mês",f_cal_pess:"✅ Sua energia no mês",f_cal_ano_emb:"✅ Ano Pessoal embutido",calc_nome:"Nome completo",f_cal_data:"Data de nascimento",f_cal_ano:"Ano de pesquisa",f_mes:"Mês de referência",ph_nome_completo:"Nome completo"},
+    en:{p_calendario:"Energetic Monthly Calendar",desc_calendario:"The month's energy + YOUR personal energy in that month, with the Personal Year built into the search. Find the best periods for important decisions.",f_cal_univ:"✅ Month's energy",f_cal_pess:"✅ Your energy in the month",f_cal_ano_emb:"✅ Personal Year included",calc_nome:"Full name",f_cal_data:"Date of birth",f_cal_ano:"Search year",f_mes:"Reference month",ph_nome_completo:"Full name"},
+    es:{p_calendario:"Calendario Mensual Energético",desc_calendario:"La energía del mes + TU energía personal en ese mes, con el Año Personal incluido en la búsqueda. Descubre los mejores períodos para decisiones importantes.",f_cal_univ:"✅ Energía del mes",f_cal_pess:"✅ Tu energía en el mes",f_cal_ano_emb:"✅ Año Personal incluido",calc_nome:"Nombre completo",f_cal_data:"Fecha de nacimiento",f_cal_ano:"Año de búsqueda",f_mes:"Mes de referencia",ph_nome_completo:"Nombre completo"},
+    it:{p_calendario:"Calendario Mensile Energetico",desc_calendario:"L'energia del mese + la TUA energia personale in quel mese, con l'Anno Personale incluso nella ricerca. Scopri i migliori periodi per decisioni importanti.",f_cal_univ:"✅ Energia del mese",f_cal_pess:"✅ La tua energia nel mese",f_cal_ano_emb:"✅ Anno Personale incluso",calc_nome:"Nome completo",f_cal_data:"Data di nascita",f_cal_ano:"Anno di ricerca",f_mes:"Mese di riferimento",ph_nome_completo:"Nome completo"},
+    fr:{p_calendario:"Calendrier Mensuel Énergétique",desc_calendario:"L'énergie du mois + VOTRE énergie personnelle ce mois-là, avec l'Année Personnelle incluse dans la recherche. Découvrez les meilleures périodes pour les décisions importantes.",f_cal_univ:"✅ Énergie du mois",f_cal_pess:"✅ Votre énergie dans le mois",f_cal_ano_emb:"✅ Année Personnelle incluse",calc_nom:"Nom complet",calc_nome:"Nom complet",f_cal_data:"Date de naissance",f_cal_ano:"Année de recherche",f_mes:"Mois de référence",ph_nome_completo:"Nom complet"},
+    de:{p_calendario:"Energetischer Monatskalender",desc_calendario:"Die Energie des Monats + IHRE persönliche Energie in diesem Monat, mit integriertem Persönlichen Jahr. Finden Sie die besten Zeiträume für wichtige Entscheidungen.",f_cal_univ:"✅ Energie des Monats",f_cal_pess:"✅ Ihre Energie im Monat",f_cal_ano_emb:"✅ Persönliches Jahr inklusive",calc_nome:"Vollständiger Name",f_cal_data:"Geburtsdatum",f_cal_ano:"Suchjahr",f_mes:"Referenzmonat",ph_nome_completo:"Vollständiger Name"},
+    ja:{p_calendario:"月間エネルギーカレンダー",desc_calendario:"その月のエネルギー＋あなた自身のその月の個人エネルギー。パーソナルイヤーも検索に含まれます。重要な決断に最適な時期を見つけましょう。",f_cal_univ:"✅ 月のエネルギー",f_cal_pess:"✅ あなたのその月のエネルギー",f_cal_ano_emb:"✅ パーソナルイヤー付き",calc_nome:"氏名（フルネーム）",f_cal_data:"生年月日",f_cal_ano:"検索年",f_mes:"対象月",ph_nome_completo:"フルネーム"},
+    zh:{p_calendario:"月度能量日历",desc_calendario:"当月能量 + 您在该月的个人能量，检索中内置个人年。发现做出重要决定的最佳时期。",f_cal_univ:"✅ 当月能量",f_cal_pess:"✅ 您在该月的能量",f_cal_ano_emb:"✅ 含个人年",calc_nome:"完整姓名",f_cal_data:"出生日期",f_cal_ano:"查询年份",f_mes:"参考月份",ph_nome_completo:"完整姓名"},
+    ru:{p_calendario:"Энергетический месячный календарь",desc_calendario:"Энергия месяца + ВАША личная энергия в этом месяце, с включённым Личным годом в исследование. Узнайте лучшие периоды для важных решений.",f_cal_univ:"✅ Энергия месяца",f_cal_pess:"✅ Ваша энергия в месяце",f_cal_ano_emb:"✅ Личный год включён",calc_nome:"Полное имя",f_cal_data:"Дата рождения",f_cal_ano:"Год анализа",f_mes:"Месяц анализа",ph_nome_completo:"Полное имя"},
+    he:{p_calendario:"לוח שנה אנרגטי חודשי",desc_calendario:"האנרגיה של החודש + האנרגיה האישית שלך באותו חודש, עם השנה האישית הכלולה בחיפוש. גלה את התקופות הטובות ביותר להחלטות חשובות.",f_cal_univ:"✅ אנרגיית החודש",f_cal_pess:"✅ האנרגיה שלך בחודש",f_cal_ano_emb:"✅ השנה האישית כלולה",calc_nome:"שם מלא",f_cal_data:"תאריך לידה",f_cal_ano:"שנת חיפוש",f_mes:"חודש ייחוס",ph_nome_completo:"שם מלא"},
+    ar:{p_calendario:"التقويم الشهري الطاقي",desc_calendario:"طاقة الشهر + طاقتك الشخصية في ذلك الشهر، مع السنة الشخصية مدمجة في البحث. اكتشف أفضل الفترات لاتخاذ القرارات المهمة.",f_cal_univ:"✅ طاقة الشهر",f_cal_pess:"✅ طاقتك في الشهر",f_cal_ano_emb:"✅ السنة الشخصية مدمجة",calc_nome:"الاسم الكامل",f_cal_data:"تاريخ الميلاد",f_cal_ano:"سنة البحث",f_mes:"شهر المرجع",ph_nome_completo:"الاسم الكامل"},
+    id:{p_calendario:"Kalender Energi Bulanan",desc_calendario:"Energi bulan + energi pribadi ANDA di bulan tersebut, dengan Tahun Pribadi disertakan dalam pencarian. Temukan periode terbaik untuk keputusan penting.",f_cal_univ:"✅ Energi bulan",f_cal_pess:"✅ Energi Anda di bulan itu",f_cal_ano_emb:"✅ Termasuk Tahun Pribadi",calc_nome:"Nama lengkap",f_cal_data:"Tanggal lahir",f_cal_ano:"Tahun pencarian",f_mes:"Bulan acuan",ph_nome_completo:"Nama lengkap"},
+    tr:{p_calendario:"Enerjetik Aylık Takvim",desc_calendario:"Ayın enerjisi + o aydaki KİŞİSEL enerjiniz, aramada Kişisel Yıl dahil. Önemli kararlar için en uygun dönemleri keşfedin.",f_cal_univ:"✅ Ayın enerjisi",f_cal_pess:"✅ O aydaki enerjiniz",f_cal_ano_emb:"✅ Kişisel Yıl dahil",calc_nome:"Tam ad",f_cal_data:"Doğum tarihi",f_cal_ano:"Arama yılı",f_mes:"Referans ay",ph_nome_completo:"Tam ad"},
+    vi:{p_calendario:"Lịch Năng lượng Hàng tháng",desc_calendario:"Năng lượng của tháng + năng lượng cá nhân CỦA BẠN trong tháng đó, kèm Năm Cá nhân trong tìm kiếm. Khám phá thời điểm tốt nhất cho các quyết định quan trọng.",f_cal_univ:"✅ Năng lượng của tháng",f_cal_pess:"✅ Năng lượng của bạn trong tháng",f_cal_ano_emb:"✅ Kèm Năm Cá nhân",calc_nome:"Họ tên đầy đủ",f_cal_data:"Ngày sinh",f_cal_ano:"Năm tìm kiếm",f_mes:"Tháng tham chiếu",ph_nome_completo:"Họ tên đầy đủ"}
+  };
+  var MESES = {
+    pt:["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"],
+    en:["January","February","March","April","May","June","July","August","September","October","November","December"],
+    es:["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"],
+    it:["Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"],
+    fr:["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"],
+    de:["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"],
+    ja:["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"],
+    zh:["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"],
+    ru:["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"],
+    he:["ינואר","פברואר","מרץ","אפריל","מאי","יוני","יולי","אוגוסט","ספטמבר","אוקטובר","נובמבר","דצמבר"],
+    ar:["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"],
+    id:["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"],
+    tr:["Ocak","Şubat","Mart","Nisan","Mayıs","Haziran","Temmuz","Ağustos","Eylül","Ekim","Kasım","Aralık"],
+    vi:["Tháng 1","Tháng 2","Tháng 3","Tháng 4","Tháng 5","Tháng 6","Tháng 7","Tháng 8","Tháng 9","Tháng 10","Tháng 11","Tháng 12"]
+  };
+  if (!window.translations) window.translations = {};
+  for (var l in TXT) {
+    if (!window.translations[l]) window.translations[l] = {};
+    for (var k in TXT[l]) window.translations[l][k] = TXT[l][k];
+    var m = MESES[l];
+    if (m) for (var i = 0; i < 12; i++) window.translations[l]["mes_" + ("0" + (i + 1)).slice(-2)] = m[i];
+  }
+})();
