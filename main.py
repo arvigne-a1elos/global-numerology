@@ -795,7 +795,7 @@ def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=No
     try:
         if price_id and price_id.startswith("price_"):
             session = stripe.checkout.Session.create(
-                mode="payment", payment_method_types=pay_types,
+                mode="payment", 
                 line_items=[{"price": price_id, "quantity": 1}],
                 customer_email=email or None,
                 locale=locale, metadata=meta,
@@ -804,7 +804,7 @@ def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=No
                 cancel_url=f"{BASE_URL}/api/pay/cancel")
         else:
             session = stripe.checkout.Session.create(
-                mode="payment", payment_method_types=pay_types,
+                mode="payment",
                 line_items=[{"price_data": {"currency": MOEDA.get(lang, "brl"),
                     "product_data": {"name": nome_prod},
                     "unit_amount": preco_local(produto, lang)}, "quantity": 1}],
@@ -947,7 +947,7 @@ async def criar_checkout_coletivo(lang: str = "pt", items: str = "[]"):
     pay_types = ["card", "boleto"] if MOEDA.get(lang, "brl") == "brl" else ["card"]
     locale = lang if lang in ["pt", "en", "es", "fr", "de", "it", "ja", "zh", "id", "tr", "vi"] else "auto"
     session = stripe.checkout.Session.create(
-        mode="payment", payment_method_types=pay_types,
+        mode="payment", 
         line_items=line_items,
         locale=locale,
         metadata={"tipo": "coletivo", "lang": lang, "desconto": str(int(desc * 100)),
