@@ -97,21 +97,29 @@ function _calMesNum(v){
   return nomes[s] || 0;
 }
 function pagarCalendario(){
-  var elN = document.getElementById('calNome');
-  var elM = document.getElementById('calMes');
+  var elN = _calPegaVisivel(['calNome']);
+  var elB = _calPegaVisivel(['calNascimento']);
+  var elA = _calPegaVisivel(['calAno']);
+  var elM = _calPegaVisivel(['calMes']);
   if(!elN || !elM){
     alert("Formulário do calendário não encontrado. Recarregue a página (Ctrl+Shift+R) e tente novamente.");
-    return; // fica no card — nunca some em silêncio
+    return;
   }
   var n = elN.value.trim();
+  var b = elB ? elB.value : "";
+  var a = elA ? elA.value : "";
   var m = elM.value;
-  if(!n || !m){
-    var msg = (typeof t_preencha === 'function') ? t_preencha() : "Preencha nome e mês antes de pesquisar.";
+  if(!n || !b || !a || !m){
+    var msg = (typeof t_preencha === 'function') ? t_preencha() : "Preencha nome, data, ano e mês antes de pesquisar.";
     alert(msg);
-    return; // permanece no card para completar os dados
+    return;
   }
-  window.location.href = '/criar-checkout?produto=calendario&nome=' + encodeURIComponent(n)
-                       + '&dado=' + encodeURIComponent(m) + '&lang=' + getLang();
+  var mes = a + "-" + (m.length === 1 ? "0" + m : m);
+  window.location.href = '/criar-checkout?produto=calendario'
+    + '&nome=' + encodeURIComponent(n)
+    + '&nascimento=' + encodeURIComponent(b)
+    + '&dado=' + encodeURIComponent(mes)
+    + '&lang=' + getLang();
 }
 function pagarArtistico(){var n=document.getElementById('artNome').value.trim();if(!n){alert(t_preencha());return;}location.href='/criar-checkout?produto=artistico&dado='+encodeURIComponent(n)+'&lang='+getLang();}
 function pagarBebe(){
