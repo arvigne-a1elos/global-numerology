@@ -1117,6 +1117,12 @@ def pay_success(request: Request):
             else:
                 html = html + bloco_qr   # fallback: HTML sem </body> recebe no fim
 
+        return HTMLResponse(html)
+
+    except Exception as e:
+        logger.error(f"pay_success {sid}: {e}")
+        return HTMLResponse("ERRO AO PROCESSAR PAGAMENTO", status_code=500)
+
 # ===== GERAÇÃO REUTILIZÁVEL DE PDF A PARTIR DOS METADADOS =====
 def regenerar_pdf_por_meta(meta):
     """Gera o PDF do produto a partir dos metadados da sessão Stripe.
