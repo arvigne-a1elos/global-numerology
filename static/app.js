@@ -97,22 +97,21 @@ function _calMesNum(v){
   return nomes[s] || 0;
 }
 function pagarCalendario(){
-  var eNome = _calPegaVisivel(['calNome']);
-  var eNasc = _calPegaVisivel(['calNascimento','calNasc','calData']);
-  var eAno  = _calPegaVisivel(['calAno']);
-  var eMes  = _calPegaVisivel(['calMes']);
-  var nome = (eNome && eNome.value) ? eNome.value.trim() : '';
-  var nasc = (eNasc && eNasc.value) ? eNasc.value.trim() : '';
-  var ano  = (eAno && eAno.value) ? String(eAno.value).trim() : '';
-  var mes  = (eMes && eMes.value) ? String(eMes.value).trim() : '';
-  var mesN = _calMesNum(mes);
-  if (!nome || !mesN || !/^\d{4}$/.test(ano)){ alert(t_preencha()); return; }
-  var dado = ano + '-' + ('0' + mesN).slice(-2);   // '2026-10', formato do backend
-  location.href = '/criar-checkout?produto=calendario&nome=' + encodeURIComponent(nome)
-    + '&nascimento=' + encodeURIComponent(nasc)
-    + '&ano=' + encodeURIComponent(ano)
-    + '&dado=' + encodeURIComponent(dado)
-    + '&lang=' + getLang();
+  var elN = document.getElementById('calNome');
+  var elM = document.getElementById('calMes');
+  if(!elN || !elM){
+    alert("Formulário do calendário não encontrado. Recarregue a página (Ctrl+Shift+R) e tente novamente.");
+    return; // fica no card — nunca some em silêncio
+  }
+  var n = elN.value.trim();
+  var m = elM.value;
+  if(!n || !m){
+    var msg = (typeof t_preencha === 'function') ? t_preencha() : "Preencha nome e mês antes de pesquisar.";
+    alert(msg);
+    return; // permanece no card para completar os dados
+  }
+  window.location.href = '/criar-checkout?produto=calendario&nome=' + encodeURIComponent(n)
+                       + '&dado=' + encodeURIComponent(m) + '&lang=' + getLang();
 }
 function pagarArtistico(){var n=document.getElementById('artNome').value.trim();if(!n){alert(t_preencha());return;}location.href='/criar-checkout?produto=artistico&dado='+encodeURIComponent(n)+'&lang='+getLang();}
 function pagarBebe(){
