@@ -964,7 +964,35 @@ async def api_precos():
    "display": PRECO_DISPLAY,
    "faixa": PRODUTO_FAIXA,
  }   
-     
+
+# ===== LINK PERMANENTE DO RELATORIO (regenera sob demanda) =====
+@app.get("/api/relatorio/{session_id}")
+def api_relatorio(session_id: str):
+    try:
+        s = stripe.checkout.Session.retrieve(session_id)
+        meta = getattr(s, "metadata", {}) or {}
+        if hasattr(meta, "to_dict"):
+            meta = meta.to_dict()
+        if getattr(s, "payment_status", "") != "paid":
+            return HTMLResponse("Pagamento nao confirmado", status_code=403)
+        pf = regenerar_pdf_por_meta(meta)
+        if pf and os.path.exists(pf):
+            prod = meta.get("tipo", "express")
+            lang = meta.get("lang", "pt")
+            with open(pf, "rb") as f:
+                conteudo = f.read()
+            try:
+                os.remove(pf)
+            except Exception:
+                pass
+            return Response(content=conteudo, media_type="application/pdf",
+                            headers={"Content-Disposition": f'inline; filename="A1ELOS_{prod}_{lang}.pdf"',
+                                     "Cache-Control": "no-store"})
+        return HTMLResponse("Documento indisponivel", status_code=404)
+    except Exception as e:
+        logger.error(f"Relatorio {session_id}: {e}")
+        return HTMLResponse("Documento indisponivel", status_code=404)
+
 @app.get("/api/pay/success")
 def pay_success(request: Request):
     sid = request.query_params.get("session_id", "")
@@ -1041,22 +1069,6 @@ def pay_success(request: Request):
         def _analisar_familia_com_datas():
             return analisar_familia(dado or nome)        
         
-        energia = meta.get("energia", "")
-        if prod in CALC_ESPECIFICO:
-            try:
-                data = CALC_ESPECIFICO[prod]()
-                if not isinstance(data, dict):
-                    data = {"resultado": data}
-                data["dado"] = dado or ""
-                nome_exib = dado or nome
-            except Exception as e:
-                logger.error(f"Calc especifico {prod}: {e}")
-                data = {"dado": dado or nome}
-                nome_exib = dado or nome
-        else:
-            data = calc_mapa(nome, bd)
-            data["dado"] = dado or ""
-            nome_exib = nome
         db = SessionLocal()
         try:
             db.add(Order(id=uuid.uuid4().hex[:12], email=email or "sem-email",
@@ -1068,10 +1080,7 @@ def pay_success(request: Request):
         finally:
             db.close()
         pn = PRODUTOS.get(lang, PRODUTOS["pt"]).get(prod, prod)
-        if prod == "nome_ong":
-            pf = gerar_pdf_ong(data, lang, nome_exib)
-        else:
-            pf = gerar_pdf(prod, data, lang, nome_exib, bd, dado=dado)
+        pf = regenerar_pdf_por_meta(meta)
 
         # ===== QRCODE RECUPERADO: guarda o PDF em static/relatorios e gera QR =====
         qr_b64 = ""
@@ -1083,7 +1092,7 @@ def pay_success(request: Request):
                 with open(pf, "rb") as f_orig:
                     with open(novo, "wb") as f_novo:
                         f_novo.write(f_orig.read())
-                link_qr = f"{BASE_URL}/{novo}".replace("\\", "/")
+                link_qr = f"{BASE_URL}/api/relatorio/{sid}"
                 img = qrcode.make(link_qr)
                 qr_path = novo.replace(".pdf", ".png")
                 img.save(qr_path)
@@ -1107,6 +1116,88 @@ def pay_success(request: Request):
                 html = html.replace("</body>", bloco_qr + "</body>")
             else:
                 html = html + bloco_qr   # fallback: HTML sem </body> recebe no fim
+
+# ===== GERAÇÃO REUTILIZÁVEL DE PDF A PARTIR DOS METADADOS =====
+def regenerar_pdf_por_meta(meta):
+    """Gera o PDF do produto a partir dos metadados da sessão Stripe.
+    Reutilizada pelo pay_success e pela rota permanente /api/relatorio/{session_id}."""
+    nome = meta.get("nome", "Cliente")
+    bd = meta.get("birth", "")
+    prod = meta.get("tipo", "express")
+    lang = meta.get("lang", "pt")
+    dado = meta.get("dado", "")
+    dado2 = meta.get("dado2", "")
+    if not bd:
+        bd = "2000-01-01"
+    energia = meta.get("energia", "")
+
+    def _analisar_nome_duplo():
+        nomes = [n for n in (dado, dado2) if n] or [nome]
+        res = analisar_nome(nomes[0], energia)
+        res["nomes"] = nomes
+        res["sugestao_ia"] = gerar_sugestao_ia(prod, energia, lang)
+        return res
+
+    def _analisar_casal_com_datas():
+        nomes = [x.strip() for x in (dado or nome).split("&")[:2]]
+        datas = [x.strip() for x in (meta.get("detalhe", "") or "").split("&")[:2]]
+        n1 = nomes[0] if len(nomes) > 0 else ""
+        n2 = nomes[1] if len(nomes) > 1 else ""
+        d1 = datas[0] if len(datas) > 0 else ""
+        d2 = datas[1] if len(datas) > 1 else ""
+        return analisar_casal(n1, d1, n2, d2)
+
+    def _analisar_familia_com_datas():
+        return analisar_familia(dado or nome)
+
+    CALC_ESPECIFICO = {
+        "imovel":    lambda: analisar_imovel(dado or nome),
+        "calendario": lambda: analisar_calendario(meta.get("nome", ""), meta.get("dado", ""), meta.get("nascimento", "")),
+        "casal":     lambda: _analisar_casal_com_datas(),
+        "familia":   lambda: _analisar_familia_com_datas(),
+        "compatibilidade_equipes": lambda: analisar_equipe(dado or nome),
+        "nome_pet":  _analisar_nome_duplo,
+        "nickname":  _analisar_nome_duplo,
+        "nome_dominio": _analisar_nome_duplo,
+        "nome_canal": _analisar_nome_duplo,
+        "nome_equipe": _analisar_nome_duplo,
+        "nome_projeto": _analisar_nome_duplo,
+        "nome_evento": _analisar_nome_duplo,
+        "artistico": _analisar_nome_duplo,
+        "bebe":      _analisar_nome_duplo,
+        "assinatura": _analisar_nome_duplo,
+        "negocio":   _analisar_nome_duplo,
+        "nome_ong":  lambda: analisar_ong({
+            "nome1": meta.get("nome1") or meta.get("dado", ""),
+            "sigla1": meta.get("sigla1", ""),
+            "nome2": meta.get("nome2", ""),
+            "sigla2": meta.get("sigla2", ""),
+            "nome3": meta.get("nome3", ""),
+            "sigla3": meta.get("sigla3", ""),
+            "natureza": meta.get("natureza", "ong"),
+            "tipo_entidade": meta.get("tipo_entidade", ""),
+            "escopo": meta.get("escopo", "nacional"),
+            "energia": energia,
+        }),
+    }
+    if prod in CALC_ESPECIFICO:
+        try:
+            data = CALC_ESPECIFICO[prod]()
+            if not isinstance(data, dict):
+                data = {"resultado": data}
+            data["dado"] = dado or ""
+            nome_exib = dado or nome
+        except Exception as e:
+            logger.error(f"Calc especifico {prod}: {e}")
+            data = {"dado": dado or nome}
+            nome_exib = dado or nome
+    else:
+        data = calc_mapa(nome, bd)
+        data["dado"] = dado or ""
+        nome_exib = nome
+    if prod == "nome_ong":
+        return gerar_pdf_ong(data, lang, nome_exib)
+    return gerar_pdf(prod, data, lang, nome_exib, bd, dado=dado)
 
 @app.get("/api/pay/urna-success")
 def pay_urna_success(request: Request):
