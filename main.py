@@ -1075,6 +1075,7 @@ def pay_success(request: Request):
 
         # ===== QRCODE RECUPERADO: guarda o PDF em static/relatorios e gera QR =====
         qr_b64 = ""
+        link_qr = ""
         if pf and os.path.exists(pf):
             try:
                 os.makedirs("static/relatorios", exist_ok=True)
@@ -1082,32 +1083,30 @@ def pay_success(request: Request):
                 with open(pf, "rb") as f_orig:
                     with open(novo, "wb") as f_novo:
                         f_novo.write(f_orig.read())
-                img = qrcode.make(f"{BASE_URL}/{novo}")
+                link_qr = f"{BASE_URL}/{novo}".replace("\\", "/")
+                img = qrcode.make(link_qr)
                 qr_path = novo.replace(".pdf", ".png")
                 img.save(qr_path)
                 with open(qr_path, "rb") as f_qr:
                     qr_b64 = base64.b64encode(f_qr.read()).decode()
+                logger.info(f"QRCode gerado: {link_qr}")
             except Exception as qe:
                 logger.error(f"QRCode: {qe}")
                 qr_b64 = ""
-
         html = pagina_sucesso(pf, nome_exib, pn, lang)
 
-        # Injeta o QRCode junto do botão de download
+        # Injeta o QRCode junto do botão de download (com fallback anti-falha silenciosa)
         if qr_b64:
-            html = html.replace(
-                "</body>",
-                f'<div style="margin:25px auto;text-align:center">'
-                f'<p style="color:#C9A94E;font-size:1rem">Ou escaneie para abrir o documento</p>'
-                f'<img src="data:image/png;base64,{qr_b64}" style="width:180px;height:180px;border-radius:12px"></div>'
-                f'</body>')
-
-        if pf and os.path.exists(pf):
-            os.remove(pf)
-        return HTMLResponse(html)
-    except Exception as e:
-        logger.error(f"Success: {e}")
-        return HTMLResponse("ERRO")
+            bloco_qr = (
+                '<div style="margin:25px auto;text-align:center">'
+                '<p style="color:#C9A94E;font-size:1rem">Ou escaneie (ou clique) para abrir o documento</p>'
+                f'<a href="{link_qr}">'
+                f'<img src="data:image/png;base64,{qr_b64}" style="width:180px;height:180px;border-radius:12px"></a></div>'
+            )
+            if "</body>" in html:
+                html = html.replace("</body>", bloco_qr + "</body>")
+            else:
+                html = html + bloco_qr   # fallback: HTML sem </body> recebe no fim
 
 @app.get("/api/pay/urna-success")
 def pay_urna_success(request: Request):
