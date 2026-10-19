@@ -1102,6 +1102,7 @@ def pay_success(request: Request):
             except Exception as qe:
                 logger.error(f"QRCode: {qe}")
                 qr_b64 = ""
+                nome_exib = dado or nome
         html = pagina_sucesso(pf, nome_exib, pn, lang)
 
         # Injeta o QRCode junto do botão de download (com fallback anti-falha silenciosa)
