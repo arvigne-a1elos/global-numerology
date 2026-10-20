@@ -1408,12 +1408,9 @@ async def stripe_webhook(req: Request):
         except Exception:
             raise HTTPException(400, "Assinatura invalida")
 
-    elif prod == "nome_ong":
-        
-    elif prod == "calendario":                                    # <<< NOVO
-        res_cal = analisar_periodo(nome_exib, meta.get("dado", ""),
-                                   meta.get("nascimento", ""))
-        data = res_cal if isinstance(res_cal, dict) else (res_cal[0] if res_cal else {})
+        elif prod == "calendario":
+            res_cal = analisar_periodo(nome_exib, meta.get("dado", ""), meta.get("nascimento", ""))
+            data = res_cal if isinstance(res_cal, dict) else (res_cal[0] if res_cal else {})
 
     else:
         data = json.loads(payload)
