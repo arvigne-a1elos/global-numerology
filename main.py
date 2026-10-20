@@ -1191,7 +1191,11 @@ def regenerar_pdf_por_meta(meta):
             "energia": energia,
         }),
     }
-    if prod in CALC_ESPECIFICO:
+    if prod == "calendario":
+        res_cal = analisar_periodo(nome, meta.get("dado", ""), meta.get("nascimento", ""))
+        data = res_cal if isinstance(res_cal, dict) else (res_cal[0] if res_cal else {})
+        nome_exib = nome
+    elif prod in CALC_ESPECIFICO:
         try:
             data = CALC_ESPECIFICO[prod]()
             if not isinstance(data, dict):
@@ -1203,14 +1207,11 @@ def regenerar_pdf_por_meta(meta):
             data = {"dado": dado or nome}
             nome_exib = dado or nome
 
-        elif prod == "calendario":
-            res_cal = analisar_periodo(nome_exib, meta.get("dado", ""), meta.get("nascimento", ""))
-            data = res_cal if isinstance(res_cal, dict) else (res_cal[0] if res_cal else {})
-
     else:
         data = calc_mapa(nome, bd)
         data["dado"] = dado or ""
         nome_exib = nome
+    
     if prod == "nome_ong":
         return gerar_pdf_ong(data, lang, nome_exib)
     return gerar_pdf(prod, data, lang, nome_exib, bd, dado=dado)
@@ -1407,10 +1408,6 @@ async def stripe_webhook(req: Request):
             event = stripe.Webhook.construct_event(payload, sig, whsec)
         except Exception:
             raise HTTPException(400, "Assinatura invalida")
-
-        elif prod == "calendario":
-            res_cal = analisar_periodo(nome_exib, meta.get("dado", ""), meta.get("nascimento", ""))
-            data = res_cal if isinstance(res_cal, dict) else (res_cal[0] if res_cal else {})
 
     else:
         data = json.loads(payload)
