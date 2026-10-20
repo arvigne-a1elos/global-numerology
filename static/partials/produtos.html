@@ -72,7 +72,7 @@
                     <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="comprar('nome_pet')" data-i18n="pesquisar_btn">pesquisar</button>
-                <form id="form-nome_pet" class="hidden">
+                <form id="form-nome_pet" class="hidden" onsubmit="return false">    
                  <label data-i18n-form="f_nome_pet">Nome do Pet</label>
                  <input id="nomePetNome" type="text" data-i18n-ph="ph_nome_pet" placeholder="Nome do pet">
                  <label id="nomePetEnergiaLabel" class="urna-label" data-i18n-form="f_energia">Energia desejada</label>
@@ -95,7 +95,7 @@
                     <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="comprar('nickname')" data-i18n="pesquisar_btn">pesquisar</button>
-                <form id="form-nickname" class="hidden">
+                <form id="form-nickname" class="hidden" onsubmit="return false">    
                  <label data-i18n-form="f_nickname">Nickname Digital</label>
                  <input id="nicknameNome" type="text" data-i18n-ph="ph_nickname" placeholder="Seu nickname">
                  <label id="nicknameEnergiaLabel" class="urna-label" data-i18n-form="f_energia">Energia desejada</label>
@@ -118,7 +118,7 @@
                     <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="comprar('nome_dominio')" data-i18n="pesquisar_btn">pesquisar</button>
-                <form id="form-nome_dominio" class="hidden">
+                <form id="form-nome_dominio" class="hidden" onsubmit="return false">    
                  <label data-i18n-form="f_nome_dominio">Nome do Domínio</label>
                  <input id="dominioNome" type="text" data-i18n-ph="ph_dominio" placeholder="meusite.com.br">
                  <label id="dominioEnergiaLabel" class="urna-label" data-i18n-form="f_energia">Energia desejada</label>
@@ -141,7 +141,7 @@
                     <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="comprar('nome_canal')" data-i18n="pesquisar_btn">pesquisar</button>
-                <form id="form-nome_canal" class="hidden">
+                <form id="form-nome_canal" class="hidden" onsubmit="return false">    
                  <label data-i18n-form="f_nome_canal">Nome do Canal</label>
                  <input id="canalNome" type="text" data-i18n-ph="ph_canal" placeholder="Nome do canal">
                  <label id="canalEnergiaLabel" class="urna-label" data-i18n-form="f_energia">Energia desejada</label>
@@ -164,7 +164,7 @@
                     <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="comprar('nome_equipe')" data-i18n="pesquisar_btn">pesquisar</button>
-                <form id="form-nome_equipe" class="hidden">
+                <form id="form-nome_equipe" class="hidden" onsubmit="return false">    
                  <label data-i18n-form="f_nome_equipe">Nome da Equipe</label>
                  <input id="equipeNome" type="text" data-i18n-ph="ph_equipe" placeholder="Nome da equipe">
                  <label id="equipeEnergiaLabel" class="urna-label" data-i18n-form="f_energia">Energia desejada</label>
@@ -187,7 +187,7 @@
                     <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="comprar('nome_projeto')" data-i18n="pesquisar_btn">pesquisar</button>
-                <form id="form-nome_projeto" class="hidden">
+                <form id="form-nome_projeto" class="hidden" onsubmit="return false">    
                  <label data-i18n-form="f_nome_projeto">Nome do Projeto</label>
                  <input id="projetoNome" type="text" data-i18n-ph="ph_projeto" placeholder="Nome do projeto">
                  <label id="projetoEnergiaLabel" class="urna-label" data-i18n-form="f_energia">Energia desejada</label>
@@ -210,7 +210,7 @@
                     <li>📲 PDF + QRCode</li>
                 </ul>
                 <button class="btn btn-full" onclick="comprar('nome_evento')" data-i18n="pesquisar_btn">pesquisar</button>
-                <form id="form-nome_evento" class="hidden">
+                <form id="form-nome_evento" class="hidden" onsubmit="return false">    
                  <label data-i18n-form="f_nome_evento">Nome do Evento</label>
                  <input id="eventoNome" type="text" data-i18n-ph="ph_evento" placeholder="Nome do evento">
                  <label id="eventoEnergiaLabel" class="urna-label" data-i18n-form="f_energia">Energia desejada</label>
@@ -301,7 +301,7 @@
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-urna')" data-i18n="start_urna">Iniciar Validação</button>
                 <!-- Formulário do Nome de Urna (aparece ao clicar) -->
-                <form id="form-urna" class="hidden">
+                <form id="form-urna" class="hidden" onsubmit="return false">    
                     <label data-i18n-form="f_nome">Nome completo da pessoa</label>
                     <input id="urnaNome" type="text" data-i18n-ph="ph_nome_completo" placeholder="Nome completo">
                     <label data-i18n-form="f_cargo">Cargo</label>
@@ -359,7 +359,7 @@
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-eleitoral')" data-i18n="start_eleitoral">Calcular Nº Eleitoral</button>
                 <!-- Formulário do Nº Eleitoral (aparece ao clicar) -->
-                <form id="form-eleitoral" class="hidden">
+                <form id="form-eleitoral" class="hidden" onsubmit="return false">    
                     <label data-i18n-form="f_nome_candidato">Nome completo do candidato</label>
                     <input id="eleiNome" type="text" data-i18n-ph="ph_nome_completo" placeholder="Nome completo">
                     <label data-i18n-form="f_cargo2">Cargo</label>
@@ -394,7 +394,7 @@
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-imovel')" data-i18n="pesquisar_btn">pesquisar</button>
                 <!-- Formulário Número do Imóvel (aparece ao clicar) -->
-                <form id="form-imovel" class="hidden">
+                <form id="form-imovel" class="hidden" onsubmit="return false">    
                     <label data-i18n-form="f_imovel">Número do imóvel</label>
                     <input id="imovelNumero" type="text" data-i18n-ph="ph_ex_numero" placeholder="Ex.: 123 ou 12A">
                     <button class="btn btn-full" onclick="pagarImovel()" data-i18n-form="pesquisar_btn">Pesquisar</button>
@@ -415,7 +415,7 @@
                 </ul>
                 <!-- Formulário da ONG (aparece ao clicar) -->
                 <button class="btn btn-full" onclick="toggleForm('form-nome_ong')" data-i18n="pesquisar_btn">pesquisar</button>
-                <form id="form-nome_ong" class="hidden">
+                <form id="form-nome_ong" class="hidden" onsubmit="return false">    
                  <label data-i18n-form="f_natureza">Natureza da entidade</label>
                  <select id="ongNatureza">
                   <option value="ong" data-i18n-form="f_ong">ONG — Organização Não Governamental</option>
@@ -467,7 +467,7 @@
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-artistico')" data-i18n="pesquisar_btn">Iniciar Validação</button>
                 <!-- Formulário do Artístico (aparece ao clicar) -->
-                <form id="form-artistico" class="hidden">
+                <form id="form-artistico" class="hidden" onsubmit="return false">     
                     <label data-i18n-form="f_artistico">Nome artístico completo</label>
                     <input id="arteNome" type="text" data-i18n-ph="ph_nome_artistico" placeholder="Nome artístico">
                     <label data-i18n-form="f_grafias">Grafias do nome artístico</label>
@@ -512,7 +512,7 @@
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-bebe')" data-i18n="pesquisar_btn">pesquisar</button>
                 <!-- Formulário Planejamento Nome de Bebê (aparece ao clicar) -->
-                <form id="form-bebe" class="hidden">
+                <form id="form-bebe" class="hidden" onsubmit="return false">    
                     <label data-i18n-form="f_sobrenome_familia">Sobrenome da família</label>
                     <input id="bebeSobrenome" type="text" data-i18n-ph="ph_sobrenome" placeholder="Sobrenome que o bebê receberá">
                     <label id="bebeEnergiaLabel" class="urna-label" data-i18n-form="f_energia">Energia desejada</label>
@@ -536,7 +536,7 @@
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-assinatura')" data-i18n="pesquisar_btn">pesquisar</button>
                 <!-- Formulário Validação de Assinaturas (aparece ao clicar) -->
-                <form id="form-assinatura" class="hidden">
+                <form id="form-assinatura" class="hidden" onsubmit="return false">    
                     <label data-i18n-form="f_assinatura">Texto da assinatura atual</label>
                     <input id="assinaturaTexto" type="text" data-i18n-ph="ph_sua_assinatura" placeholder="Ex.: Nome Sobrenome">
                     <label id="assinaturaEnergiaLabel" class="urna-label" data-i18n-form="f_energia">Energia desejada</label>
@@ -560,7 +560,7 @@
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-negocio')" data-i18n="pesquisar_btn">pesquisar</button>
                 <!-- Formulário Nome para Negócio/Produto (aparece ao clicar) -->
-                <form id="form-negocio" class="hidden">
+                <form id="form-negocio" class="hidden" onsubmit="return false">    
                     <label data-i18n-form="f_negocio">Nome do negócio ou produto</label>
                     <input id="negocioNome" type="text" data-i18n-ph="ph_nome_negocio" placeholder="Nome da empresa/produto">
                     <label id="negocioEnergiaLabel" class="urna-label" data-i18n-form="f_energia">Energia desejada</label>
@@ -584,7 +584,7 @@
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-casal')" data-i18n="pesquisar_btn">pesquisar</button>
                 <!-- Formulário Mapa do Casal (aparece ao clicar) -->
-                <form id="form-casal" class="hidden">
+                <form id="form-casal" class="hidden" onsubmit="return false">    
                     <label data-i18n-form="f_pessoa1">Nome da primeira pessoa</label>
                     <input id="casalNome1" type="text" data-i18n-ph="ph_nome_completo" placeholder="Nome completo">
                     <label data-i18n-form="f_pessoa2">Nome da segunda pessoa</label>
@@ -612,7 +612,7 @@
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-familia')" data-i18n="pesquisar_btn">pesquisar</button>
                 <!-- Formulário Mapa Família Premium (aparece ao clicar) -->
-                <form id="form-familia" class="hidden">
+                <form id="form-familia" class="hidden" onsubmit="return false">    
                     <label data-i18n-form="f_familia">Membros da família (um por linha)</label>
                     <textarea id="familiaMembros" rows="4" data-i18n-ph="ph_membros" placeholder="Nome 1; 01/01/1990&#10;Nome 2; 15/03/1985&#10;Nome 3; 22/07/2010"></textarea>
                     <button class="btn btn-full" onclick="pagarFamilia()" data-i18n-form="pesquisar_btn">Pesquisar</button>
@@ -632,7 +632,7 @@
        <li>📲 PDF + QRCode</li>
     </ul>
     <button class="btn btn-full" onclick="toggleForm('form-compatibilidade_equipes')" data-i18n="pesquisar_btn">pesquisar</button>
-    <form id="form-compatibilidade_equipes" class="hidden">
+    <form id="form-compatibilidade_equipes" class="hidden" onsubmit="return false">    
        <label data-i18n-form="f_equipe">Membros da equipe (um por linha)</label>
        <textarea id="equipeMembros" rows="4" data-i18n-ph="ph_membros" placeholder="Chefe; 01/01/1980; CHEFE&#10;Nome 2; 15/03/1985&#10;Nome 3; 22/07/1990"></textarea>
        <label id="compEquipeEnergiaLabel" class="urna-label" data-i18n-form="f_energia">Energia desejada</label>
