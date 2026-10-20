@@ -1087,7 +1087,7 @@ def pay_success(request: Request):
 
         # ===== QRCODE RECUPERADO: guarda o PDF em static/relatorios e gera QR =====
         qr_b64 = ""
-        link_qr = "url_rel = BASE_URL + "/api/relatorio/" + session_id"
+        link_qr = ""
         if pf and os.path.exists(pf):
             try:
                 os.makedirs("static/relatorios", exist_ok=True)
@@ -1095,18 +1095,18 @@ def pay_success(request: Request):
                 with open(pf, "rb") as f_orig:
                     with open(novo, "wb") as f_novo:
                         f_novo.write(f_orig.read())
-                link_qr = f"{BASE_URL}/api/relatorio/{sid}"
+                url_rel = BASE_URL + "/api/relatorio/" + sid
+                link_qr = url_rel
                 img = qrcode.make(link_qr)
                 qr_path = novo.replace(".pdf", ".png")
                 img.save(qr_path)
                 with open(qr_path, "rb") as f_qr:
                     qr_b64 = base64.b64encode(f_qr.read()).decode()
-                        url_rel = BASE_URL + "/api/relatorio/" + session_id
                 logger.info(f"QRCode gerado: {url_rel}")
-                except Exception as qe:
+            except Exception as qe:
                 logger.error(f"QRCode: {qe}")
                 qr_b64 = ""
-                nome_exib = dado or nome
+        nome_exib = dado or nome
         html = pagina_sucesso(pf, nome_exib, pn, lang)
 
         # Injeta o QRCode junto do botão de download (com fallback anti-falha silenciosa)
