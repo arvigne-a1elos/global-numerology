@@ -904,3 +904,34 @@ function pagarEquipe(){
   location.href = '/criar-checkout?produto=compatibilidade_equipes&dado=' + encodeURIComponent(n)
     + '&energia=' + encodeURIComponent(_energiaSelecionada('equipeEnergiaSel', 'compatibilidade_equipes')) + '&lang=' + getLang();
 }
+
+// ===== GUARDA GLOBAL ANTI-SUBMIT (A1ELOS — 20/10/2026) =====
+// Motivo: <button> dentro de <form> sem type="button" dispara um submit nativo
+// que cancela a navegação do onclick (pagarX). Este bloco impede o submit nativo
+// de TODOS os formulários SEM action (os cards) — cobre cards injetados via
+// fetch e clones do modal genérico. Formulários COM action real (ex.: POST
+// /sugestao) continuam funcionando normalmente.
+(function(){
+  function _guarda(ev){
+    var f = ev.target;
+    if (f && f.tagName === 'FORM' && !f.getAttribute('action')) {
+      ev.preventDefault();
+      ev.stopPropagation();
+    }
+  }
+  document.addEventListener('submit', _guarda, true);
+
+  // Camada 2: marca type="button" nos botões dos formulários sem action
+  function _blindar(){
+    var forms = document.querySelectorAll('form');
+    for (var i = 0; i < forms.length; i++) {
+      if (forms[i].getAttribute('action')) continue;
+      var bts = forms[i].querySelectorAll('button:not([type])');
+      for (var j = 0; j < bts.length; j++) bts[j].setAttribute('type', 'button');
+    }
+  }
+  _blindar();
+  if (typeof MutationObserver !== 'undefined' && document.body) {
+    new MutationObserver(_blindar).observe(document.body, {childList: true, subtree: true});
+  }
+})();
