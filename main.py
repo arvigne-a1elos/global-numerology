@@ -1101,8 +1101,9 @@ def pay_success(request: Request):
                 img.save(qr_path)
                 with open(qr_path, "rb") as f_qr:
                     qr_b64 = base64.b64encode(f_qr.read()).decode()
-                logger.info(f"QRCode gerado: {url_rel = BASE_URL + "/api/relatorio/" + session_id}")
-            except Exception as qe:
+                        url_rel = BASE_URL + "/api/relatorio/" + session_id
+                logger.info(f"QRCode gerado: {url_rel}")
+                except Exception as qe:
                 logger.error(f"QRCode: {qe}")
                 qr_b64 = ""
                 nome_exib = dado or nome
