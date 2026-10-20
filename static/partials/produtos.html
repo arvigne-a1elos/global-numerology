@@ -249,7 +249,7 @@
         <li data-i18n="f_cal_ano_emb">✅ Ano Pessoal embutido</li>
         <li>📲 PDF + QRCode</li>
     </ul>
-    <button type="button" class="btn btn-full" onclick="pagarCalendario()" data-i18n-form="pesquisar_btn">Pesquisar</button>
+    <button type="button" class="btn btn-full" onclick="toggleForm('form-calendario')" data-i18n="pesquisar_btn">pesquisar</button>
     <form id="form-calendario" class="hidden" onsubmit="return false">
         <label data-i18n-form="calc_nome">Nome completo</label>
         <input id="calNome" type="text" data-i18n-ph="ph_nome_completo" placeholder="Nome completo">
@@ -283,7 +283,7 @@
             <option value="11" data-mes="11" data-i18n-form="mes_11">Novembro</option>
             <option value="12" data-mes="12" data-i18n-form="mes_12">Dezembro</option>
         </select>
-        <button class="btn btn-full" onclick="pagarCalendario()" data-i18n-form="pesquisar_btn">Pesquisar</button>
+        <button type="button" class="btn btn-full" onclick="pagarCalendario()" data-i18n-form="pesquisar_btn">Pesquisar</button>
     </form>
 </div>
 
