@@ -249,8 +249,8 @@
         <li data-i18n="f_cal_ano_emb">✅ Ano Pessoal embutido</li>
         <li>📲 PDF + QRCode</li>
     </ul>
-    <button class="btn btn-full" onclick="toggleForm('form-calendario')" data-i18n="pesquisar_btn">pesquisar</button>
-    <form id="form-calendario" class="hidden">
+    <button type="button" class="btn btn-full" onclick="pagarCalendario()" data-i18n-form="pesquisar_btn">Pesquisar</button>
+    <form id="form-calendario" class="hidden" onsubmit="return false">
         <label data-i18n-form="calc_nome">Nome completo</label>
         <input id="calNome" type="text" data-i18n-ph="ph_nome_completo" placeholder="Nome completo">
         <label data-i18n-form="f_cal_data">Data de nascimento</label>
