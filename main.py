@@ -33,6 +33,7 @@ import dateutil.parser as dp
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from produtos.calendario import analisar_periodo
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse, Response
 from referencia.precos import VALORES, SIMBOLO, PRECO_DISPLAY, PRODUTO_FAIXA, preco_local, preco_display
 # ===== SEMANTICA (energias, vidas, formas e cores) - IMPORT OPCIONAL =====
@@ -967,7 +968,7 @@ async def api_precos():
 
 # ===== LINK PERMANENTE DO RELATORIO (regenera sob demanda) =====
 @app.get("/api/relatorio/{session_id}")
-def api_relatorio(session_id: str):
+def api_relatorio(session_id: str, download: int = 0):
     try:
         s = stripe.checkout.Session.retrieve(session_id)
         meta = getattr(s, "metadata", {}) or {}
@@ -985,9 +986,10 @@ def api_relatorio(session_id: str):
                 os.remove(pf)
             except Exception:
                 pass
-            return Response(content=conteudo, media_type="application/pdf",
-                            headers={"Content-Disposition": f'inline; filename="A1ELOS_{prod}_{lang}.pdf"',
-                                     "Cache-Control": "no-store"})
+        disp = "attachment" if download else "inline"
+        return Response(content=conteudo, media_type="application/pdf",
+                        headers={"Content-Disposition": f'{disp}; filename="A1ELOS_{prod}_{lang}.pdf"',
+                                 "Cache-Control": "no-store"})
         return HTMLResponse("Documento indisponivel", status_code=404)
     except Exception as e:
         logger.error(f"Relatorio {session_id}: {e}")
@@ -996,6 +998,7 @@ def api_relatorio(session_id: str):
 @app.get("/api/pay/success")
 def pay_success(request: Request):
     sid = request.query_params.get("session_id", "")
+    url_rel = BASE_URL + "/api/relatorio/" + session_id
     if not sid:
         return HTMLResponse("ERRO")
     try:
@@ -1084,7 +1087,7 @@ def pay_success(request: Request):
 
         # ===== QRCODE RECUPERADO: guarda o PDF em static/relatorios e gera QR =====
         qr_b64 = ""
-        link_qr = ""
+        link_qr = "url_rel = BASE_URL + "/api/relatorio/" + session_id"
         if pf and os.path.exists(pf):
             try:
                 os.makedirs("static/relatorios", exist_ok=True)
@@ -1098,7 +1101,7 @@ def pay_success(request: Request):
                 img.save(qr_path)
                 with open(qr_path, "rb") as f_qr:
                     qr_b64 = base64.b64encode(f_qr.read()).decode()
-                logger.info(f"QRCode gerado: {link_qr}")
+                logger.info(f"QRCode gerado: {url_rel = BASE_URL + "/api/relatorio/" + session_id}")
             except Exception as qe:
                 logger.error(f"QRCode: {qe}")
                 qr_b64 = ""
@@ -1110,7 +1113,7 @@ def pay_success(request: Request):
             bloco_qr = (
                 '<div style="margin:25px auto;text-align:center">'
                 '<p style="color:#C9A94E;font-size:1rem">Ou escaneie (ou clique) para abrir o documento</p>'
-                f'<a href="{link_qr}">'
+                f'<a class="btn" href="' + url_rel + '?download=1">⬇️ Baixar PDF</a>'
                 f'<img src="data:image/png;base64,{qr_b64}" style="width:180px;height:180px;border-radius:12px"></a></div>'
             )
             if "</body>" in html:
@@ -1198,6 +1201,14 @@ def regenerar_pdf_por_meta(meta):
             logger.error(f"Calc especifico {prod}: {e}")
             data = {"dado": dado or nome}
             nome_exib = dado or nome
+
+    elif prod == "nome_ong":
+   
+    elif prod == "calendario":                                    # <<< NOVO
+        res_cal = analisar_periodo(nome_exib, meta.get("dado", ""),
+                                   meta.get("nascimento", ""))
+        data = res_cal if isinstance(res_cal, dict) else (res_cal[0] if res_cal else {})
+
     else:
         data = calc_mapa(nome, bd)
         data["dado"] = dado or ""
@@ -1398,6 +1409,14 @@ async def stripe_webhook(req: Request):
             event = stripe.Webhook.construct_event(payload, sig, whsec)
         except Exception:
             raise HTTPException(400, "Assinatura invalida")
+
+    elif prod == "nome_ong":
+        
+    elif prod == "calendario":                                    # <<< NOVO
+        res_cal = analisar_periodo(nome_exib, meta.get("dado", ""),
+                                   meta.get("nascimento", ""))
+        data = res_cal if isinstance(res_cal, dict) else (res_cal[0] if res_cal else {})
+
     else:
         data = json.loads(payload)
         event = {"type": data.get("type", ""), "data": data.get("data", {})}
