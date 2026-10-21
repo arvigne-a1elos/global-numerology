@@ -1163,7 +1163,7 @@ def regenerar_pdf_por_meta(meta):
 
     CALC_ESPECIFICO = {
         "imovel":    lambda: analisar_imovel(dado or nome),
-        "calendario": lambda: analisar_calendario(meta.get("nome", ""), meta.get("dado", ""), meta.get("nascimento", "")),
+        "calendario": lambda: analisar_periodo(meta.get("nome", ""), meta.get("dado", ""), meta.get("nascimento", "")),
         "casal":     lambda: _analisar_casal_com_datas(),
         "familia":   lambda: _analisar_familia_com_datas(),
         "compatibilidade_equipes": lambda: analisar_equipe(dado or nome),
@@ -1192,7 +1192,7 @@ def regenerar_pdf_por_meta(meta):
         }),
     }
     if prod == "calendario":
-        res_cal = analisar_calendario(nome, meta.get("dado", ""), meta.get("nascimento", ""))
+        res_cal = analisar_periodo(nome, meta.get("dado", ""), meta.get("nascimento", ""))
         data = res_cal if isinstance(res_cal, dict) else (res_cal[0] if res_cal else {})
         nome_exib = nome
     elif prod in CALC_ESPECIFICO:
