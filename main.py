@@ -1417,14 +1417,11 @@ async def stripe_webhook(req: Request):
         data = json.loads(payload)
         event = {"type": data.get("type", ""), "data": data.get("data", {})}
     if event["type"] == "checkout.session.completed":
-        obj = event["data"]["object"]
-        meta = dict(obj.get("metadata") or {}) if isinstance(obj, dict) else (obj.metadata.to_dict() if hasattr(obj.metadata, "to_dict") else dict(obj.metadata or {}))
-        tipo = meta.get("tipo", "express")
-        if tipo == "coletivo":
-            try:
-                items = json.loads(meta.get("itens", "[]"))
-                gerados = _gerar_codigos_para_itens(items)
-                logger.info(f"Coletivo: {len(gerados)} codigos gerados")
+        session = event["data"]["object"]
+        meta = getattr(session, "metadata", None) or {}
+        if hasattr(meta, "to_dict"):
+            meta = meta.to_dict()
+        logger.info(f"Pagamento confirmado: {getattr(session, 'id', '')} tipo={meta.get('tipo', '?')}")
             except Exception as e:
                 logger.error(f"Erro codigos coletivo: {e}")
         nome = meta.get("nome", "Cliente")
