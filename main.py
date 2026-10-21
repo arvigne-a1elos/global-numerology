@@ -1417,8 +1417,8 @@ async def stripe_webhook(req: Request):
         data = json.loads(payload)
         event = {"type": data.get("type", ""), "data": data.get("data", {})}
     if event["type"] == "checkout.session.completed":
-        session = event["data"]["object"]
-        meta = session.get("metadata", {})
+        obj = event["data"]["object"]
+        meta = dict(obj.get("metadata") or {}) if isinstance(obj, dict) else (obj.metadata.to_dict() if hasattr(obj.metadata, "to_dict") else dict(obj.metadata or {}))
         tipo = meta.get("tipo", "express")
         if tipo == "coletivo":
             try:
