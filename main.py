@@ -4,6 +4,7 @@
 import stripe
 from produtos.mapa import reduzir, calc_mapa, calc_grid, analisar_express, analisar_completo, analisar_vida
 from produtos.calendario import analisar_calendario
+from pdf_service import gerar_pdf_calendario
 from produtos.nome import analisar_nome
 from produtos.urna import validar_nomes_urna
 from produtos.eleitoral import gerar_numeros
@@ -1191,6 +1192,7 @@ def regenerar_pdf_por_meta(meta):
             "energia": energia,
         }),
     }
+    
     if prod == "calendario":
         try:
             res_cal = analisar_calendario(nome, dado, bd)
@@ -1211,8 +1213,14 @@ def regenerar_pdf_por_meta(meta):
         data["dado"] = dado or ""
         nome_exib = nome
 
-    logger.info(f"PDF dados {prod}: {list((data or {}).keys())}")   # ← AQUI
-    return gerar_pdf(prod, data, lang, nome_exib, bd, dado=dado)
+    logger.info(f"PDF dados {prod}: {list((data or {}).keys())}")
+
+    if prod == "calendario":
+        pf = gerar_pdf_calendario(data, lang, nome_exib)
+    elif prod == "nome_ong":
+        pf = gerar_pdf_ong(data, lang, nome_exib)
+    else:
+        pf = gerar_pdf(prod, data, lang, nome_exib, bd, dado=dado)
 
 @app.get("/api/pay/urna-success")
 def pay_urna_success(request: Request):
