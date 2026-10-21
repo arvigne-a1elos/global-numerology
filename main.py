@@ -1195,7 +1195,6 @@ def regenerar_pdf_por_meta(meta):
         try:
             res_cal = analisar_calendario(nome, dado, bd)
             data = dict(res_cal)
-            data["life_path"] = res_cal.get("caminho_vida")
             data["titulo"] = "Calendário Mensal Energético"
             data["linhas"] = [
                 ("Caminho de Vida", res_cal.get("caminho_vida")),
