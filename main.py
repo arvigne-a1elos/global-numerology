@@ -1030,7 +1030,7 @@ def pay_success(request: Request):
 
         CALC_ESPECIFICO = {
             "imovel":    lambda: analisar_imovel(dado or nome),
-            "calendario": lambda: analisar_calendario(meta.get("nome", ""), meta.get("dado", ""), meta.get("nascimento", "")),
+            "calendario": lambda: analisar_periodo(nome, dado, bd),
             "casal":     lambda: _analisar_casal_com_datas(),
             "familia":   lambda: _analisar_familia_com_datas(),
             "compatibilidade_equipes": lambda: analisar_equipe(dado or nome),
@@ -1163,7 +1163,7 @@ def regenerar_pdf_por_meta(meta):
 
     CALC_ESPECIFICO = {
         "imovel":    lambda: analisar_imovel(dado or nome),
-        "calendario": lambda: analisar_periodo(meta.get("nome", ""), meta.get("dado", ""), meta.get("nascimento", "")),
+        "calendario": lambda: analisar_periodo(nome, dado, bd),
         "casal":     lambda: _analisar_casal_com_datas(),
         "familia":   lambda: _analisar_familia_com_datas(),
         "compatibilidade_equipes": lambda: analisar_equipe(dado or nome),
@@ -1195,7 +1195,6 @@ def regenerar_pdf_por_meta(meta):
         try:
             res_cal = analisar_calendario(nome, dado, bd)
             data = dict(res_cal)
-            # apelidos para o template não deixar campo vazio
             data["life_path"] = res_cal.get("caminho_vida")
             data["titulo"] = "Calendário Mensal Energético"
             data["linhas"] = [
@@ -1207,14 +1206,13 @@ def regenerar_pdf_por_meta(meta):
         except Exception as e:
             logger.error(f"Calendario calc: {e}")
             data = {"dado": dado}
-
+        nome_exib = nome
     else:
         data = calc_mapa(nome, bd)
         data["dado"] = dado or ""
         nome_exib = nome
-    
-    if prod == "nome_ong":
-        return gerar_pdf_ong(data, lang, nome_exib)
+
+    logger.info(f"PDF dados {prod}: {list((data or {}).keys())}")   # ← AQUI
     return gerar_pdf(prod, data, lang, nome_exib, bd, dado=dado)
 
 @app.get("/api/pay/urna-success")
