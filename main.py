@@ -998,9 +998,9 @@ def api_relatorio(session_id: str, download: int = 0):
 @app.get("/api/pay/success")
 def pay_success(request: Request):
     sid = request.query_params.get("session_id", "")
-    url_rel = BASE_URL + "/api/relatorio/" + session_id
     if not sid:
         return HTMLResponse("ERRO")
+    url_rel = BASE_URL + "/api/relatorio/" + sid
     try:
         s = stripe.checkout.Session.retrieve(sid)
         meta = getattr(s, "metadata", {}) or {}
@@ -1192,7 +1192,7 @@ def regenerar_pdf_por_meta(meta):
         }),
     }
     if prod == "calendario":
-        res_cal = analisar_periodo(nome, meta.get("dado", ""), meta.get("nascimento", ""))
+        "calendario": lambda: analisar_calendario(meta.get("nome", ""), meta.get("dado", ""), meta.get("nascimento", "")),
         data = res_cal if isinstance(res_cal, dict) else (res_cal[0] if res_cal else {})
         nome_exib = nome
     elif prod in CALC_ESPECIFICO:
@@ -1398,6 +1398,7 @@ def health_api():
     return {"status": "ok", "stripe": bool(STRIPE_KEY)}
 
 # ===== WEBHOOK STRIPE =====
+@app.post("/stripe_webhook")
 @app.post("/stripe-webhook")
 async def stripe_webhook(req: Request):
     payload = await req.body()
