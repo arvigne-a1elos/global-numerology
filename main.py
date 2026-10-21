@@ -1340,6 +1340,9 @@ async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
     else:
         meta = {"energia": energia, "dado": dado, "dado2": dado2, "tipo": tipo,
                 "area": area, "detalhe": detalhe}
+    meta.setdefault("tipo", produto)          # ← garante a etiqueta correta
+    meta.setdefault("nascimento", nascimento) # ← alimenta o Caminho de Vida do calendário
+    meta.setdefault("nome", nome)             # ← garante o nome no metadata
     s = _criar_sessao(produto, lang, email, nome, nascimento, meta)
     return RedirectResponse(url=s["url"])
 # ===== SUCESSO POS-PAGAMENTO =====
