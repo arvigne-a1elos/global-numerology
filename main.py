@@ -1426,6 +1426,7 @@ async def stripe_webhook(req: Request):
             logger.error(f"Webhook leitura: {e}")
 
     return {"status": "success"}
+
 # ===== SISTEMA DE BONUS =====
 ARQ_BONUS = "bonus_codes.json"
 
