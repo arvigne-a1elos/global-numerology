@@ -1192,7 +1192,7 @@ def regenerar_pdf_por_meta(meta):
         }),
     }
     if prod == "calendario":
-        "calendario": lambda: analisar_calendario(meta.get("nome", ""), meta.get("dado", ""), meta.get("nascimento", "")),
+        res_cal = analisar_calendario(nome, meta.get("dado", ""), meta.get("nascimento", ""))
         data = res_cal if isinstance(res_cal, dict) else (res_cal[0] if res_cal else {})
         nome_exib = nome
     elif prod in CALC_ESPECIFICO:
