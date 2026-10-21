@@ -1340,10 +1340,10 @@ async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
     else:
         meta = {"energia": energia, "dado": dado, "dado2": dado2, "tipo": tipo,
                 "area": area, "detalhe": detalhe}
-    meta.setdefault("tipo", produto)
-    meta.setdefault("birth", nascimento)      # ← chave que o regenerar_pdf lê
-    meta.setdefault("nascimento", nascimento) # ← chave que o analisar_calendario lê
-    meta.setdefault("nome", nome)
+    meta["tipo"] = meta.get("tipo") or produto
+    meta["nome"] = meta.get("nome") or nome
+    meta["nascimento"] = meta.get("nascimento") or nascimento
+    meta["birth"] = meta.get("birth") or nascimento   # chave lida pelo regenerar_pdf
     s = _criar_sessao(produto, lang, email, nome, nascimento, meta)
     return RedirectResponse(url=s["url"])
 # ===== SUCESSO POS-PAGAMENTO =====
