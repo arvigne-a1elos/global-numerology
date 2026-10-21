@@ -1382,7 +1382,6 @@ def calc_urna(req: UrnaPayReq):
     nomes = [n.strip() for n in [req.nome1, req.nome2, req.nome3, req.nome4, req.nome5] if n.strip()]
     res, ideal, sugs = validar_nomes_urna(nomes, req.cargo)
     return {"resultados": res, "ideal": ideal, "sugestoes": sugs}
-    
 
 @app.post("/calculate/eleitoral")
 def calc_eleitoral(req: EleitoralPayReq):
@@ -1412,25 +1411,21 @@ async def stripe_webhook(req: Request):
             event = stripe.Webhook.construct_event(payload, sig, whsec)
         except Exception:
             raise HTTPException(400, "Assinatura invalida")
-
     else:
         data = json.loads(payload)
         event = {"type": data.get("type", ""), "data": data.get("data", {})}
-    if event["type"] == "checkout.session.completed":
-        session = event["data"]["object"]
-        meta = getattr(session, "metadata", None) or {}
-        if hasattr(meta, "to_dict"):
-            meta = meta.to_dict()
-        logger.info(f"Pagamento confirmado: {getattr(session, 'id', '')} tipo={meta.get('tipo', '?')}")
-            except Exception as e:
-                logger.error(f"Erro codigos coletivo: {e}")
-        nome = meta.get("nome", "Cliente")
-        lang = meta.get("lang", "pt")
-        logger.info(f"Pagamento confirmado: {session['id']} -> {tipo}")
-        entrega = _entregar_arquivo(tipo, nome, lang)
-        logger.info(f"Entrega: {entrega}")
-    return {"status": "success"}
 
+    if event["type"] == "checkout.session.completed":
+        try:
+            session = event["data"]["object"]
+            meta = getattr(session, "metadata", None) or {}
+            if hasattr(meta, "to_dict"):
+                meta = meta.to_dict()
+            logger.info(f"Pagamento confirmado: {getattr(session, 'id', '')} tipo={meta.get('tipo', '?')}")
+        except Exception as e:
+            logger.error(f"Webhook leitura: {e}")
+
+    return {"status": "success"}
 # ===== SISTEMA DE BONUS =====
 ARQ_BONUS = "bonus_codes.json"
 
