@@ -351,6 +351,7 @@ def pdf_eleitoral(ss, cl, sugestoes, ne=None, lang="pt"):
 # PRODUTOS GENÉRICOS (19 produtos, traduzido + conteúdo do livro)
 # ═══════════════════════════════════════════
 def pdf_produto(produto, dados, nome, bd_str, lang, dado=""):
+    logger.info(f"pdf_produto NOVO rodando: {produto} | chaves: {list(dados.keys())}")
     T = PDF_TEXTS.get(lang, PDF_TEXTS["pt"])
     path = os.path.join(TMP, f"p_{uuid.uuid4().hex[:8]}.pdf")
     doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
