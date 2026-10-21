@@ -1192,20 +1192,21 @@ def regenerar_pdf_por_meta(meta):
         }),
     }
     if prod == "calendario":
-        res_cal = analisar_periodo(nome, meta.get("dado", ""), meta.get("nascimento", ""))
-        data = res_cal if isinstance(res_cal, dict) else (res_cal[0] if res_cal else {})
-        nome_exib = nome
-    elif prod in CALC_ESPECIFICO:
         try:
-            data = CALC_ESPECIFICO[prod]()
-            if not isinstance(data, dict):
-                data = {"resultado": data}
-            data["dado"] = dado or ""
-            nome_exib = dado or nome
+            res_cal = analisar_calendario(nome, dado, bd)
+            data = dict(res_cal)
+            # apelidos para o template não deixar campo vazio
+            data["life_path"] = res_cal.get("caminho_vida")
+            data["titulo"] = "Calendário Mensal Energético"
+            data["linhas"] = [
+                ("Caminho de Vida", res_cal.get("caminho_vida")),
+                ("Mês Universal", res_cal.get("energia_mes")),
+                ("Mês Pessoal", res_cal.get("energia_pessoal_mes")),
+                ("Ano Pessoal", res_cal.get("ano_pessoal")),
+            ]
         except Exception as e:
-            logger.error(f"Calc especifico {prod}: {e}")
-            data = {"dado": dado or nome}
-            nome_exib = dado or nome
+            logger.error(f"Calendario calc: {e}")
+            data = {"dado": dado}
 
     else:
         data = calc_mapa(nome, bd)
