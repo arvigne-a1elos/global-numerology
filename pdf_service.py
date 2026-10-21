@@ -106,8 +106,7 @@ def pdf8(data, nome, bd, lang="pt"):
     e.append(Paragraph(T.get("entrega", ""), _estilo("J", FONTE, 8, GRAY, TA_CENTER, sa=6)))
     e.append(Paragraph("© A1ELOS Assessoria e Consultoria",
                        _estilo("F", FONTE, 8, GRAY, TA_CENTER)))
-    doc.build(e, onFirstPage=_cabecalho_pagina, onLaterPages=_cabecalho_pagina)
-    return path
+
 # ═══════════════════════════════════════════
 # MAPA COMPLETO (template premium, traduzido)
 # ═══════════════════════════════════════════
