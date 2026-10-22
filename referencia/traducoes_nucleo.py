@@ -27,15 +27,48 @@ def _reg(camada, chave, lang):
         v = (camada.get(FALLBACK) or {}).get(chave, chave)
     return v
 
-def validar_camada(nome, camada, chaves_obrigatorias):
-    """Confere cobertura chaves x idiomas. Retorna lista de faltas (vazio = ok)."""
-    faltas = []
-    for lang in IDIOMAS:
-        d = camada.get(lang) or {}
-        for ch in chaves_obrigatorias:
-            if ch not in d:
-                faltas.append("%s/%s/%s" % (nome, lang, ch))
-    return faltas
+def validar():
+    print("== VALIDAÇÃO DO NÚCLEO ==")
+    ok = True
+    checks = [
+        ("PRODUTOS_TRAD", PRODUTOS_TRAD, CHAVES_24),
+        ("ENERGIA_TITULOS", ENERGIA_TITULOS, [1,2,3,4,5,6,7,8,9]),
+        ("ENERGIAS_TXT", ENERGIAS_TXT, [1,2,3,4,5,6,7,8,9]),
+        ("AMOR_TXT", AMOR_TXT, [5,6]),
+    ]
+    for nome, camada, chaves in checks:
+        if not camada:
+            print("%-16s PENDENTE (bloco ainda não colado)" % nome)
+            continue
+        f = validar_camada(nome, camada, chaves)
+        print("%-16s %s" % (nome, "OK 24x14" if not f else "FALTAM: " + ", ".join(f[:15])))
+        if f: ok = False
+    return ok
+
+def gerar_translations_js(caminho="static/translations.js"):
+    """Emite o translations.js com as MESMAS variáveis globais do site.
+    Mapeamento disco x site:
+      ENERGIA_TITULOS -> window.ENERGIA_TITULOS
+      ENERGIAS_TXT    -> window.ENERGIAS_DESC (nome que o site consome)
+      AMOR_TXT        -> backend (PDFs), não emite para o frontend.
+    Camadas vazias não são emitidas (migração segura)."""
+    partes = []
+    partes.append("// ===== GERADO POR referencia/traducoes_nucleo.py — NÃO EDITAR AQUI =====")
+    partes.append("window.PRODUTOS_TRAD = " + _j(PRODUTOS_TRAD) + ";")
+    partes.append("window.ENERGIA_TITULOS = " + _j(ENERGIA_TITULOS) + ";")
+    if ENERGIAS_TXT:
+        partes.append("window.ENERGIAS_DESC = " + _j(ENERGIAS_TXT) + ";")
+    for nome, camada in [("UI_TRAD", UI_TRAD), ("CAL_TXT", CAL_TXT),
+                         ("FEAT_TRAD", FEAT_TRAD), ("DESC_COLETIVO", DESC_COLETIVO),
+                         ("BC_TEXTS", BC_TEXTS), ("SERVICOS_TRAD", SERVICOS_TRAD),
+                         ("PDF_TEXTS", PDF_TEXTS), ("PDF_SECOES", PDF_SECOES),
+                         ("BOAS_VINDAS", BOAS_VINDAS), ("PERIODOS", PERIODOS),
+                         ("REALIZ_HEAD", REALIZ_HEAD)]:
+        if camada:
+            partes.append("window.%s = %s;" % (nome, _j(camada)))
+    with open(caminho, "w", encoding="utf-8") as arq:
+        arq.write("\n".join(partes) + "\n")
+    print("Gerado:", caminho)
 
 # ================ SEÇÃO NAVE (A1ELOS) ================
 # ===== 1. NOMES DOS 24 PRODUTOS (UI web) — unificação de
