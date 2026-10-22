@@ -935,3 +935,32 @@ function pagarEquipe(){
     new MutationObserver(_blindar).observe(document.body, {childList: true, subtree: true});
   }
 })();
+
+// ===== HOTFIX RH (22/10Perfeito, Antonio — com o site no ar em produção, o plano se fecha naturalmente: **a colheita da UI agora é feita no site de produção** (que tem os textos aprovados), e o servidor local deixa de ser pré-requisito. Vamos até o fim.
+
+## 🗺️ Reta final — ordem de execução
+
+1. **Colheita completa no site de produção** (console do navegador, em `global-numerology.onrender.com/static/index.html`) — comando expandido abaixo, que pega **tudo** que o Bloco 4 precisa.
+2. **Commit** do `ui_harvest.json` (e do `bc_harvest.json`).
+3. **Bloco 4** colado no núcleo (abaixo) — preços derivados de `precos.py` + tabelas BC via colheita.
+4. **Guard do import** no `main.py` + commit.
+5. **Bloco 5 (PDFs)** e **Bloco 6 (gerador final + correção das rotas do RH)**.
+6. **Bloco 7**: backup do `translations.js` atual → substituição pelo gerado → checklist por idioma.
+
+## 🥣 Colheita expandida (passo 1 — rode no console do site de produção)
+
+```javascript
+copy(JSON.stringify({
+  translations: (typeof translations !== 'undefined') ? translations : {},
+  EXTRA_TRAD: (typeof EXTRA_TRAD !== 'undefined') ? EXTRA_TRAD : {},
+  MESES_TRAD: (typeof MESES_TRAD !== 'undefined') ? MESES_TRAD : {},
+  FEAT_TRAD: (typeof FEAT_TRAD !== 'undefined') ? FEAT_TRAD : {},
+  DESC_COLETIVO: (typeof DESC_COLETIVO !== 'undefined') ? DESC_COLETIVO : {},
+  BC_TEXTS: (typeof BC_TEXTS !== 'undefined') ? BC_TEXTS : {},
+  SERVICOS_TRAD: (typeof SERVICOS_TRAD !== 'undefined') ? SERVICOS_TRAD : {},
+  PRECO_DISPLAY: (typeof PRECO_DISPLAY !== 'undefined') ? PRECO_DISPLAY : {},
+  PRODUTO_FAIXA: (typeof PRODUTO_FAIXA !== 'undefined') ? PRODUTO_FAIXA : {},
+  ENERGIAS_DESC: (typeof ENERGIAS_DESC !== 'undefined') ? ENERGIAS_DESC : {},
+  ENERGIA_TITULOS: (typeof ENERGIA_TITULOS !== 'undefined') ? ENERGIA_TITULOS : {},
+  PRODUTOS_TRAD: (typeof PRODUTOS_TRAD !== 'undefined') ? PRODUTOS_TRAD : {}
+}));
