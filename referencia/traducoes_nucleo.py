@@ -27,10 +27,18 @@ def _reg(camada, chave, lang):
         v = (camada.get(FALLBACK) or {}).get(chave, chave)
     return v
 
+# ================= GERADOR (emite o translations.js) =================
+CHAVES_24 = ["express","vida","completo","ia","urna","eleitoral","imovel","calendario",
+             "artistico","bebe","assinatura","negocio","casal","familia","coletivo",
+             "compatibilidade_equipes","nome_pet","nickname","nome_dominio","nome_canal",
+             "nome_equipe","nome_ong","nome_projeto","nome_evento"]
+
 def validar():
     print("== VALIDACAO DO NUCLEO ==")
     ok = True
     checks = [
+        ("FEAT_TRAD", FEAT_TRAD, CHAVES_24),
+        ("BC_TEXTS", BC_TEXTS, ["qtd_total", "codigos"]),
         ("PRODUTOS_TRAD", PRODUTOS_TRAD, CHAVES_24),
         ("ENERGIA_TITULOS", ENERGIA_TITULOS, [1,2,3,4,5,6,7,8,9]),
         ("ENERGIAS_TXT", ENERGIAS_TXT, [1,2,3,4,5,6,7,8,9]),
@@ -368,17 +376,17 @@ def _derivacao_meses():
             MESES_TRAD[lang] = list(meses)
 
 def colher_ui(caminho="referencia/ui_harvest.json"):
-    """Colheita byte-perfect (ampliada): UI + FEAT_TRAD + DESC_COLETIVO +
-    BC_TEXTS + SERVICOS_TRAD. Núcleo vence em conflito."""
+    """Colheita byte-perfect: núcleo vence, colheita preenche o restante."""
     _derivacao_meses()
-    _derivacao_precos()
+    _derivar_tabelas()
     if not os.path.exists(caminho):
-        print("ui_harvest.json nao encontrado. CAL_TXT/EXTRA_TRAD/MESES/PRECO_DISPLAY derivados continuam validos.")
+        print("ui_harvest.json nao encontrado; CAL/EXTRA/FEAT(pt)/BC/DESC/SERVICOS ja validos.")
         return False
     dados = json.load(open(caminho, encoding="utf-8"))
-    vivo = dados.get("translations") or {}
+    # UI + EXTRA (como no Bloco 3)
     for lang in IDIOMAS:
-        base = dict(vivo.get(lang) or {})
+        vivo = (dados.get("translations") or {}).get(lang) or {}
+        base = dict(vivo)
         for ch, val in (CAL_TXT.get(lang) or {}).items():
             if ch == "MESES":
                 continue
@@ -387,91 +395,124 @@ def colher_ui(caminho="referencia/ui_harvest.json"):
         extra = dict((dados.get("EXTRA_TRAD") or {}).get(lang) or {})
         extra.update(EXTRA_TRAD.get(lang) or {})
         EXTRA_TRAD[lang] = extra
-        for nome, alvo in [("FEAT_TRAD", FEAT_TRAD), ("DESC_COLETIVO", DESC_COLETIVO),
-                           ("BC_TEXTS", BC_TEXTS), ("SERVICOS_TRAD", SERVICOS_TRAD)]:
-            v = (dados.get(nome) or {}).get(lang)
-            if v:
-                alvo[lang] = v
-        if not MESES_TRAD.get(lang) and (dados.get("MESES_TRAD") or {}).get(lang):
-            MESES_TRAD[lang] = list(dados["MESES_TRAD"][lang])
-    print("Colheita concluida: UI_TRAD %d idiomas; FEAT_TRAD %d; BC_TEXTS %d; SERVICOS_TRAD %d."
-          % (len(UI_TRAD), len(FEAT_TRAD), len(BC_TEXTS), len(SERVICOS_TRAD)))
+        if not MESES_TRAD.get(lang):
+            vm = (dados.get("MESES_TRAD") or {}).get(lang)
+            if vm: MESES_TRAD[lang] = list(vm)
+    # Tabelas: núcleo vence, colheita preenche os demais idiomas
+    feat_vivo = dados.get("FEAT_TRAD") or {}
+    for lang in IDIOMAS:
+        vivo = dict(feat_vivo.get(lang) or {})
+        vivo.update(FEAT_TRAD.get(lang) or {})
+        FEAT_TRAD[lang] = vivo
+    desc_vivo = dados.get("DESC_COLETIVO") or {}
+    for lang in IDIOMAS:
+        if not DESC_COLETIVO.get(lang) and desc_vivo.get(lang):
+            DESC_COLETIVO[lang] = desc_vivo[lang]
+    bc_vivo = dados.get("BC_TEXTS") or {}
+    for lang in IDIOMAS:
+        if not BC_TEXTS.get(lang) and bc_vivo.get(lang):
+            BC_TEXTS[lang] = bc_vivo[lang]
+    print("Colheita concluida: UI_TRAD %d idiomas; FEAT_TRAD %d idiomas." % (len(UI_TRAD), len(FEAT_TRAD)))
     return True
 
 # ================================================================
 # BLOCO 4 — PREÇOS E TABELAS
-# PRECO_DISPLAY DERIVA de referencia/precos.py (fonte única).
-# FEAT_TRAD / DESC_COLETIVO / BC_TEXTS / SERVICOS_TRAD chegam
-# pela colheita byte-perfect (ui_harvest.json). Fim do conflito
-# de verdade (valores antigos US$ 1,50 / ¥ 250 / ₽ 130).
+# Regra: PREÇOS NUNCA SÃO DIGITADOS AQUI. Derivam de precos.py
+# (fonte única). Fim do conflito PRECO_DISPLAY antigo x novo.
+# FEAT_TRAD pt = canon dos cards do produtos.html (decisão 22/10).
+# SERVICOS_TRAD é DERIVADO (nomes de PRODUTOS_TRAD x preços de
+# PRECO_DISPLAY): zero preços duplicados em qualquer idioma.
 # ================================================================
 
-import sys, os as _os
-sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__))))
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
 try:
-    from precos import VALORES as _VALORES, SIMBOLO as _SIMBOLO, PRECO_DISPLAY as _PD_REF
+    from precos import PRECO_DISPLAY, PRODUTO_FAIXA, VALORES, SIMBOLO
+    _PRECOS_OK = True
 except ImportError:
-    from referencia.precos import VALORES as _VALORES, SIMBOLO as _SIMBOLO, PRECO_DISPLAY as _PD_REF
+    _PRECOS_OK = False
+    PRECO_DISPLAY, PRODUTO_FAIXA, VALORES, SIMBOLO = {}, {}, {}, {}
 
-PRECO_DISPLAY = {}   # derivado
+# ===== FEAT_TRAD — pt = canon produtos.html; demais via colheita =====
+FEAT_TRAD = {
+    "pt": {
+        "express": ["✅ Caminho da Vida","✅ Expressão, Alma, Personalidade","✅ Destino","📲 PDF + QRCode"],
+        "vida": ["✅ Fase de Vida atual","✅ Ano Pessoal","✅ Tendências do ciclo","📲 PDF + QRCode"],
+        "ia": ["✅ 7 tipos de nome","✅ Análise energética","✅ Sugestões com IA","📲 PDF + QRCode"],
+        "nome_pet": ["✅ Nome do pet analisado","✅ Energia do nome","✅ Sintonia com a família","📲 PDF + QRCode"],
+        "nickname": ["✅ Nickname analisado","✅ Energia do nome","✅ Imagem no mundo online","📲 PDF + QRCode"],
+        "nome_dominio": ["✅ Domínio analisado","✅ Energia do nome","✅ Força para a marca","📲 PDF + QRCode"],
+        "nome_canal": ["✅ Canal analisado","✅ Energia do nome","✅ Conexão com a audiência","📲 PDF + QRCode"],
+        "nome_equipe": ["✅ Equipe analisada","✅ Energia do nome","✅ União entre os membros","📲 PDF + QRCode"],
+        "nome_projeto": ["✅ Projeto analisado","✅ Energia do nome","✅ Impulso para o sucesso","📲 PDF + QRCode"],
+        "nome_evento": ["✅ Evento analisado","✅ Energia do nome","✅ Atmosfera para os participantes","📲 PDF + QRCode"],
+        "completo": ["✅ 5 números detalhados","✅ 3 Ciclos de Vida","✅ Desafios e Realizações","✅ Grade de Inclusão","📲 PDF + QRCode"],
+        "calendario": ["✅ Energia do mês","✅ Sua energia no mês","✅ Ano Pessoal embutido","📲 PDF + QRCode"],
+        "urna": ["✅ 5 nomes testados","✅ Sugestões com energia 8","✅ Cálculo letra a letra","📲 PDF + QRCode"],
+        "eleitoral": ["✅ 5 números sugeridos","✅ Prioridade energia 8 (Poder)","✅ Cálculo completo","📲 PDF + QRCode"],
+        "imovel": ["✅ Número do imóvel analisado","✅ Energia do ambiente","✅ Sugestões de harmonização","📲 PDF + QRCode"],
+        "nome_ong": ["✅ ONG analisada","✅ Energia do nome","✅ Causa potencializada","📲 PDF + QRCode"],
+        "artistico": ["✅ Nomes testados","✅ Sugestões de palco","✅ Energia do nome","📲 PDF + QRCode"],
+        "bebe": ["✅ Sugestões de nomes","✅ Análise energética","✅ Compatibilidade com sobrenome","📲 PDF + QRCode"],
+        "assinatura": ["✅ Assinatura atual analisada","✅ Variações sugeridas","✅ Energia da assinatura","📲 PDF + QRCode"],
+        "negocio": ["✅ Nomes testados","✅ Sugestões empresariais","✅ Energia do nome","📲 PDF + QRCode"],
+        "casal": ["✅ Compatibilidade","✅ Pontos fortes do casal","✅ Desafios da relação","📲 PDF + QRCode"],
+        "familia": ["✅ Todos os membros","✅ Sinergia familiar","✅ Orientação por membro","📲 PDF + QRCode"],
+        "compatibilidade_equipes": ["✅ Chefe × membros","✅ Membros × membros","✅ Compatibilidade de pares","📲 PDF + QRCode"],
+        "coletivo": ["✅ Planos prontos","✅ Sob medida","✅ Descontos progressivos","✅ Códigos de presente"],
+    },
+}
 
-def _derivacao_precos():
-    """PRECO_DISPLAY derivado de precos.py — fonte única de verdade.
-    Formato final idêntico ao consumido pelo site (símbolo + valor)."""
+# ===== DESC_COLETIVO (14 idiomas, verbatim do translations.js) =====
+DESC_COLETIVO = {
+    "pt":"Contrate brindes numerológicos para seus clientes ou funcionários. Descontos de 10% a 70%.",
+    "en":"Hire numerology gifts for your clients or employees. Discounts from 10% to 70%.",
+    "es":"Contrata regalos numerológicos para tus clientes o empleados. Descuentos del 10% al 70%.",
+    "it":"Assumi regali numerologici per i tuoi clienti o dipendenti. Sconti dal 10% al 70%.",
+    "fr":"Engagez des cadeaux numérologiques pour vos clients ou employés. Réductions de 10% à 70%.",
+    "de":"Engagieren Sie numerologische Geschenke für Ihre Kunden oder Mitarbeiter. Rabatte von 10% bis 70%.",
+    "ja":"顧客や従業員向けの数秘術ギフトを手配します。10%〜70%の割引。",
+    "zh":"为您的客户或员工安排数字命理礼物。折扣从10%到70%。",
+    "ru":"Закажите нумерологические подарки для клиентов или сотрудников. Скидки от 10% до 70%.",
+    "he":"הזמינו מתנות נומרולוגיות ללקוחות או לעובדים שלכם. הנחות מ-10% עד 70%.",
+    "ar":"اطلب هدايا الأعداد لعملائك أو موظفيك. خصومات من 10% إلى 70%.",
+    "id":"Pesan hadis numerologi untuk klien atau karyawan Anda. Diskon dari 10% hingga 70%.",
+    "tr":"Müşterilerin veya çalışanlarınız için numeroloji hediyeleri sipariş edin. %10 ile %70 arasında indirim.",
+    "vi":"Đặt mua quà tặng thần số học cho khách hàng hoặc nhân viên của bạn. Giảm giá từ 10% đến 70%.",
+}
+
+# ===== BC_TEXTS (tabela BC, 14 idiomas) =====
+BC_TEXTS = {
+    "pt":{"qtd_total":"Quantidade total:","codigos":"códigos"},
+    "en":{"qtd_total":"Total quantity:","codigos":"codes"},
+    "es":{"qtd_total":"Cantidad total:","codigos":"códigos"},
+    "it":{"qtd_total":"Quantità totale:","codigos":"codici"},
+    "fr":{"qtd_total":"Quantité totale:","codigos":"codes"},
+    "de":{"qtd_total":"Gesamtmenge:","codigos":"Codes"},
+    "ja":{"qtd_total":"合計数量:","codigos":"コード"},
+    "zh":{"qtd_total":"总数量:","codigos":"个代码"},
+    "ru":{"qtd_total":"Общее количество:","codigos":"кодов"},
+    "he":{"qtd_total":"כמות כוללת:","codigos":"קודים"},
+    "ar":{"qtd_total":"الكمية الإجمالية:","codigos":"رمز"},
+    "id":{"qtd_total":"Jumlah total:","codigos":"kode"},
+    "tr":{"qtd_total":"Toplam miktar:","codigos":"kod"},
+    "vi":{"qtd_total":"Tổng số lượng:","codigos":"mã"},
+}
+
+# ===== SERVICOS_TRAD — DERIVADO (nomes x preços, sem digitação) =====
+_SERVICOS_BASE = [("express", 0), ("completo", 1), ("urna", 2), ("eleitoral", 2)]
+SERVICOS_TRAD = {}
+
+def _derivar_tabelas():
+    """SERVICOS_TRAD = nomes (PRODUTOS_TRAD) x preços (PRECO_DISPLAY de precos.py)."""
     for lang in IDIOMAS:
-        vals = _VALORES.get(lang) or _VALORES.get("en") or []
-        simb = _SIMBOLO.get(lang, "US$")
-        def _fmt(v):
-            # JPY e VND são inteiros (0 casas); demais, dividido por 100
-            if lang in ("ja", "vi"):
-                n = v
-            else:
-                n = v / 100.0
-            s = ("%d" % round(n)) if lang in ("ja", "vi") else ("%g" % round(n, 2))
-            # milhar com ponto
-            int_part, _, dec_part = s.partition(".")
-            int_part = int_part[::-1]
-            grp = ".".join(int_part[i:i+3] for i in range(0, len(int_part), 3))
-            s = grp[::-1] + (("." + dec_part) if dec_part else "")
-            return "%s %s" % (simb, s)
-        PRECO_DISPLAY[lang] = [_fmt(v) for v in vals]
-
-FEAT_TRAD      = {}
-DESC_COLETIVO  = {}
-BC_TEXTS       = {}
-SERVICOS_TRAD  = {}
-
-def colher_ui(caminho="referencia/ui_harvest.json"):
-    """Colheita byte-perfect (ampliada): UI + FEAT_TRAD + DESC_COLETIVO +
-    BC_TEXTS + SERVICOS_TRAD. Núcleo vence em conflito."""
-    _derivacao_meses()
-    _derivacao_precos()
-    if not os.path.exists(caminho):
-        print("ui_harvest.json nao encontrado. CAL_TXT/EXTRA_TRAD/MESES/PRECO_DISPLAY derivados continuam validos.")
-        return False
-    dados = json.load(open(caminho, encoding="utf-8"))
-    vivo = dados.get("translations") or {}
-    for lang in IDIOMAS:
-        base = dict(vivo.get(lang) or {})
-        for ch, val in (CAL_TXT.get(lang) or {}).items():
-            if ch == "MESES":
-                continue
-            base[ch] = val
-        UI_TRAD[lang] = base
-        extra = dict((dados.get("EXTRA_TRAD") or {}).get(lang) or {})
-        extra.update(EXTRA_TRAD.get(lang) or {})
-        EXTRA_TRAD[lang] = extra
-        # Tabelas BC e features: colheita integral
-        for nome, alvo in [("FEAT_TRAD", FEAT_TRAD), ("DESC_COLETIVO", DESC_COLETIVO),
-                           ("BC_TEXTS", BC_TEXTS), ("SERVICOS_TRAD", SERVICOS_TRAD)]:
-            v = (dados.get(nome) or {}).get(lang)
-            if v:
-                alvo[lang] = v
-        if not MESES_TRAD.get(lang) and (dados.get("MESES_TRAD") or {}).get(lang):
-            MESES_TRAD[lang] = list(dados["MESES_TRAD"][lang])
-    print("Colheita concluida: UI_TRAD %d idiomas; FEAT_TRAD %d; BC_TEXTS %d; SERVICOS_TRAD %d."
-          % (len(UI_TRAD), len(FEAT_TRAD), len(BC_TEXTS), len(SERVICOS_TRAD)))
-    return True
+        disp = PRECO_DISPLAY.get(lang) or PRECO_DISPLAY.get("pt") or []
+        linhas = []
+        for prod, faixa in _SERVICOS_BASE:
+            nome = (PRODUTOS_TRAD.get(lang) or {}).get(prod) or PRODUTOS_TRAD["pt"][prod]
+            preco = disp[faixa] if faixa < len(disp) else ""
+            linhas.append([nome, preco])
+        SERVICOS_TRAD[lang] = linhas
 
 # ===== 5. BLOCO 5 (PDFs e semântica) — cole aqui =====
 PDF_TEXTS   = {}       # Bloco 5
@@ -479,38 +520,3 @@ PDF_SECOES  = {}       # Bloco 5
 BOAS_VINDAS = {}       # Bloco 5
 PERIODOS    = {}       # Bloco 5
 REALIZ_HEAD = {}       # Bloco 5
-
-# ================= GERADOR (emite o translations.js) =================
-CHAVES_24 = ["express","vida","completo","ia","urna","eleitoral","imovel","calendario",
-             "artistico","bebe","assinatura","negocio","casal","familia","coletivo",
-             "compatibilidade_equipes","nome_pet","nickname","nome_dominio","nome_canal",
-             "nome_equipe","nome_ong","nome_projeto","nome_evento"]
-
-def validar():
-    print("== VALIDAÇÃO DO NÚCLEO ==")
-    f = validar_camada("PRODUTOS_TRAD", PRODUTOS_TRAD, CHAVES_24)
-    print("PRODUTOS_TRAD 24x14:", "OK (sem faltas)" if not f else "FALTAM: " + ", ".join(f[:20]))
-    return not f
-
-def gerar_translations_js(caminho="static/translations.js"):
-    """Emite o translations.js com as MESMAS variáveis globais do site atual.
-    Camadas ainda vazias não são emitidas; as existentes no arquivo antigo
-    continuam valendo até cada bloco ser concluído (migração segura)."""
-    partes = []
-    partes.append("// ===== GERADO POR referencia/traducoes_nucleo.py — NÃO EDITAR AQUI =====")
-    partes.append("window.PRODUTOS_TRAD = " + _j(PRODUTOS_TRAD) + ";")
-    for nome, camada in [("ENERGIA_TITULOS", ENERGIA_TITULOS), ("ENERGIAS_TXT", ENERGIAS_TXT),
-                         ("AMOR_TXT", AMOR_TXT), ("UI_TRAD", UI_TRAD), ("CAL_TXT", CAL_TXT),
-                         ("FEAT_TRAD", FEAT_TRAD), ("DESC_COLETIVO", DESC_COLETIVO),
-                         ("BC_TEXTS", BC_TEXTS), ("SERVICOS_TRAD", SERVICOS_TRAD),
-                         ("PDF_TEXTS", PDF_TEXTS), ("PDF_SECOES", PDF_SECOES),
-                         ("BOAS_VINDAS", BOAS_VINDAS), ("PERIODOS", PERIODOS),
-                         ("REALIZ_HEAD", REALIZ_HEAD)]:
-        if camada:
-            partes.append("window.%s = %s;" % (nome, _j(camada)))
-    with open(caminho, "w", encoding="utf-8") as arq:
-        arq.write("\n".join(partes) + "\n")
-    print("Gerado:", caminho)
-
-if __name__ == "__main__":
-    validar()
