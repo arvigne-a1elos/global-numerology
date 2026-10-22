@@ -13,6 +13,7 @@
 # ================= SEÇÃO DISCO (ESQUELETO) =================
 IDIOMAS = ["pt","en","es","it","fr","de","ja","zh","ru","he","ar","id","tr","vi"]
 FALLBACK = "pt"
+import os, json
 
 def _j(obj):
     """Serializa uma camada para embutir no translations.js gerado."""
@@ -27,6 +28,16 @@ def _reg(camada, chave, lang):
         v = (camada.get(FALLBACK) or {}).get(chave, chave)
     return v
 
+def validar_camada(nome, camada, chaves_obrigatorias):
+    """Confere cobertura chaves x idiomas. Lista de faltas vazia = OK."""
+    faltas = []
+    for lang in IDIOMAS:
+        d = camada.get(lang) or {}
+        for ch in chaves_obrigatorias:
+            if ch not in d:
+                faltas.append("%s/%s/%s" % (nome, lang, ch))
+    return faltas
+
 # ================= GERADOR (emite o translations.js) =================
 CHAVES_24 = ["express","vida","completo","ia","urna","eleitoral","imovel","calendario",
              "artistico","bebe","assinatura","negocio","casal","familia","coletivo",
@@ -37,8 +48,6 @@ def validar():
     print("== VALIDACAO DO NUCLEO ==")
     ok = True
     checks = [
-        ("FEAT_TRAD", FEAT_TRAD, CHAVES_24),
-        ("BC_TEXTS", BC_TEXTS, ["qtd_total", "codigos"]),
         ("PRODUTOS_TRAD", PRODUTOS_TRAD, CHAVES_24),
         ("ENERGIA_TITULOS", ENERGIA_TITULOS, [1,2,3,4,5,6,7,8,9]),
         ("ENERGIAS_TXT", ENERGIAS_TXT, [1,2,3,4,5,6,7,8,9]),
@@ -49,7 +58,7 @@ def validar():
         ("FEAT_TRAD", FEAT_TRAD, CHAVES_24),
         ("BC_TEXTS", BC_TEXTS, ["qtd_total", "codigos"]),
         ("SERVICOS_TRAD", SERVICOS_TRAD, None),   # 4 servicos x 14
-        ("MESES_TRAD", MESES_TRAD, []),  # derivado; checa presenca dos 14
+        ("MESES_TRAD", MESES_TRAD, None),  # derivado; checa presenca dos 14
         ("PDF_TEXTS", PDF_TEXTS, ["t_express","t_completo","t_urna","t_eleitoral","numero","valor","caminho","expressao","motivacao","personalidade","destino","cargo","sugestoes","op8","op_alt","num_existente","ciclos","desafios","ano_pessoal","grade","baixar","confirmado","gerado","voltar","qr_titulo","qr_instrucao","entrega"]),
         ("PDF_SECOES", PDF_SECOES, ["numeros_principais","caminho_ciclos","desafios_realizacoes","como_calculamos","por_que_energia_8","energia_8_ideal","alternativas"]),
     ]
@@ -83,19 +92,12 @@ def gerar_translations_js(caminho="referencia/translations_gerado.js"):
     """SEGURANCA: emite para referencia/ (nunca sobrescreve o
     static/translations.js em producao)."""
     _derivacao_meses()
-    _derivacao_precos()          
+    _derivar_tabelas()
     for lang in IDIOMAS:
         meses = MESES_TRAD.get(lang)
         if meses and lang in UI_TRAD:
             for i, nome in enumerate(meses):
                 UI_TRAD[lang]["mes_%02d" % (i + 1)] = nome
-    _derivar_tabelas()
-    if PRECO_DISPLAY:
-        partes.append("window.PRECO_DISPLAY = " + _j(PRECO_DISPLAY) + ";")
-    if PRODUTO_FAIXA:
-        partes.append("window.PRODUTO_FAIXA = " + _j(PRODUTO_FAIXA) + ";")
-    if SIMBOLO:
-        partes.append("window.SIMBOLO = " + _j(SIMBOLO) + ";")                
     partes = []
     partes.append("// ===== GERADO POR referencia/traducoes_nucleo.py — NAO EDITAR AQUI =====")
     partes.append("window.PRODUTOS_TRAD = " + _j(PRODUTOS_TRAD) + ";")
@@ -108,7 +110,12 @@ def gerar_translations_js(caminho="referencia/translations_gerado.js"):
         partes.append("window.EXTRA_TRAD = " + _j(EXTRA_TRAD) + ";")
     if MESES_TRAD:
         partes.append("window.MESES_TRAD = " + _j(MESES_TRAD) + ";")
-    partes.append("window.PRECO_DISPLAY = " + _j(PRECO_DISPLAY) + ";")   # ← derivado de precos.py
+    if PRECO_DISPLAY:
+        partes.append("window.PRECO_DISPLAY = " + _j(PRECO_DISPLAY) + ";")
+    if PRODUTO_FAIXA:
+        partes.append("window.PRODUTO_FAIXA = " + _j(PRODUTO_FAIXA) + ";")
+    if SIMBOLO:
+        partes.append("window.SIMBOLO = " + _j(SIMBOLO) + ";")
     for nome, camada in [("FEAT_TRAD", FEAT_TRAD), ("DESC_COLETIVO", DESC_COLETIVO),
                          ("BC_TEXTS", BC_TEXTS), ("SERVICOS_TRAD", SERVICOS_TRAD),
                          ("PDF_TEXTS", PDF_TEXTS), ("PDF_SECOES", PDF_SECOES),
