@@ -1,0 +1,9 @@
+copy(JSON.stringify({
+  translations: (typeof translations !== 'undefined') ? translations : (window.translations || {}),
+  EXTRA_TRAD: (typeof EXTRA_TRAD !== 'undefined') ? EXTRA_TRAD : (window.EXTRA_TRAD || {}),
+  MESES_TRAD: (typeof MESES_TRAD !== 'undefined') ? MESES_TRAD : (window.MESES_TRAD || {}),
+  FEAT_TRAD: (typeof FEAT_TRAD !== 'undefined') ? FEAT_TRAD : (window.FEAT_TRAD || {}),
+  DESC_COLETIVO: (typeof DESC_COLETIVO !== 'undefined') ? DESC_COLETIVO : (window.DESC_COLETIVO || {}),
+  BC_TEXTS: (typeof BC_TEXTS !== 'undefined') ? BC_TEXTS : (window.BC_TEXTS || {})
+}));
+undefined
