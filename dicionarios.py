@@ -188,7 +188,7 @@ TRAD = {
         "desafios_realizacoes": "Thách thức và Thành đạt", "como_calculamos": "Chúng tôi tính như thế nào?", 
         "por_que_energia_8": "Tại sao là năng lượng 8?", "energia_8_ideal": "Năng lượng 8 — LÝ TƯỞNG:", "alternativas": "Phương án thay thế:" 
     }
-   },  
+   };  
        
 def t(chave, lang):
     d = TRAD.get(lang, TRAD["pt"])
