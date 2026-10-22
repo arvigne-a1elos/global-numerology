@@ -731,6 +731,36 @@ def gerar_pdf_ong(dados, lang="pt", nome_exib=""):
     doc.build(e)
     return path
 
+def gerar_pdf_calendario(dados, lang="pt", nome_exib=""):
+    path = f"/tmp/p_calendario_{uuid.uuid4().hex[:8]}.pdf"
+    doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
+                            topMargin=40, bottomMargin=30)
+    e = []
+    e.append(Spacer(1, 15))
+    e.append(Paragraph("CALENDÁRIO MENSAL ENERGÉTICO", estilo(16, True, GOLD, TA_CENTER, 0, 6)))
+    e.append(Paragraph(nome_exib, estilo(12, True, DARK, TA_CENTER, 0, 2)))
+    e.append(Paragraph(f"Nascimento: {dados.get('nascimento', '-')}",
+                       estilo(9, False, GRAY, TA_CENTER, 0, 10)))
+    linhas = [["Item", "Valor"]]
+    for chave, valor in dados.items():
+        if chave in ("titulo", "nascimento", "nome"):
+            continue
+        linhas.append([str(chave).replace("_", " ").capitalize(), str(valor)])
+    tbl = Table(linhas, colWidths=[220, 265])
+    tbl.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (-1, 0), GOLD),
+        ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+        ("FONTSIZE", (0, 0), (-1, -1), 9),
+        ("GRID", (0, 0), (-1, -1), 0.4, colors.grey),
+        ("BACKGROUND", (0, 1), (-1, -1), LGRAY),
+        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+    ]))
+    e.append(tbl)
+    e.append(Spacer(1, 10))
+    e.append(Paragraph("(c) A1ELOS", estilo(7, False, GRAY, TA_CENTER)))
+    doc.build(e)
+    return path
+
 def gerar_sugestao_ia(produto, energia, lang="pt"):
     """Gera 1 nome de bônus cuja energia bate com a escolhida."""
     BASES = {
@@ -1195,18 +1225,13 @@ def regenerar_pdf_por_meta(meta):
     
     if prod == "calendario":
         try:
-            res_cal = analisar_calendario(nome, dado, bd)
+            res_cal = analisar_calendario(nome, date.today().month, dado)
             data = dict(res_cal)
             data["titulo"] = "Calendário Mensal Energético"
-            data["linhas"] = [
-                ("Caminho de Vida", res_cal.get("caminho_vida")),
-                ("Mês Universal", res_cal.get("energia_mes")),
-                ("Mês Pessoal", res_cal.get("energia_pessoal_mes")),
-                ("Ano Pessoal", res_cal.get("ano_pessoal")),
-            ]
+            data["nascimento"] = dado or ""
         except Exception as e:
             logger.error(f"Calendario calc: {e}")
-            data = {"dado": dado}
+            data = {"titulo": "Calendário Mensal Energético", "nascimento": dado or ""}
         nome_exib = nome
     else:
         data = calc_mapa(nome, bd)
