@@ -57,10 +57,9 @@ def validar():
 
 def gerar_translations_js(caminho="referencia/translations_gerado.js"):
     """SEGURANCA: emite para referencia/ (nunca sobrescreve o
-    static/translations.js em producao). A substituicao real so acontece
-    no Bloco 7, com backup do arquivo atual."""
+    static/translations.js em producao)."""
     _derivacao_meses()
-    # mes_01..12 derivados de CAL_TXT entram no translations emitido
+    _derivacao_precos()          
     for lang in IDIOMAS:
         meses = MESES_TRAD.get(lang)
         if meses and lang in UI_TRAD:
@@ -78,6 +77,7 @@ def gerar_translations_js(caminho="referencia/translations_gerado.js"):
         partes.append("window.EXTRA_TRAD = " + _j(EXTRA_TRAD) + ";")
     if MESES_TRAD:
         partes.append("window.MESES_TRAD = " + _j(MESES_TRAD) + ";")
+    partes.append("window.PRECO_DISPLAY = " + _j(PRECO_DISPLAY) + ";")   # ← derivado de precos.py
     for nome, camada in [("FEAT_TRAD", FEAT_TRAD), ("DESC_COLETIVO", DESC_COLETIVO),
                          ("BC_TEXTS", BC_TEXTS), ("SERVICOS_TRAD", SERVICOS_TRAD),
                          ("PDF_TEXTS", PDF_TEXTS), ("PDF_SECOES", PDF_SECOES),
@@ -88,10 +88,7 @@ def gerar_translations_js(caminho="referencia/translations_gerado.js"):
     with open(caminho, "w", encoding="utf-8") as arq:
         arq.write("\n".join(partes) + "\n")
     print("Gerado (area segura):", caminho)
-
-if __name__ == "__main__":
-    colher_ui()
-    validar()
+    
 # ================ SEÇÃO NAVE (A1ELOS) ================
 # ===== 1. NOMES DOS 24 PRODUTOS (UI web) — unificação de
 # translations + PRODUTOS_TRAD + PRODUTOS(dicionarios.py) + Bloco 14 =====
@@ -371,19 +368,17 @@ def _derivacao_meses():
             MESES_TRAD[lang] = list(meses)
 
 def colher_ui(caminho="referencia/ui_harvest.json"):
-    """Colheita byte-perfect do translations.js em produção.
-    Regra de precedência: camadas curadas do núcleo (CAL_TXT, EXTRA_TRAD,
-    MESES derivado) vencem; a colheita preenche todo o RESTANTE da UI
-    (hero, nav, alerts, desc_*, p_*, nomes5, sig...) sem risco de perda.
-    Como o arquivo vai para o repositório, sobrevive a quedas de energia."""
+    """Colheita byte-perfect (ampliada): UI + FEAT_TRAD + DESC_COLETIVO +
+    BC_TEXTS + SERVICOS_TRAD. Núcleo vence em conflito."""
     _derivacao_meses()
+    _derivacao_precos()
     if not os.path.exists(caminho):
-        print("ui_harvest.json nao encontrado; UI_TRAD aguarda colheita. CAL_TXT e EXTRA_TRAD ja validos.")
+        print("ui_harvest.json nao encontrado. CAL_TXT/EXTRA_TRAD/MESES/PRECO_DISPLAY derivados continuam validos.")
         return False
     dados = json.load(open(caminho, encoding="utf-8"))
+    vivo = dados.get("translations") or {}
     for lang in IDIOMAS:
-        vivo = (dados.get("translations") or {}).get(lang) or {}
-        base = dict(vivo)
+        base = dict(vivo.get(lang) or {})
         for ch, val in (CAL_TXT.get(lang) or {}).items():
             if ch == "MESES":
                 continue
@@ -392,10 +387,15 @@ def colher_ui(caminho="referencia/ui_harvest.json"):
         extra = dict((dados.get("EXTRA_TRAD") or {}).get(lang) or {})
         extra.update(EXTRA_TRAD.get(lang) or {})
         EXTRA_TRAD[lang] = extra
-        vivo_meses = (dados.get("MESES_TRAD") or {}).get(lang)
-        if not MESES_TRAD.get(lang) and vivo_meses:
-            MESES_TRAD[lang] = list(vivo_meses)
-    print("Colheita concluida: UI_TRAD cobre %d idiomas." % len(UI_TRAD))
+        for nome, alvo in [("FEAT_TRAD", FEAT_TRAD), ("DESC_COLETIVO", DESC_COLETIVO),
+                           ("BC_TEXTS", BC_TEXTS), ("SERVICOS_TRAD", SERVICOS_TRAD)]:
+            v = (dados.get(nome) or {}).get(lang)
+            if v:
+                alvo[lang] = v
+        if not MESES_TRAD.get(lang) and (dados.get("MESES_TRAD") or {}).get(lang):
+            MESES_TRAD[lang] = list(dados["MESES_TRAD"][lang])
+    print("Colheita concluida: UI_TRAD %d idiomas; FEAT_TRAD %d; BC_TEXTS %d; SERVICOS_TRAD %d."
+          % (len(UI_TRAD), len(FEAT_TRAD), len(BC_TEXTS), len(SERVICOS_TRAD)))
     return True
 
 # ================================================================
