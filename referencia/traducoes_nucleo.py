@@ -28,38 +28,55 @@ def _reg(camada, chave, lang):
     return v
 
 def validar():
-    print("== VALIDAÇÃO DO NÚCLEO ==")
+    print("== VALIDACAO DO NUCLEO ==")
     ok = True
     checks = [
         ("PRODUTOS_TRAD", PRODUTOS_TRAD, CHAVES_24),
         ("ENERGIA_TITULOS", ENERGIA_TITULOS, [1,2,3,4,5,6,7,8,9]),
         ("ENERGIAS_TXT", ENERGIAS_TXT, [1,2,3,4,5,6,7,8,9]),
         ("AMOR_TXT", AMOR_TXT, [5,6]),
+        ("CAL_TXT", CAL_TXT, ["p_calendario","desc_calendario","f_cal_univ","f_cal_pess","f_cal_ano_emb","calc_nome","f_cal_data","f_cal_ano","f_mes","ph_nome_completo","MESES"]),
+        ("EXTRA_TRAD", EXTRA_TRAD, ["f_genero","f_grafias","f_nome_org","ph_nome_org","f_nome_candidato","f_num_atual","ph_sigla","f_sobrenome_familia","f_pessoa1","f_pessoa2","ph_energia","confirmar_btn","cancelar_btn"]),
+        ("MESES_TRAD", MESES_TRAD, []),  # derivado; checa presenca dos 14
     ]
     for nome, camada, chaves in checks:
+        if nome == "MESES_TRAD":
+            faltam = [l for l in IDIOMAS if not camada.get(l)]
+            print("%-16s %s" % (nome, "OK 14 idiomas" if not faltam else "FALTAM: " + ", ".join(faltam)))
+            if faltam: ok = False
+            continue
         if not camada:
-            print("%-16s PENDENTE (bloco ainda não colado)" % nome)
+            print("%-16s PENDENTE (bloco/colheita ainda nao feita)" % nome)
             continue
         f = validar_camada(nome, camada, chaves)
-        print("%-16s %s" % (nome, "OK 24x14" if not f else "FALTAM: " + ", ".join(f[:15])))
+        print("%-16s %s" % (nome, "OK 14 idiomas" if not f else "FALTAM: " + ", ".join(f[:15])))
         if f: ok = False
     return ok
 
-def gerar_translations_js(caminho="static/translations.js"):
-    """Emite o translations.js com as MESMAS variáveis globais do site.
-    Mapeamento disco x site:
-      ENERGIA_TITULOS -> window.ENERGIA_TITULOS
-      ENERGIAS_TXT    -> window.ENERGIAS_DESC (nome que o site consome)
-      AMOR_TXT        -> backend (PDFs), não emite para o frontend.
-    Camadas vazias não são emitidas (migração segura)."""
+def gerar_translations_js(caminho="referencia/translations_gerado.js"):
+    """SEGURANCA: emite para referencia/ (nunca sobrescreve o
+    static/translations.js em producao). A substituicao real so acontece
+    no Bloco 7, com backup do arquivo atual."""
+    _derivacao_meses()
+    # mes_01..12 derivados de CAL_TXT entram no translations emitido
+    for lang in IDIOMAS:
+        meses = MESES_TRAD.get(lang)
+        if meses and lang in UI_TRAD:
+            for i, nome in enumerate(meses):
+                UI_TRAD[lang]["mes_%02d" % (i + 1)] = nome
     partes = []
-    partes.append("// ===== GERADO POR referencia/traducoes_nucleo.py — NÃO EDITAR AQUI =====")
+    partes.append("// ===== GERADO POR referencia/traducoes_nucleo.py — NAO EDITAR AQUI =====")
     partes.append("window.PRODUTOS_TRAD = " + _j(PRODUTOS_TRAD) + ";")
     partes.append("window.ENERGIA_TITULOS = " + _j(ENERGIA_TITULOS) + ";")
     if ENERGIAS_TXT:
         partes.append("window.ENERGIAS_DESC = " + _j(ENERGIAS_TXT) + ";")
-    for nome, camada in [("UI_TRAD", UI_TRAD), ("CAL_TXT", CAL_TXT),
-                         ("FEAT_TRAD", FEAT_TRAD), ("DESC_COLETIVO", DESC_COLETIVO),
+    if UI_TRAD:
+        partes.append("window.translations = " + _j(UI_TRAD) + ";")
+    if EXTRA_TRAD:
+        partes.append("window.EXTRA_TRAD = " + _j(EXTRA_TRAD) + ";")
+    if MESES_TRAD:
+        partes.append("window.MESES_TRAD = " + _j(MESES_TRAD) + ";")
+    for nome, camada in [("FEAT_TRAD", FEAT_TRAD), ("DESC_COLETIVO", DESC_COLETIVO),
                          ("BC_TEXTS", BC_TEXTS), ("SERVICOS_TRAD", SERVICOS_TRAD),
                          ("PDF_TEXTS", PDF_TEXTS), ("PDF_SECOES", PDF_SECOES),
                          ("BOAS_VINDAS", BOAS_VINDAS), ("PERIODOS", PERIODOS),
@@ -68,8 +85,11 @@ def gerar_translations_js(caminho="static/translations.js"):
             partes.append("window.%s = %s;" % (nome, _j(camada)))
     with open(caminho, "w", encoding="utf-8") as arq:
         arq.write("\n".join(partes) + "\n")
-    print("Gerado:", caminho)
+    print("Gerado (area segura):", caminho)
 
+if __name__ == "__main__":
+    colher_ui()
+    validar()
 # ================ SEÇÃO NAVE (A1ELOS) ================
 # ===== 1. NOMES DOS 24 PRODUTOS (UI web) — unificação de
 # translations + PRODUTOS_TRAD + PRODUTOS(dicionarios.py) + Bloco 14 =====
@@ -293,9 +313,88 @@ AMOR_TXT = {
            6:"Trong tình yêu, 6 là tình yêu nhân văn và đoàn kết: sự quan tâm, lòng trắc ẩn, gia đình và trách nhiệm tình cảm."},
 }
 
-# ===== 3. BLOCO 3 (UI) — cole aqui =====
-UI_TRAD  = {}          # Bloco 3 (hero, nav, botões, alerts, formulários, EXTRA_TRAD)
-CAL_TXT  = {}          # Bloco 3 (p_calendario, desc_calendario, f_cal_*, mes_01..12)
+# ================================================================
+# BLOCO 3 — CAMADA DE UI
+# CAL_TXT completo (14 idiomas): camada do Calendário Mensal,
+# fim da perda de rota que derrubava a montagem do card.
+# EXTRA_TRAD completo (14 idiomas): labels de formulário.
+# MESES_TRAD DERIVA de CAL_TXT: fim da triplicação
+# (app.js + translations.js + bloco calendário).
+# UI_TRAD é populado por colheita byte-perfect do translations.js
+# em produção (impossível perder informação na transcrição).
+# ================================================================
+
+CAL_TXT = {
+    "pt": {"p_calendario":"Calendário Mensal Energético","desc_calendario":"Energia do mês + a SUA energia pessoal naquele mês, com o Ano Pessoal embutido na pesquisa. Descubra os melhores períodos para decisões importantes.","f_cal_univ":"✅ Energia do mês","f_cal_pess":"✅ Sua energia no mês","f_cal_ano_emb":"✅ Ano Pessoal embutido","calc_nome":"Nome completo","f_cal_data":"Data de nascimento","f_cal_ano":"Ano de pesquisa","f_mes":"Mês de referência","ph_nome_completo":"Nome completo","MESES":["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"]},
+    "en": {"p_calendario":"Energetic Monthly Calendar","desc_calendario":"The month's energy + YOUR personal energy in that month, with the Personal Year built into the search. Find the best periods for important decisions.","f_cal_univ":"✅ Month's energy","f_cal_pess":"✅ Your energy in the month","f_cal_ano_emb":"✅ Personal Year included","calc_nome":"Full name","f_cal_data":"Date of birth","f_cal_ano":"Search year","f_mes":"Reference month","ph_nome_completo":"Full name","MESES":["January","February","March","April","May","June","July","August","September","October","November","December"]},
+    "es": {"p_calendario":"Calendario Mensual Energético","desc_calendario":"La energía del mes + TU energía personal en ese mes, con el Año Personal incluido en la búsqueda. Descubre los mejores períodos para decisiones importantes.","f_cal_univ":"✅ Energía del mes","f_cal_pess":"✅ Tu energía en el mes","f_cal_ano_emb":"✅ Año Personal incluido","calc_nome":"Nombre completo","f_cal_data":"Fecha de nacimiento","f_cal_ano":"Año de búsqueda","f_mes":"Mes de referencia","ph_nome_completo":"Nombre completo","MESES":["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"]},
+    "it": {"p_calendario":"Calendario Mensile Energetico","desc_calendario":"L'energia del mese + la TUA energia personale in quel mese, con l'Anno Personale incluso nella ricerca. Scopri i migliori periodi per decisioni importanti.","f_cal_univ":"✅ Energia del mese","f_cal_pess":"✅ La tua energia nel mese","f_cal_ano_emb":"✅ Anno Personale incluso","calc_nome":"Nome completo","f_cal_data":"Data di nascita","f_cal_ano":"Anno di ricerca","f_mes":"Mese di riferimento","ph_nome_completo":"Nome completo","MESES":["Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"]},
+    "fr": {"p_calendario":"Calendrier Mensuel Énergétique","desc_calendario":"L'énergie du mois + VOTRE énergie personnelle ce mois-là, avec l'Année Personnelle incluse dans la recherche. Découvrez les meilleures périodes pour les décisions importantes.","f_cal_univ":"✅ Énergie du mois","f_cal_pess":"✅ Votre énergie dans le mois","f_cal_ano_emb":"✅ Année Personnelle incluse","calc_nome":"Nom complet","f_cal_data":"Date de naissance","f_cal_ano":"Année de recherche","f_mes":"Mois de référence","ph_nome_completo":"Nom complet","MESES":["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"]},
+    "de": {"p_calendario":"Energetischer Monatskalender","desc_calendario":"Die Energie des Monats + IHRE persönliche Energie in diesem Monat, mit integriertem Persönlichen Jahr. Finden Sie die besten Zeiträume für wichtige Entscheidungen.","f_cal_univ":"✅ Energie des Monats","f_cal_pess":"✅ Ihre Energie im Monat","f_cal_ano_emb":"✅ Persönliches Jahr inklusive","calc_nome":"Vollständiger Name","f_cal_data":"Geburtsdatum","f_cal_ano":"Suchjahr","f_mes":"Referenzmonat","ph_nome_completo":"Vollständiger Name","MESES":["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"]},
+    "ja": {"p_calendario":"月間エネルギーカレンダー","desc_calendario":"その月のエネルギー＋あなた自身のその月の個人エネルギー。パーソナルイヤーも検索に含まれます。重要な決断に最適な時期を見つけましょう。","f_cal_univ":"✅ 月のエネルギー","f_cal_pess":"✅ あなたのその月のエネルギー","f_cal_ano_emb":"✅ パーソナルイヤー付き","calc_nome":"氏名（フルネーム）","f_cal_data":"生年月日","f_cal_ano":"検索年","f_mes":"対象月","ph_nome_completo":"フルネーム","MESES":["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"]},
+    "zh": {"p_calendario":"月度能量日历","desc_calendario":"当月能量 + 您在该月的个人能量，检索中内置个人年。发现做出重要决定的最佳时期。","f_cal_univ":"✅ 当月能量","f_cal_pess":"✅ 您在该月的能量","f_cal_ano_emb":"✅ 含个人年","calc_nome":"完整姓名","f_cal_data":"出生日期","f_cal_ano":"查询年份","f_mes":"参考月份","ph_nome_completo":"完整姓名","MESES":["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"]},
+    "ru": {"p_calendario":"Энергетический месячный календарь","desc_calendario":"Энергия месяца + ВАША личная энергия в этом месяце, с включённым Личным годом в исследование. Узнайте лучшие периоды для важных решений.","f_cal_univ":"✅ Энергия месяца","f_cal_pess":"✅ Ваша энергия в месяце","f_cal_ano_emb":"✅ Личный год включён","calc_nome":"Полное имя","f_cal_data":"Дата рождения","f_cal_ano":"Год анализа","f_mes":"Месяц анализа","ph_nome_completo":"Полное имя","MESES":["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"]},
+    "he": {"p_calendario":"לוח שנה אנרגטי חודשי","desc_calendario":"האנרגיה של החודש + האנרגיה האישית שלך באותו חודש, עם השנה האישית הכלולה בחיפוש. גלה את התקופות הטובות ביותר להחלטות חשובות.","f_cal_univ":"✅ אנרגיית החודש","f_cal_pess":"✅ האנרגיה שלך בחודש","f_cal_ano_emb":"✅ השנה האישית כלולה","calc_nome":"שם מלא","f_cal_data":"תאריך לידה","f_cal_ano":"שנת חיפוש","f_mes":"חודש ייחוס","ph_nome_completo":"שם מלא","MESES":["ינואר","פברואר","מרץ","אפריל","מאי","יוני","יולי","אוגוסט","ספטמבר","אוקטובר","נובמבר","דצמבר"]},
+    "ar": {"p_calendario":"التقويم الشهري الطاقي","desc_calendario":"طاقة الشهر + طاقتك الشخصية في ذلك الشهر، مع السنة الشخصية مدمجة في البحث. اكتشف أفضل الفترات لاتخاذ القرارات المهمة.","f_cal_univ":"✅ طاقة الشهر","f_cal_pess":"✅ طاقتك في الشهر","f_cal_ano_emb":"✅ السنة الشخصية مدمجة","calc_nome":"الاسم الكامل","f_cal_data":"تاريخ الميلاد","f_cal_ano":"سنة البحث","f_mes":"شهر المرجع","ph_nome_completo":"الاسم الكامل","MESES":["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"]},
+    "id": {"p_calendario":"Kalender Energi Bulanan","desc_calendario":"Energi bulan + energi pribadi ANDA di bulan tersebut, dengan Tahun Pribadi disertakan dalam pencarian. Temukan periode terbaik untuk keputusan penting.","f_cal_univ":"✅ Energi bulan","f_cal_pess":"✅ Energi Anda di bulan itu","f_cal_ano_emb":"✅ Termasuk Tahun Pribadi","calc_nome":"Nama lengkap","f_cal_data":"Tanggal lahir","f_cal_ano":"Tahun pencarian","f_mes":"Bulan acuan","ph_nome_completo":"Nama lengkap","MESES":["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"]},
+    "tr": {"p_calendario":"Enerjetik Aylık Takvim","desc_calendario":"Ayın enerjisi + o aydaki KİŞİSEL enerjiniz, aramada Kişisel Yıl dahil. Önemli kararlar için en uygun dönemleri keşfedin.","f_cal_univ":"✅ Ayın enerjisi","f_cal_pess":"✅ O aydaki enerjiniz","f_cal_ano_emb":"✅ Kişisel Yıl dahil","calc_nome":"Tam ad","f_cal_data":"Doğum tarihi","f_cal_ano":"Arama yılı","f_mes":"Referans ay","ph_nome_completo":"Tam ad","MESES":["Ocak","Şubat","Mart","Nisan","Mayıs","Haziran","Temmuz","Ağustos","Eylül","Ekim","Kasım","Aralık"]},
+    "vi": {"p_calendario":"Lịch Năng lượng Hàng tháng","desc_calendario":"Năng lượng của tháng + năng lượng cá nhân CỦA BẠN trong tháng đó, kèm Năm Cá nhân trong tìm kiếm. Khám phá thời điểm tốt nhất cho các quyết định quan trọng.","f_cal_univ":"✅ Năng lượng của tháng","f_cal_pess":"✅ Năng lượng của bạn trong tháng","f_cal_ano_emb":"✅ Kèm Năm Cá nhân","calc_nome":"Họ tên đầy đủ","f_cal_data":"Ngày sinh","f_cal_ano":"Năm tìm kiếm","f_mes":"Tháng tham chiếu","ph_nome_completo":"Họ tên đầy đủ","MESES":["Tháng 1","Tháng 2","Tháng 3","Tháng 4","Tháng 5","Tháng 6","Tháng 7","Tháng 8","Tháng 9","Tháng 10","Tháng 11","Tháng 12"]},
+}
+
+EXTRA_TRAD = {
+    "pt": {"f_genero":"Gênero","f_grafias":"Grafias do nome","f_nome_org":"Nome da ONG / Associação / Instituto / Fundação","ph_nome_org":"Nome da organização","f_nome_candidato":"Nome completo do candidato","f_num_atual":"Número atual (opcional, para análise de vibração)","ph_sigla":"Sigla","f_sobrenome_familia":"Sobrenome da família","f_pessoa1":"Nome da primeira pessoa","f_pessoa2":"Nome da segunda pessoa","ph_energia":"1 a 9","confirmar_btn":"Confirmar","cancelar_btn":"Cancelar"},
+    "en": {"f_genero":"Gender","f_grafias":"Name spellings","f_nome_org":"NGO, Association, Institute or Foundation name","ph_nome_org":"Organization name","f_nome_candidato":"Candidate's full name","f_num_atual":"Current number (optional, for vibration analysis)","ph_sigla":"Abbreviation","f_sobrenome_familia":"Family surname","f_pessoa1":"First person's name","f_pessoa2":"Second person's name","ph_energia":"1 to 9","confirmar_btn":"Confirm","cancelar_btn":"Cancel"},
+    "es": {"f_genero":"Género","f_grafias":"Grafías del nombre","f_nome_org":"Nombre de la ONG, Asociación, Instituto o Fundación","ph_nome_org":"Nombre de la organización","f_nome_candidato":"Nombre completo del candidato","f_num_atual":"Número actual (opcional, para análisis de vibración)","ph_sigla":"Sigla","f_sobrenome_familia":"Apellido de la familia","f_pessoa1":"Nombre de la primera persona","f_pessoa2":"Nombre de la segunda persona","ph_energia":"1 a 9","confirmar_btn":"Confirmar","cancelar_btn":"Cancelar"},
+    "it": {"f_genero":"Genere","f_grafias":"Grafie del nome","f_nome_org":"Nome di ONG, Associazione, Istituto o Fondazione","ph_nome_org":"Nome dell'organizzazione","f_nome_candidato":"Nome completo del candidato","f_num_atual":"Numero attuale (facoltativo, per l'analisi della vibrazione)","ph_sigla":"Sigla","f_sobrenome_familia":"Cognome della famiglia","f_pessoa1":"Nome della prima persona","f_pessoa2":"Nome della seconda persona","ph_energia":"1 a 9","confirmar_btn":"Conferma","cancelar_btn":"Annulla"},
+    "fr": {"f_genero":"Genre","f_grafias":"Graphies du nom","f_nome_org":"Nom d'ONG, association, institut ou fondation","ph_nome_org":"Nom de l'organisation","f_nome_candidato":"Nom complet du candidat","f_num_atual":"Numéro actuel (facultatif, pour l'analyse de la vibration)","ph_sigla":"Sigle","f_sobrenome_familia":"Nom de famille","f_pessoa1":"Nom de la première personne","f_pessoa2":"Nom de la deuxième personne","ph_energia":"1 à 9","confirmar_btn":"Confirmer","cancelar_btn":"Annuler"},
+    "de": {"f_genero":"Geschlecht","f_grafias":"Namensschreibweisen","f_nome_org":"Name von NGO, Verein, Institut oder Stiftung","ph_nome_org":"Name der Organisation","f_nome_candidato":"Vollständiger Name des Kandidaten","f_num_atual":"Aktuelle Nummer (optional, für die Schwingungsanalyse)","ph_sigla":"Kürzel","f_sobrenome_familia":"Familienname","f_pessoa1":"Name der ersten Person","f_pessoa2":"Name der zweiten Person","ph_energia":"1 bis 9","confirmar_btn":"Bestätigen","cancelar_btn":"Abbrechen"},
+    "ja": {"f_genero":"性別","f_grafias":"名前の表記","f_nome_org":"NGO・協会・研究所・財団の名前","ph_nome_org":"組織名","f_nome_candidato":"候補者のフルネーム","f_num_atual":"現在の番号（任意、振動分析用）","ph_sigla":"略称","f_sobrenome_familia":"家族の姓","f_pessoa1":"1人目の名前","f_pessoa2":"2人目の名前","ph_energia":"1〜9","confirmar_btn":"確認","cancelar_btn":"キャンセル"},
+    "zh": {"f_genero":"性别","f_grafias":"名称写法","f_nome_org":"非政府组织、协会、研究所或基金会名称","ph_nome_org":"组织名称","f_nome_candidato":"候选人全名","f_num_atual":"当前号码（可选，用于振动分析）","ph_sigla":"缩写","f_sobrenome_familia":"家庭姓氏","f_pessoa1":"第一个人的名字","f_pessoa2":"第二个人的名字","ph_energia":"1到9","confirmar_btn":"确认","cancelar_btn":"取消"},
+    "ru": {"f_genero":"Пол","f_grafias":"Написания имени","f_nome_org":"Название НКО, ассоциации, института или фонда","ph_nome_org":"Название организации","f_nome_candidato":"Полное имя кандидата","f_num_atual":"Текущий номер (необязательно, для анализа вибрации)","ph_sigla":"Сокращение","f_sobrenome_familia":"Фамилия семьи","f_pessoa1":"Имя первого человека","f_pessoa2":"Имя второго человека","ph_energia":"от 1 до 9","confirmar_btn":"Подтвердить","cancelar_btn":"Отмена"},
+    "he": {"f_genero":"מגדר","f_grafias":"כתיב השם","f_nome_org":"שם עמותה, ארגון, מכון או קרן","ph_nome_org":"שם הארגון","f_nome_candidato":"שמו המלא של המועמד","f_num_atual":"המספר הנוכחי (אופציונלי, לניתוח תנודה)","ph_sigla":"ראשי תיבות","f_sobrenome_familia":"שם משפחה","f_pessoa1":"שמו של האדם הראשון","f_pessoa2":"שמו של האדם השני","ph_energia":"1-9","confirmar_btn":"אישור","cancelar_btn":"ביטול"},
+    "ar": {"f_genero":"الجنس","f_grafias":"كتابة الاسم","f_nome_org":"اسم منظمة أو جمعية أو معهد أو مؤسسة","ph_nome_org":"اسم المنظمة","f_nome_candidato":"الاسم الكامل للمرشح","f_num_atual":"الرقم الحالي (اختياري، لتحليل الاهتزاز)","ph_sigla":"اختصار","f_sobrenome_familia":"لقب العائلة","f_pessoa1":"اسم الشخص الأول","f_pessoa2":"اسم الشخص الثاني","ph_energia":"1 إلى 9","confirmar_btn":"تأكيد","cancelar_btn":"إلغاء"},
+    "id": {"f_genero":"Jenis kelamin","f_grafias":"Ejaan nama","f_nome_org":"Nama LSM, Asosiasi, Lembaga atau Yayasan","ph_nome_org":"Nama organisasi","f_nome_candidato":"Nama lengkap kandidat","f_num_atual":"Nomor saat ini (opsional, untuk analisis getaran)","ph_sigla":"Singkatan","f_sobrenome_familia":"Nama belakang keluarga","f_pessoa1":"Nama orang pertama","f_pessoa2":"Nama orang kedua","ph_energia":"1 sampai 9","confirmar_btn":"Konfirmasi","cancelar_btn":"Batal"},
+    "tr": {"f_genero":"Cinsiyet","f_grafias":"İsim yazımları","f_nome_org":"STK, Dernek, Enstitü veya Vakıf Adı","ph_nome_org":"Kuruluş adı","f_nome_candidato":"Adayın tam adı","f_num_atual":"Mevcut numara (isteğe bağlı, titreşim analizi için)","ph_sigla":"Kısaltma","f_sobrenome_familia":"Aile soyadı","f_pessoa1":"Birinci kişinin adı","f_pessoa2":"İkinci kişinin adı","ph_energia":"1 ile 9","confirmar_btn":"Onayla","cancelar_btn":"İptal"},
+    "vi": {"f_genero":"Giới tính","f_grafias":"Cách viết tên","f_nome_org":"Tên Tổ chức, Hiệp hội, Viện hoặc Quỹ","ph_nome_org":"Tên tổ chức","f_nome_candidato":"Họ tên đầy đủ của ứng viên","f_num_atual":"Số hiện tại (tùy chọn, để phân tích rung động)","ph_sigla":"Tên viết tắt","f_sobrenome_familia":"Họ của gia đình","f_pessoa1":"Tên người thứ nhất","f_pessoa2":"Tên người thứ hai","ph_energia":"1 đến 9","confirmar_btn":"Xác nhận","cancelar_btn":"Hủy"},
+}
+
+MESES_TRAD = {}   # derivado de CAL_TXT (fonte única dos meses)
+UI_TRAD = {}      # populado por colheita byte-perfect (função abaixo)
+
+def _derivacao_meses():
+    """MESES_TRAD deriva de CAL_TXT: uma só fonte, zero duplicação."""
+    for lang in IDIOMAS:
+        meses = (CAL_TXT.get(lang) or {}).get("MESES")
+        if meses:
+            MESES_TRAD[lang] = list(meses)
+
+def colher_ui(caminho="referencia/ui_harvest.json"):
+    """Colheita byte-perfect do translations.js em produção.
+    Regra de precedência: camadas curadas do núcleo (CAL_TXT, EXTRA_TRAD,
+    MESES derivado) vencem; a colheita preenche todo o RESTANTE da UI
+    (hero, nav, alerts, desc_*, p_*, nomes5, sig...) sem risco de perda.
+    Como o arquivo vai para o repositório, sobrevive a quedas de energia."""
+    _derivacao_meses()
+    if not os.path.exists(caminho):
+        print("ui_harvest.json nao encontrado; UI_TRAD aguarda colheita. CAL_TXT e EXTRA_TRAD ja validos.")
+        return False
+    dados = json.load(open(caminho, encoding="utf-8"))
+    for lang in IDIOMAS:
+        vivo = (dados.get("translations") or {}).get(lang) or {}
+        base = dict(vivo)
+        for ch, val in (CAL_TXT.get(lang) or {}).items():
+            if ch == "MESES":
+                continue
+            base[ch] = val
+        UI_TRAD[lang] = base
+        extra = dict((dados.get("EXTRA_TRAD") or {}).get(lang) or {})
+        extra.update(EXTRA_TRAD.get(lang) or {})
+        EXTRA_TRAD[lang] = extra
+        vivo_meses = (dados.get("MESES_TRAD") or {}).get(lang)
+        if not MESES_TRAD.get(lang) and vivo_meses:
+            MESES_TRAD[lang] = list(vivo_meses)
+    print("Colheita concluida: UI_TRAD cobre %d idiomas." % len(UI_TRAD))
+    return True
 
 # ===== 4. BLOCO 4 (preços e tabelas) — cole aqui =====
 FEAT_TRAD      = {}    # Bloco 4
