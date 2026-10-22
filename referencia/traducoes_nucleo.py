@@ -37,16 +37,18 @@ def validar():
         ("AMOR_TXT", AMOR_TXT, [5,6]),
         ("CAL_TXT", CAL_TXT, ["p_calendario","desc_calendario","f_cal_univ","f_cal_pess","f_cal_ano_emb","calc_nome","f_cal_data","f_cal_ano","f_mes","ph_nome_completo","MESES"]),
         ("EXTRA_TRAD", EXTRA_TRAD, ["f_genero","f_grafias","f_nome_org","ph_nome_org","f_nome_candidato","f_num_atual","ph_sigla","f_sobrenome_familia","f_pessoa1","f_pessoa2","ph_energia","confirmar_btn","cancelar_btn"]),
+        ("PRECO_DISPLAY", PRECO_DISPLAY, None),   # tratado abaixo (6 faixas x 14)
+        ("FEAT_TRAD", FEAT_TRAD, CHAVES_24),
+        ("BC_TEXTS", BC_TEXTS, ["qtd_total", "codigos"]),
+        ("SERVICOS_TRAD", SERVICOS_TRAD, None),   # 4 servicos x 14
         ("MESES_TRAD", MESES_TRAD, []),  # derivado; checa presenca dos 14
     ]
+
     for nome, camada, chaves in checks:
-        if nome == "MESES_TRAD":
+        if chaves is None:
             faltam = [l for l in IDIOMAS if not camada.get(l)]
             print("%-16s %s" % (nome, "OK 14 idiomas" if not faltam else "FALTAM: " + ", ".join(faltam)))
             if faltam: ok = False
-            continue
-        if not camada:
-            print("%-16s PENDENTE (bloco/colheita ainda nao feita)" % nome)
             continue
         f = validar_camada(nome, camada, chaves)
         print("%-16s %s" % (nome, "OK 14 idiomas" if not f else "FALTAM: " + ", ".join(f[:15])))
@@ -396,13 +398,80 @@ def colher_ui(caminho="referencia/ui_harvest.json"):
     print("Colheita concluida: UI_TRAD cobre %d idiomas." % len(UI_TRAD))
     return True
 
-# ===== 4. BLOCO 4 (preços e tabelas) — cole aqui =====
-FEAT_TRAD      = {}    # Bloco 4
-DESC_COLETIVO  = {}    # Bloco 4
-BC_TEXTS       = {}    # Bloco 4
-SERVICOS_TRAD  = {}    # Bloco 4
-# PRODUTO_FAIXA e PRECO_DISPLAY não são digitados aqui:
-# derivam de referencia/precos.py (fonte única, sem duplicar).
+# ================================================================
+# BLOCO 4 — PREÇOS E TABELAS
+# PRECO_DISPLAY DERIVA de referencia/precos.py (fonte única).
+# FEAT_TRAD / DESC_COLETIVO / BC_TEXTS / SERVICOS_TRAD chegam
+# pela colheita byte-perfect (ui_harvest.json). Fim do conflito
+# de verdade (valores antigos US$ 1,50 / ¥ 250 / ₽ 130).
+# ================================================================
+
+import sys, os as _os
+sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__))))
+try:
+    from precos import VALORES as _VALORES, SIMBOLO as _SIMBOLO, PRECO_DISPLAY as _PD_REF
+except ImportError:
+    from referencia.precos import VALORES as _VALORES, SIMBOLO as _SIMBOLO, PRECO_DISPLAY as _PD_REF
+
+PRECO_DISPLAY = {}   # derivado
+
+def _derivacao_precos():
+    """PRECO_DISPLAY derivado de precos.py — fonte única de verdade.
+    Formato final idêntico ao consumido pelo site (símbolo + valor)."""
+    for lang in IDIOMAS:
+        vals = _VALORES.get(lang) or _VALORES.get("en") or []
+        simb = _SIMBOLO.get(lang, "US$")
+        def _fmt(v):
+            # JPY e VND são inteiros (0 casas); demais, dividido por 100
+            if lang in ("ja", "vi"):
+                n = v
+            else:
+                n = v / 100.0
+            s = ("%d" % round(n)) if lang in ("ja", "vi") else ("%g" % round(n, 2))
+            # milhar com ponto
+            int_part, _, dec_part = s.partition(".")
+            int_part = int_part[::-1]
+            grp = ".".join(int_part[i:i+3] for i in range(0, len(int_part), 3))
+            s = grp[::-1] + (("." + dec_part) if dec_part else "")
+            return "%s %s" % (simb, s)
+        PRECO_DISPLAY[lang] = [_fmt(v) for v in vals]
+
+FEAT_TRAD      = {}
+DESC_COLETIVO  = {}
+BC_TEXTS       = {}
+SERVICOS_TRAD  = {}
+
+def colher_ui(caminho="referencia/ui_harvest.json"):
+    """Colheita byte-perfect (ampliada): UI + FEAT_TRAD + DESC_COLETIVO +
+    BC_TEXTS + SERVICOS_TRAD. Núcleo vence em conflito."""
+    _derivacao_meses()
+    _derivacao_precos()
+    if not os.path.exists(caminho):
+        print("ui_harvest.json nao encontrado. CAL_TXT/EXTRA_TRAD/MESES/PRECO_DISPLAY derivados continuam validos.")
+        return False
+    dados = json.load(open(caminho, encoding="utf-8"))
+    vivo = dados.get("translations") or {}
+    for lang in IDIOMAS:
+        base = dict(vivo.get(lang) or {})
+        for ch, val in (CAL_TXT.get(lang) or {}).items():
+            if ch == "MESES":
+                continue
+            base[ch] = val
+        UI_TRAD[lang] = base
+        extra = dict((dados.get("EXTRA_TRAD") or {}).get(lang) or {})
+        extra.update(EXTRA_TRAD.get(lang) or {})
+        EXTRA_TRAD[lang] = extra
+        # Tabelas BC e features: colheita integral
+        for nome, alvo in [("FEAT_TRAD", FEAT_TRAD), ("DESC_COLETIVO", DESC_COLETIVO),
+                           ("BC_TEXTS", BC_TEXTS), ("SERVICOS_TRAD", SERVICOS_TRAD)]:
+            v = (dados.get(nome) or {}).get(lang)
+            if v:
+                alvo[lang] = v
+        if not MESES_TRAD.get(lang) and (dados.get("MESES_TRAD") or {}).get(lang):
+            MESES_TRAD[lang] = list(dados["MESES_TRAD"][lang])
+    print("Colheita concluida: UI_TRAD %d idiomas; FEAT_TRAD %d; BC_TEXTS %d; SERVICOS_TRAD %d."
+          % (len(UI_TRAD), len(FEAT_TRAD), len(BC_TEXTS), len(SERVICOS_TRAD)))
+    return True
 
 # ===== 5. BLOCO 5 (PDFs e semântica) — cole aqui =====
 PDF_TEXTS   = {}       # Bloco 5
