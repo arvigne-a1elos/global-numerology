@@ -813,7 +813,7 @@ fetch('/api/precos')
   var MAPA_ID_PROD = {
     urna: "urna", eleitoral: "eleitoral", arte: "artistico", ong: "nome_ong",
     ia: "ia", bebe: "bebe", negocio: "negocio", assinatura: "assinatura",
-    equipe: "compatibilidade_equipes"
+    equipe: "nome_equipe", compEquipe: "compatibilidade_equipes"
   };
   function montarSeletor(el) {
     if (el.children.length > 0) return;   // já montado por outra função? não mexe
@@ -899,12 +899,20 @@ window.ativarBonusIA = window.ativarBonusIA || function(){
 };
 
 function pagarEquipe(){
-  var n = document.getElementById('equipeMembros').value.trim();
+  var n = (document.getElementById('equipeNome') ? document.getElementById('equipeNome').value : '').trim();
+  if (!n) { alert(t_preencha()); return; }
+  location.href = '/criar-checkout?produto=nome_equipe&dado=' + encodeURIComponent(n)
+    + '&energia=' + encodeURIComponent(_energiaSelecionada('equipeEnergiaSel', 'nome_equipe'))
+    + '&lang=' + getLang();
+}
+// ===== BLOCO 6: pagamento do Compatibilidade de Equipes (RH) =====
+window.pagarCompatibilidade = window.pagarCompatibilidade || function(){
+  var n = (document.getElementById('equipeMembros') ? document.getElementById('equipeMembros').value : '').trim();
   if (!n) { alert(t_preencha()); return; }
   location.href = '/criar-checkout?produto=compatibilidade_equipes&dado=' + encodeURIComponent(n)
-    + '&energia=' + encodeURIComponent(_energiaSelecionada('equipeEnergiaSel', 'compatibilidade_equipes')) + '&lang=' + getLang();
-}
-
+    + '&energia=' + encodeURIComponent(_energiaSelecionada('compEquipeEnergiaSel', 'compatibilidade_equipes'))
+    + '&lang=' + getLang();
+};
 // ===== GUARDA GLOBAL ANTI-SUBMIT (A1ELOS — 20/10/2026) =====
 // Motivo: <button> dentro de <form> sem type="button" dispara um submit nativo
 // que cancela a navegação do onclick (pagarX). Este bloco impede o submit nativo
