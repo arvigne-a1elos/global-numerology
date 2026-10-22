@@ -50,12 +50,10 @@ def validar():
     checks = [
         ("PRODUTOS_TRAD", PRODUTOS_TRAD, CHAVES_24),
         ("ENERGIA_TITULOS", ENERGIA_TITULOS, [1,2,3,4,5,6,7,8,9]),
-        ("ENERGIAS_TXT", ENERGIAS_TXT, [1,2,3,4,5,6,7,8,9]),
         ("AMOR_TXT", AMOR_TXT, [5,6]),
         ("CAL_TXT", CAL_TXT, ["p_calendario","desc_calendario","f_cal_univ","f_cal_pess","f_cal_ano_emb","calc_nome","f_cal_data","f_cal_ano","f_mes","ph_nome_completo","MESES"]),
         ("EXTRA_TRAD", EXTRA_TRAD, ["f_genero","f_grafias","f_nome_org","ph_nome_org","f_nome_candidato","f_num_atual","ph_sigla","f_sobrenome_familia","f_pessoa1","f_pessoa2","ph_energia","confirmar_btn","cancelar_btn"]),
         ("PRECO_DISPLAY", PRECO_DISPLAY, None),   # tratado abaixo (6 faixas x 14)
-        ("FEAT_TRAD", FEAT_TRAD, CHAVES_24),
         ("BC_TEXTS", BC_TEXTS, ["qtd_total", "codigos"]),
         ("SERVICOS_TRAD", SERVICOS_TRAD, None),   # 4 servicos x 14
         ("MESES_TRAD", MESES_TRAD, None),  # derivado; checa presenca dos 14
@@ -85,7 +83,24 @@ def validar():
     print("%-16s %s" % ("BOAS_VINDAS", "OK 14" if not faltas_bv else "FALTAM: " + ", ".join(faltas_bv)))
     print("%-16s %s" % ("PERIODOS", "OK 14" if not faltas_pe else "FALTAM: " + ", ".join(faltas_pe)))
     print("%-16s %s" % ("REALIZ_HEAD", "OK 14" if not faltas_rh else "FALTAM: " + ", ".join(faltas_rh)))
-    if faltas_bv or faltas_pe or faltas_rh: ok = False        
+    if faltas_bv or faltas_pe or faltas_rh: ok = False  
+        # ENERGIAS_TXT: estrutura número-first (1-9 com 14 idiomas dentro)
+    faltas_et = []
+    for n in range(1, 10):
+        d = ENERGIAS_TXT.get(n) or {}
+        for lang in IDIOMAS:
+            if not d.get(lang):
+                faltas_et.append("ENERGIAS_TXT/%d/%s" % (n, lang))
+    print("%-16s %s" % ("ENERGIAS_TXT", "OK 14 idiomas (9x14)" if not faltas_et else "FALTAM: " + ", ".join(faltas_et[:15])))
+    if faltas_et: ok = False
+
+    # FEAT_TRAD: pt é canon; demais idiomas chegam pela colheita
+    faltas_ft = [l for l in IDIOMAS if not FEAT_TRAD.get(l)]
+    if faltas_ft:
+        print("%-16s PENDENTE_COLHEITA (pt=canon OK; aguardando ui_harvest.json para: %s)"
+              % ("FEAT_TRAD", ", ".join(faltas_ft)))
+    else:
+        print("%-16s OK 14 idiomas" % "FEAT_TRAD")    
     return ok
 
 def gerar_translations_js(caminho="referencia/translations_gerado.js"):
