@@ -173,7 +173,7 @@ TRAD = {
         "Zorluklar ve Başarılar", "como_calculamos": "Nasıl hesaplıyoruz?", "por_que_energia_8": "Neden enerji 8?",
         "energia_8_ideal": "Enerji 8 — İDEAL:", "alternativas": "Alternatifler:"
     },
-        "vi": {
+    "vi": {
         "express": "Bản đồ Nhanh (₫ 25.000)", "completo": "Bản đồ Đầy đủ (₫ 53.000)",
         "significado": "Ý nghĩa", "caminho_vida": "Đường đời", "expressao": "Biểu hiện", "motivacao": "Động lực",
         "personalidade": "Tính cách", "destino": "Số phận", "seu_perfil": "Hồ sơ Thần số học của bạn", "analise": "Phân tích chi tiết",
@@ -187,7 +187,7 @@ TRAD = {
         "nenhum": "Không có", "numeros_principais": "Các Số Chính của Bạn", "caminho_ciclos": "Đường đời và Chu kỳ",   
         "desafios_realizacoes": "Thách thức và Thành đạt", "como_calculamos": "Chúng tôi tính như thế nào?", 
         "por_que_energia_8": "Tại sao là năng lượng 8?", "energia_8_ideal": "Năng lượng 8 — LÝ TƯỞNG:", "alternativas": "Phương án thay thế:"
-    },
+  },
 }
          
 def t(chave, lang):
