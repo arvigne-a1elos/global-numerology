@@ -4,7 +4,13 @@
 import stripe
 from produtos.mapa import reduzir, calc_mapa, calc_grid, analisar_express, analisar_completo, analisar_vida
 from produtos.calendario import analisar_calendario
-from pdf_service import gerar_pdf_calendario
+# Blindagem: um import faltando não pode derrubar o site inteiro
+try:
+    from pdf_service import gerar_pdf_calendario
+except ImportError:
+    def gerar_pdf_calendario(*args, **kwargs):
+        logger.error("gerar_pdf_calendario indisponivel em pdf_service; calendario nao gerado, site permanece no ar.")
+        return None
 from produtos.nome import analisar_nome
 from produtos.urna import validar_nomes_urna
 from produtos.eleitoral import gerar_numeros
