@@ -13,7 +13,7 @@ TRAD = {
         "legado": "4ª Realização (Legado)", "vibracao": "Vibração de Nascimento", "grade": "Grade Energética",
         "presentes": "Energias Presentes", "carencias": "Carências Energéticas", "nota_final": "Nota Final", "regente": "Regente",
         "download": "Baixar PDF", "voltar": "Voltar", "confirmado": "Pagamento Confirmado!", "gerado": "Seu mapa foi gerado com sucesso.",
-        "nenhum": "Nenhum"
+        "nenhum": "Nenhum",
     },
     "en": {
         "express": "Express Map ($ 20.00)", "completo": "Full Map ($ 44.00)",
@@ -26,7 +26,7 @@ TRAD = {
         "legado": "4th Achievement (Legacy)", "vibracao": "Birth Vibration", "grade": "Energy Grid",
         "presentes": "Present Energies", "carencias": "Energy Gaps", "nota_final": "Final Score", "regente": "Ruler",
         "download": "Download PDF", "voltar": "Back", "confirmado": "Payment Confirmed!", "gerado": "Your map was successfully generated.",
-        "nenhum": "None"
+        "nenhum": "None",
     },
     "es": {
         "express": "Mapa Express (11,00 €)", "completo": "Mapa Completo (26,00 €)",
@@ -39,7 +39,7 @@ TRAD = {
         "legado": "4to Logro (Legado)", "vibracao": "Vibración de Nacimiento", "grade": "Rejilla Energética",
         "presentes": "Energías Presentes", "carencias": "Carencias Energéticas", "nota_final": "Nota Final", "regente": "Regente",
         "download": "Descargar PDF", "voltar": "Volver", "confirmado": "¡Pago Confirmado!", "gerado": "Tu mapa ha sido generado con éxito.",
-        "nenhum": "Ninguno"
+        "nenhum": "Ninguno",
     },
     "fr": {
         "express": "Carte Express (11,00 €)", "completo": "Carte Complète (26,00 €)",
@@ -52,7 +52,7 @@ TRAD = {
         "legado": "4ème Réalisation (Héritage)", "vibracao": "Vibration de Naissance", "grade": "Grille Énergétique",
         "presentes": "Énergies Présentes", "carencias": "Carences Énergétiques", "nota_final": "Note Finale", "regente": "Régent",
         "download": "Télécharger PDF", "voltar": "Retour", "confirmado": "Paiement Confirmé !", "gerado": "Votre carte a été générée avec succès.",
-        "nenhum": "Aucun"
+        "nenhum": "Aucun",
     },
     "de": {
         "express": "Express-Karte (11,00 €)", "completo": "Vollständige Karte (26,00 €)",
@@ -65,7 +65,7 @@ TRAD = {
         "legado": "4. Erfolg (Vermächtnis)", "vibracao": "Geburtsschwingung", "grade": "Energiegitter",
         "presentes": "Vorhandene Energien", "carencias": "Energielücken", "nota_final": "Endnote", "regente": "Regent",
         "download": "PDF herunterladen", "voltar": "Zurück", "confirmado": "Zahlung bestätigt!", "gerado": "Ihre Karte wurde erfolgreich erstellt.",
-        "nenhum": "Keine"
+        "nenhum": "Keine",
     },
     "it": {
         "express": "Mappa Express (11,00 €)", "completo": "Mappa Completa (26,00 €)",
@@ -78,7 +78,7 @@ TRAD = {
         "legado": "4° Traguardo (Eredità)", "vibracao": "Vibrazione di Nascita", "grade": "Griglia Energetica",
         "presentes": "Energie Presenti", "carencias": "Carenze Energetiche", "nota_final": "Voto Finale", "regente": "Reggente",
         "download": "Scarica PDF", "voltar": "Indietro", "confirmado": "Pagamento Confermato!", "gerado": "La tua mappa è stata generata con successo.",
-        "nenhum": "Nessuno"
+        "nenhum": "Nessuno",
     },
     "ja": { 
         "express": "エクスプレスマップ (¥ 1.400)", "completo": "フルマップ (¥ 3.000)",
@@ -91,7 +91,7 @@ TRAD = {
         "legado": "第4の達成 (遺産)", "vibracao": "誕生の波動", "grade": "エネルギーマトリックス",
         "presentes": "存在するエネルギー", "carencias": "不足しているエネルギー", "nota_final": "最終評価", "regente": "支配星",
         "download": "PDFをダウンロード", "voltar": "戻る", "confirmado": "支払い確認済み!", "gerado": "マップの生成に成功しました。",
-        "nenhum": "なし"
+        "nenhum": "なし",
     },
     "zh": {
         "express": "快速解读 (¥ 26,00)", "completo": "完整解读 (¥ 53,00)",
@@ -104,7 +104,7 @@ TRAD = {
         "legado": "第四成就 (遗产)", "vibracao": "出生振动", "grade": "能量网格",
         "presentes": "存在的能量", "carencias": "缺失的能量", "nota_final": "最终评语", "regente": "主宰",
         "download": "下载PDF", "voltar": "返回", "confirmado": "付款已确认!", "gerado": "您的解读图已成功生成。",
-        "nenhum": "无"
+        "nenhum": "无",
     },
     "ru": {
         "express": "Экспресс-карта (₽ 440,00)", "completo": "Полная карта (₽ 800,00)",
@@ -117,7 +117,7 @@ TRAD = {
         "legado": "4-е достижение (Наследие)", "vibracao": "Вибрация рождения", "grade": "Энергетическая сетка",
         "presentes": "Присутствующие энергии", "carencias": "Энергетические пробелы", "nota_final": "Итоговая оценка", "regente": "Правитель",
         "download": "Скачать PDF", "voltar": "Назад", "confirmado": "Платёж подтверждён!", "gerado": "Ваша карта успешно создана.",
-        "nenhum": "Нет"
+        "nenhum": "Нет",
     },
     "he": {
         "express": "מפה מהירה (₪ 44,00)", "completo": "מפה מלאה (₪ 98,00)",
@@ -130,7 +130,7 @@ TRAD = {
         "legado": "הישג רביעי (מורשת)", "vibracao": "תנודת לידה", "grade": "רשת אנרגיה",
         "presentes": "אנרגיות נוכחות", "carencias": "פערי אנרגיה", "nota_final": "ציון סופי", "regente": "שליט",
         "download": "הורד PDF", "voltar": "חזור", "confirmado": "התשלום אושר!", "gerado": "המפה שלך נוצרה בהצלחה.",
-        "nenhum": "אין"
+        "nenhum": "אין",
     },
     "ar": {
         "express": "خريطة سريعة (﷼ 35,00)", "completo": "خريطة كاملة (﷼ 71,00)",
@@ -143,7 +143,7 @@ TRAD = {
         "legado": "الإنجاز الرابع (الإرث)", "vibracao": "اهتزاز الميلاد", "grade": "شبكة الطاقة",
         "presentes": "الطاقات الحاضرة", "carencias": "فجوات الطاقة", "nota_final": "النتيجة النهائية", "regente": "الحاكم",
         "download": "تحميل PDF", "voltar": "رجوع", "confirmado": "تم تأكيد الدفع!", "gerado": "تم إنشاء خريطتك بنجاح.",
-        "nenhum": "لا شيء"
+        "nenhum": "لا شيء",
     },
     "id": {
         "express": "Peta Ekspres (Rp 11.000,00)", "completo": "Peta Lengkap (Rp 23.000,00)",
@@ -156,7 +156,7 @@ TRAD = {
         "legado": "Pencapaian ke-4 (Warisan)", "vibracao": "Getaran Kelahiran", "grade": "Kisi Energi",
         "presentes": "Energi yang Hadir", "carencias": "Kekurangan Energi", "nota_final": "Nilai Akhir", "regente": "Penguasa",
         "download": "Unduh PDF", "voltar": "Kembali", "confirmado": "Pembayaran Dikonfirmasi!", "gerado": "Peta Anda berhasil dibuat.",
-        "nenhum": "Tidak Ada"
+        "nenhum": "Tidak Ada",
     },
     "tr": {
         "express": "Ekspres Harita (₺ 58,00)", "completo": "Tam Harita (₺ 123,00)",
@@ -171,7 +171,7 @@ TRAD = {
         "download": "PDF İndir", "voltar": "Geri", "confirmado": "Ödeme Onaylandı!", "gerado": "Haritanız başarıyla oluşturuldu.",
         "nenhum": "Yok", "numeros_principais": "Ana Numaralarınız", "caminho_ciclos": "Yaşam Yolu ve Döngüler", "desafios_realizacoes": 
         "Zorluklar ve Başarılar", "como_calculamos": "Nasıl hesaplıyoruz?", "por_que_energia_8": "Neden enerji 8?",
-        "energia_8_ideal": "Enerji 8 — İDEAL:", "alternativas": "Alternatifler:"
+        "energia_8_ideal": "Enerji 8 — İDEAL:", "alternativas": "Alternatifler:",
     },
     "vi": {
         "express": "Bản đồ Nhanh (₫ 25.000)", "completo": "Bản đồ Đầy đủ (₫ 53.000)",
@@ -186,7 +186,7 @@ TRAD = {
         "download": "Tải PDF", "voltar": "Quay lại", "confirmado": "Thanh toán đã xác nhận!", "gerado": "Bản đồ của bạn đã được tạo thành công.",
         "nenhum": "Không có", "numeros_principais": "Các Số Chính của Bạn", "caminho_ciclos": "Đường đời và Chu kỳ",   
         "desafios_realizacoes": "Thách thức và Thành đạt", "como_calculamos": "Chúng tôi tính như thế nào?", 
-        "por_que_energia_8": "Tại sao là năng lượng 8?", "energia_8_ideal": "Năng lượng 8 — LÝ TƯỞNG:", "alternativas": "Phương án thay thế:"
+        "por_que_energia_8": "Tại sao là năng lượng 8?", "energia_8_ideal": "Năng lượng 8 — LÝ TƯỞNG:", "alternativas": "Phương án thay thế:",
     },
 }
          
