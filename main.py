@@ -127,28 +127,42 @@ try:
 except Exception as e:
     logger.error(f"DB init adiado: {e}")
 
-# ===== FONTES PARA IDIOMAS (CJK + Cirílico) =====
+# ===== FONTES POR IDIOMA (14 idiomas) =====
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.cidfonts import UnicodeCIDFont
-from reportlab.pdfbase.ttfonts import TTFont   # ← movido para cá (antes do try)
+from reportlab.pdfbase.ttfonts import TTFont
 
+_ok = True
 try:
-    pdfmetrics.registerFont(UnicodeCIDFont('STSong-Light'))                  # chinês (zh)
-    pdfmetrics.registerFont(UnicodeCIDFont('HeiseiMin-W3'))                  # japonês (ja)
-    pdfmetrics.registerFont(TTFont('DejaVu', 'fonts/DejaVuSans.ttf'))        # russo (ru)
-    logger.info("Fontes CJK + DejaVu registradas com sucesso")
+    # CJK
+    pdfmetrics.registerFont(UnicodeCIDFont('STSong-Light'))      # zh
+    pdfmetrics.registerFont(UnicodeCIDFont('HeiseiMin-W3'))      # ja
+    # Cirílico, turco, vietnamita
+    pdfmetrics.registerFont(TTFont('DejaVu', 'fonts/DejaVuSans.ttf'))
+    pdfmetrics.registerFont(TTFont('DejaVu-Bold', 'fonts/DejaVuSans-Bold.ttf'))
+    # Hebraico (RTL)
+    pdfmetrics.registerFont(TTFont('NotoSansHebrew', 'fonts/NotoSansHebrew-Regular.ttf'))
+    pdfmetrics.registerFont(TTFont('NotoSansHebrew-Bold', 'fonts/NotoSansHebrew-Bold.ttf'))
+    # Árabe (RTL)
+    pdfmetrics.registerFont(TTFont('NotoNaskhArabic', 'fonts/NotoNaskhArabic-Regular.ttf'))
+    pdfmetrics.registerFont(TTFont('NotoNaskhArabic-Bold', 'fonts/NotoNaskhArabic-Bold.ttf'))
+    logger.info("Fontes dos 14 idiomas registradas")
 except Exception as e:
+    _ok = False
     logger.warning("Falha ao registrar fontes: %s", e)
 
 FONTE_POR_IDIOMA = {
-    'ja': 'HeiseiMin-W3',
-    'zh': 'STSong-Light',
-    'ru': 'DejaVu',
-    'tr': 'DejaVu',   # turco: ç ğ ı ö ş ü (Helvetica padrão não cobre ş e ğ)
-    'vi': 'DejaVu',   # vietnamita: diacríticos combinados
+    'ja': ('HeiseiMin-W3', 'HeiseiMin-W3'),
+    'zh': ('STSong-Light', 'STSong-Light'),
+    'ru': ('DejaVu', 'DejaVu-Bold'),
+    'tr': ('DejaVu', 'DejaVu-Bold'),
+    'vi': ('DejaVu', 'DejaVu-Bold'),
+    'he': ('NotoSansHebrew', 'NotoSansHebrew-Bold'),
+    'ar': ('NotoNaskhArabic', 'NotoNaskhArabic-Bold'),
 }
+IDIOMAS_RTL = {'he', 'ar'}
 
-# ===== NOMES DOS 23 PRODUTOS (14 IDIOMAS) =====
+# ===== NOMES DOS 24 PRODUTOS (14 IDIOMAS) =====
 PRODUTOS = {
     "pt": {"express": "Mapa Express", "vida": "Qual Vida/Ano", "completo": "Mapa Completo",
         "ia": "Pesquisa IA de Nomes", "urna": "Validacao Nome de Urna", "eleitoral": "Numero Eleitoral",
@@ -534,8 +548,12 @@ GRAY = colors.HexColor("#888")
 FONTE = "Helvetica"
 FN = "Helvetica-Bold"
 
-def estilo(tam, bold, cor, alinh=TA_LEFT, antes=0, depois=0, fonte=None):
-    fn = fonte or (FN if bold else FONTE)
+def estilo(tam, bold, cor, alinh=TA_LEFT, antes=0, depois=0, fonte=None, lang="pt"):
+    regular, negrito = FONTE_POR_IDIOMA.get(lang, ("Helvetica", "Helvetica-Bold"))
+    fn = fonte or (negrito if bold else regular)
+    # RTL: alinhamento à direita quando não especificado
+    if lang in IDIOMAS_RTL and alinh == TA_LEFT:
+        alinh = TA_RIGHT
     return ParagraphStyle("estilo", fontName=fn, fontSize=tam,
                           textColor=cor, alignment=alinh,
                           spaceBefore=antes, spaceAfter=depois,
