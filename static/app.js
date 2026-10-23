@@ -944,34 +944,3 @@ window.pagarCompatibilidade = window.pagarCompatibilidade || function(){
   }
 })();
 
-// ===== BLOCO 6 (22/10/2026): rotas do card Compatibilidade de Equipes (RH) =====
-// Corrige MAPA_ID_PROD (equipe x compEquipe), cria pagarCompatibilidade()
-// e devolve a pagarEquipe() ao produto nome_equipe.
-
-// Edicao 1 — mapeamento dos seletores de energia
-if (typeof MAPA_ID_PROD !== 'undefined') {
-  MAPA_ID_PROD.equipe = "nome_equipe";
-  MAPA_ID_PROD.compEquipe = "compatibilidade_equipes";
-}
-
-// Edicao 2 — pagamento do card RH
-window.pagarCompatibilidade = window.pagarCompatibilidade || function(){
-  var el = document.getElementById('equipeMembros');
-  var n = el ? el.value.trim() : '';
-  if (!n) { alert('Preencha os nomes dos membros.'); return; }
-  var energia = _energiaSelecionada ? _energiaSelecionada('compEquipeEnergiaSel', 'compatibilidade_equipes') : '';
-  location.href = '/criar-checkout?produto=compatibilidade_equipes&dado=' + encodeURIComponent(n)
-    + '&energia=' + encodeURIComponent(energia)
-    + '&lang=' + getLang();
-};
-
-// Edicao 3 — pagarEquipe() serve o produto nome_equipe (rota correta)
-function pagarEquipe(){
-  var el = document.getElementById('equipeNome');
-  var n = el ? el.value.trim() : '';
-  if (!n) { alert('Preencha o nome da equipe.'); return; }
-  var energia = _energiaSelecionada ? _energiaSelecionada('equipeEnergiaSel', 'nome_equipe') : '';
-  location.href = '/criar-checkout?produto=nome_equipe&dado=' + encodeURIComponent(n)
-    + '&energia=' + encodeURIComponent(energia)
-    + '&lang=' + getLang();
-}
