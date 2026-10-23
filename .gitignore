@@ -1,0 +1,20 @@
+﻿# Ferramentas locais de diagnóstico (não versionar)
+auditoria.py
+check_*.py
+diagnostico_*.py
+teste_*.py
+notepad testar_checkout.py
+
+# Python
+__pycache__/
+*.py[cod]
+*.log
+
+# Ambiente
+.env
+venv/
+.venv/
+
+# Sistema
+Thumbs.db
+desktop.ini
