@@ -135,20 +135,21 @@ from reportlab.pdfbase.ttfonts import TTFont
 _ok = True
 try:
     # CJK
-    pdfmetrics.registerFont(UnicodeCIDFont('STSong-Light'))      # zh
-    pdfmetrics.registerFont(UnicodeCIDFont('HeiseiMin-W3'))      # ja
-    # Cirílico, turco, vietnamita
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.cidfonts import UnicodeCIDFont
+from reportlab.pdfbase.ttfonts import TTFont
+
+try:
+    pdfmetrics.registerFont(UnicodeCIDFont('STSong-Light'))
+    pdfmetrics.registerFont(UnicodeCIDFont('HeiseiMin-W3'))
     pdfmetrics.registerFont(TTFont('DejaVu', 'fonts/DejaVuSans.ttf'))
     pdfmetrics.registerFont(TTFont('DejaVu-Bold', 'fonts/DejaVuSans-Bold.ttf'))
-    # Hebraico (RTL)
     pdfmetrics.registerFont(TTFont('NotoSansHebrew', 'fonts/NotoSansHebrew-Regular.ttf'))
     pdfmetrics.registerFont(TTFont('NotoSansHebrew-Bold', 'fonts/NotoSansHebrew-Bold.ttf'))
-    # Árabe (RTL)
     pdfmetrics.registerFont(TTFont('NotoNaskhArabic', 'fonts/NotoNaskhArabic-Regular.ttf'))
     pdfmetrics.registerFont(TTFont('NotoNaskhArabic-Bold', 'fonts/NotoNaskhArabic-Bold.ttf'))
     logger.info("Fontes dos 14 idiomas registradas")
 except Exception as e:
-    _ok = False
     logger.warning("Falha ao registrar fontes: %s", e)
 
 FONTE_POR_IDIOMA = {
@@ -160,7 +161,9 @@ FONTE_POR_IDIOMA = {
     'he': ('NotoSansHebrew', 'NotoSansHebrew-Bold'),
     'ar': ('NotoNaskhArabic', 'NotoNaskhArabic-Bold'),
 }
+
 IDIOMAS_RTL = {'he', 'ar'}
+
 
 # ===== NOMES DOS 24 PRODUTOS (14 IDIOMAS) =====
 PRODUTOS = {
@@ -551,13 +554,14 @@ FN = "Helvetica-Bold"
 def estilo(tam, bold, cor, alinh=TA_LEFT, antes=0, depois=0, fonte=None, lang="pt"):
     regular, negrito = FONTE_POR_IDIOMA.get(lang, ("Helvetica", "Helvetica-Bold"))
     fn = fonte or (negrito if bold else regular)
-    # RTL: alinhamento à direita quando não especificado
     if lang in IDIOMAS_RTL and alinh == TA_LEFT:
         alinh = TA_RIGHT
-    return ParagraphStyle("estilo", fontName=fn, fontSize=tam,
-                          textColor=cor, alignment=alinh,
-                          spaceBefore=antes, spaceAfter=depois,
-                          leading=tam * 1.4)
+    return ParagraphStyle(
+        "estilo", fontName=fn, fontSize=tam, textColor=cor,
+        alignment=alinh, spaceBefore=antes, spaceAfter=depois,
+        leading=tam * 1.4
+    )
+
 
 CARGO_INFO = {
     "vereador": {"label": "Vereador"},
@@ -592,6 +596,24 @@ IDEAL_ENERGIA = {
     "nome_projeto": "8",# Nome do Projeto (execução, força)
     "nome_evento": "3", # Nome do Evento (expressão, brilho)
 }
+
+ROTULOS_PDF = {
+    'pt': {'numero': 'Número', 'valor': 'Valor', 'life_path': 'Caminho de Vida', 'expression': 'Expressão', 'soul_urge': 'Impulso da Alma', 'personality': 'Personalidade', 'destiny': 'Destino'},
+    'en': {'numero': 'Number', 'valor': 'Value', 'life_path': 'Life Path', 'expression': 'Expression', 'soul_urge': 'Soul Urge', 'personality': 'Personality', 'destiny': 'Destiny'},
+    'es': {'numero': 'Número', 'valor': 'Valor', 'life_path': 'Camino de Vida', 'expression': 'Expresión', 'soul_urge': 'Impulso del Alma', 'personality': 'Personalidad', 'destiny': 'Destino'},
+    'it': {'numero': 'Numero', 'valor': 'Valore', 'life_path': 'Sentiero di Vita', 'expression': 'Espressione', 'soul_urge': 'Impulso dell Anima', 'personality': 'Personalità', 'destiny': 'Destino'},
+    'fr': {'numero': 'Numéro', 'valor': 'Valeur', 'life_path': 'Chemin de Vie', 'expression': 'Expression', 'soul_urge': 'Impulsion de l Âme', 'personality': 'Personnalité', 'destiny': 'Destinée'},
+    'de': {'numero': 'Zahl', 'valor': 'Wert', 'life_path': 'Lebensweg', 'expression': 'Ausdruck', 'soul_urge': 'Seelenimpuls', 'personality': 'Persönlichkeit', 'destiny': 'Schicksal'},
+    'ja': {'numero': '数', 'valor': '値', 'life_path': 'ライフパス', 'expression': '表現数', 'soul_urge': '魂の欲求', 'personality': '個性数', 'destiny': '運命数'},
+    'zh': {'numero': '数字', 'valor': '数值', 'life_path': '生命路径数', 'expression': '表达数', 'soul_urge': '灵魂数', 'personality': '个性数', 'destiny': '命数'},
+    'ru': {'numero': 'Число', 'valor': 'Значение', 'life_path': 'Число жизненного пути', 'expression': 'Число выражения', 'soul_urge': 'Число души', 'personality': 'Число личности', 'destiny': 'Число судьбы'},
+    'he': {'numero': 'מספר', 'valor': 'ערך', 'life_path': 'מספר דרך החיים', 'expression': 'מספר הבעה', 'soul_urge': 'מספר הנשמה', 'personality': 'מספר האישיות', 'destiny': 'מספר הגורל'},
+    'ar': {'numero': 'الرقم', 'valor': 'القيمة', 'life_path': 'رقم مسار الحياة', 'expression': 'رقم التعبير', 'soul_urge': 'رقم الروح', 'personality': 'رقم الشخصية', 'destiny': 'رقم القدر'},
+    'id': {'numero': 'Angka', 'valor': 'Nilai', 'life_path': 'Jalur Kehidupan', 'expression': 'Ekspresi', 'soul_urge': 'Panggilan Jiwa', 'personality': 'Kepribadian', 'destiny': 'Takdir'},
+    'tr': {'numero': 'Sayı', 'valor': 'Değer', 'life_path': 'Yaşam Yolu', 'expression': 'İfade', 'soul_urge': 'Ruh Arzusu', 'personality': 'Kişilik', 'destiny': 'Kader'},
+    'vi': {'numero': 'Số', 'valor': 'Giá trị', 'life_path': 'Đường đời', 'expression': 'Biểu hiện', 'soul_urge': 'Khát vọng tâm hồn', 'personality': 'Tính cách', 'destiny': 'Số mệnh'},
+}
+
 # Fixa (sem seletor): energia gravada no metadata para o PDF usar na explicação.
 # O GRAU DE COMPATIBILIDADE de casal/família continua vindo SOMENTE da tabela Cissay.
 # Aqui o 5 alimenta a camada textual (energia 5 = campo afetivo, paixão, envolvimento).
@@ -612,10 +634,11 @@ def _gerar_pdf_local(prod, data, lang, nome, bd, dado=""):
     e.append(Paragraph(nome.upper(), estilo(12, True, DARK, TA_CENTER, 0, 2)))
     e.append(Paragraph(bd or dado, estilo(9, False, GRAY, TA_CENTER, 0, 10)))
     if isinstance(data, dict):
-        td = [["Numero", "Valor"]]
-        rotulos = [("life_path", "Caminho de Vida"), ("expression", "Expressao"),
-                   ("soul_urge", "Motivacao"), ("personality", "Personalidade"),
-                   ("destiny", "Destino")]
+r = ROTULOS_PDF.get(lang, ROTULOS_PDF["pt"])
+td = [[r["numero"], r["valor"]]]
+rotulos = [("life_path", r["life_path"]), ("expression", r["expression"]),
+           ("soul_urge", r["soul_urge"]), ("personality", r["personality"]),
+           ("destiny", r["destiny"])]
         for k, l in rotulos:
             if k in data:
                 td.append([l, str(data[k])])
@@ -629,6 +652,8 @@ def _gerar_pdf_local(prod, data, lang, nome, bd, dado=""):
                 ("BACKGROUND", (0, 1), (-1, -1), LGRAY),
             ]))
             e.append(tbl)
+
+        
 
         # Descrição do Caminho de Vida (semântica em 14 idiomas)
         if SEMANTICA_OK and data.get("life_path"):
