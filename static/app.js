@@ -356,15 +356,14 @@ function montarPassoTipo(produto, lang) {
 window.CONFIG_DESCONTO = {
   faixas: [
     { min: 10,   pct: 10 },
-    { min: 50,   pct: 20 },
-    { min: 100,  pct: 25 },
+    { min: 50,   pct: 15 },
+    { min: 100,  pct: 20 },
     { min: 200,  pct: 30 },
     { min: 500,  pct: 40 },
-    { min: 1000, pct: 45 },
-    { min: 2000, pct: 50 }
+    { min: 1000, pct: 45 }
   ],
-  teto_automatico: 2000,   // acima desta quantidade = sob consulta
-  pct_teto_negociacao: 70  // máximo negociável (só você decide)
+  teto_automatico: 2000,
+  pct_teto_negociacao: 70
 };
 function obterConfigDesconto() {
   return (typeof window.CONFIG_DESCONTO !== 'undefined') ? window.CONFIG_DESCONTO : null;
