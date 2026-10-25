@@ -212,10 +212,6 @@ def t(chave, lang):
 # incrementalmente — nada quebra enquanto traduz.
 # ORDEM OBRIGATÓRIA: esta seção vem DEPOIS de SIG, CAM, DES, VIB.
 # ============================================================
-SIG_I18N = {"pt": SIG}
-CAM_I18N = {"pt": CAM}
-DES_I18N = {"pt": DES}
-VIB_I18N = {"pt": VIB}
 
 # ===== Funções de acesso =====
 def get_sig(n, lang="pt"):
