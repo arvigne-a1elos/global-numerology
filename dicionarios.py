@@ -1,6 +1,12 @@
 # -*- coding: utf-8 -*-
 # dicionarios.py - Base de dados e internacionalização
 
+# ============================================================
+# PREÇOS — FONTE DE VERDADE ÚNICA
+# Cotação âncora: 1 USD = 5,40 BRL
+# Stripe (prices_1_.csv) + capas + tabela de controle
+# Validação: todo preço reduz numerologicamente a 8
+# ============================================================
 TRAD = {
     "pt": {
         "express": "Mapa Express (R$ 8,00)", "completo": "Mapa Completo (R$ 17,00)",
@@ -16,7 +22,7 @@ TRAD = {
         "nenhum": "Nenhum",
     },
     "en": {
-        "express": "Express Map ($ 20.00)", "completo": "Full Map ($ 44.00)",
+        "express": "Express Map ($ 17.00)", "completo": "Full Map ($ 152.00)",
         "significado": "Meaning", "caminho_vida": "Life Path", "expressao": "Expression", "motivacao": "Motivation",
         "personalidade": "Personality", "destino": "Destiny", "seu_perfil": "Your Numerological Profile", "analise": "Detailed Analysis",
         "positivo": "Positive Aspects", "negativo": "Negative Aspects", "licao": "Life Lesson", "ciclos": "Life Cycles",
@@ -29,7 +35,7 @@ TRAD = {
         "nenhum": "None",
     },
     "es": {
-        "express": "Mapa Express (11,00 €)", "completo": "Mapa Completo (26,00 €)",
+        "express": "Mapa Express (17,00 €)", "completo": "Mapa Completo (152,00 €)",
         "significado": "Significado", "caminho_vida": "Camino de la Vida", "expressao": "Expresión", "motivacao": "Motivación",
         "personalidade": "Personalidad", "destino": "Destino", "seu_perfil": "Tu Perfil Numerológico", "analise": "Análisis Detallado",
         "positivo": "Aspectos Positivos", "negativo": "Aspectos Negativos", "licao": "Lección de Vida", "ciclos": "Ciclos de Vida",
@@ -42,7 +48,7 @@ TRAD = {
         "nenhum": "Ninguno",
     },
     "fr": {
-        "express": "Carte Express (11,00 €)", "completo": "Carte Complète (26,00 €)",
+        "express": "Carte Express (17,00 €)", "completo": "Carte Complète (152,00 €)",
         "significado": "Signification", "caminho_vida": "Chemin de Vie", "expressao": "Expression", "motivacao": "Motivation",
         "personalidade": "Personnalité", "destino": "Destin", "seu_perfil": "Votre Profil Numérologique", "analise": "Analyse Détaillée",
         "positivo": "Aspects Positifs", "negativo": "Aspects Négatifs", "licao": "Leçon de Vie", "ciclos": "Cycles de Vie",
@@ -55,7 +61,7 @@ TRAD = {
         "nenhum": "Aucun",
     },
     "de": {
-        "express": "Express-Karte (11,00 €)", "completo": "Vollständige Karte (26,00 €)",
+        "express": "Express-Karte (17,00 €)", "completo": "Vollständige Karte (152,00 €)",
         "significado": "Bedeutung", "caminho_vida": "Lebensweg", "expressao": "Ausdruck", "motivacao": "Motivation",
         "personalidade": "Persönlichkeit", "destino": "Schicksal", "seu_perfil": "Ihr numerologisches Profil", "analise": "Detaillierte Analyse",
         "positivo": "Positive Aspekte", "negativo": "Negative Aspekte", "licao": "Lebenslektion", "ciclos": "Lebenszyklen",
@@ -68,7 +74,7 @@ TRAD = {
         "nenhum": "Keine",
     },
     "it": {
-        "express": "Mappa Express (11,00 €)", "completo": "Mappa Completa (26,00 €)",
+        "express": "Mappa Express (17,00 €)", "completo": "Mappa Completa (152,00 €)",
         "significado": "Significato", "caminho_vida": "Cammino della Vita", "expressao": "Espressione", "motivacao": "Motivazione",
         "personalidade": "Personalità", "destino": "Destino", "seu_perfil": "Il Tuo Profilo Numerologico", "analise": "Analisi Dettagliata",
         "positivo": "Aspetti Positivi", "negativo": "Aspetti Negativi", "licao": "Lezione di Vita", "ciclos": "Cicli di Vita",
@@ -80,8 +86,8 @@ TRAD = {
         "download": "Scarica PDF", "voltar": "Indietro", "confirmado": "Pagamento Confermato!", "gerado": "La tua mappa è stata generata con successo.",
         "nenhum": "Nessuno",
     },
-    "ja": { 
-        "express": "エクスプレスマップ (¥ 1.400)", "completo": "フルマップ (¥ 3.000)",
+    "ja": {
+        "express": "エクスプレスマップ (¥ 1.376)", "completo": "フルマップ (¥ 16.856)",
         "significado": "意味", "caminho_vida": "ライフパス", "expressao": "表現", "motivacao": "動機",
         "personalidade": "性格", "destino": "運命", "seu_perfil": "あなたの数秘術プロファイル", "analise": "詳細分析",
         "positivo": "ポジティブな側面", "negativo": "ネガティブな側面", "licao": "人生の教訓", "ciclos": "ライフサイクル",
@@ -94,7 +100,7 @@ TRAD = {
         "nenhum": "なし",
     },
     "zh": {
-        "express": "快速解读 (¥ 26,00)", "completo": "完整解读 (¥ 53,00)",
+        "express": "快速解读 (¥ 53,00)", "completo": "完整解读 (¥ 647,00)",
         "significado": "含义", "caminho_vida": "生命道路", "expressao": "表现", "motivacao": "动机",
         "personalidade": "个性", "destino": "命运", "seu_perfil": "您的命理档案", "analise": "详细分析",
         "positivo": "积极方面", "negativo": "消极方面", "licao": "人生课题", "ciclos": "人生周期",
@@ -107,7 +113,7 @@ TRAD = {
         "nenhum": "无",
     },
     "ru": {
-        "express": "Экспресс-карта (₽ 440,00)", "completo": "Полная карта (₽ 800,00)",
+        "express": "Экспресс-карта (₽ 440,00)", "completo": "Полная карта (₽ 5.390,00)",
         "significado": "Значение", "caminho_vida": "Путь жизни", "expressao": "Выражение", "motivacao": "Мотивация",
         "personalidade": "Личность", "destino": "Судьба", "seu_perfil": "Ваш нумерологический профиль", "analise": "Детальный анализ",
         "positivo": "Положительные аспекты", "negativo": "Отрицательные аспекты", "licao": "Урок жизни", "ciclos": "Жизненные циклы",
@@ -120,7 +126,7 @@ TRAD = {
         "nenhum": "Нет",
     },
     "he": {
-        "express": "מפה מהירה (₪ 44,00)", "completo": "מפה מלאה (₪ 98,00)",
+        "express": "מפה מהירה (₪ 53.00)", "completo": "מפה מלאה (₪ 647.00)",
         "significado": "משמעות", "caminho_vida": "נתיב החיים", "expressao": "הבעה", "motivacao": "מוטיבציה",
         "personalidade": "אישיות", "destino": "גורל", "seu_perfil": "הפרופיל הנומרולוגי שלך", "analise": "ניתוח מפורט",
         "positivo": "היבטים חיוביים", "negativo": "היבטים שליליים", "licao": "שיעור חיים", "ciclos": "מחזורי חיים",
@@ -133,7 +139,7 @@ TRAD = {
         "nenhum": "אין",
     },
     "ar": {
-        "express": "خريطة سريعة (﷼ 35,00)", "completo": "خريطة كاملة (﷼ 71,00)",
+        "express": "خريطة سريعة (AED 53.00)", "completo": "خريطة كاملة (AED 647.00)",
         "significado": "المعنى", "caminho_vida": "مسار الحياة", "expressao": "التعبير", "motivacao": "الدافع",
         "personalidade": "الشخصية", "destino": "المصير", "seu_perfil": "ملفك العددي", "analise": "تحليل مفصل",
         "positivo": "الجوانب الإيجابية", "negativo": "الجوانب السلبية", "licao": "درس الحياة", "ciclos": "دورات الحياة",
@@ -146,7 +152,7 @@ TRAD = {
         "nenhum": "لا شيء",
     },
     "id": {
-        "express": "Peta Ekspres (Rp 11.000,00)", "completo": "Peta Lengkap (Rp 23.000,00)",
+        "express": "Peta Ekspres (Rp 10.952,00)", "completo": "Peta Lengkap (Rp 134.162,00)",
         "significado": "Arti", "caminho_vida": "Jalan Hidup", "expressao": "Ekspresi", "motivacao": "Motivasi",
         "personalidade": "Kepribadian", "destino": "Takdir", "seu_perfil": "Profil Numerologi Anda", "analise": "Analisis Terperinci",
         "positivo": "Aspek Positif", "negativo": "Aspek Negatif", "licao": "Pelajaran Hidup", "ciclos": "Siklus Hidup",
@@ -157,9 +163,12 @@ TRAD = {
         "presentes": "Energi yang Hadir", "carencias": "Kekurangan Energi", "nota_final": "Nilai Akhir", "regente": "Penguasa",
         "download": "Unduh PDF", "voltar": "Kembali", "confirmado": "Pembayaran Dikonfirmasi!", "gerado": "Peta Anda berhasil dibuat.",
         "nenhum": "Tidak Ada",
+        "numeros_principais": "Angka Utama Anda", "caminho_ciclos": "Jalan Hidup dan Siklus",
+        "desafios_realizacoes": "Tantangan dan Pencapaian", "como_calculamos": "Bagaimana kami menghitung?",
+        "por_que_energia_8": "Mengapa energi 8?", "energia_8_ideal": "Energi 8 — IDEAL:", "alternativas": "Alternatif:",
     },
     "tr": {
-        "express": "Ekspres Harita (₺ 58,00)", "completo": "Tam Harita (₺ 123,00)",
+        "express": "Ekspres Harita (₺ 62,00)", "completo": "Tam Harita (₺ 764,00)",
         "significado": "Anlam", "caminho_vida": "Yaşam Yolu", "expressao": "İfade", "motivacao": "Motivasyon",
         "personalidade": "Kişilik", "destino": "Kader", "seu_perfil": "Numeroloji Profiliniz", "analise": "Detaylı Analiz",
         "positivo": "Olumlu Yönler", "negativo": "Olumsuz Yönler", "licao": "Yaşam Dersi", "ciclos": "Yaşam Döngüleri",
@@ -169,12 +178,13 @@ TRAD = {
         "legado": "4. Başarı (Miras)", "vibracao": "Doğum Titreşimi", "grade": "Enerji Izgarası",
         "presentes": "Mevcut Enerjiler", "carencias": "Enerji Eksikleri", "nota_final": "Final Notu", "regente": "Yönetici",
         "download": "PDF İndir", "voltar": "Geri", "confirmado": "Ödeme Onaylandı!", "gerado": "Haritanız başarıyla oluşturuldu.",
-        "nenhum": "Yok", "numeros_principais": "Ana Numaralarınız", "caminho_ciclos": "Yaşam Yolu ve Döngüler", "desafios_realizacoes": 
-        "Zorluklar ve Başarılar", "como_calculamos": "Nasıl hesaplıyoruz?", "por_que_energia_8": "Neden enerji 8?",
-        "energia_8_ideal": "Enerji 8 — İDEAL:", "alternativas": "Alternatifler:",
+        "nenhum": "Yok",
+        "numeros_principais": "Ana Numaralarınız", "caminho_ciclos": "Yaşam Yolu ve Döngüler",
+        "desafios_realizacoes": "Zorluklar ve Başarılar", "como_calculamos": "Nasıl hesaplıyoruz?",
+        "por_que_energia_8": "Neden enerji 8?", "energia_8_ideal": "Enerji 8 — İDEAL:", "alternativas": "Alternatifler:",
     },
     "vi": {
-        "express": "Bản đồ Nhanh (₫ 25.000)", "completo": "Bản đồ Đầy đủ (₫ 53.000)",
+        "express": "Bản đồ Nhanh (₫ 24.992)", "completo": "Bản đồ Đầy đủ (₫ 306.152)",
         "significado": "Ý nghĩa", "caminho_vida": "Đường đời", "expressao": "Biểu hiện", "motivacao": "Động lực",
         "personalidade": "Tính cách", "destino": "Số phận", "seu_perfil": "Hồ sơ Thần số học của bạn", "analise": "Phân tích chi tiết",
         "positivo": "Khía cạnh tích cực", "negativo": "Khía cạnh tiêu cực", "licao": "Bài học cuộc sống", "ciclos": "Chu kỳ cuộc đời",
@@ -184,8 +194,9 @@ TRAD = {
         "legado": "Thành tựu thứ 4 (Di sản)", "vibracao": "Rung động sinh", "grade": "Lưới năng lượng",
         "presentes": "Năng lượng hiện diện", "carencias": "Thiếu hụt năng lượng", "nota_final": "Điểm cuối cùng", "regente": "Người cai quản",
         "download": "Tải PDF", "voltar": "Quay lại", "confirmado": "Thanh toán đã xác nhận!", "gerado": "Bản đồ của bạn đã được tạo thành công.",
-        "nenhum": "Không có", "numeros_principais": "Các Số Chính của Bạn", "caminho_ciclos": "Đường đời và Chu kỳ",   
-        "desafios_realizacoes": "Thách thức và Thành đạt", "como_calculamos": "Chúng tôi tính như thế nào?", 
+        "nenhum": "Không có",
+        "numeros_principais": "Các Số Chính của Bạn", "caminho_ciclos": "Đường đời và Chu kỳ",
+        "desafios_realizacoes": "Thách thức và Thành đạt", "como_calculamos": "Chúng tôi tính như thế nào?",
         "por_que_energia_8": "Tại sao là năng lượng 8?", "energia_8_ideal": "Năng lượng 8 — LÝ TƯỞNG:", "alternativas": "Phương án thay thế:",
     },
 }
@@ -194,22 +205,40 @@ def t(chave, lang):
     d = TRAD.get(lang, TRAD["pt"])
     return d.get(chave, TRAD["pt"].get(chave, chave))
 
+# ============================================================
+# CAMADA MULTILÍNGUE
+# Os dicionários PT (SIG, CAM, DES, VIB) são a fonte.
+# Os _I18N começam só com "pt" e recebem os 13 idiomas
+# incrementalmente — nada quebra enquanto traduz.
+# ORDEM OBRIGATÓRIA: esta seção vem DEPOIS de SIG, CAM, DES, VIB.
+# ============================================================
+SIG_I18N = {"pt": SIG}
+CAM_I18N = {"pt": CAM}
+DES_I18N = {"pt": DES}
+VIB_I18N = {"pt": VIB}
+
 # ===== Funções de acesso =====
 def get_sig(n, lang="pt"):
-    d = SIG.get(n)
-    if not d: return (t("nenhum",lang),'','','')   
+    """Título, positivo, negativo e lição do número, no idioma pedido."""
+    d = SIG_I18N.get(lang, SIG_I18N["pt"]).get(n)
+    if not d:
+        return (t("nenhum", lang), "", "", "")
     return d
 
 def get_cam(n, lang="pt"):
-    d = CAM.get(n)
-    if not d: return ("", "")
+    """Descrição do Caminho de Vida (título + texto) no idioma pedido."""
+    d = CAM_I18N.get(lang, CAM_I18N["pt"]).get(n)
+    if not d:
+        return ("", "")
     return d
 
 def get_des(n, lang="pt"):
-    return DES.get(n, "")
+    """Interpretação do Desafio no idioma pedido."""
+    return DES_I18N.get(lang, DES_I18N["pt"]).get(n, "")
 
 def get_vib(n, lang="pt"):
-    return VIB.get(n, "")
+    """Texto da Vibração do dia de nascimento no idioma pedido."""
+    return VIB_I18N.get(lang, VIB_I18N["pt"]).get(n, "")
 
 # ===== NOMES DOS 23 PRODUTOS =====
 PRODUTOS = {
