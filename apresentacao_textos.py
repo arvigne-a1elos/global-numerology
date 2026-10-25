@@ -752,7 +752,7 @@ class CanvasComTotal(canvas.Canvas):
 
 APRESENTACAO_TEXTOS = {
 
-"pt": {
+    "pt": {
         "titulo": "A1ELOS Global Numerology",
         "subtitulo": "A ciência dos números aplicada ao seu sucesso",
         "capa_nota": "Apresentação Estratégica para Investidores e Parceiros",
@@ -764,32 +764,24 @@ APRESENTACAO_TEXTOS = {
         "idioma_col": "Idioma",
         "falantes_col": "Falantes (mi)",
         "linhas_idiomas": [
-           ["Inglês", "1.528"],
-           ["Mandarim", "1.184"],
-           ["Espanhol", "558"],
-           ["Francês", "396"],
-           ["Árabe", "335"],
-           ["Português", "270"],
-           ["Russo", "255"],
-           ["Indonésio", "255"],
-           ["Alemão", "134"],
-           ["Japonês", "123"],
-           ["Vietnamita", "97"],
-           ["Turco", "90"],
-           ["Italiano", "85"],
-           ["Hebraico", "9"],
+           ["Inglês", "1.528"], ["Mandarim", "1.184"], ["Espanhol", "558"],
+           ["Francês", "396"], ["Árabe", "335"], ["Português", "270"],
+           ["Russo", "255"], ["Indonésio", "255"], ["Alemão", "134"],
+           ["Japonês", "123"], ["Vietnamita", "97"], ["Turco", "90"],
+           ["Italiano", "85"], ["Hebraico", "9"],
         ],
         "total_linha": "TOTAL",
         "fonte_receita": "Fonte de Receita",
         "participacao": "Participação",
         "b2c_linha": "B2C — 14 Idiomas",
-        "b2b_linha": "B2B — Descontos Progressivos",
+        "b2b_linha": "B2B — Três Portas de Contratação (10% a 70%)",
         "pub_linha": "Publicidade Geolocalizada",
-        "tabela_descontos": "Tabela de Descontos Progressivos",
+        "tabela_descontos": "Descontos Progressivos — Porta 1 e Porta 2",
         "grafico_anos": ["1. Ano", "3. Ano", "5. Ano"],
         "grafico_titulo": "Projeção Conservadora (R$ mil)",
         "grafico_titulo_linha": "Crescimento Projetado (R$ mil)",
         "fale_conosco": "Fale Conosco",
+
         "sumario_intro": "Esta apresentação está estruturada para guiar investidores e parceiros por todos os aspectos estratégicos da A1ELOS Global Numerology — da tese de mercado ao modelo de receita recorrente.",
         "sumario_cards": [
             ("01", "Sobre a A1ELOS", "Holding, portfólio e credencial DUNS"),
@@ -800,15 +792,17 @@ APRESENTACAO_TEXTOS = {
             ("06", "Receita Recorrente", "Banners publicitários e Pacotes B2B"),
             ("07", "Projeções e Investimento", "Horizonte de 50 anos · Rodada Seed R$ 3,5M"),
         ],
+
         "sobre_titulo": "Sobre a A1ELOS",
         "sobre_texto": "A A1ELOS é uma holding de tecnologia e conhecimento que une inteligência artificial, numerologia aplicada e estratégia cultural para criar produtos digitais de alto impacto em escala global. Nossa missão: democratizar o autoconhecimento numérico com respeito cultural e respeito ao poder aquisitivo de cada mercado.",
         "sobre_kpis": [
-            ("23", "Produtos Ativos", "Em 4 níveis de acesso"),
+            ("24", "Produtos Ativos", "Em 4 níveis de acesso"),
             ("14", "Idiomas", "~67% da população mundial"),
             ("5,3B", "Falantes", "Mercado endereçável real"),
             ("IA", "Integrada", "Motor de personalização"),
         ],
         "sobre_duns": "DUNS 942242668 — Certificação Dun & Bradstreet válida em 190+ países, habilitando contratos B2B e joint ventures internacionais.",
+
         "duns_titulo": "Credibilidade Internacional",
         "duns_texto": "O número DUNS é o passaporte corporativo da A1ELOS no cenário internacional. Ele sinaliza a parceiros, clientes corporativos e investidores que a empresa possui identidade verificável, histórico rastreável e capacidade contratual em qualquer jurisdição.",
         "duns_numero": "942242668",
@@ -819,6 +813,7 @@ APRESENTACAO_TEXTOS = {
             ("Joint Ventures", "Parcerias internacionais com due diligence facilitada"),
             ("Credibilidade Imediata", "Sinal de seriedade para investidores institucionais"),
         ],
+
         "mercado_titulo": "Oportunidade de Mercado",
         "mercado_texto": "Vivemos a convergência perfeita: o bem-estar digital explode globalmente enquanto a numerologia e astrologia migram para apps de alto engajamento. A A1ELOS está posicionada exatamente nessa interseção, com 74% da população mundial já online (~6 bilhões de pessoas).",
         "mercado_cards": [
@@ -828,19 +823,28 @@ APRESENTACAO_TEXTOS = {
             ("Usuários Online", "74% do mundo · ~6 bilhões de pessoas"),
         ],
         "mercado_rh_titulo": "Novo Mercado: RH Corporativo — o 24º Produto",
-        "mercado_rh_texto": "O 24º produto — Compatibilidade de Equipes RH (R$ 98) — abre o principal mercado B2B da A1ELOS: o RH corporativo. A análise de compatibilidade energética entre gestores e colaboradores (energia ideal: número 8) posiciona a plataforma como ferramenta pioneira de employer branding e bem-estar corporativo, com descontos progressivos de 10% a 50% e negociação direta acima de 2.000 códigos (Plano Diamante).",
+        "mercado_rh_texto": (
+            "O 24º produto — Compatibilidade de Equipes RH (R$ 98) — abre o principal mercado B2B "
+            "da A1ELOS: o RH corporativo. A análise de compatibilidade energética entre gestores e "
+            "colaboradores (energia ideal: número 8) posiciona a plataforma como ferramenta pioneira "
+            "de employer branding e bem-estar corporativo, contratada por três portas distintas: "
+            "Planos Prontos com desconto progressivo de 10% a 50% conforme o volume, Montar Sob Medida "
+            "com desconto automático até 50%, e Negociação Direta acima de 2.000 códigos com desconto "
+            "de até 70% (Plano Diamante)."
+        ),
         "mercado_rh_vantagens": [
             "Harmonia energética do setor → redução de atritos interpessoais e maior coesão da equipe",
             "Alinhamento de posturas e pensamentos entre gestores e colaboradores → comunicação mais fluida",
             "Menor rotatividade (turnover) e maior retenção de talentos",
             "Clima organizacional positivo → ganho de produtividade e bem-estar",
             "Employer branding fortalecido → atração de talentos alinhados à cultura",
-        ],            
+        ],
         "mercado_rh_cards": [
             ["HR Tech", "US$ 42,34 bi (2025) → US$ 77,74 bi (2031)", "CAGR 10,35% · Mordor Intelligence"],
             ["Employer Branding", "US$ 1,89 bi (2025) → US$ 3,62 bi (2031)", "CAGR 11,19% · Mordor Intelligence"],
             ["Corporate Wellness", "US$ 66,31 bi (2025) → US$ 94,5 bi (2031)", "CAGR 6,12% · Mordor Intelligence"],
-        ],   
+        ],
+
         "problema_titulo": "O Problema que Resolvemos",
         "problema_col_esq_titulo": "Falhas do Mercado Atual",
         "problema_col_esq": [
@@ -851,6 +855,7 @@ APRESENTACAO_TEXTOS = {
         "problema_col_dir_titulo": "O Custo da Exclusão",
         "problema_col_dir": "Quando uma plataforma ignora idioma e poder aquisitivo, ela voluntariamente abandona o maior mercado do mundo: os 4+ bilhões de pessoas que vivem em economias emergentes e falam línguas não-anglófonas. Esse é o gap que a A1ELOS ocupa com precisão cirúrgica.",
         "problema_destaque": "Plataformas que ignoram poder aquisitivo local perdem acesso a mais de 60% do mercado endereçável global.",
+
         "solucao_titulo": "Nossa Solução: 3 Pilares Estratégicos",
         "solucao_texto": "A A1ELOS construiu uma plataforma integrada que combina ciência numérica, inteligência artificial e sensibilidade cultural. A solução opera em três frentes complementares, garantindo receita diversificada e alta retenção.",
         "solucao_colunas": [
@@ -858,8 +863,10 @@ APRESENTACAO_TEXTOS = {
             ("Numerologia Empresarial", "Diagnósticos numerológicos aplicados a marcas, CNPJs, datas de fundação e estratégia corporativa. Produto diferenciado de alto valor percebido pelo mercado B2B."),
             ("White-Label B2B", "Licenciamento da plataforma para empresas parceiras que desejam oferecer numerologia sob sua própria marca — com suporte multilíngue e personalização completa."),
         ],
+
         "alcance_titulo": "Alcance Global: 14 Idiomas · ~5,3 Bilhões de Falantes",
         "alcance_texto": "A A1ELOS cobre ~67% da população mundial com uma plataforma genuinamente multilíngue. Cada idioma representa um mercado cultural distinto, com precificação calibrada ao poder aquisitivo local.",
+
         "mercados_titulo": "Os 3 Novos Mercados: +442 Milhões de Falantes",
         "mercados_texto": "A expansão estratégica para Indonésia, Turquia e Vietnã representa um salto qualitativo: mercados com alto crescimento econômico, penetração digital crescente e demanda comprovada por soluções de bem-estar digital acessíveis.",
         "mercados_cards": [
@@ -868,6 +875,7 @@ APRESENTACAO_TEXTOS = {
             ("Vietnã",  ["~100 mi habitantes", "PIB per capita ~US$ 5.066 (+7,4%/ano)", "~97 mi falantes de Vietnamita", "Bem-estar: US$ 303 mi (2025) → US$ 485 mi (2030)"]),
         ],
         "mercados_rodape": "3 mercados novos = +442 milhões de novos falantes endereçáveis — incorporados à plataforma com precificação culturalmente calibrada.",
+
         "preco_titulo": "Filosofia de Preço Consciente",
         "preco_esq": "Respeito cultural + respeito ao poder aquisitivo = mercado endereçável real. Mesma proporção de valor. Preços diferentes. Dignidade igual para todos os mercados.",
         "preco_dir_titulo": "Como Funciona na Prática",
@@ -877,24 +885,29 @@ APRESENTACAO_TEXTOS = {
             ("Respeito Cultural", "Idioma, moeda e contexto local integrados ao produto"),
             ("Conversão Superior", "Preço justo gera mais conversão e maior retenção de longo prazo"),
         ],
-        "portfolio_titulo": "Portfólio: 24 Produtos em 4 Níveis",
+
+        "portfolio_titulo": "Portfólio: 24 Produtos em 7 Níveis",
         "portfolio_texto": "A estrutura em camadas garante que cada perfil de usuário — do curioso ao profissional — encontre uma oferta adequada ao seu nível de engajamento e capacidade financeira.",
-        "portfolio_tabela": [
-           ["Nível", "Produtos", "Faixa de Preço (R$)", "Perfil"],
-           ["Básico", "Mapa Express, Mapa Completo", "R$ 8 – 17", "Curioso, primeiro contato"],
-           ["Intermediário", "Pesquisa IA, Nome de Urna, Nº Eleitoral", "R$ 26 – 53", "Usuário engajado"],
-           ["Avançado", "Nome de ONG, Nome Artístico, Nome de Bebê, Assinatura, Nome de Negócio", "R$ 35 – 44", "Profissional, empreendedor"],
-           ["Premium", "Mapa do Casal, Mapa da Família, Compatibilidade de Equipes RH ★, Bônus Coletivo", "R$ 98", "Alta renda, uso corporativo"],
-           ["B2B", "Pacotes Empresariais, licenças, brindes", "Sob consulta", "Empresas e equipes"],
+        "portfolio_cabecalho": ["Nível", "Produtos", "Faixa (R$)", "Perfil"],
+        "portfolio_linhas": [
+             ["Entrada", "Mapa Express, Qual Vida/Ano, Pesquisa IA de Nomes, Nome do Pet, Nickname, Domínio, Canal, Equipe, Projeto, Evento", "8", "Curioso, primeiro contato"],
+             ["Intermediário", "Mapa Completo", "17", "Usuário engajado"],
+             ["Avançado", "Nome de Urna, Nº Eleitoral, Nº do Imóvel, Calendário Mensal", "26", "Usuário recorrente"],
+             ["Profissional", "Nome Artístico, Nome de Bebê, Assinatura, Nome de ONG", "35", "Profissional, empreendedor"],
+             ["Premium", "Nome de Negócio, Mapa do Casal", "44", "Empreendedor consolidado"],
+             ["Corporativo", "Mapa Família, Compatibilidade de Equipes RH ★", "98", "Alta renda / RH"],
+             ["B2B", "Bônus Coletivo/Empresarial (3 portas)", "Sob consulta", "Empresas e equipes"],
         ],
         "portfolio_rodape": "24 produtos cobrem toda a jornada do usuário, do primeiro contato ao cliente recorrente premium — maximizando LTV por idioma e mercado. Destaque: Compatibilidade de Equipes RH (R$ 98) — produto pioneiro no mercado de RH corporativo, energia ideal 8.",
+
         "negocio_titulo": "Modelo de Negócio: 3 Fontes de Receita",
         "negocio_texto": "A A1ELOS foi desenhada com receita diversificada e escalável: vendas diretas ao consumidor final em escala global, contratos B2B de alto valor e publicidade geolocalizada recorrente — três motores que se alimentam mutuamente.",
         "negocio_colunas": [
             ("B2C — 14 Idiomas", "Venda direta de produtos digitais em todas as moedas, com precificação adaptada por PPC. Escala automática via IA — sem equipe de atendimento proporcional ao crescimento."),
-            ("B2B — Descontos Progressivos", "Pacotes corporativos para RH, employer branding e brindes institucionais. Descontos de 10% a 50% conforme volume. Acima de 2.000 códigos, negociação direta (Plano Diamante). Contratos respaldados pelo DUNS 942242668."),
+            ("B2B — Três Portas de Contratação", "Porta 1: Planos Prontos (10% a 50%). Porta 2: Montar Sob Medida com desconto automático até 50%. Porta 3: Negociação Direta acima de 2.000 códigos, com desconto de até 70% (Plano Diamante). Contratos respaldados pelo DUNS 942242668."),
             ("Publicidade Geolocalizada", "Banners segmentados por país, continente ou mundial com rotação automatizada. Receita recorrente mensal de alto valor — sem dependência de volume de vendas de produto."),
         ],
+
         "banners_titulo": "Banners Publicitários — Receita Recorrente Mensal",
         "banners_texto": "A plataforma A1ELOS oferece espaços publicitários premium com segmentação precisa por geolocalização — país, continente ou mundial. Com rotação automática a cada 8 segundos e formatos otimizados para desktop e mobile, os banners entregam visibilidade mensurável a anunciantes regionais e internacionais.",
         "banners_tabela": [
@@ -905,26 +918,93 @@ APRESENTACAO_TEXTOS = {
             ["Patrocínio Exclusivo", "R$ 6.000", "R$ 4.500/campanha", "Patrocinadores master, lançamentos"],
         ],
         "banners_formatos": "728×90 px — Banner central desktop · 320×100 px — Formato mobile otimizado · 8 segundos — Rotação automática · Geo-alvo — País, continente ou alcance mundial",
-        "b2b_titulo": "Pacotes Empresariais B2B — Alto Valor, Alto Volume",
-        "b2b_texto": "Os Pacotes B2B transformam a A1ELOS em uma ferramenta de employer branding e bem-estar corporativo. No centro dessa estratégia está o produto exclusivo e contínuo: a Compatibilidade de Equipes RH (R$ 98). Diferente de brindes pontuais, a análise de compatibilidade é uma ferramenta de gestão de pessoas que a empresa incorpora ao seu dia a dia — calculando setores e equipes com a energia desejada e sincronizando todos os membros de um setor na mesma sintonia e harmonia. Ideal para pequenas e grandes empresas, é o serviço que o Departamento de Recursos Humanos usa de forma constante, apoiado em mercados em forte crescimento: HR Tech (CAGR 10,35%), Employer Branding (CAGR 11,19%) e Corporate Wellness (CAGR 6,12%).",
-        "b2b_planos": [
-            ("Plano Básico · 50 códigos", "50× Mapa Express (R$ 8 cada). Ideal para programas de benefícios a colaboradores e ações de integração."),
-            ("Plano Intermediário · 100 códigos", "50× Mapa Express + 50× Pesquisa IA (R$ 17). Perfeito para equipes e estratégia de marca empregadora."),
-            ("Plano Premium · 200 códigos", "100× Mapa Express + 100× Mapa Completo (R$ 17). Máxima profundidade analítica para grandes grupos."),
+
+        "pacotes_b2b_titulo": "Pacotes Empresariais B2B — Alto Valor, Alto Volume",
+        "pacotes_b2b_sub": (
+            "Uma linha de negócio com três formas de contratar. A empresa escolhe o nível "
+            "de controle que precisa — do pacote pronto à negociação sob medida."
+        ),
+        "pacotes_b2b_texto": (
+            "Os Pacotes B2B transformam a A1ELOS em uma ferramenta de employer branding e "
+            "bem-estar corporativo. No centro dessa estratégia está o produto exclusivo e "
+            "contínuo: a Compatibilidade de Equipes RH. Diferente de brindes pontuais, a análise "
+            "de compatibilidade é uma ferramenta de gestão de pessoas que a empresa incorpora ao "
+            "seu dia a dia — calculando setores e equipes com a energia desejada e sincronizando "
+            "todos os membros na mesma sintonia. Ideal para pequenas e grandes empresas, é o "
+            "serviço que o Departamento de Recursos Humanos usa de forma constante, apoiado em "
+            "mercados em forte crescimento: HR Tech (CAGR 10,35%), Employer Branding (CAGR 11,19%) "
+            "e Corporate Wellness (CAGR 6,12%)."
+        ),
+        "portas_titulo": "As Três Portas de Contratação",
+        "porta_1_nome": "Porta 1 — Planos Prontos (praticidade imediata)",
+        "porta_1_texto": (
+             "Pacotes pré-definidos com produtos e quantidades fixas. A empresa escolhe, paga e "
+             "recebe a lista de códigos em minutos. Sem negociação, sem reunião, sem espera. Feito "
+             "para quem precisa agir agora: uma promoção, uma data comemorativa, um lançamento."
+        ),
+        "porta_2_nome": "Porta 2 — Montar Sob Medida (controle total do pedido)",
+        "porta_2_texto": (
+             "A empresa define exatamente o que quer: cada produto, cada quantidade. O desconto é "
+             "aplicado automaticamente conforme o volume. Sem limite de compra. Ideal para "
+             "diferenciação de clientes por categoria, premiação de funcionários por desempenho e "
+             "gincanas internas."
+        ),
+        "porta_3_nome": "Porta 3 — Negociação Direta (grandes volumes)",
+        "porta_3_texto": (
+             "A partir de 2.000 unidades, ou quando o desconto necessário ultrapassa 50%, a empresa "
+             "preenche um formulário de proposta e recebe uma condição personalizada — com "
+             "possibilidade de chegar a 70% de desconto. Reservado a operações de larga escala."
+        ),
+        "b2b_nota_fechamento": (
+             "Um único pedido de 2.000 códigos na faixa premium representa R$ 98.000 de receita em "
+             "uma transação. O B2B não é acessório do modelo: é o motor de ticket alto que sustenta "
+             "o crescimento de curto prazo."
+        ),
+
+        "descontos_titulo": "Descontos Progressivos",
+        "descontos_linhas": [
+             ["A partir de", "Desconto", "Perfil", "Uso Recomendado"],
+             ["10 códigos", "10%", "Pequenas equipes", "Ação pontual de bem-estar"],
+             ["50 códigos", "15%", "Equipes em crescimento", "Programas recorrentes"],
+             ["100 códigos", "20%", "PMEs", "Benefício trimestral"],
+             ["200 códigos", "30%", "Empresas médias", "Programas completos"],
+             ["500 códigos", "40%", "Médias empresas", "Brinde anual a colaboradores"],
+             ["1.000 códigos", "45%", "Grandes corporações", "Fidelização de clientes"],
+             ["2.000 códigos", "50%", "Grandes grupos", "Larga escala"],
+             ["Acima de 2.000", "Até 70% (Porta 3)", "Plano Diamante sob medida", "Distribuição de bônus em volume"],
         ],
-        "b2b_tabela": [
-            ["A partir de", "Desconto", "Perfil", "Uso Recomendado"],
-            ["10 códigos", "10%", "Pequenas equipes", "Ação pontual de bem-estar"],
-            ["50 códigos", "20%", "Equipes em crescimento", "Programas recorrentes"],
-            ["100 códigos", "25%", "PMEs", "Benefício trimestral"],
-            ["200 códigos", "30%", "Empresas médias", "Programas completos"],
-            ["500 códigos", "40%", "Médias empresas", "Brinde anual a colaboradores"],
-            ["1.000 códigos", "45%", "Grandes corporações", "Fidelização de clientes"],
-            ["2.000 códigos", "50%", "Grandes grupos", "Larga escala"],
-            ["Acima de 2.000", "Negociável", "Plano Diamante sob medida", "Distribuição de bônus em volume"],
+
+        "rh_titulo": "Compatibilidade de Equipes RH — O 24º Produto",
+        "rh_sub": "O mesmo motor do Mapa Família. Uma nova capa. Um mercado inteiramente novo.",
+        "rh_texto_1": (
+             "O 24º produto da A1ELOS é a demonstração prática da eficiência do nosso modelo: "
+             "reaproveitamos o motor de cruzamento energético que já sustenta o Mapa Família "
+             "Premium — nosso produto de afinidade emocional — e o reposicionamos para o ambiente "
+             "corporativo. Nenhuma linha de código nova. Uma nova capa, um novo texto, um novo "
+             "comprador: o Departamento de Recursos Humanos."
+        ),
+        "rh_texto_2": (
+             "A análise de compatibilidade energética entre gestores e colaboradores, e entre os "
+             "membros de uma mesma equipe, posiciona a A1ELOS como pioneira no mercado de RH "
+             "corporativo. A harmonia energética do setor reduz atritos interpessoais, alinha "
+             "posturas e pensamentos, diminui a rotatividade, fortalece o clima organizacional e "
+             "eleva a produtividade."
+        ),
+        "rh_texto_3": (
+             "Diferença de propósito: no Mapa Família, a energia é fixa em 5 e 6 — território do "
+             "afeto e da harmonia doméstica. Na Compatibilidade de Equipes, a energia fica aberta "
+             "para o pesquisador, com sugestão de 8 (poder e liderança), 4 (estrutura) e 7 "
+             "(análise) — território do trabalho e da execução. O sistema é o mesmo; o propósito "
+             "é outro."
+        ),
+        "rh_ancoras": [
+             "Zero custo de desenvolvimento — reaproveitamento integral do motor existente",
+             "Ticket por unidade 12 vezes maior — R$ 98 contra a média de R$ 8 da cauda longa",
+             "Volume escalável — o RH compra para toda a empresa, não para uma pessoa",
+             "Mercado em crescimento de dois dígitos — HR Tech (10,35%), Employer Branding (11,19%), Corporate Wellness (6,12%)",
+             "Contrato respaldado por DUNS — habilita venda corporativa formal",
         ],
-        "rh_destaque_titulo": "Compatibilidade de Equipes RH — O Produto Exclusivo",
-        "rh_destaque_texto": "A análise de compatibilidade energética entre gestores e colaboradores, e entre membros de uma mesma equipe (energia ideal: número 8 — poder, liderança e equilíbrio material), posiciona a A1ELOS como pioneira no mercado de RH corporativo. A harmonia energética do setor reduz atritos interpessoais, alinha posturas e pensamentos, diminui a rotatividade (turnover), fortalece o clima organizacional e eleva a produtividade — um valor que o Bônus Coletivo, como brinde pontual, não entrega. É o produto que sustenta o crescimento de curto prazo e a receita B2B recorrente.",   
+
         "projecoes_titulo": "Projeções Financeiras: Horizonte de 50 Anos",
         "projecoes_texto": "As projeções foram construídas com base em estimativas percentuais de penetração sobre o mercado potencial de ~5,32 bilhões de falantes, com conversão conservadora de 3% e resgate de bônus entre 70% e 90%. Com o 24º produto — Compatibilidade de Equipes RH (R$ 98) e o canal Bônus Coletivo/Empresarial —, a receita B2B de RH passa a compor a projeção, ancorada em mercados verificados: HR Tech (CAGR 10,35%), Employer Branding (CAGR 11,19%) e Corporate Wellness (CAGR 6,12%). O curto prazo (anos 1–5) evidencia o crescimento acelerado da nova frente B2B; o longo prazo reflete a estabilidade contínua do modelo até a assimilação plena do mercado endereçável.",
         "projecoes_tabela": [
@@ -956,15 +1036,17 @@ APRESENTACAO_TEXTOS = {
             ["Ano 3", "R$ 1,20M", "R$ 3,50M"],
             ["Ano 4", "R$ 2,2M", "R$ 6,2M"],
             ["Ano 5", "R$ 3,70M", "R$ 9,6M"],
-         ],   
+        ],
+
         "tracao_titulo": "Tração e Resultados Comprovados",
         "tracao_texto": "A A1ELOS já opera com métricas de produto que validam o modelo — alta retenção, avaliação premium e uma base crescente de parceiros B2B demonstram que a plataforma entrega valor real ao usuário final e ao mercado corporativo.",
         "tracao_kpis": [
-            ("12K+", "Usuários Ativos", "Base orgânica em crescimento consistente"),
-            ("87%", "Retenção", "Muito acima da média da indústria (~30%)"),
+            ("12K+", "Usuários Ativos", "Pessoas físicas que já usaram a plataforma"),
+            ("87%", "Retenção de Usuários", "Muito acima da média da indústria (~30%)"),
             ("4,8★", "Avaliação Média", "Satisfação comprovada do usuário final"),
-            ("23", "Parceiros B2B", "Contratos ativos com empresas e RHs"),
+            ("23", "Empresas Parceiras B2B", "Contratos corporativos ativos (≠ 24 produtos do catálogo)"),
         ],
+
         "roteiro_titulo": "Roteiro Estratégico",
         "roteiro_texto": "A A1ELOS executa um plano em quatro fases progressivas — da consolidação da base atual à liderança global de mercado, com opções claras de saída para investidores.",
         "roteiro_fases": [
@@ -973,6 +1055,7 @@ APRESENTACAO_TEXTOS = {
             ("Fase 3 · Entrada Global", "Presença ativa em todos os 14 idiomas com campanhas localizadas. Parcerias white-label em 5+ continentes. Série A."),
             ("Fase 4 · Liderança", "20+ países com operações consolidadas. Plataforma SaaS de referência global em numerologia aplicada. IPO ou exit estratégico."),
         ],
+
         "invest_titulo": "Investimento & Contato",
         "invest_texto": "Estamos prontos para apresentações privadas, due diligence e negociações. Entre em contato pelo canal de sua preferência.",
         "invest_dados": [
@@ -987,11 +1070,12 @@ APRESENTACAO_TEXTOS = {
             ("DUNS", "942242668 — Dun & Bradstreet"),
         ],
         "invest_alocacao": "Alocação do Capital: 45% Tecnologia · 30% Marketing · 25% Operações",
+
         "frase_final": "Os números nunca mentem.",
         "selo_final": ["DUNS 942242668", "24 PRODUTOS", "14 IDIOMAS", "~5,3 BI FALANTES"],
         "graf_cons": "Conservador",
         "graf_otim": "Otimista",
-        "grafico_titulo_linha": "Crescimento Projetado (R$ mil)",
+
         "pix_titulo": "Brasil: A Infraestrutura Pix",
         "pix_texto": "O Pix é a infraestrutura pública de pagamentos instantâneos do Brasil. Para a A1ELOS, ele garante cobrança imediata, baixo custo e aceitação universal — o alicerce da operação B2C no mercado brasileiro e a porta de entrada para a expansão internacional.",
         "pix_kpis": [
@@ -1001,6 +1085,7 @@ APRESENTACAO_TEXTOS = {
             ("~80 bi", "transações em 2025", "+25,7% vs ano anterior · Relatório do Pix"),
         ],
         "pix_fonte": "Fontes: Banco Central do Brasil (Pix em Números) e Febraban (Pesquisa de Tecnologia Bancária).",
+
         "ref_titulo": "Referências Bibliográficas",
         "ref_intro": "Fontes utilizadas para os dados de mercado, projeções e indicadores desta apresentação.",
         "ref_lista": [
@@ -1011,8 +1096,11 @@ APRESENTACAO_TEXTOS = {
             ("Febraban", "Pesquisa de Tecnologia Bancária — crescimento do Pix em 2025."),
             ("IBGE", "População e indicadores socioeconômicos do Brasil."),
         ],
-        },
+    },
 
+
+
+           
 "en": {
         "titulo": "A1ELOS Global Numerology",
         "subtitulo": "The science of numbers applied to your success",
