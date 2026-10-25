@@ -6,7 +6,53 @@
 # Cotação âncora: 1 USD = 5,40 BRL
 # Stripe (prices_1_.csv) + capas + tabela de controle
 # Validação: todo preço reduz numerologicamente a 8
-# ============================================================
+# ============================================================Microsoft Windows [versão 10.0.19045.6466]
+(c) Microsoft Corporation. Todos os direitos reservados.
+
+D:\Numerologia App\numerologia-app>chcp 65001
+Página de código ativa: 65001
+
+D:\Numerologia App\numerologia-app>python -X utf8
+Python 3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+>>> from dicionarios import TRAD
+Traceback (most recent call last):
+  File "<python-input-0>", line 1, in <module>
+    from dicionarios import TRAD
+  File "D:\Numerologia App\numerologia-app\dicionarios.py", line 215, in <module>
+    SIG_I18N = {"pt": SIG}
+                      ^^^
+NameError: name 'SIG' is not defined
+>>> print(TRAD["pt"]["express"])
+Traceback (most recent call last):
+  File "<python-input-1>", line 1, in <module>
+    print(TRAD["pt"]["express"])
+          ^^^^
+NameError: name 'TRAD' is not defined
+>>> print(TRAD["en"]["express"])
+Traceback (most recent call last):
+  File "<python-input-2>", line 1, in <module>
+    print(TRAD["en"]["express"])
+          ^^^^
+NameError: name 'TRAD' is not defined
+>>> print(TRAD["ja"]["completo"])
+Traceback (most recent call last):
+  File "<python-input-3>", line 1, in <module>
+    print(TRAD["ja"]["completo"])
+          ^^^^
+NameError: name 'TRAD' is not defined
+>>> print(TRAD["vi"]["completo"])
+Traceback (most recent call last):
+  File "<python-input-4>", line 1, in <module>
+    print(TRAD["vi"]["completo"])
+          ^^^^
+NameError: name 'TRAD' is not defined
+>>> print(TRAD["ar"]["express"])chcp 65001
+  File "<python-input-5>", line 1
+    print(TRAD["ar"]["express"])chcp 65001
+                                ^^^^
+SyntaxError: invalid syntax
+>>>
 TRAD = {
     "pt": {
         "express": "Mapa Express (R$ 8,00)", "completo": "Mapa Completo (R$ 17,00)",
@@ -201,41 +247,6 @@ TRAD = {
     },
 }
          
-def t(chave, lang):
-    d = TRAD.get(lang, TRAD["pt"])
-    return d.get(chave, TRAD["pt"].get(chave, chave))
-
-# ============================================================
-# CAMADA MULTILÍNGUE
-# Os dicionários PT (SIG, CAM, DES, VIB) são a fonte.
-# Os _I18N começam só com "pt" e recebem os 13 idiomas
-# incrementalmente — nada quebra enquanto traduz.
-# ORDEM OBRIGATÓRIA: esta seção vem DEPOIS de SIG, CAM, DES, VIB.
-# ============================================================
-
-# ===== Funções de acesso =====
-def get_sig(n, lang="pt"):
-    """Título, positivo, negativo e lição do número, no idioma pedido."""
-    d = SIG_I18N.get(lang, SIG_I18N["pt"]).get(n)
-    if not d:
-        return (t("nenhum", lang), "", "", "")
-    return d
-
-def get_cam(n, lang="pt"):
-    """Descrição do Caminho de Vida (título + texto) no idioma pedido."""
-    d = CAM_I18N.get(lang, CAM_I18N["pt"]).get(n)
-    if not d:
-        return ("", "")
-    return d
-
-def get_des(n, lang="pt"):
-    """Interpretação do Desafio no idioma pedido."""
-    return DES_I18N.get(lang, DES_I18N["pt"]).get(n, "")
-
-def get_vib(n, lang="pt"):
-    """Texto da Vibração do dia de nascimento no idioma pedido."""
-    return VIB_I18N.get(lang, VIB_I18N["pt"]).get(n, "")
-
 # ===== NOMES DOS 23 PRODUTOS =====
 PRODUTOS = {
     "pt": {"express": "Mapa Express", "vida": "Qual Vida/Ano", "completo": "Mapa Completo",
@@ -932,3 +943,48 @@ VIB = {
     22: "Nasceu sob vibração 22. Mestre construtor. Capaz de transformar os maiores sonhos em realidade concreta. "
        "Visão prática. Veio para construir para a humanidade."
 }
+
+# ============================================================
+# CAMADA MULTILÍNGUE — obrigatoriamente DEPOIS de SIG/CAM/DES/VIB
+# ============================================================
+SIG_I18N = {"pt": SIG}
+CAM_I18N = {"pt": CAM}
+DES_I18N = {"pt": DES}
+VIB_I18N = {"pt": VIB}
+
+# ===== Funções de acesso =====
+
+def t(chave, lang):
+    d = TRAD.get(lang, TRAD["pt"])
+    return d.get(chave, TRAD["pt"].get(chave, chave))
+
+# ============================================================
+# CAMADA MULTILÍNGUE
+# Os dicionários PT (SIG, CAM, DES, VIB) são a fonte.
+# Os _I18N começam só com "pt" e recebem os 13 idiomas
+# incrementalmente — nada quebra enquanto traduz.
+# ORDEM OBRIGATÓRIA: esta seção vem DEPOIS de SIG, CAM, DES, VIB.
+# ============================================================
+
+# ===== Funções de acesso =====
+def get_sig(n, lang="pt"):
+    """Título, positivo, negativo e lição do número, no idioma pedido."""
+    d = SIG_I18N.get(lang, SIG_I18N["pt"]).get(n)
+    if not d:
+        return (t("nenhum", lang), "", "", "")
+    return d
+
+def get_cam(n, lang="pt"):
+    """Descrição do Caminho de Vida (título + texto) no idioma pedido."""
+    d = CAM_I18N.get(lang, CAM_I18N["pt"]).get(n)
+    if not d:
+        return ("", "")
+    return d
+
+def get_des(n, lang="pt"):
+    """Interpretação do Desafio no idioma pedido."""
+    return DES_I18N.get(lang, DES_I18N["pt"]).get(n, "")
+
+def get_vib(n, lang="pt"):
+    """Texto da Vibração do dia de nascimento no idioma pedido."""
+    return VIB_I18N.get(lang, VIB_I18N["pt"]).get(n, "")
