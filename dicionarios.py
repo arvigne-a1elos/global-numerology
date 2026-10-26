@@ -1259,24 +1259,16 @@ def t(chave, lang):
 # ============================================================
 
 # ===== Funções de acesso =====
-def get_sig(n, lang="pt"):
-    """Título, positivo, negativo e lição do número, no idioma pedido."""
-    d = SIG_I18N.get(lang, SIG_I18N["pt"]).get(n)
-    if not d:
-        return (t("nenhum", lang), "", "", "")
-    return d
 
 def get_sig(n, lang="pt"):
-    """Express: 4 campos curtos. Fallback explícito para PT."""
+    """Express: 4 campos curtos, sem aprofundamento."""
     d = EXPRESS_TXT.get(lang) or EXPRESS_TXT["pt"]
     return d.get(n) or (t("nenhum", lang), "", "", "")
 
-def get_sig(n, lang="pt"):
-    """Express: título + positivo + negativo + lição, sem aprofundamento."""
-    d = EXPRESS_TXT.get(lang, EXPRESS_TXT["pt"]).get(n)
-    if not d:
-        return (t("nenhum", lang), "", "", "")
-    return d
+def get_sig_full(n, lang="pt"):
+    """Completo: texto integral da Cissay, com metadados."""
+    d = SIG_I18N.get(lang) or SIG_I18N["pt"]
+    return d.get(n) or (t("nenhum", lang), "", "", "")
 
 def get_cam(n, lang="pt"):
     """Descrição do Caminho de Vida (título + texto) no idioma pedido."""
