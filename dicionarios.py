@@ -692,6 +692,71 @@ ENERGIAS_TXT = {
     }
 }
 
+# ============================================================
+# EXPRESS_TXT — MAPA EXPRESS
+# Derivado do SIG (Monique Cissay). Sem aprofundamento:
+# 1 frase por campo. O SIG completo fica para o Mapa Completo.
+# Assinatura idêntica ao SIG: (titulo, positivo, negativo, licao)
+# ============================================================
+EXPRESS_TXT = {
+    "pt": {
+        1: ("Individualidade",
+            "Original, criativo, líder nato e independente — energia do início e do impulso criador.",
+            "Egoísta, arrogante e impulsivo — tende a centralizar decisões e não delegar.",
+            "Desenvolver humildade: a liderança verdadeira inspira, não impõe."),
+
+        2: ("Associação",
+            "Diplomata, sensível e pacificador — sua presença acalma e harmoniza ambientes.",
+            "Indeciso, carente e dependente da opinião alheia — evita conflitos a qualquer custo.",
+            "Desenvolver autoconfiança: sua sensibilidade é um dom, não uma fraqueza."),
+
+        3: ("Criação",
+            "Criativo, comunicativo e otimista — tem o dom da palavra e da expressão artística.",
+            "Superficial, disperso e exagerado — espalha energia sem concluir projetos.",
+            "Desenvolver foco: qualidade sobre quantidade."),
+
+        4: ("Trabalho",
+            "Prático, disciplinado e confiável — é o alicerce de qualquer projeto ou equipe.",
+            "Rígido, teimoso e resistente a inovações — pode perder oportunidades por medo do novo.",
+            "Desenvolver flexibilidade: a vida também pede espontaneidade."),
+
+        5: ("Liberdade",
+            "Versátil, aventureiro e magnético — tem sede de vida e de experiências.",
+            "Impulsivo, irresponsável e inconsequente — pode ferir quem ama com sua imprevisibilidade.",
+            "Equilibrar liberdade com responsabilidade: a verdadeira liberdade inclui respeito pelo outro."),
+
+        6: ("Família",
+            "Responsável, amoroso e protetor — é o pilar emocional dos seus.",
+            "Superprotetor e intrometido — tende a querer controlar por amor.",
+            "Amar sem controlar: cuidar de si também é cuidar dos outros."),
+
+        7: ("Sabedoria",
+            "Sábio, analítico e espiritual — busca a verdade onde ninguém mais olha.",
+            "Frio, sarcástico e isolado — pode se sentir superior intelectualmente.",
+            "Equilibrar razão e emoção: a sabedoria só tem valor quando compartilhada."),
+
+        8: ("Poder",
+            "Poderoso, realizador e próspero — nasceu para liderar e construir riqueza.",
+            "Materialista, autoritário e workaholic — pode sacrificar pessoas em nome do sucesso.",
+            "Usar o poder com integridade: o verdadeiro sucesso é medido pelo bem que se faz."),
+
+        9: ("Humanidade",
+            "Humanitário, generoso e compassivo — enxerga o quadro maior da existência.",
+            "Melancólico e disperso — tende a fugir da realidade concreta.",
+            "Perdoar e deixar ir: o desapego é libertador."),
+
+        11: ("Mestre Inspirador",
+            "Intuitivo, iluminado e visionário — canaliza energias superiores.",
+            "Ansioso, nervoso e distante — a pressão da alta vibração é difícil de suportar.",
+            "Equilibrar o mundo espiritual com o material: aterrar os insights."),
+
+        22: ("Mestre Construtor",
+            "Realizador e visionário prático — transforma sonhos em realidade em larga escala.",
+            "Ambicioso excessivo e prepotente — o peso do grande potencial pode esmagar.",
+            "Construir sem escravizar-se ao trabalho: grandes obras precisam de um mestre em paz."),
+    }
+}
+
 # =====================================================================
 # SIG - Significados completos dos números (Monique Cissay)
 # Cada entrada: (Título, Aspectos Positivos, Aspectos Negativos, Lição)
@@ -925,6 +990,13 @@ def t(chave, lang):
 def get_sig(n, lang="pt"):
     """Título, positivo, negativo e lição do número, no idioma pedido."""
     d = SIG_I18N.get(lang, SIG_I18N["pt"]).get(n)
+    if not d:
+        return (t("nenhum", lang), "", "", "")
+    return d
+
+def get_sig(n, lang="pt"):
+    """Express: título + positivo + negativo + lição, sem aprofundamento."""
+    d = EXPRESS_TXT.get(lang, EXPRESS_TXT["pt"]).get(n)
     if not d:
         return (t("nenhum", lang), "", "", "")
     return d
