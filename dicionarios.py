@@ -7,52 +7,7 @@
 # Stripe (prices_1_.csv) + capas + tabela de controle
 # Validação: todo preço reduz numerologicamente a 8
 # ============================================================Microsoft Windows [versão 10.0.19045.6466]
-(c) Microsoft Corporation. Todos os direitos reservados.
 
-D:\Numerologia App\numerologia-app>chcp 65001
-Página de código ativa: 65001
-
-D:\Numerologia App\numerologia-app>python -X utf8
-Python 3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)] on win32
-Type "help", "copyright", "credits" or "license" for more information.
->>> from dicionarios import TRAD
-Traceback (most recent call last):
-  File "<python-input-0>", line 1, in <module>
-    from dicionarios import TRAD
-  File "D:\Numerologia App\numerologia-app\dicionarios.py", line 215, in <module>
-    SIG_I18N = {"pt": SIG}
-                      ^^^
-NameError: name 'SIG' is not defined
->>> print(TRAD["pt"]["express"])
-Traceback (most recent call last):
-  File "<python-input-1>", line 1, in <module>
-    print(TRAD["pt"]["express"])
-          ^^^^
-NameError: name 'TRAD' is not defined
->>> print(TRAD["en"]["express"])
-Traceback (most recent call last):
-  File "<python-input-2>", line 1, in <module>
-    print(TRAD["en"]["express"])
-          ^^^^
-NameError: name 'TRAD' is not defined
->>> print(TRAD["ja"]["completo"])
-Traceback (most recent call last):
-  File "<python-input-3>", line 1, in <module>
-    print(TRAD["ja"]["completo"])
-          ^^^^
-NameError: name 'TRAD' is not defined
->>> print(TRAD["vi"]["completo"])
-Traceback (most recent call last):
-  File "<python-input-4>", line 1, in <module>
-    print(TRAD["vi"]["completo"])
-          ^^^^
-NameError: name 'TRAD' is not defined
->>> print(TRAD["ar"]["express"])chcp 65001
-  File "<python-input-5>", line 1
-    print(TRAD["ar"]["express"])chcp 65001
-                                ^^^^
-SyntaxError: invalid syntax
->>>
 TRAD = {
     "pt": {
         "express": "Mapa Express (R$ 8,00)", "completo": "Mapa Completo (R$ 17,00)",
