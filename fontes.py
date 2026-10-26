@@ -27,23 +27,23 @@ _PASTA_FONTES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fonts"
 #    TTF primeiro; CID é o plano B, definido em CID_FALLBACK.
 # ------------------------------------------------------------------
 FONTES_TTF = {
-    # Latinos com acento pleno (ru/tr/vi precisam de cobertura cirílica e diacrítica)
-    "pt": ("DejaVuSans",          "DejaVuSans-Bold"),
-    "en": ("DejaVuSans",          "DejaVuSans-Bold"),
-    "es": ("DejaVuSans",          "DejaVuSans-Bold"),
-    "fr": ("DejaVuSans",          "DejaVuSans-Bold"),
-    "de": ("DejaVuSans",          "DejaVuSans-Bold"),
-    "it": ("DejaVuSans",          "DejaVuSans-Bold"),
-    "ru": ("DejaVuSans",          "DejaVuSans-Bold"),
-    "tr": ("DejaVuSans",          "DejaVuSans-Bold"),
-    "vi": ("DejaVuSans",          "DejaVuSans-Bold"),
-    "id": ("DejaVuSans",          "DejaVuSans-Bold"),
+    # Latinos
+    "pt": ("DejaVu", "DejaVuSans"),   # se o arquivo for DejaVuSans.ttf
+    "en": ("DejaVu", "DejaVuSans"),
+    "es": ("DejaVu", "DejaVuSans"),
+    "fr": ("DejaVu", "DejaVuSans"),
+    "de": ("DejaVu", "DejaVuSans"),
+    "it": ("DejaVu", "DejaVuSans"),
+    "ru": ("DejaVu", "DejaVuSans"),
+    "tr": ("DejaVu", "DejaVuSans"),
+    "vi": ("DejaVu", "DejaVuSans"),
+    "id": ("DejaVu", "DejaVuSans"),
     # RTL
-    "ar": ("NotoNaskhArabic",     "NotoNaskhArabic-Bold"),
-    "he": ("NotoSansHebrew",      "NotoSansHebrew-Bold"),
+    "ar": ("NotoNaskhArabic", "NotoNaskhArabic"),
+    "he": ("NotoSansHebrew",  "NotoSansHebrew"),
     # CJK
-    "ja": ("NotoSansJP",          "NotoSansJP-Bold"),
-    "zh": ("NotoSansSC",          "NotoSansSC-Bold"),
+    "ja": ("NotoSansJP",      "NotoSansJP"),
+    "zh": ("NotoSansSC",      "NotoSansSC"),
 }
 
 # Plano B: fontes CID embutidas no ReportLab (não exigem arquivo)
@@ -70,13 +70,22 @@ _REGISTRADOS = {}   # cache: nome -> True
 # 3. UTILITÁRIOS INTERNOS
 # ------------------------------------------------------------------
 def _achar_arquivo(nome_base):
-    """Procura <nome>.ttf em qualquer subpasta do projeto. Devolve caminho ou None."""
-    alvo = nome_base + ".ttf"
+    """
+    Procura em 3 padrões, em ordem:
+      <base>.ttf  |  <base>-Regular.ttf  |  <base>-Bold.ttf
+    Percorre fonts/ e subpastas.
+    """
+    candidatos = [
+        nome_base + ".ttf",
+        nome_base + "-Regular.ttf",
+        nome_base + "-Bold.ttf",
+    ]
     if not os.path.isdir(_PASTA_FONTES):
         return None
     for pasta, _subs, arquivos in os.walk(_PASTA_FONTES):
-        if alvo in arquivos:
-            return os.path.join(pasta, alvo)
+        for cand in candidatos:
+            if cand in arquivos:
+                return os.path.join(pasta, cand)
     return None
 
 
