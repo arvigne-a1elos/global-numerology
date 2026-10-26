@@ -140,14 +140,8 @@ from reportlab.pdfbase.cidfonts import UnicodeCIDFont
 from reportlab.pdfbase.ttfonts import TTFont
 
 try:
-    pdfmetrics.registerFont(UnicodeCIDFont('STSong-Light'))
-    pdfmetrics.registerFont(UnicodeCIDFont('HeiseiMin-W3'))
-    pdfmetrics.registerFont(TTFont('DejaVu', 'fonts/DejaVuSans.ttf'))
-    pdfmetrics.registerFont(TTFont('DejaVu-Bold', 'fonts/DejaVuSans-Bold.ttf'))
-    pdfmetrics.registerFont(TTFont('NotoSansHebrew', 'fonts/NotoSansHebrew-Regular.ttf'))
-    pdfmetrics.registerFont(TTFont('NotoSansHebrew-Bold', 'fonts/NotoSansHebrew-Bold.ttf'))
-    pdfmetrics.registerFont(TTFont('NotoNaskhArabic', 'fonts/NotoNaskhArabic-Regular.ttf'))
-    pdfmetrics.registerFont(TTFont('NotoNaskhArabic-Bold', 'fonts/NotoNaskhArabic-Bold.ttf'))
+from fontes import registrar_tudo, fonte_para
+registrar_tudo()
     logger.info("Fontes dos 14 idiomas registradas")
 except Exception as e:
     logger.warning("Falha ao registrar fontes: %s", e)
