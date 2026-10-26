@@ -1241,6 +1241,7 @@ VIB = {
 EXPRESS_TXT["en"] = EXPRESS_TXT_EN
 SIG_I18N = {"pt": SIG, "en": SIG_EN}
 CAM_I18N = {"pt": CAM, "en": CAM_EN}
+DES_I18N = {"pt": DES, "en": DES_EN}
 VIB_I18N = {"pt": VIB, "en": VIB_EN}
 
 # ===== Funções de acesso =====
