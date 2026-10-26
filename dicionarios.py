@@ -1267,6 +1267,11 @@ def get_sig(n, lang="pt"):
     return d
 
 def get_sig(n, lang="pt"):
+    """Express: 4 campos curtos. Fallback explícito para PT."""
+    d = EXPRESS_TXT.get(lang) or EXPRESS_TXT["pt"]
+    return d.get(n) or (t("nenhum", lang), "", "", "")
+
+def get_sig(n, lang="pt"):
     """Express: título + positivo + negativo + lição, sem aprofundamento."""
     d = EXPRESS_TXT.get(lang, EXPRESS_TXT["pt"]).get(n)
     if not d:
