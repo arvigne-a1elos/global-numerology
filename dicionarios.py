@@ -1734,6 +1734,255 @@ VIB_FR = {
 }
 
 # ============================================================
+# ALEMÃO — EXPRESS
+# ============================================================
+EXPRESS_TXT_DE = {
+    1: ("Individualität",
+        "Originell, kreativ, geborene Führungspersönlichkeit und unabhängig — Energie des Anfangs und des schöpferischen Impulses.",
+        "Egoistisch, arrogant und impulsiv — neigt dazu, Entscheidungen zu zentralisieren und nie zu delegieren.",
+        "Demut entwickeln: wahre Führung inspiriert, sie zwingt nicht auf."),
+    2: ("Verbundenheit",
+        "Diplomatisch, feinfühlig und friedensstiftend — seine Gegenwart beruhigt und harmonisiert jede Umgebung.",
+        "Unentschlossen, bedürftig und von der Meinung anderer abhängig — vermeidet Konflikte um jeden Preis.",
+        "Selbstvertrauen entwickeln: Ihre Feinfühligkeit ist eine Gabe, keine Schwäche."),
+    3: ("Schöpfung",
+        "Kreativ, kommunikativ und optimistisch — mit der Gabe des Wortes und des künstlerischen Ausdrucks.",
+        "Oberflächlich, zerstreut und übertrieben — verstreut Energie, ohne Projekte zu beenden.",
+        "Fokus entwickeln: Qualität vor Quantität."),
+    4: ("Arbeit",
+        "Praktisch, diszipliniert und zuverlässig — das Fundament jedes Projekts und jedes Teams.",
+        "Starr, stur und innovationsresistent — kann durch Angst vor dem Neuen Chancen verlieren.",
+        "Flexibilität entwickeln: das Leben verlangt auch Spontaneität."),
+    5: ("Freiheit",
+        "Vielseitig, abenteuerlustig und magnetisch — dürstet nach Leben und Erfahrungen.",
+        "Impulsiv, verantwortungslos und unbedacht — kann durch Unberechenbarkeit geliebte Menschen verletzen.",
+        "Freiheit mit Verantwortung in Einklang bringen: wahre Freiheit schließt den Respekt vor anderen ein."),
+    6: ("Familie",
+        "Verantwortungsvoll, liebevoll und beschützend — die emotionale Säule der Seinen.",
+        "Überfürsorglich und übergriffig — neigt dazu, aus Liebe kontrollieren zu wollen.",
+        "Lieben ohne zu kontrollieren: für sich zu sorgen heißt auch, für andere zu sorgen."),
+    7: ("Weisheit",
+        "Weise, analytisch und spirituell — sucht die Wahrheit dort, wo niemand sonst hinsieht.",
+        "Kalt, sarkastisch und isoliert — kann sich intellektuell überlegen fühlen.",
+        "Vernunft und Gefühl in Einklang bringen: Weisheit hat nur Wert, wenn sie geteilt wird."),
+    8: ("Macht",
+        "Mächtig, verwirklichend und erfolgreich — geboren zu führen und Wohlstand aufzubauen.",
+        "Materialistisch, autoritär und workaholic — kann im Namen des Erfolgs Menschen opfern.",
+        "Macht mit Integrität ausüben: wahrer Erfolg misst sich am Guten, das man tut."),
+    9: ("Menschlichkeit",
+        "Humanitär, großzügig und mitfühlend — erkennt das größere Bild der Existenz.",
+        "Melancholisch und zerstreut — neigt dazu, vor der konkreten Wirklichkeit zu fliehen.",
+        "Vergeben und loslassen: Losgelöstheit befreit."),
+    11: ("Meisterhafter Inspirator",
+         "Intuitiv, erleuchtet und visionär — kanalisiert höhere Energien.",
+         "Ängstlich, nervös und distanziert — der Druck der hohen Schwingung ist schwer zu ertragen.",
+         "Die spirituelle mit der materiellen Welt in Einklang bringen: Erkenntnisse erden."),
+    22: ("Meisterhafter Baumeister",
+         "Verwirklichend und praktischer Visionär — verwandelt Träume in großem Maßstab in Wirklichkeit.",
+         "Übermäßig ehrgeizig und anmaßend — das Gewicht des großen Potenzials kann erdrücken.",
+         "Bauen, ohne sich der Arbeit zu versklaven: große Werke brauchen einen Meister in Frieden."),
+}
+
+# ============================================================
+# ALEMÃO — COMPLETO (SIG mit Metadaten)
+# ============================================================
+SIG_DE = {
+    1: ("Individualität",
+        "Symbol: Kreis. Tag: Sonntag. Planet: Sonne. Element: Feuer. Farbe: Gelb. Organe: Herz. "
+        "Originell, kreativ, geborene Führungspersönlichkeit, unabhängig, stark, entschlossen, Pionier. Energie des Anfangs, "
+        "des schöpferischen Impulses. Menschen mit dieser Zahl sind Visionäre, die keine Angst haben, neue Wege "
+        "zu gehen. Sie zeigen Eigeninitiative und sind beim Handeln nicht von anderen abhängig. Positiv kanalisiert, "
+        "baut diese Energie Imperien auf und revolutioniert Paradigmen. Ihre Präsenz ist markant und ihre Entschlossenheit unerschütterlich.",
+        "Egoistisch, arrogant, herrschsüchtig, impulsiv, stur, ungeduldig. Neigt dazu, Entscheidungen zu zentralisieren und "
+        "nie zu delegieren. Kann autoritär und unflexibel werden und jene vertreiben, die an "
+        "seinen Projekten mitarbeiten könnten. Das Übermaß an Individualität kann isolieren und Beziehungen schädigen.",
+        "Demut entwickeln und lernen, im Team zu arbeiten. Bedenken, dass niemand große Taten "
+        "allein vollbringt. Wahre Führung inspiriert, sie zwingt nicht auf. Den Rampenlicht zu teilen erweitert die Kraft "
+        "der Verwirklichung und baut dauerhafte Vermächtnisse auf."),
+    2: ("Verbundenheit",
+        "Symbol: Halbkreis. Tag: Montag. Planet: Mond. Element: Wasser. Farbe: Grün. "
+        "Diplomatisch, feinfühlig, kooperativ, friedensstiftend, intuitiv, detailgenau, guter Zuhörer. Seine Gegenwart "
+        "beruhigt und harmonisiert Umgebungen. Er hat die Gabe, Menschen zu verbinden und Lösungen zu finden, die allen gefallen. "
+        "Seine Intuition ist fein und irrt sich selten in Menschen. Er ist der goldene Faden, der dauerhafte "
+        "und bedeutungsvolle Beziehungen webt.",
+        "Unentschlossen, bedürftig, unterwürfig, überempfindlich, von der Meinung anderer abhängig, schüchtern. Vermeidet Konflikte "
+        "um jeden Preis, selbst wenn eine Positionierung nötig wäre. Kann sich in Beziehungen aufgeben, um "
+        "scheinbaren Frieden zu wahren, was innere Frustration erzeugt.",
+        "Selbstvertrauen und emotionale Unabhängigkeit entwickeln. Nein sagen, wenn nötig. Ihre Feinfühligkeit "
+        "ist eine Gabe, keine Schwäche. Wahrer Friede kommt aus innerem Gleichgewicht, nicht aus äußerer Anerkennung."),
+    3: ("Schöpfung",
+        "Symbol: Dreieck. Tag: Dienstag. Planet: Jupiter. Element: Luft. Farbe: Violett. "
+        "Kreativ, kommunikativ, optimistisch, charismatisch, künstlerisch begabt. Er erhellt jede Umgebung "
+        "durch seine Gegenwart. Er hat die Gabe des Wortes und des künstlerischen Ausdrucks. Seine Energie ist ansteckend und "
+        "zieht Menschen auf natürliche Weise an. Er verkörpert die Lebensfreude und die grenzenlose Kreativität.",
+        "Oberflächlich, zerstreut, übertrieben, dramatisch. Neigt dazu, Energie in viele Richtungen zu verstreuen, ohne "
+        "Projekte zu beenden. Kann das dramatische Talent nutzen, um Situationen und Menschen zu manipulieren.",
+        "Fokus und Tiefe im Ausdruck entwickeln. So viel Talent in eine konkrete Richtung kanalisieren. "
+        "Qualität vor Quantität."),
+    4: ("Arbeit",
+        "Symbol: Quadrat. Tag: Mittwoch. Planet: Uranus. Element: Erde. Farbe: Blau. "
+        "Praktisch, diszipliniert, zuverlässig, loyal, ausdauernd, organisiert, effizient, hingegeben, ehrlich. "
+        "Er ist das Fundament jedes Projekts und jedes Teams. Er gibt nicht auf, bis die Arbeit gut gemacht ist. Er schätzt "
+        "Stabilität und Sicherheit über alles. Seine Solidität inspiriert Vertrauen bei allen um ihn herum.",
+        "Starr, stur, langsam im Wandel, übermäßig materialistisch, innovationsresistent. Kann "
+        "an unnötigen Routinen festhalten und durch Angst vor dem Neuen Chancen verlieren.",
+        "Flexibilität und Leichtigkeit entwickeln. Nicht alles muss so ernst sein. Das Leben verlangt auch "
+        "Spontaneität. Mehr dem Fluss des Lebens vertrauen."),
+    5: ("Freiheit",
+        "Symbol: Stern. Tag: Donnerstag. Planet: Merkur. Element: Luft. Farbe: Orange. "
+        "Frei, vielseitig, abenteuerlustig, fortschrittlich, intelligent, neugierig, anpassungsfähig, magnetisch. "
+        "Seine Energie ist ansteckend und zieht neue Menschen und Situationen mühelos an. Er dürstet nach Leben "
+        "und Erfahrungen. Er verkörpert Freiheit und Erforschung.",
+        "Impulsiv, verantwortungslos, ängstlich, unbedacht, maßlos in Genüssen. Kann jene verletzen, die er liebt, "
+        "durch seine Unberechenbarkeit. Übermäßige Freiheit kann zu Zügellosigkeit werden.",
+        "Freiheit mit Verantwortung in Einklang bringen. Wahre Freiheit schließt den Respekt vor anderen ein. "
+        "Beständigkeit suchen, ohne das Wesen zu verlieren."),
+    6: ("Familie",
+        "Symbol: Sechseck. Tag: Freitag. Planet: Venus. Element: Erde. Farbe: Rosa. "
+        "Verantwortungsvoll, liebevoll, beschützend, gerecht, mitfühlend, künstlerisch, geborener Ratgeber. Er ist die "
+        "emotionale Säule der Seinen. Er hat einen scharfen Gerechtigkeitssinn und scheut keine Mühe, um jene zu schützen, die er liebt.",
+        "Überfürsorglich, übergriffig, ängstlich um andere. Neigt dazu, aus Liebe kontrollieren zu wollen. Kann sich "
+        "für Probleme verantwortlich fühlen, die nicht seine sind.",
+        "Lieben ohne zu kontrollieren. Den Raum anderer respektieren. Für sich zu sorgen heißt auch, für andere zu sorgen. "
+        "Wahre Liebe ist Freiheit."),
+    7: ("Weisheit",
+        "Symbol: Siebeneck. Tag: Samstag. Planet: Neptun. Element: Wasser. Farbe: Indigo. "
+        "Weise, analytisch, spirituell, intuitiv, perfektionistisch, zurückhaltend, Philosoph, brillanter Geist. "
+        "Er sucht die Wahrheit dort, wo niemand sonst hinsieht. Er hat eine tiefe Verbindung zum Unsichtbaren.",
+        "Kalt, sarkastisch, isoliert, misstrauisch. Kann sich intellektuell überlegen fühlen. "
+        "Einsamkeit kann zu Bitterkeit werden.",
+        "Vernunft und Gefühl in Einklang bringen. Wissen teilen. Weisheit hat nur Wert, wenn sie geteilt wird."),
+    8: ("Macht",
+        "Symbol: Achteck. Tag: Sonntag. Planet: Saturn. Element: Erde. Farbe: Rot. "
+        "Mächtig, verwirklichend, erfolgreich, Stratege, ehrgeizig, visionär. Geboren zu führen "
+        "und Wohlstand aufzubauen. Er verwandelt Vision in Wirklichkeit mit Effizienz. Er zieht Erfolg auf natürliche Weise an.",
+        "Materialistisch, autoritär, workaholic, ungeduldig. Kann im Namen des Erfolgs Menschen opfern. "
+        "Macht ohne Ethik korrumpiert.",
+        "Macht mit Integrität ausüben. Wahrer Erfolg misst sich am Guten, das man tut. "
+        "Geld ist Mittel, nicht Zweck."),
+    9: ("Menschlichkeit",
+        "Symbol: Neuneck. Tag: Dienstag. Planet: Mars. Element: Feuer. Farbe: Karmesinrot. "
+        "Humanitär, großzügig, mitfühlend, weise, tolerant, inspirierend, altruistisch. Er erkennt das größere "
+        "Bild der Existenz. Seine Seele ist alt und trägt die Weisheit vieler Leben.",
+        "Melancholisch, zerstreut, opferbetont. Neigt dazu, vor der konkreten Wirklichkeit zu fliehen. Flüchtet sich in "
+        "unerreichbare Ideale.",
+        "Vergeben und loslassen. Dem Fluss des Lebens vertrauen. Losgelöstheit befreit. Für sich sorgen, um "
+        "für die Welt zu sorgen."),
+    11: ("Meisterhafter Inspirator",
+         "Intuitiv, erleuchtet, inspirierend, visionär. Kanalisiert höhere Energien. Zugang zu "
+         "Wissen jenseits des Rationalen. Magnetische und inspirierende Präsenz. Er erhebt alle um sich herum "
+         "durch sein inneres Licht.",
+         "Ängstlich, nervös, distanziert, fanatisch. Der Druck der hohen Schwingung ist schwer zu ertragen. "
+         "Kann sich unverstanden und fehl am Platz fühlen.",
+         "Die spirituelle mit der materiellen Welt in Einklang bringen. Erkenntnisse erden. Den Körper ebenso "
+         "pflegen wie den Geist."),
+    22: ("Meisterhafter Baumeister",
+         "Verwirklichend, praktischer Visionär. Fähig, Träume in großem Maßstab in Wirklichkeit zu verwandeln. "
+         "Er verbindet spirituelle Vision mit konkretem Handeln. Grenzenloses Potenzial. Er ist der Architekt der Zukunft, "
+         "der Werke baut, die der Menschheit dienen.",
+         "Übermäßig ehrgeizig, gestresst, anmaßend. Das Gewicht des großen Potenzials kann erdrücken und "
+         "zur Erschöpfung führen.",
+         "Bauen, ohne sich der Arbeit zu versklaven. Das Gleichgewicht zwischen Tun und Sein. Große Werke "
+         "brauchen einen Meister in Frieden."),
+}
+
+# ============================================================
+# ALEMÃO — LEBENSWEG (CAM)
+# ============================================================
+CAM_DE = {
+    1: ("Verwirklichung",
+        "Ihre Mission ist es, Wege zu öffnen, zu führen und zu erneuern. Sie sind in die Welt gekommen, um Pionier zu sein, "
+        "um Chancen zu schaffen, wo zuvor keine waren. Sie haben Mut, Willenskraft und Entschlossenheit, um "
+        "große Taten zu vollbringen. Ihre größte Herausforderung ist zu lernen, dass Führen auch Dienen bedeutet und "
+        "andere zu inspirieren, zu glänzen. Menschen wie Napoleon Bonaparte, Walt Disney, Steve Jobs und Pelé "
+        "teilen diesen Weg der Verwirklichung und Pionierarbeit."),
+    2: ("Frieden und Zusammenarbeit",
+        "Ihre Mission ist es, zu kooperieren, auszugleichen und als Brücke zwischen Menschen zu dienen. Sie sind gekommen, um "
+        "Harmonie und Diplomatie zu bringen. Ihre Feinfühligkeit ist Ihr wichtigstes Werkzeug. Die Welt braucht Ihre "
+        "Fähigkeit, Gegensätze zu verbinden und Konsens zu schaffen. Lady Diana, Abraham Lincoln und Roberto Carlos "
+        "sind Beispiele dieses Weges des Friedens."),
+    3: ("Freude und Schöpfung",
+        "Ihre Mission ist es, zu kommunizieren, zu erschaffen und Freude zu inspirieren. Sie sind gekommen, um die Schönheit des Lebens "
+        "durch Kunst und Wort auszudrücken. Ihr Charisma erhellt jene um Sie herum. Oscar Wilde, Charles "
+        "Dickens, Jim Carrey und Paul McCartney sind Beispiele dieses Weges der Schöpfung."),
+    4: ("Handeln und Struktur",
+        "Ihre Mission ist es, zu bauen, zu organisieren und Struktur zu schaffen. Sie sind gekommen, um solide Grundlagen "
+        "mit Disziplin zu errichten und Chaos in Ordnung zu verwandeln. Ihre Zuverlässigkeit ist Ihr größter Trumpf. Bill Gates, "
+        "Sigmund Freud und Margaret Thatcher teilen diesen Weg des Bauens."),
+    5: ("Entwicklung und Freiheit",
+        "Ihre Mission ist es, zu erfahren, zu verändern und sich zu entwickeln. Sie sind gekommen, um Paradigmen zu brechen und Befreiung "
+        "zu inspirieren. Ihre Vielseitigkeit ist Ihre Triebkraft. Franklin Roosevelt, Cristiano Ronaldo und "
+        "Mick Jagger sind Beispiele der Verwandlung."),
+    6: ("Ausgleich und Verantwortung",
+        "Ihre Mission ist es, zu dienen, zu sorgen und zu harmonisieren. Sie sind gekommen, um Schönheit und Liebe in die Welt zu bringen. "
+        "Ihr großzügiges Herz leitet Ihre Schritte und berührt jene um Sie herum. John F. Kennedy, "
+        "Elvis Presley und Jeanne d'Arc sind Beispiele dieses Weges."),
+    7: ("Weisheit und Vollkommenheit",
+        "Ihre Mission ist es, die Wahrheit zu suchen und spirituell zu wachsen. Sie sind gekommen, um die "
+        "Geheimnisse der Existenz zu verstehen und Weisheit zu vermitteln. Stephen Hawking, Marie Curie, Nikola Tesla "
+        "und Alan Turing teilen diesen Weg des Wissens."),
+    8: ("Gerechtigkeit und Wohlstand",
+        "Ihre Mission ist es, Fülle mit Weisheit zu manifestieren. Sie sind gekommen, um große Werke zu vollbringen und "
+        "zu zeigen, dass Wohlstand und Ethik zusammengehen. Henry Ford, Getúlio Vargas, Silvio Santos und "
+        "Julio Iglesias sind Beispiele materieller Verwirklichung mit Sinn."),
+    9: ("Weisheit und Humanismus",
+        "Ihre Mission ist es, der Menschheit mit Mitgefühl zu dienen. Sie sind gekommen, um Zyklen zu schließen und zu inspirieren. "
+        "Ihre Seele trägt die Weisheit vieler Leben. Gandhi, Martin Luther King Jr., Mutter Teresa und "
+        "John Lennon sind Beispiele des Dienstes an der Menschheit."),
+    11: ("Göttliche Inspiration",
+         "Ihre Mission ist es, zu erleuchten und das kollektive Bewusstsein zu heben. Sie sind ein Kanal höherer Intuition. "
+         "Winston Churchill, Albert Einstein, Mozart und Marilyn Monroe sind Beispiele dieser Inspiration."),
+    22: ("Bauen in großem Maßstab",
+         "Ihre Mission ist es, große Werke zu vollbringen, die der Menschheit dienen. Sie sind der Architekt der Zukunft. "
+         "Oprah Winfrey, Thomas Edison, Simón Bolívar und Frank Lloyd Wright sind Beispiele des Bauens "
+         "in großem Maßstab."),
+}
+
+# ============================================================
+# ALEMÃO — HERAUSFORDERUNGEN (DES)
+# ============================================================
+DES_DE = {
+    0: "Natürliches Gleichgewicht. Sie haben in diesem Bereich Gleichgewicht, fließen Sie einfach mit dem Leben.",
+    1: "Egoismus überwinden und dienende Führung entwickeln. Wahre Macht liegt darin, andere zu befähigen.",
+    2: "Schüchternheit und emotionale Abhängigkeit überwinden. Selbstvertrauen aufbauen, um Bedürfnisse auszudrücken.",
+    3: "Zerstreuung vermeiden und Fokus kultivieren. Schöpferische Energie auf konkrete Projekte konzentrieren.",
+    4: "Starrheit überwinden und Wandel annehmen. Flexibilität und Anpassung sind Schlüssel zum Wachstum.",
+    5: "Maßlosigkeit kontrollieren und Disziplin kultivieren. Freiheit mit Verantwortung führt zur Reife.",
+    6: "Überfürsorge vermeiden. Vertrauen, dass Ihre Lieben eigene Entscheidungen treffen können.",
+    7: "Isolation überwinden und Wissen mit der Welt teilen. Weisheit existiert nur, wenn sie geteilt wird.",
+    8: "Ehrgeiz mit Ethik und Großzügigkeit ausbalancieren. Materieller Erfolg, der anderen dient, ist der wahre.",
+    9: "Übermäßige Losgelöstheit überwinden. Lernen, Zyklen ohne Schuld zu schließen und dem Fluss des Lebens zu vertrauen.",
+}
+
+# ============================================================
+# ALEMÃO — GEBURTSSCHWINGUNG (VIB)
+# ============================================================
+VIB_DE = {
+    1: "Geboren unter Schwingung 1. Geborene Führungspersönlichkeit, Pionier, Individualist. Schöpferische und initiierende Energie. "
+       "Hat den Mut, Wege zu öffnen, auf denen niemand gegangen ist. Gekommen, um mit Demut und Dienst zu führen.",
+    2: "Geboren unter Schwingung 2. Feinfühlig, diplomatisch, kooperativ. Seine Stärke liegt in Partnerschaft und Harmonie. "
+       "Scharfe Intuition. Gekommen, um das Gleichgewicht zwischen Geben und Nehmen zu lernen.",
+    3: "Geboren unter Schwingung 3. Kommunikativ, kreativ, optimistisch. Ansteckende Freude. Das Wort ist sein "
+       "mächtigstes Werkzeug. Gekommen, um die Welt mit seiner Kunst zu erheitern.",
+    4: "Geboren unter Schwingung 4. Fleißig, diszipliniert, praktisch. Solidität baut sichere Grundlagen. "
+       "Gekommen, um zu lernen, dass wahre Sicherheit von innen kommt.",
+    5: "Geboren unter Schwingung 5. Frei, vielseitig, abenteuerlustig. Seine Energie sucht Erfahrung und Verwandlung. "
+       "Neugier bewegt seine Seele. Gekommen, um die Fülle des Lebens zu erfahren.",
+    6: "Geboren unter Schwingung 6. Liebevoll, verantwortungsvoll, familienorientiert. Mission zu sorgen und zu harmonisieren. "
+       "Liebe ist seine größte Kraft. Gekommen, um zu lernen, dass Lieben Befreien bedeutet.",
+    7: "Geboren unter Schwingung 7. Weise, introspectiv, spirituell. Suche nach tiefem Wissen. "
+       "Die Stille ist sein Meister. Gekommen, um die Geheimnisse der Existenz zu verstehen.",
+    8: "Geboren unter Schwingung 8. Mächtig, verwirklichend, erfolgreich. Seine Energie zieht Fülle an. "
+       "Geboren zu bauen. Gekommen, um zu lernen, dass wahre Macht Dienst ist.",
+    9: "Geboren unter Schwingung 9. Humanitär, großzügig, mitfühlend. Alte und weise Seele. "
+       "Mission, dem Kollektiv zu dienen. Gekommen, um Zyklen zu schließen und Loslassen zu lehren.",
+    11: "Geboren unter Schwingung 11. Meisterhafter Intuitiver. Kanalisiert höhere Energien mit Weisheit und Inspiration. "
+        "Magnetische Präsenz. Gekommen, um das spirituelle Licht mit beiden Füßen auf der Erde zu balancieren.",
+    22: "Geboren unter Schwingung 22. Meisterhafter Baumeister. Fähig, die größten Träume in konkrete Wirklichkeit zu verwandeln. "
+        "Praktische Vision. Gekommen, um für die Menschheit zu bauen.",
+}
+
+# ============================================================
 # CAMADA MULTILÍNGUE — obrigatoriamente DEPOIS de SIG/CAM/DES/VIB
 #                                        e DEPOIS de *_EN
 # ============================================================
@@ -1753,6 +2002,11 @@ SIG_I18N["fr"] = SIG_FR
 CAM_I18N["fr"] = CAM_FR
 DES_I18N["fr"] = DES_FR
 VIB_I18N["fr"] = VIB_FR
+EXPRESS_TXT["de"] = EXPRESS_TXT_DE
+SIG_I18N["de"] = SIG_DE
+CAM_I18N["de"] = CAM_DE
+DES_I18N["de"] = DES_DE
+VIB_I18N["de"] = VIB_DE
 
 # ===== Funções de acesso =====
 
