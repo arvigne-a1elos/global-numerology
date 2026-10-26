@@ -757,6 +757,275 @@ EXPRESS_TXT = {
     }
 }
 
+# ============================================================
+# INGLÊS — EXPRESS
+# ============================================================
+EXPRESS_TXT_EN = {
+    1: ("Individuality",
+        "Original, creative, born leader and independent — the energy of beginnings and creative impulse.",
+        "Selfish, arrogant and impulsive — tends to centralize decisions and never delegate.",
+        "Develop humility: true leadership inspires, it does not impose."),
+
+    2: ("Association",
+        "Diplomatic, sensitive and peacemaking — their presence calms and harmonizes any environment.",
+        "Indecisive, needy and dependent on others' opinions — avoids conflict at any cost.",
+        "Develop self-confidence: your sensitivity is a gift, not a weakness."),
+
+    3: ("Creation",
+        "Creative, communicative and optimistic — gifted with words and artistic expression.",
+        "Superficial, scattered and exaggerated — spreads energy without finishing projects.",
+        "Develop focus: quality over quantity."),
+
+    4: ("Work",
+        "Practical, disciplined and reliable — the foundation of any project or team.",
+        "Rigid, stubborn and resistant to innovation — may lose opportunities through fear of the new.",
+        "Develop flexibility: life also asks for spontaneity."),
+
+    5: ("Freedom",
+        "Versatile, adventurous and magnetic — thirsts for life and experience.",
+        "Impulsive, irresponsible and reckless — can hurt loved ones through unpredictability.",
+        "Balance freedom with responsibility: true freedom includes respect for others."),
+
+    6: ("Family",
+        "Responsible, loving and protective — the emotional pillar of their own.",
+        "Overprotective and intrusive — tends to control through love.",
+        "Love without controlling: caring for yourself is also caring for others."),
+
+    7: ("Wisdom",
+        "Wise, analytical and spiritual — seeks truth where no one else looks.",
+        "Cold, sarcastic and isolated — may feel intellectually superior.",
+        "Balance reason and emotion: wisdom only has value when shared."),
+
+    8: ("Power",
+        "Powerful, accomplished and prosperous — born to lead and build wealth.",
+        "Materialistic, authoritarian and workaholic — may sacrifice people in the name of success.",
+        "Use power with integrity: true success is measured by the good it does."),
+
+    9: ("Humanity",
+        "Humanitarian, generous and compassionate — sees the larger picture of existence.",
+        "Melancholic and scattered — tends to flee from concrete reality.",
+        "Forgive and let go: detachment is liberating."),
+
+    11: ("Master Inspirer",
+         "Intuitive, illuminated and visionary — channels higher energies.",
+         "Anxious, nervous and distant — the pressure of high vibration is hard to bear.",
+         "Balance the spiritual with the material: ground your insights."),
+
+    22: ("Master Builder",
+         "Accomplished and practical visionary — turns dreams into reality at large scale.",
+         "Excessively ambitious and overbearing — the weight of great potential can crush.",
+         "Build without enslaving yourself to work: great works need a master at peace."),
+}
+
+# ============================================================
+# INGLÊS — COMPLETO (SIG com metadados)
+# ============================================================
+SIG_EN = {
+    1: ("Individuality",
+        "Symbol: Circle. Day: Sunday. Planet: Sun. Element: Fire. Colour: Yellow. Organs: Heart. "
+        "Original, creative, born leader, independent, strong, determined, pioneer. The energy of beginning, "
+        "of creative impulse. People with this number are visionaries unafraid to walk new paths. "
+        "They show initiative and do not depend on others to act. When channelled positively, "
+        "this energy builds empires and revolutionizes paradigms. Their presence is striking and their determination unshakeable.",
+        "Selfish, arrogant, domineering, impulsive, stubborn, impatient. Tends to centralize decisions and "
+        "never delegate. May become authoritarian and inflexible, driving away those who could collaborate "
+        "on their projects. Excess individuality can isolate them and damage their relationships.",
+        "Develop humility and learn to work in a team. Remember that no one achieves great deeds alone. "
+        "True leadership inspires, it does not impose. Sharing the spotlight expands your power of "
+        "achievement and builds lasting legacies."),
+
+    2: ("Association",
+        "Symbol: Semicircle. Day: Monday. Planet: Moon. Element: Water. Colour: Green. "
+        "Diplomat, sensitive, cooperative, peacemaker, intuitive, detail-oriented, good listener. Their presence "
+        "calms and harmonizes environments. They have the gift of uniting people and finding solutions that please everyone. "
+        "Their intuition is refined and rarely wrong about people. It is the golden thread that weaves lasting "
+        "and meaningful relationships.",
+        "Indecisive, needy, submissive, hypersensitive, dependent on others' opinions, shy. Avoids conflict "
+        "at any cost, even when standing up is necessary. May erase themselves in relationships to keep "
+        "apparent peace, which generates inner frustration.",
+        "Develop self-confidence and emotional independence. Say no when necessary. Your sensitivity "
+        "is a gift, not a weakness. True peace comes from inner balance, not external approval."),
+
+    3: ("Creation",
+        "Symbol: Triangle. Day: Tuesday. Planet: Jupiter. Element: Air. Colour: Violet. "
+        "Creative, communicative, optimistic, charismatic, gifted in the arts. Illuminates any environment "
+        "with their presence. They have the gift of words and artistic expression. Their energy is contagious and "
+        "naturally attracts people. They are the embodiment of joy in living and limitless creativity.",
+        "Superficial, scattered, exaggerated, dramatic. Tends to spread energy in many directions without "
+        "finishing projects. May use dramatic talent to manipulate situations and people.",
+        "Develop focus and depth in expression. Channel so much talent into a specific direction. "
+        "Quality over quantity."),
+
+    4: ("Work",
+        "Symbol: Square. Day: Wednesday. Planet: Uranus. Element: Earth. Colour: Blue. "
+        "Practical, disciplined, reliable, loyal, persistent, organized, efficient, dedicated, honest. "
+        "They are the foundation of any project or team. They do not give up until the work is well done. Value "
+        "stability and security above all. Their solidity inspires confidence in everyone around them.",
+        "Rigid, stubborn, slow to change, excessively materialistic, resistant to innovation. May become "
+        "attached to unnecessary routines and lose opportunities through fear of the new.",
+        "Develop flexibility and lightness. Not everything needs to be so serious. Life also asks for "
+        "spontaneity. Trust more in the flow of life."),
+
+    5: ("Freedom",
+        "Symbol: Star. Day: Thursday. Planet: Mercury. Element: Air. Colour: Orange. "
+        "Free, versatile, adventurous, progressive, intelligent, curious, adaptable, magnetic. "
+        "Their energy is contagious and attracts new people and situations with ease. They thirst for life "
+        "and experience. They are the embodiment of freedom and exploration.",
+        "Impulsive, irresponsible, anxious, reckless, excessive in pleasures. May hurt those they love "
+        "through unpredictability. Excess freedom can become libertinism.",
+        "Balance freedom with responsibility. True freedom includes respect for others. "
+        "Seek consistency without losing your essence."),
+
+    6: ("Family",
+        "Symbol: Hexagon. Day: Friday. Planet: Venus. Element: Earth. Colour: Pink. "
+        "Responsible, loving, protective, fair, compassionate, artistic, born counsellor. They are the "
+        "emotional pillar of their own. They have a sharp sense of justice and spare no effort to protect those they love.",
+        "Overprotective, intrusive, anxious about others. Tends to want to control through love. May feel "
+        "responsible for problems that are not theirs.",
+        "Love without controlling. Respect others' space. Caring for yourself is also caring for others. "
+        "True love is freedom."),
+
+    7: ("Wisdom",
+        "Symbol: Heptagon. Day: Saturday. Planet: Neptune. Element: Water. Colour: Indigo. "
+        "Wise, analytical, spiritual, intuitive, perfectionist, reserved, philosopher, brilliant mind. "
+        "Seeks truth where no one else looks. Has a deep connection with the invisible.",
+        "Cold, sarcastic, isolated, distrustful. May feel intellectually superior. "
+        "Solitude can turn into bitterness.",
+        "Balance reason and emotion. Share knowledge. Wisdom only has value when shared."),
+
+    8: ("Power",
+        "Symbol: Octagon. Day: Sunday. Planet: Saturn. Element: Earth. Colour: Red. "
+        "Powerful, accomplished, prosperous, strategist, ambitious, visionary. Born to lead "
+        "and build wealth. Turns vision into reality with efficiency. Attracts success naturally.",
+        "Materialistic, authoritarian, workaholic, impatient. May sacrifice people in the name of success. "
+        "Power without ethics corrupts.",
+        "Use power with integrity. True success is measured by the good one does. "
+        "Money is a means, not an end."),
+
+    9: ("Humanity",
+        "Symbol: Nonagon. Day: Tuesday. Planet: Mars. Element: Fire. Colour: Crimson. "
+        "Humanitarian, generous, compassionate, wise, tolerant, inspiring, altruistic. Sees the larger "
+        "picture of existence. Their soul is old and carries the wisdom of many lives.",
+        "Melancholic, scattered, victim-minded. Tends to flee from concrete reality. Takes refuge in "
+        "unreachable ideals.",
+        "Forgive and let go. Trust the flow of life. Detachment is liberating. Care for yourself in order to "
+        "care for the world."),
+
+    11: ("Master Inspirer",
+         "Intuitive, illuminated, inspiring, visionary. Channels higher energies. Access to "
+         "knowledge beyond the rational. Magnetic and inspiring presence. Elevates everyone around "
+         "them with their inner light.",
+         "Anxious, nervous, distant, fanatical. The pressure of high vibration is hard to bear. "
+         "May feel misunderstood and out of place.",
+         "Balance the spiritual world with the material. Ground your insights. Care for the body as much "
+         "as for the spirit."),
+
+    22: ("Master Builder",
+         "Accomplished, practical visionary. Able to turn dreams into reality at large scale. "
+         "Combines spiritual vision with concrete action. Limitless potential. They are the architect of the future, "
+         "building works that benefit humanity.",
+         "Excessively ambitious, stressed, overbearing. The weight of great potential can crush and "
+         "lead to burnout.",
+         "Build without enslaving yourself to work. Balance between doing and being. Great works "
+         "need a master at peace."),
+}
+
+# ============================================================
+# INGLÊS — CAMINHO DE VIDA (CAM)
+# ============================================================
+CAM_EN = {
+    1: ("Accomplishment",
+        "Your mission is to open paths, lead and innovate. You came into the world to be a pioneer, to "
+        "create opportunities where none existed before. You have the courage, willpower and determination to "
+        "achieve great deeds. Your greatest challenge is learning that leading also means serving and "
+        "inspiring others to shine. People such as Napoleon Bonaparte, Walt Disney, Steve Jobs and Pelé "
+        "share this path of accomplishment and pioneering."),
+    2: ("Peace and Cooperation",
+        "Your mission is to cooperate, balance and serve as a bridge between people. You came to bring "
+        "harmony and diplomacy. Your sensitivity is your greatest tool. The world needs your "
+        "ability to unite opposites and create consensus. Princess Diana, Abraham Lincoln and Roberto Carlos "
+        "are examples of this path of peace."),
+    3: ("Joy and Creation",
+        "Your mission is to communicate, create and inspire joy. You came to express the beauty of life "
+        "through art and the word. Your charisma illuminates those around you. Oscar Wilde, Charles "
+        "Dickens, Jim Carrey and Paul McCartney are examples of this path of creation."),
+    4: ("Action and Structure",
+        "Your mission is to build, organize and create structure. You came to establish solid foundations "
+        "with discipline and turn chaos into order. Your reliability is your greatest asset. Bill Gates, "
+        "Sigmund Freud and Margaret Thatcher share this journey of construction."),
+    5: ("Evolution and Freedom",
+        "Your mission is to experience, change and evolve. You came to break paradigms and inspire "
+        "liberation. Your versatility is your driving force. Franklin Roosevelt, Cristiano Ronaldo and "
+        "Mick Jagger are examples of transformation."),
+    6: ("Reconciliation and Responsibility",
+        "Your mission is to serve, care and harmonize. You came to create beauty and love in the world. "
+        "Your generous heart guides your steps and touches those around you. John F. Kennedy, "
+        "Elvis Presley and Joan of Arc are examples of this path."),
+    7: ("Wisdom and Perfection",
+        "Your mission is to seek truth and evolve spiritually. You came to understand the "
+        "mysteries of existence and transmit wisdom. Stephen Hawking, Marie Curie, Nikola Tesla "
+        "and Alan Turing share this path of knowledge."),
+    8: ("Justice and Prosperity",
+        "Your mission is to manifest abundance with wisdom. You came to accomplish great works and "
+        "show that prosperity and ethics go together. Henry Ford, Getúlio Vargas, Silvio Santos and "
+        "Julio Iglesias are examples of material achievement with purpose."),
+    9: ("Wisdom and Humanitarianism",
+        "Your mission is to serve humanity with compassion. You came to close cycles and inspire. "
+        "Your soul carries the wisdom of many lives. Gandhi, Martin Luther King Jr., Mother Teresa and "
+        "John Lennon are examples of service to humanity."),
+    11: ("Divine Inspiration",
+         "Your mission is to illuminate and elevate collective consciousness. You are a channel of higher intuition. "
+         "Winston Churchill, Albert Einstein, Mozart and Marilyn Monroe are examples of this inspiration."),
+    22: ("Construction at Great Scale",
+         "Your mission is to accomplish great works that benefit humanity. You are the architect of the future. "
+         "Oprah Winfrey, Thomas Edison, Simón Bolívar and Frank Lloyd Wright are examples of construction "
+         "at large scale."),
+}
+
+# ============================================================
+# INGLÊS — DESAFIOS (DES)
+# ============================================================
+DES_EN = {
+    0: "Natural balance. You have balance in this area — simply flow with life.",
+    1: "Overcome selfishness and develop servant leadership. True power lies in empowering others.",
+    2: "Overcome shyness and emotional dependency. Build self-confidence to express your needs.",
+    3: "Avoid dispersion and cultivate focus. Concentrate creative energy on concrete projects.",
+    4: "Overcome rigidity and embrace change. Flexibility and adaptation are keys to growth.",
+    5: "Control excesses and cultivate discipline. Freedom with responsibility leads to maturity.",
+    6: "Avoid overprotection. Trust that your loved ones can make their own choices.",
+    7: "Overcome isolation and share your knowledge with the world. Wisdom exists only when shared.",
+    8: "Balance ambition with ethics and generosity. Material success that benefits others is the true one.",
+    9: "Overcome excessive detachment. Learn to close cycles without guilt and trust the flow of life.",
+}
+
+# ============================================================
+# INGLÊS — VIBRAÇÃO DE NASCIMENTO (VIB)
+# ============================================================
+VIB_EN = {
+    1: "Born under vibration 1. Born leader, pioneer, individualist. Creative and initiating energy. "
+       "Has the courage to open paths where no one has walked. Came to learn to lead with humility and service.",
+    2: "Born under vibration 2. Sensitive, diplomat, cooperative. Their strength lies in partnership and harmony. "
+       "Sharp intuition. Came to learn the balance between giving and receiving.",
+    3: "Born under vibration 3. Communicative, creative, optimistic. Contagious joy. The word is their "
+       "most powerful tool. Came to gladden the world with their art.",
+    4: "Born under vibration 4. Hardworking, disciplined, practical. Solidity builds safe foundations. "
+       "Came to learn that true security comes from within.",
+    5: "Born under vibration 5. Free, versatile, adventurous. Their energy seeks experience and transformation. "
+       "Curiosity moves their soul. Came to experience the fullness of life.",
+    6: "Born under vibration 6. Loving, responsible, family-oriented. Mission to care and harmonize. "
+       "Love is their greatest strength. Came to learn that loving is setting free.",
+    7: "Born under vibration 7. Wise, introspective, spiritual. Search for deep knowledge. "
+       "Silence is their master. Came to understand the mysteries of existence.",
+    8: "Born under vibration 8. Powerful, accomplished, prosperous. Energy attracts abundance. "
+       "Born to build. Came to learn that true power is service.",
+    9: "Born under vibration 9. Humanitarian, generous, compassionate. Old and wise soul. "
+       "Mission to serve the collective. Came to close cycles and teach detachment.",
+    11: "Born under vibration 11. Intuitive master. Channels higher energies with wisdom and inspiration. "
+        "Magnetic presence. Came to balance spiritual light with feet on the ground.",
+    22: "Born under vibration 22. Master builder. Able to turn the greatest dreams into concrete reality. "
+        "Practical vision. Came to build for humanity.",
+}
+
 # =====================================================================
 # SIG - Significados completos dos números (Monique Cissay)
 # Cada entrada: (Título, Aspectos Positivos, Aspectos Negativos, Lição)
@@ -967,10 +1236,12 @@ VIB = {
 # ============================================================
 # CAMADA MULTILÍNGUE — obrigatoriamente DEPOIS de SIG/CAM/DES/VIB
 # ============================================================
-SIG_I18N = {"pt": SIG}
-CAM_I18N = {"pt": CAM}
-DES_I18N = {"pt": DES}
-VIB_I18N = {"pt": VIB}
+SIG_I18N = {"pt": SIG, "en": SIG_EN}
+CAM_I18N = {"pt": CAM, "en": CAM_EN}
+DES_I18N = {"pt": DES, "en": DES_EN}
+VIB_I18N = {"pt": VIB, "en": VIB_EN}
+
+EXPRESS_TXT = {"pt": EXPRESS_TXT_PT, "en": EXPRESS_TXT_EN}
 
 # ===== Funções de acesso =====
 
