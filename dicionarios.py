@@ -1234,6 +1234,506 @@ VIB = {
 }
 
 # ============================================================
+# ESPANHOL — EXPRESS
+# ============================================================
+EXPRESS_TXT_ES = {
+    1: ("Individualidad",
+        "Original, creativo, líder nato e independiente — energía del comienzo y del impulso creador.",
+        "Egoísta, arrogante e impulsivo — tiende a centralizar decisiones y no delegar.",
+        "Desarrollar la humildad: el liderazgo verdadero inspira, no impone."),
+    2: ("Asociación",
+        "Diplomático, sensible y pacificador — su presencia calma y armoniza los ambientes.",
+        "Indeciso, dependiente y pendiente de la opinión ajena — evita el conflicto a cualquier precio.",
+        "Desarrollar la autoconfianza: su sensibilidad es un don, no una debilidad."),
+    3: ("Creación",
+        "Creativo, comunicativo y optimista — tiene el don de la palabra y de la expresión artística.",
+        "Superficial, disperso y exagerado — reparte su energía sin concluir los proyectos.",
+        "Desarrollar el enfoque: calidad sobre cantidad."),
+    4: ("Trabajo",
+        "Práctico, disciplinado y fiable — es el cimiento de cualquier proyecto o equipo.",
+        "Rígido, obstinado y resistente a las innovaciones — puede perder oportunidades por miedo a lo nuevo.",
+        "Desarrollar la flexibilidad: la vida también pide espontaneidad."),
+    5: ("Libertad",
+        "Versátil, aventurero y magnético — tiene sed de vida y de experiencias.",
+        "Impulsivo, irresponsable e inconsecuente — puede herir a quien ama con su imprevisibilidad.",
+        "Equilibrar libertad y responsabilidad: la verdadera libertad incluye el respeto al otro."),
+    6: ("Familia",
+        "Responsable, amoroso y protector — es el pilar emocional de los suyos.",
+        "Sobreprotector e invasivo — tiende a querer controlar por amor.",
+        "Amar sin controlar: cuidar de sí también es cuidar de los demás."),
+    7: ("Sabiduría",
+        "Sabio, analítico y espiritual — busca la verdad donde nadie más mira.",
+        "Frío, sarcástico y aislado — puede sentirse intelectualmente superior.",
+        "Equilibrar razón y emoción: la sabiduría solo tiene valor cuando se comparte."),
+    8: ("Poder",
+        "Poderoso, realizador y próspero — nació para liderar y construir riqueza.",
+        "Materialista, autoritario y adicto al trabajo — puede sacrificar personas en nombre del éxito.",
+        "Usar el poder con integridad: el verdadero éxito se mide por el bien que se hace."),
+    9: ("Humanidad",
+        "Humanitario, generoso y compasivo — percibe el cuadro mayor de la existencia.",
+        "Melancólico y disperso — tiende a huir de la realidad concreta.",
+        "Perdonar y dejar ir: el desapego es liberador."),
+    11: ("Maestro Inspirador",
+         "Intuitivo, iluminado y visionario — canaliza energías superiores.",
+         "Ansioso, nervioso y distante — la presión de la alta vibración es difícil de soportar.",
+         "Equilibrar el mundo espiritual con el material: aterrizar las intuiciones."),
+    22: ("Maestro Constructor",
+         "Realizador y visionario práctico — transforma sueños en realidad a gran escala.",
+         "Ambicioso en exceso y prepotente — el peso del gran potencial puede aplastar.",
+         "Construir sin esclavizarse al trabajo: las grandes obras necesitan un maestro en paz."),
+}
+
+# ============================================================
+# ESPANHOL — COMPLETO (SIG con metadatos)
+# ============================================================
+SIG_ES = {
+    1: ("Individualidad",
+        "Símbolo: Círculo. Día: Domingo. Planeta: Sol. Elemento: Fuego. Color: Amarillo. Órganos: Corazón. "
+        "Original, creativo, líder nato, independiente, fuerte, determinado, pionero. Energía del comienzo, "
+        "del impulso creador. Las personas con este número son visionarias que no temen recorrer caminos "
+        "nuevos. Tienen iniciativa propia y no dependen de otros para actuar. Cuando se canaliza positivamente, "
+        "esta energía construye imperios y revoluciona paradigmas. Su presencia es notable y su determinación inquebrantable.",
+        "Egoísta, arrogante, dominante, impulsivo, obstinado, impaciente. Tiende a centralizar decisiones y "
+        "no delegar. Puede volverse autoritario e inflexible, alejando a quienes podrían colaborar "
+        "en sus proyectos. El exceso de individualidad puede aislarlo y perjudicar sus relaciones.",
+        "Desarrollar la humildad y saber trabajar en equipo. Recordar que nadie realiza grandes hazañas "
+        "solo. El liderazgo verdadero inspira, no impone. Compartir el protagonismo amplía su poder "
+        "de realización y construye legados duraderos."),
+    2: ("Asociación",
+        "Símbolo: Semicírculo. Día: Lunes. Planeta: Luna. Elemento: Agua. Color: Verde. "
+        "Diplomático, sensible, cooperativo, pacificador, intuitivo, detallista, buen oyente. Su presencia "
+        "calma y armoniza los ambientes. Tiene el don de unir personas y encontrar soluciones que agradan a todos. "
+        "Su intuición es refinada y rara vez se equivoca con las personas. Es el hilo de oro que teje relaciones "
+        "duraderas y significativas.",
+        "Indeciso, dependiente, sumiso, hipersensible, pendiente de la opinión ajena, tímido. Evita los conflictos "
+        "a cualquier precio, incluso cuando es necesario posicionarse. Puede anularse en las relaciones para mantener "
+        "una paz aparente, lo que genera frustración interna.",
+        "Desarrollar la autoconfianza y la independencia emocional. Decir no cuando sea necesario. Su sensibilidad "
+        "es un don, no una debilidad. La verdadera paz viene del equilibrio interno, no de la aprobación externa."),
+    3: ("Creación",
+        "Símbolo: Triángulo. Día: Martes. Planeta: Júpiter. Elemento: Aire. Color: Violeta. "
+        "Creativo, comunicativo, optimista, carismático, talentoso para las artes. Ilumina cualquier ambiente "
+        "con su presencia. Tiene el don de la palabra y de la expresión artística. Su energía es contagiosa y "
+        "atrae personas con naturalidad. Es la personificación de la alegría de vivir y de la creatividad sin límites.",
+        "Superficial, disperso, exagerado, dramático. Tiende a repartir energía en muchas direcciones sin "
+        "concluir proyectos. Puede usar el talento dramático para manipular situaciones y personas.",
+        "Desarrollar el enfoque y la profundidad en la expresión. Canalizar tanto talento hacia una dirección concreta. "
+        "Calidad sobre cantidad."),
+    4: ("Trabajo",
+        "Símbolo: Cuadrado. Día: Miércoles. Planeta: Urano. Elemento: Tierra. Color: Azul. "
+        "Práctico, disciplinado, fiable, leal, persistente, organizado, eficiente, dedicado, honesto. "
+        "Es el cimiento de cualquier proyecto o equipo. No desiste hasta ver el trabajo bien hecho. Valora "
+        "la estabilidad y la seguridad por encima de todo. Su solidez inspira confianza en todos los que lo rodean.",
+        "Rígido, obstinado, lento para cambiar, materialista en exceso, resistente a las innovaciones. Puede "
+        "aferrarse a rutinas innecesarias y perder oportunidades por miedo a lo nuevo.",
+        "Desarrollar la flexibilidad y la ligereza. No todo tiene que ser tan serio. La vida también pide "
+        "espontaneidad. Confiar más en el fluir de la vida."),
+    5: ("Libertad",
+        "Símbolo: Estrella. Día: Jueves. Planeta: Mercurio. Elemento: Aire. Color: Naranja. "
+        "Libre, versátil, aventurero, progresista, inteligente, curioso, adaptable, magnético. "
+        "Su energía es contagiosa y atrae personas y situaciones nuevas con facilidad. Tiene sed de vida "
+        "y de experiencias. Es la personificación de la libertad y de la exploración.",
+        "Impulsivo, irresponsable, ansioso, inconsecuente, excesivo en los placeres. Puede herir a quien ama "
+        "con su imprevisibilidad. El exceso de libertad puede convertirse en libertinaje.",
+        "Equilibrar libertad y responsabilidad. La verdadera libertad incluye el respeto al otro. "
+        "Buscar consistencia sin perder la esencia."),
+    6: ("Familia",
+        "Símbolo: Hexágono. Día: Viernes. Planeta: Venus. Elemento: Tierra. Color: Rosa. "
+        "Responsable, amoroso, protector, justo, compasivo, artístico, consejero nato. Es el pilar "
+        "emocional de los suyos. Tiene un agudo sentido de la justicia y no escatima esfuerzos para proteger a quien ama.",
+        "Sobreprotector, invasivo, ansioso por los demás. Tiende a querer controlar por amor. Puede "
+        "sentirse responsable de problemas que no son suyos.",
+        "Amar sin controlar. Respetar el espacio ajeno. Cuidar de sí también es cuidar de los demás. "
+        "El amor verdadero es libertad."),
+    7: ("Sabiduría",
+        "Símbolo: Heptágono. Día: Sábado. Planeta: Neptuno. Elemento: Agua. Color: Índigo. "
+        "Sabio, analítico, espiritual, intuitivo, perfeccionista, reservado, filósofo, mente brillante. "
+        "Busca la verdad donde nadie más mira. Tiene una conexión profunda con lo invisible.",
+        "Frío, sarcástico, aislado, desconfiado. Puede sentirse intelectualmente superior. "
+        "La soledad puede transformarse en amargura.",
+        "Equilibrar razón y emoción. Compartir el conocimiento. La sabiduría solo tiene valor cuando se comparte."),
+    8: ("Poder",
+        "Símbolo: Octógono. Día: Domingo. Planeta: Saturno. Elemento: Tierra. Color: Rojo. "
+        "Poderoso, realizador, próspero, estratega, ambicioso, visionario. Nació para liderar "
+        "y construir riqueza. Transforma la visión en realidad con eficiencia. Atrae el éxito con naturalidad.",
+        "Materialista, autoritario, adicto al trabajo, impaciente. Puede sacrificar personas en nombre del éxito. "
+        "El poder sin ética corrompe.",
+        "Usar el poder con integridad. El verdadero éxito se mide por el bien que se hace. "
+        "El dinero es un medio, no un fin."),
+    9: ("Humanidad",
+        "Símbolo: Nonágono. Día: Martes. Planeta: Marte. Elemento: Fuego. Color: Carmesí. "
+        "Humanitario, generoso, compasivo, sabio, tolerante, inspirador, altruista. Percibe el cuadro "
+        "mayor de la existencia. Su alma es vieja y lleva la sabiduría de muchas vidas.",
+        "Melancólico, disperso, victimista. Tiende a huir de la realidad concreta. Se refugia en ideales "
+        "inalcanzables.",
+        "Perdonar y dejar ir. Confiar en el fluir de la vida. El desapego es liberador. Cuidar de sí para "
+        "cuidar del mundo."),
+    11: ("Maestro Inspirador",
+         "Intuitivo, iluminado, inspirador, visionario. Canaliza energías superiores. Acceso al "
+         "conocimiento más allá de lo racional. Presencia magnética e inspiradora. Eleva a todos los que lo rodean "
+         "con su luz interior.",
+         "Ansioso, nervioso, distante, fanático. La presión de la alta vibración es difícil de soportar. "
+         "Puede sentirse incomprendido y fuera de lugar.",
+         "Equilibrar el mundo espiritual con el material. Aterrizar las intuiciones. Cuidar del cuerpo tanto "
+         "como del espíritu."),
+    22: ("Maestro Constructor",
+         "Realizador, visionario práctico. Capaz de transformar sueños en realidad a gran escala. "
+         "Combina visión espiritual con acción concreta. Potencial ilimitado. Es el arquitecto del futuro, "
+         "construyendo obras que benefician a la humanidad.",
+         "Ambicioso en exceso, estresado, prepotente. El peso del gran potencial puede aplastar y "
+         "llevar al agotamiento.",
+         "Construir sin esclavizarse al trabajo. El equilibrio entre hacer y ser. Las grandes obras "
+         "necesitan un maestro en paz."),
+}
+
+# ============================================================
+# ESPANHOL — CAMINHO DE VIDA (CAM)
+# ============================================================
+CAM_ES = {
+    1: ("Realización",
+        "Su misión es abrir caminos, liderar e innovar. Usted vino al mundo para ser pionero, para "
+        "crear oportunidades donde antes no existían. Tiene coraje, fuerza de voluntad y determinación para "
+        "alcanzar grandes hazañas. Su mayor desafío es aprender que liderar también significa servir e "
+        "inspirar a otros a brillar. Personas como Napoleón Bonaparte, Walt Disney, Steve Jobs y Pelé "
+        "comparten este camino de realización y pionerismo."),
+    2: ("Paz y Cooperación",
+        "Su misión es cooperar, equilibrar y servir como puente entre las personas. Usted vino para traer "
+        "armonía y diplomacia. Su sensibilidad es su mayor herramienta. El mundo necesita su "
+        "capacidad de unir opuestos y crear consenso. Lady Di, Abraham Lincoln y Roberto Carlos "
+        "son ejemplos de este recorrido de paz."),
+    3: ("Alegría y Creación",
+        "Su misión es comunicar, crear e inspirar alegría. Usted vino para expresar la belleza de la vida "
+        "a través del arte y de la palabra. Su carisma ilumina a quienes lo rodean. Oscar Wilde, Charles "
+        "Dickens, Jim Carrey y Paul McCartney son ejemplos de este camino de creación."),
+    4: ("Acción y Estructura",
+        "Su misión es construir, organizar y crear estructura. Usted vino para establecer bases sólidas "
+        "con disciplina y transformar el caos en orden. Su fiabilidad es su mayor baza. Bill Gates, "
+        "Sigmund Freud y Margaret Thatcher comparten esta jornada de construcción."),
+    5: ("Evolución y Libertad",
+        "Su misión es experimentar, cambiar y evolucionar. Usted vino para romper paradigmas e inspirar "
+        "la liberación. Su versatilidad es su fuerza motriz. Franklin Roosevelt, Cristiano Ronaldo y "
+        "Mick Jagger son ejemplos de transformación."),
+    6: ("Conciliación y Responsabilidad",
+        "Su misión es servir, cuidar y armonizar. Usted vino para crear belleza y amor en el mundo. "
+        "Su corazón generoso guía sus pasos y toca a quienes lo rodean. John F. Kennedy, "
+        "Elvis Presley y Juana de Arco son ejemplos de este camino."),
+    7: ("Sabiduría y Perfección",
+        "Su misión es buscar la verdad y evolucionar espiritualmente. Usted vino para comprender los "
+        "misterios de la existencia y transmitir sabiduría. Stephen Hawking, Marie Curie, Nikola Tesla "
+        "y Alan Turing comparten este camino de conocimiento."),
+    8: ("Justicia y Prosperidad",
+        "Su misión es manifestar abundancia con sabiduría. Usted vino para realizar grandes obras y "
+        "mostrar que prosperidad y ética van juntas. Henry Ford, Getúlio Vargas, Silvio Santos y "
+        "Julio Iglesias son ejemplos de realización material con propósito."),
+    9: ("Sabiduría y Humanitarismo",
+        "Su misión es servir a la humanidad con compasión. Usted vino para cerrar ciclos e inspirar. "
+        "Su alma lleva la sabiduría de muchas vidas. Gandhi, Martin Luther King Jr., Madre Teresa y "
+        "John Lennon son ejemplos de servicio a la humanidad."),
+    11: ("Inspiración Divina",
+         "Su misión es iluminar y elevar la conciencia colectiva. Usted es un canal de intuición superior. "
+         "Winston Churchill, Albert Einstein, Mozart y Marilyn Monroe son ejemplos de esta inspiración."),
+    22: ("Construcción a Gran Escala",
+         "Su misión es realizar grandes obras que benefician a la humanidad. Usted es el arquitecto del futuro. "
+         "Oprah Winfrey, Thomas Edison, Simón Bolívar y Frank Lloyd Wright son ejemplos de construcción "
+         "a gran escala."),
+}
+
+# ============================================================
+# ESPANHOL — DESAFÍOS (DES)
+# ============================================================
+DES_ES = {
+    0: "Equilibrio natural. Usted posee equilibrio en esta área, simplemente fluya con la vida.",
+    1: "Superar el egoísmo y desarrollar un liderazgo servidor. El poder verdadero está en empoderar a otros.",
+    2: "Vencer la timidez y la dependencia emocional. Desarrollar autoconfianza para expresar sus necesidades.",
+    3: "Evitar la dispersión y cultivar el enfoque. Concentrar la energía creativa en proyectos concretos.",
+    4: "Superar la rigidez y abrazar los cambios. La flexibilidad y la adaptación son claves para el crecimiento.",
+    5: "Controlar los excesos y cultivar la disciplina. La libertad con responsabilidad lleva a la madurez.",
+    6: "Evitar la sobreprotección. Confiar en que sus seres queridos pueden tomar sus propias decisiones.",
+    7: "Vencer el aislamiento y compartir su conocimiento con el mundo. La sabiduría solo existe cuando se comparte.",
+    8: "Equilibrar la ambición con la ética y la generosidad. El éxito material que beneficia a otros es el verdadero.",
+    9: "Superar el desapego excesivo. Aprender a cerrar ciclos sin culpa y confiar en el fluir de la vida.",
+}
+
+# ============================================================
+# ESPANHOL — VIBRACIÓN DE NACIMIENTO (VIB)
+# ============================================================
+VIB_ES = {
+    1: "Nació bajo la vibración 1. Líder nato, pionero, individualista. Energía creadora e iniciadora. "
+       "Tiene el coraje de abrir caminos donde nadie ha transitado. Vino para aprender a liderar con humildad y servicio.",
+    2: "Nació bajo la vibración 2. Sensible, diplomático, cooperativo. Su fuerza está en la cooperación y la armonía. "
+       "Intuición aguda. Vino para aprender el equilibrio entre dar y recibir.",
+    3: "Nació bajo la vibración 3. Comunicativo, creativo, optimista. Alegría contagiosa. La palabra es su "
+       "herramienta más poderosa. Vino para alegrar el mundo con su arte.",
+    4: "Nació bajo la vibración 4. Trabajador, disciplinado, práctico. La solidez construye bases seguras. "
+       "Vino para aprender que la verdadera seguridad viene de dentro.",
+    5: "Nació bajo la vibración 5. Libre, versátil, aventurero. Su energía busca experiencias y transformación. "
+       "La curiosidad mueve su alma. Vino para experimentar la plenitud de la vida.",
+    6: "Nació bajo la vibración 6. Amoroso, responsable, familiar. Misión de cuidar y armonizar. "
+       "El amor es su mayor fuerza. Vino para aprender que amar es liberar.",
+    7: "Nació bajo la vibración 7. Sabio, introspectivo, espiritual. Búsqueda del conocimiento profundo. "
+       "El silencio es su maestro. Vino para comprender los misterios de la existencia.",
+    8: "Nació bajo la vibración 8. Poderoso, realizador, próspero. Su energía atrae la abundancia. "
+       "Nació para construir. Vino para aprender que el poder verdadero es servicio.",
+    9: "Nació bajo la vibración 9. Humanitario, generoso, compasivo. Alma vieja y sabia. "
+       "Misión de servir al colectivo. Vino para cerrar ciclos y enseñar el desapego.",
+    11: "Nació bajo la vibración 11. Maestro intuitivo. Canaliza energías superiores con sabiduría e inspiración. "
+        "Presencia magnética. Vino para equilibrar la luz espiritual con los pies en la tierra.",
+    22: "Nació bajo la vibración 22. Maestro constructor. Capaz de transformar los mayores sueños en realidad concreta. "
+        "Visión práctica. Vino para construir para la humanidad.",
+}
+
+# ============================================================
+# FRANCÊS — EXPRESS
+# ============================================================
+EXPRESS_TXT_FR = {
+    1: ("Individualité",
+        "Original, créatif, leader-né et indépendant — énergie du commencement et de l'impulsion créatrice.",
+        "Égoïste, arrogant et impulsif — tend à centraliser les décisions et à ne jamais déléguer.",
+        "Développer l'humilité : le vrai leadership inspire, il n'impose pas."),
+    2: ("Association",
+        "Diplomate, sensible et pacificateur — sa présence apaise et harmonise les environnements.",
+        "Indécis, dépendant et influençable — évite le conflit à tout prix.",
+        "Développer la confiance en soi : votre sensibilité est un don, pas une faiblesse."),
+    3: ("Création",
+        "Créatif, communicatif et optimiste — doté du don de la parole et de l'expression artistique.",
+        "Superficiel, dispersé et exagéré — disperse son énergie sans achever ses projets.",
+        "Développer la concentration : la qualité prime sur la quantité."),
+    4: ("Travail",
+        "Pratique, discipliné et fiable — il est le fondement de tout projet ou de toute équipe.",
+        "Rigide, têtu et résistant aux innovations — peut perdre des occasions par peur du nouveau.",
+        "Développer la souplesse : la vie demande aussi de la spontanéité."),
+    5: ("Liberté",
+        "Polyvalent, aventureux et magnétique — il a soif de vie et d'expériences.",
+        "Impulsif, irresponsable et inconséquent — peut blesser ceux qu'il aime par son imprévisibilité.",
+        "Équilibrer liberté et responsabilité : la vraie liberté inclut le respect de l'autre."),
+    6: ("Famille",
+        "Responsable, aimant et protecteur — il est le pilier émotionnel des siens.",
+        "Surprotecteur et envahissant — tend à vouloir contrôler par amour.",
+        "Aimer sans contrôler : prendre soin de soi, c'est aussi prendre soin des autres."),
+    7: ("Sagesse",
+        "Sage, analytique et spirituel — cherche la vérité là où personne ne regarde.",
+        "Froid, sarcastique et isolé — peut se sentir intellectuellement supérieur.",
+        "Équilibrer raison et émotion : la sagesse n'a de valeur que lorsqu'elle est partagée."),
+    8: ("Pouvoir",
+        "Puissant, réalisateur et prospère — né pour diriger et bâtir la richesse.",
+        "Matérialiste, autoritaire et bourreau de travail — peut sacrifier des personnes au nom du succès.",
+        "User du pouvoir avec intégrité : le vrai succès se mesure au bien que l'on fait."),
+    9: ("Humanité",
+        "Humanitaire, généreux et compatissant — perçoit le tableau d'ensemble de l'existence.",
+        "Mélancolique et dispersé — tend à fuir la réalité concrète.",
+        "Pardonner et lâcher prise : le détachement libère."),
+    11: ("Maître Inspirateur",
+         "Intuitif, illuminé et visionnaire — canalise des énergies supérieures.",
+         "Anxieux, nerveux et distant — la pression de la haute vibration est difficile à supporter.",
+         "Équilibrer le monde spirituel et le monde matériel : ancrer les intuitions."),
+    22: ("Maître Bâtisseur",
+         "Réalisateur et visionnaire pratique — transforme les rêves en réalité à grande échelle.",
+         "Excessivement ambitieux et arrogant — le poids du grand potentiel peut écraser.",
+         "Bâtir sans s'asservir au travail : les grandes œuvres ont besoin d'un maître en paix."),
+}
+
+# ============================================================
+# FRANCÊS — COMPLETO (SIG avec métadonnées)
+# ============================================================
+SIG_FR = {
+    1: ("Individualité",
+        "Symbole : Cercle. Jour : Dimanche. Planète : Soleil. Élément : Feu. Couleur : Jaune. Organes : Cœur. "
+        "Original, créatif, leader-né, indépendant, fort, déterminé, pionnier. Énergie du commencement, "
+        "de l'impulsion créatrice. Les personnes portant ce nombre sont des visionnaires qui ne craignent pas "
+        "d'emprunter des chemins nouveaux. Elles font preuve d'initiative et ne dépendent pas des autres pour agir. "
+        "Lorsqu'elle est canalisée positivement, cette énergie bâtit des empires et révolutionne les paradigmes. "
+        "Leur présence est marquante et leur détermination inébranlable.",
+        "Égoïste, arrogant, dominateur, impulsif, têtu, impatient. Tend à centraliser les décisions et "
+        "à ne jamais déléguer. Peut devenir autoritaire et inflexible, éloignant ceux qui pourraient collaborer "
+        "à ses projets. L'excès d'individualité peut l'isoler et nuire à ses relations.",
+        "Développer l'humilité et apprendre à travailler en équipe. Se rappeler que nul n'accomplit de grandes "
+        "choses seul. Le vrai leadership inspire, il n'impose pas. Partager la vedette élargit son pouvoir "
+        "de réalisation et bâtit des héritages durables."),
+    2: ("Association",
+        "Symbole : Demi-cercle. Jour : Lundi. Planète : Lune. Élément : Eau. Couleur : Vert. "
+        "Diplomate, sensible, coopératif, pacificateur, intuitif, attentif aux détails, bon auditeur. Sa présence "
+        "apaise et harmonise les environnements. Il a le don d'unir les personnes et de trouver des solutions qui plaisent à tous. "
+        "Son intuition est fine et se trompe rarement sur les gens. C'est le fil d'or qui tisse des relations "
+        "durables et significatives.",
+        "Indécis, dépendant, soumis, hypersensible, influençable, timide. Évite le conflit "
+        "à tout prix, même lorsqu'il faut se positionner. Peut s'effacer dans les relations pour maintenir "
+        "une paix apparente, ce qui génère une frustration intérieure.",
+        "Développer la confiance en soi et l'indépendance émotionnelle. Savoir dire non quand c'est nécessaire. "
+        "Votre sensibilité est un don, pas une faiblesse. La vraie paix vient de l'équilibre intérieur, "
+        "non de l'approbation extérieure."),
+    3: ("Création",
+        "Symbole : Triangle. Jour : Mardi. Planète : Jupiter. Élément : Air. Couleur : Violet. "
+        "Créatif, communicatif, optimiste, charismatique, doué pour les arts. Il illumine tout environnement "
+        "par sa présence. Il a le don de la parole et de l'expression artistique. Son énergie est contagieuse et "
+        "attire naturellement les gens. Il incarne la joie de vivre et la créativité sans limites.",
+        "Superficiel, dispersé, exagéré, dramatique. Tend à disperser son énergie dans plusieurs directions sans "
+        "achever ses projets. Peut utiliser son talent dramatique pour manipuler les situations et les personnes.",
+        "Développer la concentration et la profondeur dans l'expression. Canaliser tant de talent dans une direction précise. "
+        "La qualité prime sur la quantité."),
+    4: ("Travail",
+        "Symbole : Carré. Jour : Mercredi. Planète : Uranus. Élément : Terre. Couleur : Bleu. "
+        "Pratique, discipliné, fiable, loyal, persévérant, organisé, efficace, dévoué, honnête. "
+        "Il est le fondement de tout projet ou de toute équipe. Il n'abandonne pas avant que le travail soit bien fait. "
+        "Il valorise la stabilité et la sécurité par-dessus tout. Sa solidité inspire confiance à tous ceux qui l'entourent.",
+        "Rigide, têtu, lent à changer, excessivement matérialiste, résistant aux innovations. Peut "
+        "s'attacher à des routines inutiles et perdre des occasions par peur du nouveau.",
+        "Développer la souplesse et la légèreté. Tout ne doit pas être si sérieux. La vie demande aussi "
+        "de la spontanéité. Faire davantage confiance au flux de la vie."),
+    5: ("Liberté",
+        "Symbole : Étoile. Jour : Jeudi. Planète : Mercure. Élément : Air. Couleur : Orange. "
+        "Libre, polyvalent, aventureux, progressiste, intelligent, curieux, adaptable, magnétique. "
+        "Son énergie est contagieuse et attire facilement des personnes et des situations nouvelles. Il a soif de vie "
+        "et d'expériences. Il incarne la liberté et l'exploration.",
+        "Impulsif, irresponsable, anxieux, inconséquent, excessif dans les plaisirs. Peut blesser ceux qu'il aime "
+        "par son imprévisibilité. L'excès de liberté peut devenir libertinage.",
+        "Équilibrer liberté et responsabilité. La vraie liberté inclut le respect de l'autre. "
+        "Chercher la constance sans perdre son essence."),
+    6: ("Famille",
+        "Symbole : Hexagone. Jour : Vendredi. Planète : Vénus. Élément : Terre. Couleur : Rose. "
+        "Responsable, aimant, protecteur, juste, compatissant, artistique, conseiller-né. Il est le pilier "
+        "émotionnel des siens. Il a un sens aigu de la justice et ne ménage pas ses efforts pour protéger ceux qu'il aime.",
+        "Surprotecteur, envahissant, anxieux pour les autres. Tend à vouloir contrôler par amour. Peut se "
+        "sentir responsable de problèmes qui ne sont pas les siens.",
+        "Aimer sans contrôler. Respecter l'espace d'autrui. Prendre soin de soi, c'est aussi prendre soin des autres. "
+        "Le véritable amour est liberté."),
+    7: ("Sagesse",
+        "Symbole : Heptagone. Jour : Samedi. Planète : Neptune. Élément : Eau. Couleur : Indigo. "
+        "Sage, analytique, spirituel, intuitif, perfectionniste, réservé, philosophe, esprit brillant. "
+        "Il cherche la vérité là où personne ne regarde. Il a une connexion profonde avec l'invisible.",
+        "Froid, sarcastique, isolé, méfiant. Peut se sentir intellectuellement supérieur. "
+        "La solitude peut se transformer en amertume.",
+        "Équilibrer raison et émotion. Partager son savoir. La sagesse n'a de valeur que lorsqu'elle est partagée."),
+    8: ("Pouvoir",
+        "Symbole : Octogone. Jour : Dimanche. Planète : Saturne. Élément : Terre. Couleur : Rouge. "
+        "Puissant, réalisateur, prospère, stratège, ambitieux, visionnaire. Né pour diriger "
+        "et bâtir la richesse. Il transforme la vision en réalité avec efficacité. Il attire le succès naturellement.",
+        "Matérialiste, autoritaire, bourreau de travail, impatient. Peut sacrifier des personnes au nom du succès. "
+        "Le pouvoir sans éthique corrompt.",
+        "User du pouvoir avec intégrité. Le vrai succès se mesure au bien que l'on fait. "
+        "L'argent est un moyen, non une fin."),
+    9: ("Humanité",
+        "Symbole : Ennéagone. Jour : Mardi. Planète : Mars. Élément : Feu. Couleur : Cramoisi. "
+        "Humanitaire, généreux, compatissant, sage, tolérant, inspirant, altruiste. Il perçoit le tableau "
+        "d'ensemble de l'existence. Son âme est ancienne et porte la sagesse de nombreuses vies.",
+        "Mélancolique, dispersé, victimaire. Tend à fuir la réalité concrète. Se réfugie dans des idéaux "
+        "inaccessibles.",
+        "Pardonner et lâcher prise. Faire confiance au flux de la vie. Le détachement libère. Prendre soin de soi pour "
+        "prendre soin du monde."),
+    11: ("Maître Inspirateur",
+         "Intuitif, illuminé, inspirant, visionnaire. Canalise des énergies supérieures. Accès à "
+         "un savoir au-delà du rationnel. Présence magnétique et inspirante. Il élève tous ceux qui l'entourent "
+         "par sa lumière intérieure.",
+         "Anxieux, nerveux, distant, fanatique. La pression de la haute vibration est difficile à supporter. "
+         "Peut se sentir incompris et déplacé.",
+         "Équilibrer le monde spirituel et le monde matériel. Ancrer les intuitions. Prendre soin du corps autant "
+         "que de l'esprit."),
+    22: ("Maître Bâtisseur",
+         "Réalisateur, visionnaire pratique. Capable de transformer les rêves en réalité à grande échelle. "
+         "Il allie vision spirituelle et action concrète. Potentiel illimité. Il est l'architecte de l'avenir, "
+         "bâtissant des œuvres qui bénéficient à l'humanité.",
+         "Excessivement ambitieux, stressé, arrogant. Le poids du grand potentiel peut écraser et "
+         "mener à l'épuisement.",
+         "Bâtir sans s'asservir au travail. L'équilibre entre faire et être. Les grandes œuvres "
+         "ont besoin d'un maître en paix."),
+}
+
+# ============================================================
+# FRANCÊS — CHEMIN DE VIE (CAM)
+# ============================================================
+CAM_FR = {
+    1: ("Réalisation",
+        "Votre mission est d'ouvrir des chemins, de diriger et d'innover. Vous êtes venu au monde pour être "
+        "pionnier, pour créer des opportunités là où il n'en existait aucune. Vous avez le courage, la volonté et la "
+        "détermination pour accomplir de grandes choses. Votre plus grand défi est d'apprendre que diriger signifie aussi "
+        "servir et inspirer les autres à briller. Des personnes comme Napoléon Bonaparte, Walt Disney, Steve Jobs et Pelé "
+        "partagent ce chemin de réalisation et de pionnier."),
+    2: ("Paix et Coopération",
+        "Votre mission est de coopérer, d'équilibrer et de servir de pont entre les personnes. Vous êtes venu apporter "
+        "l'harmonie et la diplomatie. Votre sensibilité est votre meilleur outil. Le monde a besoin de votre "
+        "capacité à unir les opposés et à créer un consensus. Lady Diana, Abraham Lincoln et Roberto Carlos "
+        "sont des exemples de ce parcours de paix."),
+    3: ("Joie et Création",
+        "Votre mission est de communiquer, de créer et d'inspirer la joie. Vous êtes venu exprimer la beauté de la vie "
+        "à travers l'art et la parole. Votre charisme illumine ceux qui vous entourent. Oscar Wilde, Charles "
+        "Dickens, Jim Carrey et Paul McCartney sont des exemples de ce chemin de création."),
+    4: ("Action et Structure",
+        "Votre mission est de bâtir, d'organiser et de créer de la structure. Vous êtes venu établir des bases solides "
+        "avec discipline et transformer le chaos en ordre. Votre fiabilité est votre meilleur atout. Bill Gates, "
+        "Sigmund Freud et Margaret Thatcher partagent ce parcours de construction."),
+    5: ("Évolution et Liberté",
+        "Votre mission est d'expérimenter, de changer et d'évoluer. Vous êtes venu briser les paradigmes et inspirer "
+        "la libération. Votre polyvalence est votre force motrice. Franklin Roosevelt, Cristiano Ronaldo et "
+        "Mick Jagger sont des exemples de transformation."),
+    6: ("Conciliation et Responsabilité",
+        "Votre mission est de servir, de prendre soin et d'harmoniser. Vous êtes venu créer de la beauté et de l'amour dans le monde. "
+        "Votre cœur généreux guide vos pas et touche ceux qui vous entourent. John F. Kennedy, "
+        "Elvis Presley et Jeanne d'Arc sont des exemples de ce chemin."),
+    7: ("Sagesse et Perfection",
+        "Votre mission est de chercher la vérité et d'évoluer spirituellement. Vous êtes venu comprendre les "
+        "mystères de l'existence et transmettre la sagesse. Stephen Hawking, Marie Curie, Nikola Tesla "
+        "et Alan Turing partagent ce chemin de connaissance."),
+    8: ("Justice et Prospérité",
+        "Votre mission est de manifester l'abondance avec sagesse. Vous êtes venu accomplir de grandes œuvres et "
+        "montrer que prospérité et éthique vont de pair. Henry Ford, Getúlio Vargas, Silvio Santos et "
+        "Julio Iglesias sont des exemples de réalisation matérielle avec un but."),
+    9: ("Sagesse et Humanitarisme",
+        "Votre mission est de servir l'humanité avec compassion. Vous êtes venu clore des cycles et inspirer. "
+        "Votre âme porte la sagesse de nombreuses vies. Gandhi, Martin Luther King Jr., Mère Teresa et "
+        "John Lennon sont des exemples de service à l'humanité."),
+    11: ("Inspiration Divine",
+         "Votre mission est d'illuminer et d'élever la conscience collective. Vous êtes un canal d'intuition supérieure. "
+         "Winston Churchill, Albert Einstein, Mozart et Marilyn Monroe sont des exemples de cette inspiration."),
+    22: ("Construction à Grande Échelle",
+         "Votre mission est d'accomplir de grandes œuvres qui bénéficient à l'humanité. Vous êtes l'architecte de l'avenir. "
+         "Oprah Winfrey, Thomas Edison, Simón Bolívar et Frank Lloyd Wright sont des exemples de construction "
+         "à grande échelle."),
+}
+
+# ============================================================
+# FRANCÊS — DÉFIS (DES)
+# ============================================================
+DES_FR = {
+    0: "Équilibre naturel. Vous possédez l'équilibre dans ce domaine, il suffit de suivre le cours de la vie.",
+    1: "Surmonter l'égoïsme et développer un leadership au service des autres. Le vrai pouvoir est de donner du pouvoir aux autres.",
+    2: "Vaincre la timidité et la dépendance affective. Développer la confiance en soi pour exprimer ses besoins.",
+    3: "Éviter la dispersion et cultiver la concentration. Canaliser l'énergie créative vers des projets concrets.",
+    4: "Surmonter la rigidité et accueillir le changement. La souplesse et l'adaptation sont les clés de la croissance.",
+    5: "Maîtriser les excès et cultiver la discipline. La liberté avec responsabilité mène à la maturité.",
+    6: "Éviter la surprotection. Faire confiance à vos proches pour faire leurs propres choix.",
+    7: "Vaincre l'isolement et partager votre savoir avec le monde. La sagesse n'existe que lorsqu'elle est partagée.",
+    8: "Équilibrer l'ambition avec l'éthique et la générosité. Le succès matériel qui profite aux autres est le véritable.",
+    9: "Surmonter le détachement excessif. Apprendre à clore des cycles sans culpabilité et faire confiance au flux de la vie.",
+}
+
+# ============================================================
+# FRANCÊS — VIBRATION DE NAISSANCE (VIB)
+# ============================================================
+VIB_FR = {
+    1: "Né sous la vibration 1. Leader-né, pionnier, individualiste. Énergie créatrice et initiatrice. "
+       "Il a le courage d'ouvrir des chemins où personne n'a marché. Venu apprendre à diriger avec humilité et service.",
+    2: "Né sous la vibration 2. Sensible, diplomate, coopératif. Sa force réside dans le partenariat et l'harmonie. "
+       "Intuition aiguisée. Venu apprendre l'équilibre entre donner et recevoir.",
+    3: "Né sous la vibration 3. Communicatif, créatif, optimiste. Joie contagieuse. La parole est son "
+       "outil le plus puissant. Venu égayer le monde de son art.",
+    4: "Né sous la vibration 4. Travailleur, discipliné, pratique. La solidité bâtit des bases sûres. "
+       "Venu apprendre que la vraie sécurité vient de l'intérieur.",
+    5: "Né sous la vibration 5. Libre, polyvalent, aventureux. Son énergie cherche l'expérience et la transformation. "
+       "La curiosité meut son âme. Venu expérimenter la plénitude de la vie.",
+    6: "Né sous la vibration 6. Aimant, responsable, familial. Mission de prendre soin et d'harmoniser. "
+       "L'amour est sa plus grande force. Venu apprendre qu'aimer, c'est libérer.",
+    7: "Né sous la vibration 7. Sage, introspectif, spirituel. Recherche de la connaissance profonde. "
+       "Le silence est son maître. Venu comprendre les mystères de l'existence.",
+    8: "Né sous la vibration 8. Puissant, réalisateur, prospère. Son énergie attire l'abondance. "
+       "Né pour bâtir. Venu apprendre que le vrai pouvoir est service.",
+    9: "Né sous la vibration 9. Humanitaire, généreux, compatissant. Âme ancienne et sage. "
+       "Mission de servir le collectif. Venu clore des cycles et enseigner le détachement.",
+    11: "Né sous la vibration 11. Maître intuitif. Canalise des énergies supérieures avec sagesse et inspiration. "
+        "Présence magnétique. Venu équilibrer la lumière spirituelle avec les pieds sur terre.",
+    22: "Né sous la vibration 22. Maître bâtisseur. Capable de transformer les plus grands rêves en réalité concrète. "
+        "Vision pratique. Venu bâtir pour l'humanité.",
+}
+
+# ============================================================
 # CAMADA MULTILÍNGUE — obrigatoriamente DEPOIS de SIG/CAM/DES/VIB
 #                                        e DEPOIS de *_EN
 # ============================================================
@@ -1243,6 +1743,16 @@ SIG_I18N = {"pt": SIG, "en": SIG_EN}
 CAM_I18N = {"pt": CAM, "en": CAM_EN}
 DES_I18N = {"pt": DES, "en": DES_EN}
 VIB_I18N = {"pt": VIB, "en": VIB_EN}
+EXPRESS_TXT["es"] = EXPRESS_TXT_ES
+SIG_I18N["es"] = SIG_ES
+CAM_I18N["es"] = CAM_ES
+DES_I18N["es"] = DES_ES
+VIB_I18N["es"] = VIB_ES
+EXPRESS_TXT["fr"] = EXPRESS_TXT_FR
+SIG_I18N["fr"] = SIG_FR
+CAM_I18N["fr"] = CAM_FR
+DES_I18N["fr"] = DES_FR
+VIB_I18N["fr"] = VIB_FR
 
 # ===== Funções de acesso =====
 
