@@ -153,6 +153,66 @@ def registrar_tudo():
         if not registrou:
             cid = CID_FALLBACK.get(lang)
             if cid:
+
+# ------------------------------------------------------------------
+# 5. CONSULTA POR IDIOMA
+# ------------------------------------------------------------------
+LATINOS = ("pt", "en", "es", "fr", "de", "it", "ru", "tr", "vi", "id")
+
+# Mapa registro -> idioma (inverso do FONTES_TTF, para consulta)
+_POR_REGISTRO = {
+    "pt": "DejaVu",
+    "ar": "NotoNaskhArabic",
+    "he": "NotoSansHebrew",
+    "ja": "NotoSansJP",
+    "zh": "NotoSansSC",
+}
+
+
+def fonte_para(lang):
+    """
+    Devolve (nome_regular, nome_bold) já REGISTRADOS para o idioma pedido.
+    Nunca devolve nome inexistente: se o TTF faltou e há CID, devolve o CID.
+    """
+    lang = (lang or "pt").lower()
+
+    # Latinos
+    if lang in LATINOS:
+        reg = "DejaVu"
+        bold = "DejaVu-Bold"
+        return (reg, bold if bold in _REGISTRADOS else reg)
+
+    # RTL
+    if lang == "ar":
+        reg = "NotoNaskhArabic"
+        bold = "NotoNaskhArabic-Bold"
+        return (reg, bold if bold in _REGISTRADOS else reg)
+    if lang == "he":
+        reg = "NotoSansHebrew"
+        bold = "NotoSansHebrew-Bold"
+        return (reg, bold if bold in _REGISTRADOS else reg)
+
+    # CJK
+    if lang == "ja":
+        reg = "NotoSansJP"
+        if reg not in _REGISTRADOS:
+            reg = CID_FALLBACK.get("ja", "HeiseiMin-W3")
+        bold = "NotoSansJP-Bold"
+        return (reg, bold if bold in _REGISTRADOS else reg)
+    if lang == "zh":
+        reg = "NotoSansSC"
+        if reg not in _REGISTRADOS:
+            reg = CID_FALLBACK.get("zh", "STSong-Light")
+        bold = "NotoSansSC-Bold"
+        return (reg, bold if bold in _REGISTRADOS else reg)
+
+    # Desconhecido → latino
+    return fonte_para("pt")
+
+
+def registrar_fontes():
+    """ASSINATURA LEGADA — delega para registrar_tudo()."""
+    return registrar_tudo()              
                 _registrar_cid(alias_cjk, cid)
 
     logger.info("fontes: registro concluído — %d fontes ativas", len(_REGISTRADOS))
