@@ -15,7 +15,7 @@ from reportlab.pdfbase.cidfonts import UnicodeCIDFont
 from reportlab.platypus import Table, TableStyle, Paragraph, SimpleDocTemplate, Spacer, HRFlowable, Image
 from reportlab.lib.utils import ImageReader
 from reportlab.lib.pagesizes import A4, landscape
-from fontes import registrar_tudo, fonte_para         
+from fontes import registrar_tudo, fonte_para 
 
 _CTX_TEXTO = {}
 STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
@@ -164,6 +164,30 @@ def _rodape(canvas, doc_, c, lang, num_pag=None, total_pag=None):
     canvas.setFillColor(COR_CINZA)
     canvas.setFont(_fonte(lang), 7.5)
     canvas.drawCentredString(w / 2, 8*mm, CONTATOS)
+
+# ===== Canvas com total de páginas (X de Y) =====
+    doc.build(story, canvasmaker=CanvasComTotal)
+    return caminho_saida 
+
+_RODAPE_FN = None
+
+class CanvasComTotal(_canvas.Canvas):
+    def _desenhar_cabecalho(self):
+        w, h = self._pagesize
+        if self._logo_num:
+            try:
+                self.drawImage(ImageReader(self._logo_num), 28, h - 34,
+                               width=24, height=24, preserveAspectRatio=True,
+                               mask='auto')
+            except Exception:
+                pass
+        if self._logo_a1elos:
+            try:
+                self.drawImage(ImageReader(self._logo_a1elos), w - 52, h - 34,
+                               width=24, height=24, preserveAspectRatio=True,
+                               mask='auto')
+            except Exception:
+                pass
 
 def gerar_pdf_texto(lang="pt", caminho_saida=None):
     """Gera o PDF documento A4 retrato — texto limpo. Retorna o caminho."""
@@ -481,9 +505,6 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     _CTX_TEXTO["lang"] = lang
     _RODAPE_FN = _rodape_texto      
 
-    doc.build(story, canvasmaker=CanvasComTotal)
-    return caminho_saida 
-           
 # ============================================================
 # BLOCO JURÍDICO / GOVERNANÇA E COMPLIANCE (SEÇÕES 19-29)
 # Conteúdo em PT com fallback para todos os idiomas.
@@ -574,19 +595,6 @@ def _render_bloco_juridico(doc, largura, altura, lang, c):
             y -= 3 * mm
         y -= 5 * mm
     return y
-
-    def showPage(self):
-        self._saved_page_states.append(dict(self.__dict__))
-        self._startPage()
-
-    def save(self):
-        num_pages = len(self._saved_page_states)
-        for state in self._saved_page_states:
-            self.__dict__.update(state)
-            self._desenhar_cabecalho()
-            self._desenhar_rodape(num_pages)
-            super().showPage()
-        super().save()
 
 # ------------------------------------------------------------
 # CORES DA MARCA
@@ -696,27 +704,6 @@ def _encaixar_texto(doc, x, y, largura, altura_max, texto, tam, lang, cor,
         y_ini -= lh
     return y_ini + lh                               # base do bloco
 
-# ===== Canvas com total de páginas (X de Y) =====
-_RODAPE_FN = None
-
-class CanvasComTotal(canvas.Canvas):
-    def _desenhar_cabecalho(self):
-        w, h = self._pagesize
-        if self._logo_num:
-            try:
-                self.drawImage(ImageReader(self._logo_num), 28, h - 34,
-                               width=24, height=24, preserveAspectRatio=True,
-                               mask='auto')
-            except Exception:
-                pass
-        if self._logo_a1elos:
-            try:
-                self.drawImage(ImageReader(self._logo_a1elos), w - 52, h - 34,
-                               width=24, height=24, preserveAspectRatio=True,
-                               mask='auto')
-            except Exception:
-                pass
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._saved = []
@@ -734,8 +721,8 @@ class CanvasComTotal(canvas.Canvas):
             self.__dict__.update(estado)
             if _RODAPE_FN is not None:
                 _RODAPE_FN(self, self._pageNumber, total)
-            canvas.Canvas.showPage(self)
-        canvas.Canvas.save(self)
+            _canvas.Canvas.showPage(self)
+        _canvas.Canvas.save(self)
  
 # -*- coding: utf-8 -*-
 # apresentacao_textos.py - Textos das apresentações em 14 idiomas (Versão Atualizada 20/09/2026)
@@ -4801,7 +4788,7 @@ def gerar_pdf_slides(lang):
     c = APRESENTACAO_TEXTOS.get(lang, APRESENTACAO_TEXTOS["pt"])
     largura, altura = landscape(A4)
     caminho_saida = os.path.join(STATIC_DIR, f"apresentacao_slides_{lang}.pdf")
-    doc = canvas.Canvas(caminho_saida, pagesize=landscape(A4))
+    doc = _canvas.Canvas(caminho_saida, pagesize=landscape(A4))
 
     # ===== CLOSURES (usam doc, largura, altura, lang, c) =====
     def cab(titulo, nivel=1):
