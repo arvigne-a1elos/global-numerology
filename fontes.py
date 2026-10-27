@@ -65,15 +65,13 @@ ALIAS = {
 
 _REGISTRADOS = {}   # cache: nome -> True
 
-
 # ------------------------------------------------------------------
 # 3. UTILITÁRIOS INTERNOS
 # ------------------------------------------------------------------
 def _achar_arquivo(nome_base):
     """
-    Procura em 3 padrões, em ordem:
-      <base>.ttf  |  <base>-Regular.ttf  |  <base>-Bold.ttf
-    Percorre fonts/ e subpastas.
+    Procura <base>.ttf, <base>-Regular.ttf ou <base>-Bold.ttf em fonts/ e subpastas.
+    Tolerante: aceita o sufixo -Regular quando o nome-base puro não existe.
     """
     candidatos = [
         nome_base + ".ttf",
@@ -87,7 +85,6 @@ def _achar_arquivo(nome_base):
             if cand in arquivos:
                 return os.path.join(pasta, cand)
     return None
-
 
 def _registrar_ttf(nome_registro, nome_arquivo):
     """Registra um TTF, tolerando .ttc (subfontIndex). Devolve True se registrou."""
@@ -125,72 +122,38 @@ def _registrar_cid(nome_registro, familia_cid):
                        nome_registro, familia_cid, e)
         return False
 
-
-# ------------------------------------------------------------------
-# 4. API PÚBLICA
-# ------------------------------------------------------------------
 def registrar_tudo():
     """
     Registra TODAS as fontes disponíveis (TTF e CID) de uma só vez.
     Idempotente: pode ser chamada quantas vezes quiser.
     Chamar no arranque do app, antes de qualquer geração de PDF.
     """
-    # Latinos
-    for lang in ("pt", "en", "es", "fr", "de", "it", "ru", "tr", "vi", "id"):
-        reg, bold = FONTES_TTF[lang]
-        _registrar_ttf(ALIAS["base"], reg)
-        _registrar_ttf(ALIAS["base_b"], bold)
-        break  # todos usam DejaVu — registra uma vez e sai
+    registrados = 0
 
-    # RTL
-    _registrar_ttf(ALIAS["ar"], FONTES_TTF["ar"][0])
-    _registrar_ttf(ALIAS["he"], FONTES_TTF["he"][0])
+    # ---- Latinos (registra uma única vez — todos usam a mesma DejaVu) ----
+    registro, arquivo_base = FONTES_TTF["pt"]
+    if _registrar_ttf(registro, arquivo_base):
+        registrados += 1
+    if _registrar_ttf(registro + "-Bold", arquivo_base + "-Bold"):
+        registrados += 1
 
-    # CJK — TTF primeiro, CID como plano B
+    # ---- RTL ----
+    for lang in ("ar", "he"):
+        registro, arquivo_base = FONTES_TTF[lang]
+        _registrar_ttf(registro, arquivo_base)
+        _registrar_ttf(registro + "-Bold", arquivo_base + "-Bold")
+
+    # ---- CJK: TTF primeiro, CID como plano B ----
     for lang, alias_cjk in (("ja", ALIAS["cjk"]), ("zh", ALIAS["cjk2"])):
-        regular, bold = FONTES_TTF[lang]
-        if not _registrar_ttf(alias_cjk, regular):
+        registro, arquivo_base = FONTES_TTF[lang]
+        registrou = _registrar_ttf(registro, arquivo_base)
+        _registrar_ttf(registro + "-Bold", arquivo_base + "-Bold")
+
+        # se o TTF do regular falhou, tenta o CID
+        if not registrou:
             cid = CID_FALLBACK.get(lang)
             if cid:
                 _registrar_cid(alias_cjk, cid)
 
-    _registrar_ttf(ALIAS["cjk_b"], FONTES_TTF["ja"][1])
-
     logger.info("fontes: registro concluído — %d fontes ativas", len(_REGISTRADOS))
     return dict(_REGISTRADOS)
-
-
-def fonte_para(lang):
-    """
-    Devolve (nome_regular, nome_bold) já REGISTRADOS para o idioma pedido.
-    Nunca devolve nome inexistente: se o TTF faltou e há CID, devolve o CID.
-    """
-    lang = (lang or "pt").lower()
-
-    # Latinos e RTL
-    if lang in ("pt", "en", "es", "fr", "de", "it", "ru", "tr", "vi", "id"):
-        return (ALIAS["base"], ALIAS["base_b"])
-    if lang == "ar":
-        return (ALIAS["ar"], ALIAS["ar"])
-    if lang == "he":
-        return (ALIAS["he"], ALIAS["he"])
-
-    # CJK
-    if lang == "ja":
-        reg = ALIAS["cjk"] if ALIAS["cjk"] in _REGISTRADOS else CID_FALLBACK.get("ja", "HeiseiMin-W3")
-        bold = ALIAS["cjk_b"] if ALIAS["cjk_b"] in _REGISTRADOS else reg
-        return (reg, bold)
-    if lang == "zh":
-        reg = ALIAS["cjk2"] if ALIAS["cjk2"] in _REGISTRADOS else CID_FALLBACK.get("zh", "STSong-Light")
-        return (reg, reg)
-
-    # Desconhecido → latino
-    return (ALIAS["base"], ALIAS["base_b"])
-
-
-def registrar_fontes():
-    """
-    ASSINATURA LEGADA — mantida para não quebrar apresentacao_textos.py:67.
-    Agora apenas delega para registrar_tudo().
-    """
-    return registrar_tudo()
