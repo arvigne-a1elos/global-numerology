@@ -2,12 +2,6 @@
 """
 fontes.py — Registro ÚNICO de fontes para os 14 idiomas.
 Híbrido: tenta TTF real; se não encontrar o arquivo, cai no CID embutido do ReportLab.
-
-Substitui, com uma só implementação:
-  main.py (linhas 143-150)
-  apresentacao_textos.py (linhas 28-30, 43-63, 624, 646)
-  apresentacao_slides_v2.py (linhas 27-95)
-  pdf_service.py (linhas 695-710)
 """
 import os
 import logging
@@ -18,17 +12,16 @@ from reportlab.pdfbase.cidfonts import UnicodeCIDFont
 logger = logging.getLogger(__name__)
 
 # ------------------------------------------------------------------
-# 1. PASTA DE FONTES (resolvida uma vez, à prova de reorganização)
+# 1. PASTA DE FONTES
 # ------------------------------------------------------------------
 _PASTA_FONTES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fonts")
 
 # ------------------------------------------------------------------
-# 2. MAPA POR IDIOMA — (regular, bold)
-#    TTF primeiro; CID é o plano B, definido em CID_FALLBACK.
+# 2. MAPA POR IDIOMA — (nome_de_registro, nome_base_do_arquivo)
 # ------------------------------------------------------------------
 FONTES_TTF = {
     # Latinos
-    "pt": ("DejaVu", "DejaVuSans"),   # se o arquivo for DejaVuSans.ttf
+    "pt": ("DejaVu", "DejaVuSans"),
     "en": ("DejaVu", "DejaVuSans"),
     "es": ("DejaVu", "DejaVuSans"),
     "fr": ("DejaVu", "DejaVuSans"),
@@ -42,37 +35,35 @@ FONTES_TTF = {
     "ar": ("NotoNaskhArabic", "NotoNaskhArabic"),
     "he": ("NotoSansHebrew",  "NotoSansHebrew"),
     # CJK
-    "ja": ("NotoSansJP",      "NotoSansJP"),
-    "zh": ("NotoSansSC",      "NotoSansSC"),
+    "ja": ("NotoSansJP", "NotoSansJP"),
+    "zh": ("NotoSansSC", "NotoSansSC"),
 }
 
-# Plano B: fontes CID embutidas no ReportLab (não exigem arquivo)
 CID_FALLBACK = {
     "ja": "HeiseiMin-W3",
     "zh": "STSong-Light",
 }
 
-# Nomes de registro fixos — mantidos para compatibilidade com o código antigo
 ALIAS = {
-    "base":  "A1Base",
+    "base":   "A1Base",
     "base_b": "A1BaseB",
-    "cjk":   "A1CJK",
-    "cjk_b": "A1CJKB",
-    "cjk2":  "A1CJK2",
-    "ar":    "A1AR",
-    "he":    "A1HE",
+    "cjk":    "A1CJK",
+    "cjk_b":  "A1CJKB",
+    "cjk2":   "A1CJK2",
+    "ar":     "A1AR",
+    "he":     "A1HE",
 }
 
-_REGISTRADOS = {}   # cache: nome -> True
+LATINOS = ("pt", "en", "es", "fr", "de", "it", "ru", "tr", "vi", "id")
+
+_REGISTRADOS = {}
+
 
 # ------------------------------------------------------------------
 # 3. UTILITÁRIOS INTERNOS
 # ------------------------------------------------------------------
 def _achar_arquivo(nome_base):
-    """
-    Procura <base>.ttf, <base>-Regular.ttf ou <base>-Bold.ttf em fonts/ e subpastas.
-    Tolerante: aceita o sufixo -Regular quando o nome-base puro não existe.
-    """
+    """Procura <base>.ttf, <base>-Regular.ttf ou <base>-Bold.ttf em fonts/."""
     candidatos = [
         nome_base + ".ttf",
         nome_base + "-Regular.ttf",
@@ -86,11 +77,12 @@ def _achar_arquivo(nome_base):
                 return os.path.join(pasta, cand)
     return None
 
-def _registrar_ttf(nome_registro, nome_arquivo):
-    """Registra um TTF, tolerando .ttc (subfontIndex). Devolve True se registrou."""
+
+def _registrar_ttf(nome_registro, nome_base):
+    """Registra um TTF (tolerando .ttc). Devolve True se registrou."""
     if nome_registro in _REGISTRADOS:
         return True
-    caminho = _achar_arquivo(nome_arquivo)
+    caminho = _achar_arquivo(nome_base)
     if not caminho:
         return False
     try:
@@ -98,14 +90,12 @@ def _registrar_ttf(nome_registro, nome_arquivo):
         _REGISTRADOS[nome_registro] = True
         return True
     except Exception:
-        # pode ser .ttc — tenta como coleção
         try:
             pdfmetrics.registerFont(TTFont(nome_registro, caminho, subfontIndex=0))
             _REGISTRADOS[nome_registro] = True
             return True
         except Exception as e:
-            logger.warning("fontes: falha ao registrar %s (%s): %s",
-                           nome_registro, caminho, e)
+            logger.warning("fontes: falha ao registrar %s (%s): %s", nome_registro, caminho, e)
             return False
 
 
@@ -118,56 +108,46 @@ def _registrar_cid(nome_registro, familia_cid):
         _REGISTRADOS[nome_registro] = True
         return True
     except Exception as e:
-        logger.warning("fontes: falha no CID %s (%s): %s",
-                       nome_registro, familia_cid, e)
+        logger.warning("fontes: falha no CID %s (%s): %s", nome_registro, familia_cid, e)
         return False
 
+
+# ------------------------------------------------------------------
+# 4. REGISTRO
+# ------------------------------------------------------------------
 def registrar_tudo():
     """
     Registra TODAS as fontes disponíveis (TTF e CID) de uma só vez.
     Idempotente: pode ser chamada quantas vezes quiser.
-    Chamar no arranque do app, antes de qualquer geração de PDF.
     """
-    registrados = 0
-
-    # ---- Latinos (registra uma única vez — todos usam a mesma DejaVu) ----
+    # Latinos (uma única vez — todos usam a mesma DejaVu)
     registro, arquivo_base = FONTES_TTF["pt"]
-    if _registrar_ttf(registro, arquivo_base):
-        registrados += 1
-    if _registrar_ttf(registro + "-Bold", arquivo_base + "-Bold"):
-        registrados += 1
+    _registrar_ttf(registro, arquivo_base)
+    _registrar_ttf(registro + "-Bold", arquivo_base + "-Bold")
 
-    # ---- RTL ----
+    # RTL
     for lang in ("ar", "he"):
         registro, arquivo_base = FONTES_TTF[lang]
         _registrar_ttf(registro, arquivo_base)
         _registrar_ttf(registro + "-Bold", arquivo_base + "-Bold")
 
-    # ---- CJK: TTF primeiro, CID como plano B ----
+    # CJK: TTF primeiro, CID como plano B
     for lang, alias_cjk in (("ja", ALIAS["cjk"]), ("zh", ALIAS["cjk2"])):
         registro, arquivo_base = FONTES_TTF[lang]
         registrou = _registrar_ttf(registro, arquivo_base)
         _registrar_ttf(registro + "-Bold", arquivo_base + "-Bold")
-
-        # se o TTF do regular falhou, tenta o CID
         if not registrou:
             cid = CID_FALLBACK.get(lang)
             if cid:
+                _registrar_cid(alias_cjk, cid)
+
+    logger.info("fontes: registro concluído — %d fontes ativas", len(_REGISTRADOS))
+    return dict(_REGISTRADOS)
+
 
 # ------------------------------------------------------------------
 # 5. CONSULTA POR IDIOMA
 # ------------------------------------------------------------------
-LATINOS = ("pt", "en", "es", "fr", "de", "it", "ru", "tr", "vi", "id")
-
-# Mapa registro -> idioma (inverso do FONTES_TTF, para consulta)
-_POR_REGISTRO = {
-    "pt": "DejaVu",
-    "ar": "NotoNaskhArabic",
-    "he": "NotoSansHebrew",
-    "ja": "NotoSansJP",
-    "zh": "NotoSansSC",
-}
-
 def fonte_para(lang):
     """
     Devolve (nome_regular, nome_bold) já REGISTRADOS para o idioma pedido.
@@ -186,6 +166,7 @@ def fonte_para(lang):
         reg = "NotoNaskhArabic"
         bold = "NotoNaskhArabic-Bold"
         return (reg, bold if bold in _REGISTRADOS else reg)
+
     if lang == "he":
         reg = "NotoSansHebrew"
         bold = "NotoSansHebrew-Bold"
@@ -198,6 +179,7 @@ def fonte_para(lang):
             reg = CID_FALLBACK.get("ja", "HeiseiMin-W3")
         bold = "NotoSansJP-Bold"
         return (reg, bold if bold in _REGISTRADOS else reg)
+
     if lang == "zh":
         reg = "NotoSansSC"
         if reg not in _REGISTRADOS:
@@ -208,10 +190,7 @@ def fonte_para(lang):
     # Desconhecido → latino
     return fonte_para("pt")
 
+
 def registrar_fontes():
     """ASSINATURA LEGADA — delega para registrar_tudo()."""
-    return registrar_tudo()              
-                _registrar_cid(alias_cjk, cid)
-
-    logger.info("fontes: registro concluído — %d fontes ativas", len(_REGISTRADOS))
-    return dict(_REGISTRADOS)
+    return registrar_tudo()
