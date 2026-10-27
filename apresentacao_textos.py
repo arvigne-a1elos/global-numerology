@@ -166,9 +166,6 @@ def _rodape(canvas, doc_, c, lang, num_pag=None, total_pag=None):
     canvas.drawCentredString(w / 2, 8*mm, CONTATOS)
 
 # ===== Canvas com total de páginas (X de Y) =====
-    doc.build(story, canvasmaker=CanvasComTotal)
-    return caminho_saida 
-
 _RODAPE_FN = None
 
 class CanvasComTotal(_canvas.Canvas):
@@ -714,17 +711,32 @@ def _encaixar_texto(doc, x, y, largura, altura_max, texto, tam, lang, cor,
         y_ini -= lh
     return y_ini + lh                               # base do bloco
 
+class CanvasComTotal(_canvas.Canvas):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._saved = []
-        self._logo_num = LOGO_ESQ          # ← era LOGO_PATH (logo.png, esquerda)
-        self._logo_a1elos = LOGO_DIR       # ← era LOGO_A1ELOS (A1ELOS.png, direita)
-
+        self._logo_num = LOGO_ESQ
+        self._logo_a1elos = LOGO_DIR
+    def _desenhar_cabecalho(self):
+        w, h = self._pagesize
+        if self._logo_num:
+            try:
+                self.drawImage(ImageReader(self._logo_num), 28, h - 34,
+                               width=24, height=24, preserveAspectRatio=True,
+                               mask='auto')
+            except Exception:
+                pass
+        if self._logo_a1elos:
+            try:
+                self.drawImage(ImageReader(self._logo_a1elos), w - 52, h - 34,
+                               width=24, height=24, preserveAspectRatio=True,
+                               mask='auto')
+            except Exception:
+                pass
     def showPage(self):
-        self._desenhar_cabecalho()          # ← desenha os 2 logos em cada página
+        self._desenhar_cabecalho()
         self._saved.append(dict(self.__dict__))
         self._startPage()
-
     def save(self):
         total = len(self._saved)
         for estado in self._saved:
@@ -734,8 +746,6 @@ def _encaixar_texto(doc, x, y, largura, altura_max, texto, tam, lang, cor,
             _canvas.Canvas.showPage(self)
         _canvas.Canvas.save(self)
  
-# -*- coding: utf-8 -*-
-# apresentacao_textos.py - Textos das apresentações em 14 idiomas (Versão Atualizada 20/09/2026)
 # Estrutura preservada. Valores atualizados: tabela de descontos (até 50%) e projeções (1ª década em 1/3/5/7).
 
 APRESENTACAO_TEXTOS = {
