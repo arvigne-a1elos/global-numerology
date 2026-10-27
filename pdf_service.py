@@ -705,12 +705,12 @@ def _fontes_urna():
                 break
         except Exception:
             continue
-    if "CJK" not in fonts:
-        try:
-            pdfmetrics.registerFont(UnicodeCIDFont("STSong-Light"))
-            fonts["CJK"] = True
-        except Exception:
-            pass
+if "CJK" not in fonts:
+    try:
+        pdfmetrics.registerFont(UnicodeCIDFont("HeiseiMin-W3"))  # japonês
+        fonts["CJK"] = True
+    except Exception:
+        pass
     return fonts
 
 def pdf_urna(nome_completo, cargo_label, resultados, sugestoes, lang="pt"):
