@@ -2477,6 +2477,7 @@ VIB_JA = {
 #                                        e DEPOIS de *_EN
 # ============================================================
 
+EXPRESS_TXT["pt"] = EXPRESS_TXT_PT
 EXPRESS_TXT["en"] = EXPRESS_TXT_EN
 SIG_I18N = {"pt": SIG, "en": SIG_EN}
 CAM_I18N = {"pt": CAM, "en": CAM_EN}
