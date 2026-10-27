@@ -168,7 +168,6 @@ _POR_REGISTRO = {
     "zh": "NotoSansSC",
 }
 
-
 def fonte_para(lang):
     """
     Devolve (nome_regular, nome_bold) já REGISTRADOS para o idioma pedido.
@@ -208,7 +207,6 @@ def fonte_para(lang):
 
     # Desconhecido → latino
     return fonte_para("pt")
-
 
 def registrar_fontes():
     """ASSINATURA LEGADA — delega para registrar_tudo()."""
