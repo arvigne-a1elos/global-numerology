@@ -11,39 +11,13 @@ from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_JUSTIFY
 from reportlab.platypus import (SimpleDocTemplate, Paragraph, Spacer,
                                 Table, TableStyle, HRFlowable)
 from reportlab.lib.styles import ParagraphStyle
-from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.cidfonts import UnicodeCIDFont
-from reportlab.pdfbase.ttfonts import TTFont
-# Registro de fontes especiais (CJK, cirílico, RTL) — bloco à prova de erro
-try:
-    from reportlab.pdfbase import pdfmetrics
-    from reportlab.pdfbase.cidfonts import UnicodeCIDFont
-    from reportlab.pdfbase.ttfonts import TTFont
-    try:
-        pdfmetrics.registerFont(UnicodeCIDFont('STSong-Light'))
-        pdfmetrics.registerFont(UnicodeCIDFont('HeiseiMin-W3'))
-    except Exception:
-        pass
-    try:
-        pdfmetrics.registerFont(TTFont('DejaVu', 'fonts/DejaVuSans.ttf'))
-    except Exception:
-        pass
-except Exception:
-    pass
+# ===== FONTES — delega ao módulo central fontes.py =====
+from fontes import registrar_tudo, fonte_para
+registrar_tudo()
 STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
 IDIOMAS = ["pt", "en", "es", "it", "fr", "de", "ja", "zh",
            "ru", "he", "ar", "id", "tr", "vi"]
-
-# Fontes para idiomas especiais (CJK + cirílico + vietnamita/turco)
-try:
-    pdfmetrics.registerFont(UnicodeCIDFont('STSong-Light'))  # zh
-    pdfmetrics.registerFont(UnicodeCIDFont('HeiseiMin-W3'))  # ja
-    pdfmetrics.registerFont(TTFont('DejaVu', 'fonts/DejaVuSans.ttf'))  # ru/tr/vi
-except Exception:
-    pass
-
-FONTE_POR_IDIOMA = {'ja': 'HeiseiMin-W3', 'zh': 'STSong-Light',
-                    'ru': 'DejaVu', 'tr': 'DejaVu', 'vi': 'DejaVu'}
+base = fonte_para(lang)[0]
 
 COR_AZUL = colors.HexColor("#1a3a6b")
 COR_DOURADO = colors.HexColor("#B8860B")
@@ -51,21 +25,6 @@ COR_PRETO = colors.HexColor("#1a1a1a")
 COR_CINZA = colors.HexColor("#555555")
 COR_CINZA_CLARO = colors.HexColor("#f0f0f0")
 CONTATOS = "a1elos.consultoria@gmail.com · arvigne@a1elos.com.br · a1elos.com.br/contato"
-
-def _registrar_fontes_rtl():
-    """Registra fontes para idiomas especiais (RTL, CJK e cirílico)."""
-    # CJK — chinês (zh) e japonês (ja)
-    try:
-        pdfmetrics.registerFont(UnicodeCIDFont('STSong-Light'))
-        pdfmetrics.registerFont(UnicodeCIDFont('HeiseiMin-W3'))
-    except Exception:
-        pass
-    # DejaVu — cobre cirílico (ru), turco (tr), vietnamita (vi)
-    # e também árabe (ar) e hebraico (he), que usam escrita RTL
-    try:
-        pdfmetrics.registerFont(TTFont('DejaVu', 'fonts/DejaVuSans.ttf'))
-    except Exception:
-        pass
 
 def _campo(item, chave=None, idx=None, default=""):
     """Lê um campo de um item que pode ser dict OU tuple/list."""
@@ -78,7 +37,7 @@ def _campo(item, chave=None, idx=None, default=""):
     return default
 
 def _fonte(lang, bold=False):
-    base = FONTE_POR_IDIOMA.get(lang, "Helvetica")
+    base = FONTE_POR_IDIOMA.get(lang) or fonte_para(lang)[0]
     if base == "Helvetica":
         return "Helvetica-Bold" if bold else "Helvetica"
     return base
