@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # ============================================================
 # CABEÇALHO COM DUAS LOGOS (uma em cada lado) + RODAPÉ
-# Usado nas DUAS versões: documento (texto) e slides
 # ============================================================
 import os, math, logging
 from reportlab.lib.units import mm
@@ -10,29 +9,25 @@ from reportlab.lib.colors import HexColor, white, black
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_JUSTIFY
 from reportlab.pdfgen import canvas as _canvas
-from reportlab.pdfgen import canvas 
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase.cidfonts import UnicodeCIDFont
 from reportlab.platypus import Table, TableStyle, Paragraph, SimpleDocTemplate, Spacer, HRFlowable, Image
 from reportlab.lib.utils import ImageReader
 from reportlab.lib.pagesizes import A4, landscape
+from fontes import registrar_tudo, fonte_para          ← LINHA OBRIGATÓRIA, ANTES DA LINHA 45
 
 _CTX_TEXTO = {}
 STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
 IDIOMAS = ["pt", "en", "es", "it", "fr", "de", "ja", "zh",
            "ru", "he", "ar", "id", "tr", "vi"]
 
-# Fontes para idiomas especiais (CJK + cirílico + vietnamita/turco)
 try:
-    pdfmetrics.registerFont(UnicodeCIDFont('STSong-Light'))  # zh
-    pdfmetrics.registerFont(UnicodeCIDFont('HeiseiMin-W3'))  # ja
-    pdfmetrics.registerFont(TTFont('DejaVu', 'fonts/DejaVuSans.ttf'))  # ru/tr/vi
-except Exception:
-    pass
+    registrar_tudo()
+except Exception as e:
+    print(f"[fontes] aviso: {e}")
 
-FONTE_POR_IDIOMA = {'ja': 'HeiseiMin-W3', 'zh': 'STSong-Light',
-                    'ru': 'DejaVu', 'tr': 'DejaVu', 'vi': 'DejaVu'}
+FONTE_POR_IDIOMA = {l: fonte_para(l)[0] for l in IDIOMAS}
 
 # Fontes RTL (árabe e hebraico) — registro robusto, procura em qualquer pasta
 FONTES_RTL = {
@@ -84,18 +79,14 @@ LOGO_ESQ = os.path.join(STATIC_DIR, "logo.png")        # logo à esquerda
 LOGO_DIR = os.path.join(STATIC_DIR, "A1ELOS.png")      # logo à direita
 
 def _fonte(lang, bold=False):
-    if lang in FONTES_RTL:
-        nome = FONTES_RTL[lang][0]                       # "NotoNaskhArabic" / "NotoSansHebrew"
-        alvo = nome + ("-Bold" if bold else "")          # "NotoNaskhArabic-Bold" etc.
-        if alvo in pdfmetrics.getRegisteredFontNames():
-            return alvo
-        if nome in pdfmetrics.getRegisteredFontNames():  # fallback: regular se bold não registrado
-            return nome
-        return "Helvetica"                               # fallback final
-    base = FONTE_POR_IDIOMA.get(lang, "Helvetica")
-    if base == "Helvetica":
+    """Resolve a fonte do idioma delegando ao fontes.py (fonte única)."""
+    try:
+        reg, bold_nome = fonte_para(lang)
+    except Exception:
         return "Helvetica-Bold" if bold else "Helvetica"
-    return base
+    if bold:
+        return bold_nome or reg or "Helvetica-Bold"
+    return reg or "Helvetica"
 
 def _estilo(lang, tam, bold, cor, alinh=TA_LEFT, antes=0, depois=6):
     return ParagraphStyle("s", fontName=_fonte(lang, bold), fontSize=tam,
