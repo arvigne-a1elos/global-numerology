@@ -573,29 +573,37 @@ def _render_bloco_juridico(doc, largura, altura, lang, c):
     y = altura - 32 * mm
     doc.setFillColor(COR_AZUL)
     doc.setFont(_fonte(lang, True), 14)
-    y = _texto_wrap(doc, titulo, _fonte(lang, True), 12, margem, y,
-                    largura_texto, COR_AZUL, 5.5 * mm, y_min=15 * mm)
+    y = _texto_wrap(doc, "ESTRUTURA JURÍDICA, GOVERNANÇA E COMPLIANCE",
+                    _fonte(lang, True), 14, margem, y, largura_texto, COR_AZUL, 7 * mm,
+                    y_min=20 * mm)
     doc.setStrokeColor(COR_DOURADO)
     doc.setLineWidth(1.2)
     doc.line(margem, y - 2 * mm, largura - margem, y - 2 * mm)
     y -= 8 * mm
-    for p in paragrafos:
-        if y < 45 * mm:
-          doc.showPage()
-          y = altura - 30 * mm
-        doc.setFillColor(COR_PRETO)
-        y = _texto_wrap(doc, p, _fonte(lang), 10, margem, y,
-                        largura_texto, COR_PRETO, 4.5 * mm, y_min=25 * mm)
+    for titulo, paragrafos in BLOCO_JURIDICO_PT:
+        # quebra ANTES da seção, com folga
+        if y < 50 * mm:
+            doc.showPage()
+            y = altura - 30 * mm
+        doc.setFillColor(COR_AZUL)
+        doc.setFont(_fonte(lang, True), 12)
+        y = _texto_wrap(doc, titulo, _fonte(lang, True), 12, margem, y,
+                        largura_texto, COR_AZUL, 5.5 * mm, y_min=15 * mm)
         y -= 3 * mm
         for p in paragrafos:
+            # quebra ANTES de cada parágrafo se não há espaço
+            if y < 45 * mm:
+                doc.showPage()
+                y = altura - 30 * mm
             doc.setFillColor(COR_PRETO)
             y = _texto_wrap(doc, p, _fonte(lang), 10, margem, y,
-                            largura_texto, COR_PRETO, 4.5 * mm)
+                            largura_texto, COR_PRETO, 4.5 * mm, y_min=25 * mm)
             y -= 3 * mm
         y -= 5 * mm
+        # quebra DEPOIS da seção também
         if y < 30 * mm:
-          doc.showPage()
-          y = altura - 30 * mm
+            doc.showPage()
+            y = altura - 30 * mm
     return y
 
 # ------------------------------------------------------------
@@ -4702,26 +4710,28 @@ def _rodape_deck(doc, largura, altura, lang, c, pagina):
     doc.drawCentredString(largura / 2, 4 * mm, CONTATOS)
 
 def _texto_wrap_centrado_v(doc, texto, fonte, tam, x, y, largura, cor, entrelinha, altura):
-    """Texto quebrado, centralizado horizontal e verticalmente
-    dentro da área de altura 'altura'. y = TOPO da área."""
+    """Texto quebrado, centralizado horizontal e verticalmente dentro da área
+    de altura 'altura'. y = TOPO da área. Encolhe a fonte até caber.
+    CORREÇÃO: nunca vaza do card (B.1) e recalcula entrelinha proporcional (B.2)."""
     fator, eh_cjk = _fator_script(texto)
     tam2 = tam * fator
     larg_interna = max(largura, 1)
+    # proporção entrelinha/tamanho original (preserva o design)
+    proporcao = (entrelinha / tam) if tam else 1.4
     linhas = _quebrar_harmonizado(texto, fonte, tam2, larg_interna, eh_cjk)
-    while tam2 > 5 and total > altura:
+    while tam2 > 5 and len(linhas) * (tam2 * proporcao) > altura:
         tam2 -= 0.5
         linhas = _quebrar_harmonizado(texto, fonte, tam2, larg_interna, eh_cjk)
-        doc.setFont(fonte, tam2)
+    entrelinha_final = tam2 * proporcao
+    total = len(linhas) * entrelinha_final
+    # nunca deixa y_ini subir acima do topo do card
+    y_ini = y - max((altura - total) / 2.0, 0)
+    doc.setFont(fonte, tam2)
     doc.setFillColor(cor)
-    total_real = min(total, altura)                    # não deixa negativo
-    y_ini = y - max((altura - total) / 2.0, 0)         # nunca sobe acima do topo       
     for ln in linhas:
         doc.drawCentredString(x + larg_interna / 2, y_ini, ln)
-        y_ini -= entrelinha
-    fator_entrelinha = entrelinha / tam if tam > 0 else 1.4
-    entrelinha_final = tam2 * fator_entrelinha
-    total = len(linhas) * entrelinha_final           
-    return y_ini + entrelinha
+        y_ini -= entrelinha_final
+    return y_ini + entrelinha_final
 
 def _kpis_grid(doc, largura, altura, lang, dados, y, colunas=4):
     """Desenha uma grade de cards de KPIs e retorna o novo y."""
