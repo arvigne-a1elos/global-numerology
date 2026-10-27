@@ -15,7 +15,7 @@ from reportlab.pdfbase.cidfonts import UnicodeCIDFont
 from reportlab.platypus import Table, TableStyle, Paragraph, SimpleDocTemplate, Spacer, HRFlowable, Image
 from reportlab.lib.utils import ImageReader
 from reportlab.lib.pagesizes import A4, landscape
-from fontes import registrar_tudo, fonte_para          
+from fontes import registrar_tudo, fonte_para         
 
 _CTX_TEXTO = {}
 STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
