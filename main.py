@@ -128,36 +128,42 @@ except Exception as e:
     logger.error(f"DB init adiado: {e}")
 
 # ===== FONTES POR IDIOMA (14 idiomas) =====
-from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.cidfonts import UnicodeCIDFont
-from reportlab.pdfbase.ttfonts import TTFont
-
-_ok = True
-try:
-    # CJK
-from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.cidfonts import UnicodeCIDFont
-from reportlab.pdfbase.ttfonts import TTFont
-
-try:
+# Toda a lógica de registro vive em fontes.py (híbrido TTF -> CID).
 from fontes import registrar_tudo, fonte_para
-registrar_tudo()
+
+try:
+    registrar_tudo()
     logger.info("Fontes dos 14 idiomas registradas")
 except Exception as e:
     logger.warning("Falha ao registrar fontes: %s", e)
 
+
+def _fonte_do_idioma(lang):
+    """Devolve (regular, bold) para o idioma, sempre registrado."""
+    return fonte_para(lang)
+
+
 FONTE_POR_IDIOMA = {
-    'ja': ('HeiseiMin-W3', 'HeiseiMin-W3'),
-    'zh': ('STSong-Light', 'STSong-Light'),
+    # Latinos
+    'pt': ('DejaVu', 'DejaVu-Bold'),
+    'en': ('DejaVu', 'DejaVu-Bold'),
+    'es': ('DejaVu', 'DejaVu-Bold'),
+    'fr': ('DejaVu', 'DejaVu-Bold'),
+    'de': ('DejaVu', 'DejaVu-Bold'),
+    'it': ('DejaVu', 'DejaVu-Bold'),
+    'id': ('DejaVu', 'DejaVu-Bold'),
     'ru': ('DejaVu', 'DejaVu-Bold'),
     'tr': ('DejaVu', 'DejaVu-Bold'),
     'vi': ('DejaVu', 'DejaVu-Bold'),
+    # RTL
     'he': ('NotoSansHebrew', 'NotoSansHebrew-Bold'),
     'ar': ('NotoNaskhArabic', 'NotoNaskhArabic-Bold'),
+    # CJK — TTF real
+    'ja': ('NotoSansJP', 'NotoSansJP-Bold'),
+    'zh': ('NotoSansSC', 'NotoSansSC-Bold'),
 }
 
 IDIOMAS_RTL = {'he', 'ar'}
-
 
 # ===== NOMES DOS 24 PRODUTOS (14 IDIOMAS) =====
 PRODUTOS = {
