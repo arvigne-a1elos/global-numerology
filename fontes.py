@@ -140,7 +140,7 @@ def registrar_tudo():
             cid = CID_FALLBACK.get(lang)
             if cid:
                 _registrar_cid(alias_cjk, cid)
-
+        _registrar_ttf("CJKUrna", FONTES_TTF["ja"][1])   # alias legado -> NotoSansJP
     logger.info("fontes: registro concluído — %d fontes ativas", len(_REGISTRADOS))
     return dict(_REGISTRADOS)
 
