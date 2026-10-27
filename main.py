@@ -634,11 +634,11 @@ def _gerar_pdf_local(prod, data, lang, nome, bd, dado=""):
     e.append(Paragraph(nome.upper(), estilo(12, True, DARK, TA_CENTER, 0, 2)))
     e.append(Paragraph(bd or dado, estilo(9, False, GRAY, TA_CENTER, 0, 10)))
     if isinstance(data, dict):
-r = ROTULOS_PDF.get(lang, ROTULOS_PDF["pt"])
-td = [[r["numero"], r["valor"]]]
-rotulos = [("life_path", r["life_path"]), ("expression", r["expression"]),
-           ("soul_urge", r["soul_urge"]), ("personality", r["personality"]),
-           ("destiny", r["destiny"])]
+        r = ROTULOS_PDF.get(lang, ROTULOS_PDF["pt"])
+        td = [[r["numero"], r["valor"]]]
+        rotulos = [("life_path", r["life_path"]), ("expression", r["expression"]),
+                   ("soul_urge", r["soul_urge"]), ("personality", r["personality"]),
+                   ("destiny", r["destiny"])]
         for k, l in rotulos:
             if k in data:
                 td.append([l, str(data[k])])
