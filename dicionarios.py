@@ -2478,6 +2478,10 @@ VIB_JA = {
 # ============================================================
 
 EXPRESS_TXT["pt"] = EXPRESS_TXT_PT
+SIG_I18N["pt"] = SIG_PT
+CAM_I18N["pt"] = CAM_PT
+DES_I18N["pt"] = DES_PT
+VIB_I18N["pt"] = VIB_PT
 EXPRESS_TXT["en"] = EXPRESS_TXT_EN
 SIG_I18N = {"pt": SIG, "en": SIG_EN}
 CAM_I18N = {"pt": CAM, "en": CAM_EN}
