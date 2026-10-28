@@ -680,6 +680,10 @@ def _gerar_pdf_local(prod, data, lang, nome, bd, dado=""):
     doc.build(e)
     return path
 
+# ATENÇÃO: gerador_pdf.py retorna None em gerar_pdf (bug identificado em 28/10/2026).
+# NÃO reativar o import externo até que aquela função seja corrigida.
+gerar_pdf = _gerar_pdf_local       
+
 def _pagina_sucesso_local(pdf_path, nome, prod_nome, lang="pt"):
     b64 = ""
     if pdf_path and os.path.exists(pdf_path):
