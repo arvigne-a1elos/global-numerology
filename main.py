@@ -704,12 +704,9 @@ def _entregar_arquivo_local(tipo, nome, lang="pt"):
         logger.error(f"Falha entrega: {e}")
         return {"pdf": None, "url": "", "pdf_ok": False}
 
-try:
-    from gerador_pdf import gerar_pdf, pagina_sucesso, _entregar_arquivo
-except Exception:
-    gerar_pdf = _gerar_pdf_local
-    pagina_sucesso = _pagina_sucesso_local
-    _entregar_arquivo = _entregar_arquivo_local
+gerar_pdf = _gerar_pdf_local
+pagina_sucesso = _pagina_sucesso_local
+_entregar_arquivo = _entregar_arquivo_local
 
 # ===== EMAIL SIMPLES =====
 def _enviar_email_simples(destinatario, assunto, corpo):
