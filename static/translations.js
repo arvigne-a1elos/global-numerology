@@ -4371,3 +4371,28 @@ _langs14.forEach(function(l){
     if (m) for (var i = 0; i < 12; i++) window.translations[l]["mes_" + ("0" + (i + 1)).slice(-2)] = m[i];
   }
 })();
+
+// ===== INJEÇÃO FINAL: compatibilidade_equipes nos 14 idiomas =====
+(function(){
+  if (!window.PRODUTOS_TRAD) window.PRODUTOS_TRAD = {};
+  var NOMES = {
+    pt:"Compatibilidade de Equipes (RH)",
+    en:"Team Compatibility (HR)",
+    es:"Compatibilidad de Equipos (RRHH)",
+    it:"Compatibilità di Squadre (HR)",
+    fr:"Compatibilité des Équipes (RH)",
+    de:"Teamkompatibilität (HR)",
+    ja:"チーム相性（人事）",
+    zh:"团队兼容性（人力资源）",
+    ru:"Совместимость команд (HR)",
+    he:"תאימות צוות",
+    ar:"توافق الفريق",
+    id:"Kompatibilitas Tim (HR)",
+    tr:"Ekip Uyumu (İK)",
+    vi:"Tương Hợp Đội Nhóm (Nhân sự)"
+  };
+  for (var l in NOMES) {
+    if (!window.PRODUTOS_TRAD[l]) window.PRODUTOS_TRAD[l] = {};
+    window.PRODUTOS_TRAD[l].compatibilidade_equipes = NOMES[l];
+  }
+})();
