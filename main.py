@@ -1228,7 +1228,10 @@ def regenerar_pdf_por_meta(meta):
         data["dado"] = dado or ""
     elif prod == "calendario":
         try:
-            res_cal = analisar_calendario(nome, dado, bd)
+            _d = (dado or "").strip()
+            if len(_d) >= 7 and _d[4] == "-":
+                _d = _d[:7]                          # '2026-10-28' → '2026-10'
+            res_cal = analisar_calendario(nome, _d, bd)
             data = dict(res_cal)
             data["titulo"] = "Calendário Mensal Energético"
             data["nascimento"] = dado or ""
