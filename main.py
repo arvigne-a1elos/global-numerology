@@ -625,7 +625,7 @@ ENERGIA_FIXA = {
 
 # ===== GERADOR DE PDF (usa gerador_pdf.py se existir; senão fallback interno) =====
 def _gerar_pdf_local(prod, data, lang, nome, bd, dado=""):
-    path = f"/tmp/p_{prod}_{uuid.uuid4().hex[:8]}.pdf"
+    path = os.path.join(tempfile.gettempdir(), f"p_{prod}_{uuid.uuid4().hex[:8]}.pdf")
     doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
                             topMargin=40, bottomMargin=30)
     e = []
@@ -726,7 +726,7 @@ def _enviar_email_simples(destinatario, assunto, corpo):
         return False
 
 def gerar_pdf_ong(dados, lang="pt", nome_exib=""):
-    path = f"/tmp/p_ong_{uuid.uuid4().hex[:8]}.pdf"
+    path = os.path.join(tempfile.gettempdir(), f"p_ong_{uuid.uuid4().hex[:8]}.pdf")
     doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
                             topMargin=40, bottomMargin=30)
     e = []
@@ -779,7 +779,7 @@ def gerar_pdf_ong(dados, lang="pt", nome_exib=""):
     return path
 
 def gerar_pdf_calendario(dados, lang="pt", nome_exib=""):
-    path = f"/tmp/p_calendario_{uuid.uuid4().hex[:8]}.pdf"
+    path = os.path.join(tempfile.gettempdir(), f"p_calendario_{uuid.uuid4().hex[:8]}.pdf")
     doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
                             topMargin=40, bottomMargin=30)
     e = []
