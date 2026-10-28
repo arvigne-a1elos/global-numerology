@@ -2,6 +2,7 @@
 # main.py - A1ELOS Global Numerology API
 # VERSÃO CONSOLIDADA CORRIGIDA - TODAS AS ROTAS DOS 23 PRODUTOS
 import stripe
+import tempfile
 from produtos.mapa import reduzir, calc_mapa, calc_grid, analisar_express, analisar_completo, analisar_vida
 from produtos.calendario import analisar_calendario
 # Blindagem: um import faltando não pode derrubar o site inteiro
@@ -1165,7 +1166,7 @@ def regenerar_pdf_por_meta(meta):
     if not bd:
         bd = "2000-01-01"
     energia = meta.get("energia", "")
-        nome_exib = dado or nome
+    nome_exib = dado or nome
 
     def _analisar_nome_duplo():
         nomes = [n for n in (dado, dado2) if n] or [nome]
@@ -1188,7 +1189,6 @@ def regenerar_pdf_por_meta(meta):
 
     CALC_ESPECIFICO = {
         "imovel":    lambda: analisar_imovel(dado or nome),
-        "calendario": lambda: analisar_periodo(nome, dado, bd),
         "casal":     lambda: _analisar_casal_com_datas(),
         "familia":   lambda: _analisar_familia_com_datas(),
         "compatibilidade_equipes": lambda: analisar_equipe(dado or nome),
