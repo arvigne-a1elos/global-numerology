@@ -1227,17 +1227,23 @@ def regenerar_pdf_por_meta(meta):
             data = calc_mapa(nome, bd)
         data["dado"] = dado or ""
     elif prod == "calendario":
-        try:
-            res_cal = analisar_calendario(nome, date.today().month, dado)
-            data = dict(res_cal)
-            data["titulo"] = "Calendário Mensal Energético"
-            data["nascimento"] = dado or ""
-        except Exception as e:
-            logger.error(f"Calendario calc: {e}")
-            data = {"titulo": "Calendário Mensal Energético", "nascimento": dado or ""}
-    else:
-        data = calc_mapa(nome, bd)
-        data["dado"] = dado or ""
+    try:
+        # aceita '2026-10-28', '2026-10' ou '10'
+        _dado_cal = (dado or "").strip()
+        _mes = date.today().month          # padrão seguro
+        if len(_dado_cal) >= 7 and "-" in _dado_cal:
+            _parcial = _dado_cal.split("-")[1]
+            if _parcial.isdigit() and 1 <= int(_parcial) <= 12:
+                _mes = int(_parcial)
+        elif _dado_cal.isdigit() and 1 <= int(_dado_cal) <= 12:
+            _mes = int(_dado_cal)
+        res_cal = analisar_calendario(nome, _mes, dado)
+        data = dict(res_cal)
+        data["titulo"] = "Calendário Mensal Energético"
+        data["nascimento"] = dado or ""
+    except Exception as e:
+        logger.error(f"Calendario calc: {e}")
+        data = {"titulo": "Calendário Mensal Energético", "nascimento": dado or ""}
 
     logger.info(f"PDF dados {prod}: {list((data or {}).keys())}")
     if prod == "calendario":
