@@ -2508,6 +2508,19 @@ CAM_I18N["ja"] = CAM_JA
 DES_I18N["ja"] = DES_JA
 VIB_I18N["ja"] = VIB_JA
 
+# ============================================================
+# FECHAMENTO DO EXPRESS_TXT: chaves pt + idiomas sem bloco próprio
+# ============================================================
+# O bloco PT é o dicionário principal, então precisa ser registrado em "pt".
+EXPRESS_TXT.setdefault("pt", EXPRESS_TXT)
+
+# Idiomas ainda sem bloco próprio caem no inglês (fallback explícito e controlado).
+# TODO: substituir por tradução real quando disponível.
+for _lang_sem_bloco in ("ar", "zh", "ru", "he", "hi", "id", "tr", "vi"):
+    if _lang_sem_bloco not in EXPRESS_TXT:
+        EXPRESS_TXT[_lang_sem_bloco] = EXPRESS_TXT.get("en", EXPRESS_TXT)
+del _lang_sem_bloco
+
 # ===== Funções de acesso =====
 
 def t(chave, lang):
