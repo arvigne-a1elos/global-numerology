@@ -1096,62 +1096,6 @@ def pay_success(request: Request):
         if not bd:
             bd = "2000-01-01"
 
-        # DISPATCH POR PRODUTO: cada produto usa o cálculo específico do
-        # esqueleto produtos/ (resgate do main anterior). Nada de forçar
-        # calc_mapa em produto que não pede mapa.
-        energia = meta.get("energia", "")
-
-        def _analisar_nome_duplo():
-            nomes = [n for n in (dado, dado2) if n] or [nome]
-            res = analisar_nome(nomes[0], energia)
-            res["nomes"] = nomes
-            res["sugestao_ia"] = gerar_sugestao_ia(prod, energia, lang)
-            return res
-
-        CALC_ESPECIFICO = {
-            "imovel":    lambda: analisar_imovel(dado or nome),
-            "calendario": lambda: analisar_periodo(nome, dado, bd),
-            "casal":     lambda: _analisar_casal_com_datas(),
-            "familia":   lambda: _analisar_familia_com_datas(),
-            "compatibilidade_equipes": lambda: analisar_equipe(dado or nome),
-            "nome_pet":  _analisar_nome_duplo,
-            "nickname":  _analisar_nome_duplo,
-            "nome_dominio": _analisar_nome_duplo,
-            "nome_canal": _analisar_nome_duplo,
-            "nome_equipe": _analisar_nome_duplo,
-            "nome_projeto": _analisar_nome_duplo,
-            "nome_evento": _analisar_nome_duplo,
-            "artistico": _analisar_nome_duplo,
-            "bebe":      _analisar_nome_duplo,
-            "assinatura": _analisar_nome_duplo,
-            "negocio":   _analisar_nome_duplo,
-            "nome_ong":  lambda: analisar_ong({
-                "nome1": meta.get("nome1") or meta.get("dado", ""),
-                "sigla1": meta.get("sigla1", ""),
-                "nome2": meta.get("nome2", ""),
-                "sigla2": meta.get("sigla2", ""),
-                "nome3": meta.get("nome3", ""),
-                "sigla3": meta.get("sigla3", ""),
-                "natureza": meta.get("natureza", "ong"),
-                "tipo_entidade": meta.get("tipo_entidade", ""),
-                "escopo": meta.get("escopo", "nacional"),
-                "energia": energia,
-            }),
-        }
-
-        def _analisar_casal_com_datas():
-            # dado = "Nome1 & Nome2" ; detalhe = "AAAA-MM-DD & AAAA-MM-DD"
-            nomes = [x.strip() for x in (dado or nome).split("&")[:2]]
-            datas = [x.strip() for x in (meta.get("detalhe", "") or "").split("&")[:2]]
-            n1 = nomes[0] if len(nomes) > 0 else ""
-            n2 = nomes[1] if len(nomes) > 1 else ""
-            d1 = datas[0] if len(datas) > 0 else ""
-            d2 = datas[1] if len(datas) > 1 else ""
-            return analisar_casal(n1, d1, n2, d2)
-
-        def _analisar_familia_com_datas():
-            return analisar_familia(dado or nome)        
-        
         db = SessionLocal()
         try:
             db.add(Order(id=uuid.uuid4().hex[:12], email=email or "sem-email",
@@ -1221,6 +1165,7 @@ def regenerar_pdf_por_meta(meta):
     if not bd:
         bd = "2000-01-01"
     energia = meta.get("energia", "")
+        nome_exib = dado or nome
 
     def _analisar_nome_duplo():
         nomes = [n for n in (dado, dado2) if n] or [nome]
@@ -1271,8 +1216,16 @@ def regenerar_pdf_por_meta(meta):
             "energia": energia,
         }),
     }
-    
-    if prod == "calendario":
+
+    # DISPATCH: usa o cálculo específico quando existir
+    if prod in CALC_ESPECIFICO:
+        try:
+            data = CALC_ESPECIFICO[prod]()
+        except Exception as e:
+            logger.error(f"calc {prod}: {e}")
+            data = calc_mapa(nome, bd)
+        data["dado"] = dado or ""
+    elif prod == "calendario":
         try:
             res_cal = analisar_calendario(nome, date.today().month, dado)
             data = dict(res_cal)
@@ -1281,21 +1234,19 @@ def regenerar_pdf_por_meta(meta):
         except Exception as e:
             logger.error(f"Calendario calc: {e}")
             data = {"titulo": "Calendário Mensal Energético", "nascimento": dado or ""}
-        nome_exib = nome
     else:
         data = calc_mapa(nome, bd)
         data["dado"] = dado or ""
-        nome_exib = nome
 
     logger.info(f"PDF dados {prod}: {list((data or {}).keys())}")
-
     if prod == "calendario":
         pf = gerar_pdf_calendario(data, lang, nome_exib)
     elif prod == "nome_ong":
         pf = gerar_pdf_ong(data, lang, nome_exib)
     else:
         pf = gerar_pdf(prod, data, lang, nome_exib, bd, dado=dado)
-
+    return pf          
+    
 @app.get("/api/pay/urna-success")
 def pay_urna_success(request: Request):
     sid = request.query_params.get("session_id", "")
