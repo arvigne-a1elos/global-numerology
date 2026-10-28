@@ -1238,7 +1238,9 @@ def regenerar_pdf_por_meta(meta):
         except Exception as e:
             logger.error(f"Calendario calc: {e}")
             data = {"titulo": "Calendário Mensal Energético", "nascimento": dado or ""}
-
+    else:                                    
+        data = calc_mapa(nome, bd)           
+        data["dado"] = dado or ""           
     logger.info(f"PDF dados {prod}: {list((data or {}).keys())}")
     if prod == "calendario":
         pf = gerar_pdf_calendario(data, lang, nome_exib)
