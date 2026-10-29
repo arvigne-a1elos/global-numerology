@@ -108,6 +108,7 @@ def pagina_sucesso(pdf_path, nome, prod_nome, lang="pt"):
             f'font-family:sans-serif"><h1 style="color:#C9A94E">{tx("confirmado")}</h1>'
             f'<p>{tx("gerado").format(nome=nome, prod=prod_nome)}</p>{btn}{qr_html}'
             f'<a href="/" style="color:#C9A94E">{tx("voltar")}</a></body></html>')
+    
 # ===== FUNÇÃO ÚNICA DO ORQUESTRADOR =====
 def gerar_pdf(produto, dados, lang, nome, nascimento, dado=""):
     """Escolhe o template certo do pdf_service, enriquece com semântica (14 idiomas)
@@ -120,6 +121,7 @@ def gerar_pdf(produto, dados, lang, nome, nascimento, dado=""):
         if produto == "express":
             return pdf8(data, nome, nascimento, lang)
         return pdf17(data, nome, nascimento, lang)
+        
     # Nome de Urna: template próprio (fontes DejaVu/CJK + 14 idiomas)
     if produto == "urna":
         return pdf_urna(dados.get("nome_completo") or nome,
@@ -127,6 +129,7 @@ def gerar_pdf(produto, dados, lang, nome, nascimento, dado=""):
                         dados.get("resultados") or [],
                         dados.get("sugestoes") or [],
                         lang)
+        
     # Número Eleitoral: template próprio
     if produto == "eleitoral":
         return pdf_eleitoral(dados.get("sigla") or "",
@@ -134,6 +137,17 @@ def gerar_pdf(produto, dados, lang, nome, nascimento, dado=""):
                              dados.get("sugestoes") or [],
                              dados.get("numero_existente"),
                              lang)
+
+    # Calendário Mensal Energético: cálculo próprio (numerologia_core)
+    if produto == "calendario":
+        leitura = gerar_leitura(
+            data_nasc=dados["nascimento"],   # DD/MM/AAAA completo
+            ano_ref=dados["ano_ref"],
+            mes_ref=dados["mes_ref"],
+            nome=nome,
+        )
+        return pdf_produto("calendario", leitura, nome, nascimento, lang, dado)    
+    
     # Demais 19 produtos: template genérico com semântica
     data = _enriquecer_semantica(dados, lang)
     if produto == "calendario":
