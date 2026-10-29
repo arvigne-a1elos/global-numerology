@@ -144,7 +144,3 @@ def gerar_pdf(produto, dados, lang, nome, nascimento, dado=""):
             nome=nome,
         )
         return pdf_produto("calendario", leitura, nome, nascimento, lang, dado)
-
-    # Demais 19 produtos: template genérico com semântica
-    data = _enriquecer_semantica(dados, lang)
-    return pdf_produto(produto, data, nome, nascimento, lang, dado)
