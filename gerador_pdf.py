@@ -5,6 +5,7 @@
 # Sem cálculo (produtos.*), sem textos (referencia.semantica), sem renderização (pdf_service).
 import os, uuid, base64, io, logging
 import qrcode
+from numerologia_core import gerar_leitura
 from pdf_service import pdf8, pdf17, pdf_urna, pdf_eleitoral, pdf_produto
 from dicionarios import PDF_TEXTS, PRODUTOS, TRAD
 logging.basicConfig(level=logging.INFO)
@@ -59,7 +60,7 @@ def _entregar_arquivo(tipo, nome, lang="pt", extra=""):
     except Exception as e:
         logger.error(f"Falha ao gerar PDF: {e}")
         arquivo_pdf = None
-    alvo = f"{BASE_URL}/{arquivo_pdf}" if pdf_ok else f"{BASE_URL}/?tipo={tipo}&lang={lang}"
+    alvo = f"{BASE_URL.rstrip('/')}/{arquivo_pdf}" if pdf_ok else BASE_URL
     try:
         img = qrcode.make(alvo)
         img.save(arquivo_qr)
@@ -133,6 +134,17 @@ def gerar_pdf(produto, dados, lang, nome, nascimento, dado=""):
                              dados.get("sugestoes") or [],
                              dados.get("numero_existente"),
                              lang)
+    # Demais 19 produtos: template genérico com semântica
+    data = _enriquecer_semantica(dados, lang)
+    if produto == "calendario":
+        leitura = gerar_leitura(
+            data_nasc=dados["nascimento"],   # DD/MM/AAAA completo
+            ano_ref=dados["ano_ref"],
+            mes_ref=dados["mes_ref"],
+            nome=nome,
+        )
+        return pdf_produto("calendario", leitura, nome, nascimento, lang, dado)
+
     # Demais 19 produtos: template genérico com semântica
     data = _enriquecer_semantica(dados, lang)
     return pdf_produto(produto, data, nome, nascimento, lang, dado)
