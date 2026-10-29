@@ -11,6 +11,7 @@ from dicionarios import PDF_TEXTS, PRODUTOS, TRAD
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 BASE_URL = os.getenv("BASE_URL", os.getenv("SITE_URL", "https://global-numerology.onrender.com"))
+
 # ===== SEMANTICA (energias, vidas, formas e cores) - IMPORT OPCIONAL =====
 # O gerador NUNCA quebra se o módulo ainda não existir.
 try:
@@ -19,6 +20,7 @@ try:
     SEMANTICA_OK = True
 except Exception:
     SEMANTICA_OK = False
+    
 # ===== ENRIQUECE OS DADOS COM A SEMANTICA (14 idiomas) =====
 def _enriquecer_semantica(data, lang):
     """Injeta desc_life e forma_cor no dict de dados, se houver life_path."""
@@ -38,6 +40,7 @@ def _enriquecer_semantica(data, lang):
     except Exception as e:
         logger.error(f"Falha semantica: {e}")
     return data
+    
 # ===== ENTREGA PDF + QRCODE =====
 def _entregar_arquivo(tipo, nome, lang="pt", extra=""):
     """Gera PDF + QRCode (sem email). Se o PDF falhar, entrega apenas o QRCode."""
@@ -69,6 +72,7 @@ def _entregar_arquivo(tipo, nome, lang="pt", extra=""):
         logger.error(f"Falha ao gerar QRCode: {e}")
         arquivo_qr = None
     return {"pdf": arquivo_pdf, "qr": arquivo_qr, "url": alvo, "pdf_ok": pdf_ok}
+    
 # ===== PAGINA DE SUCESSO =====
 def pagina_sucesso(pdf_path, nome, prod_nome, lang="pt"):
     T = PDF_TEXTS.get(lang, PDF_TEXTS["pt"])
@@ -115,13 +119,14 @@ def gerar_pdf(produto, dados, lang, nome, nascimento, dado=""):
     e devolve o caminho do PDF gerado."""
     lang = lang or "pt"
     dados = dict(dados or {})
+
     # Mapa Express (8) / Mapa Completo (17): template de mapa com semântica
     if produto in ("express", "completo"):
         data = _enriquecer_semantica(dados, lang)
         if produto == "express":
             return pdf8(data, nome, nascimento, lang)
         return pdf17(data, nome, nascimento, lang)
-        
+
     # Nome de Urna: template próprio (fontes DejaVu/CJK + 14 idiomas)
     if produto == "urna":
         return pdf_urna(dados.get("nome_completo") or nome,
@@ -129,7 +134,7 @@ def gerar_pdf(produto, dados, lang, nome, nascimento, dado=""):
                         dados.get("resultados") or [],
                         dados.get("sugestoes") or [],
                         lang)
-        
+
     # Número Eleitoral: template próprio
     if produto == "eleitoral":
         return pdf_eleitoral(dados.get("sigla") or "",
@@ -146,15 +151,8 @@ def gerar_pdf(produto, dados, lang, nome, nascimento, dado=""):
             mes_ref=dados["mes_ref"],
             nome=nome,
         )
-        return pdf_produto("calendario", leitura, nome, nascimento, lang, dado)    
-    
-    # Demais 19 produtos: template genérico com semântica
-    data = _enriquecer_semantica(dados, lang)
-    if produto == "calendario":
-        leitura = gerar_leitura(
-            data_nasc=dados["nascimento"],   # DD/MM/AAAA completo
-            ano_ref=dados["ano_ref"],
-            mes_ref=dados["mes_ref"],
-            nome=nome,
-        )
         return pdf_produto("calendario", leitura, nome, nascimento, lang, dado)
+
+    # Demais produtos: template genérico com semântica
+    data = _enriquecer_semantica(dados, lang)
+    return pdf_produto(produto, data, nome, nascimento, lang, dado)
