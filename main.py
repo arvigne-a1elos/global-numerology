@@ -1246,6 +1246,7 @@ def pay_success(request: Request):
                 novo = os.path.join(DIR_RELATORIOS, nome_arq)
                 with open(pf, "rb") as f_orig, open(novo, "wb") as f_novo:
                     f_novo.write(f_orig.read())
+                logger.info(f"QR aponta para: {url_rel}")    
                 img = qrcode.make(url_rel)
                 buf = io.BytesIO()
                 img.save(buf, format="PNG")
