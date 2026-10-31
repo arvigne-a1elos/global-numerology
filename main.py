@@ -655,8 +655,6 @@ def _gerar_pdf_local(prod, data, lang, nome, bd, dado=""):
             ]))
             e.append(tbl)
 
-        
-
         # Descrição do Caminho de Vida (semântica em 14 idiomas)
         if SEMANTICA_OK and data.get("life_path"):
             valor = data["life_path"]
@@ -754,9 +752,6 @@ NOTA_SIGILO = {
            "Nếu thất lạc, bạn sẽ cần tạo tài liệu mới — sẽ không có bản sao nào để khôi phục."),
 }
 RTL = {'he', 'ar'}
-# no HTML da nota:
-dir_attr = ' dir="rtl"' if lang in RTL else ''
-# e no <p> do texto: <p{dir_attr} style="...">
 
 def _pagina_sucesso_local(pdf_path, nome, prod_nome, lang="pt", nome_arq=""):
     b64 = ""
@@ -769,12 +764,13 @@ def _pagina_sucesso_local(pdf_path, nome, prod_nome, lang="pt", nome_arq=""):
                f'style="display:inline-block;padding:18px 50px;background:#C9A94E;color:#000;'
                f'text-decoration:none;border-radius:50px;font-weight:700;font-size:1.2rem;margin:25px 0">📥 BAIXAR PDF</a>')
     t, txt = NOTA_SIGILO.get(lang, NOTA_SIGILO["pt"])
+    dir_attr = ' dir="rtl"' if lang in RTL else ''
     nota = (f'<div style="max-width:560px;margin:38px auto 0;padding:20px 24px;'
             f'border:1px solid #C9A94E55;border-left:3px solid #C9A94E;'
             f'border-radius:6px;background:#141414;text-align:left">'
             f'<p style="color:#C9A94E;font-size:.75rem;letter-spacing:.14em;'
             f'font-weight:700;margin:0 0 10px">{t}</p>'
-            f'<p style="color:#b8b8b8;font-size:.9rem;line-height:1.65;margin:0">{txt}</p></div>')
+            f'<p{dir_attr} style="color:#b8b8b8;font-size:.9rem;line-height:1.65;margin:0">{txt}</p></div>')
     beacon = ""
     if nome_arq:
         beacon = (
@@ -793,34 +789,6 @@ pagina_sucesso = _pagina_sucesso_local
 DIR_RELATORIOS = os.path.join(STATIC_DIR, "relatorios")
 ARQ_TTL_MINUTOS = 30
 os.makedirs(DIR_RELATORIOS, exist_ok=True)
-
-def _limpar_expirados() -> int:
-    agora, removidos = time.time(), 0
-    if not os.path.isdir(DIR_RELATORIOS):
-        return 0
-    for arq in os.listdir(DIR_RELATORIOS):
-        if not arq.lower().endswith((".pdf", ".png")):
-            continue
-        try:
-            caminho = os.path.join(DIR_RELATORIOS, arq)
-            if agora - os.path.getmtime(caminho) > ARQ_TTL_MINUTOS * 60:
-                os.remove(caminho)
-                removidos += 1
-        except Exception:
-            pass
-    return removidos
-
-def _apagar_agora(nome_arq: str) -> bool:
-    if not nome_arq or ".." in nome_arq or "/" in nome_arq or "\\" in nome_arq:
-        return False
-    try:
-        caminho = os.path.join(DIR_RELATORIOS, nome_arq)
-        if os.path.isfile(caminho):
-            os.remove(caminho)
-            return True
-    except Exception as e:
-        logger.error(f"Apagar {nome_arq}: {e}")
-    return False
 
 @app.post("/api/sessao-encerrada")
 async def sessao_encerrada(request: Request):
