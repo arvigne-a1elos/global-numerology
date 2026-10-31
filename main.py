@@ -790,6 +790,38 @@ DIR_RELATORIOS = os.path.join(STATIC_DIR, "relatorios")
 ARQ_TTL_MINUTOS = 30
 os.makedirs(DIR_RELATORIOS, exist_ok=True)
 
+def _limpar_expirados() -> int:
+    """Remove PDFs e PNGs mais velhos que o TTL. Rede de segurança do sendBeacon."""
+    agora, removidos = time.time(), 0
+    if not os.path.isdir(DIR_RELATORIOS):
+        return 0
+    for arq in os.listdir(DIR_RELATORIOS):
+        if not arq.lower().endswith((".pdf", ".png")):
+            continue
+        try:
+            caminho = os.path.join(DIR_RELATORIOS, arq)
+            if agora - os.path.getmtime(caminho) > ARQ_TTL_MINUTOS * 60:
+                os.remove(caminho)
+                removidos += 1
+        except Exception:
+            pass
+    if removidos:
+        logger.info(f"Limpeza TTL: {removidos} arquivo(s) removido(s)")
+    return removidos
+
+def _apagar_agora(nome_arq: str) -> bool:
+    """Apaga um arquivo específico, com proteção contra path traversal."""
+    if not nome_arq or ".." in nome_arq or "/" in nome_arq or "\\" in nome_arq:
+        return False
+    try:
+        caminho = os.path.join(DIR_RELATORIOS, nome_arq)
+        if os.path.isfile(caminho):
+            os.remove(caminho)
+            return True
+    except Exception as e:
+        logger.error(f"Apagar {nome_arq}: {e}")
+    return False
+
 @app.post("/api/sessao-encerrada")
 async def sessao_encerrada(request: Request):
     try:
@@ -1183,6 +1215,7 @@ def pay_success(request: Request):
         lang = meta.get("lang", "pt")
         dado = meta.get("dado", "")
         dado2 = meta.get("dado2", "")
+        nome_exib = dado or nome          
         if not bd:
             bd = "2000-01-01"
 
