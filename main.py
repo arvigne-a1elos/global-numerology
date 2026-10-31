@@ -1260,9 +1260,11 @@ def pay_success(request: Request):
             bloco_qr = (
                 '<div style="margin:25px auto;text-align:center">'
                 '<p style="color:#C9A94E;font-size:1rem">Ou escaneie (ou clique) para abrir o documento</p>'
-                '<a class="btn" href="' + url_rel + '?download=1">⬇️ Baixar PDF</a>'
-                f'<img src="data:image/png;base64,{qr_b64}" '
-                'style="width:180px;height:180px;border-radius:12px"></a></div>'
+                f'<a class="btn" href="{url_rel}?download=1">⬇️ Baixar PDF</a>'
+                '<br>'
+                f'<img src="data:image/png;base64,{qr_b64}" alt="QR Code do relatorio" '
+                'style="width:220px;height:220px;border-radius:8px;margin-top:12px">'
+                '</div>'
             )
             if "</body>" in html:
                 html = html.replace("</body>", bloco_qr + "</body>")
