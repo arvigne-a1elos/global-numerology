@@ -777,10 +777,12 @@ def _pagina_sucesso_local(pdf_path, nome, prod_nome, lang="pt", nome_arq=""):
             f'<p style="color:#b8b8b8;font-size:.9rem;line-height:1.65;margin:0">{txt}</p></div>')
     beacon = ""
     if nome_arq:
-        beacon = (f'<script>window.addEventListener("beforeunload",function(){{'
-                  f'navigator.sendBeacon("/api/sessao-encerrada",'
-                  f'new Blob([JSON.stringify({{arq:"{nome_arq}}"}}),'
-                  f'{{type:"application/json"}}))}});</script>')
+        beacon = (
+            '<script>window.addEventListener("beforeunload",function(){'
+            'navigator.sendBeacon("/api/sessao-encerrada",'
+            'new Blob([JSON.stringify({arq:"' + nome_arq + '"}),'
+            '{type:"application/json"}]))});</script>'
+        )
     return (f'<html><body style="background:#0a0a0a;color:#fff;text-align:center;padding:40px;'
             f'font-family:sans-serif"><h1 style="color:#C9A94E">✅ Confirmado!</h1>'
             f'<p>Ola <b>{nome}</b>, seu {prod_nome} foi gerado.</p>{btn}{nota}{beacon}'
