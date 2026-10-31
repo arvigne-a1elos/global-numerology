@@ -52,7 +52,7 @@ function _energiaSelecionada(idSel, produto) {
   var ideal = (typeof ENERGIA_IDEAL !== 'undefined' && ENERGIA_IDEAL[produto]) ? ENERGIA_IDEAL[produto] : '';
   return String(ideal);
 }
-function pagarVida(){var n=document.getElementById('vidaNome').value.trim(),b=document.getElementById('vidaNasc').value;if(!n||!b){alert(t_preencha());return;}location.href='/criar-checkout?produto=vida&nome='+encodeURIComponent(n)+'&nascimento='+encodeURIComponent(b)+'&lang='+getLang();}
+function pagarVida(){var n=document.getElementById('vidaNome').value.trim(),b=converterData(document.getElementById('vidaNasc').value);if(!n||!b){alert(t_preencha());return;}location.href='/criar-checkout?produto=vida&nome='+encodeURIComponent(n)+'&nascimento='+encodeURIComponent(b)+'&lang='+getLang();}
 function pagarIa(){
   var n = (document.getElementById('iaNome') ? document.getElementById('iaNome').value : '').trim();
   if (!n) { alert(t_preencha()); return; }
@@ -117,7 +117,7 @@ function pagarCalendario(){
   var mes = a + "-" + (m.length === 1 ? "0" + m : m);
   window.location.href = '/criar-checkout?produto=calendario'
     + '&nome=' + encodeURIComponent(n)
-    + '&nascimento=' + encodeURIComponent(b)
+    + '&nascimento=' + encodeURIComponent(converterData(b))
     + '&dado=' + encodeURIComponent(mes)
     + '&lang=' + getLang();
 }
@@ -143,9 +143,8 @@ function pagarNegocio(){
 function pagarCasal(){
   var n1 = document.getElementById('casalNome1').value.trim();
   var n2 = document.getElementById('casalNome2').value.trim();
-  var d1 = (document.getElementById('casalNasc1') ? document.getElementById('casalNasc1').value : '').trim();
-  var d2 = (document.getElementById('casalNasc2') ? document.getElementById('casalNasc2').value : '').trim();
-  if (!n1 || !n2 || !d1 || !d2) { alert(t_preencha()); return; }
+  var d1 = converterData((document.getElementById('casalNasc1') ? document.getElementById('casalNasc1').value : '').trim());
+  var d2 = converterData((document.getElementById('casalNasc2') ? document.getElementById('casalNasc2').value : '').trim());  if (!n1 || !n2 || !d1 || !d2) { alert(t_preencha()); return; }
   location.href = '/criar-checkout?produto=casal&dado=' + encodeURIComponent(n1 + ' & ' + n2)
     + '&detalhe=' + encodeURIComponent(d1 + ' & ' + d2) + '&lang=' + getLang();
 }function pagarFamilia(){var n=document.getElementById('familiaMembros').value.trim();if(!n){alert(t_preencha());return;}location.href='/criar-checkout?produto=familia&dado='+encodeURIComponent(n)+'&lang='+getLang();}
@@ -218,8 +217,6 @@ window.pagarOng = window.pagarOng || function(){
     + '&lang=' + getLang();
   window.location.href = qs;
 };
-// ===== COMPRAR (abre modal do dado específico para os 7 produtos) =====
-var DADO_APLICA = ["nome_pet","nickname","nome_dominio","nome_canal","nome_equipe","nome_projeto","nome_evento"];
 function comprar(produto) {
   var lang = getLang();
   var t = translations[lang] || translations.pt;
@@ -228,7 +225,7 @@ function comprar(produto) {
     return;
   }
   var nome = (document.getElementById("calcNome") ? document.getElementById("calcNome").value : "").trim();
-  var nasc = (document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim();
+  var nasc = converterData((document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim());
   if (!nome || !nasc) {
     alert(t.preencha_dados || "Preencha nome e data de nascimento primeiro.");
     var sec = document.getElementById("calcSection") || document.getElementById("calculadora");
@@ -452,7 +449,7 @@ function calcularMapa() {
   var lang = getLang();
   var t = translations[lang] || translations["pt"];
   var nome = (document.getElementById("calcNome") ? document.getElementById("calcNome").value : "").trim();
-  var nasc = (document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim();
+    var nasc = converterData((document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim());
   if (!nome || !nasc) {
     alert(t.preencha_dados || "Preencha nome e data de nascimento primeiro.");
     var sec = document.getElementById("calcSection") || document.getElementById("calculadora");
@@ -492,7 +489,7 @@ function irParaCompra(produto, lang, energia) {
   var qs = 'lang=' + encodeURIComponent(lang) + '&produto=' + encodeURIComponent(produto);
   if (energia) qs += '&energia=' + encodeURIComponent(energia);
   var nome = (document.getElementById("calcNome") ? document.getElementById("calcNome").value : "").trim();
-  var nasc = (document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim();
+    var nasc = converterData((document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim());
   if (nome) qs += '&nome=' + encodeURIComponent(nome);
   if (nasc) qs += '&nascimento=' + encodeURIComponent(nasc);
   window.location.href = '/criar-checkout?' + qs;
@@ -550,7 +547,7 @@ window.ativarBonusIA = window.ativarBonusIA || function(){
   }).catch(function(){ if (st) st.textContent = 'Erro ao validar o código.'; });
 };
 
-/* ===== CARREGADOR DE PARTIALS ===== */
+ /* ===== CARREGADOR DE PARTIALS ===== */
 function carregarPartials() {
   fetch('/static/partials/produtos.html')
     .then(function(r){ if(!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
@@ -621,6 +618,23 @@ var MESES_TRAD = {
   tr:["Ocak","Şubat","Mart","Nisan","Mayıs","Haziran","Temmuz","Ağustos","Eylül","Ekim","Kasım","Aralık"],
   vi:["Tháng 1","Tháng 2","Tháng 3","Tháng 4","Tháng 5","Tháng 6","Tháng 7","Tháng 8","Tháng 9","Tháng 10","Tháng 11","Tháng 12"]
 };
+
+var nascInput = document.getElementById("calcNasc");
+if (nascInput) {
+    nascInput.addEventListener("input", function () {
+        var v = this.value.replace(/\D/g, "").slice(0, 8);
+        if (v.length > 4)      this.value = v.slice(0,2) + "/" + v.slice(2,4) + "/" + v.slice(4);
+        else if (v.length > 2) this.value = v.slice(0,2) + "/" + v.slice(2);
+        else                   this.value = v;
+    });
+}
+function converterData(v) {
+    var p = (v || "").split("/");
+    if (p.length === 3 && p[0].length === 2) {
+        return p[2] + "-" + p[1] + "-" + p[0];   // DD/MM/AAAA → AAAA-MM-DD
+    }
+    return v;   // já está em AAAA-MM-DD (ou vazio) — não mexe
+}
 function getLang() { return (typeof localStorage !== 'undefined' && localStorage.getItem('lang')) || 'pt'; }
 function montarSeletorData() {
   var dia = document.getElementById("calcDia");
@@ -886,18 +900,6 @@ window.abrirHubIA = window.abrirHubIA || function(){
 window.fecharHubIA = window.fecharHubIA || function(){
   var o = document.getElementById('modalHubIA');
   if (o) o.style.display = 'none';
-};
-window.ativarBonusIA = window.ativarBonusIA || function(){
-  var cod = (document.getElementById('iaCodigoBonus') ? document.getElementById('iaCodigoBonus').value : '').trim();
-  var st = document.getElementById('iaBonusStatus');
-  if (!cod) { if (st) st.textContent = t_preencha(); return; }
-  fetch('/ativar-bonus', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ codigo: cod })
-  }).then(function(r){ return r.json(); }).then(function(res){
-    if (st) st.textContent = (res && res.ok) ? '🎁 Código ativado!' : 'Código inválido ou já usado.';
-  }).catch(function(){ if (st) st.textContent = 'Erro ao validar o código.'; });
 };
 
 function pagarEquipe(){
