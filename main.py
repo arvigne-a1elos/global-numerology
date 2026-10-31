@@ -1248,6 +1248,26 @@ def pay_success(request: Request):
                 logger.error(f"QRCode: {qe}")
         html = pagina_sucesso(pf, nome_exib, pn, lang, nome_arq=nome_arq)
 
+        # Injeta o QRCode junto do botão de download (fallback silencioso)
+        if qr_b64:
+            bloco_qr = (
+                '<div style="margin:25px auto;text-align:center">'
+                '<p style="color:#C9A94E;font-size:1rem">Ou escaneie (ou clique) para abrir o documento</p>'
+                '<a class="btn" href="' + url_rel + '?download=1">⬇️ Baixar PDF</a>'
+                f'<img src="data:image/png;base64,{qr_b64}" '
+                'style="width:180px;height:180px;border-radius:12px"></a></div>'
+            )
+            if "</body>" in html:
+                html = html.replace("</body>", bloco_qr + "</body>")
+            else:
+                html = html + bloco_qr
+
+        return HTMLResponse(html)
+
+    except Exception as e:
+        logger.error(f"pay_success {sid}: {e}")
+        return HTMLResponse("ERRO AO PROCESSAR PAGAMENTO", status_code=500)
+
 # ===== GERAÇÃO REUTILIZÁVEL DE PDF A PARTIR DOS METADADOS =====
 def regenerar_pdf_por_meta(meta):
     """Gera o PDF do produto a partir dos metadados da sessão Stripe.
