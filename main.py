@@ -1178,21 +1178,26 @@ def api_relatorio(session_id: str, download: int = 0):
             meta = meta.to_dict()
         if getattr(s, "payment_status", "") != "paid":
             return HTMLResponse("Pagamento nao confirmado", status_code=403)
+
         pf = regenerar_pdf_por_meta(meta)
+        conteudo = None
         if pf and os.path.exists(pf):
-            prod = meta.get("tipo", "express")
-            lang = meta.get("lang", "pt")
             with open(pf, "rb") as f:
                 conteudo = f.read()
             try:
                 os.remove(pf)
             except Exception:
                 pass
+
+        if not conteudo:
+            return HTMLResponse("Documento indisponivel", status_code=404)
+
+        prod = meta.get("tipo", "express")
+        lang = meta.get("lang", "pt")
         disp = "attachment" if download else "inline"
         return Response(content=conteudo, media_type="application/pdf",
                         headers={"Content-Disposition": f'{disp}; filename="A1ELOS_{prod}_{lang}.pdf"',
                                  "Cache-Control": "no-store"})
-        return HTMLResponse("Documento indisponivel", status_code=404)
     except Exception as e:
         logger.error(f"Relatorio {session_id}: {e}")
         return HTMLResponse("Documento indisponivel", status_code=404)
@@ -1282,7 +1287,7 @@ def regenerar_pdf_por_meta(meta):
     if not bd:
         bd = "2000-01-01"
     energia = meta.get("energia", "")
-    nome_exib = dado or nome
+    nome_exib = nome if prod == "calendario" else (dado or nome)
 
     def _analisar_nome_duplo():
         nomes = [n for n in (dado, dado2) if n] or [nome]
