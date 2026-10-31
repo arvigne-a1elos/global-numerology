@@ -1215,7 +1215,7 @@ def pay_success(request: Request):
         lang = meta.get("lang", "pt")
         dado = meta.get("dado", "")
         dado2 = meta.get("dado2", "")
-        nome_exib = dado or nome          
+        nome_exib = nome if prod == "calendario" else (dado or nome)          
         if not bd:
             bd = "2000-01-01"
 
@@ -1349,7 +1349,7 @@ def regenerar_pdf_por_meta(meta):
             res_cal = analisar_calendario(nome, _d, bd)
             data = dict(res_cal)
             data["titulo"] = "Calendário Mensal Energético"
-            data["nascimento"] = dado or ""
+            data["nascimento"] = bd or ""
         except Exception as e:
             logger.error(f"Calendario calc: {e}")
             data = {"titulo": "Calendário Mensal Energético", "nascimento": dado or ""}
