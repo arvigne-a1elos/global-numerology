@@ -3,6 +3,7 @@
 # VERSÃO CONSOLIDADA CORRIGIDA - TODAS AS ROTAS DOS 23 PRODUTOS
 import stripe
 import tempfile
+import os, json, uuid, logging, secrets, string, base64, traceback, time, io
 from produtos.mapa import reduzir, calc_mapa, calc_grid, analisar_express, analisar_completo, analisar_vida
 from produtos.calendario import analisar_calendario
 # Blindagem: um import faltando não pode derrubar o site inteiro
@@ -680,37 +681,154 @@ def _gerar_pdf_local(prod, data, lang, nome, bd, dado=""):
     doc.build(e)
     return path
 
-# ATENÇÃO: gerador_pdf.py retorna None em gerar_pdf (bug identificado em 28/10/2026).
-# NÃO reativar o import externo até que aquela função seja corrigida.
-gerar_pdf = _gerar_pdf_local       
+NOTA_SIGILO = {
+    # Português
+    "pt": ("DOCUMENTO EXCLUSIVO E CONFIDENCIAL",
+           "Este material foi gerado exclusivamente para você, apenas para os seus olhos. "
+           "A A1ELOS não armazena cópias deste documento em seus servidores. "
+           "Se perdê-lo, será necessário gerar um novo — não haverá cópia para recuperar."),
+    # Inglês
+    "en": ("EXCLUSIVE AND CONFIDENTIAL DOCUMENT",
+           "This material was generated exclusively for you, for your eyes only. "
+           "A1ELOS does not store copies of this document on its servers. "
+           "If lost, a new one must be generated — there will be no copy to recover."),
+    # Espanhol
+    "es": ("DOCUMENTO EXCLUSIVO Y CONFIDENCIAL",
+           "Este material fue generado exclusivamente para usted, solo para sus ojos. "
+           "A1ELOS no almacena copias de este documento en sus servidores. "
+           "Si lo pierde, deberá generar uno nuevo — no habrá copia para recuperar."),
+    # Italiano
+    "it": ("DOCUMENTO ESCLUSIVO E RISERVATO",
+           "Questo materiale è stato generato esclusivamente per lei, solo per i suoi occhi. "
+           "A1ELOS non archivia copie di questo documento sui propri server. "
+           "Se lo perde, sarà necessario generarne uno nuovo — non ci sarà copia da recuperare."),
+    # Francês
+    "fr": ("DOCUMENT EXCLUSIF ET CONFIDENTIEL",
+           "Ce document a été généré exclusivement pour vous, uniquement pour vos yeux. "
+           "A1ELOS ne stocke aucune copie de ce document sur ses serveurs. "
+           "En cas de perte, un nouveau document devra être généré — aucune copie ne pourra être récupérée."),
+    # Alemão
+    "de": ("EXKLUSIVES UND VERTRAULICHES DOKUMENT",
+           "Dieses Material wurde ausschließlich für Sie erstellt, nur für Ihre Augen. "
+           "A1ELOS speichert keine Kopien dieses Dokuments auf seinen Servern. "
+           "Bei Verlust muss ein neues Dokument erstellt werden — es wird keine Kopie zur Wiederherstellung geben."),
+    # Japonês
+    "ja": ("専用機密文書",
+           "この資料はお客様一人のために特別に作成されました。お客様だけのものです。"
+           "A1ELOSはこの文書のコピーをサーバーに保存しません。"
+           "紛失した場合は新しく作成し直す必要があります。復元用のコピーは存在しません。"),
+    # Chinês
+    "zh": ("专属机密文件",
+           "本资料专为您一人生成，仅供您本人查阅。"
+           "A1ELOS不会在服务器上存储本文件的任何副本。"
+           "如若遗失，需重新生成——将没有任何副本可供恢复。"),
+    # Russo
+    "ru": ("ЭКСКЛЮЗИВНЫЙ И КОНФИДЕНЦИАЛЬНЫЙ ДОКУМЕНТ",
+           "Этот материал был подготовлен исключительно для вас и только для ваших глаз. "
+           "A1ELOS не хранит копии этого документа на своих серверах. "
+           "В случае утери потребуется создать новый документ — восстановить копию будет невозможно."),
+    # Hebraico
+    "he": ("מסמך בלעדי וחסוי",
+           "חומר זה הופק במיוחד עבורך, לעיניך בלבד. "
+           "A1ELOS אינה שומרת עותקים של מסמך זה בשרתיה. "
+           "אם תאבד אותו, יהיה צורך להפיק מסמך חדש — לא תהיה עותק לשחזור."),
+    # Árabe
+    "ar": ("وثيقة حصرية وسرية",
+           "تم إنشاء هذه المادة خصيصًا لك، لعينيك وحدك. "
+           "لا تحتفظ A1ELOS بنسخ من هذه الوثيقة على خوادمها. "
+           "إذا فقدتها، فسيكون من الضروري إنشاء وثيقة جديدة — لن توجد نسخة يمكن استعادتها."),
+    # Indonésio
+    "id": ("DOKUMEN EKSKLUSIF DAN RAHASIA",
+           "Materi ini dibuat secara eksklusif untuk Anda, hanya untuk mata Anda sendiri. "
+           "A1ELOS tidak menyimpan salinan dokumen ini di servernya. "
+           "Jika hilang, dokumen baru harus dibuat — tidak akan ada salinan untuk dipulihkan."),
+    # Turco
+    "tr": ("ÖZEL VE GİZLİ BELGE",
+           "Bu materyal yalnızca sizin için, yalnızca sizin gözleriniz için oluşturuldu. "
+           "A1ELOS bu belgenin kopyalarını sunucularında saklamaz. "
+           "Kaybederseniz yeni bir belge oluşturulması gerekecektir — kurtarılacak bir kopya olmayacaktır."),
+    # Vietnamita
+    "vi": ("TÀI LIỆU ĐỘC QUYỀN VÀ BÍ MẬT",
+           "Tài liệu này được tạo riêng cho bạn, chỉ dành cho mắt của bạn. "
+           "A1ELOS không lưu trữ bất kỳ bản sao nào của tài liệu này trên máy chủ của mình. "
+           "Nếu thất lạc, bạn sẽ cần tạo tài liệu mới — sẽ không có bản sao nào để khôi phục."),
+}
+RTL = {'he', 'ar'}
+# no HTML da nota:
+dir_attr = ' dir="rtl"' if lang in RTL else ''
+# e no <p> do texto: <p{dir_attr} style="...">
 
-def _pagina_sucesso_local(pdf_path, nome, prod_nome, lang="pt"):
+def _pagina_sucesso_local(pdf_path, nome, prod_nome, lang="pt", nome_arq=""):
     b64 = ""
     if pdf_path and os.path.exists(pdf_path):
         with open(pdf_path, "rb") as f:
             b64 = base64.b64encode(f.read()).decode()
     btn = ""
     if b64:
-        btn = (f'<a href="data:application/pdf;base64,{b64}" download="Documento.pdf" '
+        btn = (f'<a href="data:application/pdf;base64,{b64}" download="A1ELOS_{prod_nome}.pdf" '
                f'style="display:inline-block;padding:18px 50px;background:#C9A94E;color:#000;'
                f'text-decoration:none;border-radius:50px;font-weight:700;font-size:1.2rem;margin:25px 0">📥 BAIXAR PDF</a>')
+    t, txt = NOTA_SIGILO.get(lang, NOTA_SIGILO["pt"])
+    nota = (f'<div style="max-width:560px;margin:38px auto 0;padding:20px 24px;'
+            f'border:1px solid #C9A94E55;border-left:3px solid #C9A94E;'
+            f'border-radius:6px;background:#141414;text-align:left">'
+            f'<p style="color:#C9A94E;font-size:.75rem;letter-spacing:.14em;'
+            f'font-weight:700;margin:0 0 10px">{t}</p>'
+            f'<p style="color:#b8b8b8;font-size:.9rem;line-height:1.65;margin:0">{txt}</p></div>')
+    beacon = ""
+    if nome_arq:
+        beacon = (f'<script>window.addEventListener("beforeunload",function(){{'
+                  f'navigator.sendBeacon("/api/sessao-encerrada",'
+                  f'new Blob([JSON.stringify({{arq:"{nome_arq}}"}}),'
+                  f'{{type:"application/json"}}))}});</script>')
     return (f'<html><body style="background:#0a0a0a;color:#fff;text-align:center;padding:40px;'
             f'font-family:sans-serif"><h1 style="color:#C9A94E">✅ Confirmado!</h1>'
-            f'<p>Ola <b>{nome}</b>, seu {prod_nome} foi gerado.</p>{btn}'
+            f'<p>Ola <b>{nome}</b>, seu {prod_nome} foi gerado.</p>{btn}{nota}{beacon}'
             f'<a href="/" style="color:#C9A94E">Voltar</a></body></html>')
 
-def _entregar_arquivo_local(tipo, nome, lang="pt"):
-    try:
-        pf = _gerar_pdf_local(tipo, {"life_path": 1, "expression": 1, "soul_urge": 1,
-                                     "personality": 1, "destiny": 1}, lang, nome, "")
-        return {"pdf": pf, "url": "", "pdf_ok": True}
-    except Exception as e:
-        logger.error(f"Falha entrega: {e}")
-        return {"pdf": None, "url": "", "pdf_ok": False}
-
-gerar_pdf = _gerar_pdf_local
 pagina_sucesso = _pagina_sucesso_local
-_entregar_arquivo = _entregar_arquivo_local
+
+DIR_RELATORIOS = os.path.join(STATIC_DIR, "relatorios")
+ARQ_TTL_MINUTOS = 30
+os.makedirs(DIR_RELATORIOS, exist_ok=True)
+
+def _limpar_expirados() -> int:
+    agora, removidos = time.time(), 0
+    if not os.path.isdir(DIR_RELATORIOS):
+        return 0
+    for arq in os.listdir(DIR_RELATORIOS):
+        if not arq.lower().endswith((".pdf", ".png")):
+            continue
+        try:
+            caminho = os.path.join(DIR_RELATORIOS, arq)
+            if agora - os.path.getmtime(caminho) > ARQ_TTL_MINUTOS * 60:
+                os.remove(caminho)
+                removidos += 1
+        except Exception:
+            pass
+    return removidos
+
+def _apagar_agora(nome_arq: str) -> bool:
+    if not nome_arq or ".." in nome_arq or "/" in nome_arq or "\\" in nome_arq:
+        return False
+    try:
+        caminho = os.path.join(DIR_RELATORIOS, nome_arq)
+        if os.path.isfile(caminho):
+            os.remove(caminho)
+            return True
+    except Exception as e:
+        logger.error(f"Apagar {nome_arq}: {e}")
+    return False
+
+@app.post("/api/sessao-encerrada")
+async def sessao_encerrada(request: Request):
+    try:
+        body = await request.json()
+        if _apagar_agora(body.get("arq", "")):
+            logger.info(f"Apagado ao encerrar: {body.get('arq')}")
+    except Exception:
+        pass
+    return {"ok": True}
 
 # ===== EMAIL SIMPLES =====
 def _enviar_email_simples(destinatario, assunto, corpo):
@@ -1111,48 +1229,22 @@ def pay_success(request: Request):
         pn = PRODUTOS.get(lang, PRODUTOS["pt"]).get(prod, prod)
         pf = regenerar_pdf_por_meta(meta)
 
-        # ===== QRCODE RECUPERADO: guarda o PDF em static/relatorios e gera QR =====
-        qr_b64 = ""
-        link_qr = ""
+        qr_b64, nome_arq = "", ""
         if pf and os.path.exists(pf):
             try:
-                os.makedirs("static/relatorios", exist_ok=True)
-                novo = os.path.join("static/relatorios", f"{prod}_{uuid.uuid4().hex[:8]}.pdf")
-                with open(pf, "rb") as f_orig:
-                    with open(novo, "wb") as f_novo:
-                        f_novo.write(f_orig.read())
-                url_rel = BASE_URL + "/api/relatorio/" + sid
-                link_qr = url_rel
-                img = qrcode.make(link_qr)
-                qr_path = novo.replace(".pdf", ".png")
-                img.save(qr_path)
-                with open(qr_path, "rb") as f_qr:
-                    qr_b64 = base64.b64encode(f_qr.read()).decode()
-                logger.info(f"QRCode gerado: {url_rel}")
+                os.makedirs(DIR_RELATORIOS, exist_ok=True)
+                _limpar_expirados()
+                nome_arq = f"{uuid.uuid4().hex}.pdf"          # UUID, sem identificar
+                novo = os.path.join(DIR_RELATORIOS, nome_arq)
+                with open(pf, "rb") as f_orig, open(novo, "wb") as f_novo:
+                    f_novo.write(f_orig.read())
+                img = qrcode.make(url_rel)
+                buf = io.BytesIO()
+                img.save(buf, format="PNG")
+                qr_b64 = base64.b64encode(buf.getvalue()).decode()
             except Exception as qe:
                 logger.error(f"QRCode: {qe}")
-                qr_b64 = ""
-        nome_exib = dado or nome
-        html = pagina_sucesso(pf, nome_exib, pn, lang)
-
-        # Injeta o QRCode junto do botão de download (com fallback anti-falha silenciosa)
-        if qr_b64:
-            bloco_qr = (
-                '<div style="margin:25px auto;text-align:center">'
-                '<p style="color:#C9A94E;font-size:1rem">Ou escaneie (ou clique) para abrir o documento</p>'
-                f'<a class="btn" href="' + url_rel + '?download=1">⬇️ Baixar PDF</a>'
-                f'<img src="data:image/png;base64,{qr_b64}" style="width:180px;height:180px;border-radius:12px"></a></div>'
-            )
-            if "</body>" in html:
-                html = html.replace("</body>", bloco_qr + "</body>")
-            else:
-                html = html + bloco_qr   # fallback: HTML sem </body> recebe no fim
-
-        return HTMLResponse(html)
-
-    except Exception as e:
-        logger.error(f"pay_success {sid}: {e}")
-        return HTMLResponse("ERRO AO PROCESSAR PAGAMENTO", status_code=500)
+        html = pagina_sucesso(pf, nome_exib, pn, lang, nome_arq=nome_arq)
 
 # ===== GERAÇÃO REUTILIZÁVEL DE PDF A PARTIR DOS METADADOS =====
 def regenerar_pdf_por_meta(meta):
