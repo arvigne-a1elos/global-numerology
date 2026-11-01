@@ -1187,6 +1187,8 @@ CAM_EN = {
          "Your mission is to accomplish great works that benefit humanity. You are the architect of the future. "
          "Oprah Winfrey, Thomas Edison, Simón Bolívar and Frank Lloyd Wright are examples of construction "
          "at large scale."),
+    33: ("The Loving Master", 
+         "Compassionate and healing love. To serve is to shine: love with responsibility, without losing yourself."),
 }
 
 # ============================================================
@@ -1436,6 +1438,8 @@ CAM_ES = {
          "Su misión es realizar grandes obras que benefician a la humanidad. Usted es el arquitecto del futuro. "
          "Oprah Winfrey, Thomas Edison, Simón Bolívar y Frank Lloyd Wright son ejemplos de construcción "
          "a gran escala."),
+    33: ("El Maestro Amoroso", 
+         "Amor compasivo y sanador. Servir es brillar: amar con responsabilidad, sin perderse."),
 }
 
 # ============================================================
@@ -1687,6 +1691,8 @@ CAM_FR = {
          "Votre mission est d'accomplir de grandes œuvres qui bénéficient à l'humanité. Vous êtes l'architecte de l'avenir. "
          "Oprah Winfrey, Thomas Edison, Simón Bolívar et Frank Lloyd Wright sont des exemples de construction "
          "à grande échelle."),
+    33: ("Le Maître Amoureux", 
+         "Amour compatissant et guérisseur. Servir est briller : aimer avec responsabilité, sans se perdre."),
 }
 
 # ============================================================
@@ -1936,6 +1942,8 @@ CAM_DE = {
          "Ihre Mission ist es, große Werke zu vollbringen, die der Menschheit dienen. Sie sind der Architekt der Zukunft. "
          "Oprah Winfrey, Thomas Edison, Simón Bolívar und Frank Lloyd Wright sind Beispiele des Bauens "
          "in großem Maßstab."),
+    33: ("Der Liebende Meister, 
+         "Mitfühlende und heilende Liebe. Dienen heißt leuchten: mit Verantwortung lieben, ohne sich zu verlieren."),
 }
 
 # ============================================================
@@ -2185,6 +2193,8 @@ CAM_IT = {
          "La tua missione è realizzare grandi opere che beneficiano l'umanità. Sei l'architetto del futuro. "
          "Oprah Winfrey, Thomas Edison, Simón Bolívar e Frank Lloyd Wright sono esempi di costruzione "
          "su larga scala."),
+    33: ("Il Maestro Amoroso, 
+         "Amore compassionevole e guaritore. Servire è brillare: amare con responsabilità, senza perdersi."),
 }
 
 # ============================================================
@@ -2425,6 +2435,8 @@ CAM_JA = {
          "あなたの使命は人類に資する偉業を成し遂げることです。あなたは未来の建築家です。"
          "オプラ・ウィンフリー、トーマス・エジソン、シモン・ボリバル、フランク・ロイド・ライトが"
          "大規模な建設の例です。"),
+    33: ("愛のマスター , 
+         "思いやりと癒しの愛。奉仕することこそ輝き：自分を失わず、責任を持って愛する。"),
 }
 
 # ============================================================
