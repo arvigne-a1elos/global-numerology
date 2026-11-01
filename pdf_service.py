@@ -793,3 +793,108 @@ def pdf_urna(nome_completo, cargo_label, resultados, sugestoes, lang="pt"):
     doc.build(story)
     return arquivo
 
+# ===== LEITURAS COMPOSTAS 1-9 (calendário) =====
+LEITURAS_ENERGIA = {
+    1:  "Liderança e iniciativa — mês de começar. Projetos novos fluem; evite esperar pelos outros.",
+    2:  "Cooperação e sensibilidade — parcerias decidem. Ouça antes de agir; paciência traz acordos.",
+    3:  "Expressão e criatividade — comunicação favorece. Bom momento para apresentar ideias e publicar.",
+    4:  "Estrutura e trabalho — organize bases, contratos e finanças. Os resultados vêm pelo método.",
+    5:  "Movimento e mudança — viagens, contatos e novidades. Evite decisões impulsivas em dinheiro.",
+    6:  "Família e responsabilidade — harmonize relações e o lar. Bom para conciliar, cuidar e servir.",
+    7:  "Estudo e introspecção — pesquisa, análise e espiritualidade. Recolhimento produtivo; evite isolamento.",
+    8:  "Poder e materialização — negócios, promoções e dinheiro em foco. Exige ética e firmeza.",
+    9:  "Conclusão e generosidade — feche ciclos, perdoe, doe. O novo chega quando o velho termina.",
+    11: "Mestre 11 — intuição elevada e inspiração. Grandes percepções pedem equilíbrio emocional.",
+    22: "Mestre 22 — o construtor. Idealiza e materializa em grande escala; exige disciplina.",
+}
+
+def _leitura_energia(n):
+    try:
+        return LEITURAS_ENERGIA.get(int(n), "Energia em transição.")
+    except (TypeError, ValueError):
+        return "Energia em transição."
+
+
+def gerar_pdf_calendario(dados, lang="pt", nome_exib=""):
+    path = os.path.join(tempfile.gettempdir(), f"p_calendario_{uuid.uuid4().hex[:8]}.pdf")
+    doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
+                            topMargin=40, bottomMargin=30)
+    e = []
+    e.append(Spacer(1, 15))
+    e.append(Paragraph("CALENDÁRIO MENSAL ENERGÉTICO", estilo(16, True, GOLD, TA_CENTER, 0, 6)))
+    e.append(Paragraph(nome_exib, estilo(12, True, DARK, TA_CENTER, 0, 2)))
+    e.append(Paragraph(f"Nascimento: {dados.get('nascimento', '-')}",
+                       estilo(9, False, GRAY, TA_CENTER, 0, 12)))
+
+    # --- Tabela dos números, com rótulos elegantes e campos vazios ocultos ---
+    ROTULOS = {
+        "mes": "Mês de referência",
+        "caminho_vida": "Caminho de Vida (energia pessoal)",
+        "ano_pessoal": "Ano Pessoal",
+        "energia_mes": "Energia do Mês (universal)",
+        "energia_pessoal_mes": "Energia Pessoal no Mês",
+        "mes_pessoal_mestre": "Número-mestre registrado",
+    }
+    ORDEM = ["mes", "caminho_vida", "ano_pessoal",
+             "energia_mes", "energia_pessoal_mes", "mes_pessoal_mestre"]
+    linhas = [["Item", "Valor"]]
+    for chave in ORDEM:
+        valor = dados.get(chave)
+        if valor in (None, ""):            # oculta campos sem valor (ex.: sem mestre)
+            continue
+        linhas.append([ROTULOS.get(chave, chave.replace("_", " ").capitalize()),
+                       str(valor)])
+    tbl = Table(linhas, colWidths=[240, 245])
+    tbl.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (-1, 0), GOLD),
+        ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+        ("FONTSIZE", (0, 0), (-1, -1), 9),
+        ("GRID", (0, 0), (-1, -1), 0.4, colors.grey),
+        ("BACKGROUND", (0, 1), (-1, -1), LGRAY),
+        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+    ]))
+    e.append(tbl)
+    e.append(Spacer(1, 14))
+
+    # --- Rastro do cálculo em caixa dourada (quebra de linha automática) ---
+    rastro = dados.get("rastro", "")
+    if rastro:
+        st_rastro = ParagraphStyle("rastro", parent=estilo(9, False, DARK, TA_LEFT, 0, 0))
+        box_rastro = Table([[Paragraph("<b>COMO CALCULAMOS</b>", st_rastro)],
+                            [Paragraph(rastro.replace(" · ", "<br/>"), st_rastro)]],
+                           colWidths=[485])
+        box_rastro.setStyle(TableStyle([
+            ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor("#FBF5E6")),
+            ("BOX", (0, 0), (-1, -1), 1, GOLD),
+            ("LINEBELOW", (0, 0), (0, 0), 0.5, GOLD),
+            ("LEFTPADDING", (0, 0), (-1, -1), 10),
+            ("RIGHTPADDING", (0, 0), (-1, -1), 10),
+            ("TOPPADDING", (0, 0), (-1, -1), 6),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
+        ]))
+        e.append(box_rastro)
+        e.append(Spacer(1, 14))
+
+    # --- Leituras compostas ---
+    st_tit = ParagraphStyle("sec", parent=estilo(11, True, GOLD, TA_LEFT, 0, 4))
+    st_txt = ParagraphStyle("corpo", parent=estilo(9, False, DARK, TA_LEFT, 0, 6))
+    e.append(Paragraph("O QUE ESTES NÚMEROS SIGNIFICAM", st_tit))
+    for chave, titulo in [
+        ("energia_mes", "Energia do Mês"),
+        ("energia_pessoal_mes", "Sua Energia neste Mês"),
+        ("ano_pessoal", "Seu Ano Pessoal"),
+    ]:
+        n = dados.get(chave)
+        if n in (None, ""):
+            continue
+        mestre = dados.get("mes_pessoal_mestre")
+        texto = _leitura_energia(mestre if (chave == "energia_pessoal_mes" and mestre) else n)
+        e.append(Paragraph(f"<b>{titulo} — {n}</b>", st_txt))
+        e.append(Paragraph(texto, st_txt))
+        e.append(Spacer(1, 4))
+
+    e.append(Spacer(1, 10))
+    e.append(Paragraph("(c) A1ELOS", estilo(7, False, GRAY, TA_CENTER)))
+    doc.build(e)
+    return path
+
