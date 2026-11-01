@@ -902,36 +902,6 @@ def gerar_pdf_ong(dados, lang="pt", nome_exib=""):
     doc.build(e)
     return path
 
-def gerar_pdf_calendario(dados, lang="pt", nome_exib=""):
-    path = os.path.join(tempfile.gettempdir(), f"p_calendario_{uuid.uuid4().hex[:8]}.pdf")
-    doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
-                            topMargin=40, bottomMargin=30)
-    e = []
-    e.append(Spacer(1, 15))
-    e.append(Paragraph("CALENDÁRIO MENSAL ENERGÉTICO", estilo(16, True, GOLD, TA_CENTER, 0, 6)))
-    e.append(Paragraph(nome_exib, estilo(12, True, DARK, TA_CENTER, 0, 2)))
-    e.append(Paragraph(f"Nascimento: {dados.get('nascimento', '-')}",
-                       estilo(9, False, GRAY, TA_CENTER, 0, 10)))
-    linhas = [["Item", "Valor"]]
-    for chave, valor in dados.items():
-        if chave in ("titulo", "nascimento", "nome"):
-            continue
-        linhas.append([str(chave).replace("_", " ").capitalize(), str(valor)])
-    tbl = Table(linhas, colWidths=[220, 265])
-    tbl.setStyle(TableStyle([
-        ("BACKGROUND", (0, 0), (-1, 0), GOLD),
-        ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
-        ("FONTSIZE", (0, 0), (-1, -1), 9),
-        ("GRID", (0, 0), (-1, -1), 0.4, colors.grey),
-        ("BACKGROUND", (0, 1), (-1, -1), LGRAY),
-        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-    ]))
-    e.append(tbl)
-    e.append(Spacer(1, 10))
-    e.append(Paragraph("(c) A1ELOS", estilo(7, False, GRAY, TA_CENTER)))
-    doc.build(e)
-    return path
-
 def gerar_sugestao_ia(produto, energia, lang="pt"):
     """Gera 1 nome de bônus cuja energia bate com a escolhida."""
     BASES = {
