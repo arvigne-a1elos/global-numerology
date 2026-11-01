@@ -1207,7 +1207,7 @@ def pay_success(request: Request):
     sid = request.query_params.get("session_id", "")
     if not sid:
         return HTMLResponse("ERRO")
-    url_rel = BASE_URL + "/api/relatorio/" + sid
+    url_rel = BASE_URL + "/r/" + sid      # ~35 caracteres em vez de ~70
     try:
         s = stripe.checkout.Session.retrieve(sid)
         meta = getattr(s, "metadata", {}) or {}
@@ -1247,13 +1247,23 @@ def pay_success(request: Request):
                 with open(pf, "rb") as f_orig, open(novo, "wb") as f_novo:
                     f_novo.write(f_orig.read())
                 logger.info(f"QR aponta para: {url_rel}")    
-                img = qrcode.make(url_rel)
+                qr = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_H, box_size=10, border=2)
+                qr.add_data(url_rel)
+                qr.make(fit=True)
+                img = qr.make_image(fill_color="black", back_color="white")
+                buf = io.BytesIO()
+                img.save(buf, format="PNG")
+                qr_b64 = base64.b64encode(buf.getvalue()).decode()
                 buf = io.BytesIO()
                 img.save(buf, format="PNG")
                 qr_b64 = base64.b64encode(buf.getvalue()).decode()
             except Exception as qe:
                 logger.error(f"QRCode: {qe}")
         html = pagina_sucesso(pf, nome_exib, pn, lang, nome_arq=nome_arq)
+
+@app.get("/r/{sid}")
+def r_curto(sid: str, download: int = 0):
+    return RedirectResponse(url=f"/api/relatorio/{sid}?download={download}")
 
         # Injeta o QRCode junto do botão de download (fallback silencioso)
         if qr_b64:
