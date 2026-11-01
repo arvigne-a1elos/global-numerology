@@ -793,7 +793,7 @@ def pdf_urna(nome_completo, cargo_label, resultados, sugestoes, lang="pt"):
     doc.build(story)
     return arquivo
 
-# ===== LEITURAS COMPOSTAS 1-9 (calendário) =====
+# ===== LEITURAS COMPOSTAS 1-9 + MESTRES (calendário) =====
 LEITURAS_ENERGIA = {
     1:  "Liderança e iniciativa — mês de começar. Projetos novos fluem; evite esperar pelos outros.",
     2:  "Cooperação e sensibilidade — parcerias decidem. Ouça antes de agir; paciência traz acordos.",
@@ -816,17 +816,18 @@ def _leitura_energia(n):
 
 
 def gerar_pdf_calendario(dados, lang="pt", nome_exib=""):
-    path = os.path.join(tempfile.gettempdir(), f"p_calendario_{uuid.uuid4().hex[:8]}.pdf")
+    path = os.path.join(TMP, f"p_calendario_{uuid.uuid4().hex[:8]}.pdf")
     doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
                             topMargin=40, bottomMargin=30)
     e = []
     e.append(Spacer(1, 15))
-    e.append(Paragraph("CALENDÁRIO MENSAL ENERGÉTICO", estilo(16, True, GOLD, TA_CENTER, 0, 6)))
-    e.append(Paragraph(nome_exib, estilo(12, True, DARK, TA_CENTER, 0, 2)))
+    e.append(Paragraph("CALENDÁRIO MENSAL ENERGÉTICO",
+                       _estilo("cal_t", FN, 16, GOLD, TA_CENTER, sa=6)))
+    e.append(Paragraph(nome_exib, _estilo("cal_n", FN, 12, DARK, TA_CENTER, sa=2)))
     e.append(Paragraph(f"Nascimento: {dados.get('nascimento', '-')}",
-                       estilo(9, False, GRAY, TA_CENTER, 0, 12)))
+                       _estilo("cal_nb", FONTE, 9, GRAY, TA_CENTER, sa=12)))
 
-    # --- Tabela dos números, com rótulos elegantes e campos vazios ocultos ---
+    # --- Tabela dos números (rótulos elegantes, campos vazios ocultos) ---
     ROTULOS = {
         "mes": "Mês de referência",
         "caminho_vida": "Caminho de Vida (energia pessoal)",
@@ -840,30 +841,29 @@ def gerar_pdf_calendario(dados, lang="pt", nome_exib=""):
     linhas = [["Item", "Valor"]]
     for chave in ORDEM:
         valor = dados.get(chave)
-        if valor in (None, ""):            # oculta campos sem valor (ex.: sem mestre)
+        if valor in (None, ""):
             continue
-        linhas.append([ROTULOS.get(chave, chave.replace("_", " ").capitalize()),
-                       str(valor)])
+        linhas.append([ROTULOS.get(chave, chave.replace("_", " ").capitalize()), str(valor)])
     tbl = Table(linhas, colWidths=[240, 245])
     tbl.setStyle(TableStyle([
         ("BACKGROUND", (0, 0), (-1, 0), GOLD),
-        ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+        ("TEXTCOLOR", (0, 0), (-1, 0), WHITE),
         ("FONTSIZE", (0, 0), (-1, -1), 9),
-        ("GRID", (0, 0), (-1, -1), 0.4, colors.grey),
+        ("GRID", (0, 0), (-1, -1), 0.4, GRAY),
         ("BACKGROUND", (0, 1), (-1, -1), LGRAY),
         ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
     ]))
     e.append(tbl)
     e.append(Spacer(1, 14))
 
-    # --- Rastro do cálculo em caixa dourada (quebra de linha automática) ---
+    # --- Rastro do cálculo em caixa dourada (quebra de linha por passo) ---
     rastro = dados.get("rastro", "")
     if rastro:
-        st_rastro = ParagraphStyle("rastro", parent=estilo(9, False, DARK, TA_LEFT, 0, 0))
-        box_rastro = Table([[Paragraph("<b>COMO CALCULAMOS</b>", st_rastro)],
-                            [Paragraph(rastro.replace(" · ", "<br/>"), st_rastro)]],
-                           colWidths=[485])
-        box_rastro.setStyle(TableStyle([
+        st_rastro = _estilo("cal_rastro", FONTE, 9, DARK, TA_LEFT)
+        box = Table([[Paragraph("<b>COMO CALCULAMOS</b>", st_rastro)],
+                     [Paragraph(rastro.replace(" · ", "<br/>"), st_rastro)]],
+                    colWidths=[485])
+        box.setStyle(TableStyle([
             ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor("#FBF5E6")),
             ("BOX", (0, 0), (-1, -1), 1, GOLD),
             ("LINEBELOW", (0, 0), (0, 0), 0.5, GOLD),
@@ -872,13 +872,13 @@ def gerar_pdf_calendario(dados, lang="pt", nome_exib=""):
             ("TOPPADDING", (0, 0), (-1, -1), 6),
             ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
         ]))
-        e.append(box_rastro)
+        e.append(box)
         e.append(Spacer(1, 14))
 
     # --- Leituras compostas ---
-    st_tit = ParagraphStyle("sec", parent=estilo(11, True, GOLD, TA_LEFT, 0, 4))
-    st_txt = ParagraphStyle("corpo", parent=estilo(9, False, DARK, TA_LEFT, 0, 6))
-    e.append(Paragraph("O QUE ESTES NÚMEROS SIGNIFICAM", st_tit))
+    e.append(Paragraph("O QUE ESTES NÚMEROS SIGNIFICAM",
+                       _estilo("cal_sec", FN, 11, GOLD, TA_LEFT, sa=4)))
+    mestre = dados.get("mes_pessoal_mestre")
     for chave, titulo in [
         ("energia_mes", "Energia do Mês"),
         ("energia_pessoal_mes", "Sua Energia neste Mês"),
@@ -887,14 +887,13 @@ def gerar_pdf_calendario(dados, lang="pt", nome_exib=""):
         n = dados.get(chave)
         if n in (None, ""):
             continue
-        mestre = dados.get("mes_pessoal_mestre")
-        texto = _leitura_energia(mestre if (chave == "energia_pessoal_mes" and mestre) else n)
-        e.append(Paragraph(f"<b>{titulo} — {n}</b>", st_txt))
-        e.append(Paragraph(texto, st_txt))
-        e.append(Spacer(1, 4))
+        usar = mestre if (chave == "energia_pessoal_mes" and mestre) else n
+        e.append(Paragraph(f"<b>{titulo} — {n}</b>",
+                           _estilo("cal_l1", FN, 9, DARK, TA_LEFT, sa=2)))
+        e.append(Paragraph(_leitura_energia(usar),
+                           _estilo("cal_l2", FONTE, 9, DARK, TA_LEFT, sa=6)))
 
     e.append(Spacer(1, 10))
-    e.append(Paragraph("(c) A1ELOS", estilo(7, False, GRAY, TA_CENTER)))
+    e.append(Paragraph("(c) A1ELOS", _estilo("cal_foot", FONTE, 7, GRAY, TA_CENTER)))
     doc.build(e)
     return path
-
