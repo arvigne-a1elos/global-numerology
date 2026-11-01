@@ -1,25 +1,28 @@
 # -*- coding: utf-8 -*-
-# produtos/calendario.py - Calendário Mensal Energético (v3, com Caminho de Vida)
-# Regra de cálculo definida por Antonio (18/10/2026):
+# produtos/calendario.py - Calendário Mensal Energético (v4 — REGRA A1ELOS)
+# Regra de cálculo definida por Antonio (01/11/2026):
 #   1) Caminho de Vida (energia pessoal) = redução da data completa de nascimento.
-#   2) Mês Universal = reduzir(mês da pesquisa) + reduzir(ano da pesquisa).
-#   3) Mês Pessoal = reduzir(Mês Universal + Caminho de Vida).
-#   4) Ano Pessoal (serviço embutido) = reduzir(dia) + reduzir(mês nasc.) + reduzir(ano pesquisa).
+#   2) Energia do Mês Universal = mês da pesquisa (11 e 22 permanecem mestres).
+#   3) Ano Universal = redução do ano da pesquisa.
+#   4) Ano Pessoal = reduzir(Caminho de Vida + Ano Universal).
+#   5) Mês Pessoal = reduzir(Ano Pessoal + mês da pesquisa), com o mestre
+#      registrado quando o resultado bruto for 11 ou 22.
+# Exemplo de verificação (Antonio, 05/08/1966, mês 2026-11):
+#   CV: 5+8+22 = 8 · Ano Universal: 2+0+2+6 = 1 · Ano Pessoal: 8+1 = 9
+#   Mês Pessoal: 9+11 = 20 → 2 (mestre 11 registrado)
 from .mapa import reduzir
 
 
-def _reduz9(n):
-    """Reduz a um único dígito 1-9, sem preservar números-mestre.
-    Regra do produto: cada etapa termina em um dígito."""
+def _reduz_mestre(n):
+    """Reduz preservando números-mestre 11 e 22 (regra A1ELOS)."""
     n = int(n)
-    while n > 9:
+    while n > 9 and n not in (11, 22):
         n = sum(int(d) for d in str(n))
     return n
 
 
 def _digitos_data(nascimento):
-    """Aceita AAAA-MM-DD (input de data do HTML) ou DD/MM/AAAA.
-    Retorna o texto de todos os dígitos, ou '' se inválido."""
+    """Aceita AAAA-MM-DD ou DD/MM/AAAA. Retorna os dígitos, ou '' se inválido."""
     partes = str(nascimento).replace("/", "-").split("-")
     if len(partes) == 3 and all(p.strip().isdigit() for p in partes):
         return "".join(p.strip() for p in partes)
@@ -31,62 +34,50 @@ def caminho_vida(nascimento):
     digitos = _digitos_data(nascimento)
     if not digitos:
         return None
-    return _reduz9(sum(int(c) for c in digitos))
-
-
-def _dia_mes_nascimento(nascimento):
-    """Retorna (dia, mês) de nascimento, detectando a ordem da data."""
-    partes = str(nascimento).replace("/", "-").split("-")
-    if len(partes) != 3:
-        return None, None
-    try:
-        p0, p1, p2 = (p.strip() for p in partes)
-        if len(p0) == 4:          # AAAA-MM-DD
-            return int(p2), int(p1)
-        return int(p0), int(p1)   # DD-MM-AAAA
-    except (ValueError, TypeError):
-        return None, None
+    return _reduz_mestre(sum(int(c) for c in digitos))
 
 
 def analisar_calendario(nome, mes, nascimento=""):
-    """Analisa um mês no formato 'AAAA-MM'."""
-    # 1) Mês Universal (energia própria do mês, sem indivíduo)
+    """Analisa um mês no formato 'AAAA-MM' — REGRA A1ELOS."""
+    # 1) Energia do Mês Universal = o próprio mês (mestres preservados)
     try:
         ano, mm = str(mes).split("-")
-        e_mes = _reduz9(sum(int(c) for c in mm))
-        e_ano = _reduz9(sum(int(c) for c in ano))
-        universal = _reduz9(e_mes + e_ano)
+        e_mes = _reduz_mestre(int(mm))
+        e_ano = _reduz_mestre(sum(int(c) for c in ano))   # Ano Universal
     except (ValueError, TypeError):
         import logging; logging.getLogger(__name__).warning("Calendario: dado invalido: %s", str(mes)[:20])
-        universal = 1
+        e_mes, e_ano = 1, 1
 
     # 2) Caminho de Vida (energia pessoal da pessoa)
     cv = caminho_vida(nascimento) if nascimento else None
 
-    # 3) Mês Pessoal (a energia DA PESSOA naquele mês)
-    pessoal_mes = _reduz9(universal + cv) if cv else universal
+    # 3) Ano Pessoal (regra A1ELOS): Caminho de Vida + Ano Universal
+    ano_pessoal = _reduz_mestre(cv + e_ano) if cv else None
 
-    # 4) Ano Pessoal (serviço embutido no produto)
-    ano_pessoal = None
-    d_n, m_n = _dia_mes_nascimento(nascimento) if nascimento else (None, None)
-    if d_n:
-        try:
-            ano_pesq = str(mes).split("-")[0]
-            e_d = _reduz9(sum(int(c) for c in str(d_n)))
-            e_m = _reduz9(sum(int(c) for c in str(m_n)))
-            e_a = _reduz9(sum(int(c) for c in ano_pesq))
-            ano_pessoal = _reduz9(e_d + e_m + e_a)
-        except (ValueError, TypeError):
-            ano_pessoal = None
+    # 4) Mês Pessoal: Ano Pessoal + mês da pesquisa (mestre registrado)
+    bruto = (ano_pessoal + int(mm)) if (ano_pessoal is not None) else e_mes
+    pessoal_mes = _reduz_mestre(bruto)
+    mestre_mes = bruto if bruto in (11, 22) else ""
+
+    # 5) Rastro do cálculo — caixa dourada do PDF
+    rastro = (
+        f"Vida: {nascimento} = {cv} · "
+        f"Ano Universal: {ano} = {e_ano} · "
+        f"Ano Pessoal: {cv}+{e_ano} = {ano_pessoal} · "
+        f"Mês Pessoal: {ano_pessoal}+{int(mm)} = {bruto}"
+        + (f" → {pessoal_mes} (mestre {mestre_mes})" if mestre_mes else f" → {pessoal_mes}")
+    )
 
     return {
         "nome": nome,
         "mes": mes,
         "nascimento": nascimento or "",
         "caminho_vida": cv,                  # energia pessoal (sua: 8)
-        "ano_pessoal": ano_pessoal,          # serviço embutido
-        "energia_mes": universal,            # energia geral do mês (PDF atual lê esta chave)
-        "energia_pessoal_mes": pessoal_mes,  # energia da pessoa naquele mês
+        "ano_pessoal": ano_pessoal,          # sua regra: 9
+        "energia_mes": e_mes,                # mês universal (11 fica 11)
+        "energia_pessoal_mes": pessoal_mes,  # energia da pessoa naquele mês (2)
+        "mes_pessoal_mestre": mestre_mes,    # "11" quando houver mestre
+        "rastro": rastro,                    # caixa dourada do PDF
     }
 
 
