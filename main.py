@@ -1259,15 +1259,12 @@ def pay_success(request: Request):
                 buf = io.BytesIO()
                 img.save(buf, format="PNG")
                 qr_b64 = base64.b64encode(buf.getvalue()).decode()
-                buf = io.BytesIO()
-                img.save(buf, format="PNG")
-                qr_b64 = base64.b64encode(buf.getvalue()).decode()
             except Exception as qe:
                 logger.error(f"QRCode: {qe}")
         html = pagina_sucesso(pf, nome_exib, pn, lang, nome_arq=nome_arq)
 
         # Injeta o QRCode junto do botão de download (fallback silencioso)
-                if qr_b64:
+        if qr_b64:
             aviso_qr = (
                 '<p style="color:#C9A94E;font-size:0.85rem;max-width:320px;'
                 'margin:8px auto;line-height:1.5">'
