@@ -554,7 +554,6 @@ function carregarPartials() {
     .then(function(html){
       var alvo = document.getElementById('areaProdutos');
       if (alvo) alvo.innerHTML = html;
-      aplicarMascarasData();     // ← ADICIONE ESTA LINHA
       montarTudo();
     })
     .catch(function(e){ console.warn('[partials] produtos.html:', e); });
@@ -652,6 +651,7 @@ function aplicarMascarasData() {
         });
     });
 }
+
 function converterData(v) {
     var p = (v || "").split("/");
     if (p.length === 3 && p[0].length === 2) {
@@ -660,6 +660,51 @@ function converterData(v) {
     return v;   // já está em AAAA-MM-DD (ou vazio) — não mexe
 }
 function getLang() { return (typeof localStorage !== 'undefined' && localStorage.getItem('lang')) || 'pt'; }
+function montarSeletorData() {
+  var dia = document.getElementById("calcDia");
+  var mes = document.getElementById("calcMes");
+  var ano = document.getElementById("calcAno");
+  if (!dia || !mes || !ano) return;
+  if (dia.options.length > 0) { atualizarMesesData(); return; }
+  for (var d = 1; d <= 31; d++) {
+    var o = document.createElement("option");
+    o.value = (d < 10 ? "0" : "") + d;
+    o.textContent = d;
+    dia.appendChild(o);
+  }
+  var anoAtual = new Date().getFullYear();
+  for (var a = anoAtual; a >= 1900; a--) {
+    var oa = document.createElement("option");
+    oa.value = a;
+    oa.textContent = a;
+    ano.appendChild(oa);
+  }
+  atualizarMesesData();
+  dia.onchange = mes.onchange = ano.onchange = montarValorData;
+}
+function atualizarMesesData() {
+  var mes = document.getElementById("calcMes");
+  if (!mes) return;
+  var lang = getLang();
+  var nomes = MESES_TRAD[lang] || MESES_TRAD.pt;
+  var atual = mes.value;
+  mes.innerHTML = "";
+  for (var i = 0; i < 12; i++) {
+    var o = document.createElement("option");
+    o.value = (i + 1 < 10 ? "0" : "") + (i + 1);
+    o.textContent = nomes[i];
+    mes.appendChild(o);
+  }
+  if (atual) mes.value = atual;
+  montarValorData();
+}
+function montarValorData() {
+  var d = document.getElementById("calcDia").value;
+  var m = document.getElementById("calcMes").value;
+  var a = document.getElementById("calcAno").value;
+  var hidden = document.getElementById("calcNasc");
+  if (hidden && d && m && a) hidden.value = a + "-" + m + "-" + d;
+}
 
 // Interruptor automático: acima do teto, oculta o botão de pagamento
 // e exibe o formulário de negociação sob consulta.
@@ -926,4 +971,3 @@ window.pagarCompatibilidade = window.pagarCompatibilidade || function(){
     new MutationObserver(_blindar).observe(document.body, {childList: true, subtree: true});
   }
 })();
-
