@@ -253,10 +253,13 @@
     <form id="form-calendario" class="hidden" onsubmit="return false">
         <label data-i18n-form="calc_nome">Nome completo</label>
         <input id="calNome" type="text" data-i18n-ph="ph_nome_completo" placeholder="Nome completo">
+
         <label data-i18n-form="f_cal_data">Data de nascimento</label>
         <input id="calNascimento" type="text" inputmode="numeric"
-               maxlength="10" placeholder="DD/MM/AAAA" autocomplete="bday"
-               style="max-width:220px">
+               maxlength="10" placeholder="DD/MM/AAAA" autocomplete="bday">
+
+        <label data-i18n-form="f_cal_ano">Ano de pesquisa</label>
+        <select id="calAno">
             <option value="2026" selected>2026</option>
             <option value="2027">2027</option>
             <option value="2028">2028</option>
@@ -268,9 +271,9 @@
             <option value="2034">2034</option>
             <option value="2035">2035</option>
         </select>
-        <label data-i18n-form="f_cal_ano">Mês e ano da pesquisa</label>
-        <input id="calMesAno" type="text" inputmode="numeric"
-               maxlength="7" placeholder="MM/AAAA" autocomplete="off">
+
+        <label data-i18n-form="f_mes">Mês de referência</label>
+        <select id="calMes">
             <option value="01" data-mes="01" data-i18n-form="mes_01">Janeiro</option>
             <option value="02" data-mes="02" data-i18n-form="mes_02">Fevereiro</option>
             <option value="03" data-mes="03" data-i18n-form="mes_03">Março</option>
@@ -284,6 +287,7 @@
             <option value="11" data-mes="11" data-i18n-form="mes_11">Novembro</option>
             <option value="12" data-mes="12" data-i18n-form="mes_12">Dezembro</option>
         </select>
+
         <button type="button" class="btn btn-full" onclick="pagarCalendario()" data-i18n-form="pesquisar_btn">Pesquisar</button>
     </form>
 </div>
