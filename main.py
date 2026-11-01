@@ -1267,7 +1267,26 @@ def pay_success(request: Request):
         html = pagina_sucesso(pf, nome_exib, pn, lang, nome_arq=nome_arq)
 
         # Injeta o QRCode junto do botão de download (fallback silencioso)
-        if qr_b64:
+                if qr_b64:
+            aviso_qr = (
+                '<p style="color:#C9A94E;font-size:0.85rem;max-width:320px;'
+                'margin:8px auto;line-height:1.5">'
+                '📷 Melhor leitura com o Google Lens · '
+                '📷 Best scanned with Google Lens · '
+                '📷 Mejor leerlo con Google Lens · '
+                '📷 Am besten mit Google Lens scannen · '
+                '📷 Mieux lu avec Google Lens · '
+                '📷 Meglio con Google Lens · '
+                '📷 Лучше считывать через Google Lens · '
+                '📷 请用 Google Lens 扫描 · '
+                '📷 Google Lens での読み取りがおすすめ · '
+                '📷 Google Lens से स्कैन करें · '
+                '📷 עדיף לסרוק עם Google Lens · '
+                '📷 الأفضل القراءة عبر Google Lens · '
+                '📷 Scannen met Google Lens werkt beter · '
+                '📷 Google Lens ile okutun'
+                '</p>'
+            )
             bloco_qr = (
                 '<div style="margin:25px auto;text-align:center">'
                 '<p style="color:#C9A94E;font-size:1rem">Ou escaneie (ou clique) para abrir o documento</p>'
@@ -1275,13 +1294,14 @@ def pay_success(request: Request):
                 '<br>'
                 f'<img src="data:image/png;base64,{qr_b64}" alt="QR Code do relatorio" '
                 'style="width:220px;height:220px;border-radius:8px;margin-top:12px">'
+                + aviso_qr +
                 '</div>'
             )
             if "</body>" in html:
                 html = html.replace("</body>", bloco_qr + "</body>")
             else:
                 html = html + bloco_qr
-
+            
         return HTMLResponse(html)
 
     except Exception as e:
