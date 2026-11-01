@@ -554,6 +554,7 @@ function carregarPartials() {
     .then(function(html){
       var alvo = document.getElementById('areaProdutos');
       if (alvo) alvo.innerHTML = html;
+      aplicarMascarasData();     // ← ADICIONE ESTA LINHA
       montarTudo();
     })
     .catch(function(e){ console.warn('[partials] produtos.html:', e); });
@@ -619,13 +620,36 @@ var MESES_TRAD = {
   vi:["Tháng 1","Tháng 2","Tháng 3","Tháng 4","Tháng 5","Tháng 6","Tháng 7","Tháng 8","Tháng 9","Tháng 10","Tháng 11","Tháng 12"]
 };
 
-var nascInput = document.getElementById("calcNasc");
-if (nascInput) {
-    nascInput.addEventListener("input", function () {
-        var v = this.value.replace(/\D/g, "").slice(0, 8);
-        if (v.length > 4)      this.value = v.slice(0,2) + "/" + v.slice(2,4) + "/" + v.slice(4);
-        else if (v.length > 2) this.value = v.slice(0,2) + "/" + v.slice(2);
-        else                   this.value = v;
+// ===== MÁSCARAS DE DATA — teclado numérico no celular (calcNasc + calNascimento) =====
+["calcNasc", "calNascimento"].forEach(function (id) {
+    document.querySelectorAll('[id="' + id + '"]').forEach(function (inp) {
+        inp.setAttribute("inputmode", "numeric");
+        inp.setAttribute("maxlength", "10");
+        if (inp._mascarado) return;          // evita máscara duplicada nas cópias do modal
+        inp._mascarado = true;
+        inp.addEventListener("input", function () {
+            var v = this.value.replace(/\D/g, "").slice(0, 8);
+            if (v.length > 4)      this.value = v.slice(0,2) + "/" + v.slice(2,4) + "/" + v.slice(4);
+            else if (v.length > 2) this.value = v.slice(0,2) + "/" + v.slice(2);
+            else                   this.value = v;
+        });
+    });
+});
+// Reaplica máscaras quando os partials carregam (formulários injetados via fetch)
+function aplicarMascarasData() {
+    ["calcNasc", "calNascimento"].forEach(function (id) {
+        document.querySelectorAll('[id="' + id + '"]').forEach(function (inp) {
+            if (inp._mascarado) return;
+            inp._mascarado = true;
+            inp.setAttribute("inputmode", "numeric");
+            inp.setAttribute("maxlength", "10");
+            inp.addEventListener("input", function () {
+                var v = this.value.replace(/\D/g, "").slice(0, 8);
+                if (v.length > 4)      this.value = v.slice(0,2) + "/" + v.slice(2,4) + "/" + v.slice(4);
+                else if (v.length > 2) this.value = v.slice(0,2) + "/" + v.slice(2);
+                else                   this.value = v;
+            });
+        });
     });
 }
 function converterData(v) {
@@ -636,51 +660,6 @@ function converterData(v) {
     return v;   // já está em AAAA-MM-DD (ou vazio) — não mexe
 }
 function getLang() { return (typeof localStorage !== 'undefined' && localStorage.getItem('lang')) || 'pt'; }
-function montarSeletorData() {
-  var dia = document.getElementById("calcDia");
-  var mes = document.getElementById("calcMes");
-  var ano = document.getElementById("calcAno");
-  if (!dia || !mes || !ano) return;
-  if (dia.options.length > 0) { atualizarMesesData(); return; }
-  for (var d = 1; d <= 31; d++) {
-    var o = document.createElement("option");
-    o.value = (d < 10 ? "0" : "") + d;
-    o.textContent = d;
-    dia.appendChild(o);
-  }
-  var anoAtual = new Date().getFullYear();
-  for (var a = anoAtual; a >= 1900; a--) {
-    var oa = document.createElement("option");
-    oa.value = a;
-    oa.textContent = a;
-    ano.appendChild(oa);
-  }
-  atualizarMesesData();
-  dia.onchange = mes.onchange = ano.onchange = montarValorData;
-}
-function atualizarMesesData() {
-  var mes = document.getElementById("calcMes");
-  if (!mes) return;
-  var lang = getLang();
-  var nomes = MESES_TRAD[lang] || MESES_TRAD.pt;
-  var atual = mes.value;
-  mes.innerHTML = "";
-  for (var i = 0; i < 12; i++) {
-    var o = document.createElement("option");
-    o.value = (i + 1 < 10 ? "0" : "") + (i + 1);
-    o.textContent = nomes[i];
-    mes.appendChild(o);
-  }
-  if (atual) mes.value = atual;
-  montarValorData();
-}
-function montarValorData() {
-  var d = document.getElementById("calcDia").value;
-  var m = document.getElementById("calcMes").value;
-  var a = document.getElementById("calcAno").value;
-  var hidden = document.getElementById("calcNasc");
-  if (hidden && d && m && a) hidden.value = a + "-" + m + "-" + d;
-}
 
 // Interruptor automático: acima do teto, oculta o botão de pagamento
 // e exibe o formulário de negociação sob consulta.
