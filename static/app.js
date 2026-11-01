@@ -99,22 +99,20 @@ function _calMesNum(v){
 function pagarCalendario(){
   var elN = _calPegaVisivel(['calNome']);
   var elB = _calPegaVisivel(['calNascimento']);
-  var elA = _calPegaVisivel(['calAno']);
-  var elM = _calPegaVisivel(['calMes']);
-  if(!elN || !elM){
+  var elMA = _calPegaVisivel(['calMesAno']);
+  if(!elN || !elMA){
     alert("Formulário do calendário não encontrado. Recarregue a página (Ctrl+Shift+R) e tente novamente.");
     return;
   }
   var n = elN.value.trim();
   var b = elB ? elB.value : "";
-  var a = elA ? elA.value : "";
-  var m = elM.value;
-  if(!n || !b || !a || !m){
-    var msg = (typeof t_preencha === 'function') ? t_preencha() : "Preencha nome, data, ano e mês antes de pesquisar.";
+  var ma = (elMA.value || "").replace(/\D/g, "");     // '112026' → dígitos puros
+  if(!n || !b || ma.length !== 6){
+    var msg = (typeof t_preencha === 'function') ? t_preencha() : "Preencha nome, data de nascimento e mês/ano da pesquisa.";
     alert(msg);
     return;
   }
-  var mes = a + "-" + (m.length === 1 ? "0" + m : m);
+  var mes = ma.slice(2) + "-" + ma.slice(0, 2);       // '112026' → '2026-11'
   window.location.href = '/criar-checkout?produto=calendario'
     + '&nome=' + encodeURIComponent(n)
     + '&nascimento=' + encodeURIComponent(converterData(b))
@@ -626,13 +624,14 @@ var MESES_TRAD = {
         inp.setAttribute("maxlength", "10");
         if (inp._mascarado) return;          // evita máscara duplicada nas cópias do modal
         inp._mascarado = true;
-        inp.addEventListener("input", function () {
-            var v = this.value.replace(/\D/g, "").slice(0, 8);
-            if (v.length > 4)      this.value = v.slice(0,2) + "/" + v.slice(2,4) + "/" + v.slice(4);
-            else if (v.length > 2) this.value = v.slice(0,2) + "/" + v.slice(2);
-            else                   this.value = v;
-        });
-    });
+        var elMA = document.getElementById("calMesAno");
+        if (elMA) {
+            elMA.addEventListener("input", function () {
+                var v = this.value.replace(/\D/g, "").slice(0, 6);
+                if (v.length > 2) this.value = v.slice(0,2) + "/" + v.slice(2);
+                else              this.value = v;
+            });
+      }
 });
 // Reaplica máscaras quando os partials carregam (formulários injetados via fetch)
 function aplicarMascarasData() {
