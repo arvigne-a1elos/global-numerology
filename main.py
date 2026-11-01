@@ -1168,6 +1168,11 @@ async def api_precos():
    "faixa": PRODUTO_FAIXA,
  }   
 
+# ===== REDIRECIONADOR CURTO PARA O QR CODE =====
+@app.get("/r/{sid}")
+def r_curto(sid: str, download: int = 0):
+    return RedirectResponse(url=f"/api/relatorio/{sid}?download={download}")
+    
 # ===== LINK PERMANENTE DO RELATORIO (regenera sob demanda) =====
 @app.get("/api/relatorio/{session_id}")
 def api_relatorio(session_id: str, download: int = 0):
@@ -1201,7 +1206,7 @@ def api_relatorio(session_id: str, download: int = 0):
     except Exception as e:
         logger.error(f"Relatorio {session_id}: {e}")
         return HTMLResponse("Documento indisponivel", status_code=404)
-
+        
 @app.get("/api/pay/success")
 def pay_success(request: Request):
     sid = request.query_params.get("session_id", "")
@@ -1260,10 +1265,6 @@ def pay_success(request: Request):
             except Exception as qe:
                 logger.error(f"QRCode: {qe}")
         html = pagina_sucesso(pf, nome_exib, pn, lang, nome_arq=nome_arq)
-
-@app.get("/r/{sid}")
-def r_curto(sid: str, download: int = 0):
-    return RedirectResponse(url=f"/api/relatorio/{sid}?download={download}")
 
         # Injeta o QRCode junto do botão de download (fallback silencioso)
         if qr_b64:
