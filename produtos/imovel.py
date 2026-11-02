@@ -176,13 +176,6 @@ DICAS_HARMONIZACAO = {
     "ar": "💡 نصيحة: طاقة المبنى ثابتة، لكن لكل غرفة طاقتها الخاصة. رقّم أو سمِّ الغرف والأبواب — كل كلمة أو رقم تحمل طاقة تُضاف إلى طاقة المكان. أدوات التسمية لدينا (اسم للأعمال/المنتج) تحدد التسمية الأنسب لكل غرفة.",
 }
 
-# Dica traduzida por idioma
-DICAS_HARMONIZACAO = {
-    "pt": "💡 Dica: a energia do imóvel é fixa, mas cada ambiente pode ter a sua. Numere ou dê nome às salas e portas — cada palavra ou número vibra em uma energia que se soma à do local. Nossas ferramentas de nomenclatura (Nome para Negócio/Produto) indicam a melhor designação para cada cômodo.",
-    "en": "💡 Tip: the energy of the property is fixed, but each room can have its own. Number or name the rooms and doors — every word or number carries an energy that adds to the place. Our naming tools (Business/Product Name) indicate the best designation for each room.",
-    # ... es, it, fr, de, ja, zh, ru, he, ar, id, tr, vi
-}
-
 def analisar_imovel(dado, dado2="", dado3="", lang="pt"):
     """Recebe os 3 campos do modal. Qualquer combinação >= 1 campo gera o PDF.
     Ex.: imóvel 81, escritório 7, sala B -> 9 + 7 + 2 = 18 -> (9)"""
