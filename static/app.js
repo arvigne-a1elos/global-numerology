@@ -59,11 +59,9 @@ function pagarIa(){
   location.href = '/criar-checkout?produto=ia&nome=' + encodeURIComponent(n)
     + '&energia=' + encodeURIComponent(_energiaSelecionada('iaEnergiaSel', 'ia')) + '&lang=' + getLang();
 }
-function pagarImovel(){var n=document.getElementById('imovelNumero').value.trim();if(!n){alert(t_preencha());return;}location.href='/criar-checkout?produto=imovel&dado='+encodeURIComponent(n)+'&lang='+getLang();}
-// ===== CALENDÁRIO MENSAL — leitura por IDs (visível primeiro) =====
-function _calPegaVisivel(ids){
-  // O modal genérico pode clonar o formulário: duas cópias com o mesmo id.
-  // Prioriza a cópia VISÍVEL; a oculta original (vazia) não pode vencer.
+
+// ===== NÚMERO DO IMÓVEL — 3 campos, validação silenciosa (sem alert) =====
+function _imovelPegaVisivel(ids){
   for (var j = 0; j < ids.length; j++){
     var todos = document.querySelectorAll('[id="' + ids[j] + '"]');
     for (var i = 0; i < todos.length; i++){
@@ -76,6 +74,28 @@ function _calPegaVisivel(ids){
   }
   return null;
 }
+
+function pagarImovel(){
+  var n   = _imovelPegaVisivel(['imovelNumero']),
+      ap  = _imovelPegaVisivel(['imovelApto']),
+      sal = _imovelPegaVisivel(['imovelSala']),
+      aviso = _imovelPegaVisivel(['imovelAviso']);
+  var vn   = n   ? n.value.trim()   : '';
+  var vap  = ap  ? ap.value.trim()  : '';
+  var vsal = sal ? sal.value.trim() : '';
+  // PDF liberado com 1 dado só (casa sozinha é suficiente)
+  if (!vn && !vap && !vsal){
+    if (aviso) aviso.style.display = 'block';
+    return;
+  }
+  if (aviso) aviso.style.display = 'none';
+  location.href = '/criar-checkout?produto=imovel'
+    + '&dado='  + encodeURIComponent(vn)
+    + '&dado2=' + encodeURIComponent(vap)
+    + '&dado3=' + encodeURIComponent(vsal)
+    + '&lang='  + getLang();
+}
+
 function _calMesNum(v){
   v = String(v || '').trim();
   if (/^\d{1,2}$/.test(v)) return parseInt(v, 10);
