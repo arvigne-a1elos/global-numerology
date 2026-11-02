@@ -348,18 +348,21 @@ def pdf_eleitoral(ss, cl, sugestoes, ne=None, lang="pt"):
     return path
 
 # ═══════════════════════════════════════════
-# PRODUTOS GENÉRICOS (19 produtos, traduzido + conteúdo do livro)
+# PRODUTOS GENÉRICOS (24 produtos, traduzido + conteúdo do livro)
 # ═══════════════════════════════════════════
 def pdf_produto(produto, dados, nome, bd_str, lang, dado=""):
+    T = PDF_TEXTS.get(lang, PDF_TEXTS["pt"])
+    path = os.path.join(TMP, f"p_{uuid.uuid4().hex[:8]}.pdf")   # ← DEVE vir antes de qualquer uso
+    doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
+                            topMargin=45, bottomMargin=45)
     global FONTE, FN
     _fontes_antigas = (FONTE, FN)
-    _fontes_cjk = {"ja": "HeiseiMin-W3", "zh": "STSong-Light"}
     if lang in ("ja", "zh"):
         try:
             from reportlab.pdfbase import pdfmetrics as _pm
             from reportlab.pdfbase.cidfonts import UnicodeCIDFont
-            _pm.registerFont(UnicodeCIDFont(_fontes_cjk[lang]))
-            FONTE = FN = _fontes_cjk[lang]
+            _pm.registerFont(UnicodeCIDFont("HeiseiMin-W3" if lang == "ja" else "STSong-Light"))
+            FONTE = FN = "HeiseiMin-W3" if lang == "ja" else "STSong-Light"
         except Exception:
             pass
     else:
@@ -376,21 +379,7 @@ def pdf_produto(produto, dados, nome, bd_str, lang, dado=""):
             pass
     FONTE, FN = _fontes_antigas
     return path
-    T = PDF_TEXTS.get(lang, PDF_TEXTS["pt"])
-    path = os.path.join(TMP, f"p_{uuid.uuid4().hex[:8]}.pdf")
-    doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
-                            topMargin=45, bottomMargin=45)
-    titulo = PRODUTOS.get(lang, PRODUTOS["pt"]).get(produto, produto).upper()
-    e = []
-    e.append(Spacer(1, 20))
-    e.append(Paragraph(titulo, _estilo("T", FN, 24, GOLD, TA_CENTER, sa=ET)))
-    e.append(Paragraph(t("seu_perfil", lang), _estilo("S", FONTE, 14, GOLD, TA_CENTER, sa=4)))
-    e.append(Paragraph(nome.upper(), _estilo("N", FN, 14, DARK, TA_CENTER, sa=4)))
-    e.append(Paragraph(bd_str, _estilo("D", FONTE, 10, GRAY, TA_CENTER, sa=LINHA)))
-    if dado:
-        e.append(Paragraph(f"<b>{dado}</b>", _estilo("J", FONTE, 11, DARK, TA_CENTER, sa=LINHA)))
-    e.append(Paragraph(BOAS_VINDAS.get(lang, BOAS_VINDAS["pt"]),
-                       _estilo("BV", FONTE, 10, DARK, TA_JUSTIFY, sa=LINHA)))
+
     # ===== SEÇÃO ESPECÍFICA DO PRODUTO (cálculo próprio) =====
     # Ativada quando o pay_success usou analisar_imovel/calendario/casal/
     # familia/nome. Cada produto renderiza os campos que a função devolveu.
