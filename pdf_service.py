@@ -351,6 +351,29 @@ def pdf_eleitoral(ss, cl, sugestoes, ne=None, lang="pt"):
 # PRODUTOS GENÉRICOS (19 produtos, traduzido + conteúdo do livro)
 # ═══════════════════════════════════════════
 def pdf_produto(produto, dados, nome, bd_str, lang, dado=""):
+    global FONTE, FN
+    _fontes_antigas = (FONTE, FN)
+    _fontes_cjk = {"ja": "HeiseiMin-W3", "zh": "STSong-Light"}
+    if lang in ("ja", "zh"):
+        try:
+            from reportlab.pdfbase import pdfmetrics as _pm
+            from reportlab.pdfbase.cidfonts import UnicodeCIDFont
+            _pm.registerFont(UnicodeCIDFont(_fontes_cjk[lang]))
+            FONTE = FN = _fontes_cjk[lang]
+        except Exception:
+            pass
+    else:
+        try:
+            from reportlab.pdfbase import pdfmetrics as _pm
+            from reportlab.pdfbase.ttfonts import TTFont
+            for _p in ("static/fonts/DejaVuSans.ttf", "fonts/DejaVuSans.ttf",
+                       "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"):
+                if os.path.exists(_p):
+                    _pm.registerFont(TTFont("DejaVuGen", _p))
+                    FONTE = FN = "DejaVuGen"
+                    break
+        except Exception:
+            pass
     FONTE, FN = _fontes_antigas
     return path
     T = PDF_TEXTS.get(lang, PDF_TEXTS["pt"])
