@@ -158,7 +158,7 @@ SUGESTOES_TRAD = {
            9: "المكان المناسب لـ: القضايا الاجتماعية والمنظمات غير الحكومية والإيواء — طاقة التعاطف والإتمام."},
 }
 
-# ===== DICA DE HARMONIZAÇÃO (14 idiomas) =====
+# Dica traduzida por idioma (14)
 DICAS_HARMONIZACAO = {
     "pt": "💡 Dica: a energia do imóvel é fixa, mas cada ambiente pode ter a sua. Numere ou dê nome às salas e portas — cada palavra ou número vibra em uma energia que se soma à do local. Nossas ferramentas de nomenclatura (Nome para Negócio/Produto) indicam a melhor designação para cada cômodo.",
     "en": "💡 Tip: the energy of the property is fixed, but each room can have its own. Number or name the rooms and doors — every word or number carries an energy that adds to the place. Our naming tools (Business/Product Name) indicate the best designation for each room.",
