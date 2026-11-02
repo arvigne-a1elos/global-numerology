@@ -1322,7 +1322,7 @@ def regenerar_pdf_por_meta(meta):
         return analisar_familia(dado or nome)
 
     CALC_ESPECIFICO = {
-        "imovel":    lambda: analisar_imovel(dado, dado2, dado3),
+        "imovel": lambda: analisar_imovel(dado, dado2, dado3, lang),
         "casal":     lambda: _analisar_casal_com_datas(),
         "familia":   lambda: _analisar_familia_com_datas(),
         "compatibilidade_equipes": lambda: analisar_equipe(dado or nome),
