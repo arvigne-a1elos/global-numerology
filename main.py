@@ -9,6 +9,7 @@ from produtos.calendario import analisar_calendario
 # Blindagem: um import faltando não pode derrubar o site inteiro
 try:
     from pdf_service import gerar_pdf_calendario
+    from gerador_pdf import gerar_pdf
 except ImportError:
     def gerar_pdf_calendario(*args, **kwargs):
         logger.error("gerar_pdf_calendario indisponivel em pdf_service; calendario nao gerado, site permanece no ar.")
