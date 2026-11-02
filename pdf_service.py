@@ -524,6 +524,13 @@ def pdf_produto(produto, dados, nome, bd_str, lang, dado=""):
             f"<b>{L['numero']}:</b> {dados.get('numero', '')}",
             f"<b>{L['soma']}:</b> {dados.get('soma', '')} — <b>{L['energia']}:</b> {dados.get('energia', '')}",
         ]
+        # Número do Imóvel — sugestão única + dica traduzida
+        if dados.get("sugestao"):
+            _espec.append(
+                f"<br/><font color='#8a6d1f'><b>{dados.get('sugestao', '')}</b></font>")
+        if dados.get("dica"):
+            _espec.append(
+                f"<br/>{dados.get('dica', '')}")
     elif "match" in dados or "energia_desejada" in dados:
         _espec = [
             f"<b>{dados.get('nome', nome)}</b> — {L['soma']} {dados.get('soma', '')} — {L['energia']} {dados.get('energia', '')}",
