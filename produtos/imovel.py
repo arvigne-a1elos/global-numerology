@@ -64,7 +64,7 @@ def analisar_imovel(dado, dado2="", dado3="", lang="pt"):
         "partes": partes,
         "soma": sum(partes),
         "energia": total,
-        "sugestao": SUGESTAO_UNICA.get(total, ""),
+        "sugestao": SUGESTOES_TRAD.get(lang, SUGESTOES_TRAD["pt"]).get(total, SUGESTOES_TRAD["pt"].get(total, "")),
         "dica": DICAS_HARMONIZACAO.get(lang, DICAS_HARMONIZACAO["pt"]),
         "ok": True,
     }
