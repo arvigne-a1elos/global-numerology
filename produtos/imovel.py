@@ -42,6 +42,30 @@ def analisar_imovel(dado, dado2="", dado3=""):
     return {
         "numero": " + ".join(str(x) for x in [dado, dado2, dado3] if str(x).strip()),
         "partes": partes,
+
+# produtos/imovel.py — sugestão única por energia + dica traduzida
+SUGESTAO_UNICA = {
+    1: "Lugar ideal para: empreendimentos e escritórios de negócios — energia de iniciativa e novos começos.",
+    2: "Lugar ideal para: famílias, casais e ambientes de cuidado — energia de cooperação e paz.",
+    3: "Lugar ideal para: agências, estúdios e espaços sociais — energia de criatividade e comunicação.",
+    4: "Lugar ideal para: clínicas, escritórios e projetos de longo prazo — energia de estabilidade e trabalho.",
+    5: "Lugar ideal para: comércio, viagens e transformações — energia de movimento e liberdade.",
+    6: "Lugar ideal para: lares, escolas e serviços de saúde — energia de família e responsabilidade.",
+    7: "Lugar ideal para: consultórios, bibliotecas e retiros — energia de estudo e espiritualidade.",
+    8: "Lugar ideal para: empresas, bancos e finanças — energia de poder material e realização.",
+    9: "Lugar ideal para: causas sociais, ONGs e acolhimento — energia de compaixão e conclusões.",
+}
+
+# Dica traduzida por idioma (14): mesma estrutura dos textos do calendário
+DICAS_HARMONIZACAO = {
+    "pt": "💡 Dica: a energia do imóvel é fixa, mas cada ambiente pode ter a sua. Numere ou dê nome às salas e portas — cada palavra ou número vibra em uma energia que se soma à do local. Nossas ferramentas de nomenclatura (Nome para Negócio/Produto) indicam a melhor designação para cada cômodo.",
+    "en": "💡 Tip: the energy of the property is fixed, but each room can have its own. Number or name the rooms and doors — every word or number carries an energy that adds to the place. Our naming tools (Business/Product Name) indicate the best designation for each room.",
+    # ... es, it, fr, de, ja, zh, ru, he, ar, id, tr, vi
+}
+
+# dentro do analisar_imovel, após calcular 'total':
+    res["sugestao"] = SUGESTAO_UNICA.get(total, "")
+    res["dica"] = DICAS_HARMONIZACAO.get(lang, DICAS_HARMONIZACAO["pt"])        
         "soma": sum(partes),
         "energia": total,
         "ok": True,
