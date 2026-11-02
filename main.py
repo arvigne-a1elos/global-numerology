@@ -1295,6 +1295,7 @@ def regenerar_pdf_por_meta(meta):
     lang = meta.get("lang", "pt")
     dado = meta.get("dado", "")
     dado2 = meta.get("dado2", "")
+    dado3 = meta.get("dado3", "")
     if not bd:
         bd = "2000-01-01"
     energia = meta.get("energia", "")
@@ -1320,7 +1321,7 @@ def regenerar_pdf_por_meta(meta):
         return analisar_familia(dado or nome)
 
     CALC_ESPECIFICO = {
-        "imovel":    lambda: analisar_imovel(dado or nome),
+        "imovel":    lambda: analisar_imovel(dado, dado2, dado3),
         "casal":     lambda: _analisar_casal_com_datas(),
         "familia":   lambda: _analisar_familia_com_datas(),
         "compatibilidade_equipes": lambda: analisar_equipe(dado or nome),
@@ -1477,7 +1478,7 @@ async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
                                 sigla1: str = "", sigla2: str = "", sigla3: str = "",
                                 natureza: str = "ong", tipo_entidade: str = "",
                                 escopo: str = "nacional",
-                                energia: str = "", dado: str = "", dado2: str = "",
+                                energia: str = "", dado: str = "", dado2: str = "", dado3: str = "",
                                 tipo: str = "", numero_existente: str = "",
                                 area: str = "", detalhe: str = ""):
     if not stripe.api_key:
@@ -1503,7 +1504,7 @@ async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
                 "natureza": natureza, "tipo_entidade": tipo_entidade,
                 "escopo": escopo}
     else:
-        meta = {"energia": energia, "dado": dado, "dado2": dado2, "tipo": tipo,
+        meta = {"energia": energia, "dado": dado, "dado2": dado2, "dado3": dado3, "tipo": tipo,
                 "area": area, "detalhe": detalhe}
     meta["tipo"] = meta.get("tipo") or produto
     meta["nome"] = meta.get("nome") or nome
