@@ -37,7 +37,7 @@ def _campo(item, chave=None, idx=None, default=""):
     return default
 
 def _fonte(lang, bold=False):
-    base = FONTE_POR_IDIOMA.get(lang) or fonte_para(lang)[0]
+    base = fonte_para(lang)[0]   # fonte_para já tem fallback para todos os 14 idiomas
     if base == "Helvetica":
         return "Helvetica-Bold" if bold else "Helvetica"
     return base
