@@ -378,9 +378,7 @@ def pdf_produto(produto, dados, nome, bd_str, lang, dado=""):
                     break
         except Exception:
             pass
-    FONTE, FN = _fontes_antigas
-    return path
-   
+      
     titulo = PRODUTOS.get(lang, PRODUTOS["pt"]).get(produto, produto).upper()
     e = []
     e.append(Spacer(1, 20))
@@ -392,6 +390,7 @@ def pdf_produto(produto, dados, nome, bd_str, lang, dado=""):
         e.append(Paragraph(f"<b>{dado}</b>", _estilo("J", FONTE, 11, DARK, TA_CENTER, sa=LINHA)))
     e.append(Paragraph(BOAS_VINDAS.get(lang, BOAS_VINDAS["pt"]),
                        _estilo("BV", FONTE, 10, DARK, TA_JUSTIFY, sa=LINHA)))
+    
     # ===== SEÇÃO ESPECÍFICA DO PRODUTO (cálculo próprio) =====
     # Ativada quando o pay_success usou analisar_imovel/calendario/casal/
     # familia/nome. Cada produto renderiza os campos que a função devolveu.
@@ -573,6 +572,7 @@ def pdf_produto(produto, dados, nome, bd_str, lang, dado=""):
         e.append(Paragraph("© A1ELOS Assessoria e Consultoria",
                            _estilo("F", FONTE, 8, GRAY, TA_CENTER)))
         doc.build(e, onFirstPage=_cabecalho_pagina, onLaterPages=_cabecalho_pagina)
+        FONTE, FN = _fontes_antigas
         return path    
     chaves = [("life_path", "caminho_vida"), ("expression", "expressao"),
               ("soul_urge", "motivacao"), ("personality", "personalidade"),
@@ -629,6 +629,7 @@ def pdf_produto(produto, dados, nome, bd_str, lang, dado=""):
     e.append(Paragraph("© A1ELOS Assessoria e Consultoria",
                        _estilo("F", FONTE, 8, GRAY, TA_CENTER)))
     doc.build(e, onFirstPage=_cabecalho_pagina, onLaterPages=_cabecalho_pagina)
+    FONTE, FN = _fontes_antigas
     return path
 
 # -*- coding: utf-8 -*-
