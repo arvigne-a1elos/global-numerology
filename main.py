@@ -1136,7 +1136,7 @@ async def criar_checkout_coletivo(lang: str = "pt", items: str = "[]"):
         locale=locale,
         metadata={"tipo": "coletivo", "lang": lang, "desconto": str(int(desc * 100)),
                   "itens": json.dumps(itens)},
-        success_url=BASE_URL + "/static/sucesso.html?session_id={CHECKOUT_SESSION_ID}",
+        success_url=BASE_URL + "/static/sucesso.html?session_id={CHECKOUT_SESSION_ID}&lang=" + lang,
         cancel_url=BASE_URL + "/static/cancelado.html")
     return RedirectResponse(url=session.url)
 
