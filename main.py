@@ -764,6 +764,38 @@ NOTA_SIGILO = {
 }
 RTL = {'he', 'ar'}
 
+# ===== Tradução da página de confirmação (14 idiomas) =====
+PAG_SUCESSO_TRAD = {
+    "pt": {"titulo": "✅ Confirmado!", "ola": "Olá", "gerado": "foi gerado.",
+           "btn": "📥 BAIXAR PDF", "voltar": "Voltar"},
+    "en": {"titulo": "✅ Confirmed!", "ola": "Hello", "gerado": "has been generated.",
+           "btn": "📥 DOWNLOAD PDF", "voltar": "Back"},
+    "es": {"titulo": "✅ ¡Confirmado!", "ola": "Hola", "gerado": "fue generado.",
+           "btn": "📥 DESCARGAR PDF", "voltar": "Volver"},
+    "it": {"titulo": "✅ Confermato!", "ola": "Ciao", "gerado": "è stato generato.",
+           "btn": "📥 SCARICA PDF", "voltar": "Indietro"},
+    "fr": {"titulo": "✅ Confirmé !", "ola": "Bonjour", "gerado": "a été généré.",
+           "btn": "📥 TÉLÉCHARGER PDF", "voltar": "Retour"},
+    "de": {"titulo": "✅ Bestätigt!", "ola": "Hallo", "gerado": "wurde erstellt.",
+           "btn": "📥 PDF HERUNTERLADEN", "voltar": "Zurück"},
+    "ja": {"titulo": "✅ 確認されました！", "ola": "", "gerado": "が生成されました。",
+           "btn": "📥 PDFをダウンロード", "voltar": "戻る"},
+    "zh": {"titulo": "✅ 已确认！", "ola": "您好", "gerado": "已生成。",
+           "btn": "📥 下载PDF", "voltar": "返回"},
+    "ru": {"titulo": "✅ Подтверждено!", "ola": "Здравствуйте", "gerado": "сгенерирован.",
+           "btn": "📥 СКАЧАТЬ PDF", "voltar": "Назад"},
+    "id": {"titulo": "✅ Dikonfirmasi!", "ola": "Halo", "gerado": "telah dibuat.",
+           "btn": "📥 UNDUH PDF", "voltar": "Kembali"},
+    "tr": {"titulo": "✅ Onaylandı!", "ola": "Merhaba", "gerado": "oluşturuldu.",
+           "btn": "📥 PDF İNDİR", "voltar": "Geri"},
+    "vi": {"titulo": "✅ Đã xác nhận!", "ola": "Xin chào", "gerado": "đã được tạo.",
+           "btn": "📥 TẢI PDF", "voltar": "Quay lại"},
+    "he": {"titulo": "✅ אושר!", "ola": "שלום", "gerado": "הופק.",
+           "btn": "📥 הורד PDF", "voltar": "חזרה"},
+    "ar": {"titulo": "✅ تم التأكيد!", "ola": "مرحباً", "gerado": "تم إنشاؤه.",
+           "btn": "📥 تحميل PDF", "voltar": "رجوع"},
+}
+
 def _pagina_sucesso_local(pdf_path, nome, prod_nome, lang="pt", nome_arq=""):
     b64 = ""
     if pdf_path and os.path.exists(pdf_path):
