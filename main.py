@@ -767,33 +767,47 @@ RTL = {'he', 'ar'}
 # ===== Tradução da página de confirmação (14 idiomas) =====
 PAG_SUCESSO_TRAD = {
     "pt": {"titulo": "✅ Confirmado!", "ola": "Olá", "gerado": "foi gerado.",
-           "btn": "📥 BAIXAR PDF", "voltar": "Voltar"},
+           "btn": "📥 BAIXAR PDF", "voltar": "Voltar",
+           "escaneie": "Ou escaneie (ou clique) para abrir o documento", "baixar2": "⬇️ Baixar PDF"},
     "en": {"titulo": "✅ Confirmed!", "ola": "Hello", "gerado": "has been generated.",
-           "btn": "📥 DOWNLOAD PDF", "voltar": "Back"},
+           "btn": "📥 DOWNLOAD PDF", "voltar": "Back",
+           "escaneie": "Or scan (or click) to open the document", "baixar2": "⬇️ Download PDF"},
     "es": {"titulo": "✅ ¡Confirmado!", "ola": "Hola", "gerado": "fue generado.",
-           "btn": "📥 DESCARGAR PDF", "voltar": "Volver"},
+           "btn": "📥 DESCARGAR PDF", "voltar": "Volver",
+           "escaneie": "O escanee (o haga clic) para abrir el documento", "baixar2": "⬇️ Descargar PDF"},
     "it": {"titulo": "✅ Confermato!", "ola": "Ciao", "gerado": "è stato generato.",
-           "btn": "📥 SCARICA PDF", "voltar": "Indietro"},
+           "btn": "📥 SCARICA PDF", "voltar": "Indietro",
+           "escaneie": "Oppure scansiona (o clicca) per aprire il documento", "baixar2": "⬇️ Scarica PDF"},
     "fr": {"titulo": "✅ Confirmé !", "ola": "Bonjour", "gerado": "a été généré.",
-           "btn": "📥 TÉLÉCHARGER PDF", "voltar": "Retour"},
+           "btn": "📥 TÉLÉCHARGER PDF", "voltar": "Retour", 
+           "escaneie": "Ou scannez (ou cliquez) pour ouvrir le document", "baixar2": "⬇️ Télécharger PDF"},
     "de": {"titulo": "✅ Bestätigt!", "ola": "Hallo", "gerado": "wurde erstellt.",
-           "btn": "📥 PDF HERUNTERLADEN", "voltar": "Zurück"},
+           "btn": "📥 PDF HERUNTERLADEN", "voltar": "Zurück",
+           "escaneie": "Oder scannen (oder klicken), um das Dokument zu öffnen", "baixar2": "⬇️ PDF herunterladen"},
     "ja": {"titulo": "✅ 確認されました！", "ola": "", "gerado": "が生成されました。",
-           "btn": "📥 PDFをダウンロード", "voltar": "戻る"},
+           "btn": "📥 PDFをダウンロード", "voltar": "戻る",
+           "escaneie": "スキャンまたはクリックでドキュメントを開く", "baixar2": "⬇️ PDFをダウンロード"},
     "zh": {"titulo": "✅ 已确认！", "ola": "您好", "gerado": "已生成。",
-           "btn": "📥 下载PDF", "voltar": "返回"},
+           "btn": "📥 下载PDF", "voltar": "返回",
+           "escaneie": "或扫描（或点击）以打开文档", "baixar2": "⬇️ 下载PDF"},
     "ru": {"titulo": "✅ Подтверждено!", "ola": "Здравствуйте", "gerado": "сгенерирован.",
-           "btn": "📥 СКАЧАТЬ PDF", "voltar": "Назад"},
+           "btn": "📥 СКАЧАТЬ PDF", "voltar": "Назад",
+           "escaneie": "Или отсканируйте (или нажмите), чтобы открыть документ", "baixar2": "⬇️ Скачать PDF"},
     "id": {"titulo": "✅ Dikonfirmasi!", "ola": "Halo", "gerado": "telah dibuat.",
-           "btn": "📥 UNDUH PDF", "voltar": "Kembali"},
+           "btn": "📥 UNDUH PDF", "voltar": "Kembali",
+           "escaneie": "Atau pindai (atau klik) untuk membuka dokumen", "baixar2": "⬇️ Unduh PDF"},
     "tr": {"titulo": "✅ Onaylandı!", "ola": "Merhaba", "gerado": "oluşturuldu.",
-           "btn": "📥 PDF İNDİR", "voltar": "Geri"},
+           "btn": "📥 PDF İNDİR", "voltar": "Geri",
+           "escaneie": "Belgeyi açmak için tarayın (veya tıklayın)", "baixar2": "⬇️ PDF İndir"},
     "vi": {"titulo": "✅ Đã xác nhận!", "ola": "Xin chào", "gerado": "đã được tạo.",
-           "btn": "📥 TẢI PDF", "voltar": "Quay lại"},
+           "btn": "📥 TẢI PDF", "voltar": "Quay lại",
+           "escaneie": "Hoặc quét (hoặc nhấp) để mở tài liệu", "baixar2": "⬇️ Tải PDF"},
     "he": {"titulo": "✅ אושר!", "ola": "שלום", "gerado": "הופק.",
-           "btn": "📥 הורד PDF", "voltar": "חזרה"},
+           "btn": "📥 הורד PDF", "voltar": "חזרה",
+           "escaneie": "או סרוק (או לחץ) לפתיחת המסמך", "baixar2": "⬇️ הורד PDF"},
     "ar": {"titulo": "✅ تم التأكيد!", "ola": "مرحباً", "gerado": "تم إنشاؤه.",
-           "btn": "📥 تحميل PDF", "voltar": "رجوع"},
+           "btn": "📥 تحميل PDF", "voltar": "رجوع",
+           "escaneie": "أو امسح (أو انقر) لفتح المستند", "baixar2": "⬇️ تحميل PDF"},
 }
 
 def _pagina_sucesso_local(pdf_path, nome, prod_nome, lang="pt", nome_arq=""):
@@ -1281,6 +1295,7 @@ def pay_success(request: Request):
 
         # Injeta o QRCode junto do botão de download (fallback silencioso)
         if qr_b64:
+            T2 = PAG_SUCESSO_TRAD.get(lang, PAG_SUCESSO_TRAD["pt"])
             aviso_qr = (
                 '<p style="color:#C9A94E;font-size:0.85rem;max-width:320px;'
                 'margin:8px auto;line-height:1.5">'
@@ -1302,8 +1317,8 @@ def pay_success(request: Request):
             )
             bloco_qr = (
                 '<div style="margin:25px auto;text-align:center">'
-                '<p style="color:#C9A94E;font-size:1rem">Ou escaneie (ou clique) para abrir o documento</p>'
-                f'<a class="btn" href="{url_rel}?download=1">⬇️ Baixar PDF</a>'
+                f'<p style="color:#C9A94E;font-size:1rem">{T2["escaneie"]}</p>'
+                f'<a class="btn" href="{url_rel}?download=1">{T2["baixar2"]}</a>'
                 '<br>'
                 f'<img src="data:image/png;base64,{qr_b64}" alt="QR Code do relatorio" '
                 'style="width:220px;height:220px;border-radius:8px;margin-top:12px">'
