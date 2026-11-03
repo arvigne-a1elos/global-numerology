@@ -798,6 +798,7 @@ PAG_SUCESSO_TRAD = {
 
 def _pagina_sucesso_local(pdf_path, nome, prod_nome, lang="pt", nome_arq=""):
     b64 = ""
+    T2 = PAG_SUCESSO_TRAD.get(lang, PAG_SUCESSO_TRAD["pt"])
     if pdf_path and os.path.exists(pdf_path):
         with open(pdf_path, "rb") as f:
             b64 = base64.b64encode(f.read()).decode()
@@ -805,7 +806,7 @@ def _pagina_sucesso_local(pdf_path, nome, prod_nome, lang="pt", nome_arq=""):
     if b64:
         btn = (f'<a href="data:application/pdf;base64,{b64}" download="A1ELOS_{prod_nome}.pdf" '
                f'style="display:inline-block;padding:18px 50px;background:#C9A94E;color:#000;'
-               f'text-decoration:none;border-radius:50px;font-weight:700;font-size:1.2rem;margin:25px 0">📥 BAIXAR PDF</a>')
+               f'text-decoration:none;border-radius:50px;font-weight:700;font-size:1.2rem;margin:25px 0">{T2["btn"]}</a>')
     t, txt = NOTA_SIGILO.get(lang, NOTA_SIGILO["pt"])
     dir_attr = ' dir="rtl"' if lang in RTL else ''
     nota = (f'<div style="max-width:560px;margin:38px auto 0;padding:20px 24px;'
@@ -822,10 +823,12 @@ def _pagina_sucesso_local(pdf_path, nome, prod_nome, lang="pt", nome_arq=""):
             'new Blob([JSON.stringify({arq:"' + nome_arq + '"}),'
             '{type:"application/json"}]))});</script>'
         )
+    saudacao = f'{T2["ola"]} <b>{nome}</b>, seu {prod_nome} {T2["gerado"]}' if T2["ola"] \
+               else f'<b>{nome}</b>様の{prod_nome}{T2["gerado"]}'
     return (f'<html><body style="background:#0a0a0a;color:#fff;text-align:center;padding:40px;'
-            f'font-family:sans-serif"><h1 style="color:#C9A94E">✅ Confirmado!</h1>'
-            f'<p>Ola <b>{nome}</b>, seu {prod_nome} foi gerado.</p>{btn}{nota}{beacon}'
-            f'<a href="/" style="color:#C9A94E">Voltar</a></body></html>')
+            f'font-family:sans-serif"><h1 style="color:#C9A94E">{T2["titulo"]}</h1>'
+            f'<p>{saudacao}</p>{btn}{nota}{beacon}'
+            f'<a href="/" style="color:#C9A94E">{T2["voltar"]}</a></body></html>')
 
 pagina_sucesso = _pagina_sucesso_local
 
