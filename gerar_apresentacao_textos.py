@@ -17,7 +17,6 @@ registrar_tudo()
 STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
 IDIOMAS = ["pt", "en", "es", "it", "fr", "de", "ja", "zh",
            "ru", "he", "ar", "id", "tr", "vi"]
-base = fonte_para(lang)[0]
 
 COR_AZUL = colors.HexColor("#1a3a6b")
 COR_DOURADO = colors.HexColor("#B8860B")
