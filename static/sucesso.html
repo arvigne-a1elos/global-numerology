@@ -13,16 +13,38 @@
     </style>
 </head>
 <body>
-    <h1>✅ Pagamento Confirmado!</h1>
-    <p>Seu mapa numerológico está sendo gerado e enviado para seu email.</p>
-    <p>O PDF também aparecerá aqui em instantes.</p>
-    <a class="btn" href="/">← VOLTAR AO SITE</a>
+    <h1 id="t1">✅</h1>
+    <p id="t2"></p>
+    <p id="t3"></p>
+    <a class="btn" href="/" id="t4">←</a>
     <br>
-    <a class="voltar" href="/">Início</a>
+    <a class="voltar" href="/" id="t5"></a>
     <script>
-        // Busca o PDF gerado pelo backend na rota de sucesso
-        const params = new URLSearchParams(window.location.search);
-        const sid = params.get('session_id');
+        // ===== Textos da página de confirmação (14 idiomas) =====
+        const SUCESSO_TRAD = {
+            pt: {t1:"✅ Pagamento Confirmado!", t2:"Seu mapa numerológico está sendo gerado e enviado para seu email.", t3:"O PDF também aparecerá aqui em instantes.", t4:"← VOLTAR AO SITE", t5:"Início"},
+            en: {t1:"✅ Payment Confirmed!", t2:"Your numerological map is being generated and sent to your email.", t3:"The PDF will also appear here in a moment.", t4:"← BACK TO SITE", t5:"Home"},
+            es: {t1:"✅ ¡Pago Confirmado!", t2:"Su mapa numerológico está siendo generado y enviado a su email.", t3:"El PDF también aparecerá aquí en unos instantes.", t4:"← VOLVER AL SITIO", t5:"Inicio"},
+            it: {t1:"✅ Pagamento Confermato!", t2:"La sua mappa numerologica è in fase di generazione e invio via email.", t3:"Il PDF apparirà qui tra pochi istanti.", t4:"← TORNA AL SITO", t5:"Inizio"},
+            fr: {t1:"✅ Paiement Confirmé !", t2:"Votre carte numérologique est en cours de génération et d'envoi par email.", t3:"Le PDF apparaîtra également ici dans quelques instants.", t4:"← RETOUR AU SITE", t5:"Accueil"},
+            de: {t1:"✅ Zahlung Bestätigt!", t2:"Ihre numerologische Karte wird erstellt und per E-Mail gesendet.", t3:"Das PDF erscheint in Kürze ebenfalls hier.", t4:"← ZURÜCK ZUR SEITE", t5:"Start"},
+            ja: {t1:"✅ お支払いが確認されました！", t2:"あなたの数秘術マップを生成し、メールに送信しています。", t3:"PDFもまもなくここに表示されます。", t4:"← サイトに戻る", t5:"ホーム"},
+            zh: {t1:"✅ 付款已确认！", t2:"您的命理地图正在生成并发送到您的邮箱。", t3:"PDF稍后也会在此显示。", t4:"← 返回网站", t5:"首页"},
+            ru: {t1:"✅ Платёж Подтверждён!", t2:"Ваша нумерологическая карта генерируется и отправляется на вашу почту.", t3:"PDF также появится здесь через несколько секунд.", t4:"← НАЗАД НА САЙТ", t5:"Главная"},
+            id: {t1:"✅ Pembayaran Dikonfirmasi!", t2:"Peta numerologi Anda sedang dibuat dan dikirim ke email Anda.", t3:"PDF juga akan muncul di sini sebentar lagi.", t4:"← KEMBALI KE SITUS", t5:"Beranda"},
+            tr: {t1:"✅ Ödeme Onaylandı!", t2:"Numeroloji haritanız oluşturulup e-postanıza gönderiliyor.", t3:"PDF de birazdan burada görünecek.", t4:"← SİTEYE DÖN", t5:"Ana Sayfa"},
+            vi: {t1:"✅ Đã Xác Nhận Thanh Toán!", t2:"Bản đồ số học của bạn đang được tạo và gửi tới email của bạn.", t3:"PDF cũng sẽ xuất hiện tại đây ngay sau đây.", t4:"← QUAY LẠI TRANG", t5:"Trang chủ"},
+            he: {t1:"✅ התשלום אושר!", t2:"המפה הנומרולוגית שלך נוצרת ונשלחת לאימייל שלך.", t3:"ה-PDF יופיע כאן בעוד רגע.", t4:"← חזרה לאתר", t5:"דף הבית"},
+            ar: {t1:"✅ تم تأكيد الدفع!", t2:"يتم الآن إنشاء خريطتك العددية وإرسالها إلى بريدك الإلكتروني.", t3:"سيظهر ملف PDF هنا أيضًا بعد لحظات.", t4:"← العودة إلى الموقع", t5:"الرئيسية"}
+        };
+        // Detecta idioma: ?lang= da URL → navegador → pt
+        const _p = new URLSearchParams(window.location.search);
+        const lang = _p.get('lang') || (navigator.language || 'pt').slice(0,2);
+        const T = SUCESSO_TRAD[lang] || SUCESSO_TRAD['pt'];
+        document.title = T.t1.replace('✅ ', '') + ' | A1ELOS';
+        ['t1','t2','t3','t4','t5'].forEach(id => { document.getElementById(id).textContent = T[id]; });
+        // Redireciona para geração/download do PDF
+        const sid = _p.get('session_id');
         if (sid) {
             window.location.href = '/api/pay/success?session_id=' + sid;
         }
