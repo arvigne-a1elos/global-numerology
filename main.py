@@ -1206,7 +1206,7 @@ def pay_success(request: Request):
         lang = meta.get("lang", "pt")
         dado = meta.get("dado", "")
         dado2 = meta.get("dado2", "")
-        nome_exib = nome if prod == "calendario" else (dado or nome)          
+        nome_exib = nome if prod == "calendario" else (nome or dado or "Cliente")          
         if not bd:
             bd = "2000-01-01"
 
@@ -1481,7 +1481,7 @@ async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
                                 escopo: str = "nacional",
                                 energia: str = "", dado: str = "", dado2: str = "", dado3: str = "",
                                 tipo: str = "", numero_existente: str = "",
-                                area: str = "", detalhe: str = ""):
+                                area: str = "", detalhe: str = "", apelido: str = ""):    
     if not stripe.api_key:
         raise HTTPException(503, "Stripe nao configurado")
     if produto == "coletivo":
@@ -1507,6 +1507,8 @@ async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
     else:
         meta = {"energia": energia, "dado": dado, "dado2": dado2, "dado3": dado3, "tipo": tipo,
                 "area": area, "detalhe": detalhe}
+        if apelido:
+            meta["nome"] = apelido          # apelido vira o nome de exibição
     meta["tipo"] = meta.get("tipo") or produto
     meta["nome"] = meta.get("nome") or nome
     meta["nascimento"] = meta.get("nascimento") or nascimento
