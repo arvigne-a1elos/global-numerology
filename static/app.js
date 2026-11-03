@@ -77,14 +77,14 @@ function _imovelPegaVisivel(ids){
 
 function pagarImovel(){
   var n   = _imovelPegaVisivel(['imovelNumero']),
-  var ne = _imovelPegaVisivel(['imovelNomeEntrega']);
+      ne  = _imovelPegaVisivel(['imovelNomeEntrega']),
       ap  = _imovelPegaVisivel(['imovelApto']),
       sal = _imovelPegaVisivel(['imovelSala']),
       aviso = _imovelPegaVisivel(['imovelAviso']);
   var vn   = n   ? n.value.trim()   : '';
   var vap  = ap  ? ap.value.trim()  : '';
   var vsal = sal ? sal.value.trim() : '';
-  var vne = ne ? ne.value.trim() : '';  
+  var vne  = ne ? ne.value.trim() : '';  
   // PDF liberado com 1 dado só (casa sozinha é suficiente)
   if (!vn && !vap && !vsal){
     if (aviso) aviso.style.display = 'block';
