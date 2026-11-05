@@ -1102,15 +1102,15 @@ IDIOMAS_APRES = ["pt", "en", "es", "it", "fr", "de", "ja", "zh",
 
 def _gerar_apresentacao(lang="pt", modo="texto"):
     try:
+        import apresentacao_textos as ap
         if modo == "slides":
-            from apresentacao_textos import gerar_pdf_slides as _gerar
+            caminho = ap.gerar_pdf_slides(lang)
         else:
-            from gerar_apresentacao_textos import gerar_pdf_texto as _gerar
-        caminho = _gerar(lang)
+            caminho = ap.gerar_pdf_texto(lang)
         if caminho and os.path.exists(caminho):
             with open(caminho, "rb") as f:
                 return f.read(), os.path.basename(caminho)
-        logger.error(f"Apresentacao {lang}/{modo}: caminho invalido ou inexistente: {caminho!r}")
+        logger.error(f"Apresentacao {lang}/{modo}: caminho invalido: {caminho!r}")
         raise HTTPException(status_code=500,
                             detail=f"Nao foi possivel gerar a apresentacao em {lang} ({modo}).")
     except HTTPException:
