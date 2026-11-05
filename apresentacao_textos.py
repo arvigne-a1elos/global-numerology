@@ -500,7 +500,9 @@ def gerar_pdf_texto(lang="pt", caminho_saida=None):
     global _RODAPE_FN
     _CTX_TEXTO["c"] = c
     _CTX_TEXTO["lang"] = lang
-    _RODAPE_FN = _rodape_texto      
+    _RODAPE_FN = _rodape_texto
+    doc.build(story, canvasmaker=CanvasComTotal)
+    return caminho_saida      
 
 # ============================================================
 # BLOCO JURÍDICO / GOVERNANÇA E COMPLIANCE (SEÇÕES 19-29)
