@@ -18,3 +18,5 @@ venv/
 # Sistema
 Thumbs.db
 desktop.ini
+numerologia.db
+*.db
