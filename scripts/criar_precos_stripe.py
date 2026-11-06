@@ -127,54 +127,26 @@ def slug(txt):
 
 def carregar_linhas(caminho):
     df = pd.read_excel(caminho, header=None)
-
-    # Localiza a linha de cabeçalho (procura a célula "produto")
-    idx_hdr = -1
-    for i in range(min(6, len(df))):
-        cels = [str(x).strip().lower() for x in df.iloc[i].tolist()]
-        if "produto" in cels:
-            idx_hdr = i
-            break
-
-    col = {"lang": 0, "produto": 1, "faixa": 2, "preco": 5, "iso": 6, "capa": 8}
-    if idx_hdr >= 0:
-        cels = [str(x).strip().lower() for x in df.iloc[idx_hdr].tolist()]
-        mapa = {"lang": ["pt", "idioma", "lang"],
-                "produto": ["produto"],
-                "faixa": ["faixa"],
-                "preco": ["preço", "preco"],
-                "iso": ["iso 4217", "iso4217", "iso"],
-                "capa": ["nome da capa", "capa"]}
-        for chave, candidatos in mapa.items():
-            for j, c in enumerate(cels):
-                if c in candidatos:
-                    col[chave] = j
-                    break
-
     linhas = []
-    for i in range(idx_hdr + 1, len(df)):
-        r = [("" if pd.isna(x) else str(x).strip()) for x in df.iloc[i].tolist()]
-        if not any(r):
+    idiomas = {"PT","EN","ES","IT","FR","DE","JA","ZH","RU","HE","AR","ID","TR","VI"}
+    lang_atual = None
+    for i in range(len(df)):
+        c0 = str(df.iat[i, 0]).strip().upper() if pd.notna(df.iat[i, 0]) else ""
+        if c0 in idiomas:
+            lang_atual = c0.lower()
             continue
-        lang = norm_idioma(r[col["lang"]]) if col["lang"] < len(r) else None
-        if not lang:
-            continue  # linha de separação ou rodapé
-        prod = norm_produto(r[col["produto"]]) if col["produto"] < len(r) else ""
-        if not prod:
+        # linha de produto: precisa de nome (col 1) e preço (col 5)
+        if lang_atual is None:
             continue
-        preco = parse_preco(r[col["preco"]]) if col["preco"] < len(r) else None
-        iso = norm_moeda(r[col["iso"]]) if col["iso"] < len(r) else ""
-        capa = r[col["capa"]] if col["capa"] < len(r) else ""
-        if not capa and len(r) > 3:
-            capa = r[3]
-        try:
-            faixa = int(float(str(r[col["faixa"]]).replace(",", "."))) if col["faixa"] < len(r) else None
-        except ValueError:
-            faixa = None
-        if prod not in PRODUTOS_CONHECIDOS:
-            print(f"Aviso: linha {i+1}, produto '{prod}' fora da lista dos 24 (seguirá mesmo assim).")
-        linhas.append({"lang": lang, "produto": prod, "faixa": faixa, "preco": preco,
-                       "iso": iso, "capa": capa, "linha": i + 1})
+        nome = str(df.iat[i, 1]).strip() if pd.notna(df.iat[i, 1]) else ""
+        faixa = str(df.iat[i, 2]).strip() if pd.notna(df.iat[i, 2]) else ""
+        cifra = str(df.iat[i, 4]).strip() if pd.notna(df.iat[i, 4]) else ""
+        preco = df.iat[i, 5] if pd.notna(df.iat[i, 5]) else None
+        if not nome or preco is None:
+            continue  # pula linhas vazias ou sem preço
+        linhas.append({"lang": lang_atual, "produto": nome, "faixa": faixa,
+                       "cifra": cifra, "preco": int(preco)})
+    print(f"Linhas lidas: {len(linhas)} (esperado: 336)")
     return linhas
 
 
