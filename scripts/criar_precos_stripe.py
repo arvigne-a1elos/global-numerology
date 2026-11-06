@@ -204,7 +204,7 @@ def conferir_ambiente(modo):
     except Exception as e:
         print(f"Aviso: não consegui confirmar o ambiente da chave ({e}). Seguindo mesmo assim.")
         return
-    if acct.livemode and modo == "teste":
+    if getattr(acct, "livemode", False) and modo == "teste":
         sys.exit("ERRO: você passou --teste mas a chave é AO VIVO. Nada foi criado.")
     if (not acct.livemode) and modo == "live":
         sys.exit("ERRO: execução AO VIVO pedida, mas a chave é de TESTE. Nada foi criado.")
