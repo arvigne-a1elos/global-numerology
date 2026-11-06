@@ -127,28 +127,48 @@ def slug(txt):
 
 def carregar_linhas(caminho):
     df = pd.read_excel(caminho, header=None)
+
+    IDIOMAS_COD = {"PT", "EN", "ES", "IT", "FR", "DE", "JA", "ZH", "RU",
+                   "HE", "AR", "ID", "TR", "VI"}
+
+    col = {"produto": 1, "faixa": 2, "preco": 5, "iso": 6, "capa": 8}
+
     linhas = []
-    idiomas = {"PT","EN","ES","IT","FR","DE","JA","ZH","RU","HE","AR","ID","TR","VI"}
     lang_atual = None
     for i in range(len(df)):
-        c0 = str(df.iat[i, 0]).strip().upper() if pd.notna(df.iat[i, 0]) else ""
-        if c0 in idiomas:
+        r = [("" if pd.isna(x) else str(x).strip()) for x in df.iloc[i].tolist()]
+        if not any(r):
+            continue
+
+        c0 = r[0].strip().upper()
+
+        # Linha de cabeçalho de bloco: atualiza o idioma corrente e segue
+        if c0 in IDIOMAS_COD:
             lang_atual = c0.lower()
             continue
-        # linha de produto: precisa de nome (col 1) e preço (col 5)
+
+        # Linha de produto: precisa de idioma corrente, nome e preço
         if lang_atual is None:
             continue
-        nome = str(df.iat[i, 1]).strip() if pd.notna(df.iat[i, 1]) else ""
-        faixa = str(df.iat[i, 2]).strip() if pd.notna(df.iat[i, 2]) else ""
-        cifra = str(df.iat[i, 4]).strip() if pd.notna(df.iat[i, 4]) else ""
-        preco = df.iat[i, 5] if pd.notna(df.iat[i, 5]) else None
-        if not nome or preco is None:
-            continue  # pula linhas vazias ou sem preço
-        linhas.append({"lang": lang_atual, "produto": nome, "faixa": faixa,
-                       "cifra": cifra, "preco": int(preco)})
+        prod = norm_produto(r[col["produto"]]) if col["produto"] < len(r) else ""
+        if not prod:
+            continue
+        preco = parse_preco(r[col["preco"]]) if col["preco"] < len(r) else None
+        iso = norm_moeda(r[col["iso"]]) if col["iso"] < len(r) else ""
+        capa = r[col["capa"]] if col["capa"] < len(r) else ""
+        if not capa and len(r) > 3:
+            capa = r[3]  # coluna do nome traduzido do produto
+        try:
+            faixa = int(float(str(r[col["faixa"]]).replace(",", "."))) if col["faixa"] < len(r) else None
+        except ValueError:
+            faixa = None
+        if prod not in PRODUTOS_CONHECIDOS:
+            print(f"Aviso: linha {i+1}, produto '{prod}' fora da lista dos 24 (seguirá mesmo assim).")
+        linhas.append({"lang": lang_atual, "produto": prod, "faixa": faixa, "preco": preco,
+                       "iso": iso, "capa": capa, "linha": i + 1})
+
     print(f"Linhas lidas: {len(linhas)} (esperado: 336)")
     return linhas
-
 
 def validar_faixas(linhas):
     for l in linhas:
