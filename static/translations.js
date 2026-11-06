@@ -4396,3 +4396,31 @@ _langs14.forEach(function(l){
     window.PRODUTOS_TRAD[l].compatibilidade_equipes = NOMES[l];
   }
 })();
+
+// ===== INJECAO PORTAS 1/2/3 — nomenclatura oficial do Bônus Coletivo (Registro 18) =====
+(function(){
+  var TRAD = {
+    pt:{porta:"Porta", p1:"Porta 1", p2:"Porta 2", p3:"Porta 3"},
+    en:{porta:"Door", p1:"Door 1", p2:"Door 2", p3:"Door 3"},
+    es:{porta:"Puerta", p1:"Puerta 1", p2:"Puerta 2", p3:"Puerta 3"},
+    it:{porta:"Porta", p1:"Porta 1", p2:"Porta 2", p3:"Porta 3"},
+    fr:{porta:"Porte", p1:"Porte 1", p2:"Porte 2", p3:"Porte 3"},
+    de:{porta:"Tor", p1:"Tor 1", p2:"Tor 2", p3:"Tor 3"},
+    ja:{porta:"ゲート", p1:"ゲート1", p2:"ゲート2", p3:"ゲート3"},
+    zh:{porta:"通道", p1:"通道 1", p2:"通道 2", p3:"通道 3"},
+    ru:{porta:"Канал", p1:"Канал 1", p2:"Канал 2", p3:"Канал 3"},
+    he:{porta:"שער", p1:"שער 1", p2:"שער 2", p3:"שער 3"},
+    ar:{porta:"بوابة", p1:"البوابة 1", p2:"البوابة 2", p3:"البوابة 3"},
+    id:{porta:"Gerbang", p1:"Gerbang 1", p2:"Gerbang 2", p3:"Gerbang 3"},
+    tr:{porta:"Kapı", p1:"Kapı 1", p2:"Kapı 2", p3:"Kapı 3"},
+    vi:{porta:"Cổng", p1:"Cổng 1", p2:"Cổng 2", p3:"Cổng 3"}
+  };
+  window.PORTAS_TRAD = TRAD;
+  for (var l in TRAD) {
+    if (!window.translations[l]) window.translations[l] = {};
+    window.translations[l].porta = TRAD[l].porta;
+    window.translations[l].porta1 = TRAD[l].p1;
+    window.translations[l].porta2 = TRAD[l].p2;
+    window.translations[l].porta3 = TRAD[l].p3;
+  }
+})();
