@@ -22,6 +22,11 @@ SLUG_MAP = {
 
 ORDEM = ["pt", "en", "es", "it", "fr", "de", "ja", "zh", "ru", "id", "tr", "vi", "he", "ar"]
 
+if not os.path.exists(JSON_IN):
+    raise SystemExit(
+        f"Arquivo não encontrado: {JSON_IN}\n"
+        "Rode primeiro o criar_precos_stripe.py --teste --executar para gerá-lo."
+    )
 with open(JSON_IN, encoding="utf-8") as f:
     dados = json.load(f)
 
