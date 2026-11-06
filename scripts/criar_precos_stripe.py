@@ -206,7 +206,7 @@ def conferir_ambiente(modo):
         return
     if getattr(acct, "livemode", False) and modo == "teste":
         sys.exit("ERRO: você passou --teste mas a chave é AO VIVO. Nada foi criado.")
-    if (not acct.livemode) and modo == "live":
+    if (not getattr(acct, "livemode", False)) and modo == "live":
         sys.exit("ERRO: execução AO VIVO pedida, mas a chave é de TESTE. Nada foi criado.")
 
 
