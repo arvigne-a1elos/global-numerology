@@ -46,6 +46,14 @@ from email.mime.multipart import MIMEMultipart
 from produtos.calendario import analisar_periodo
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse, Response
 from referencia.precos import VALORES, SIMBOLO, PRECO_DISPLAY, PRODUTO_FAIXA, preco_local, preco_display
+# ===== FONTES CJK (ja/zh) — restaura glifos kanji nos PDFs (07/11/2026) =====
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.cidfonts import UnicodeCIDFont
+try:
+    pdfmetrics.registerFont(UnicodeCIDFont("HeiseiKakuGo-W5"))   # japonês
+    pdfmetrics.registerFont(UnicodeCIDFont("STSong-Light"))      # chinês
+except Exception:
+    pass
 # ===== SEMANTICA (energias, vidas, formas e cores) - IMPORT OPCIONAL =====
 # O main NUNCA quebra se o módulo ainda não existir: import protegido.
 try:
@@ -162,8 +170,8 @@ FONTE_POR_IDIOMA = {
     'he': ('NotoSansHebrew', 'NotoSansHebrew-Bold'),
     'ar': ('NotoNaskhArabic', 'NotoNaskhArabic-Bold'),
     # CJK — TTF real
-    'ja': ('NotoSansJP', 'NotoSansJP-Bold'),
-    'zh': ('NotoSansSC', 'NotoSansSC-Bold'),
+    'ja': ('HeiseiKakuGo-W5', 'HeiseiKakuGo-W5'),
+    'zh': ('STSong-Light', 'STSong-Light'),
 }
 
 IDIOMAS_RTL = {'he', 'ar'}
@@ -542,11 +550,15 @@ def _gerar_pdf_local(prod, data, lang, nome, bd, dado=""):
 
 # ===== DISPATCHER GERAR_PDF (restaurado 07/11/2026 — era perdido na edicao) =====
 def gerar_pdf(prod, data, lang, nome, bd, dado=""):
+    pf = None
     try:
         import gerador_pdf
-        return gerador_pdf.gerar_pdf(prod, data, lang, nome, bd, dado)
+        pf = gerador_pdf.gerar_pdf(prod, data, lang, nome, bd, dado)
     except Exception:
-        return _gerar_pdf_local(prod, data, lang, nome, bd, dado)
+        pf = None
+    if pf and os.path.exists(pf):
+        return pf
+    return _gerar_pdf_local(prod, data, lang, nome, bd, dado)
 
 NOTA_SIGILO = {
     # Português
