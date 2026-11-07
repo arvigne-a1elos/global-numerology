@@ -540,6 +540,14 @@ def _gerar_pdf_local(prod, data, lang, nome, bd, dado=""):
     doc.build(e)
     return path
 
+# ===== DISPATCHER GERAR_PDF (restaurado 07/11/2026 — era perdido na edicao) =====
+def gerar_pdf(prod, data, lang, nome, bd, dado=""):
+    try:
+        import gerador_pdf
+        return gerador_pdf.gerar_pdf(prod, data, lang, nome, bd, dado)
+    except Exception:
+        return _gerar_pdf_local(prod, data, lang, nome, bd, dado)
+
 NOTA_SIGILO = {
     # Português
     "pt": ("DOCUMENTO EXCLUSIVO E CONFIDENCIAL",
