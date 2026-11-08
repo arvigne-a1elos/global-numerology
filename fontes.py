@@ -1,195 +1,120 @@
 # -*- coding: utf-8 -*-
-"""
-fontes.py — Registro ÚNICO de fontes para os 14 idiomas.
-Híbrido: tenta TTF real; se não encontrar o arquivo, cai no CID embutido do ReportLab.
-"""
-import os
-import logging
+# ================================================================
+# fontes.py — FONTE ÚNICA DE VERDADE das fontes de PDF (A1ELOS)
+# REGRA DE OURO: nenhum outro arquivo do projeto decide fonte.
+# Todo gerador de PDF chama: fonte_para(lang) e preparar_texto(txt, lang).
+# ================================================================
+import os, logging
+logger = logging.getLogger(__name__)
+
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase.cidfonts import UnicodeCIDFont
 
-logger = logging.getLogger(__name__)
+# --- Registro já feito? evita registrar duas vezes ---
+_REGISTRADO = False
 
-# ------------------------------------------------------------------
-# 1. PASTA DE FONTES
-# ------------------------------------------------------------------
-_PASTA_FONTES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fonts")
-
-# ------------------------------------------------------------------
-# 2. MAPA POR IDIOMA — (nome_de_registro, nome_base_do_arquivo)
-# ------------------------------------------------------------------
-FONTES_TTF = {
-    # Latinos
-    "pt": ("DejaVu", "DejaVuSans"),
-    "en": ("DejaVu", "DejaVuSans"),
-    "es": ("DejaVu", "DejaVuSans"),
-    "fr": ("DejaVu", "DejaVuSans"),
-    "de": ("DejaVu", "DejaVuSans"),
-    "it": ("DejaVu", "DejaVuSans"),
-    "ru": ("DejaVu", "DejaVuSans"),
-    "tr": ("DejaVu", "DejaVuSans"),
-    "vi": ("DejaVu", "DejaVuSans"),
-    "id": ("DejaVu", "DejaVuSans"),
-    # RTL
-    "ar": ("NotoNaskhArabic", "NotoNaskhArabic"),
-    "he": ("NotoSansHebrew",  "NotoSansHebrew"),
-    # CJK
-    "ja": ("NotoSansJP", "NotoSansJP"),
-    "zh": ("NotoSansSC", "NotoSansSC"),
+# Candidatos de caminho de fonte TTF (ordem: local -> projeto -> sistema)
+_CAMINHOS = {
+    "DejaVu": [
+        "static/fonts/DejaVuSans.ttf", "fonts/DejaVuSans.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+    ],
+    "DejaVu-Bold": [
+        "static/fonts/DejaVuSans-Bold.ttf", "fonts/DejaVuSans-Bold.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+    ],
+    "NotoSansVi": [
+        "static/fonts/NotoSans-Regular.ttf", "fonts/NotoSans-Regular.ttf",
+    ],
+    "NotoSansVi-Bold": [
+        "static/fonts/NotoSans-Bold.ttf", "fonts/NotoSans-Bold.ttf",
+    ],
+    "NotoSansHebrew": [
+        "static/fonts/NotoSansHebrew-Regular.ttf", "fonts/NotoSansHebrew-Regular.ttf",
+    ],
+    "NotoNaskhArabic": [
+        "static/fonts/NotoNaskhArabic-Regular.ttf", "fonts/NotoNaskhArabic-Regular.ttf",
+    ],
 }
 
-CID_FALLBACK = {
-    "ja": "HeiseiMin-W3",
-    "zh": "STSong-Light",
-}
-
-ALIAS = {
-    "base":   "A1Base",
-    "base_b": "A1BaseB",
-    "cjk":    "A1CJK",
-    "cjk_b":  "A1CJKB",
-    "cjk2":   "A1CJK2",
-    "ar":     "A1AR",
-    "he":     "A1HE",
-}
-
-LATINOS = ("pt", "en", "es", "fr", "de", "it", "ru", "tr", "vi", "id")
-
-_REGISTRADOS = {}
-
-
-# ------------------------------------------------------------------
-# 3. UTILITÁRIOS INTERNOS
-# ------------------------------------------------------------------
-def _achar_arquivo(nome_base):
-    """Procura <base>.ttf, <base>-Regular.ttf ou <base>-Bold.ttf em fonts/."""
-    candidatos = [
-        nome_base + ".ttf",
-        nome_base + "-Regular.ttf",
-        nome_base + "-Bold.ttf",
-    ]
-    if not os.path.isdir(_PASTA_FONTES):
-        return None
-    for pasta, _subs, arquivos in os.walk(_PASTA_FONTES):
-        for cand in candidatos:
-            if cand in arquivos:
-                return os.path.join(pasta, cand)
-    return None
-
-
-def _registrar_ttf(nome_registro, nome_base):
-    """Registra um TTF (tolerando .ttc). Devolve True se registrou."""
-    if nome_registro in _REGISTRADOS:
-        return True
-    caminho = _achar_arquivo(nome_base)
-    if not caminho:
-        return False
-    try:
-        pdfmetrics.registerFont(TTFont(nome_registro, caminho))
-        _REGISTRADOS[nome_registro] = True
-        return True
-    except Exception:
+def _registrar_ttf(nome_fonte, nome_registro):
+    for p in _CAMINHOS.get(nome_fonte, []):
         try:
-            pdfmetrics.registerFont(TTFont(nome_registro, caminho, subfontIndex=0))
-            _REGISTRADOS[nome_registro] = True
-            return True
-        except Exception as e:
-            logger.warning("fontes: falha ao registrar %s (%s): %s", nome_registro, caminho, e)
-            return False
+            if os.path.exists(p):
+                pdfmetrics.registerFont(TTFont(nome_registro, p, subfontIndex=0))
+                return True
+        except Exception:
+            continue
+    return False
 
-
-def _registrar_cid(nome_registro, familia_cid):
-    """Registra uma fonte CID embutida. Devolve True se registrou."""
-    if nome_registro in _REGISTRADOS:
-        return True
-    try:
-        pdfmetrics.registerFont(UnicodeCIDFont(familia_cid))
-        _REGISTRADOS[nome_registro] = True
-        return True
-    except Exception as e:
-        logger.warning("fontes: falha no CID %s (%s): %s", nome_registro, familia_cid, e)
-        return False
-
-
-# ------------------------------------------------------------------
-# 4. REGISTRO
-# ------------------------------------------------------------------
 def registrar_tudo():
-    """
-    Registra TODAS as fontes disponíveis (TTF e CID) de uma só vez.
-    Idempotente: pode ser chamada quantas vezes quiser.
-    """
-    # Latinos (uma única vez — todos usam a mesma DejaVu)
-    registro, arquivo_base = FONTES_TTF["pt"]
-    _registrar_ttf(registro, arquivo_base)
-    _registrar_ttf(registro + "-Bold", arquivo_base + "-Bold")
+    """Registra TODAS as fontes dos 14 idiomas. Chame 1x na inicialização."""
+    global _REGISTRADO
+    if _REGISTRADO:
+        return
+    # Latinos + cirílico (ru) + turco (tr) + vietnamita (parcial)
+    _registrar_ttf("DejaVu", "DejaVu")
+    _registrar_ttf("DejaVu-Bold", "DejaVu-Bold")
+    # Vietnamita completo (diacríticos ư, ữ, ộ...)
+    _registrar_ttf("NotoSansVi", "NotoSansVi")
+    _registrar_ttf("NotoSansVi-Bold", "NotoSansVi-Bold")
+    # Hebraico
+    _registrar_ttf("NotoSansHebrew", "NotoSansHebrew")
+    # Árabe
+    _registrar_ttf("NotoNaskhArabic", "NotoNaskhArabic")
+    # CJK — fontes CID embutidas no ReportLab (sempre existem)
+    for cid in ("HeiseiKakuGo-W5", "HeiseiMin-W3", "STSong-Light"):
+        try:
+            pdfmetrics.registerFont(UnicodeCIDFont(cid))
+        except Exception:
+            pass
+    _REGISTRADO = True
+    logger.info("fontes.py: registro de fontes dos 14 idiomas concluído")
 
-    # RTL
-    for lang in ("ar", "he"):
-        registro, arquivo_base = FONTES_TTF[lang]
-        _registrar_ttf(registro, arquivo_base)
-        _registrar_ttf(registro + "-Bold", arquivo_base + "-Bold")
+# ===== MAPA ÚNICO: idioma -> (regular, bold) =====
+FONTE_POR_IDIOMA = {
+    "pt": ("DejaVu", "DejaVu-Bold"),
+    "en": ("DejaVu", "DejaVu-Bold"),
+    "es": ("DejaVu", "DejaVu-Bold"),
+    "it": ("DejaVu", "DejaVu-Bold"),
+    "fr": ("DejaVu", "DejaVu-Bold"),
+    "de": ("DejaVu", "DejaVu-Bold"),
+    "id": ("DejaVu", "DejaVu-Bold"),
+    "tr": ("DejaVu", "DejaVu-Bold"),
+    "ru": ("DejaVu", "DejaVu-Bold"),
+    "vi": ("NotoSansVi", "NotoSansVi-Bold"),       # cai em DejaVu se Noto não existir
+    "he": ("NotoSansHebrew", "NotoSansHebrew"),
+    "ar": ("NotoNaskhArabic", "NotoNaskhArabic"),
+    "ja": ("HeiseiKakuGo-W5", "HeiseiKakuGo-W5"),
+    "zh": ("STSong-Light", "STSong-Light"),
+}
+IDIOMAS_RTL = {"he", "ar"}
 
-    # CJK: TTF primeiro, CID como plano B
-    for lang, alias_cjk in (("ja", ALIAS["cjk"]), ("zh", ALIAS["cjk2"])):
-        registro, arquivo_base = FONTES_TTF[lang]
-        registrou = _registrar_ttf(registro, arquivo_base)
-        _registrar_ttf(registro + "-Bold", arquivo_base + "-Bold")
-        if not registrou:
-            cid = CID_FALLBACK.get(lang)
-            if cid:
-                _registrar_cid(alias_cjk, cid)
-    logger.info("fontes: registro concluído — %d fontes ativas", len(_REGISTRADOS))
-    return dict(_REGISTRADOS)
-
-
-# ------------------------------------------------------------------
-# 5. CONSULTA POR IDIOMA
-# ------------------------------------------------------------------
 def fonte_para(lang):
-    """
-    Devolve (nome_regular, nome_bold) já REGISTRADOS para o idioma pedido.
-    Nunca devolve nome inexistente: se o TTF faltou e há CID, devolve o CID.
-    """
-    lang = (lang or "pt").lower()
+    """Única função de consulta de fonte. Nunca retorna Helvetica."""
+    registrar_tudo()
+    reg, bold = FONTE_POR_IDIOMA.get(lang, ("DejaVu", "DejaVu-Bold"))
+    # Rede de segurança: se a fonte pedida não foi registrada, cai em DejaVu
+    try:
+        pdfmetrics.getFont(reg)
+    except Exception:
+        reg, bold = "DejaVu", "DejaVu-Bold"
+    return reg, bold
 
-    # Latinos
-    if lang in LATINOS:
-        reg = "DejaVu"
-        bold = "DejaVu-Bold"
-        return (reg, bold if bold in _REGISTRADOS else reg)
+# ===== SHAPING/BIDI para árabe e hebraico =====
+try:
+    import arabic_reshaper
+    from bidi.algorithm import get_display
+    _BIDI_OK = True
+except Exception:
+    _BIDI_OK = False
 
-    # RTL
-    if lang == "ar":
-        reg = "NotoNaskhArabic"
-        bold = "NotoNaskhArabic-Bold"
-        return (reg, bold if bold in _REGISTRADOS else reg)
-
-    if lang == "he":
-        reg = "NotoSansHebrew"
-        bold = "NotoSansHebrew-Bold"
-        return (reg, bold if bold in _REGISTRADOS else reg)
-
-    # CJK
-    if lang == "ja":
-        reg = "NotoSansJP"
-        if reg not in _REGISTRADOS:
-            reg = CID_FALLBACK.get("ja", "HeiseiMin-W3")
-        bold = "NotoSansJP-Bold"
-        return (reg, bold if bold in _REGISTRADOS else reg)
-
-    if lang == "zh":
-        reg = "NotoSansSC"
-        if reg not in _REGISTRADOS:
-            reg = CID_FALLBACK.get("zh", "STSong-Light")
-        bold = "NotoSansSC-Bold"
-        return (reg, bold if bold in _REGISTRADOS else reg)
-
-    # Desconhecido → latino
-    return fonte_para("pt")
-
-
-def registrar_fontes():
-    """ASSINATURA LEGADA — delega para registrar_tudo()."""
-    return registrar_tudo()
+def preparar_texto(texto, lang):
+    """Texto para desenhar no PDF. Árabe/hebraico recebem reshaping + bidi."""
+    if not texto or lang not in IDIOMAS_RTL or not _BIDI_OK:
+        return texto
+    try:
+        return get_display(arabic_reshaper.reshape(str(texto)))
+    except Exception:
+        return texto

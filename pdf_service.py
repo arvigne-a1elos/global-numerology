@@ -20,8 +20,10 @@ DARK = colors.HexColor("#1a1a1a")
 LGRAY = colors.HexColor("#f5f5f0")
 WHITE = colors.white
 GRAY = colors.HexColor("#888888")
-FONTE = "Helvetica"
-FN = "Helvetica"
+from fontes import fonte_para, preparar_texto, registrar_tudo
+registrar_tudo()
+FONTE = "DejaVu"
+FN = "DejaVu-Bold"
 TAM_T = 28
 TAM_C = 12
 EL = 12
@@ -65,6 +67,8 @@ def _cabecalho_pagina(canvas, doc):
 # ═══════════════════════════════════════════
 def pdf8(data, nome, bd, lang="pt"):
     T = PDF_TEXTS.get(lang, PDF_TEXTS["pt"])
+    _fr, _fb = fonte_para(lang)
+    FONTE, FN = _fr, _fb
     path = os.path.join(TMP, f"p8_{uuid.uuid4().hex[:8]}.pdf")
     doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
                             topMargin=45, bottomMargin=45)
@@ -106,12 +110,16 @@ def pdf8(data, nome, bd, lang="pt"):
     e.append(Paragraph(T.get("entrega", ""), _estilo("J", FONTE, 8, GRAY, TA_CENTER, sa=6)))
     e.append(Paragraph("© A1ELOS Assessoria e Consultoria",
                        _estilo("F", FONTE, 8, GRAY, TA_CENTER)))
+    doc.build(e, onFirstPage=_cabecalho_pagina, onLaterPages=_cabecalho_pagina)
+    return path
 
 # ═══════════════════════════════════════════
 # MAPA COMPLETO (template premium, traduzido)
 # ═══════════════════════════════════════════
 def pdf17(data, nome, bd_str, lang="pt"):
     T = PDF_TEXTS.get(lang, PDF_TEXTS["pt"])
+    _fr, _fb = fonte_para(lang)
+    FONTE, FN = _fr, _fb
     S = PDF_SECOES.get(lang, PDF_SECOES["pt"])
     P = PERIODOS.get(lang, PERIODOS["pt"])
     RH = REALIZ_HEAD.get(lang, REALIZ_HEAD["pt"])
@@ -358,27 +366,8 @@ def pdf_produto(produto, dados, nome, bd_str, lang, dado=""):
     # ===== FONTES POR IDIOMA (CJK para ja/zh, DejaVu para os demais) =====
     global FONTE, FN
     _fontes_antigas = (FONTE, FN)
-    if lang in ("ja", "zh"):
-        try:
-            from reportlab.pdfbase import pdfmetrics as _pm
-            from reportlab.pdfbase.cidfonts import UnicodeCIDFont
-            _pm.registerFont(UnicodeCIDFont("HeiseiMin-W3" if lang == "ja" else "STSong-Light"))
-            FONTE = FN = "HeiseiMin-W3" if lang == "ja" else "STSong-Light"
-        except Exception:
-            pass
-    else:
-        try:
-            from reportlab.pdfbase import pdfmetrics as _pm
-            from reportlab.pdfbase.ttfonts import TTFont
-            for _p in ("static/fonts/DejaVuSans.ttf", "fonts/DejaVuSans.ttf",
-                       "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"):
-                if os.path.exists(_p):
-                    _pm.registerFont(TTFont("DejaVuGen", _p))
-                    FONTE = FN = "DejaVuGen"
-                    break
-        except Exception:
-            pass
-      
+    FONTE, FN = fonte_para(lang)    
+
     titulo = PRODUTOS.get(lang, PRODUTOS["pt"]).get(produto, produto).upper()
     e = []
     e.append(Spacer(1, 20))

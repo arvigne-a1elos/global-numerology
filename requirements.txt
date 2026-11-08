@@ -9,3 +9,5 @@ pydantic
 qrcode[pil]
 python-pptx
 python-multipart==0.0.9
+arabic-reshaper
+python-bidi
