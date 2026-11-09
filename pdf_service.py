@@ -69,6 +69,8 @@ def pdf8(data, nome, bd, lang="pt"):
     T = PDF_TEXTS.get(lang, PDF_TEXTS["pt"])
     _fr, _fb = fonte_para(lang)
     FONTE, FN = _fr, _fb
+    from dicionarios import get_sig, t as _t
+    from fontes import preparar_texto as _prep
     path = os.path.join(TMP, f"p8_{uuid.uuid4().hex[:8]}.pdf")
     doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
                             topMargin=45, bottomMargin=45)
@@ -88,7 +90,7 @@ def pdf8(data, nome, bd, lang="pt"):
     linhas = [[t("numero", lang), t("valor", lang), t("significado", lang)]]
     for k, lbl in chaves:
         v = data.get(k, 0)
-        sig = SIG.get(v, (t("nenhum", lang), "", "", ""))
+        sig = get_sig(v, lang)
         linhas.append([t(lbl, lang), str(v), sig[0]])
     tbl = Table(linhas, colWidths=[180, 60, 220])  # 460pt <= 495pt
     tbl.setStyle(TableStyle([
@@ -103,8 +105,8 @@ def pdf8(data, nome, bd, lang="pt"):
     e.append(Spacer(1, LINHA))
     for k, lbl in chaves:
         v = data.get(k, 0)
-        sig = SIG.get(v, (t("nenhum", lang), "", "", ""))
-        e.append(Paragraph(f"<b>{t(lbl, lang)}:</b> {v} — {sig[0]}",
+        sig = get_sig(v, lang)
+        e.append(Paragraph(f"<b>{_prep(t(lbl, lang), lang)}:</b> {v} — {_prep(sig[0], lang)}",
                            _estilo("TX", FONTE, 10, DARK, TA_LEFT, sa=3)))
     e.append(Spacer(1, LINHA))
     e.append(Paragraph(T.get("entrega", ""), _estilo("J", FONTE, 8, GRAY, TA_CENTER, sa=6)))
@@ -120,6 +122,8 @@ def pdf17(data, nome, bd_str, lang="pt"):
     T = PDF_TEXTS.get(lang, PDF_TEXTS["pt"])
     _fr, _fb = fonte_para(lang)
     FONTE, FN = _fr, _fb
+    from dicionarios import get_sig, get_cam
+    from fontes import preparar_texto as _prep
     S = PDF_SECOES.get(lang, PDF_SECOES["pt"])
     P = PERIODOS.get(lang, PERIODOS["pt"])
     RH = REALIZ_HEAD.get(lang, REALIZ_HEAD["pt"])
@@ -128,7 +132,7 @@ def pdf17(data, nome, bd_str, lang="pt"):
                             topMargin=45, bottomMargin=45)
     e = []
     lp = data["life_path"]
-    _, desc_cam = CAM.get(lp, ("", ""))
+    _, desc_cam = get_cam(lp, lang)
     # CAPA
     e.append(Spacer(1, 120))
     e.append(Paragraph(T.get("t_completo", "MAPA COMPLETO"),
@@ -152,7 +156,7 @@ def pdf17(data, nome, bd_str, lang="pt"):
     linhas = [[t("numero", lang), t("significado", lang), t("valor", lang)]]
     for k, lbl in chaves:
         v = data.get(k, 0)
-        sig = SIG.get(v, (t("nenhum", lang), "", "", ""))
+        sig = get_sig(v, lang)
         linhas.append([t(lbl, lang), sig[0], str(v)])
     tbl = Table(linhas, colWidths=[180, 220, 80])  # 480pt <= 495pt
     tbl.setStyle(TableStyle([
@@ -360,6 +364,8 @@ def pdf_eleitoral(ss, cl, sugestoes, ne=None, lang="pt"):
 # ═══════════════════════════════════════════
 def pdf_produto(produto, dados, nome, bd_str, lang, dado=""):
     T = PDF_TEXTS.get(lang, PDF_TEXTS["pt"])
+    from dicionarios import get_sig, get_cam
+    from fontes import preparar_texto as _prep
     path = os.path.join(TMP, f"p_{uuid.uuid4().hex[:8]}.pdf")
     doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
                             topMargin=45, bottomMargin=45)
@@ -569,8 +575,8 @@ def pdf_produto(produto, dados, nome, bd_str, lang, dado=""):
     linhas = [[t("numero", lang), t("valor", lang), t("significado", lang)]]
     for k, lbl in chaves:
         v = dados.get(k, 0)
-        sig = SIG.get(v, (t("nenhum", lang), "", "", ""))
-        linhas.append([t(lbl, lang), str(v), sig[0]])
+        sig = get_sig(v, lang)
+        linhas.append([_prep(t(lbl, lang), lang), str(v), _prep(sig[0], lang)])
     tbl = Table(linhas, colWidths=[180, 60, 220])  # 460pt <= 495pt
     tbl.setStyle(TableStyle([
         ("BACKGROUND", (0, 0), (-1, 0), GOLD), ("TEXTCOLOR", (0, 0), (-1, 0), WHITE),
@@ -599,7 +605,7 @@ def pdf_produto(produto, dados, nome, bd_str, lang, dado=""):
             e.append(Paragraph(f"<b>{t('licao', lang)}:</b> {licao}",
                                _estilo("JP", FONTE, 9, DARK, TA_LEFT, sa=6)))
     lp = dados.get("life_path", 0)
-    _, desc_cam = CAM.get(lp, ("", ""))
+    _, desc_cam = get_cam(lp, lang)
     if desc_cam:
         e.append(Spacer(1, LINHA))
         e.append(Paragraph(f"<b>{t('caminho_vida', lang)} {lp}:</b> {desc_cam}",
