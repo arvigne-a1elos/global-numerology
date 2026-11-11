@@ -1479,6 +1479,10 @@ function montarSeletorEnergia(containerId, aoSelecionar, ideal){
       return v;
     };
     try { if (typeof window.montarTabelaBC === "function") window.montarTabelaBC(); } catch(e){}
+    // dentro do instalar(), antes do return true:
+    if (typeof window.descontoBC !== "function") {
+      console.warn("[BC] descontoBC não disponível — app.js não carregado antes de produtos.js");
+  }
     return true;
   }
   try { instalar(); } catch(e){}
