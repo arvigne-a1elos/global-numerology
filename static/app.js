@@ -395,7 +395,8 @@ window.CONFIG_DESCONTO = {
     { min: 100,  pct: 20 },
     { min: 200,  pct: 30 },
     { min: 500,  pct: 40 },
-    { min: 1000, pct: 45 }
+    { min: 1000, pct: 45 },
+    { min: 2000, pct: 50 }    
   ],
   teto_automatico: 2000,
   pct_teto_negociacao: 70
