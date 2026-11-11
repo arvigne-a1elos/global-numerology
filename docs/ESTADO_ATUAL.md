@@ -1,49 +1,23 @@
-# ESTADO ATUAL — A1ELOS GLOBAL NUMEROLOGY
+## Atualização — 11/11/2026 (fim do dia)
 
-**Última atualização:** 09/11/2026
-**Fase:** final de configuração (24 produtos × 14 idiomas)
-**Ambiente:** Stripe em modo TESTE — não trocar para live antes de fechar os testes
+### Concluído
+- Governança em arquitetura B (Disco separado em a1elos-governanca)
+- P-44, P-47, P-48, P-49, P-50, P-52 fechados
+- Máscaras Principal + 4 membros aplicadas em Família e Equipes
+- Traduções das 5 chaves novas nos 14 idiomas
 
-## Números
-- Pendências ativas: 49
-- Prioridade P1 (dinheiro e causa-raiz): 5
-- Pendências retiradas por triagem: 5
-- Produtos testados: 1 de 24 (Mapa Express, em ja/ru/ar/vi)
-- Deploys bem-sucedidos: 30
-- Último commit: a1f6f9a
+### Diagnóstico provado
+- referencia/cissay.py existe mas NUNCA é chamado pelo main.py
+- analisar_familia e analisar_equipe recebem string única, não lista
+- detalhe (datas de nascimento) é descartado pela análise
+- PDFs geram "Membros: 1" e "2000-01-01" por isso
 
-## Os 5 itens P1
-| ID | Pendência | Ação |
-|----|-----------|------|
-| P-44 | Tabela de desconto com 20%/25% (oficial é 15%/20%) | Corrigir nos 3 arquivos: app.js, main.py, produtos.js |
-| P-47 | IDs duplicados no card 23 (equipeEnergiaSel) | Renomear para compEquipeEnergiaSel no produtos.html |
-| P-48 | pagarCompatibilidade() não existe | Criar a função no produtos.js |
-| P-49 | BC_PRODUTOS pode não ter o produto 24 | Verificar e adicionar a linha a R$ 98 |
-| P-50 | PRODUTO_FAIXA duplicado no translations.js | Corrigir a segunda cópia |
+### Aberto para 12/11
+- P-53 a P-58 (app.js — Casal e faxina)
+- P-59 a P-62 (PDF de Família/Equipes com cruzamento Cissay)
 
-## O que está validado
-- Checkout ponta a ponta em 4 idiomas (ja, ru, ar, vi)
-- PDF com fontes corretas, incluindo RTL árabe e hebraico
-- 336 preços no Stripe (24 produtos × 14 idiomas), dedup provado
-- PRICE_IDS integrados no main.py
-- Colheita da UI 20/20 (221.494 caracteres)
-- Persistência SQLite (numerologia.db + .gitignore)
-- Apresentação com 14 idiomas × 107 chaves idênticas
-
-## O que está travado
-- Produto 24 (Compatibilidade de Equipes): card não completa a compra por causa dos IDs duplicados (P-47)
-- Tabela de desconto: cliente vê 20% na faixa de 50 unidades, mas a decisão oficial é 15% (P-44)
-
-## Próximo passo
-Bloco 1 — corrigir a tabela de desconto (P-44) nos três arquivos.
-
-## Arquitetura de repositórios (decidido em 11/11/2026)
-
-Cada projeto mantém a própria governança. Não há repositório central.
-
-- **global-numerology** → governança da nave (este repositório)
-- **Ex-Libris-Est** → governança da biblioteca
-- **a1elos-governanca** → governança do Disco (privado)
-
-Arquivos de governança da nave vivem em `docs/`:
-`ESTADO_ATUAL.md`, `DECISOES.md`, `COMO_RETOMAR.md`, `controle/`, `relatorios/`.
+### Critério para declarar pronto para lançamento
+1. Os 24 cards chegam ao Stripe com produto correto
+2. Os 3 cards de compatibilidade geram PDF com seções por pessoa
+3. Nenhuma duplicata de função no app.js
+4. Teste em 2 idiomas (pt + en) de cada card
