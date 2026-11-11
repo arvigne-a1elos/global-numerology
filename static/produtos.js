@@ -1481,13 +1481,13 @@ function montarSeletorEnergia(containerId, aoSelecionar, ideal){
     try { if (typeof window.montarTabelaBC === "function") window.montarTabelaBC(); } catch(e){}
     // dentro do instalar(), antes do return true:
     if (typeof window.descontoBC !== "function") {
-      console.warn("[BC] descontoBC não disponível — app.js não carregado antes de produtos.js");
+      console.warn("[BC] descontoBC indisponível — app.js pode não ter carregado antes de produtos.js");
   }
     return true;
   }
   try { instalar(); } catch(e){}
-  var t = setInterval(function(){ try { if (instalar()) clearInterval(t); } catch(e){} }, 300);
-  setTimeout(function(){ try { clearInterval(t); } catch(e){} }, 15000);
+  var t = setInterval(function(){ try { if (instalar()) clearInterval(t); } catch(e){} }, 150);
+  setTimeout(function(){ try { clearInterval(t); } catch(e){} }, 5000);
 })();
 // ===== FIM DO BLOCO 22 =====
 
