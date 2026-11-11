@@ -171,7 +171,47 @@ function pagarCasal(){
   location.href = '/criar-checkout?produto=casal&dado=' + encodeURIComponent(n1 + ' & ' + n2)
     + '&detalhe=' + encodeURIComponent(d1 + ' & ' + d2) + '&lang=' + getLang();
 }
-function pagarFamilia(){var n=document.getElementById('familiaMembros').value.trim();if(!n){alert(t_preencha());return;}location.href='/criar-checkout?produto=familia&dado='+encodeURIComponent(n)+'&lang='+getLang();}
+// ===== FAMÍLIA: principal + até 4 membros =====
+function _coletarPares(prefixoP, prefixoM, qtdMax) {
+  var elN = document.getElementById(prefixoP + 'Nome');
+  var elD = document.getElementById(prefixoP + 'Nasc');
+  var principal = { nome: elN ? elN.value.trim() : '', nasc: elD ? converterData(elD.value.trim()) : '' };
+  if (!principal.nome || !principal.nasc) return { erro: 'principal' };
+  var membros = [];
+  for (var i = 1; i <= qtdMax; i++) {
+    var mn = document.getElementById(prefixoM + 'Nome' + i);
+    var md = document.getElementById(prefixoM + 'Nasc' + i);
+    var vn = mn ? mn.value.trim() : '';
+    var vd = md ? converterData(md.value.trim()) : '';
+    if (!vn && !vd) continue;                    // linha vazia: ignora
+    if (!vn || !vd) return { erro: 'incompleto', idx: i };  // meia linha: bloqueia
+    membros.push({ nome: vn, nasc: vd });
+  }
+  return { principal: principal, membros: membros };
+}
+
+function pagarFamilia(){
+  var r = _coletarPares('familiaPrincipal', 'familiaMembro', 4);
+  if (r.erro === 'principal') { alert(t_preencha()); return; }
+  if (r.erro === 'incompleto') { alert(t_preencha()); return; }
+  if (!r.membros.length) { alert(t_preencha()); return; }
+  var dado = [r.principal.nome].concat(r.membros.map(function(m){ return m.nome; })).join(' | ');
+  var det  = [r.principal.nasc].concat(r.membros.map(function(m){ return m.nasc; })).join(' | ');
+  location.href = '/criar-checkout?produto=familia&dado=' + encodeURIComponent(dado)
+    + '&detalhe=' + encodeURIComponent(det) + '&lang=' + getLang();
+}
+
+function pagarCompatibilidade(){
+  var r = _coletarPares('equipePrincipal', 'equipeMembro', 4);
+  if (r.erro === 'principal') { alert(t_preencha()); return; }
+  if (r.erro === 'incompleto') { alert(t_preencha()); return; }
+  if (!r.membros.length) { alert(t_preencha()); return; }
+  var dado = [r.principal.nome].concat(r.membros.map(function(m){ return m.nome; })).join(' | ');
+  var det  = [r.principal.nasc].concat(r.membros.map(function(m){ return m.nasc; })).join(' | ');
+  location.href = '/criar-checkout?produto=compatibilidade_equipes&dado=' + encodeURIComponent(dado)
+    + '&detalhe=' + encodeURIComponent(det) + '&lang=' + getLang();
+}
+
 function t_preencha(){var t=translations[getLang()]||translations.pt;return t.preencha_dado||'Preencha os dados solicitados.';}
 window.pagarUrna = window.pagarUrna || function(){
   var nomeCompleto = (document.getElementById('urnaNome') ? document.getElementById('urnaNome').value : '').trim();
