@@ -644,15 +644,14 @@
        <li>📲 PDF + QRCode</li>
     </ul>
     <button class="btn btn-full" onclick="toggleForm('form-compatibilidade_equipes')" data-i18n="pesquisar_btn">pesquisar</button>
-    <form id="form-compatibilidade_equipes" class="hidden" onsubmit="return false">    
+    <form id="form-compatibilidade_equipes" class="hidden" onsubmit="return false">
        <label data-i18n-form="f_equipe">Membros da equipe (um por linha)</label>
        <textarea id="equipeMembros" rows="4" data-i18n-ph="ph_membros" placeholder="Chefe; 01/01/1980; CHEFE&#10;Nome 2; 15/03/1985&#10;Nome 3; 22/07/1990"></textarea>
        <label class="lbl-energia" data-i18n="energia_ideal">Energia ideal (padrão 8)</label>
        <div id="compEquipeEnergiaSel" class="energia-selector"></div>
        <label id="compEquipeEnergiaLabel" class="urna-label" data-i18n-form="f_energia">Energia desejada</label>
        <p id="compEquipeEnergiaDica" class="urna-dica"></p>
-       <div id="compEquipeEnergiaSel" class="energia-selector"></div>
-       <button class="btn btn-full" onclick="pagarCompatibilidade()" data-i18n-form="pesquisar_btn">Pesquisar</button>
+       <button class="btn btn-full" onclick="pagarCompatibilidade()" data-i18n-form="comprar_btn">Comprar</button>
     </form>
 </div>
         
