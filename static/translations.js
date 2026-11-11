@@ -381,6 +381,11 @@ const translations = {
         sig_alma: "O que o seu coração mais deseja e o que alimenta sua essência.",
         sig_personalidade: "Como os outros enxergam você e a impressão que você causa.",
         sig_destino: "Onde suas escolhas e seu potencial podem te levar no futuro.",
+        f_principal: "Pessoa principal",
+        f_membros: "Membros da família",
+        f_principal_rh: "Pessoa principal (gestor)",
+        f_membros_rh: "Membros da equipe",
+        ph_opcional: "Opcional",   
         }
     },
     en: {
@@ -633,6 +638,11 @@ const translations = {
         sig_alma: "What your heart desires most and what feeds your essence.",
         sig_personalidade: "How others see you and the impression you make.",
         sig_destino: "Where your choices and your potential can take you in the future.",
+        f_principal: "Main person",
+        f_membros: "Family members",
+        f_principal_rh: "Main person (manager)",
+        f_membros_rh: "Team members",
+        ph_opcional: "Optional",   
         }
     },
     es: { 
@@ -885,6 +895,11 @@ const translations = {
         sig_alma: "Lo que tu corazón más desea y lo que alimenta tu esencia.",
         sig_personalidade: "Cómo te ven los demás y la impresión que causas.",
         sig_destino: "A dónde pueden llevarte tus elecciones y tu potencial en el futuro.",
+        f_principal: "Persona principal",
+        f_membros: "Miembros de la familia",
+        f_principal_rh: "Persona principal (gerente)",
+        f_membros_rh: "Miembros del equipo",
+        ph_opcional: "Opcional",   
         }
     },
     it: { 
@@ -1133,6 +1148,11 @@ const translations = {
         sig_alma: "Ciò che il tuo cuore desidera di più e ciò che nutre la tua essenza.",
         sig_personalidade: "Come gli altri ti vedono e l'impressione che susciti.",
         sig_destino: "Dove le tue scelte e il tuo potenziale possono portarti in futuro.",
+        f_principal: "Persona principale",
+        f_membros: "Membri della famiglia",
+        f_principal_rh: "Persona principale (manager)",
+        f_membros_rh: "Membri del team",
+        ph_opcional: "Opzionale",   
         }   
     },
     fr: {
@@ -1385,6 +1405,11 @@ const translations = {
         sig_alma: "Ce que votre cœur désire le plus et ce qui nourrit votre essence.",
         sig_personalidade: "Comment les autres vous voient et l'impression que vous laissez.",
         sig_destino: "Où vos choix et votre potentiel peuvent vous mener à l'avenir.",
+        f_principal: "Personne principale",
+        f_membros: "Membres de la famille",
+        f_principal_rh: "Personne principale (responsable)",
+        f_membros_rh: "Membres de l'équipe",
+        ph_opcional: "Facultatif",   
         }    
     },
     de: {
@@ -1637,6 +1662,11 @@ const translations = {
         sig_alma: "Was dein Herz sich am meisten wünscht und was deine Essenz nährt.",
         sig_personalidade: "Wie andere dich sehen und welchen Eindruck du hinterlässt.",
         sig_destino: "Wohin deine Entscheidungen und dein Potenzial dich in der Zukunft führen können.",
+        f_principal: "Hauptperson",
+        f_membros: "Familienmitglieder",
+        f_principal_rh: "Hauptperson (Führungskraft)",
+        f_membros_rh: "Teammitglieder",
+        ph_opcional: "Optional",   
         }    
     },
     ja: {
@@ -1889,6 +1919,11 @@ const translations = {
         sig_alma: "あなたの心が最も望むものと、あなたの本質を育むもの。",
         sig_personalidade: "他の人があなたをどう見るか、そしてあなたが与える印象。",
         sig_destino: "あなたの選択と可能性が未来に導く場所。",
+        f_principal: "主要な人物",
+        f_membros: "家族のメンバー",
+        f_principal_rh: "主要な人物（管理者）",
+        f_membros_rh: "チームのメンバー",
+        ph_opcional: "任意",   
         }        
     },
     zh: {
@@ -2141,6 +2176,11 @@ const translations = {
         sig_alma: "你内心最渴望的东西，以及滋养你本质的东西。",
         sig_personalidade: "别人如何看待你，以及你留下的印象。",
         sig_destino: "你的选择和潜力能在未来带你走向何方。",
+        f_principal: "主要人物",
+        f_membros: "家庭成员",
+        f_principal_rh: "主要人物（主管）",
+        f_membros_rh: "团队成员",
+        ph_opcional: "可选",   
         }    
     },
     ru: {
@@ -2396,6 +2436,11 @@ const translations = {
         sig_alma: "Чего больше всего желает ваше сердце и что питает вашу сущность.",
         sig_personalidade: "Как другие видят вас и какое впечатление вы производите.",
         sig_destino: "Куда ваши выборы и ваш потенциал могут привести вас в будущем.",
+        f_principal: "Основное лицо",
+        f_membros: "Члены семьи",
+        f_principal_rh: "Основное лицо (руководитель)",
+        f_membros_rh: "Члены команды",
+        ph_opcional: "Необязательно",   
         }    
     },
     he: {
@@ -2648,6 +2693,11 @@ const translations = {
         sig_alma: "מה הלב שלך הכי רוצה ומה מזין את המהות שלך.",
         sig_personalidade: "איך אחרים רואים אותך ומה הרושם שאתה משאיר.",
         sig_destino: "לאן הבחירות שלך והפוטנציאל שלך יכולים להוביל אותך בעתיד.",
+        f_principal: "אדם ראשי",
+        f_membros: "בני המשפחה",
+        f_principal_rh: "אדם ראשי (מנהל)",
+        f_membros_rh: "חברי הצוות",
+        ph_opcional: "אופציונלי",   
         }    
     },
     ar: {
@@ -2900,6 +2950,11 @@ const translations = {
         sig_alma: "ما الذي يرغب فيه قلبك أكثر وما الذي يغذي جوهرك.",
         sig_personalidade: "كيف يراك الآخرون والانطباع الذي تتركه.",
         sig_destino: "أين يمكن أن تقودك خياراتك وإمكاناتك في المستقبل.",
+        f_principal: "الشخص الرئيسي",
+        f_membros: "أفراد العائلة",
+        f_principal_rh: "الشخص الرئيسي (المدير)",
+        f_membros_rh: "أعضاء الفريق",
+        ph_opcional: "اختياري",   
         }    
     },
     id: {
@@ -3167,6 +3222,11 @@ const translations = {
             sig_alma: "Apa yang paling diinginkan hati Anda dan yang memberi makan esensi Anda.",
             sig_personalidade: "Bagaimana orang lain melihat Anda dan kesan yang Anda berikan.",
             sig_destino: "Ke mana pilihan dan potensi Anda dapat membawa Anda di masa depan.",
+        f_principal: "Orang utama",
+        f_membros: "Anggota keluarga",
+        f_principal_rh: "Orang utama (manajer)",
+        f_membros_rh: "Anggota tim",
+        ph_opcional: "Opsional",    
         }
     },
     tr: {
@@ -3434,6 +3494,11 @@ const translations = {
             sig_alma: "Kalbinizin en çok arzuladığı ve özünüzü besleyen şey.",
             sig_personalidade: "Başkalarının sizi nasıl gördüğü ve bıraktığınız izlenim.",
             sig_destino: "Seçimlerinizin ve potansiyelinizin sizi gelecekte nereye götürebileceği.",
+        f_principal: "Ana kişi",
+        f_membros: "Aile üyeleri",
+        f_principal_rh: "Ana kişi (yönetici)",
+        f_membros_rh: "Ekip üyeleri",
+        ph_opcional: "İsteğe bağlı",    
         }
     }, 
     vi: {
@@ -3701,6 +3766,11 @@ const translations = {
             sig_alma: "Điều trái tim bạn khao khát nhất và điều nuôi dưỡng bản chất của bạn.",
             sig_personalidade: "Cách người khác nhìn nhận bạn và ấn tượng bạn tạo ra.",
             sig_destino: "Nơi lựa chọn và tiềm năng của bạn có thể đưa bạn đến trong tương lai.",
+        f_principal: "Người chính",
+        f_membros: "Thành viên gia đình",
+        f_principal_rh: "Người chính (quản lý)",
+        f_membros_rh: "Thành viên nhóm",
+        ph_opcional: "Tùy chọn",    
         }    
       },  
     };
