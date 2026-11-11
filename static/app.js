@@ -50,7 +50,7 @@ function _energiaSelecionada(idSel, produto) {
     if (ativo) return ativo.textContent.trim();
   }
   var ideal = (typeof ENERGIA_IDEAL !== 'undefined' && ENERGIA_IDEAL[produto]) ? ENERGIA_IDEAL[produto] : '';
-  return String(ideal);
+  return ideal ? String(ideal) : '';
 }
 function pagarVida(){var n=document.getElementById('vidaNome').value.trim(),b=converterData(document.getElementById('vidaNasc').value);if(!n||!b){alert(t_preencha());return;}location.href='/criar-checkout?produto=vida&nome='+encodeURIComponent(n)+'&nascimento='+encodeURIComponent(b)+'&lang='+getLang();}
 function pagarIa(){
@@ -144,7 +144,6 @@ function pagarCalendario(){
     + '&dado=' + encodeURIComponent(mes)
     + '&lang=' + getLang();
 }
-function pagarArtistico(){var n=document.getElementById('artNome').value.trim();if(!n){alert(t_preencha());return;}location.href='/criar-checkout?produto=artistico&dado='+encodeURIComponent(n)+'&lang='+getLang();}
 function pagarBebe(){
   var n = (document.getElementById('bebeSobrenome') ? document.getElementById('bebeSobrenome').value : '').trim();
   if (!n) { alert(t_preencha()); return; }
@@ -164,13 +163,15 @@ function pagarNegocio(){
     + '&energia=' + encodeURIComponent(_energiaSelecionada('negocioEnergiaSel', 'negocio')) + '&lang=' + getLang();
 }
 function pagarCasal(){
-  var n1 = document.getElementById('casalNome1').value.trim();
-  var n2 = document.getElementById('casalNome2').value.trim();
-  var d1 = converterData((document.getElementById('casalNasc1') ? document.getElementById('casalNasc1').value : '').trim());
-  var d2 = converterData((document.getElementById('casalNasc2') ? document.getElementById('casalNasc2').value : '').trim());  if (!n1 || !n2 || !d1 || !d2) { alert(t_preencha()); return; }
+  var e1=document.getElementById('casalNome1'), e2=document.getElementById('casalNome2');
+  var s1=document.getElementById('casalNasc1'), s2=document.getElementById('casalNasc2');
+  var n1=e1?e1.value.trim():'', n2=e2?e2.value.trim():'';
+  var d1=s1?converterData(s1.value.trim()):'', d2=s2?converterData(s2.value.trim()):'';
+  if (!n1 || !n2 || !d1 || !d2) { alert(t_preencha()); return; }
   location.href = '/criar-checkout?produto=casal&dado=' + encodeURIComponent(n1 + ' & ' + n2)
     + '&detalhe=' + encodeURIComponent(d1 + ' & ' + d2) + '&lang=' + getLang();
-}function pagarFamilia(){var n=document.getElementById('familiaMembros').value.trim();if(!n){alert(t_preencha());return;}location.href='/criar-checkout?produto=familia&dado='+encodeURIComponent(n)+'&lang='+getLang();}
+}
+function pagarFamilia(){var n=document.getElementById('familiaMembros').value.trim();if(!n){alert(t_preencha());return;}location.href='/criar-checkout?produto=familia&dado='+encodeURIComponent(n)+'&lang='+getLang();}
 function t_preencha(){var t=translations[getLang()]||translations.pt;return t.preencha_dado||'Preencha os dados solicitados.';}
 window.pagarUrna = window.pagarUrna || function(){
   var nomeCompleto = (document.getElementById('urnaNome') ? document.getElementById('urnaNome').value : '').trim();
@@ -894,7 +895,7 @@ fetch('/api/precos')
   var MAPA_ID_PROD = {
     urna: "urna", eleitoral: "eleitoral", arte: "artistico", ong: "nome_ong",
     ia: "ia", bebe: "bebe", negocio: "negocio", assinatura: "assinatura",
-    equipe: "nome_equipe", compEquipe: "compatibilidade_equipes"
+    equipe: "nome_equipe"
   };
   function montarSeletor(el) {
     if (el.children.length > 0) return;   // já montado por outra função? não mexe
@@ -979,7 +980,6 @@ window.pagarCompatibilidade = window.pagarCompatibilidade || function(){
   var n = (document.getElementById('equipeMembros') ? document.getElementById('equipeMembros').value : '').trim();
   if (!n) { alert(t_preencha()); return; }
   location.href = '/criar-checkout?produto=compatibilidade_equipes&dado=' + encodeURIComponent(n)
-    + '&energia=' + encodeURIComponent(_energiaSelecionada('compEquipeEnergiaSel', 'compatibilidade_equipes'))
     + '&lang=' + getLang();
 };
 // ===== GUARDA GLOBAL ANTI-SUBMIT (A1ELOS — 20/10/2026) =====
