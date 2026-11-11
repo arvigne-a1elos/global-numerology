@@ -36,3 +36,14 @@
 
 ## Próximo passo
 Bloco 1 — corrigir a tabela de desconto (P-44) nos três arquivos.
+
+## Arquitetura de repositórios (decidido em 11/11/2026)
+
+Cada projeto mantém a própria governança. Não há repositório central.
+
+- **global-numerology** → governança da nave (este repositório)
+- **Ex-Libris-Est** → governança da biblioteca
+- **a1elos-governanca** → governança do Disco (privado)
+
+Arquivos de governança da nave vivem em `docs/`:
+`ESTADO_ATUAL.md`, `DECISOES.md`, `COMO_RETOMAR.md`, `controle/`, `relatorios/`.
