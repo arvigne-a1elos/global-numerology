@@ -54,3 +54,4 @@
 
 ### 12/10/2026
 - Fontes RTL ar/he resolvidas; apresentacao_textos com 14 idiomas × 107 chaves
+
