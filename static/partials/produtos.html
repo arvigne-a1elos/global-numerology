@@ -624,9 +624,27 @@
                 </ul>
                 <button class="btn btn-full" onclick="toggleForm('form-familia')" data-i18n="pesquisar_btn">pesquisar</button>
                 <!-- Formulário Mapa Família Premium (aparece ao clicar) -->
-                <form id="form-familia" class="hidden" onsubmit="return false">    
-                    <label data-i18n-form="f_familia">Membros da família (um por linha)</label>
-                    <textarea id="familiaMembros" rows="4" data-i18n-ph="ph_membros" placeholder="Nome 1; 01/01/1990&#10;Nome 2; 15/03/1985&#10;Nome 3; 22/07/2010"></textarea>
+                <form id="form-familia" class="hidden" onsubmit="return false">
+                    <label class="lbl-pessoa" data-i18n-form="f_principal">Pessoa principal</label>
+                    <input id="familiaPrincipalNome" type="text" data-i18n-ph="ph_nome_completo" placeholder="Nome completo">
+                    <input id="familiaPrincipalNasc" type="date">
+                    <label class="lbl-pessoa" data-i18n-form="f_membros">Membros da família</label>
+                    <div class="bloco-membro">
+                        <input id="familiaMembroNome1" type="text" data-i18n-ph="ph_nome_completo" placeholder="Nome completo">
+                        <input id="familiaMembroNasc1" type="date">
+                    </div>
+                    <div class="bloco-membro">
+                        <input id="familiaMembroNome2" type="text" data-i18n-ph="ph_opcional" placeholder="Opcional">
+                        <input id="familiaMembroNasc2" type="date">
+                    </div>
+                    <div class="bloco-membro">
+                        <input id="familiaMembroNome3" type="text" data-i18n-ph="ph_opcional" placeholder="Opcional">
+                        <input id="familiaMembroNasc3" type="date">
+                    </div>
+                    <div class="bloco-membro">
+                        <input id="familiaMembroNome4" type="text" data-i18n-ph="ph_opcional" placeholder="Opcional">
+                        <input id="familiaMembroNasc4" type="date">
+                    </div>
                     <button class="btn btn-full" onclick="pagarFamilia()" data-i18n-form="pesquisar_btn">Pesquisar</button>
                 </form>
             </div>
@@ -645,12 +663,26 @@
     </ul>
     <button class="btn btn-full" onclick="toggleForm('form-compatibilidade_equipes')" data-i18n="pesquisar_btn">pesquisar</button>
     <form id="form-compatibilidade_equipes" class="hidden" onsubmit="return false">
-       <label data-i18n-form="f_equipe">Membros da equipe (um por linha)</label>
-       <textarea id="equipeMembros" rows="4" data-i18n-ph="ph_membros" placeholder="Chefe; 01/01/1980; CHEFE&#10;Nome 2; 15/03/1985&#10;Nome 3; 22/07/1990"></textarea>
-       <label class="lbl-energia" data-i18n="energia_ideal">Energia ideal (padrão 8)</label>
-       <div id="compEquipeEnergiaSel" class="energia-selector"></div>
-       <label id="compEquipeEnergiaLabel" class="urna-label" data-i18n-form="f_energia">Energia desejada</label>
-       <p id="compEquipeEnergiaDica" class="urna-dica"></p>
+       <label class="lbl-pessoa" data-i18n-form="f_principal_rh">Pessoa principal (gestor)</label>
+       <input id="equipePrincipalNome" type="text" data-i18n-ph="ph_nome_completo" placeholder="Nome completo">
+       <input id="equipePrincipalNasc" type="date">
+       <label class="lbl-pessoa" data-i18n-form="f_membros_rh">Membros da equipe</label>
+       <div class="bloco-membro">
+           <input id="equipeMembroNome1" type="text" data-i18n-ph="ph_nome_completo" placeholder="Nome completo">
+           <input id="equipeMembroNasc1" type="date">
+       </div>
+       <div class="bloco-membro">
+           <input id="equipeMembroNome2" type="text" data-i18n-ph="ph_opcional" placeholder="Opcional">
+           <input id="equipeMembroNasc2" type="date">
+       </div>
+       <div class="bloco-membro">
+           <input id="equipeMembroNome3" type="text" data-i18n-ph="ph_opcional" placeholder="Opcional">
+           <input id="equipeMembroNasc3" type="date">
+       </div>
+       <div class="bloco-membro">
+           <input id="equipeMembroNome4" type="text" data-i18n-ph="ph_opcional" placeholder="Opcional">
+           <input id="equipeMembroNasc4" type="date">
+       </div>
        <button class="btn btn-full" onclick="pagarCompatibilidade()" data-i18n-form="pesquisar_btn">Pesquisar</button>
     </form>
 </div>
