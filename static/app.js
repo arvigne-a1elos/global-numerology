@@ -416,7 +416,8 @@ function calcDescontoBC(qtd) {
   var cfg = obterConfigDesconto();
   if (!cfg) { // fallback = mesma tabela do CONFIG_DESCONTO
     var pct = 0;
-    if (qtd >= 1000) pct = 45;
+    if (qtd >= 2000) pct = 50;
+    else if (qtd >= 1000) pct = 45;    
     else if (qtd >= 500) pct = 40;
     else if (qtd >= 200) pct = 30;
     else if (qtd >= 100) pct = 20;
