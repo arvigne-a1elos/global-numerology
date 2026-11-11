@@ -94,7 +94,7 @@ if STRIPE_KEY:
 # ===== CONFIG DE DESCONTO DO BÔNUS COLETIVO (espelho do app.js) =====
 CONFIG_DESCONTO = {
     "faixas": [
-        {"min": 10, "pct": 10}, {"min": 50, "pct": 20}, {"min": 100, "pct": 25},
+        {"min": 10, "pct": 10}, {"min": 50, "pct": 15}, {"min": 100, "pct": 20},
         {"min": 200, "pct": 30}, {"min": 500, "pct": 40}, {"min": 1000, "pct": 45},
         {"min": 2000, "pct": 50},
     ],
