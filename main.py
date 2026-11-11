@@ -91,7 +91,12 @@ ADMIN_EMAIL = "arvigne@gmail.com"
 if STRIPE_KEY:
     stripe.api_key = STRIPE_KEY
 
-# ===== CONFIG DE DESCONTO DO BÔNUS COLETIVO (espelho do app.js) =====
+# ===== CONFIG DE DESCONTO DO BÔNUS COLETIVO (espelho documental do app.js) =====
+# ATENÇÃO: este dicionário é APENAS documentação de referência.
+# O frontend (app.js) NÃO consulta estes valores, e o backend NÃO os usa
+# para calcular desconto. A fonte de verdade em tempo de execução é o
+# window.CONFIG_DESCONTO do app.js.
+# Se alterar as faixas aqui, altere também no app.js — e vice-versa.
 CONFIG_DESCONTO = {
     "faixas": [
         {"min": 10, "pct": 10}, {"min": 50, "pct": 15}, {"min": 100, "pct": 20},
