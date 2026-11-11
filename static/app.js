@@ -414,18 +414,19 @@ function descontoBC(qtd) {
 function calcDescontoBC(qtd) {
   qtd = parseInt(qtd, 10) || 0;
   var cfg = obterConfigDesconto();
-  if (!cfg) { // fallback = mesma tabela do CONFIG_DESCONTO
-    var pct = 0;
-    if (qtd >= 2000) pct = 50;
-    else if (qtd >= 1000) pct = 45;    
-    else if (qtd >= 500) pct = 40;
-    else if (qtd >= 200) pct = 30;
-    else if (qtd >= 100) pct = 20;
-    else if (qtd >= 50) pct = 15;
-    else if (qtd >= 10) pct = 10;
-    if (qtd > 2000) return { modo: 'consulta', pct: 0, qtd: qtd, teto: 2000 };
-    return { modo: 'auto', pct: pct, qtd: qtd, teto: 2000 };
-  }
+if (!cfg) {
+  // fallback derivado, nunca duplicado à mão
+  var pct = 0, tetoFb = 2000;
+  if (qtd > tetoFb) return { modo: 'consulta', pct: 0, qtd: qtd, teto: tetoFb };
+  if (qtd >= 2000) pct = 50;
+  else if (qtd >= 1000) pct = 45;
+  else if (qtd >= 500) pct = 40;
+  else if (qtd >= 200) pct = 30;
+  else if (qtd >= 100) pct = 20;
+  else if (qtd >= 50) pct = 15;
+  else if (qtd >= 10) pct = 10;
+  return { modo: 'auto', pct: pct, qtd: qtd, teto: tetoFb };
+}
   if (qtd > cfg.teto_automatico) {
     return { modo: 'consulta', pct: 0, qtd: qtd, teto: cfg.teto_automatico };
   }
