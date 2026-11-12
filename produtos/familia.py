@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
-# produtos/familia.py - Mapa Família Premium (membros com nome + data)
-# Compatibilidade: fonte de verdade absoluta referencia/cissay.py (Monique Cissay, p. 159)
+# produtos/familia.py — Mapa Família Premium
+# REGRA DE PRODUTO: contratante + 2 membros (3 pessoas).
+# Cruzamento: principal x cada membro. NUNCA membro x membro.
+# Profundidade: energia do nome + caminho de vida (padrão casal.py).
 from .mapa import reduzir, _LETRAS
 from referencia.cissay import compatibilidade
+
+MAX_MEMBROS = 2   # além do principal
 
 def _energia_nome(nome):
     s = sum(_LETRAS.get(c, 0) for c in nome.upper().replace(" ", ""))
@@ -17,41 +21,52 @@ def _caminho_vida(nasc):
         return None, 0
 
 def analisar_familia(texto):
-    # Formato por linha: "Nome; DD/MM/AAAA" ou "Nome; AAAA-MM-DD" (aceita "Nome, AAAA-MM-DD")
-    membros = [m.strip() for m in str(texto).replace(";", "\n").splitlines() if m.strip()]
-    resultados = []
-    for m in membros:
+    linhas = [m.strip() for m in str(texto).replace(";", "\n").splitlines() if m.strip()]
+    pessoas = []
+    for m in linhas:
         partes = [p.strip() for p in m.split(",")] if "," in m else [m]
         nome = partes[0]
         nasc = partes[1] if len(partes) > 1 else ""
-        # converte DD/MM/AAAA -> AAAA-MM-DD se for o caso
         if nasc and "/" in nasc:
             dd, mm, aa = nasc.split("/")
             nasc = f"{aa}-{mm}-{dd}"
         en, sn = _energia_nome(nome)
         ev, sv = _caminho_vida(nasc)
-        resultados.append({"membro": nome, "nascimento": nasc,
-                           "soma": sn, "energia": en,
-                           "caminho_vida": ev})
+        pessoas.append({"membro": nome, "nascimento": nasc, "soma": sn,
+                        "energia": en, "caminho_vida": ev})
 
-    # Cruzamento entre todos os pares (fonte de verdade Cissay)
+    # Limite de produto: principal + 2
+    if len(pessoas) > MAX_MEMBROS + 1:
+        pessoas = pessoas[:MAX_MEMBROS + 1]
+
+    principal = pessoas[0] if pessoas else None
     pares = []
-    n = len(resultados)
-    for i in range(n):
-        for j in range(i + 1, n):
-            a = resultados[i]["energia"]
-            b = resultados[j]["energia"]
-            comp = compatibilidade(a, b)
+
+    if principal:
+        for m in pessoas[1:]:
+            cn = compatibilidade(principal["energia"], m["energia"])
+            cv = None
+            if principal["caminho_vida"] and m["caminho_vida"]:
+                cv = compatibilidade(principal["caminho_vida"], m["caminho_vida"])
+
+            if cn["grau"] is None:
+                grau_final = cv["grau"] if cv else None
+            elif cv is None or cv["grau"] is None:
+                grau_final = cn["grau"]
+            else:
+                grau_final = (cn["grau"] + cv["grau"]) // 2
+
             pares.append({
-                "membro1": resultados[i]["membro"],
-                "membro2": resultados[j]["membro"],
-                "energia1": a,
-                "energia2": b,
-                "compatibilidade": comp["grau"],
-                "rotulo": comp["rotulo"],
-                "especial": comp["especial"],
-                "dual": comp["dual"],
-                "alerta_dualidade": comp["alerta_dualidade"],
+                "membro1": principal["membro"], "membro2": m["membro"],
+                "energia1": principal["energia"], "energia2": m["energia"],
+                "caminho1": principal["caminho_vida"], "caminho2": m["caminho_vida"],
+                "compatibilidade_nome": cn["grau"], "rotulo_nome": cn["rotulo"],
+                "compatibilidade_vida": cv["grau"] if cv else None,
+                "rotulo_vida": cv["rotulo"] if cv else None,
+                "compatibilidade": grau_final,
+                "dual": cn["dual"] or (cv["dual"] if cv else False),
+                "alerta_dualidade": cn["alerta_dualidade"],
             })
 
-    return {"membros": resultados, "total": n, "pares": pares}
+    return {"principal": principal, "membros": pessoas,
+            "total": len(pessoas), "pares": pares}
