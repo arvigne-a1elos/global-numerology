@@ -4,9 +4,19 @@
 # Quadro das Relações dos Números entre Si
 # Fonte canônica: Monique Cissay, "A Numerologia", p. 159
 # Legenda: 1=Dissonância | 2=Média (Acordo/Desacordo) | 3=Acordo | 4=Acordo perfeito
-# Registro: 28/09/2026 — cruzamento 22x22 é exceção especial (sem grau numérico)
-# 28/09/2026 — 7 pares com dualidade convergência/divergência geram alerta no PDF
+# ------------------------------------------------------------
+# REGRAS CONSOLIDADAS (12/11/2026)
+# 1. Acento NÃO zera letra: É=E=5, Á=A=1, Ã=A=1, Ç=C=3
+# 2. Tabela pythagórica padrão A1..I9, J1..R9, S1..Z8
+# 3. Número da pessoa = reduzir(energia_nome + energia_data)
+# 4. reduzir() preserva 11 e 22 (números mestres)
+# 5. O PRIMEIRO nome da lista ocupa a LINHA (margem esquerda)
+# 6. Grau = MATRIZ[linha][coluna] — um único cruzamento
+# 7. 22 x 22 = exceção especial, sem grau numérico
+# 8. 7 pares de dualidade geram alerta no PDF
 # ============================================================
+
+import unicodedata
 
 GRAUS = {
     1: "Dissonância",
@@ -17,7 +27,6 @@ GRAUS = {
 
 COLUNAS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 22]
 
-# Matriz Direcional: MATRIZ[linha_agente][_idx(coluna_receptora)]
 MATRIZ = {
     1:  [1, 2, 4, 3, 4, 1, 3, 4, 4, 4, 4],
     2:  [2, 2, 2, 3, 2, 4, 2, 4, 1, 3, 2],
@@ -29,7 +38,7 @@ MATRIZ = {
     8:  [1, 4, 3, 2, 1, 3, 1, 1, 1, 4, 3],
     9:  [4, 1, 3, 4, 3, 2, 4, 2, 1, 4, 3],
     11: [4, 3, 3, 1, 2, 3, 2, 4, 4, 2, 3],
-    22: [4, 2, 3, 4, 2, 3, 1, 3, 3, 3, None],  # (22,22): exceção especial
+    22: [4, 2, 3, 4, 2, 3, 1, 3, 3, 3, None],
 }
 
 ESPECIAL_22_22 = (
@@ -38,7 +47,6 @@ ESPECIAL_22_22 = (
     "Depende de fatores complementares; a sorte está lançada."
 )
 
-# 7 pares com dualidade: convergência OU divergência — instabilidade permanente.
 DUAIS = {
     frozenset((1, 6)),
     frozenset((1, 8)),
@@ -56,40 +64,100 @@ ALERTA_DUALIDADE = (
     "de posturas individuais de ambas as partes."
 )
 
-# Pares direcionais para conferência visual na obra
 CONFERIR = list(DUAIS)
 
+
+# ------------------------------------------------------------
+# TABELA DE LETRAS — REGRA 1 e 2
+# ------------------------------------------------------------
+LETRAS_BASE = {
+    "A": 1, "B": 2, "C": 3, "D": 4, "E": 5,
+    "F": 6, "G": 7, "H": 8, "I": 9,
+    "J": 1, "K": 2, "L": 3, "M": 4, "N": 5,
+    "O": 6, "P": 7, "Q": 8, "R": 9,
+    "S": 1, "T": 2, "U": 3, "V": 4, "W": 5,
+    "X": 6, "Y": 7, "Z": 8,
+}
+
+
+def normalizar_nome(nome):
+    """Remove acentos preservando a letra-base. É=E, Á=A, Ç=C."""
+    n = unicodedata.normalize("NFD", str(nome).upper())
+    n = "".join(c for c in n if unicodedata.category(c) != "Mn")
+    return "".join(c for c in n if c.isalpha())
+
+
+def energia_nome(nome):
+    """Soma as letras do nome. Acento não zera; a letra-base vale."""
+    n = normalizar_nome(nome)
+    return sum(LETRAS_BASE.get(c, 0) for c in n)
+
+
+def reduzir(n):
+    """Reduz a 1-9 preservando 11 e 22 (regra 4)."""
+    while n > 9 and n not in (11, 22):
+        n = sum(int(d) for d in str(n))
+    return n
+
+
+def energia_data(nasc):
+    """Soma os dígitos da data AAAA-MM-DD e reduz."""
+    try:
+        s = sum(int(c) for c in str(nasc) if c.isdigit())
+        return reduzir(s)
+    except Exception:
+        return None
+
+
+def numero_pessoa(nome, nasc_iso):
+    """Regra 3: N = reduzir(energia do nome + energia da data)."""
+    en = energia_nome(nome)
+    ed = energia_data(nasc_iso)
+    if ed is None:
+        return None
+    return reduzir(en + ed)
+
+
+# ------------------------------------------------------------
+# CRUZAMENTO
+# ------------------------------------------------------------
 def _idx(num):
     return COLUNAS.index(num)
 
-def obter_grau(n1, n2):
-    """Grau direcional (1-4) de n1 (age) sobre n2 (recebe). None no 22x22."""
-    if n1 == 22 and n2 == 22:
+
+def obter_grau(n_linha, n_coluna):
+    """Grau direcional. n_linha = primeiro nome da lista (topo).
+    Retorna None no 22x22."""
+    if n_linha == 22 and n_coluna == 22:
         return None
     try:
-        return MATRIZ[n1][_idx(n2)]
+        return MATRIZ[n_linha][_idx(n_coluna)]
     except (KeyError, ValueError, IndexError):
         return None
 
-def obter_rotulo(n1, n2):
-    """Rótulo textual do grau, ou a nota especial do cruzamento 22x22."""
-    if n1 == 22 and n2 == 22:
+
+def obter_rotulo(n_linha, n_coluna):
+    if n_linha == 22 and n_coluna == 22:
         return ESPECIAL_22_22
-    return GRAUS.get(obter_grau(n1, n2), "Não catalogado")
+    return GRAUS.get(obter_grau(n_linha, n_coluna), "Não catalogado")
+
 
 def eh_dual(n1, n2):
-    """True quando o par está na lista de dualidade convergência/divergência."""
     if n1 == 22 and n2 == 22:
         return False
     return frozenset((n1, n2)) in DUAIS
 
-def compatibilidade(n1, n2):
-    """Dict pronto para o PDF (casal/família). Inclui alerta de dualidade."""
-    if n1 == 22 and n2 == 22:
-        return {"n1": n1, "n2": n2, "grau": None,
+
+def compatibilidade(n_linha, n_coluna):
+    """Dict pronto para o PDF. n_linha = primeiro nome da lista.
+    Regra 5 e 6: primeiro nome na linha, um único cruzamento."""
+    if n_linha == 22 and n_coluna == 22:
+        return {"linha": n_linha, "coluna": n_coluna, "grau": None,
                 "rotulo": ESPECIAL_22_22, "especial": True,
                 "dual": False, "alerta_dualidade": None}
-    return {"n1": n1, "n2": n2, "grau": obter_grau(n1, n2),
-            "rotulo": obter_rotulo(n1, n2), "especial": False,
-            "dual": eh_dual(n1, n2),
-            "alerta_dualidade": ALERTA_DUALIDADE if eh_dual(n1, n2) else None}
+    g = obter_grau(n_linha, n_coluna)
+    d = eh_dual(n_linha, n_coluna)
+    return {"linha": n_linha, "coluna": n_coluna, "grau": g,
+            "rotulo": obter_rotulo(n_linha, n_coluna), "especial": False,
+            "dual": d,
+            "alerta_dualidade": ALERTA_DUALIDADE if d else None}
