@@ -21,10 +21,16 @@ def _caminho_vida(nasc):
         return None, 0
 
 def analisar_familia(texto):
-    linhas = [m.strip() for m in str(texto).replace(";", "\n").splitlines() if m.strip()]
+    bruto = str(texto).replace("\\n", "\n")
+    linhas = [l.strip() for l in bruto.splitlines() if l.strip()]
     pessoas = []
-    for m in linhas:
-        partes = [p.strip() for p in m.split(",")] if "," in m else [m]
+    for linha in linhas:
+        if ";" in linha:
+            partes = [p.strip() for p in linha.split(";", 1)]
+        elif "," in linha:
+            partes = [p.strip() for p in linha.split(",", 1)]
+        else:
+            partes = [linha]
         nome = partes[0]
         nasc = partes[1] if len(partes) > 1 else ""
         if nasc and "/" in nasc:
