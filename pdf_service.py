@@ -494,6 +494,59 @@ def pdf_produto(produto, dados, nome, bd_str, lang, dado=""):
                "caminho_vida": "Đường đời", "ano_pessoal": "Năm Cá nhân"},
     }
     L.update(ROTULOS_CAL.get(lang, ROTULOS_CAL["pt"]))
+        # ===== TRADUÇÕES — CARDS DE COMPATIBILIDADE (Família / Equipes) =====
+    _TRAD_COMPAT = {
+        "por_nome": {
+            "pt": "Nome", "en": "Name", "es": "Nombre", "de": "Name",
+            "fr": "Nom", "it": "Nome", "nl": "Naam", "pl": "Imię",
+            "ru": "Имя", "ja": "名前", "zh": "姓名", "ko": "이름",
+            "id": "Nama", "tr": "Ad",
+        },
+        "por_vida": {
+            "pt": "Caminho de Vida", "en": "Life Path", "es": "Camino de Vida",
+            "de": "Lebensweg", "fr": "Chemin de Vie", "it": "Percorso di Vita",
+            "nl": "Levenspad", "pl": "Ścieżka Życia", "ru": "Путь Жизни",
+            "ja": "ライフパス", "zh": "生命历程", "ko": "인생 경로",
+            "id": "Jalur Hidup", "tr": "Yaşam Yolu",
+        },
+        "analise_parcial": {
+            "pt": "Análise parcial: o caminho de vida não consta na tabela clássica de referência.",
+            "en": "Partial analysis: the life path is not in the classic reference table.",
+            "es": "Análisis parcial: el camino de vida no figura en la tabla clásica de referencia.",
+            "de": "Teilanalyse: Der Lebensweg ist nicht in der klassischen Referenztabelle enthalten.",
+            "fr": "Analyse partielle : le chemin de vie ne figure pas dans la table de référence classique.",
+            "it": "Analisi parziale: il percorso di vita non è nella tabella classica di riferimento.",
+            "nl": "Gedeeltelijke analyse: het levenspad staat niet in de klassieke referentietabel.",
+            "pl": "Analiza częściowa: ścieżka życia nie występuje w klasycznej tabeli referencyjnej.",
+            "ru": "Частичный анализ: путь жизни отсутствует в классической таблице.",
+            "ja": "部分分析：ライフパスは古典的な参照表に含まれていません。",
+            "zh": "部分分析：生命历程不在经典参照表中。",
+            "ko": "부분 분석: 인생 경로가 고전 참조표에 없습니다.",
+            "id": "Analisis sebagian: jalur hidup tidak terdapat dalam tabel referensi klasik.",
+            "tr": "Kısmi analiz: yaşam yolu klasik referans tablosunda yer almıyor.",
+        },
+        "nota": {
+            "pt": "Nota", "en": "Note", "es": "Nota", "de": "Hinweis",
+            "fr": "Note", "it": "Nota", "nl": "Opmerking", "pl": "Uwaga",
+            "ru": "Примечание", "ja": "注記", "zh": "注", "ko": "참고",
+            "id": "Catatan", "tr": "Not",
+        },
+        "papel_chefe": {
+            "pt": "chefe", "en": "leader", "es": "jefe", "de": "Leitung",
+            "fr": "responsable", "it": "capo", "nl": "leidinggevende", "pl": "przełożony",
+            "ru": "руководитель", "ja": "上司", "zh": "主管", "ko": "책임자",
+            "id": "atasan", "tr": "yönetici",
+        },
+        "papel_colaborador": {
+            "pt": "colaborador", "en": "team member", "es": "colaborador",
+            "de": "Mitarbeitende", "fr": "collaborateur", "it": "collaboratore",
+            "nl": "medewerker", "pl": "pracownik", "ru": "сотрудник",
+            "ja": "メンバー", "zh": "成员", "ko": "구성원",
+            "id": "anggota tim", "tr": "ekip üyesi",
+        },
+    }
+    for _k, _v in _TRAD_COMPAT.items():
+        L.setdefault(_k, _v.get(lang, _v["pt"]))
     _espec = None
     if "energia_mes" in dados:
         _espec = [
