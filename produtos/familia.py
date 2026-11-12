@@ -2,15 +2,18 @@
 # produtos/familia.py — Mapa Família Premium
 # REGRA DE PRODUTO: contratante + 2 membros (3 pessoas).
 # Cruzamento: principal x cada membro. NUNCA membro x membro.
-# Profundidade: energia do nome + caminho de vida (padrão casal.py).
+# Energia de cada pessoa = reduzir(energia do nome + caminho de vida).
+# Cruzamento único sobre essa energia combinada.
 from .mapa import reduzir, _LETRAS
 from referencia.cissay import compatibilidade
 
 MAX_MEMBROS = 2   # além do principal
 
+
 def _energia_nome(nome):
     s = sum(_LETRAS.get(c, 0) for c in nome.upper().replace(" ", ""))
     return reduzir(s), s
+
 
 def _caminho_vida(nasc):
     try:
@@ -19,6 +22,14 @@ def _caminho_vida(nasc):
         return reduzir(s), s
     except Exception:
         return None, 0
+
+
+def _energia_combinada(energia_nome, caminho_vida):
+    """Energia da pessoa = reduzir(energia do nome + caminho de vida)."""
+    if energia_nome is None or caminho_vida is None:
+        return None
+    return reduzir(energia_nome + caminho_vida)
+
 
 def analisar_familia(texto):
     bruto = str(texto).replace("\\n", "\n")
@@ -38,8 +49,14 @@ def analisar_familia(texto):
             nasc = f"{aa}-{mm}-{dd}"
         en, sn = _energia_nome(nome)
         ev, sv = _caminho_vida(nasc)
-        pessoas.append({"membro": nome, "nascimento": nasc, "soma": sn,
-                        "energia": en, "caminho_vida": ev})
+        pessoas.append({
+            "membro": nome,
+            "nascimento": nasc,
+            "soma": sn,
+            "energia": en,
+            "caminho_vida": ev,
+            "energia_combinada": _energia_combinada(en, ev),
+        })
 
     # Limite de produto: principal + 2
     if len(pessoas) > MAX_MEMBROS + 1:
@@ -50,29 +67,23 @@ def analisar_familia(texto):
 
     if principal:
         for m in pessoas[1:]:
-            cn = compatibilidade(principal["energia"], m["energia"])
-            cv = None
-            if principal["caminho_vida"] and m["caminho_vida"]:
-                cv = compatibilidade(principal["caminho_vida"], m["caminho_vida"])
-
-            if cn["grau"] is None:
-                grau_final = cv["grau"] if cv else None
-            elif cv is None or cv["grau"] is None:
-                grau_final = cn["grau"]
-            else:
-                grau_final = (cn["grau"] + cv["grau"]) // 2
-
+            c = compatibilidade(principal["energia_combinada"],
+                                m["energia_combinada"])
             pares.append({
-                "membro1": principal["membro"], "membro2": m["membro"],
-                "energia1": principal["energia"], "energia2": m["energia"],
-                "caminho1": principal["caminho_vida"], "caminho2": m["caminho_vida"],
-                "compatibilidade_nome": cn["grau"], "rotulo_nome": cn["rotulo"],
-                "compatibilidade_vida": cv["grau"] if cv else None,
-                "rotulo_vida": cv["rotulo"] if cv else None,
-                "compatibilidade": grau_final,
-                "dual": cn["dual"] or (cv["dual"] if cv else False),
-                "alerta_dualidade": cn["alerta_dualidade"],
+                "membro1": principal["membro"],
+                "membro2": m["membro"],
+                "energia1": principal["energia_combinada"],
+                "energia2": m["energia_combinada"],
+                "compatibilidade": c["grau"],
+                "rotulo": c["rotulo"],
+                "dual": c["dual"],
+                "alerta_dualidade": c["alerta_dualidade"],
+                "especial": c["especial"],
             })
 
-    return {"principal": principal, "membros": pessoas,
-            "total": len(pessoas), "pares": pares}
+    return {
+        "principal": principal,
+        "membros": pessoas,
+        "total": len(pessoas),
+        "pares": pares,
+    }
