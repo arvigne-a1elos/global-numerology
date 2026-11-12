@@ -1241,14 +1241,22 @@ def regenerar_pdf_por_meta(meta):
         d2 = datas[1] if len(datas) > 1 else ""
         return analisar_casal(n1, d1, n2, d2)
 
-    def _analisar_familia_com_datas():
-        return analisar_familia(dado or nome)
-
+    def _analisar_multi_com_datas(fn, dado, detalhe, nome):
+        nomes = [x.strip() for x in (dado or nome).split("|")]
+        datas = [x.strip() for x in (detalhe or "").split("|")]
+        linhas = []
+        for i, n in enumerate(nomes):
+            if not n:
+                continue
+            d = datas[i] if i < len(datas) else ""
+            linhas.append(f"{n}; {d}" if d else n)
+        return fn("\n".join(linhas))
+        
     CALC_ESPECIFICO = {
         "imovel": lambda: analisar_imovel(dado, dado2, dado3, lang),
         "casal":     lambda: _analisar_casal_com_datas(),
-        "familia":   lambda: _analisar_familia_com_datas(),
-        "compatibilidade_equipes": lambda: analisar_equipe(dado or nome),
+        "familia": lambda: _analisar_multi_com_datas(analisar_familia, dado, meta.get("detalhe",""), nome),
+        "compatibilidade_equipes": lambda: _analisar_multi_com_datas(analisar_equipe, dado, meta.get("detalhe",""), nome),
         "nome_pet":  _analisar_nome_duplo,
         "nickname":  _analisar_nome_duplo,
         "nome_dominio": _analisar_nome_duplo,
