@@ -527,23 +527,43 @@ def pdf_produto(produto, dados, nome, bd_str, lang, dado=""):
                 _espec.append(
                     f"<font color='#8a6d1f'><b>Nota:</b> "
                     f"{dados.get('alerta_dualidade_vida', ALERTA_DUALIDADE)}</font>")
+    
     elif "membros" in dados:
         _espec = [f"<b>{L['membros']}:</b> {dados.get('total', '')}"]
         for m in dados.get("membros", []):
-            _espec.append(f"{m.get('membro', '')} — {L['energia']} {m.get('energia', '')}")
-        for p in dados.get("pares", []):
+            papel = m.get("papel", "")
+            _papel = f" ({L.get('papel_' + papel, papel)})" if papel else ""
             _espec.append(
-                f"{p.get('membro1', '')} × {p.get('membro2', '')}: "
-                f"{L['compatibilidade']} {p.get('compatibilidade', '')} ({p.get('rotulo', '')})")
-            if p.get("dual"):
+                f"{m.get('membro', '')} — {L['energia']} {m.get('energia', '')}"
+                f"{_papel}" + (
+                    f" — {L.get('caminho_vida', 'Caminho de Vida')} {m.get('caminho_vida')}"
+                    if m.get("caminho_vida") else ""))
+        for p in dados.get("pares", []):
+            _linha = (
+                f"<br/><b>{p.get('membro1', '')} × {p.get('membro2', '')}</b><br/>"
+                f"{L['compatibilidade']}: <b>{p.get('compatibilidade', '—')}</b>")
+            _rot = p.get("rotulo_nome") or p.get("rotulo") or ""
+            if _rot:
+                _linha += f" — {_rot}"
+            _cn = p.get("compatibilidade_nome")
+            _cv = p.get("compatibilidade_vida")
+            if _cn is not None and _cv is not None:
+                _linha += (
+                    f"<br/><font size='8' color='#666666'>"
+                    f"{L.get('por_nome', 'Nome')}: {_cn} ({p.get('rotulo_nome', '')}) · "
+                    f"{L.get('por_vida', 'Caminho de Vida')}: {_cv} ({p.get('rotulo_vida', '')})"
+                    f"</font>")
+            elif _cv is None and p.get("rotulo_vida") == "Não catalogado":
+                _linha += (
+                    f"<br/><font size='8' color='#8a6d1f'>"
+                    f"{L.get('analise_parcial', 'Análise parcial: o caminho de vida não consta na tabela clássica de referência.')}"
+                    f"</font>")
+            _espec.append(_linha)
+            if p.get("dual") and p.get("alerta_dualidade"):
                 _espec.append(
-                    f"<font color='#8a6d1f'><b>Nota:</b> "
-                    f"{p.get('alerta_dualidade', ALERTA_DUALIDADE)}</font>")
-    elif "numero" in dados and "soma" in dados:
-        _espec = [
-            f"<b>{L['numero']}:</b> {dados.get('numero', '')}",
-            f"<b>{L['soma']}:</b> {dados.get('soma', '')} — <b>{L['energia']}:</b> {dados.get('energia', '')}",
-        ]
+                    f"<font color='#8a6d1f'><b>{L.get('nota', 'Nota')}:</b> "
+                    f"{p.get('alerta_dualidade')}</font>")
+                
         # Número do Imóvel — sugestão única + dica traduzida
         if dados.get("sugestao"):
             _espec.append(
