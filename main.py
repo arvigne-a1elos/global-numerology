@@ -24,6 +24,7 @@ from produtos.equipe import analisar_equipe
 from produtos.coletivo import desconto_bc
 from produtos.ong import analisar_ong
 import os, json, uuid, logging, secrets, string, base64, traceback
+from referencia.cissay import energia_nome, reduzir as _reduzir_cissay
 from datetime import date, datetime
 from typing import Optional
 from fastapi import FastAPI, HTTPException, Request
