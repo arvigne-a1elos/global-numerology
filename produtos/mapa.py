@@ -13,41 +13,30 @@ _LETRAS = LETRAS_BASE
 
 def calc_mapa(nome, data_str):
     bd = dp.parse(data_str).date()
-
-    # Caminho de vida: soma dia + mês + ano (sem reduzir cada parte antes)
     lp = reduzir(bd.day + bd.month + bd.year)
-
-    # Acento NÃO zera: normaliza antes de somar
     nu = normalizar_nome(nome)
 
-    te = tv = tp = 0
+    total = vogais = consoantes = 0
     for ch in nu:
         val = _LETRAS.get(ch, 0)
-        te += val
+        total += val
         if ch in "AEIOU":
-            tv += val
+            vogais += val
         else:
-            tp += val
+            consoantes += val
 
-    exp = reduzir(te)
+    personalidade = reduzir(total)      # TODAS as letras
+    alma = reduzir(vogais)              # vogais
+    realizacao = reduzir(consoantes)    # consoantes
 
     return {
         "life_path": lp,
-        "expression": exp,
-        "soul_urge": reduzir(tv),
-        "personality": reduzir(tp),
-        "destiny": reduzir(exp + lp),
+        "expression": personalidade,     # compatibilidade
+        "personality": personalidade,    # todas as letras
+        "soul_urge": alma,               # vogais
+        "realizacao": realizacao,        # consoantes (NOVO)
+        "destiny": reduzir(lp + personalidade),  # número da pessoa
     }
-
-
-def calc_grid(nome):
-    g = {i: 0 for i in range(1, 10)}
-    for ch in normalizar_nome(nome):
-        v = _LETRAS.get(ch, 0)
-        if 1 <= v <= 9:
-            g[v] += 1
-    return g
-
 
 def analisar_express(nome, data_str):
     return {"mapa": calc_mapa(nome, data_str), "tipo": "express"}
