@@ -1035,72 +1035,58 @@ LP_DESC_MASTER = {
     "pt": {
         11: "Mestre intuitivo.",
         22: "Mestre construtor.",
-        33: "Mestre do amor.",
     },
     "en": {
         11: "Intuitive master.",
         22: "Master builder.",
-        33: "Master of love.",
     },
     "es": {
         11: "Maestro intuitivo.",
         22: "Maestro constructor.",
-        33: "Maestro del amor.",
     },
     "it": {
         11: "Maestro intuitivo.",
         22: "Maestro costruttore.",
-        33: "Maestro dell'amore.",
     },
     "fr": {
         11: "Maître intuitif.",
         22: "Maître bâtisseur.",
-        33: "Maître de l'amour.",
     },
     "de": {
         11: "Intuitiver Meister.",
         22: "Baumeister-Meister.",
-        33: "Meister der Liebe.",
     },
     "ja": {
         11: "直感のマスター。",
         22: "建設のマスター。",
-        33: "愛のマスター。",
     },
     "zh": {
         11: "直觉大师。",
         22: "建造大师。",
-        33: "爱的大师。",
     },
     "ru": {
         11: "Интуитивный мастер.",
         22: "Мастер-строитель.",
-        33: "Мастер любви.",
     },
     "id": {
         11: "Master intuitif.",
         22: "Master pembangun.",
-        33: "Master cinta.",
     },
     "tr": {
         11: "Sezgisel usta.",
         22: "İnşaat ustası.",
-        33: "Aşk ustası.",
     },
     "vi": {
         11: "Bậc thầy trực giác.",
         22: "Bậc thầy kiến tạo.",
-        33: "Bậc thầy tình yêu.",
     },
     "he": {
         11: "מאסטר אינטואיטיבי.",
         22: "מאסטר בונה.",
-        33: "מאסטר של אהבה.",
     },
     "ar": {
         11: "سيد الحدس.",
         22: "سيد البناء.",
-        33: "سيد الحب.",
     },
 }
 
