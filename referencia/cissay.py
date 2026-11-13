@@ -89,6 +89,8 @@ LETRAS_ESPECIAIS = {
 }
 
 def normalizar_nome(nome):
+    """Remove acentos preservando a letra-base. É=E, Á=A, Ç=C.
+    Aplica as substituições de LETRAS_ESPECIAIS antes de remover acentos."""
     n = str(nome).upper()
     for orig, sub in LETRAS_ESPECIAIS.items():
         n = n.replace(orig, sub)
