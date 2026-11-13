@@ -504,8 +504,9 @@ function usarPlanoPronto(qExpress, qVida, qIa, qCompleto) {
   atualizarResumoBC();
 }
 // ===== CALCULADORA GRATUITA (5 números) =====
-function r1Num(n, mestres) {
-  while (n > 9 && !(mestres && (n === 11 || n === 22))) {
+function r1Num(n) {
+  // Reduz SEMPRE a 1-9. Mestres são exceção só no cruzamento.
+  while (n > 9) {
     n = String(n).split('').reduce(function(a, d) { return a + parseInt(d, 10); }, 0);
   }
   return n;
