@@ -10,6 +10,8 @@ from referencia.cissay import (
 # Alias de compatibilidade com o resto do projeto
 _LETRAS = LETRAS_BASE
 
+VOGAIS = "AEIOU"
+
 
 def calc_mapa(nome, data_str):
     bd = dp.parse(data_str).date()
@@ -20,26 +22,17 @@ def calc_mapa(nome, data_str):
     for ch in nu:
         val = _LETRAS.get(ch, 0)
         total += val
-        if ch in "AEIOU":
+        if ch in VOGAIS:
             vogais += val
         else:
             consoantes += val
 
-    te = tv = tp = 0
-    for ch in nu:
-        val = _LETRAS.get(ch, 0)
-        te += val
-        if ch in "AEIOU":
-            tv += val
-        else:
-            tp += val
-
     # TRAVA: vogais + consoantes tem que fechar com o total
-    assert tv + tp == te, "partição de letras quebrada"
+    assert vogais + consoantes == total, "partição de letras quebrada"
 
-    personalidade = reduzir(te)   # TODAS as letras
-    alma = reduzir(tv)            # vogais
-    realizacao = reduzir(tp)      # consoantes
+    personalidade = reduzir(total)        # TODAS as letras
+    alma = reduzir(vogais)               # vogais
+    realizacao = reduzir(consoantes)     # consoantes
 
     return {
         "life_path": lp,
@@ -49,6 +42,16 @@ def calc_mapa(nome, data_str):
         "realizacao": realizacao,       # consoantes (NOVO)
         "destiny": reduzir(lp + personalidade),
     }
+
+
+def calc_grid(nome):
+    g = {i: 0 for i in range(1, 10)}
+    for ch in normalizar_nome(nome):
+        v = _LETRAS.get(ch, 0)
+        if 1 <= v <= 9:
+            g[v] += 1
+    return g
+
 
 def analisar_express(nome, data_str):
     return {"mapa": calc_mapa(nome, data_str), "tipo": "express"}
