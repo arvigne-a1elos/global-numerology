@@ -86,6 +86,12 @@ LETRAS_ESPECIAIS = {
     "Ł": "L",   # polonês
     "Þ": "TH",  # islandês
     "ß": "SS",  # alemão
+    "Ơ": "O",   # vietnamita
+    "Ư": "U",   # vietnamita
+    "Ğ": "G",   # turco
+    "İ": "I",   # turco
+    "Œ": "OE",  # francês
+    "Ħ": "H",   # maltês
 }
 
 def normalizar_nome(nome):
