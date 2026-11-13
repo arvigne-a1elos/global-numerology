@@ -12,6 +12,7 @@ _LETRAS = LETRAS_BASE
 
 VOGAIS = "AEIOU"
 
+
 def calc_mapa(nome, data_str):
     bd = dp.parse(data_str).date()
     nu = normalizar_nome(nome)
@@ -37,7 +38,13 @@ def calc_mapa(nome, data_str):
     personalidade = reduzir(total)
     alma = reduzir(vogais)
     realizacao = reduzir(consoantes)
-    numero = reduzir(lp + personalidade)
+
+    # --- Número da pessoa: soma os valores BRUTOS, reduz no final ---
+    lp_bruto_val = lp_mestre if lp_mestre is not None else lp
+    pers_bruto_val = total if total in (11, 22) else personalidade
+    numero_bruto = lp_bruto_val + pers_bruto_val
+    numero = reduzir(numero_bruto)
+    numero_mestre = numero_bruto if numero_bruto in (11, 22) else None
 
     return {
         "life_path": lp,
@@ -50,8 +57,9 @@ def calc_mapa(nome, data_str):
         "realizacao": realizacao,
         "realizacao_mestre": consoantes if consoantes in (11, 22) else None,
         "destiny": numero,
-        "destiny_mestre": (lp + personalidade) if (lp + personalidade) in (11, 22) else None,
+        "destiny_mestre": numero_mestre,
     }
+
 
 def calc_grid(nome):
     g = {i: 0 for i in range(1, 10)}
@@ -60,7 +68,8 @@ def calc_grid(nome):
         if 1 <= v <= 9:
             g[v] += 1
     return g
-    
+
+
 def analisar_express(nome, data_str):
     return {"mapa": calc_mapa(nome, data_str), "tipo": "express"}
 
