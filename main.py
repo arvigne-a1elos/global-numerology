@@ -860,19 +860,13 @@ def gerar_sugestao_ia(produto, energia, lang="pt"):
     return {"nome": base[0], "energia": energia_texto(base[0]), "bonus": True}
 
 def energia_texto(texto):
-    LETRAS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    """Fonte única: usa a tabela e a redução de referencia/cissay.py."""
     if not texto:
         return None
-    soma = 0
-    for ch in texto.upper():
-        idx = LETRAS.find(ch)
-        if idx >= 0:
-            soma += (idx % 9) + 1
+    soma = energia_nome(texto)
     if soma == 0:
         return None
-    while soma > 9 and soma not in (11, 22, 33):
-        soma = sum(int(d) for d in str(soma))
-    return soma
+    return reduzir(soma)
 
 # ===== PRODUTOS DA PESQUISA IA (7 — Card da IA) =====
 PRODUTOS_IA = ["pet", "dominio", "canal", "equipe", "projeto", "evento", "nickname"]
