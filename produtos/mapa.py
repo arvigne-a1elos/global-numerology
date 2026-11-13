@@ -25,17 +25,29 @@ def calc_mapa(nome, data_str):
         else:
             consoantes += val
 
-    personalidade = reduzir(total)      # TODAS as letras
-    alma = reduzir(vogais)              # vogais
-    realizacao = reduzir(consoantes)    # consoantes
+    te = tv = tp = 0
+    for ch in nu:
+        val = _LETRAS.get(ch, 0)
+        te += val
+        if ch in "AEIOU":
+            tv += val
+        else:
+            tp += val
+
+    # TRAVA: vogais + consoantes tem que fechar com o total
+    assert tv + tp == te, "partição de letras quebrada"
+
+    personalidade = reduzir(te)   # TODAS as letras
+    alma = reduzir(tv)            # vogais
+    realizacao = reduzir(tp)      # consoantes
 
     return {
         "life_path": lp,
-        "expression": personalidade,     # compatibilidade
-        "personality": personalidade,    # todas as letras
-        "soul_urge": alma,               # vogais
-        "realizacao": realizacao,        # consoantes (NOVO)
-        "destiny": reduzir(lp + personalidade),  # número da pessoa
+        "expression": personalidade,
+        "personality": personalidade,   # todas as letras
+        "soul_urge": alma,              # vogais
+        "realizacao": realizacao,       # consoantes (NOVO)
+        "destiny": reduzir(lp + personalidade),
     }
 
 def analisar_express(nome, data_str):
