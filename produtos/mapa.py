@@ -2,6 +2,8 @@
 # produtos/mapa.py - Núcleo numerológico compartilhado
 # FONTE ÚNICA: referencia/cissay.py
 import dateutil.parser as dp
+# Reexporta para o main.py — o main importa reduzir daqui
+from referencia.cissay import reduzir  # noqa: F401
 from referencia.cissay import (
     LETRAS_BASE, reduzir, energia_nome,
     energia_data, numero_pessoa, normalizar_nome,
