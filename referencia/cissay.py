@@ -79,6 +79,23 @@ LETRAS_BASE = {
     "X": 6, "Y": 7, "Z": 8,
 }
 
+LETRAS_ESPECIAIS = {
+    "Đ": "D",   # vietnamita — D implosivo, valor 4
+    "Æ": "AE",  # dinamarquês/norueguês
+    "Ø": "O",   # dinamarquês/norueguês
+    "Ł": "L",   # polonês
+    "Þ": "TH",  # islandês
+    "ß": "SS",  # alemão
+}
+
+def normalizar_nome(nome):
+    n = str(nome).upper()
+    for orig, sub in LETRAS_ESPECIAIS.items():
+        n = n.replace(orig, sub)
+    n = unicodedata.normalize("NFD", n)
+    n = "".join(c for c in n if unicodedata.category(c) != "Mn")
+    return "".join(c for c in n if c.isalpha())
+
 
 def normalizar_nome(nome):
     """Remove acentos preservando a letra-base. É=E, Á=A, Ç=C."""
