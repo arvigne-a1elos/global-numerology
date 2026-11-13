@@ -118,9 +118,9 @@ def energia_nome(nome):
     return sum(LETRAS_BASE.get(c, 0) for c in n)
 
 
-def reduzir(n):
-    """Reduz a 1-9 preservando 11 e 22 (regra 4)."""
-    while n > 9 and n not in (11, 22):
+def reduzir(n, preservar_mestres=False):
+    mestres = (11, 22) if preservar_mestres else ()
+    while n > 9 and n not in mestres:
         n = sum(int(d) for d in str(n))
     return n
 
