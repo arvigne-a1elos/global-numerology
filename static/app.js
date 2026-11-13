@@ -505,7 +505,7 @@ function usarPlanoPronto(qExpress, qVida, qIa, qCompleto) {
 }
 // ===== CALCULADORA GRATUITA (5 números) =====
 function r1Num(n) {
-  while (n > 9 && n !== 11 && n !== 22 && n !== 33) {
+  while (n > 9 && n !== 11 && n !== 22) {
     n = String(n).split('').reduce(function(a, d) { return a + parseInt(d, 10); }, 0);
   }
   return n;
@@ -516,7 +516,7 @@ function calcular5Numeros(nome, nasc) {
   for (var i = 0; i < letras.length; i++) { t[letras[i]] = (i % 9 || 9); }
   var parts = nasc.split('-');
   var lp = r1Num(parseInt(parts[0], 10) + parseInt(parts[1], 10) + parseInt(parts[2], 10));
-  var nu = nome.toUpperCase().replace(/[^A-Z]/g, '');
+  var nu = nome.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^A-Z]/g, '');
   var te = 0, tv = 0, tp = 0;
   for (var j = 0; j < nu.length; j++) {
     var ch = nu[j];
@@ -524,7 +524,9 @@ function calcular5Numeros(nome, nasc) {
     te += val;
     if ("AEIOU".indexOf(ch) >= 0) { tv += val; } else { tp += val; }
   }
-  return [lp, r1Num(te), r1Num(tv), r1Num(tp), r1Num(r1Num(te) + lp)];
+  // ordem dos rótulos: caminho, realizacao, alma, personalidade, destino
+  // realizacao = consoantes (tp) | alma = vogais (tv) | personalidade = todas (te)
+  return [lp, r1Num(tp), r1Num(tv), r1Num(te), r1Num(r1Num(te) + lp)];
 }
 var ultimosNumeros = null;
 function calcularMapa() {
