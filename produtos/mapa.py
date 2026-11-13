@@ -15,7 +15,7 @@ VOGAIS = "AEIOU"
 
 def calc_mapa(nome, data_str):
     bd = dp.parse(data_str).date()
-    lp = reduzir(bd.day + bd.month + bd.year)
+    lp = reduzir(bd.day + bd.month + bd.year, preservar_mestres=True)
     nu = normalizar_nome(nome)
 
     total = vogais = consoantes = 0
@@ -30,17 +30,18 @@ def calc_mapa(nome, data_str):
     # TRAVA: vogais + consoantes tem que fechar com o total
     assert vogais + consoantes == total, "partição de letras quebrada"
 
-    personalidade = reduzir(total)        # TODAS as letras
-    alma = reduzir(vogais)               # vogais
-    realizacao = reduzir(consoantes)     # consoantes
+    personalidade = reduzir(total, preservar_mestres=True)
+    alma = reduzir(vogais, preservar_mestres=True)
+    realizacao = reduzir(consoantes, preservar_mestres=True)
+    numero = reduzir(lp + personalidade, preservar_mestres=True)
 
     return {
         "life_path": lp,
         "expression": personalidade,
-        "personality": personalidade,   # todas as letras
-        "soul_urge": alma,              # vogais
-        "realizacao": realizacao,       # consoantes (NOVO)
-        "destiny": reduzir(lp + personalidade),
+        "personality": personalidade,
+        "soul_urge": alma,
+        "realizacao": realizacao,
+        "destiny": numero,
     }
 
 
