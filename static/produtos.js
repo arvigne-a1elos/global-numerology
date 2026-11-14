@@ -1250,7 +1250,7 @@ window.ENERGIA_UI = {
   ar: { ideal: "الأمثل لهذا المنتج", selecionada: "الطاقة المحددة", label: "المنصب + طاقة الاسم", dica: "الطاقة المثالية 8" },
 };  
 
-window.pagarCasal = window.pagarCasal || function(){
+window.pagarCasal = function(){
   try {
     var lang = (typeof getLang === 'function') ? getLang() : 'pt';
     var t = (typeof translations !== 'undefined') ? (translations[lang] || translations.pt) : null;
@@ -1277,13 +1277,13 @@ window.pagarCasal = window.pagarCasal || function(){
   }
 };
 
-window.pagarFamilia = window.pagarFamilia || function(){
+window.pagarFamilia = function(){
   try {
     var lang = (typeof getLang === 'function') ? getLang() : 'pt';
     var t = (typeof translations !== 'undefined') ? (translations[lang] || translations.pt) : null;
 
-    var principal = (document.getElementById('familiaPrincipal') ? document.getElementById('familiaPrincipal').value : '').trim();
-    var nascP = (document.getElementById('familiaNascP') ? document.getElementById('familiaNascP').value : '').trim();
+    var principal = (document.getElementById('familiaPrincipalNome') ? document.getElementById('familiaPrincipalNome').value : '').trim();
+    var nascP = (document.getElementById('familiaPrincipalNasc') ? document.getElementById('familiaPrincipalNasc').value : '').trim();
 
     if (!principal || !nascP) {
       alert((t && t.preencha_dado) ? t.preencha_dado : 'Preencha o dado solicitado.');
@@ -1292,8 +1292,8 @@ window.pagarFamilia = window.pagarFamilia || function(){
 
     var membros = [];
     for (var i = 1; i <= 4; i++) {
-      var n = document.getElementById('familiaNome' + i);
-      var d = document.getElementById('familiaNasc' + i);
+      var n = document.getElementById('familiaMembroNome' + i);
+      var d = document.getElementById('familiaMembroNasc' + i);
       if (n && d && n.value.trim() && d.value.trim()) {
         membros.push({ nome: n.value.trim(), nasc: d.value.trim() });
       }
