@@ -1228,8 +1228,8 @@ def regenerar_pdf_por_meta(meta):
         return res
 
     def _analisar_casal_com_datas():
-        nomes = [x.strip() for x in (dado or nome).split("&")[:2]]
-        datas = [x.strip() for x in (meta.get("detalhe", "") or "").split("&")[:2]]
+        nomes = [x.strip() for x in (dado or nome).split("|")[:2]]
+        datas = [x.strip() for x in (meta.get("detalhe", "") or "").split("|")[:2]]
         n1 = nomes[0] if len(nomes) > 0 else ""
         n2 = nomes[1] if len(nomes) > 1 else ""
         d1 = datas[0] if len(datas) > 0 else ""
