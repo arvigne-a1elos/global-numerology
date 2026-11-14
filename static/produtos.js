@@ -1285,8 +1285,8 @@ window.pagarCasal = function(){
       + '&produto=casal'
       + '&nome=' + encodeURIComponent(nome1)
       + '&nascimento=' + encodeURIComponent(nasc1)
-      + '&dado=' + encodeURIComponent(nome1 + '&' + nome2)
-      + '&detalhe=' + encodeURIComponent(nasc1 + '&' + nasc2);
+      + '&dado=' + encodeURIComponent(nome1 + '|' + nome2)
+      + '&detalhe=' + encodeURIComponent(nasc1 + '|' + nasc2);
   } catch(e) {
     console.error('pagarCasal:', e);
     alert('Erro ao iniciar o pagamento. Recarregue a página.');
