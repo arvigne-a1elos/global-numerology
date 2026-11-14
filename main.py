@@ -1237,8 +1237,8 @@ def regenerar_pdf_por_meta(meta):
         return analisar_casal(n1, d1, n2, d2)
 
     def _analisar_multi_com_datas(fn, dado, detalhe, nome):
-        nomes = [x.strip() for x in (dado or nome).split("|")]
-        datas = [x.strip() for x in (detalhe or "").split("|")]
+        nomes = [x.strip() for x in (dado or nome).split("|")[:2]]
+        datas = [x.strip() for x in (meta.get("detalhe", "") or "").split("|")[:2]]
         linhas = []
         for i, n in enumerate(nomes):
             if not n:
