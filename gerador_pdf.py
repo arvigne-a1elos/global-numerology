@@ -156,3 +156,13 @@ def gerar_pdf(produto, dados, lang, nome, nascimento, dado=""):
     # Demais produtos: template genérico com semântica
     data = _enriquecer_semantica(dados, lang)
     return pdf_produto(produto, data, nome, nascimento, lang, dado)
+
+    # ---- PRODUTOS DE RELAÇÃO (2 ou 3 pessoas) ----
+    if produto == "casal":
+        return pdf_casal(dados, lang)
+
+    if produto == "familia":
+        return pdf_familia(dados, lang)
+
+    if produto == "compatibilidade_equipes":
+        return pdf_equipe(dados, lang)
