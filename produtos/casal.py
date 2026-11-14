@@ -48,7 +48,7 @@ def analisar_casal(nome1, nasc1, nome2, nasc2):
     cn = compatibilidade(e1n, e2n)
     cv = compatibilidade(e1v, e2v) if e1v and e2v else None
 
-    # MESMO critério da família: caminho de vida manda
+    # MESMO critério da familia: caminho de vida manda
     if cv and cv.get("grau") is not None:
         comp_final = cv["grau"]
     elif cn.get("grau") is not None:
@@ -70,8 +70,4 @@ def analisar_casal(nome1, nasc1, nome2, nasc2):
         "alerta_dualidade_vida": cv["alerta_dualidade"] if cv else None,
         "compatibilidade": comp_final,
         "rotulo": cv["rotulo"] if cv else (cn.get("rotulo") if cn else None),
-    }
-        "dual_vida": cv["dual"] if cv else False,
-        "alerta_dualidade_vida": cv["alerta_dualidade"] if cv else None,
-        "compatibilidade": comp_final,
     }
