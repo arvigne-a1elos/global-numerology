@@ -1310,27 +1310,42 @@ window.pagarFamilia = function(){
   }
 };
 
-window.pagarCompatibilidade = window.pagarCompatibilidade || function(){
+window.pagarCompatibilidade = function(){
   try {
     var lang = (typeof getLang === 'function') ? getLang() : 'pt';
-    var membros = (document.getElementById('equipeMembros') ? document.getElementById('equipeMembros').value : '').trim();
     var t = (typeof translations !== 'undefined') ? (translations[lang] || translations.pt) : null;
-    if (!membros) {
+
+    var chefe = (document.getElementById('equipePrincipalNome') ? document.getElementById('equipePrincipalNome').value : '').trim();
+    var nascC = (document.getElementById('equipePrincipalNasc') ? document.getElementById('equipePrincipalNasc').value : '').trim();
+
+    if (!chefe || !nascC) {
       alert((t && t.preencha_dado) ? t.preencha_dado : 'Preencha o dado solicitado.');
       return;
     }
+
+    var membros = [];
+    for (var i = 1; i <= 2; i++) {
+      var n = document.getElementById('equipeMembroNome' + i);
+      var d = document.getElementById('equipeMembroNasc' + i);
+      if (n && d && n.value.trim() && d.value.trim()) {
+        membros.push({ nome: n.value.trim(), nasc: d.value.trim() });
+      }
+    }
+
     var energia = (window._compEnergia && window._compEnergia !== '' && window._compEnergia !== '0')
                 ? window._compEnergia : '8';
+
     window.location.href = '/criar-checkout?lang=' + encodeURIComponent(lang)
       + '&produto=compatibilidade_equipes'
-      + '&dado=' + encodeURIComponent(membros)
+      + '&nome=' + encodeURIComponent(chefe)
+      + '&nascimento=' + encodeURIComponent(nascC)
+      + '&membros=' + encodeURIComponent(JSON.stringify(membros))
       + '&energia=' + encodeURIComponent(energia);
   } catch(e) {
     console.error('pagarCompatibilidade:', e);
     alert('Erro ao iniciar o pagamento. Recarregue a página.');
   }
 };
-
 function pagarUrna(){
   var lang=localStorage.getItem('l')||'pt';
   var nc=(document.getElementById('urnaNome')?document.getElementById('urnaNome').value:'').trim();
