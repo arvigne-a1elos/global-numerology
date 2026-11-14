@@ -1250,6 +1250,7 @@ window.ENERGIA_UI = {
   ar: { ideal: "الأمثل لهذا المنتج", selecionada: "الطاقة المحددة", label: "المنصب + طاقة الاسم", dica: "الطاقة المثالية 8" },
 };  
 
+// ===== MAPA DO CASAL (2 pessoas) =====
 window.pagarCasal = function(){
   try {
     var lang = (typeof getLang === 'function') ? getLang() : 'pt';
@@ -1277,6 +1278,7 @@ window.pagarCasal = function(){
   }
 };
 
+// ===== MAPA FAMÍLIA PREMIUM (1 principal + 2 membros) =====
 window.pagarFamilia = function(){
   try {
     var lang = (typeof getLang === 'function') ? getLang() : 'pt';
@@ -1292,13 +1294,18 @@ window.pagarFamilia = function(){
 
     var nomes = [principal];
     var datas = [nascP];
-    for (var i = 1; i <= 4; i++) {
+    for (var i = 1; i <= 2; i++) {
       var n = document.getElementById('familiaMembroNome' + i);
       var d = document.getElementById('familiaMembroNasc' + i);
       if (n && d && n.value.trim() && d.value.trim()) {
         nomes.push(n.value.trim());
         datas.push(d.value.trim());
       }
+    }
+
+    if (nomes.length < 3) {
+      alert((t && t.preencha_dado) ? t.preencha_dado : 'Preencha o dado solicitado.');
+      return;
     }
 
     window.location.href = '/criar-checkout?lang=' + encodeURIComponent(lang)
@@ -1313,6 +1320,7 @@ window.pagarFamilia = function(){
   }
 };
 
+// ===== COMPATIBILIDADE DE EQUIPES (1 chefe + 2 colaboradores) =====
 window.pagarCompatibilidade = function(){
   try {
     var lang = (typeof getLang === 'function') ? getLang() : 'pt';
@@ -1335,6 +1343,11 @@ window.pagarCompatibilidade = function(){
         nomes.push(n.value.trim());
         datas.push(d.value.trim());
       }
+    }
+
+    if (nomes.length < 3) {
+      alert((t && t.preencha_dado) ? t.preencha_dado : 'Preencha o dado solicitado.');
+      return;
     }
 
     var energia = (window._compEnergia && window._compEnergia !== '' && window._compEnergia !== '0')
