@@ -1250,6 +1250,66 @@ window.ENERGIA_UI = {
   ar: { ideal: "الأمثل لهذا المنتج", selecionada: "الطاقة المحددة", label: "المنصب + طاقة الاسم", dica: "الطاقة المثالية 8" },
 };  
 
+window.pagarCasal = window.pagarCasal || function(){
+  try {
+    var lang = (typeof getLang === 'function') ? getLang() : 'pt';
+    var t = (typeof translations !== 'undefined') ? (translations[lang] || translations.pt) : null;
+
+    var nome1 = (document.getElementById('casalNome1') ? document.getElementById('casalNome1').value : '').trim();
+    var nome2 = (document.getElementById('casalNome2') ? document.getElementById('casalNome2').value : '').trim();
+    var nasc1 = (document.getElementById('casalNasc1') ? document.getElementById('casalNasc1').value : '').trim();
+    var nasc2 = (document.getElementById('casalNasc2') ? document.getElementById('casalNasc2').value : '').trim();
+
+    if (!nome1 || !nome2 || !nasc1 || !nasc2) {
+      alert((t && t.preencha_dado) ? t.preencha_dado : 'Preencha o dado solicitado.');
+      return;
+    }
+
+    window.location.href = '/criar-checkout?lang=' + encodeURIComponent(lang)
+      + '&produto=casal'
+      + '&nome1=' + encodeURIComponent(nome1)
+      + '&nome2=' + encodeURIComponent(nome2)
+      + '&nasc1=' + encodeURIComponent(nasc1)
+      + '&nasc2=' + encodeURIComponent(nasc2);
+  } catch(e) {
+    console.error('pagarCasal:', e);
+    alert('Erro ao iniciar o pagamento. Recarregue a página.');
+  }
+};
+
+window.pagarFamilia = window.pagarFamilia || function(){
+  try {
+    var lang = (typeof getLang === 'function') ? getLang() : 'pt';
+    var t = (typeof translations !== 'undefined') ? (translations[lang] || translations.pt) : null;
+
+    var principal = (document.getElementById('familiaPrincipal') ? document.getElementById('familiaPrincipal').value : '').trim();
+    var nascP = (document.getElementById('familiaNascP') ? document.getElementById('familiaNascP').value : '').trim();
+
+    if (!principal || !nascP) {
+      alert((t && t.preencha_dado) ? t.preencha_dado : 'Preencha o dado solicitado.');
+      return;
+    }
+
+    var membros = [];
+    for (var i = 1; i <= 4; i++) {
+      var n = document.getElementById('familiaNome' + i);
+      var d = document.getElementById('familiaNasc' + i);
+      if (n && d && n.value.trim() && d.value.trim()) {
+        membros.push({ nome: n.value.trim(), nasc: d.value.trim() });
+      }
+    }
+
+    window.location.href = '/criar-checkout?lang=' + encodeURIComponent(lang)
+      + '&produto=familia'
+      + '&nome=' + encodeURIComponent(principal)
+      + '&nascimento=' + encodeURIComponent(nascP)
+      + '&membros=' + encodeURIComponent(JSON.stringify(membros));
+  } catch(e) {
+    console.error('pagarFamilia:', e);
+    alert('Erro ao iniciar o pagamento. Recarregue a página.');
+  }
+};
+
 window.pagarCompatibilidade = window.pagarCompatibilidade || function(){
   try {
     var lang = (typeof getLang === 'function') ? getLang() : 'pt';
