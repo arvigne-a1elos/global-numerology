@@ -11,6 +11,8 @@ from dicionarios import PDF_TEXTS, PRODUTOS, TRAD
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 BASE_URL = os.getenv("BASE_URL", os.getenv("SITE_URL", "https://global-numerology.onrender.com"))
+from pdf_service import (pdf8, pdf17, pdf_urna, pdf_eleitoral, pdf_produto,
+                         pdf_casal, pdf_familia, pdf_equipe)
 
 # ===== SEMANTICA (energias, vidas, formas e cores) - IMPORT OPCIONAL =====
 # O gerador NUNCA quebra se o módulo ainda não existir.
@@ -97,6 +99,7 @@ def pagina_sucesso(pdf_path, nome, prod_nome, lang="pt"):
         btn = (f'<a href="data:application/pdf;base64,{b64}" download="Documento.pdf" '
                f'style="display:inline-block;padding:18px 50px;background:#C9A94E;color:#000;'
                f'text-decoration:none;border-radius:50px;font-weight:700;font-size:1.2rem;margin:25px 0">{tx("baixar")}</a>')
+
     else:
         try:
             buf = io.BytesIO()
@@ -166,3 +169,4 @@ def gerar_pdf(produto, dados, lang, nome, nascimento, dado=""):
 
     if produto == "compatibilidade_equipes":
         return pdf_equipe(dados, lang)
+    
