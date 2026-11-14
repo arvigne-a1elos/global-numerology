@@ -1267,10 +1267,10 @@ window.pagarCasal = function(){
 
     window.location.href = '/criar-checkout?lang=' + encodeURIComponent(lang)
       + '&produto=casal'
-      + '&nome1=' + encodeURIComponent(nome1)
-      + '&nome2=' + encodeURIComponent(nome2)
-      + '&nasc1=' + encodeURIComponent(nasc1)
-      + '&nasc2=' + encodeURIComponent(nasc2);
+      + '&nome=' + encodeURIComponent(nome1)
+      + '&nascimento=' + encodeURIComponent(nasc1)
+      + '&dado=' + encodeURIComponent(nome1 + '&' + nome2)
+      + '&detalhe=' + encodeURIComponent(nasc1 + '&' + nasc2);
   } catch(e) {
     console.error('pagarCasal:', e);
     alert('Erro ao iniciar o pagamento. Recarregue a página.');
@@ -1290,12 +1290,14 @@ window.pagarFamilia = function(){
       return;
     }
 
-    var membros = [];
+    var nomes = [principal];
+    var datas = [nascP];
     for (var i = 1; i <= 4; i++) {
       var n = document.getElementById('familiaMembroNome' + i);
       var d = document.getElementById('familiaMembroNasc' + i);
       if (n && d && n.value.trim() && d.value.trim()) {
-        membros.push({ nome: n.value.trim(), nasc: d.value.trim() });
+        nomes.push(n.value.trim());
+        datas.push(d.value.trim());
       }
     }
 
@@ -1303,7 +1305,8 @@ window.pagarFamilia = function(){
       + '&produto=familia'
       + '&nome=' + encodeURIComponent(principal)
       + '&nascimento=' + encodeURIComponent(nascP)
-      + '&membros=' + encodeURIComponent(JSON.stringify(membros));
+      + '&dado=' + encodeURIComponent(nomes.join('|'))
+      + '&detalhe=' + encodeURIComponent(datas.join('|'));
   } catch(e) {
     console.error('pagarFamilia:', e);
     alert('Erro ao iniciar o pagamento. Recarregue a página.');
@@ -1323,12 +1326,14 @@ window.pagarCompatibilidade = function(){
       return;
     }
 
-    var membros = [];
+    var nomes = [chefe];
+    var datas = [nascC];
     for (var i = 1; i <= 2; i++) {
       var n = document.getElementById('equipeMembroNome' + i);
       var d = document.getElementById('equipeMembroNasc' + i);
       if (n && d && n.value.trim() && d.value.trim()) {
-        membros.push({ nome: n.value.trim(), nasc: d.value.trim() });
+        nomes.push(n.value.trim());
+        datas.push(d.value.trim());
       }
     }
 
@@ -1339,13 +1344,15 @@ window.pagarCompatibilidade = function(){
       + '&produto=compatibilidade_equipes'
       + '&nome=' + encodeURIComponent(chefe)
       + '&nascimento=' + encodeURIComponent(nascC)
-      + '&membros=' + encodeURIComponent(JSON.stringify(membros))
+      + '&dado=' + encodeURIComponent(nomes.join('|'))
+      + '&detalhe=' + encodeURIComponent(datas.join('|'))
       + '&energia=' + encodeURIComponent(energia);
   } catch(e) {
     console.error('pagarCompatibilidade:', e);
     alert('Erro ao iniciar o pagamento. Recarregue a página.');
   }
 };
+
 function pagarUrna(){
   var lang=localStorage.getItem('l')||'pt';
   var nc=(document.getElementById('urnaNome')?document.getElementById('urnaNome').value:'').trim();
