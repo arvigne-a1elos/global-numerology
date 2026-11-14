@@ -1,21 +1,27 @@
 # -*- coding: utf-8 -*-
 # produtos/familia.py — Mapa Família Premium
-# REGRA DE PRODUTO: contratante + 2 membros (3 pessoas).
-# Cruzamento: principal x cada membro. NUNCA membro x membro.
-# Energia de cada pessoa = reduzir(energia do nome + caminho de vida).
-# Cruzamento único sobre essa energia combinada.
-from .mapa import reduzir, _LETRAS
+import unicodedata
+from .mapa import reduzir, _LETRAS, calc_mapa
 from referencia.cissay import compatibilidade
 
-MAX_MEMBROS = 2   # além do principal
+MAX_MEMBROS = 2
+
+
+def _limpar(nome):
+    n = unicodedata.normalize("NFD", (nome or "").upper())
+    n = "".join(c for c in n if unicodedata.category(c) != "Mn")
+    return "".join(c for c in n if "A" <= c <= "Z")
 
 
 def _energia_nome(nome):
-    s = sum(_LETRAS.get(c, 0) for c in nome.upper().replace(" ", ""))
+    limpo = _limpar(nome)
+    s = sum(_LETRAS.get(c, 0) for c in limpo)
     return reduzir(s), s
 
 
 def _caminho_vida(nasc):
+    if not nasc:
+        return None, 0
     try:
         d, m, a = nasc.split("-")
         s = sum(int(x) for x in d + m + a)
@@ -25,15 +31,22 @@ def _caminho_vida(nasc):
 
 
 def _energia_combinada(energia_nome, caminho_vida):
-    """Energia da pessoa = reduzir(energia do nome + caminho de vida)."""
     if energia_nome is None or caminho_vida is None:
         return None
     return reduzir(energia_nome + caminho_vida)
 
 
-def analisar_familia(texto):
-    bruto = str(texto).replace("\\n", "\n")
-    linhas = [l.strip() for l in bruto.splitlines() if l.strip()]
+def analisar_familia(texto, separador="|"):
+    """Aceita nomes separados por | e datas separadas por |."""
+    bruto = str(texto or "")
+    # primeiro tenta quebra de linha, depois o separador recebido
+    if "\n" in bruto:
+        linhas = [l.strip() for l in bruto.splitlines() if l.strip()]
+    elif separador in bruto:
+        linhas = [l.strip() for l in bruto.split(separador) if l.strip()]
+    else:
+        linhas = [bruto.strip()] if bruto.strip() else []
+
     pessoas = []
     for linha in linhas:
         if ";" in linha:
@@ -50,40 +63,27 @@ def analisar_familia(texto):
         en, sn = _energia_nome(nome)
         ev, sv = _caminho_vida(nasc)
         pessoas.append({
-            "membro": nome,
-            "nascimento": nasc,
-            "soma": sn,
-            "energia": en,
-            "caminho_vida": ev,
+            "membro": nome, "nascimento": nasc, "soma": sn,
+            "energia": en, "caminho_vida": ev,
             "energia_combinada": _energia_combinada(en, ev),
         })
 
-    # Limite de produto: principal + 2
     if len(pessoas) > MAX_MEMBROS + 1:
         pessoas = pessoas[:MAX_MEMBROS + 1]
 
     principal = pessoas[0] if pessoas else None
     pares = []
-
     if principal:
         for m in pessoas[1:]:
             c = compatibilidade(principal["energia_combinada"],
                                 m["energia_combinada"])
             pares.append({
-                "membro1": principal["membro"],
-                "membro2": m["membro"],
+                "membro1": principal["membro"], "membro2": m["membro"],
                 "energia1": principal["energia_combinada"],
                 "energia2": m["energia_combinada"],
-                "compatibilidade": c["grau"],
-                "rotulo": c["rotulo"],
-                "dual": c["dual"],
-                "alerta_dualidade": c["alerta_dualidade"],
-                "especial": c["especial"],
+                "compatibilidade": c["grau"], "rotulo": c["rotulo"],
+                "dual": c["dual"], "alerta_dualidade": c["alerta_dualidade"],
             })
 
-    return {
-        "principal": principal,
-        "membros": pessoas,
-        "total": len(pessoas),
-        "pares": pares,
-    }
+    return {"principal": principal, "membros": pessoas,
+            "total": len(pessoas), "pares": pares}
