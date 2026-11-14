@@ -514,7 +514,7 @@ function r1Num(n) {
 function calcular5Numeros(nome, nasc) {
   var t = {};
   var letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  for (var i = 0; i < letras.length; i++) { t[letras[i]] = (i % 9 || 9); }
+  for (var i = 0; i < letras.length; i++) { t[letras[i]] = (i % 9) + 1; }
   var parts = nasc.split('-');
   var lp = r1Num(parseInt(parts[0], 10) + parseInt(parts[1], 10) + parseInt(parts[2], 10));
   var nu = nome.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^A-Z]/g, '');
