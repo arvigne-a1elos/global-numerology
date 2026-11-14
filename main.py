@@ -1110,7 +1110,7 @@ def pay_success(request: Request):
     sid = request.query_params.get("session_id", "")
     if not sid:
         return HTMLResponse("ERRO")
-    url_rel = BASE_URL + "/r/" + sid      # ~35 caracteres em vez de ~70
+    url_rel = BASE_URL + "/r/" + sid
     try:
         s = stripe.checkout.Session.retrieve(sid)
         meta = getattr(s, "metadata", {}) or {}
@@ -1118,14 +1118,26 @@ def pay_success(request: Request):
             meta = meta.to_dict()
         nome = meta.get("nome", "Cliente")
         email = meta.get("email", "") or getattr(s, "customer_email", "") or ""
-        bd = meta.get("birth", "")
         prod = meta.get("tipo", "express")
         lang = meta.get("lang", "pt")
         dado = meta.get("dado", "")
         dado2 = meta.get("dado2", "")
-        nome_exib = nome if prod == "calendario" else (nome or dado or "Cliente")          
+
+        # Data do cabeçalho: birth; se vazio, 1ª data de detalhe; senão fallback
+        bd = meta.get("birth", "")
         if not bd:
-            bd = "2000-01-01"
+            _det = meta.get("detalhe", "") or ""
+            _primeira = _det.split("|")[0].strip() if _det else ""
+            bd = _primeira or "2000-01-01"
+
+        # Cabeçalho: multi-pessoa usa os nomes de "dado", não o do contratante
+        if prod in ("familia", "compatibilidade_equipes", "casal"):
+            _nomes = [n.strip() for n in (dado or nome).split("|") if n.strip()]
+            nome_exib = " & ".join(_nomes) if _nomes else nome
+        elif prod == "calendario":
+            nome_exib = nome
+        else:
+            nome_exib = nome or dado or "Cliente"
 
         db = SessionLocal()
         try:
@@ -1137,6 +1149,7 @@ def pay_success(request: Request):
             pass
         finally:
             db.close()
+
         pn = PRODUTOS.get(lang, PRODUTOS["pt"]).get(prod, prod)
         pf = regenerar_pdf_por_meta(meta)
 
@@ -1145,12 +1158,13 @@ def pay_success(request: Request):
             try:
                 os.makedirs(DIR_RELATORIOS, exist_ok=True)
                 _limpar_expirados()
-                nome_arq = f"{uuid.uuid4().hex}.pdf"          # UUID, sem identificar
+                nome_arq = f"{uuid.uuid4().hex}.pdf"
                 novo = os.path.join(DIR_RELATORIOS, nome_arq)
                 with open(pf, "rb") as f_orig, open(novo, "wb") as f_novo:
                     f_novo.write(f_orig.read())
-                logger.info(f"QR aponta para: {url_rel}")    
-                qr = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_H, box_size=10, border=2)
+                logger.info(f"QR aponta para: {url_rel}")
+                qr = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_H,
+                                   box_size=10, border=2)
                 qr.add_data(url_rel)
                 qr.make(fit=True)
                 img = qr.make_image(fill_color="black", back_color="white")
@@ -1237,12 +1251,12 @@ def regenerar_pdf_por_meta(meta):
         return analisar_casal(n1, d1, n2, d2)
 
     def _analisar_multi_com_datas(fn, dado, detalhe, nome):
-        nomes = [x.strip() for x in (dado or nome).split("|")[:2]]
-        datas = [x.strip() for x in (meta.get("detalhe", "") or "").split("|")[:2]]
+        nomes = [x.strip() for x in (dado or nome).split("|")]
+        nomes = [n for n in nomes if n][:3]        # exatamente 3 pessoas
+        datas = [x.strip() for x in (meta.get("detalhe", "") or "").split("|")]
+        datas = [d for d in datas if d][:3]
         linhas = []
         for i, n in enumerate(nomes):
-            if not n:
-                continue
             d = datas[i] if i < len(datas) else ""
             linhas.append(f"{n}; {d}" if d else n)
         return fn("\n".join(linhas))
