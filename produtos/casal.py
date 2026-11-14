@@ -69,4 +69,9 @@ def analisar_casal(nome1, nasc1, nome2, nasc2):
         "dual_vida": cv["dual"] if cv else False,
         "alerta_dualidade_vida": cv["alerta_dualidade"] if cv else None,
         "compatibilidade": comp_final,
+        "rotulo": cv["rotulo"] if cv else (cn.get("rotulo") if cn else None),
+    }
+        "dual_vida": cv["dual"] if cv else False,
+        "alerta_dualidade_vida": cv["alerta_dualidade"] if cv else None,
+        "compatibilidade": comp_final,
     }
