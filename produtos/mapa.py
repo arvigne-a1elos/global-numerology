@@ -2,10 +2,21 @@
 # produtos/mapa.py - Núcleo numerológico compartilhado
 # FONTE ÚNICA: referencia/cissay.py
 import dateutil.parser as dp
+
 from referencia.cissay import (
-    LETRAS_BASE, reduzir, energia_nome,
-    energia_data, numero_pessoa, normalizar_nome,
+    LETRAS_BASE,
+    reduzir,
+    energia_nome,
+    energia_data,
+    numero_pessoa,
+    normalizar_nome,
 )
+
+# Reexporta explicitamente para o main.py
+__all__ = [
+    "reduzir", "calc_mapa", "calc_grid",
+    "analisar_express", "analisar_completo", "analisar_vida",
+]
 
 # Alias de compatibilidade com o resto do projeto
 _LETRAS = LETRAS_BASE
