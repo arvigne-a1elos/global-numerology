@@ -1256,12 +1256,27 @@ window.pagarCasal = function(){
     var lang = (typeof getLang === 'function') ? getLang() : 'pt';
     var t = (typeof translations !== 'undefined') ? (translations[lang] || translations.pt) : null;
 
-    var nome1 = (document.getElementById('casalNome1') ? document.getElementById('casalNome1').value : '').trim();
-    var nome2 = (document.getElementById('casalNome2') ? document.getElementById('casalNome2').value : '').trim();
-    var nasc1 = (document.getElementById('casalNasc1') ? document.getElementById('casalNasc1').value : '').trim();
-    var nasc2 = (document.getElementById('casalNasc2') ? document.getElementById('casalNasc2').value : '').trim();
+    // pega o formulário VISÍVEL, não o primeiro id do DOM
+    var forms = document.querySelectorAll('form#form-casal');
+    var form = null;
+    for (var i = 0; i < forms.length; i++) {
+      if (forms[i].offsetParent !== null) { form = forms[i]; break; }
+    }
+    if (!form) form = forms[forms.length - 1] || document.getElementById('form-casal');
+
+    var _v = function(id){
+      var e = form ? form.querySelector('[id="' + id + '"]') : null;
+      if (!e) e = document.getElementById(id);
+      return e ? (e.value || '').trim() : '';
+    };
+
+    var nome1 = _v('casalNome1');
+    var nome2 = _v('casalNome2');
+    var nasc1 = _v('casalNasc1');
+    var nasc2 = _v('casalNasc2');
 
     if (!nome1 || !nome2 || !nasc1 || !nasc2) {
+      console.warn('pagarCasal faltando:', {nome1:nome1, nome2:nome2, nasc1:nasc1, nasc2:nasc2, forms:forms.length});
       alert((t && t.preencha_dado) ? t.preencha_dado : 'Preencha o dado solicitado.');
       return;
     }
@@ -1274,48 +1289,6 @@ window.pagarCasal = function(){
       + '&detalhe=' + encodeURIComponent(nasc1 + '&' + nasc2);
   } catch(e) {
     console.error('pagarCasal:', e);
-    alert('Erro ao iniciar o pagamento. Recarregue a página.');
-  }
-};
-
-// ===== MAPA FAMÍLIA PREMIUM (1 principal + 2 membros) =====
-window.pagarFamilia = function(){
-  try {
-    var lang = (typeof getLang === 'function') ? getLang() : 'pt';
-    var t = (typeof translations !== 'undefined') ? (translations[lang] || translations.pt) : null;
-
-    var principal = (document.getElementById('familiaPrincipalNome') ? document.getElementById('familiaPrincipalNome').value : '').trim();
-    var nascP = (document.getElementById('familiaPrincipalNasc') ? document.getElementById('familiaPrincipalNasc').value : '').trim();
-
-    if (!principal || !nascP) {
-      alert((t && t.preencha_dado) ? t.preencha_dado : 'Preencha o dado solicitado.');
-      return;
-    }
-
-    var nomes = [principal];
-    var datas = [nascP];
-    for (var i = 1; i <= 2; i++) {
-      var n = document.getElementById('familiaMembroNome' + i);
-      var d = document.getElementById('familiaMembroNasc' + i);
-      if (n && d && n.value.trim() && d.value.trim()) {
-        nomes.push(n.value.trim());
-        datas.push(d.value.trim());
-      }
-    }
-
-    if (nomes.length < 3) {
-      alert((t && t.preencha_dado) ? t.preencha_dado : 'Preencha o dado solicitado.');
-      return;
-    }
-
-    window.location.href = '/criar-checkout?lang=' + encodeURIComponent(lang)
-      + '&produto=familia'
-      + '&nome=' + encodeURIComponent(principal)
-      + '&nascimento=' + encodeURIComponent(nascP)
-      + '&dado=' + encodeURIComponent(nomes.join('|'))
-      + '&detalhe=' + encodeURIComponent(datas.join('|'));
-  } catch(e) {
-    console.error('pagarFamilia:', e);
     alert('Erro ao iniciar o pagamento. Recarregue a página.');
   }
 };
