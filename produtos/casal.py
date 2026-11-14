@@ -6,7 +6,7 @@ from referencia.cissay import compatibilidade
 
 
 def _limpar(nome):
-    """Normaliza igual ao mapa.py: remove acentos e não-letras."""
+    """Normaliza igual ao mapa.py: remove acentos e mantém só A-Z."""
     n = unicodedata.normalize("NFD", (nome or "").upper())
     n = "".join(c for c in n if unicodedata.category(c) != "Mn")
     return "".join(c for c in n if "A" <= c <= "Z")
@@ -18,15 +18,18 @@ def _energia_nome(nome):
     return reduzir(s), s
 
 
-def _caminho_vida(nasc):
-    """Usa o calc_mapa para garantir o MESMO número do mapa principal."""
+def _caminho_vida(nasc, nome=""):
+    """Usa calc_mapa para garantir o MESMO caminho de vida do mapa principal."""
     if not nasc:
         return None, 0
     try:
-        r = calc_mapa("Teste", nasc)
-        # calc_mapa devolve as chaves do mapa; usamos o caminho de vida
-        cv = r.get("life_path") or r.get("caminho_vida") or r.get("destino")
-        return reduzir(int(cv)), s if False else (reduzir(int(cv)), int(cv))
+        r = calc_mapa(nome or "Teste", nasc)
+        cv = r.get("life_path")
+        if cv is None:
+            return None, 0
+        if r.get("life_path_mestre") and int(cv) in (11, 22):
+            return int(cv), int(cv)
+        return reduzir(int(cv)), int(cv)
     except Exception:
         try:
             d, m, a = nasc.split("-")
@@ -39,13 +42,13 @@ def _caminho_vida(nasc):
 def analisar_casal(nome1, nasc1, nome2, nasc2):
     e1n, s1n = _energia_nome(nome1)
     e2n, s2n = _energia_nome(nome2)
-    e1v, s1v = _caminho_vida(nasc1)
-    e2v, s2v = _caminho_vida(nasc2)
+    e1v, s1v = _caminho_vida(nasc1, nome1)
+    e2v, s2v = _caminho_vida(nasc2, nome2)
 
     cn = compatibilidade(e1n, e2n)
     cv = compatibilidade(e1v, e2v) if e1v and e2v else None
 
-    # MESMO critério da família: prioriza o caminho de vida
+    # MESMO critério da família: caminho de vida manda
     if cv and cv.get("grau") is not None:
         comp_final = cv["grau"]
     elif cn.get("grau") is not None:
