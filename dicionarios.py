@@ -3937,3 +3937,74 @@ def get_compat(grau, contexto="casal", lang="pt"):
         return ""
     d = _COMPAT_MAPA.get(contexto, COMPAT_TXT_CASAL)
     return (d.get(lang) or d["pt"]).get(chave, "")
+
+# ============================================================
+# DUAL_TXT — texto complementar de dualidade (grau 2)
+# Aplicado quando o cruzamento resulta em 2. Explica o antagonismo:
+# instabilidade permanente, disputa de poder e a convergência possível.
+# 14 idiomas.
+# ============================================================
+DUAL_TXT_CASAL = {
+    "pt": "A convivência do casal nunca será morna. Vai oscilar entre encontro e conflito, e a disputa por espaço é permanente — nenhum dos dois cede de forma espontânea. Se houver acordo acima da média, essa mesma intensidade vira força: a relação cresce para o bem ou se desgasta para o mal, sem meio-termo.",
+    "en": "Life as a couple will never be lukewarm. It swings between closeness and conflict, and the struggle for space is permanent — neither yields spontaneously. If there is above-average agreement, that same intensity becomes strength: the relationship grows for good or wears down for bad, with no middle ground.",
+    "es": "La convivencia de la pareja nunca será tibia. Oscilará entre encuentro y conflicto, y la disputa por el espacio es permanente — ninguno cede de forma espontánea. Si existe acuerdo por encima del promedio, esa misma intensidad se convierte en fuerza: la relación crece para bien o se desgasta para mal, sin término medio.",
+    "it": "La convivenza di coppia non sarà mai tiepida. Oscillerà tra incontro e conflitto, e la disputa per lo spazio è permanente — nessuno dei due cede spontaneamente. Se c'è un accordo sopra la media, quella stessa intensità diventa forza: la relazione cresce per il bene o si logora per il male, senza vie di mezzo.",
+    "fr": "La vie de couple ne sera jamais tiède. Elle oscillera entre rencontre et conflit, et la lutte pour l'espace est permanente — aucun des deux ne cède spontanément. S'il existe un accord supérieur à la moyenne, cette même intensité devient force : la relation grandit pour le bien ou s'use pour le mal, sans demi-mesure.",
+    "de": "Das Zusammenleben als Paar wird niemals lauwarm sein. Es schwankt zwischen Nähe und Konflikt, und der Kampf um Raum ist dauerhaft — keiner gibt von sich aus nach. Gibt es eine überdurchschnittliche Übereinstimmung, wird genau diese Intensität zur Kraft: die Beziehung wächst zum Guten oder verschleißt zum Schlechten, ohne Mittelweg.",
+    "ja": "カップルの生活は決して穏やかなだけでは終わりません。接近と衝突の間を揺れ動き、居場所をめぐる争いは恒常的で、どちらも自発的には譲りません。平均以上の合意があれば、その同じ強さが力となります。関係は善き方向へ成長するか、悪しき方向へ消耗するか、中間はありません。",
+    "zh": "情侣之间的相处永远不会温吞。它将在亲密与冲突之间摇摆，对空间的争夺是恒久的，双方都不会主动退让。若有高于平均水平的共识，同样的强度便会转化为力量：关系要么向善成长，要么向恶消耗，没有中间地带。",
+    "ru": "Совместная жизнь пары никогда не будет тёплой и безразличной. Она колеблется между близостью и конфликтом, а борьба за пространство постоянна — ни один не уступает добровольно. Если согласие выше среднего, та же интенсивность становится силой: отношения растут во благо или изнашиваются во вред, без середины.",
+    "he": "החיים כזוג לעולם לא יהיו פושרים. הם יתנדנדו בין קרבה לעימות, והמאבק על מרחב הוא קבוע — אף אחד לא מוותר מיוזמתו. אם יש הסכמה מעל הממוצע, אותה עוצמה עצמה הופכת לכוח: הזוגיות צומחת לטובה או נשחקת לרעה, בלי אמצע.",
+    "ar": "لن تكون الحياة الزوجية فاترة أبداً. ستتأرجح بين القرب والصراع، والتنازع على المساحة دائم — لا يستسلم أي منهما من تلقاء نفسه. وإذا وُجد اتفاق فوق المتوسط، تتحول هذه الشدة نفسها إلى قوة: العلاقة تنمو خيراً أو تستهلك شراً، بلا حل وسط.",
+    "id": "Hidup sebagai pasangan tidak akan pernah hambar. Ia berayun antara kedekatan dan konflik, dan perebutan ruang bersifat permanen — tak satu pun mengalah dengan sendirinya. Bila ada kesepakatan di atas rata-rata, intensitas yang sama itu berubah menjadi kekuatan: hubungan tumbuh ke arah baik atau tergerus ke arah buruk, tanpa jalan tengah.",
+    "tr": "Çift olarak yaşam asla ılık olmayacak. Yakınlık ile çatışma arasında salınacak ve alan mücadelesi kalıcıdır — hiçbiri kendiliğinden geri adım atmaz. Ortalamanın üzerinde bir uzlaşma varsa, aynı yoğunluk bir güce dönüşür: ilişki iyiye doğru büyür ya da kötüye doğru yıpranır, ortası yoktur.",
+    "vi": "Cuộc sống chung của một cặp đôi sẽ không bao giờ phẳng lặng. Nó dao động giữa gần gũi và xung đột, và cuộc tranh giành không gian là vĩnh viễn — không ai tự nguyện nhường bước. Nếu có sự đồng thuận trên mức trung bình, chính cường độ đó trở thành sức mạnh: mối quan hệ lớn lên theo hướng tốt hoặc hao mòn theo hướng xấu, không có nửa vời.",
+}
+
+DUAL_TXT_FAMILIA = {
+    "pt": "A convivência familiar nunca será morna. Vai oscilar entre proximidade e atrito, e a disputa de poder entre os papéis é permanente — cada um defende seu território sem ceder de imediato. Se houver acordo acima da média, essa mesma intensidade vira força: o núcleo se fortalece para o bem ou se desgasta para o mal, sem meio-termo.",
+    "en": "Family life will never be lukewarm. It swings between closeness and friction, and the power struggle between roles is permanent — each defends their territory without yielding at once. If there is above-average agreement, that same intensity becomes strength: the household strengthens for good or wears down for bad, with no middle ground.",
+    "es": "La convivencia familiar nunca será tibia. Oscilará entre cercanía y roce, y la disputa de poder entre los roles es permanente — cada uno defiende su territorio sin ceder de inmediato. Si existe acuerdo por encima del promedio, esa misma intensidad se convierte en fuerza: el núcleo se fortalece para bien o se desgasta para mal, sin término medio.",
+    "it": "La convivenza familiare non sarà mai tiepida. Oscillerà tra vicinanza e attrito, e la disputa di potere tra i ruoli è permanente — ognuno difende il proprio territorio senza cedere subito. Se c'è un accordo sopra la media, quella stessa intensità diventa forza: il nucleo si rafforza per il bene o si logora per il male, senza vie di mezzo.",
+    "fr": "La vie familiale ne sera jamais tiède. Elle oscillera entre proximité et friction, et la lutte de pouvoir entre les rôles est permanente — chacun défend son territoire sans céder aussitôt. S'il existe un accord supérieur à la moyenne, cette même intensité devient force : le foyer se renforce pour le bien ou s'use pour le mal, sans demi-mesure.",
+    "de": "Das Familienleben wird niemals lauwarm sein. Es schwankt zwischen Nähe und Reibung, und der Machtkampf zwischen den Rollen ist dauerhaft — jeder verteidigt sein Terrain, ohne sofort nachzugeben. Gibt es eine überdurchschnittliche Übereinstimmung, wird genau diese Intensität zur Kraft: das Gefüge erstarkt zum Guten oder verschleißt zum Schlechten, ohne Mittelweg.",
+    "ja": "家族の暮らしは決して穏やかなだけでは終わりません。親密さと摩擦の間を揺れ動き、役割をめぐる権力の争いは恒常的で、誰もすぐには譲りません。平均以上の合意があれば、その同じ強さが力となります。家庭は善き方向へ強まるか、悪しき方向へ消耗するか、中間はありません。",
+    "zh": "家庭生活永远不会温吞。它将在亲近与摩擦之间摇摆，角色之间的权力争夺是恒久的，每个人都捍卫自己的地盘而不会立即退让。若有高于平均水平的共识，同样的强度便会转化为力量：家庭要么向善而凝聚，要么向恶而消耗，没有中间地带。",
+    "ru": "Семейная жизнь никогда не будет тёплой и безразличной. Она колеблется между близостью и трением, а борьба за власть между ролями постоянна — каждый защищает свою территорию, не уступая сразу. Если согласие выше среднего, та же интенсивность становится силой: дом крепнет во благо или изнашивается во вред, без середины.",
+    "he": "החיים המשפחתיים לעולם לא יהיו פושרים. הם יתנדנדו בין קרבה לחיכוך, והמאבק על כוח בין התפקידים קבוע — כל אחד מגן על הטריטוריה שלו בלי לוותר מיד. אם יש הסכמה מעל הממוצע, אותה עוצמה עצמה הופכת לכוח: הבית מתחזק לטובה או נשחק לרעה, בלי אמצע.",
+    "ar": "لن تكون الحياة الأسرية فاترة أبداً. ستتأرجح بين القرب والاحتكاك، والتنازع على السلطة بين الأدوار دائم — كلٌّ يدافع عن منطقته دون تنازل فوري. وإذا وُجد اتفاق فوق المتوسط، تتحول هذه الشدة نفسها إلى قوة: البيت يقوى خيراً أو يستهلك شراً، بلا حل وسط.",
+    "id": "Kehidupan keluarga tidak akan pernah hambar. Ia berayun antara kedekatan dan gesekan, dan perebutan kekuasaan antar peran bersifat permanen — masing-masing mempertahankan wilayahnya tanpa langsung mengalah. Bila ada kesepakatan di atas rata-rata, intensitas yang sama itu berubah menjadi kekuatan: keluarga menguat ke arah baik atau tergerus ke arah buruk, tanpa jalan tengah.",
+    "tr": "Aile yaşamı asla ılık olmayacak. Yakınlık ile sürtüşme arasında salınacak ve roller arasındaki güç mücadelesi kalıcıdır — herkes kendi alanını savunur ve hemen geri adım atmaz. Ortalamanın üzerinde bir uzlaşma varsa, aynı yoğunluk bir güce dönüşür: yuva iyiye doğru güçlenir ya da kötüye doğru yıpranır, ortası yoktur.",
+    "vi": "Cuộc sống gia đình sẽ không bao giờ phẳng lặng. Nó dao động giữa gần gũi và va chạm, và cuộc tranh giành quyền lực giữa các vai trò là vĩnh viễn — mỗi người bảo vệ lãnh thổ của mình mà không nhượng bộ ngay. Nếu có sự đồng thuận trên mức trung bình, chính cường độ đó trở thành sức mạnh: gia đình vững mạnh theo hướng tốt hoặc hao mòn theo hướng xấu, không có nửa vời.",
+}
+
+DUAL_TXT_EQUIPE = {
+    "pt": "A convivência no ambiente de trabalho nunca será morna. Vai oscilar entre cooperação e atrito, e a disputa de poder entre as funções é permanente — cada um defende seu espaço sem ceder de imediato. Se houver acordo acima da média, essa mesma intensidade vira produtividade; se não houver, vira desgaste.",
+    "en": "The workplace relationship will never be lukewarm. It swings between cooperation and friction, and the power struggle between roles is permanent — each defends their space without yielding at once. If there is above-average agreement, that same intensity becomes productivity; if not, it becomes wear.",
+    "es": "La convivencia en el trabajo nunca será tibia. Oscilará entre cooperación y roce, y la disputa de poder entre las funciones es permanente — cada uno defiende su espacio sin ceder de inmediato. Si existe acuerdo por encima del promedio, esa misma intensidad se convierte en productividad; si no, se convierte en desgaste.",
+    "it": "La convivenza sul lavoro non sarà mai tiepida. Oscillerà tra cooperazione e attrito, e la disputa di potere tra le funzioni è permanente — ognuno difende il proprio spazio senza cedere subito. Se c'è un accordo sopra la media, quella stessa intensità diventa produttività; in caso contrario, diventa logoramento.",
+    "fr": "La vie professionnelle ne sera jamais tiède. Elle oscillera entre coopération et friction, et la lutte de pouvoir entre les fonctions est permanente — chacun défend son espace sans céder aussitôt. S'il existe un accord supérieur à la moyenne, cette même intensité devient productivité ; sinon, elle devient usure.",
+    "de": "Das Arbeitsumfeld wird niemals lauwarm sein. Es schwankt zwischen Kooperation und Reibung, und der Machtkampf zwischen den Funktionen ist dauerhaft — jeder verteidigt seinen Raum, ohne sofort nachzugeben. Gibt es eine überdurchschnittliche Übereinstimmung, wird genau diese Intensität zur Produktivität; andernfalls zum Verschleiß.",
+    "ja": "職場での関わりは決して穏やかなだけでは終わりません。協力と摩擦の間を揺れ動き、職務をめぐる権力の争いは恒常的で、誰もすぐには譲りません。平均以上の合意があれば、その同じ強さが生産性となります。なければ消耗となります。",
+    "zh": "职场中的共处永远不会温吞。它将在合作与摩擦之间摇摆，职能之间的权力争夺是恒久的，每个人都捍卫自己的空间而不会立即退让。若有高于平均水平的共识，同样的强度便会转化为生产力；若无，则转化为消耗。",
+    "ru": "Рабочие отношения никогда не будут тёплыми и безразличными. Они колеблются между сотрудничеством и трением, а борьба за власть между функциями постоянна — каждый защищает своё пространство, не уступая сразу. Если согласие выше среднего, та же интенсивность становится продуктивностью; если нет — износом.",
+    "he": "העבודה המשותפת לעולם לא תהיה פושרת. היא תתנדנד בין שיתוף פעולה לחיכוך, והמאבק על כוח בין התפקידים קבוע — כל אחד מגן על המרחב שלו בלי לוותר מיד. אם יש הסכמה מעל הממוצע, אותה עוצמה עצמה הופכת לפרודוקטיביות; אם לא, לשחיקה.",
+    "ar": "لن يكون التعامل في بيئة العمل فاتراً أبداً. سيتأرجح بين التعاون والاحتكاك، والتنازع على السلطة بين الوظائف دائم — كلٌّ يدافع عن مساحته دون تنازل فوري. وإذا وُجد اتفاق فوق المتوسط، تتحول هذه الشدة نفسها إلى إنتاجية؛ وإلا تحولت إلى استنزاف.",
+    "id": "Hubungan di lingkungan kerja tidak akan pernah hambar. Ia berayun antara kerja sama dan gesekan, dan perebutan kekuasaan antar fungsi bersifat permanen — masing-masing mempertahankan ruangnya tanpa langsung mengalah. Bila ada kesepakatan di atas rata-rata, intensitas yang sama itu berubah menjadi produktivitas; bila tidak, menjadi pengurasan.",
+    "tr": "İş ortamındaki ilişki asla ılık olmayacak. İş birliği ile sürtüşme arasında salınacak ve işlevler arasındaki güç mücadelesi kalıcıdır — herkes kendi alanını savunur ve hemen geri adım atmaz. Ortalamanın üzerinde bir uzlaşma varsa, aynı yoğunluk verimliliğe dönüşür; yoksa yıpranmaya.",
+    "vi": "Mối quan hệ trong môi trường làm việc sẽ không bao giờ phẳng lặng. Nó dao động giữa hợp tác và va chạm, và cuộc tranh giành quyền lực giữa các chức năng là vĩnh viễn — mỗi người bảo vệ không gian của mình mà không nhượng bộ ngay. Nếu có sự đồng thuận trên mức trung bình, chính cường độ đó trở thành năng suất; nếu không, trở thành hao mòn.",
+}
+
+_DUAL_MAPA = {
+    "casal": DUAL_TXT_CASAL,
+    "familia": DUAL_TXT_FAMILIA,
+    "equipe": DUAL_TXT_EQUIPE,
+}
+
+def get_dual(grau, contexto="casal", lang="pt"):
+    """Texto complementar de dualidade. Só dispara quando o grau é 2.
+    Instabilidade permanente, disputa de poder, convergência possível."""
+    if grau != 2:
+        return ""
+    d = _DUAL_MAPA.get(contexto, DUAL_TXT_CASAL)
+    return (d.get(lang) or d["pt"])
