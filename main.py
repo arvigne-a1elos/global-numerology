@@ -1252,8 +1252,8 @@ def regenerar_pdf_por_meta(meta):
 
     def _analisar_multi_com_datas(fn, dado, detalhe, nome):
         nomes = [x.strip() for x in (dado or nome).split("|")]
-        nomes = [n for n in nomes if n][:3]        # exatamente 3 pessoas
-        datas = [x.strip() for x in (meta.get("detalhe", "") or "").split("|")]
+        nomes = [n for n in nomes if n][:3]
+        datas = [x.strip() for x in (detalhe or "").split("|")]
         datas = [d for d in datas if d][:3]
         linhas = []
         for i, n in enumerate(nomes):
