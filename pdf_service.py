@@ -13,7 +13,7 @@ from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER, TA_LEFT
 import dateutil.parser as dp
 from calc_service import reduzir, calc_grid, calc_ciclos, calc_desafios, calc_realizacoes
 from dicionarios import SIG, CAM, DES, VIB, t, PRODUTOS, PDF_TEXTS, PDF_SECOES, BOAS_VINDAS, PERIODOS, REALIZ_HEAD
-from dicionarios import get_compat
+from dicionarios import get_sig, get_cam, get_compat, get_dual
 
 # ---- Identidade visual (Padrão Mínimo de Qualidade Total) ----
 GOLD = colors.HexColor("#C9A94E")
@@ -582,8 +582,11 @@ def pdf_produto(produto, dados, nome, bd_str, lang, dado=""):
         _leitura = get_compat(dados.get("compatibilidade"), _ctx, lang)
         if _leitura:
             _espec.append(f"<font size='9' color='#333333'>{_leitura}</font>")
-        if dados.get("dual_nome"):
-            _espec.append(
+
+        # Dualidade — só dispara no grau 2
+        _dual = get_dual(dados.get("compatibilidade"), _ctx, lang)
+        if _dual:
+            _espec.append(f"<font size='9' color='#8a6d1f'>{_dual}</font>")
                 f"<font color='#8a6d1f'><b>Nota:</b> "
                 f"{dados.get('alerta_dualidade_nome', ALERTA_DUALIDADE)}</font>")
         if dados.get("compatibilidade_vida") is not None:
@@ -635,8 +638,9 @@ def pdf_produto(produto, dados, nome, bd_str, lang, dado=""):
             if _leitura:
                 _espec.append(f"<font size='9' color='#333333'>{_leitura}</font>")
 
-            if p.get("dual") and p.get("alerta_dualidade"):
-                _espec.append(
+            _dual = get_dual(p.get("compatibilidade"), _ctx, lang)
+            if _dual:
+                _espec.append(f"<font size='9' color='#8a6d1f'>{_dual}</font>")
                     f"<font color='#8a6d1f'><b>{L.get('nota', 'Nota')}:</b> "
                     f"{p.get('alerta_dualidade')}</font>")
                 
