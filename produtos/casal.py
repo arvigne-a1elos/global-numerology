@@ -31,12 +31,15 @@ def analisar_casal(nome1, nasc1, nome2, nasc2):
     # ordem fixada no método: primeiro nome ocupa a LINHA
     comp = MATRIZ[n1][n2]   # MATRIZ[3][8] -> 3
 
-    return {
-        "nome1": nome1, "nasc1": nasc1, "numero1": n1,
-        "nome2": nome2, "nasc2": nasc2, "numero2": n2,
-        "compatibilidade": comp,
-        "rotulo": _ROTULO.get(comp, ""),
-    }
+return {
+    "nome1": nome1, "nasc1": nasc1, "numero1": n1,
+    "energia1": n1, "energia_nome1": n1,      # ← aliases
+    "nome2": nome2, "nasc2": nasc2, "numero2": n2,
+    "energia2": n2, "energia_nome2": n2,      # ← aliases
+    "compatibilidade": comp,
+    "rotulo": _ROTULO.get(comp, ""),
+    "rotulo_nome": _ROTULO.get(comp, ""),     # ← alias
+}
 
 _ROTULO = {
     1: "Dissonância",
