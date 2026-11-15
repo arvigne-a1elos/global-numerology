@@ -173,14 +173,15 @@ def eh_dual(grau):
 
 
 def compatibilidade(n_linha, n_coluna):
-    """Dict pronto para o PDF. n_linha = primeiro nome da lista.
-    Regra 5 e 6: primeiro nome na linha, um único cruzamento."""
     if n_linha == 22 and n_coluna == 22:
         return {"linha": n_linha, "coluna": n_coluna, "grau": None,
                 "rotulo": ESPECIAL_22_22, "especial": True,
                 "dual": False, "alerta_dualidade": None}
     g = obter_grau(n_linha, n_coluna)
-    d = eh_dual(n_linha, n_coluna)
+    d = eh_dual(g)                          # ← grau, não (n1, n2)
+    return {"linha": n_linha, "coluna": n_coluna, "grau": g,
+            "rotulo": obter_rotulo(n_linha, n_coluna), "especial": False,
+            "dual": d, "alerta_dualidade": ALERTA_DUALIDADE if d else None}
     return {"linha": n_linha, "coluna": n_coluna, "grau": g,
             "rotulo": obter_rotulo(n_linha, n_coluna), "especial": False,
             "dual": d,
