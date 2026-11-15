@@ -3,6 +3,7 @@
 import unicodedata
 from .mapa import reduzir, calc_mapa
 from referencia.cissay import MATRIZ
+from dicionarios import get_compat
 
 
 def _limpar(nome):
@@ -26,14 +27,9 @@ def numero_pessoa(nome, nasc):
 
 _ROTULO = {
     1: "Dissonância",
-    2: "Média — Acordo/Desacordo",
-    3: "Criatividade",
+    2: "Média - Acordo/Desacordo",
+    3: "Acordo",
     4: "Acordo perfeito",
-    5: "Liberdade",
-    6: "Harmonia",
-    7: "Espiritualidade",
-    8: "Poder",
-    9: "Humanitarismo",
 }
 
 
@@ -51,18 +47,16 @@ def analisar_casal(nome1, nasc1, nome2, nasc2):
     comp = MATRIZ[n1][n2]
     rotulo = _ROTULO.get(comp, "")
 
+    rotulo = _ROTULO.get(comp, "")
+
+    
     return {
-        "nome1": nome1,
-        "nasc1": nasc1,
-        "numero1": n1,
-        "energia1": n1,
-        "energia_nome1": n1,
-        "nome2": nome2,
-        "nasc2": nasc2,
-        "numero2": n2,
-        "energia2": n2,
-        "energia_nome2": n2,
+        "nome1": nome1, "nasc1": nasc1, "numero1": n1,
+        "energia1": n1, "energia_nome1": n1,
+        "nome2": nome2, "nasc2": nasc2, "numero2": n2,
+        "energia2": n2, "energia_nome2": n2,
         "compatibilidade": comp,
         "rotulo": rotulo,
         "rotulo_nome": rotulo,
+        "leitura": get_compat(comp, "casal"),
     }
