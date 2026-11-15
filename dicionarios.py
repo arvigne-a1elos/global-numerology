@@ -3861,3 +3861,79 @@ def get_des(n, lang="pt"):
 def get_vib(n, lang="pt"):
     """Texto da Vibração do dia de nascimento no idioma pedido."""
     return VIB_I18N.get(lang, VIB_I18N["pt"]).get(n, "")
+
+# ============================================================
+# COMPAT_TXT — 4 graus × 3 contextos (12 matrizes curtas)
+# Aplicado APÓS o cruzamento da matriz. Sem citação de fonte.
+# ============================================================
+COMPAT_TXT = {
+    "pt": {
+        "dissonancia": "As energias se chocam. Cada um puxa para um lado e o atrito é constante. Exige paciência e limites claros para não desgastar o vínculo.",
+        "media": "Há dias de sintonia e dias de ruído. O convívio alterna entre encontro e desencontro — funciona quando há disposição para negociar.",
+        "acordo": "As energias conversam bem. Existe base para construir junto, com pontos de atenção que não ameaçam a relação.",
+        "acordo_perfeito": "As energias se completam com naturalidade. É a combinação que flui sem esforço e sustenta o vínculo ao longo do tempo.",
+    },
+    "en": {
+        "dissonancia": "The energies clash. Each pulls in a different direction and friction is constant. It demands patience and clear boundaries to avoid wearing the bond down.",
+        "media": "Some days flow, some days clash. Life together alternates between connection and friction — it works when both are willing to negotiate.",
+        "acordo": "The energies speak well to each other. There is a foundation to build on together, with points of attention that do not threaten the bond.",
+        "acordo_perfeito": "The energies complete each other naturally. This is the combination that flows effortlessly and sustains the bond over time.",
+    },
+}
+COMPAT_TXT_CASAL = {
+    "pt": {
+        "dissonancia": "Como casal, a atração existe mas a convivência cobra caro: ciúme, controle e discussões repetidas pedem acordos explícitos.",
+        "media": "Como casal, a relação oscila entre entrega e recuo. O vínculo se sustenta na conversa franca e na disposição de ceder dos dois lados.",
+        "acordo": "Como casal, há sintonia de valores e ritmo. A relação tende a amadurecer com diálogo e respeito ao espaço de cada um.",
+        "acordo_perfeito": "Como casal, a combinação é de complemento: onde um falta, o outro cobre. Relação de longo prazo com pouca desgaste.",
+    },
+    "en": {
+        "dissonancia": "As a couple, attraction exists but daily life is costly: jealousy, control and repeated arguments demand explicit agreements.",
+        "media": "As a couple, the relationship swings between closeness and withdrawal. The bond holds through honest conversation and willingness to yield on both sides.",
+        "acordo": "As a couple, there is alignment of values and rhythm. The relationship tends to mature through dialogue and respect for each other's space.",
+        "acordo_perfeito": "As a couple, the combination is complementary: where one is lacking, the other covers. A long-term relationship with little wear.",
+    },
+}
+COMPAT_TXT_FAMILIA = {
+    "pt": {
+        "dissonancia": "No núcleo familiar, as energias se confrontam. Há tensão entre gerações ou papéis e o ambiente pede mediação constante.",
+        "media": "Na família, o convívio alterna entre proximidade e afastamento. Funciona quando há espaço para cada um e limites bem definidos.",
+        "acordo": "Na família, os vínculos se fortalecem na cooperação. Cada membro encontra lugar e a casa tende à estabilidade.",
+        "acordo_perfeito": "Na família, a sinergia é natural: os membros se apoiam sem esforço e o lar se torna base sólida para todos.",
+    },
+    "en": {
+        "dissonancia": "Within the family, the energies confront each other. There is tension between generations or roles, and the environment requires constant mediation.",
+        "media": "In the family, coexistence alternates between closeness and distance. It works when there is room for each person and well-defined boundaries.",
+        "acordo": "In the family, bonds strengthen through cooperation. Each member finds their place and the home tends toward stability.",
+        "acordo_perfeito": "In the family, synergy is natural: members support each other effortlessly and the home becomes a solid foundation for all.",
+    },
+}
+COMPAT_TXT_EQUIPE = {
+    "pt": {
+        "dissonancia": "No ambiente de trabalho, as energias se atritam. Divergência de ritmo e de método exige papéis claros e metas objetivas para não travar a entrega.",
+        "media": "Na equipe, a colaboração funciona em ciclos: há sinergia em projetos e atrito na rotina. Papéis definidos resolvem a maior parte.",
+        "acordo": "Na equipe, o ritmo é compatível. Há cooperação natural e o grupo tende a entregar bem quando os objetivos estão alinhados.",
+        "acordo_perfeito": "Na equipe, a combinação é de alta performance: um potencializa o outro e o resultado supera a soma das partes.",
+    },
+    "en": {
+        "dissonancia": "In the workplace, the energies clash. Differences in pace and method require clear roles and objective goals to keep delivery on track.",
+        "media": "In the team, collaboration works in cycles: synergy on projects, friction in the routine. Defined roles resolve most of it.",
+        "acordo": "In the team, the pace is compatible. Cooperation is natural and the group tends to deliver well when goals are aligned.",
+        "acordo_perfeito": "In the team, the combination is high performance: each amplifies the other and the result exceeds the sum of the parts.",
+    },
+}
+
+_COMPAT_MAPA = {
+    "casal": COMPAT_TXT_CASAL,
+    "familia": COMPAT_TXT_FAMILIA,
+    "equipe": COMPAT_TXT_EQUIPE,
+}
+
+def get_compat(grau, contexto="casal", lang="pt"):
+    """Texto curto do grau (1-4) no contexto do produto.
+    Aplicado APÓS o cruzamento da matriz. Sem citação de fonte."""
+    chave = {1: "dissonancia", 2: "media", 3: "acordo", 4: "acordo_perfeito"}.get(grau)
+    if not chave:
+        return ""
+    d = _COMPAT_MAPA.get(contexto, COMPAT_TXT_CASAL)
+    return (d.get(lang) or d["pt"]).get(chave, "")
