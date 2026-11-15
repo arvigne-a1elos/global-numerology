@@ -4,10 +4,12 @@ import unicodedata
 from .mapa import reduzir, calc_mapa
 from referencia.cissay import MATRIZ
 
+
 def _limpar(nome):
     n = unicodedata.normalize("NFD", (nome or "").upper())
     n = "".join(c for c in n if unicodedata.category(c) != "Mn")
     return "".join(c for c in n if "A" <= c <= "Z")
+
 
 def numero_pessoa(nome, nasc):
     """Um número por pessoa: reduzir(energia_nome + energia_data)."""
@@ -17,29 +19,10 @@ def numero_pessoa(nome, nasc):
     if nome_n is None or data_n is None:
         return None
     total = int(nome_n) + int(data_n)
-    # Valéria: 8 + 9 = 17 -> 8
     while total > 9 and total not in (11, 22):
         total = sum(int(d) for d in str(total))
     return total
 
-def analisar_casal(nome1, nasc1, nome2, nasc2):
-    n1 = numero_pessoa(nome1, nasc1)   # Antonio = 3
-    n2 = numero_pessoa(nome2, nasc2)   # Valéria = 8
-    if n1 is None or n2 is None:
-        return {"erro": "dados insuficientes", "nome1": nome1, "nome2": nome2}
-
-    # ordem fixada no método: primeiro nome ocupa a LINHA
-    comp = MATRIZ[n1][n2]   # MATRIZ[3][8] -> 3
-
-return {
-    "nome1": nome1, "nasc1": nasc1, "numero1": n1,
-    "energia1": n1, "energia_nome1": n1,      # ← aliases
-    "nome2": nome2, "nasc2": nasc2, "numero2": n2,
-    "energia2": n2, "energia_nome2": n2,      # ← aliases
-    "compatibilidade": comp,
-    "rotulo": _ROTULO.get(comp, ""),
-    "rotulo_nome": _ROTULO.get(comp, ""),     # ← alias
-}
 
 _ROTULO = {
     1: "Dissonância",
@@ -52,3 +35,34 @@ _ROTULO = {
     8: "Poder",
     9: "Humanitarismo",
 }
+
+
+def analisar_casal(nome1, nasc1, nome2, nasc2):
+    n1 = numero_pessoa(nome1, nasc1)
+    n2 = numero_pessoa(nome2, nasc2)
+    if n1 is None or n2 is None:
+        return {
+            "erro": "dados insuficientes",
+            "nome1": nome1,
+            "nome2": nome2,
+        }
+
+    # ordem fixada no método: primeiro nome ocupa a LINHA
+    comp = MATRIZ[n1][n2]
+    rotulo = _ROTULO.get(comp, "")
+
+    return {
+        "nome1": nome1,
+        "nasc1": nasc1,
+        "numero1": n1,
+        "energia1": n1,
+        "energia_nome1": n1,
+        "nome2": nome2,
+        "nasc2": nasc2,
+        "numero2": n2,
+        "energia2": n2,
+        "energia_nome2": n2,
+        "compatibilidade": comp,
+        "rotulo": rotulo,
+        "rotulo_nome": rotulo,
+    }
