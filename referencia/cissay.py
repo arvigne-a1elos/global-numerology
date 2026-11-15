@@ -167,10 +167,9 @@ def obter_rotulo(n_linha, n_coluna):
     return GRAUS.get(obter_grau(n_linha, n_coluna), "Não catalogado")
 
 
-def eh_dual(n1, n2):
-    if n1 == 22 and n2 == 22:
-        return False
-    return frozenset((n1, n2)) in DUAIS
+def eh_dual(grau):
+    """Dualidade: sempre que o cruzamento resultar em 2."""
+    return grau == 2
 
 
 def compatibilidade(n_linha, n_coluna):
