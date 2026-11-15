@@ -1,3 +1,42 @@
+# -*- coding: utf-8 -*-
+# produtos/equipe.py — Compatibilidade de Equipes (RH)
+# REGRA: chefe + 2 colaboradores. Cruzamento: chefe x cada colaborador.
+import unicodedata
+from .mapa import reduzir, _LETRAS, calc_mapa
+from referencia.cissay import compatibilidade
+
+MAX_MEMBROS = 2
+
+
+def _limpar(nome):
+    n = unicodedata.normalize("NFD", (nome or "").upper())
+    n = "".join(c for c in n if unicodedata.category(c) != "Mn")
+    return "".join(c for c in n if "A" <= c <= "Z")
+
+
+def _energia_nome(nome):
+    limpo = _limpar(nome)
+    s = sum(_LETRAS.get(c, 0) for c in limpo)
+    return reduzir(s), s
+
+
+def _caminho_vida(nasc):
+    if not nasc:
+        return None, 0
+    try:
+        d, m, a = nasc.split("-")
+        s = sum(int(x) for x in d + m + a)
+        return reduzir(s), s
+    except Exception:
+        return None, 0
+
+
+def _energia_combinada(energia_nome, caminho_vida):
+    if energia_nome is None or caminho_vida is None:
+        return None
+    return reduzir(energia_nome + caminho_vida)
+
+
 def analisar_equipe(texto, separador="|"):
     bruto = str(texto or "")
     if "\n" in bruto:
@@ -34,7 +73,6 @@ def analisar_equipe(texto, separador="|"):
     if chefe:
         for m in pessoas[1:]:
             m["papel"] = "colaborador"
-            # MESMA regra da família: cruza a ENERGIA COMBINADA
             c = compatibilidade(chefe["energia_combinada"],
                                 m["energia_combinada"])
             pares.append({
