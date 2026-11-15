@@ -1315,13 +1315,22 @@ def regenerar_pdf_por_meta(meta):
         data = calc_mapa(nome, bd)           
         data["dado"] = dado or ""           
     logger.info(f"PDF dados {prod}: {list((data or {}).keys())}")
-    if prod == "calendario":
-        pf = gerar_pdf_calendario(data, lang, nome_exib)
-    elif prod == "nome_ong":
-        pf = gerar_pdf_ong(data, lang, nome_exib)
-    else:
+if prod == "calendario":
+    pf = gerar_pdf_calendario(data, lang, nome_exib)
+elif prod == "nome_ong":
+    pf = gerar_pdf_ong(data, lang, nome_exib)
+elif prod in ("casal", "familia", "compatibilidade_equipes"):
+    # Multi-pessoa: o único renderizador preparado é o pdf_service.pdf_produto
+    try:
+        from pdf_service import pdf_produto as _pdf_multi
+        pf = _pdf_multi(prod, data, nome_exib, bd, lang, dado=dado)
+    except Exception as _e:
+        logger.error(f"pdf_produto {prod}: {_e}", exc_info=True)
+        pf = None
+    if not pf or not os.path.exists(pf or ""):
         pf = gerar_pdf(prod, data, lang, nome_exib, bd, dado=dado)
-    return pf          
+else:
+    pf = gerar_pdf(prod, data, lang, nome_exib, bd, dado=dado)        
     
 @app.get("/api/pay/urna-success")
 def pay_urna_success(request: Request):
