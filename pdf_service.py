@@ -13,6 +13,7 @@ from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER, TA_LEFT
 import dateutil.parser as dp
 from calc_service import reduzir, calc_grid, calc_ciclos, calc_desafios, calc_realizacoes
 from dicionarios import SIG, CAM, DES, VIB, t, PRODUTOS, PDF_TEXTS, PDF_SECOES, BOAS_VINDAS, PERIODOS, REALIZ_HEAD
+from dicionarios import get_compat
 
 # ---- Identidade visual (Padrão Mínimo de Qualidade Total) ----
 GOLD = colors.HexColor("#C9A94E")
@@ -364,16 +365,18 @@ def pdf_eleitoral(ss, cl, sugestoes, ne=None, lang="pt"):
 # ═══════════════════════════════════════════
 def pdf_produto(produto, dados, nome, bd_str, lang, dado=""):
     T = PDF_TEXTS.get(lang, PDF_TEXTS["pt"])
-    from dicionarios import get_sig, get_cam
+    from dicionarios import get_sig, get_cam, get_compat
     from fontes import preparar_texto as _prep
     path = os.path.join(TMP, f"p_{uuid.uuid4().hex[:8]}.pdf")
     doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
                             topMargin=45, bottomMargin=45)
+    _ctx = {"familia": "familia",
+            "compatibilidade_equipes": "equipe"}.get(produto, "casal")
+            
     # ===== FONTES POR IDIOMA (CJK para ja/zh, DejaVu para os demais) =====
     global FONTE, FN
     _fontes_antigas = (FONTE, FN)
-    FONTE, FN = fonte_para(lang)    
-
+    FONTE, FN = fonte_para(lang)
     titulo = PRODUTOS.get(lang, PRODUTOS["pt"]).get(produto, produto).upper()
     e = []
     e.append(Spacer(1, 20))
@@ -580,6 +583,10 @@ def pdf_produto(produto, dados, nome, bd_str, lang, dado=""):
                 _espec.append(
                     f"<font color='#8a6d1f'><b>Nota:</b> "
                     f"{dados.get('alerta_dualidade_vida', ALERTA_DUALIDADE)}</font>")
+                            _leitura = get_compat(p.get("compatibilidade"), _ctx, lang)               
+            if _leitura:
+                _espec.append(
+                    f"<font size='9' color='#333333'>{_leitura}</font>")
     
     elif "membros" in dados:
         _espec = [f"<b>{L['membros']}:</b> {dados.get('total', '')}"]
@@ -616,6 +623,10 @@ def pdf_produto(produto, dados, nome, bd_str, lang, dado=""):
                 _espec.append(
                     f"<font color='#8a6d1f'><b>{L.get('nota', 'Nota')}:</b> "
                     f"{p.get('alerta_dualidade')}</font>")
+                            _leitura = get_compat(p.get("compatibilidade"), _ctx, lang)
+            if _leitura:
+                _espec.append(
+                    f"<font size='9' color='#333333'>{_leitura}</font>")
                 
         # Número do Imóvel — sugestão única + dica traduzida
         if dados.get("sugestao"):
