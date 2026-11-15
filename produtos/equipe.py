@@ -4,6 +4,7 @@
 import unicodedata
 from .mapa import reduzir, _LETRAS, calc_mapa
 from referencia.cissay import compatibilidade
+from itertools import combinations
 
 MAX_MEMBROS = 2
 
@@ -84,5 +85,18 @@ def analisar_equipe(texto, separador="|"):
                 "dual": c["dual"], "alerta_dualidade": c["alerta_dualidade"],
             })
 
+    # Pares entre colaboradores (o card promete "membros × membros")
+    colaboradores = pessoas[1:] if len(pessoas) > 1 else []
+    for a, b in combinations(colaboradores, 2):
+        c = compatibilidade(a["energia_combinada"], b["energia_combinada"])
+        pares.append({
+            "membro1": a["membro"], "papel1": "colaborador",
+            "membro2": b["membro"], "papel2": "colaborador",
+            "energia1": a["energia_combinada"],
+            "energia2": b["energia_combinada"],
+            "compatibilidade": c["grau"], "rotulo": c["rotulo"],
+            "dual": c["dual"], "alerta_dualidade": c["alerta_dualidade"],
+        })
+    
     return {"chefe": chefe, "membros": pessoas,
             "total": len(pessoas), "pares": pares}
