@@ -550,6 +550,7 @@ def pdf_produto(produto, dados, nome, bd_str, lang, dado=""):
     }
     for _k, _v in _TRAD_COMPAT.items():
         L.setdefault(_k, _v.get(lang, _v["pt"]))
+        
     _espec = None
 
     if "energia_mes" in dados:
@@ -582,22 +583,17 @@ def pdf_produto(produto, dados, nome, bd_str, lang, dado=""):
         _leitura = get_compat(dados.get("compatibilidade"), _ctx, lang)
         if _leitura:
             _espec.append(f"<font size='9' color='#333333'>{_leitura}</font>")
-
-        # Dualidade — só dispara no grau 2
         _dual = get_dual(dados.get("compatibilidade"), _ctx, lang)
         if _dual:
             _espec.append(f"<font size='9' color='#8a6d1f'>{_dual}</font>")
-                f"<font color='#8a6d1f'><b>Nota:</b> "
-                f"{dados.get('alerta_dualidade_nome', ALERTA_DUALIDADE)}</font>")
         if dados.get("compatibilidade_vida") is not None:
             _espec.append(
                 f"<b>{L['compatibilidade']} ({L['energia']} de vida):</b> "
                 f"{dados.get('compatibilidade_vida')} "
                 f"({dados.get('rotulo_vida', '')})")
-            if dados.get("dual_vida"):
-                _espec.append(
-                    f"<font color='#8a6d1f'><b>Nota:</b> "
-                    f"{dados.get('alerta_dualidade_vida', ALERTA_DUALIDADE)}</font>")
+            _dual_v = get_dual(dados.get("compatibilidade_vida"), _ctx, lang)
+            if _dual_v:
+                _espec.append(f"<font size='9' color='#8a6d1f'>{_dual_v}</font>")
 
     elif "membros" in dados:
         _espec = [f"<b>{L['membros']}:</b> {dados.get('total', '')}"]
@@ -641,8 +637,10 @@ def pdf_produto(produto, dados, nome, bd_str, lang, dado=""):
             _dual = get_dual(p.get("compatibilidade"), _ctx, lang)
             if _dual:
                 _espec.append(f"<font size='9' color='#8a6d1f'>{_dual}</font>")
-                    f"<font color='#8a6d1f'><b>{L.get('nota', 'Nota')}:</b> "
-                    f"{p.get('alerta_dualidade')}</font>")
+
+            _dual_v = get_dual(p.get("compatibilidade_vida"), _ctx, lang)
+            if _dual_v:
+                _espec.append(f"<font size='9' color='#8a6d1f'>{_dual_v}</font>")
                 
         # Número do Imóvel — sugestão única + dica traduzida
         if dados.get("sugestao"):
