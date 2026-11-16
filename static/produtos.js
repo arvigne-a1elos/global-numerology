@@ -586,7 +586,7 @@ ENERGIAS_DESC = ENERGIAS_DESC || {};
 ENERGIAS_BTN = ENERGIAS_BTN || { pt:"Pesquisar", en:"Search", es:"Buscar", fr:"Rechercher", it:"Cerca", de:"Suchen", ru:"Поиск", zh:"搜索", ja:"検索", ar:"بحث", he:"חיפוש", id:"Cari", tr:"Ara", vi:"Tìm Kiếm" };
 
 /* ===== DADO_LABEL ===== */
-DADO_LABEL = DADO_LABEL || {
+window.DADO_LABEL = window.DADO_LABEL || {
   pt:{nome_pet:"Nome do Pet",nickname:"Nickname Digital",nome_dominio:"Nome do Domínio",nome_canal:"Nome do Canal",nome_equipe:"Nome da Equipe",nome_ong:"Nome da ONG",nome_projeto:"Nome do Projeto",nome_evento:"Nome do Evento", compatibilidade_equipes: "Membros da equipe" },
   en:{nome_pet:"Pet Name",nickname:"Digital Nickname",nome_dominio:"Domain Name",nome_canal:"Channel Name",nome_equipe:"Team Name",nome_ong:"NGO Name",nome_projeto:"Project Name",nome_evento:"Event Name", compatibilidade_equipes: "Team members"},
   es:{nome_pet:"Nombre de Mascota",nickname:"Nickname Digital",nome_dominio:"Nombre de Dominio",nome_canal:"Nombre de Canal",nome_equipe:"Nombre del Equipo",nome_ong:"Nombre de la ONG",nome_projeto:"Nombre del Proyecto",nome_evento:"Nombre del Evento", compatibilidade_equipes: "Miembros del equipo" },
