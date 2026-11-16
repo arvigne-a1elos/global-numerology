@@ -28,7 +28,7 @@ window._traduzindo = window._traduzindo || false;
 window.BC_QUANTIDADES = window.BC_QUANTIDADES || {};
 
 /* ===== CONF_COLETA ===== */
-CONF_COLETA = CONF_COLETA || {
+window.CONF_COLETA = window.CONF_COLETA || {
   nome_canal:   { labelTipo:"f_tipo_canal",   tipos:["youtube","podcast","tiktok","twitch"],        temArea:true,  areas:["esporte","noticias","politica","beleza"], temDetalhe:false },
   nickname:     { labelTipo:"f_tipo_nickname", tipos:["gamer","profissional","criador","artista"],  temArea:false, areas:[], temDetalhe:false },
   nome_evento:  { labelTipo:"f_tipo_evento",   tipos:["show","congresso","festa","curso","palestra"],temArea:true,  areas:["musica","esporte","cultura","politica","beleza"], temDetalhe:false },
@@ -113,7 +113,7 @@ function atualizarResumoBC() {
 }
 
 /* ===== PRODUTOS_TRAD (24 produtos, 14 idiomas) ===== */
-PRODUTOS_TRAD = PRODUTOS_TRAD || {
+window.PRODUTOS_TRAD = window.PRODUTOS_TRAD || {
  pt:{express:"Mapa Express",vida:"Qual Vida/Ano",completo:"Mapa Completo",ia:"Pesquisa IA de Nomes",urna:"Validação Nome de Urna",eleitoral:"Número Eleitoral",imovel:"Número do Imóvel",calendario:"Calendário Mensal Energético",artistico:"Validação Nome Artístico",bebe:"Planejamento Nome de Bebê",assinatura:"Validação de Assinaturas",negocio:"Nome para Negócio/Produto",casal:"Mapa do Casal",familia:"Mapa Família Premium",coletivo:"Bônus Coletivo/Empresarial", nome_pet:"Nome do Pet",nickname:"Nickname Digital",nome_dominio:"Nome do Domínio",nome_canal:"Nome do Canal",nome_equipe:"Nome da Equipe",nome_ong:"Nome de ONG, Associação, Instituto ou Fundação",nome_projeto:"Nome do Projeto",nome_evento:"Nome do Evento", compatibilidade_equipes: "Compatibilidade de Equipes"},
  en:{express:"Express Map",vida:"Life Phase & Year",completo:"Complete Map",ia:"AI Name Search",urna:"Ballot Name Validation",eleitoral:"Electoral Number",imovel:"Property Number",calendario:"Monthly Energy Calendar",artistico:"Artistic Name Validation",bebe:"Baby Name Planning",assinatura:"Signature Validation",negocio:"Business & Product Name",casal:"Couple Map",familia:"Premium Family Map",coletivo:"Corporate Bonus",nome_pet:"Pet Name",nickname:"Digital Nickname",nome_dominio:"Domain Name",nome_canal:"Channel Name",nome_equipe:"Team Name",nome_ong:"NGO, Association, Institute or Foundation Name",nome_projeto:"Project Name",nome_evento:"Event Name", compatibilidade_equipes: "Team Compatibility"},
  es:{express:"Mapa Exprés",vida:"Ciclo de Vida y Año",completo:"Mapa Completo",ia:"Búsqueda IA de Nombres",urna:"Validación Nombre de Urna",eleitoral:"Número Electoral",imovel:"Número de la Propiedad",calendario:"Calendario Mensual Energético",artistico:"Validación Nombre Artístico",bebe:"Planificación Nombre de Bebé",assinatura:"Validación de Firmas",negocio:"Nombre para Negocio/Producto",casal:"Mapa de Pareja",familia:"Mapa Familiar Premium",coletivo:"Bono Corporativo",nome_pet:"Nombre de la Mascota",nickname:"Apodo Digital",nome_dominio:"Nombre de Dominio",nome_canal:"Nombre del Canal",nome_equipe:"Nombre del Equipo",nome_ong:"Nombre de ONG, Asociacion, Instituto o Fundacion",nome_projeto:"Nombre del Proyecto",nome_evento:"Nombre del Evento", compatibilidade_equipes: "Compatibilidad de Equipos"},
@@ -131,7 +131,7 @@ PRODUTOS_TRAD = PRODUTOS_TRAD || {
 };
 
 /* ===== PRODUTO_FAIXA (24 produtos — sincronizado com referencia/precos.py) ===== */
-PRODUTO_FAIXA = {
+window.PRODUTO_FAIXA = window.PRODUTO_FAIXA || {
   express: 0, vida: 0, completo: 1, ia: 0,
   urna: 2, eleitoral: 2, imovel: 2, calendario: 2,
   artistico: 3, bebe: 3, assinatura: 3, nome_ong: 3,
@@ -142,7 +142,7 @@ PRODUTO_FAIXA = {
 };
 
 /* ===== FEAT_TRAD v1 — FEATURES DOS 24 CARDS EM 14 IDIOMAS ===== */
-FEAT_TRAD = FEAT_TRAD || {};
+window.FEAT_TRAD = window.FEAT_TRAD || {};
 if (!FEAT_TRAD.pt) {
   (function () {
     var F = {
@@ -521,7 +521,7 @@ if (!FEAT_TRAD.pt) {
 }
 
 /* ===== CARDS_TRAD (8 produtos, 14 idiomas) ===== */
-CARDS_TRAD = CARDS_TRAD || {
+window.CARDS_TRAD = window.CARDS_TRAD || {
   pt:{ nome_pet:"Nome do Pet", nome_pet_desc:"A energia do nome do seu animal de estimação.", nickname:"Nickname Digital", nickname_desc:"A vibração do seu nickname nas redes.", nome_dominio:"Nome do Domínio", nome_dominio_desc:"A energia do nome do seu domínio.", nome_canal:"Nome do Canal", nome_canal_desc:"A energia do nome do seu canal.", nome_equipe:"Nome da Equipe", nome_equipe_desc:"A vibração do nome da sua equipe.", nome_ong:"Nome de ONG", nome_ong_desc:"A energia do nome da sua organização.", nome_projeto:"Nome do Projeto", nome_projeto_desc:"A energia do nome do seu projeto.", nome_evento:"Nome do Evento", nome_evento_desc:"A vibração do nome do seu evento.", buscar:"Buscar" },
   en:{ nome_pet:"Pet Name", nome_pet_desc:"The energy of your pet's name.", nickname:"Digital Nickname", nickname_desc:"The vibration of your nickname online.", nome_dominio:"Domain Name", nome_dominio_desc:"The energy of your domain name.", nome_canal:"Channel Name", nome_canal_desc:"The energy of your channel name.", nome_equipe:"Team Name", nome_equipe_desc:"The vibration of your team's name.", nome_ong:"NGO Name", nome_ong_desc:"The energy of your organization's name.", nome_projeto:"Project Name", nome_projeto_desc:"The energy of your project name.", nome_evento:"Event Name", nome_evento_desc:"The vibration of your event's name.", buscar:"Search" },
   es:{ nome_pet:"Nombre de la Mascota", nome_pet_desc:"La energía del nombre de tu mascota.", nickname:"Apodo Digital", nickname_desc:"La vibración de tu apodo en redes.", nome_dominio:"Nombre del Dominio", nome_dominio_desc:"La energía del nombre de tu dominio.", nome_canal:"Nombre del Canal", nome_canal_desc:"La energía del nombre de tu canal.", nome_equipe:"Nombre del Equipo", nome_equipe_desc:"La vibración del nombre de tu equipo.", nome_ong:"Nombre de la ONG", nome_ong_desc:"La energía del nombre de tu organización.", nome_projeto:"Nombre del Proyecto", nome_projeto_desc:"La energía del nombre de tu proyecto.", nome_evento:"Nombre del Evento", nome_evento_desc:"La vibración del nombre de tu evento.", buscar:"Buscar" },
@@ -539,7 +539,7 @@ CARDS_TRAD = CARDS_TRAD || {
 };
 
 /* ===== MONTAR_TRAD ===== */
-MONTAR_TRAD = MONTAR_TRAD || {
+window.MONTAR_TRAD = window.MONTAR_TRAD || {
   pt:{ titulo:"Montar Sob Medida", subtitulo:"Escolha os produtos e a energia desejada.", produto:"Produto", energia:"Energia", quantidade:"Quantidade", preco:"Preço", adicionar:"Adicionar", remover:"Remover", finalizar:"Finalizar", bruto:"Valor Bruto", desconto:"Desconto Aplicado", total:"Total", vazio:"Seu carrinho está vazio" },
   en:{ titulo:"Build Custom", subtitulo:"Choose the products and desired energy.", produto:"Product", energia:"Energy", quantidade:"Quantity", preco:"Price", adicionar:"Add", remover:"Remove", finalizar:"Checkout", bruto:"Gross Amount", desconto:"Applied Discount", total:"Total", vazio:"Your cart is empty" },
   es:{ titulo:"Montar a Medida", subtitulo:"Elige los productos y la energía deseada.", produto:"Producto", energia:"Energía", quantidade:"Cantidad", preco:"Precio", adicionar:"Añadir", remover:"Eliminar", finalizar:"Finalizar", bruto:"Importe Bruto", desconto:"Descuento Aplicado", total:"Total", vazio:"Tu carrito está vacío" },
@@ -557,7 +557,7 @@ MONTAR_TRAD = MONTAR_TRAD || {
 };
 
 /* ===== ENERGIA_TRAD (9 energias, 14 idiomas) ===== */
-ENERGIA_TRAD = ENERGIA_TRAD || {
+window.ENERGIA_TRAD = window.ENERGIA_TRAD || {
   pt:{ e1:"Líder", e2:"Diplomata", e3:"Criatividade", e4:"Estrutura", e5:"Liberdade", e6:"Harmonia", e7:"Espiritualidade", e8:"Poder", e9:"Humanitarismo" },
   en:{ e1:"Leader", e2:"Diplomat", e3:"Creativity", e4:"Structure", e5:"Freedom", e6:"Harmony", e7:"Spirituality", e8:"Power", e9:"Humanitarianism" },
   es:{ e1:"Líder", e2:"Diplomático", e3:"Creatividad", e4:"Estructura", e5:"Libertad", e6:"Armonía", e7:"Espiritualidad", e8:"Poder", e9:"Humanitarismo" },
@@ -573,7 +573,7 @@ ENERGIA_TRAD = ENERGIA_TRAD || {
   tr:{ e1:"Lider", e2:"Diplomat", e3:"Yaratıcılık", e4:"Yapı", e5:"Özgürlük", e6:"Uyum", e7:"Maneviyat", e8:"Güç", e9:"İnsaniyet" },
   vi:{ e1:"Lãnh đạo", e2:"Nhà ngoại giao", e3:"Sáng tạo", e4:"Cấu trúc", e5:"Tự do", e6:"Hòa hợp", e7:"Tâm linh", e8:"Sức mạnh", e9:"Nhân đạo" }
 };
-ENERGIA_TITULOS = ENERGIA_TITULOS || {};
+window.ENERGIA_TITULOS = window.ENERGIA_TITULOS || {};
 if (!ENERGIA_TITULOS.pt) {
   Object.keys(ENERGIA_TRAD).forEach(function(l) {
     var src = ENERGIA_TRAD[l];
@@ -582,8 +582,8 @@ if (!ENERGIA_TITULOS.pt) {
     ENERGIA_TITULOS[l] = out;
   });
 }
-ENERGIAS_DESC = ENERGIAS_DESC || {};
-ENERGIAS_BTN = ENERGIAS_BTN || { pt:"Pesquisar", en:"Search", es:"Buscar", fr:"Rechercher", it:"Cerca", de:"Suchen", ru:"Поиск", zh:"搜索", ja:"検索", ar:"بحث", he:"חיפוש", id:"Cari", tr:"Ara", vi:"Tìm Kiếm" };
+window.ENERGIAS_DESC = window.ENERGIAS_DESC || {};
+window.ENERGIAS_BTN = window.ENERGIAS_BTN || { pt:"Pesquisar", en:"Search", es:"Buscar", fr:"Rechercher", it:"Cerca", de:"Suchen", ru:"Поиск", zh:"搜索", ja:"検索", ar:"بحث", he:"חיפוש", id:"Cari", tr:"Ara", vi:"Tìm Kiếm" };
 
 /* ===== DADO_LABEL ===== */
 window.DADO_LABEL = window.DADO_LABEL || {
@@ -604,7 +604,7 @@ window.DADO_LABEL = window.DADO_LABEL || {
 };
 
 /* ===== DADO_TIPOS ===== */
-DADO_TIPOS = DADO_TIPOS || {
+window.DADO_TIPOS = window.DADO_TIPOS || {
   nome_pet: { label:"Tipo de Pet", opcoes:["Gato","Cão","Pássaro","Réptil","Outro"] },
   nickname: { label:"Tipo de Perfil", opcoes:["Gamer","Criador","Profissional","Artista","Outro"] },
   nome_dominio: { label:"Tipo de Site", opcoes:["Blog","Loja","Portfólio","Empresa","Outro"] },
@@ -616,7 +616,7 @@ DADO_TIPOS = DADO_TIPOS || {
 };
 
 /* ===== OPCOES_FALLBACK ===== */
-OPCOES_FALLBACK = OPCOES_FALLBACK || {
+window.OPCOES_FALLBACK = window.OPCOES_FALLBACK || {
   loja:"Loja", empresa:"Empresa", blog:"Blog", portfolio:"Portfólio",
   comercio:"Comércio", industria:"Indústria", servicos:"Serviços", pessoal:"Pessoal/Individual",
   cao:"Cão", gato:"Gato", passaro:"Pássaro", reptil:"Réptil",
@@ -629,7 +629,7 @@ OPCOES_FALLBACK = OPCOES_FALLBACK || {
 };
 
 /* ===== OPCOES_TRAD (14 idiomas) ===== */
-OPCOES_TRAD = OPCOES_TRAD || {
+window.OPCOES_TRAD = window.OPCOES_TRAD || {
   pt:{ youtube:"YouTube", podcast:"Podcast", tiktok:"TikTok", twitch:"Twitch", gamer:"Gamer", profissional:"Profissional", criador:"Criador", artista:"Artista", ong:"ONG", instituto:"Instituto", associacao:"Associação", fundacao:"Fundação", show:"Show", congresso:"Congresso", festa:"Festa", curso:"Curso", palestra:"Palestra", pessoal:"Pessoal", social:"Social", empresarial:"Empresarial", cultural:"Cultural", esportiva:"Esportiva", banda:"Banda", loja:"Loja", empresa:"Empresa", blog:"Blog", portfolio:"Portfólio", cao:"Cão", gato:"Gato", passaro:"Pássaro", reptil:"Réptil", projeto:"Projeto", esporte:"Esporte", noticias:"Notícias", politica:"Política", beleza:"Beleza", musica:"Música", cultura:"Cultura", comercio:"Comércio", industria:"Indústria", servicos:"Serviços", outro:"OUTRO/QUAL?" },
   en:{ youtube:"YouTube", podcast:"Podcast", tiktok:"TikTok", twitch:"Twitch", gamer:"Gamer", profissional:"Professional", criador:"Creator", artista:"Artist", ong:"NGO", instituto:"Institute", associacao:"Association", fundacao:"Foundation", show:"Show", congresso:"Congress", festa:"Party", curso:"Course", palestra:"Talk", pessoal:"Personal", social:"Social", empresarial:"Business", cultural:"Cultural", esportiva:"Sports", banda:"Band", loja:"Store", empresa:"Company", blog:"Blog", portfolio:"Portfolio", cao:"Dog", gato:"Cat", passaro:"Bird", reptil:"Reptile", projeto:"Project", esporte:"Sports", noticias:"News", politica:"Politics", beleza:"Beauty", musica:"Music", cultura:"Culture", comercio:"Commerce", industria:"Industry", servicos:"Services", outro:"OTHER/WHAT?" },
   es:{ youtube:"YouTube", podcast:"Podcast", tiktok:"TikTok", twitch:"Twitch", gamer:"Gamer", profissional:"Profesional", criador:"Creador", artista:"Artista", ong:"ONG", instituto:"Instituto", associacao:"Asociación", fundacao:"Fundación", show:"Show", congresso:"Congreso", festa:"Fiesta", curso:"Curso", palestra:"Charla", pessoal:"Personal", social:"Social", empresarial:"Empresarial", cultural:"Cultural", esportiva:"Deportiva", banda:"Banda", loja:"Tienda", empresa:"Empresa", blog:"Blog", portfolio:"Portafolio", cao:"Perro", gato:"Gato", passaro:"Pájaro", reptil:"Reptil", projeto:"Proyecto", esporte:"Deporte", noticias:"Noticias", politica:"Política", beleza:"Belleza", musica:"Música", cultura:"Cultura", comercio:"Comercio", industria:"Industria", servicos:"Servicios", outro:"OTRO/¿CUÁL?" },
@@ -659,7 +659,7 @@ function tradMontar(chave){ var l=getLang(); var t=MONTAR_TRAD[l]||MONTAR_TRAD.p
 function tradEnergia(n){ var l=getLang(); var t=ENERGIA_TRAD[l]||ENERGIA_TRAD.pt; return t["e"+n]||"Energia "+n; }
 
 /* ===== BÔNUS COLETIVO (Montar Sob Medida) — ordenado por preço crescente ===== */
-BC_PRODUTOS = BC_PRODUTOS || [
+window.BC_PRODUTOS = window.BC_PRODUTOS || [
   // --- Faixa R$ 8 (entrada) ---
   ["express", "Mapa Express", 8, "🔮"],
   ["vida", "Qual Vida/Ano", 8, "🔢"],
@@ -766,7 +766,7 @@ function montarTabelaBC() {
 }
 
 /* ===== MENU DE ENERGIAS ===== */
-ENERGIA_PRODUTOS = ENERGIA_PRODUTOS || [["ia","🤖"],["nome_pet","🐾"],["nickname","🎮"],["nome_dominio","🌐"],["nome_canal","🎥"],["nome_equipe","🧭"],["nome_ong","🏛️"],["nome_projeto","📋"],["nome_evento","🎪"],["bebe","👶"],["assinatura","✍️"],["imovel","🏠"],["negocio","💼"],["compatibilidade_equipes","🏢"]];
+window.ENERGIA_PRODUTOS = window.ENERGIA_PRODUTOS || [["ia","🤖"],["nome_pet","🐾"],["nickname","🎮"],["nome_dominio","🌐"],["nome_canal","🎥"],["nome_equipe","🧭"],["nome_ong","🏛️"],["nome_projeto","📋"],["nome_evento","🎪"],["bebe","👶"],["assinatura","✍️"],["imovel","🏠"],["negocio","💼"],["compatibilidade_equipes","🏢"]];
 function pesquisarEnergia(n) {
   abrirMenuEnergia(n, getLang());
 }
@@ -854,7 +854,7 @@ function abrirSeletorEnergia(produto, lang) {
   document.getElementById("modalEnergiaSelTitulo").textContent = titulo;
   var lista = document.getElementById("modalEnergiaSelLista");
   lista.innerHTML = "";
-  var titulos = ENERGIA_TITULOS[lang] || ENERGIA_TITULOS["pt"];
+  var titulos = [lang] || ["pt"];
   for (var i = 1; i <= 9; i++) {
     var nomeE = titulos[String(i)] || ("Energia " + i);
     var b = document.createElement("button");
@@ -899,7 +899,7 @@ function montarPassoEnergia(produto, lang) {
   var preEscolhida = (_modalDado && _modalDado.energia) ? parseInt(_modalDado.energia, 10) : 0;
   for (var i = 1; i <= 9; i++) {
     (function(n){
-      var nomeE = (ENERGIA_TITULOS[lang] && ENERGIA_TITULOS[lang][String(n)]) ? ENERGIA_TITULOS[lang][String(n)] : String(n);
+      var nomeE = ([lang] && [lang][String(n)]) ? [lang][String(n)] : String(n);
       var b = document.createElement("button");
       b.type = "button";
       var marcado = (preEscolhida > 0) ? (n === preEscolhida) : (n === ideal);
@@ -926,7 +926,7 @@ function montarPassoNome(produto, lang) {
 /* ===== CONFIRMAR BÔNUS COLETIVO ===== */
 function confirmarBC() {
   var qtdTotal = 0;
-  for (var id in window.BC_QUANTIDADES) { qtdTotal += parseInt(BC_QUANTIDADES[id], 10) || 0; }
+  for (var id in window.BC_QUANTIDADES) { qtdTotal += parseInt(window.BC_QUANTIDADES[id], 10) || 0; }
   if (bcSobConsulta(qtdTotal)) {
     aplicarEstadoBC(qtdTotal);
     var av = document.getElementById('bcAvisoConsulta');
@@ -1192,7 +1192,7 @@ function montarEnergias() {
     || document.getElementById("energias")
     || document.querySelector(".energias-grid");
   if (container) {
-    var titulos = window.ENERGIA_TITULOS[lang] || window.ENERGIA_TITULOS["pt"];
+    var titulos = window.[lang] || window.["pt"];
     var descs = window.ENERGIAS_DESC[lang] || window.ENERGIAS_DESC["pt"] || {};
     var btn = window.ENERGIAS_BTN[lang] || "Pesquisar";
     var html = "";
