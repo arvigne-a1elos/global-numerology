@@ -308,36 +308,7 @@ window.pagarOng = window.pagarOng || function(){
 function comprar(produto) {
   var lang = getLang();
   var t = translations[lang] || translations.pt;
-    // ===== RESTAURAÇÃO DAS LISTAS DE COLETA (perdidas do produtos.js — 07/11/2026) =====
-  var DADO_APLICA = ["nome_pet","nickname","nome_dominio","nome_canal","nome_equipe","nome_projeto","nome_evento"];
-  var DADO_LABEL = {
-    pt: { nome_pet:"Nome do pet", nickname:"Seu nickname ou usuário", nome_dominio:"Nome do domínio (ex.: meusite.com)", nome_canal:"Nome do canal", nome_equipe:"Nome da equipe", nome_projeto:"Nome do projeto", nome_evento:"Nome do evento" },
-    en: { nome_pet:"Pet's name", nickname:"Your nickname or handle", nome_dominio:"Domain name (e.g.: mysite.com)", nome_canal:"Channel name", nome_equipe:"Team name", nome_projeto:"Project name", nome_evento:"Event name" }
-  };
-  var CONF_COLETA = {
-    nome_pet: { tipos:["cao","gato","passaro","outro"] },
-    nickname: { tipos:["pessoal","profissional","artistico"] },
-    nome_dominio: { tipos:["empresa","pessoal","loja","blog"] },
-    nome_canal: { tipos:["youtube","podcast","instagram","tiktok"] },
-    nome_equipe: { tipos:["esportiva","corporativa","criativa"] },
-    nome_projeto: { tipos:["digital","social","comercial"] },
-    nome_evento: { tipos:["congresso","curso","festa","palestra"] }
-  };
-  if (DADO_APLICA.indexOf(produto) !== -1) {
-    abrirModalDado(produto, lang);
-    return;
-  }
-  var nome = (document.getElementById("calcNome") ? document.getElementById("calcNome").value : "").trim();
-  var nasc = converterData((document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim());
-  if (!nome || !nasc) {
-    alert(t.preencha_dados || "Preencha nome e data de nascimento primeiro.");
-    var sec = document.getElementById("calcSection") || document.getElementById("calculadora");
-    if (sec) sec.scrollIntoView({ behavior: "smooth" });
-    return;
-  }
-  window.location.href = '/criar-checkout?lang=' + lang + '&produto=' + produto
-    + '&nome=' + encodeURIComponent(nome) + '&nascimento=' + encodeURIComponent(nasc);
-}
+
 function selecionarOpcao(container, btn) {
   container.querySelectorAll(".coleta-opcao").forEach(function(b){ b.classList.remove("ativo"); });
   btn.classList.add("ativo");
@@ -450,6 +421,37 @@ function montarPassoTipo(produto, lang) {
   });
 }
 
+    // ===== RESTAURAÇÃO DAS LISTAS DE COLETA (perdidas do produtos.js — 07/11/2026) =====
+  var DADO_APLICA = ["nome_pet","nickname","nome_dominio","nome_canal","nome_equipe","nome_projeto","nome_evento"];
+  var DADO_LABEL = {
+    pt: { nome_pet:"Nome do pet", nickname:"Seu nickname ou usuário", nome_dominio:"Nome do domínio (ex.: meusite.com)", nome_canal:"Nome do canal", nome_equipe:"Nome da equipe", nome_projeto:"Nome do projeto", nome_evento:"Nome do evento" },
+    en: { nome_pet:"Pet's name", nickname:"Your nickname or handle", nome_dominio:"Domain name (e.g.: mysite.com)", nome_canal:"Channel name", nome_equipe:"Team name", nome_projeto:"Project name", nome_evento:"Event name" }
+  };
+  var CONF_COLETA = {
+    nome_pet: { tipos:["cao","gato","passaro","outro"] },
+    nickname: { tipos:["pessoal","profissional","artistico"] },
+    nome_dominio: { tipos:["empresa","pessoal","loja","blog"] },
+    nome_canal: { tipos:["youtube","podcast","instagram","tiktok"] },
+    nome_equipe: { tipos:["esportiva","corporativa","criativa"] },
+    nome_projeto: { tipos:["digital","social","comercial"] },
+    nome_evento: { tipos:["congresso","curso","festa","palestra"] }
+  };
+  if (DADO_APLICA.indexOf(produto) !== -1) {
+    abrirModalDado(produto, lang);
+    return;
+  }
+  var nome = (document.getElementById("calcNome") ? document.getElementById("calcNome").value : "").trim();
+  var nasc = converterData((document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim());
+  if (!nome || !nasc) {
+    alert(t.preencha_dados || "Preencha nome e data de nascimento primeiro.");
+    var sec = document.getElementById("calcSection") || document.getElementById("calculadora");
+    if (sec) sec.scrollIntoView({ behavior: "smooth" });
+    return;
+  }
+  window.location.href = '/criar-checkout?lang=' + lang + '&produto=' + produto
+    + '&nome=' + encodeURIComponent(nome) + '&nascimento=' + encodeURIComponent(nasc);
+}
+    
 // ===== CONFIG DE DESCONTO DO BÔNUS COLETIVO — FONTE ÚNICA =====
 // Zona automática: até 2.000 unidades, o site calcula o desconto sozinho (10% a 50%).
 // Acima disso: NÃO calcula — entra em "sob consulta" (negociação manual).
