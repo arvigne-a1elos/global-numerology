@@ -24,8 +24,8 @@ if (!window.PRECO_DISPLAY) {
   });
 }
 
-_traduzindo = _traduzindo || false;
-BC_QUANTIDADES = BC_QUANTIDADES || {};
+window._traduzindo = window._traduzindo || false;
+window.BC_QUANTIDADES = window.BC_QUANTIDADES || {};
 
 /* ===== CONF_COLETA ===== */
 CONF_COLETA = CONF_COLETA || {
@@ -740,7 +740,7 @@ function montarTabelaBC() {
     var corpo = document.getElementById('bcTabelaCorpo');
     if (!corpo) return;
     corpo.innerHTML = '';
-    var qtds = BC_QUANTIDADES || (BC_QUANTIDADES = {});
+    var qtds = window.BC_QUANTIDADES || (window.BC_QUANTIDADES = {});
     produtos.forEach(function(prod) {
       var faixa = (PRODUTO_FAIXA && PRODUTO_FAIXA[prod] !== undefined) ? PRODUTO_FAIXA[prod] : null;
       if (faixa === null) return;
@@ -926,7 +926,7 @@ function montarPassoNome(produto, lang) {
 /* ===== CONFIRMAR BÔNUS COLETIVO ===== */
 function confirmarBC() {
   var qtdTotal = 0;
-  for (var id in BC_QUANTIDADES) { qtdTotal += parseInt(BC_QUANTIDADES[id], 10) || 0; }
+  for (var id in window.BC_QUANTIDADES) { qtdTotal += parseInt(BC_QUANTIDADES[id], 10) || 0; }
   if (bcSobConsulta(qtdTotal)) {
     aplicarEstadoBC(qtdTotal);
     var av = document.getElementById('bcAvisoConsulta');
