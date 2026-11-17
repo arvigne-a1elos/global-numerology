@@ -60,37 +60,6 @@ function pagarIa(){
     + '&energia=' + encodeURIComponent(_energiaSelecionada('iaEnergiaSel', 'ia')) + '&lang=' + getLang();
 }
 
-    // ===== RESTAURAÇÃO DAS LISTAS DE COLETA (perdidas do produtos.js — 07/11/2026) =====
-  var DADO_APLICA = ["nome_pet","nickname","nome_dominio","nome_canal","nome_equipe","nome_projeto","nome_evento"];
-  var DADO_LABEL = {
-    pt: { nome_pet:"Nome do pet", nickname:"Seu nickname ou usuário", nome_dominio:"Nome do domínio (ex.: meusite.com)", nome_canal:"Nome do canal", nome_equipe:"Nome da equipe", nome_projeto:"Nome do projeto", nome_evento:"Nome do evento" },
-    en: { nome_pet:"Pet's name", nickname:"Your nickname or handle", nome_dominio:"Domain name (e.g.: mysite.com)", nome_canal:"Channel name", nome_equipe:"Team name", nome_projeto:"Project name", nome_evento:"Event name" }
-  };
-  var CONF_COLETA = {
-    nome_pet: { tipos:["cao","gato","passaro","outro"] },
-    nickname: { tipos:["pessoal","profissional","artistico"] },
-    nome_dominio: { tipos:["empresa","pessoal","loja","blog"] },
-    nome_canal: { tipos:["youtube","podcast","instagram","tiktok"] },
-    nome_equipe: { tipos:["esportiva","corporativa","criativa"] },
-    nome_projeto: { tipos:["digital","social","comercial"] },
-    nome_evento: { tipos:["congresso","curso","festa","palestra"] }
-  };
-  if (DADO_APLICA.indexOf(produto) !== -1) {
-    abrirModalDado(produto, lang);
-    return;
-  }
-  var nome = (document.getElementById("calcNome") ? document.getElementById("calcNome").value : "").trim();
-  var nasc = converterData((document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim());
-  if (!nome || !nasc) {
-    alert(t.preencha_dados || "Preencha nome e data de nascimento primeiro.");
-    var sec = document.getElementById("calcSection") || document.getElementById("calculadora");
-    if (sec) sec.scrollIntoView({ behavior: "smooth" });
-    return;
-  }
-  window.location.href = '/criar-checkout?lang=' + lang + '&produto=' + produto
-    + '&nome=' + encodeURIComponent(nome) + '&nascimento=' + encodeURIComponent(nasc);
-}
-
 // ===== NÚMERO DO IMÓVEL — 3 campos, validação silenciosa (sem alert) =====
 function _imovelPegaVisivel(ids){
   for (var j = 0; j < ids.length; j++){
@@ -336,31 +305,46 @@ window.pagarOng = window.pagarOng || function(){
     + '&lang=' + getLang();
   window.location.href = qs;
 };
+
+// ===== LISTAS DE COLETA (globais — fora da função) =====
+window.DADO_APLICA = window.DADO_APLICA || ["nome_pet","nickname","nome_dominio","nome_canal","nome_equipe","nome_projeto","nome_evento"];
+
+window.DADO_LABEL = window.DADO_LABEL || {
+  pt: { nome_pet:"Nome do pet", nickname:"Seu nickname ou usuário", nome_dominio:"Nome do domínio (ex.: meusite.com)", nome_canal:"Nome do canal", nome_equipe:"Nome da equipe", nome_projeto:"Nome do projeto", nome_evento:"Nome do evento" },
+  en: { nome_pet:"Pet's name", nickname:"Your nickname or handle", nome_dominio:"Domain name (e.g.: mysite.com)", nome_canal:"Channel name", nome_equipe:"Team name", nome_projeto:"Project name", nome_evento:"Event name" }
+};
+
+window.CONF_COLETA = window.CONF_COLETA || {
+  nome_pet:     { tipos:["cao","gato","passaro","outro"] },
+  nickname:     { tipos:["pessoal","profissional","artistico"] },
+  nome_dominio: { tipos:["empresa","pessoal","loja","blog"] },
+  nome_canal:   { tipos:["youtube","podcast","instagram","tiktok"] },
+  nome_equipe:  { tipos:["esportiva","corporativa","criativa"] },
+  nome_projeto: { tipos:["digital","social","comercial"] },
+  nome_evento:  { tipos:["congresso","curso","festa","palestra"] }
+};
+
+// ===== COMPRAR (abre o modal do dado para os 7 produtos da IA Nomes) =====
 function comprar(produto) {
   var lang = getLang();
   var t = translations[lang] || translations.pt;
+  if (DADO_APLICA.indexOf(produto) !== -1) {
+    abrirModalDado(produto, lang);
+    return;
+  }
+  var nome = (document.getElementById("calcNome") ? document.getElementById("calcNome").value : "").trim();
+  var nasc = converterData((document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim());
+  if (!nome || !nasc) {
+    alert(t.preencha_dados || "Preencha nome e data de nascimento primeiro.");
+    var sec = document.getElementById("calcSection") || document.getElementById("calculadora");
+    if (sec) sec.scrollIntoView({ behavior: "smooth" });
+    return;
+  }
+  window.location.href = '/criar-checkout?lang=' + lang + '&produto=' + produto
+    + '&nome=' + encodeURIComponent(nome) + '&nascimento=' + encodeURIComponent(nasc);
+}
 
 function selecionarOpcao(container, btn) {
-  container.querySelectorAll(".coleta-opcao").forEach(function(b){ b.classList.remove("ativo"); });
-  btn.classList.add("ativo");
-}
-function montarGradeEnergia(idContainer) {
-  var c = document.getElementById(idContainer);
-  if (!c) return;
-  c.innerHTML = "";
-  for (var i = 1; i <= 9; i++) {
-    (function(n){
-      var b = document.createElement("button");
-      b.type = "button"; b.className = "btn btn-outline energia-num";
-      b.textContent = String(n);
-      b.onclick = function(){
-        c.querySelectorAll(".energia-num").forEach(function(x){ x.classList.remove("ativo"); });
-        b.classList.add("ativo");
-      };
-      c.appendChild(b);
-    })(i);
-  }
-}
 function fecharModalColeta() {
   var o = document.getElementById("modalColeta");
   if (o) o.style.display = "none";
