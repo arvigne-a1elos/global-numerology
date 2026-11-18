@@ -1250,36 +1250,65 @@ window.ENERGIA_UI = {
   ar: { ideal: "الأمثل لهذا المنتج", selecionada: "الطاقة المحددة", label: "المنصب + طاقة الاسم", dica: "الطاقة المثالية 8" },
 };  
 
-// ===== MAPA DO CASAL (2 pessoas) =====
-window.pagarCasal = function(){
+// ===== HELPERS UNIFICADOS =====
+// Idioma: fonte única de verdade (substitui o localStorage.getItem('l') solto)
+window._lang = window._lang || function(){
+  try { if (typeof getLang === 'function') { var l = getLang(); if (l) return l; } } catch(e){}
+  try { return localStorage.getItem('lang') || localStorage.getItem('l') || 'pt'; } catch(e){ return 'pt'; }
+};
+
+// Resolve o formulário VISÍVEL (partials podem ser injetados 2x)
+window._resolverForm = window._resolverForm || function(formId){
+  var forms = document.querySelectorAll('form#' + formId);
+  for (var i = 0; i < forms.length; i++) {
+    if (forms[i].offsetParent !== null) return forms[i];
+  }
+  return forms.length ? forms[forms.length - 1] : document.getElementById(formId);
+};
+
+// Lê um campo: primeiro dentro do form resolvido, depois no documento
+window._campo = window._campo || function(form, id){
+  var e = form ? form.querySelector('[id="' + id + '"]') : null;
+  if (!e) e = document.getElementById(id);
+  return e ? String(e.value || '').trim() : '';
+};
+
+// Mensagem traduzida com fallback neutro
+window._aviso = window._aviso || function(chave, padrao){
+  var lang = window._lang();
+  var t = (typeof translations !== 'undefined') ? (translations[lang] || translations.pt) : null;
+  alert((t && t[chave]) ? t[chave] : (padrao || 'Preencha o dado solicitado.'));
+};
+
+// ===== NORMALIZAÇÃO DE NOMES =====
+// Letras que o NFD NÃO resolve: precisam de mapa explícito (Đ, Ø, Æ, Ł...)
+window.LETRAS_ESPECIAIS = window.LETRAS_ESPECIAIS || {
+  "Æ": "AE", "Œ": "OE", "Ø": "O", "Đ": "D", "Ł": "L",
+  "Þ": "TH", "Ð": "D", "Ħ": "H", "Ŧ": "T", "Ŋ": "N"
+};
+
+window.normalizar = window.normalizar || function(texto){
+  var s = String(texto || "").toUpperCase();
+  // 1) letras sem decomposição Unicode
+  s = s.replace(/[ÆŒØĐŁÞÐĦŦŊ]/g, function(ch){ return window.LETRAS_ESPECIAIS[ch] || ch; });
+  // 2) separa acentos da letra-base e remove só os acentos (JOÃO -> JOAO)
+  s = s.normalize ? s.normalize("NFD").replace(/[\u0300-\u036f]/g, "") : s;
+  // 3) mantém apenas A-Z
+  return s.replace(/[^A-Z]/g, "");
+};
+
+// ===== MAPA DO CASAL =====
+window.pagarCasal = window.pagarCasal || function(){
   try {
-    var lang = (typeof getLang === 'function') ? getLang() : 'pt';
-    var t = (typeof translations !== 'undefined') ? (translations[lang] || translations.pt) : null;
+    var lang = window._lang();
+    var form = window._resolverForm('form-casal');
 
-    // pega o formulário VISÍVEL, não o primeiro id do DOM
-    var forms = document.querySelectorAll('form#form-casal');
-    var form = null;
-    for (var i = 0; i < forms.length; i++) {
-      if (forms[i].offsetParent !== null) { form = forms[i]; break; }
-    }
-    if (!form) form = forms[forms.length - 1] || document.getElementById('form-casal');
+    var nome1 = window._campo(form, 'casalNome1');
+    var nome2 = window._campo(form, 'casalNome2');
+    var nasc1 = window._campo(form, 'casalNasc1');
+    var nasc2 = window._campo(form, 'casalNasc2');
 
-    var _v = function(id){
-      var e = form ? form.querySelector('[id="' + id + '"]') : null;
-      if (!e) e = document.getElementById(id);
-      return e ? (e.value || '').trim() : '';
-    };
-
-    var nome1 = _v('casalNome1');
-    var nome2 = _v('casalNome2');
-    var nasc1 = _v('casalNasc1');
-    var nasc2 = _v('casalNasc2');
-
-    if (!nome1 || !nome2 || !nasc1 || !nasc2) {
-      console.warn('pagarCasal faltando:', {nome1:nome1, nome2:nome2, nasc1:nasc1, nasc2:nasc2, forms:forms.length});
-      alert((t && t.preencha_dado) ? t.preencha_dado : 'Preencha o dado solicitado.');
-      return;
-    }
+    if (!nome1 || !nome2 || !nasc1 || !nasc2) { window._aviso('preencha_dado'); return; }
 
     window.location.href = '/criar-checkout?lang=' + encodeURIComponent(lang)
       + '&produto=casal'
@@ -1293,45 +1322,26 @@ window.pagarCasal = function(){
   }
 };
 
-// ===== MAPA FAMÍLIA PREMIUM (1 principal + 2 membros) =====
-window.pagarFamilia = function(){
+// ===== MAPA FAMÍLIA PREMIUM =====
+window.pagarFamilia = window.pagarFamilia || function(){
   try {
-    var lang = (typeof getLang === 'function') ? getLang() : 'pt';
-    var t = (typeof translations !== 'undefined') ? (translations[lang] || translations.pt) : null;
+    var lang = window._lang();
+    var form = window._resolverForm('form-familia');
 
-    var forms = document.querySelectorAll('form#form-familia');
-    var form = null;
-    for (var i = 0; i < forms.length; i++) {
-      if (forms[i].offsetParent !== null) { form = forms[i]; break; }
-    }
-    if (!form) form = forms[forms.length - 1] || document.getElementById('form-familia');
+    var nome1 = window._campo(form, 'familiaPrincipalNome');
+    var nasc1 = window._campo(form, 'familiaPrincipalNasc');
 
-    var _v = function(id){
-      var e = form ? form.querySelector('[id="' + id + '"]') : null;
-      if (!e) e = document.getElementById(id);
-      return e ? (e.value || '').trim() : '';
-    };
+    if (!nome1 || !nasc1) { window._aviso('preencha_dado'); return; }
 
-    var nome1 = _v('familiaPrincipalNome');
-    var nasc1 = _v('familiaPrincipalNasc');
-
-    if (!nome1 || !nasc1) {
-      alert((t && t.preencha_dado) ? t.preencha_dado : 'Preencha o dado solicitado.');
-      return;
-    }
-
-    var nomes = [nome1];
-    var datas = [nasc1];
+    var nomes = [nome1], datas = [nasc1];
     for (var i = 1; i <= 2; i++) {
-      var n = _v('familiaMembroNome' + i);
-      var d = _v('familiaMembroNasc' + i);
+      var n = window._campo(form, 'familiaMembroNome' + i);
+      var d = window._campo(form, 'familiaMembroNasc' + i);
       if (n && d) { nomes.push(n); datas.push(d); }
     }
 
-    if (nomes.length < 3) {
-      alert((t && t.preencha_dado) ? t.preencha_dado : 'Preencha o dado solicitado.');
-      return;
-    }
+    // REGRA: exige 2 membros (total 3). Para aceitar 1, troque 3 por 2.
+    if (nomes.length < 3) { window._aviso('preencha_dado'); return; }
 
     window.location.href = '/criar-checkout?lang=' + encodeURIComponent(lang)
       + '&produto=familia'
@@ -1345,38 +1355,29 @@ window.pagarFamilia = function(){
   }
 };
 
-// ===== COMPATIBILIDADE DE EQUIPES (1 chefe + 2 colaboradores) =====
-window.pagarCompatibilidade = function(){
+// ===== COMPATIBILIDADE DE EQUIPES (RH) =====
+window.pagarCompatibilidade = window.pagarCompatibilidade || function(){
   try {
-    var lang = (typeof getLang === 'function') ? getLang() : 'pt';
-    var t = (typeof translations !== 'undefined') ? (translations[lang] || translations.pt) : null;
+    var lang = window._lang();
+    var form = window._resolverForm('form-compatibilidade_equipes');
 
-    var chefe = (document.getElementById('equipePrincipalNome') ? document.getElementById('equipePrincipalNome').value : '').trim();
-    var nascC = (document.getElementById('equipePrincipalNasc') ? document.getElementById('equipePrincipalNasc').value : '').trim();
+    var chefe = window._campo(form, 'equipePrincipalNome');
+    var nascC = window._campo(form, 'equipePrincipalNasc');
 
-    if (!chefe || !nascC) {
-      alert((t && t.preencha_dado) ? t.preencha_dado : 'Preencha o dado solicitado.');
-      return;
-    }
+    if (!chefe || !nascC) { window._aviso('preencha_dado'); return; }
 
-    var nomes = [chefe];
-    var datas = [nascC];
+    var nomes = [chefe], datas = [nascC];
     for (var i = 1; i <= 2; i++) {
-      var n = document.getElementById('equipeMembroNome' + i);
-      var d = document.getElementById('equipeMembroNasc' + i);
-      if (n && d && n.value.trim() && d.value.trim()) {
-        nomes.push(n.value.trim());
-        datas.push(d.value.trim());
-      }
+      var n = window._campo(form, 'equipeMembroNome' + i);
+      var d = window._campo(form, 'equipeMembroNasc' + i);
+      if (n && d) { nomes.push(n); datas.push(d); }
     }
 
-    if (nomes.length < 3) {
-      alert((t && t.preencha_dado) ? t.preencha_dado : 'Preencha o dado solicitado.');
-      return;
-    }
+    // REGRA: exige 2 colaboradores (total 3). Para aceitar 1, troque 3 por 2.
+    if (nomes.length < 3) { window._aviso('preencha_dado'); return; }
 
-    var energia = (window._compEnergia && window._compEnergia !== '' && window._compEnergia !== '0')
-                ? window._compEnergia : '8';
+    // Compatibilidade compara pessoas: energia fixa 8 (NÃO usa seletor)
+    var energia = '8';
 
     window.location.href = '/criar-checkout?lang=' + encodeURIComponent(lang)
       + '&produto=compatibilidade_equipes'
@@ -1391,82 +1392,111 @@ window.pagarCompatibilidade = function(){
   }
 };
 
-function pagarUrna(){
-  var lang=localStorage.getItem('l')||'pt';
-  var nc=(document.getElementById('urnaNome')?document.getElementById('urnaNome').value:'').trim();
-  var cr=document.getElementById('urnaCargo')?document.getElementById('urnaCargo').value:'vereador';
-  var ge=document.getElementById('urnaGenero')?document.getElementById('urnaGenero').value:'masculino';
-  if(nc.length<3){alert('Preencha o nome completo da pessoa');return;}
-  var nomes=[];
-  for(var i=1;i<=5;i++){
-    var p=document.getElementById('urnaPrefixo'+i);
-    var inp=document.getElementById('urnaNome'+i);
-    var n=inp?inp.value.trim():'';
-    if(!n) continue;
-    var pref=p?p.dataset.valor||'':'';
-    nomes.push(pref+' '+n);
+// ===== NOME DE URNA =====
+window.pagarUrna = window.pagarUrna || function(){
+  try {
+    var lang = window._lang();
+    var nc = window._campo(null, 'urnaNome');
+    var cr = (document.getElementById('urnaCargo') || {}).value || 'vereador';
+    var ge = (document.getElementById('urnaGenero') || {}).value || 'masculino';
+
+    if (nc.length < 3) { window._aviso('preencha_dado', 'Preencha o nome completo da pessoa.'); return; }
+
+    var nomes = [];
+    for (var i = 1; i <= 5; i++) {
+      var p = document.getElementById('urnaPrefixo' + i);
+      var inp = document.getElementById('urnaNome' + i);
+      var n = inp ? String(inp.value || '').trim() : '';
+      if (!n) continue;
+      var pref = (p && p.dataset) ? (p.dataset.valor || '') : '';
+      nomes.push((pref + ' ' + n).trim());
+    }
+    if (!nomes.length) { window._aviso('preencha_dado', 'Preencha ao menos uma grafia.'); return; }
+
+    var boxE = document.getElementById('urnaEnergiaSel');
+    var energia = boxE ? (boxE.dataset.energia || '8') : '8';
+
+    var qs = 'lang=' + encodeURIComponent(lang)
+           + '&produto=urna'
+           + '&nome_completo=' + encodeURIComponent(nc)
+           + '&cargo=' + encodeURIComponent(cr)
+           + '&genero=' + encodeURIComponent(ge)
+           + '&nome=' + encodeURIComponent(nc)
+           + '&energia=' + encodeURIComponent(energia);
+
+    for (var j = 1; j <= nomes.length; j++) {
+      qs += '&nome' + j + '=' + encodeURIComponent(nomes[j - 1]);
+    }
+    window.location.href = '/criar-checkout?' + qs;
+  } catch(e) {
+    console.error('pagarUrna:', e);
+    alert('Erro ao iniciar o pagamento. Recarregue a página.');
   }
-  if(!nomes.length){alert('Preencha pelo menos uma grafia com o nome do candidato');return;}
-  var enc=encodeURIComponent;
-  var qs='lang='+enc(lang)+'&produto=urna&nome_completo='+enc(nc)+'&cargo='+enc(cr)+'&genero='+enc(ge)+'&nome='+enc(nc);
-  var boxE = document.getElementById('urnaEnergiaSel');
-  var energia = boxE ? (boxE.dataset.energia || '8') : '8';
-  qs += '&energia=' + enc(energia);
-  for(var i=1;i<=nomes.length;i++){ qs+='&nome'+i+'='+enc(nomes[i-1]); }
-  window.location.href='/criar-checkout?'+qs;
+};
+
+// ===== ENERGIA DE UMA GRAFIA =====
+window.LETRA_VALOR = window.LETRA_VALOR || {
+  A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,
+  J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,
+  S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8
+};
+
+function reduzirNum(n){
+  while (n > 9 && n !== 11 && n !== 22) {
+    n = String(n).split('').reduce(function(a, d){ return a + parseInt(d, 10); }, 0);
+  }
+  return n;
 }
-
-/* Mapa letra->valor (numerologia pitagorica) */
-window.LETRA_VALOR = {A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8};
-
-function reduzirNum(n){ while(n>9 && n!==11 && n!==22){ n=String(n).split('').reduce(function(a,d){return a+parseInt(d,10);},0);} return n; }
 
 function energiaGrafia(texto){
-  var limpo = String(texto||'').toUpperCase().replace(/[^A-Z]/g,'');
+  var limpo = window.normalizar(texto);   // <- agora JOÃO vira JOAO
   var soma = 0;
-  for(var i=0;i<limpo.length;i++){ soma += (window.LETRA_VALOR[limpo[i]]||0); }
-  return {soma:soma, energia:reduzirNum(soma)};
+  for (var i = 0; i < limpo.length; i++) { soma += (window.LETRA_VALOR[limpo[i]] || 0); }
+  return { soma: soma, energia: reduzirNum(soma) };
 }
 
-/* NOVA: energia de um número (Nº Eleitoral) */
 function energiaNumero(num){
   var n = parseInt(num, 10) || 0;
   if (n <= 0) return 0;
   return reduzirNum(n);
 }
 
-function montarSeletorEnergia(containerId, aoSelecionar, ideal){
-  if (typeof aoSelecionar !== "function") aoSelecionar = function(){};
-  var lang = localStorage.getItem('l') || 'pt';
-  var ui = window.ENERGIA_UI[lang] || window.ENERGIA_UI.pt;
+// ===== SELETOR DE ENERGIA (com guarda) =====
+window.montarSeletorEnergia = window.montarSeletorEnergia || function(containerId, aoSelecionar, ideal){
+  if (typeof aoSelecionar !== 'function') aoSelecionar = function(){};
+
+  var lang = window._lang();
+  var _UI = window.ENERGIA_UI || {};                      // <- guarda contra undefined
+  var ui = _UI[lang] || _UI.pt || { ideal: 'Energia ideal' };
+
   var box = document.getElementById(containerId);
-  if(!box) return;
+  if (!box) return null;
+
   box.innerHTML = '';
-  for(var i=1;i<=9;i++){
-    var b=document.createElement('button');
-    b.type='button';
-    b.className='energia-btn'+(i===ideal?' ideal':'');
-    b.textContent=i;
-    b.title=(i===ideal)?ui.ideal:String(i);
-    b.dataset.energia=i;
-    b.onclick=function(){
-      box.querySelectorAll('.energia-btn').forEach(function(x){x.classList.remove('selecionada');});
+  for (var i = 1; i <= 9; i++) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'energia-btn' + (i === ideal ? ' ideal' : '');
+    b.textContent = i;
+    b.title = (i === ideal) ? (ui.ideal || 'Energia ideal') : String(i);
+    b.dataset.energia = i;
+    b.onclick = function(){
+      var todos = box.querySelectorAll('.energia-btn');
+      for (var k = 0; k < todos.length; k++) todos[k].classList.remove('selecionada');
       this.classList.add('selecionada');
-      box.dataset.energia=this.dataset.energia;
-      if(aoSelecionar) aoSelecionar(parseInt(this.dataset.energia,10));
+      box.dataset.energia = this.dataset.energia;
+      aoSelecionar(parseInt(this.dataset.energia, 10));
     };
     box.appendChild(b);
-  }      
-// Amor: sem seletor, energia fixa 5
-// Estudos: sem seletor, energia livre
-// Só marca a estrela e pré-seleciona se houver um ideal definido
-  if(ideal){
-    var btnIdeal = box.querySelector('.energia-btn[data-energia="'+ideal+'"]');
-    if(btnIdeal){ btnIdeal.classList.add('selecionada'); box.dataset.energia=ideal; }
-    if(aoSelecionar) aoSelecionar(ideal);
+  }
+
+  if (ideal) {
+    var btnIdeal = box.querySelector('.energia-btn[data-energia="' + ideal + '"]');
+    if (btnIdeal) { btnIdeal.classList.add('selecionada'); box.dataset.energia = ideal; }
+    aoSelecionar(ideal);
   }
   return box;
-}
+};
 
 /* ===== MODAL GENÉRICO DE FORMULÁRIOS (SISTEMA ÚNICO, CONSOLIDADO) =====
    Um só overlay, um só estado, um só fechamento.
