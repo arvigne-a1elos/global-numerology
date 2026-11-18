@@ -1192,8 +1192,8 @@ function montarEnergias() {
     || document.getElementById("energias")
     || document.querySelector(".energias-grid");
   if (container) {
-    var titulos = window.[lang] || window.["pt"];
-    var descs = window.ENERGIAS_DESC[lang] || window.ENERGIAS_DESC["pt"] || {};
+    var _T = window.ENERGIA_TRAD || window.ENERGIAS_TITULOS || {};
+    var titulos = _T[lang] || _T["pt"] || {};
     var btn = window.ENERGIAS_BTN[lang] || "Pesquisar";
     var html = "";
     for (var i = 1; i <= 9; i++) {
