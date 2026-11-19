@@ -324,6 +324,46 @@ window.CONF_COLETA = window.CONF_COLETA || {
   nome_evento:  { tipos:["congresso","curso","festa","palestra"] }
 };
 
+// ===== COMPRAR (entrada dos 24 cards) =====
+function comprar(produto) {
+  var lang = (typeof getLang === 'function') ? getLang() : 'pt';
+  var t = (typeof translations !== 'undefined') ? (translations[lang] || translations.pt) : {};
+
+  var lista = window.DADO_APLICA || ["nome_pet","nickname","nome_dominio","nome_canal","nome_equipe","nome_projeto","nome_evento"];
+  if (lista.indexOf(produto) !== -1) {
+    abrirModalDado(produto, lang);
+    return;
+  }
+
+  var nome = (document.getElementById("calcNome") ? document.getElementById("calcNome").value : "").trim();
+  var nasc = (typeof converterData === 'function')
+    ? converterData((document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim())
+    : ((document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim());
+
+  if (!nome || !nasc) {
+    alert(t.preencha_dados || "Preencha nome e data de nascimento primeiro.");
+    var sec = document.getElementById("calcSection") || document.getElementById("calculadora");
+    if (sec) sec.scrollIntoView({ behavior: "smooth" });
+    return;
+  }
+
+  window.location.href = '/criar-checkout?lang=' + encodeURIComponent(lang)
+    + '&produto=' + encodeURIComponent(produto)
+    + '&nome=' + encodeURIComponent(nome)
+    + '&nascimento=' + encodeURIComponent(nasc);
+}
+
+function selecionarOpcao(container, btn) {
+  container.querySelectorAll(".coleta-opcao").forEach(function(b){ b.classList.remove("ativo"); });
+  btn.classList.add("ativo");
+}
+
+function fecharModalColeta() {
+  var o = document.getElementById("modalColeta");
+  if (o) o.style.display = "none";
+  if (typeof coletaAtual !== 'undefined') coletaAtual = null;
+}
+
 // ===== MODAL ÚNICO DOS 7 PRODUTOS DA IA — NOME + ENERGIA + TIPO NA MESMA TELA =====
 function abrirModalDado(produto, lang) {
   var t = translations[lang] || translations.pt;
