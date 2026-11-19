@@ -324,39 +324,44 @@ window.CONF_COLETA = window.CONF_COLETA || {
   nome_evento:  { tipos:["congresso","curso","festa","palestra"] }
 };
 
-// ===== COMPRAR (abre o modal do dado para os 7 produtos da IA Nomes) =====
+// ===== COMPRAR (entrada dos 24 cards) =====
 function comprar(produto) {
-  var lang = getLang();
-  var t = translations[lang] || translations.pt;
-  if (DADO_APLICA.indexOf(produto) !== -1) {
-    abrirModalDado(produto, lang);
-    return;
-  }
+  var lang = (typeof getLang === 'function') ? getLang() : 'pt';
+  var t = (typeof translations !== 'undefined') ? (translations[lang] || translations.pt) : {};
+  var lista = window.DADO_APLICA || ["nome_pet","nickname","nome_dominio","nome_canal","nome_equipe","nome_projeto","nome_evento"];
+  if (lista.indexOf(produto) !== -1) { abrirModalDado(produto, lang); return; }
   var nome = (document.getElementById("calcNome") ? document.getElementById("calcNome").value : "").trim();
-  var nasc = converterData((document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim());
+  var nascEl = document.getElementById("calcNasc");
+  var nasc = (typeof converterData === 'function') ? converterData(nascEl ? nascEl.value : "") : (nascEl ? nascEl.value : "").trim();
   if (!nome || !nasc) {
     alert(t.preencha_dados || "Preencha nome e data de nascimento primeiro.");
     var sec = document.getElementById("calcSection") || document.getElementById("calculadora");
     if (sec) sec.scrollIntoView({ behavior: "smooth" });
     return;
   }
-  window.location.href = '/criar-checkout?lang=' + lang + '&produto=' + produto
-    + '&nome=' + encodeURIComponent(nome) + '&nascimento=' + encodeURIComponent(nasc);
+  window.location.href = '/criar-checkout?lang=' + encodeURIComponent(lang)
+    + '&produto=' + encodeURIComponent(produto)
+    + '&nome=' + encodeURIComponent(nome)
+    + '&nascimento=' + encodeURIComponent(nasc);
 }
 
 function selecionarOpcao(container, btn) {
   container.querySelectorAll(".coleta-opcao").forEach(function(b){ b.classList.remove("ativo"); });
   btn.classList.add("ativo");
 }
+
 function fecharModalColeta() {
   var o = document.getElementById("modalColeta");
   if (o) o.style.display = "none";
-  coletaAtual = null;
-}// ===== MODAL ÚNICO DOS 7 PRODUTOS DA IA — NOME + ENERGIA + TIPO NA MESMA TELA =====
+}
+
+// ===== MODAL ÚNICO DOS 7 PRODUTOS DA IA =====
 function abrirModalDado(produto, lang) {
-  var t = translations[lang] || translations.pt;
-  var label = (DADO_LABEL[lang] && DADO_LABEL[lang][produto]) ? DADO_LABEL[lang][produto] : DADO_LABEL.pt[produto];
-  var titulo = (PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang][produto]) ? PRODUTOS_TRAD[lang][produto] : produto;
+  var t  = (typeof translations !== 'undefined' && (translations[lang] || translations.pt)) || {};
+  var DL = window.DADO_LABEL || { pt: {} };
+  var PT = window.PRODUTOS_TRAD || {};
+  var label  = (DL[lang] && DL[lang][produto]) ? DL[lang][produto] : ((DL.pt && DL.pt[produto]) || produto);
+  var titulo = (PT[lang] && PT[lang][produto]) ? PT[lang][produto] : ((PT.pt && PT.pt[produto]) || produto);
   var conf  = (window.CONF_COLETA && window.CONF_COLETA[produto]) || {};
   var tipos = conf.tipos || [];
   var ideal = (typeof ENERGIA_IDEAL !== 'undefined' && ENERGIA_IDEAL[produto]) ? ENERGIA_IDEAL[produto] : 0;
@@ -386,25 +391,19 @@ function abrirModalDado(produto, lang) {
   }
 
   overlay.innerHTML = '<div class="modal-box">'
-    + '<button type="button" id="modalDadoX" aria-label="Fechar" '
-    + 'style="position:absolute;top:8px;right:14px;background:none;border:none;'
-    + 'color:#C9A94E;font-size:26px;line-height:1;cursor:pointer;">&times;</button>'
+    + '<button type="button" id="modalDadoX" aria-label="Fechar" style="position:absolute;top:8px;right:14px;background:none;border:none;color:#C9A94E;font-size:26px;line-height:1;cursor:pointer;">&times;</button>'
     + '<h3 id="modalDadoTitulo" style="color:var(--gold);margin-bottom:4px">' + titulo + '</h3>'
     + '<p id="modalDadoLabel" style="color:#ccc;margin-bottom:8px">' + label + ':</p>'
     + '<input id="modalDadoInput" type="text" class="modal-input" placeholder="Nome 1" autocomplete="off">'
-    + '<input id="modalDadoInput2" type="text" class="modal-input" placeholder="Nome 2" autocomplete="off" style="margin-top:8px">'
-    + '<p style="color:#888;font-size:.75rem;margin-top:6px">Informe até 2 nomes. '
-    + 'Se nenhum atingir a energia escolhida, a IA sugere 1 nome com essa energia.</p>'
+    + '<input id="modalDadoInput2" type="text" class="modal-input" placeholder="Nome 2 (opcional)" autocomplete="off" style="margin-top:8px">'
+    + '<p style="color:#888;font-size:.75rem;margin-top:6px">Informe até 2 nomes. Se nenhum atingir a energia escolhida, a IA sugere 1 nome com essa energia.</p>'
     + htmlEnergia
     + htmlTipo
     + '<div class="modal-actions">'
-    + '<button type="button" id="modalDadoOk" class="btn">'
-    + (t.confirmar_btn || t.confirmar || 'Confirmar') + '</button>'
-    + '<button type="button" id="modalDadoCancel" class="btn btn-outline">'
-    + (t.cancelar_btn || t.cancelar || 'Cancelar') + '</button>'
+    + '<button type="button" id="modalDadoOk" class="btn">' + (t.confirmar_btn || t.confirmar || 'Confirmar') + '</button>'
+    + '<button type="button" id="modalDadoCancel" class="btn btn-outline">' + (t.cancelar_btn || t.cancelar || 'Cancelar') + '</button>'
     + '</div></div>';
 
-  // --- seletor de energia (1-9, ideal pré-marcada) ---
   var boxE = document.getElementById('modalEnergiaOpcoes');
   var energiaSel = ideal || 0;
   for (var n = 1; n <= 9; n++) {
@@ -424,7 +423,6 @@ function abrirModalDado(produto, lang) {
     })(n);
   }
 
-  // --- botões de tipo ---
   var tipoSel = '';
   var btnsTipo = overlay.querySelectorAll('.modal-tipo-btn');
   for (var j = 0; j < btnsTipo.length; j++) {
@@ -437,9 +435,9 @@ function abrirModalDado(produto, lang) {
 
   window._modalDado = { produto: produto, lang: lang, tipo: '', energia: energiaSel };
 
-  document.getElementById('modalDadoX').onclick = fecharModalDado;
+  document.getElementById('modalDadoX').onclick      = fecharModalDado;
   document.getElementById('modalDadoCancel').onclick = fecharModalDado;
-  document.getElementById('modalDadoOk').onclick = function () {
+  document.getElementById('modalDadoOk').onclick     = function () {
     _confirmarCamposIA(produto, lang, tipoSel, energiaSel);
   };
 
@@ -454,7 +452,7 @@ function _confirmarCamposIA(produto, lang, tipo, energia) {
   var d1 = i1 ? i1.value.trim() : '';
   var d2 = i2 ? i2.value.trim() : '';
   if (!d1 && !d2) {
-    alert((translations[lang] || translations.pt).preencha_dado || "Preencha ao menos um nome.");
+    alert(((translations[lang] || translations.pt) || {}).preencha_dado || "Preencha ao menos um nome.");
     return;
   }
   fecharModalDado();
@@ -465,58 +463,21 @@ function _confirmarCamposIA(produto, lang, tipo, energia) {
     + '&tipo='  + encodeURIComponent(tipo || '')
     + '&energia=' + encodeURIComponent(energia || '');
 }
-    
-    // ===== TRADUÇÃO DOS BOTÕES Confirmar/Cancelar (14 idiomas) =====
-  var okBtn = document.getElementById("modalDadoOk");
-  var cancelBtn = document.getElementById("modalDadoCancel");
-  if (okBtn) {
-    okBtn.textContent = t.confirmar_btn || t.confirmar || "Confirmar";
-    okBtn.setAttribute("data-i18n", "confirmar_btn");
-  }
-  if (cancelBtn) {
-    cancelBtn.textContent = t.cancelar_btn || t.cancelar || "Cancelar";
-    cancelBtn.setAttribute("data-i18n", "cancelar_btn");
-  }
-  if (typeof traduzirFormularios === "function") traduzirFormularios();  
-  overlay.classList.add("active");
-}
+
 function fecharModalDado() {
   var o = document.getElementById("modalDado");
   if (o) o.classList.remove("active");
 }
+
 function confirmarModalDado(produto, lang) {
-  var dado1 = (document.getElementById("modalDadoInput") ? document.getElementById("modalDadoInput").value : "").trim();
-  var dado2 = (document.getElementById("modalDadoInput2") ? document.getElementById("modalDadoInput2").value : "").trim();
-  if (!dado1 && !dado2) {
-    alert((translations[lang] || translations.pt).preencha_dado || "Preencha o dado solicitado.");
-    return;
-  }
-  var tipo = _modalDado.tipo || "";
-  var energia = _modalDado.energia || "";
-  fecharModalDado();
-  window.location.href = '/criar-checkout?lang=' + lang + '&produto=' + produto
-    + '&dado=' + encodeURIComponent(dado1)
-    + '&dado2=' + encodeURIComponent(dado2)
-    + '&tipo=' + encodeURIComponent(tipo)
-    + '&energia=' + encodeURIComponent(energia);
+  var i1 = document.getElementById("modalDadoInput");
+  var i2 = document.getElementById("modalDadoInput2");
+  if (!i1 && !i2) return;
+  _confirmarCamposIA(produto, lang, (_modalDado && _modalDado.tipo) || '', (_modalDado && _modalDado.energia) || '');
 }
+
 function montarPassoTipo(produto, lang) {
-  var t = translations[lang] || translations.pt;
-  document.getElementById("modalPassoTipo").style.display = "block";
-  document.getElementById("modalPassoEnergia").style.display = "none";
-  document.getElementById("modalPassoNome").style.display = "none";
-  var conf = CONF_COLETA[produto] || {};
-  var label = (t.f_tipo || "Tipo") + ":";
-  document.getElementById("modalTipoLabel").textContent = label;
-  var box = document.getElementById("modalTipoOpcoes");
-  box.innerHTML = "";
-  (conf.tipos || []).forEach(function(ch) {
-    var b = document.createElement("button");
-    b.className = "btn btn-full";
-    b.textContent = tradOpcao(ch);
-    b.onclick = function(){ _modalDado.tipo = ch; montarPassoEnergia(produto, lang); };
-    box.appendChild(b);
-  });
+  abrirModalDado(produto, lang || ((typeof getLang === 'function') ? getLang() : 'pt'));
 }
   
 // ===== CONFIG DE DESCONTO DO BÔNUS COLETIVO — FONTE ÚNICA =====
