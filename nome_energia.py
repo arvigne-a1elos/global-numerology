@@ -97,6 +97,15 @@ def avaliar_nomes(nomes, tipo, energia_alvo, lang='pt'):
         'energia_alvo': alvo,
         'tipo': tipo,
         'entradas': entradas,
+
+      if __name__ == "__main__":
+    for lang in BANCO:
+        for tipo in BANCO[lang]:
+            grupos = {}
+            for n in BANCO[lang][tipo]:
+                grupos.setdefault(energia_nome(n)[0], []).append(n)
+            faltam = [e for e in range(1, 10) if e not in grupos]
+            print(lang, tipo, '-> energias:', sorted(grupos), '| faltam:', faltam)
         'escolhido': escolhido or sugestao or (entradas[0]['nome'] if entradas else None),
         'sugestao': sugestao,
         'total_opcoes': len(entradas) + (1 if sugestao else 0)
