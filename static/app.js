@@ -324,119 +324,118 @@ window.CONF_COLETA = window.CONF_COLETA || {
   nome_evento:  { tipos:["congresso","curso","festa","palestra"] }
 };
 
-// ===== COMPRAR (abre o modal do dado para os 7 produtos da IA Nomes) =====
-function comprar(produto) {
-  var lang = getLang();
-  var t = translations[lang] || translations.pt;
-  if (DADO_APLICA.indexOf(produto) !== -1) {
-    abrirModalDado(produto, lang);
-    return;
-  }
-  var nome = (document.getElementById("calcNome") ? document.getElementById("calcNome").value : "").trim();
-  var nasc = converterData((document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim());
-  if (!nome || !nasc) {
-    alert(t.preencha_dados || "Preencha nome e data de nascimento primeiro.");
-    var sec = document.getElementById("calcSection") || document.getElementById("calculadora");
-    if (sec) sec.scrollIntoView({ behavior: "smooth" });
-    return;
-  }
-  window.location.href = '/criar-checkout?lang=' + lang + '&produto=' + produto
-    + '&nome=' + encodeURIComponent(nome) + '&nascimento=' + encodeURIComponent(nasc);
-}
-
-function selecionarOpcao(container, btn) {
-  container.querySelectorAll(".coleta-opcao").forEach(function(b){ b.classList.remove("ativo"); });
-  btn.classList.add("ativo");
-}
-function fecharModalColeta() {
-  var o = document.getElementById("modalColeta");
-  if (o) o.style.display = "none";
-  coletaAtual = null;
-}
+// ===== MODAL ÚNICO DOS 7 PRODUTOS DA IA — NOME + ENERGIA + TIPO NA MESMA TELA =====
 function abrirModalDado(produto, lang) {
   var t = translations[lang] || translations.pt;
   var label = (DADO_LABEL[lang] && DADO_LABEL[lang][produto]) ? DADO_LABEL[lang][produto] : DADO_LABEL.pt[produto];
   var titulo = (PRODUTOS_TRAD[lang] && PRODUTOS_TRAD[lang][produto]) ? PRODUTOS_TRAD[lang][produto] : produto;
+  var conf  = (window.CONF_COLETA && window.CONF_COLETA[produto]) || {};
+  var tipos = conf.tipos || [];
+  var ideal = (typeof ENERGIA_IDEAL !== 'undefined' && ENERGIA_IDEAL[produto]) ? ENERGIA_IDEAL[produto] : 0;
+
   var overlay = document.getElementById("modalDado");
   if (!overlay) {
     overlay = document.createElement("div");
     overlay.id = "modalDado";
     overlay.className = "modal-overlay";
-    overlay.innerHTML = '<div class="modal-box">'
-      + '<h3 id="modalDadoTitulo"></h3>'
-      + '<p id="modalDadoLabel"></p>'
-      + '<div id="modalPassoTipo"><p id="modalTipoLabel" style="color:#ccc;margin-bottom:8px"></p><div id="modalTipoOpcoes" class="modal-grid"></div></div>'
-      + '<div id="modalPassoEnergia" style="display:none"><p id="modalEnergiaLabel" style="color:#ccc;margin-bottom:8px"></p><div id="modalEnergiaOpcoes" class="modal-grid"></div></div>'
-      + '<div id="modalPassoNome" style="display:none"><p id="modalNomeLabel" style="color:#ccc;margin-bottom:8px"></p>'
-      + '<input id="modalDadoInput" type="text" class="modal-input" placeholder="Nome 1">'
-      + '<input id="modalDadoInput2" type="text" class="modal-input" placeholder="Nome 2 (opcional)" style="margin-top:8px">'
-      + '<p style="color:#888;font-size:.75rem;margin-top:6px">Você sugere 2 nomes; a IA adiciona 1 sugestão de bônus.</p>'
-      + '</div>'
-      + '<div class="modal-actions">'
-      + '<button id="modalDadoOk" class="btn">' + (t.confirmar || "Confirmar") + '</button>'
-      + '<button id="modalDadoCancel" class="btn btn-outline">' + (t.cancelar || "Cancelar") + '</button>'
-      + '</div></div>';
     document.body.appendChild(overlay);
-    overlay.addEventListener("click", function(e){ if (e.target === overlay) fecharModalDado(); });
-    document.getElementById("modalDadoCancel").onclick = fecharModalDado;
   }
-  document.getElementById("modalDadoOk").onclick = function(){ confirmarModalDado(produto, lang); };
-  document.getElementById("modalDadoTitulo").textContent = titulo;
-  document.getElementById("modalDadoLabel").textContent = label;
-  var energiaPre = (typeof window._energiaPresel !== "undefined" && window._energiaPresel) ? window._energiaPresel : "";
-  window._modalDado = { produto: produto, lang: lang, tipo: "", energia: energiaPre };
-  montarPassoTipo(produto, lang);
-    // ===== TRADUÇÃO DOS BOTÕES Confirmar/Cancelar (14 idiomas) =====
-  var okBtn = document.getElementById("modalDadoOk");
-  var cancelBtn = document.getElementById("modalDadoCancel");
-  if (okBtn) {
-    okBtn.textContent = t.confirmar_btn || t.confirmar || "Confirmar";
-    okBtn.setAttribute("data-i18n", "confirmar_btn");
+
+  var htmlEnergia = '<p style="color:#ccc;margin:12px 0 6px">'
+    + (t.energia_label || 'Energia desejada') + ' (1-9):</p>'
+    + '<div id="modalEnergiaOpcoes" class="energia-selector"></div>';
+
+  var htmlTipo = '';
+  if (tipos.length) {
+    htmlTipo = '<p style="color:#ccc;margin:12px 0 6px">' + (t.f_tipo || 'Tipo') + ':</p>'
+      + '<div id="modalTipoOpcoes" class="modal-grid">';
+    for (var i = 0; i < tipos.length; i++) {
+      var rotulo = (typeof tradOpcao === 'function') ? tradOpcao(tipos[i]) : tipos[i];
+      htmlTipo += '<button type="button" class="btn btn-full modal-tipo-btn" data-tipo="'
+        + tipos[i] + '">' + rotulo + '</button>';
+    }
+    htmlTipo += '</div>';
   }
-  if (cancelBtn) {
-    cancelBtn.textContent = t.cancelar_btn || t.cancelar || "Cancelar";
-    cancelBtn.setAttribute("data-i18n", "cancelar_btn");
+
+  overlay.innerHTML = '<div class="modal-box">'
+    + '<button type="button" id="modalDadoX" aria-label="Fechar" '
+    + 'style="position:absolute;top:8px;right:14px;background:none;border:none;'
+    + 'color:#C9A94E;font-size:26px;line-height:1;cursor:pointer;">&times;</button>'
+    + '<h3 id="modalDadoTitulo" style="color:var(--gold);margin-bottom:4px">' + titulo + '</h3>'
+    + '<p id="modalDadoLabel" style="color:#ccc;margin-bottom:8px">' + label + ':</p>'
+    + '<input id="modalDadoInput" type="text" class="modal-input" placeholder="Nome 1" autocomplete="off">'
+    + '<input id="modalDadoInput2" type="text" class="modal-input" placeholder="Nome 2" autocomplete="off" style="margin-top:8px">'
+    + '<p style="color:#888;font-size:.75rem;margin-top:6px">Informe até 2 nomes. '
+    + 'Se nenhum atingir a energia escolhida, a IA sugere 1 nome com essa energia.</p>'
+    + htmlEnergia
+    + htmlTipo
+    + '<div class="modal-actions">'
+    + '<button type="button" id="modalDadoOk" class="btn">'
+    + (t.confirmar_btn || t.confirmar || 'Confirmar') + '</button>'
+    + '<button type="button" id="modalDadoCancel" class="btn btn-outline">'
+    + (t.cancelar_btn || t.cancelar || 'Cancelar') + '</button>'
+    + '</div></div>';
+
+  // --- seletor de energia (1-9, ideal pré-marcada) ---
+  var boxE = document.getElementById('modalEnergiaOpcoes');
+  var energiaSel = ideal || 0;
+  for (var n = 1; n <= 9; n++) {
+    (function (num) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'energia-btn' + (num === ideal ? ' ideal selecionada' : '');
+      b.textContent = String(num);
+      b.dataset.energia = num;
+      b.onclick = function () {
+        var todos = boxE.querySelectorAll('.energia-btn');
+        for (var k = 0; k < todos.length; k++) todos[k].classList.remove('selecionada');
+        b.classList.add('selecionada');
+        energiaSel = num;
+      };
+      boxE.appendChild(b);
+    })(n);
   }
-  if (typeof traduzirFormularios === "function") traduzirFormularios();  
+
+  // --- botões de tipo ---
+  var tipoSel = '';
+  var btnsTipo = overlay.querySelectorAll('.modal-tipo-btn');
+  for (var j = 0; j < btnsTipo.length; j++) {
+    btnsTipo[j].onclick = function () {
+      for (var k = 0; k < btnsTipo.length; k++) btnsTipo[k].classList.remove('selecionado');
+      this.classList.add('selecionado');
+      tipoSel = this.getAttribute('data-tipo');
+    };
+  }
+
+  window._modalDado = { produto: produto, lang: lang, tipo: '', energia: energiaSel };
+
+  document.getElementById('modalDadoX').onclick = fecharModalDado;
+  document.getElementById('modalDadoCancel').onclick = fecharModalDado;
+  document.getElementById('modalDadoOk').onclick = function () {
+    _confirmarCamposIA(produto, lang, tipoSel, energiaSel);
+  };
+
   overlay.classList.add("active");
+  var inp1 = document.getElementById('modalDadoInput');
+  if (inp1) { try { inp1.focus(); } catch (e) {} }
 }
-function fecharModalDado() {
-  var o = document.getElementById("modalDado");
-  if (o) o.classList.remove("active");
-}
-function confirmarModalDado(produto, lang) {
-  var dado1 = (document.getElementById("modalDadoInput") ? document.getElementById("modalDadoInput").value : "").trim();
-  var dado2 = (document.getElementById("modalDadoInput2") ? document.getElementById("modalDadoInput2").value : "").trim();
-  if (!dado1 && !dado2) {
-    alert((translations[lang] || translations.pt).preencha_dado || "Preencha o dado solicitado.");
+
+function _confirmarCamposIA(produto, lang, tipo, energia) {
+  var i1 = document.getElementById('modalDadoInput');
+  var i2 = document.getElementById('modalDadoInput2');
+  var d1 = i1 ? i1.value.trim() : '';
+  var d2 = i2 ? i2.value.trim() : '';
+  if (!d1 && !d2) {
+    alert((translations[lang] || translations.pt).preencha_dado || "Preencha ao menos um nome.");
     return;
   }
-  var tipo = _modalDado.tipo || "";
-  var energia = _modalDado.energia || "";
   fecharModalDado();
-  window.location.href = '/criar-checkout?lang=' + lang + '&produto=' + produto
-    + '&dado=' + encodeURIComponent(dado1)
-    + '&dado2=' + encodeURIComponent(dado2)
-    + '&tipo=' + encodeURIComponent(tipo)
-    + '&energia=' + encodeURIComponent(energia);
-}
-function montarPassoTipo(produto, lang) {
-  var t = translations[lang] || translations.pt;
-  document.getElementById("modalPassoTipo").style.display = "block";
-  document.getElementById("modalPassoEnergia").style.display = "none";
-  document.getElementById("modalPassoNome").style.display = "none";
-  var conf = CONF_COLETA[produto] || {};
-  var label = (t.f_tipo || "Tipo") + ":";
-  document.getElementById("modalTipoLabel").textContent = label;
-  var box = document.getElementById("modalTipoOpcoes");
-  box.innerHTML = "";
-  (conf.tipos || []).forEach(function(ch) {
-    var b = document.createElement("button");
-    b.className = "btn btn-full";
-    b.textContent = tradOpcao(ch);
-    b.onclick = function(){ _modalDado.tipo = ch; montarPassoEnergia(produto, lang); };
-    box.appendChild(b);
-  });
+  window.location.href = '/criar-checkout?lang=' + encodeURIComponent(lang)
+    + '&produto=' + encodeURIComponent(produto)
+    + '&dado='  + encodeURIComponent(d1)
+    + '&dado2=' + encodeURIComponent(d2)
+    + '&tipo='  + encodeURIComponent(tipo || '')
+    + '&energia=' + encodeURIComponent(energia || '');
 }
   
 // ===== CONFIG DE DESCONTO DO BÔNUS COLETIVO — FONTE ÚNICA =====
