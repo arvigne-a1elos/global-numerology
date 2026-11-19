@@ -117,20 +117,72 @@ def pagina_sucesso(pdf_path, nome, prod_nome, lang="pt"):
             f'<a href="/" style="color:#C9A94E">{tx("voltar")}</a></body></html>')
     
 # ===== FUNÇÃO ÚNICA DO ORQUESTRADOR =====
-def gerar_pdf(produto, dados, lang, nome, nascimento, dado=""):
+# ===== PRODUTOS DA IA DE NOMES (7 cards) =====
+IA_NOMES = {
+    "nome_pet", "nickname", "nome_dominio", "nome_canal",
+    "nome_equipe", "nome_projeto", "nome_evento",
+}
+
+# ===== FUNÇÃO ÚNICA DO ORQUESTRADOR =====
+def gerar_pdf(produto, dados, lang, nome, nascimento, dado="",
+              dado2="", dado3="", energia=0, tipo=""):
     """Escolhe o template certo do pdf_service, enriquece com semântica (14 idiomas)
     e devolve o caminho do PDF gerado."""
     lang = lang or "pt"
     dados = dict(dados or {})
 
-    # Mapa Express (8) / Mapa Completo (17): template de mapa com semântica
+    # tolera os dois formatos: parâmetro direto ou chave no dict
+    dado    = dado    or dados.get("dado")    or ""
+    dado2   = dado2   or dados.get("dado2")   or ""
+    dado3   = dado3   or dados.get("dado3")   or ""
+    tipo    = tipo    or dados.get("tipo")    or ""
+    energia = energia or dados.get("energia") or 0
+    try:
+        energia = int(str(energia).split(".")[0])
+    except Exception:
+        energia = 0
+
+    # ---- 1. PRODUTOS DA IA DE NOMES: 3 nomes + sugestao (4a opcao) ----
+    if produto in IA_NOMES:
+        try:
+            from nome_energia import avaliar_nomes, precisa_romanizar
+        except Exception as e:
+            logger.error(f"nome_energia indisponivel: {e}")
+            avaliar_nomes = None
+            precisa_romanizar = None
+
+        nomes = [n.strip() for n in (dado, dado2, dado3) if n and n.strip()]
+
+        if avaliar_nomes:
+            res = avaliar_nomes(nomes, tipo or "outro", energia, lang)
+        else:
+            # fallback: entrega os nomes sem calculo, marcando a falha
+            res = {"energia_alvo": energia, "tipo": tipo, "idioma": lang,
+                   "entradas": [{"nome": n, "energia": 0, "soma": 0,
+                                 "bate": False, "romanizar": False} for n in nomes],
+                   "escolhido": nomes[0] if nomes else "",
+                   "sugestao": None, "sugestao_idioma": None,
+                   "sugestao_real": None, "total_opcoes": len(nomes)}
+
+        dados["ia_nomes"] = res
+        dados["tipo"] = tipo
+        dados["energia"] = energia
+        dados["nomes_entrada"] = nomes
+        dados["nome_escolhido"] = res.get("escolhido") or (nomes[0] if nomes else "")
+
+        # nascimento nao existe nesses produtos: usa string vazia para nao
+        # imprimir "2000-01-01" nem disparar calculo de data
+        return pdf_produto(produto, dados, dados["nome_escolhido"], "", lang,
+                           dados["nome_escolhido"])
+
+    # ---- 2. Mapa Express (8) / Mapa Completo (17) ----
     if produto in ("express", "completo"):
         data = _enriquecer_semantica(dados, lang)
         if produto == "express":
             return pdf8(data, nome, nascimento, lang)
         return pdf17(data, nome, nascimento, lang)
 
-    # Nome de Urna: template próprio (fontes DejaVu/CJK + 14 idiomas)
+    # ---- 3. Nome de Urna ----
     if produto == "urna":
         return pdf_urna(dados.get("nome_completo") or nome,
                         dados.get("cargo_label") or "",
@@ -138,7 +190,7 @@ def gerar_pdf(produto, dados, lang, nome, nascimento, dado=""):
                         dados.get("sugestoes") or [],
                         lang)
 
-    # Número Eleitoral: template próprio
+    # ---- 4. Número Eleitoral ----
     if produto == "eleitoral":
         return pdf_eleitoral(dados.get("sigla") or "",
                              dados.get("cargo_label") or "",
@@ -146,7 +198,7 @@ def gerar_pdf(produto, dados, lang, nome, nascimento, dado=""):
                              dados.get("numero_existente"),
                              lang)
 
-    # Calendário Mensal Energético: cálculo próprio (numerologia_core)
+    # ---- 5. Calendário Mensal Energético ----
     if produto == "calendario":
         leitura = gerar_leitura(
             data_nasc=dados["nascimento"],   # DD/MM/AAAA completo
@@ -156,11 +208,7 @@ def gerar_pdf(produto, dados, lang, nome, nascimento, dado=""):
         )
         return pdf_produto("calendario", leitura, nome, nascimento, lang, dado)
 
-    # Demais produtos: template genérico com semântica
-    data = _enriquecer_semantica(dados, lang)
-    return pdf_produto(produto, data, nome, nascimento, lang, dado)
-
-    # ---- PRODUTOS DE RELAÇÃO (2 ou 3 pessoas) ----
+    # ---- 6. PRODUTOS DE RELAÇÃO (movidos para ANTES do genérico) ----
     if produto == "casal":
         return pdf_casal(dados, lang)
 
@@ -169,4 +217,7 @@ def gerar_pdf(produto, dados, lang, nome, nascimento, dado=""):
 
     if produto == "compatibilidade_equipes":
         return pdf_equipe(dados, lang)
-    
+
+    # ---- 7. Demais produtos: template genérico com semântica ----
+    data = _enriquecer_semantica(dados, lang)
+    return pdf_produto(produto, data, nome, nascimento, lang, dado)
