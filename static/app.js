@@ -429,6 +429,8 @@ function abrirModalDado(produto, lang) {
     + '<input id="modalDadoInput2" type="text" class="modal-input" placeholder="' + (UI.n2 || 'Nome 2') + '" autocomplete="off" style="margin-top:8px">'
     + '<input id="modalDadoInput3" type="text" class="modal-input" placeholder="' + (UI.n3 || 'Nome 3') + '" autocomplete="off" style="margin-top:8px">'
     + '<p style="color:#888;font-size:.75rem;margin-top:6px">' + (UI.dica || '') + '</p>'
+    + '<p style="color:#888;font-size:.72rem;margin-top:6px">'
+    + ((window.IA_ROMAN || {})[lang] || (window.IA_ROMAN || {}).pt || '') + '</p>'  
     + '<p style="color:#ccc;margin:12px 0 6px">' + (UI.energia || 'Energia desejada') + ' (1-9):</p>'
     + '<div id="modalEnergiaOpcoes" class="energia-selector"></div>'
     + htmlTipo
