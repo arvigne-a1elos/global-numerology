@@ -345,6 +345,9 @@ function comprar(produto) {
 }
 
 function selecionarOpcao(container, btn) {
+  container.querySelectorAll(".coleta-opcao").forEach(function(b){ b.classList.remove("ativo"); });
+  btn.classList.add("ativo");
+}
 function fecharModalColeta() {
   var o = document.getElementById("modalColeta");
   if (o) o.style.display = "none";
