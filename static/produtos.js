@@ -79,7 +79,7 @@ function atualizarResumoBC() {
   var lang = (typeof getLang === 'function') ? getLang() : 'pt';
   var simbolo = (typeof SIMBOLO !== 'undefined' && SIMBOLO[lang]) ? SIMBOLO[lang]
               : ((typeof SIMB !== 'undefined' && SIMB[lang]) ? SIMB[lang]
-              : ((MOEDAS && MOEDAS[lang]) ? MOEDAS[lang] : 'R$'));
+              : ((typeof MOEDAS !== 'undefined' && MOEDAS[lang]) ? MOEDAS[lang] : 'R$'));
   var servidor = (typeof PRECO_VALORES !== 'undefined' && PRECO_VALORES[lang]);
   var base = servidor ? PRECO_VALORES[lang]
            : (typeof PRECO_BASE !== 'undefined' ? (PRECO_BASE[lang] || PRECO_BASE.pt) : null);
@@ -167,7 +167,7 @@ if (!FEAT_TRAD.pt) {
         canal_anal:"✅ Canal analisado", conexao_audiencia:"✅ Conexão com a audiência", equipe_anal:"✅ Equipe analisada",
         uniao_membros:"✅ União entre os membros", ong_anal:"✅ ONG analisada", causa_potencial:"✅ Causa potencializada",
         projeto_anal:"✅ Projeto analisado", impulso_sucesso:"✅ Impulso para o sucesso", evento_anal:"✅ Evento analisado",
-        atmosfera:"✅ Atmosfera para os participantes", pdf:"📲 PDF + QRCode",
+        atmosfera:"✅ Atmosfera para os participantes", 
         chefe_membros:"✅ Chefe × membros", membros_membros:"✅ Membros × membros", compat_cissay:"✅ Compatibilidade de pares", pdf:"📲 PDF + QRCode",
       },
       en: {
@@ -191,7 +191,7 @@ if (!FEAT_TRAD.pt) {
         canal_anal:"✅ Channel analyzed", conexao_audiencia:"✅ Audience connection", equipe_anal:"✅ Team analyzed",
         uniao_membros:"✅ Unity among members", ong_anal:"✅ NGO analyzed", causa_potencial:"✅ Amplified cause",
         projeto_anal:"✅ Project analyzed", impulso_sucesso:"✅ Success boost", evento_anal:"✅ Event analyzed",
-        atmosfera:"✅ Atmosphere for participants", pdf:"📲 PDF + QR Code",
+        atmosfera:"✅ Atmosphere for participants", 
         chefe_membros:"✅ Manager × members", membros_membros:"✅ Members × members", compat_cissay:"✅ Pair compatibility", pdf:"📲 PDF + QRCode",
       },
       es: {
@@ -215,7 +215,7 @@ if (!FEAT_TRAD.pt) {
         canal_anal:"✅ Canal analizado", conexao_audiencia:"✅ Conexión con la audiencia", equipe_anal:"✅ Equipo analizado",
         uniao_membros:"✅ Unión entre los miembros", ong_anal:"✅ ONG analizada", causa_potencial:"✅ Causa potenciada",
         projeto_anal:"✅ Proyecto analizado", impulso_sucesso:"✅ Impulso para el éxito", evento_anal:"✅ Evento analizado",
-        atmosfera:"✅ Ambiente para los participantes", pdf:"📲 PDF + Código QR",
+        atmosfera:"✅ Ambiente para los participantes", 
         chefe_membros:"✅ Jefe × miembros", membros_membros:"✅ Miembros × miembros", compat_cissay:"✅ Compatibilidad de pares", pdf:"📲 PDF + QRCode",
       },
       it: {
@@ -239,7 +239,7 @@ if (!FEAT_TRAD.pt) {
         canal_anal:"✅ Canale analizzato", conexao_audiencia:"✅ Connessione con il pubblico", equipe_anal:"✅ Team analizzato",
         uniao_membros:"✅ Unione tra i membri", ong_anal:"✅ ONG analizzata", causa_potencial:"✅ Causa potenziata",
         projeto_anal:"✅ Progetto analizzato", impulso_sucesso:"✅ Spinta verso il successo", evento_anal:"✅ Evento analizzato",
-        atmosfera:"✅ Atmosfera per i partecipanti", pdf:"📲 PDF + Codice QR",
+        atmosfera:"✅ Atmosfera per i partecipanti", 
         chefe_membros:"✅ Responsabile × membri", membros_membros:"✅ Membri × membri", compat_cissay:"✅ Compatibilità di coppie", pdf:"📲 PDF + QRCode",
       },
       fr: {
@@ -263,7 +263,7 @@ if (!FEAT_TRAD.pt) {
         canal_anal:"✅ Chaîne analysée", conexao_audiencia:"✅ Connexion avec l'audience", equipe_anal:"✅ Équipe analysée",
         uniao_membros:"✅ Union entre les membres", ong_anal:"✅ ONG analysée", causa_potencial:"✅ Cause amplifiée",
         projeto_anal:"✅ Projet analysé", impulso_sucesso:"✅ Élan vers le succès", evento_anal:"✅ Événement analysé",
-        atmosfera:"✅ Atmosphère pour les participants", pdf:"📲 PDF + Code QR",
+        atmosfera:"✅ Atmosphère pour les participants",
         chefe_membros:"✅ Chef × membres", membros_membros:"✅ Membres × membres", compat_cissay:"✅ Compatibilité de paires", pdf:"📲 PDF + QRCode",
       },
       de: {
@@ -287,7 +287,7 @@ if (!FEAT_TRAD.pt) {
         canal_anal:"✅ Kanal analysiert", conexao_audiencia:"✅ Verbindung zum Publikum", equipe_anal:"✅ Team analysiert",
         uniao_membros:"✅ Zusammenhalt der Mitglieder", ong_anal:"✅ NGO analysiert", causa_potencial:"✅ Verstärkte Wirkung der Sache",
         projeto_anal:"✅ Projekt analysiert", impulso_sucesso:"✅ Schub für den Erfolg", evento_anal:"✅ Veranstaltung analysiert",
-        atmosfera:"✅ Atmosphäre für die Teilnehmer", pdf:"📲 PDF + QR-Code",
+        atmosfera:"✅ Atmosphäre für die Teilnehmer", 
         chefe_membros:"✅ Leitung × Mitglieder", membros_membros:"✅ Mitglieder × Mitglieder", compat_cissay:"✅ Paarkompatibilität", pdf:"📲 PDF + QRCode",
       },
       ru: {
@@ -854,7 +854,10 @@ function abrirSeletorEnergia(produto, lang) {
   document.getElementById("modalEnergiaSelTitulo").textContent = titulo;
   var lista = document.getElementById("modalEnergiaSelLista");
   lista.innerHTML = "";
-  var titulos = [lang] || ["pt"];
+  var _T = window.ENERGIA_TITULOS || {};
+  var titulos = _T[lang] || _T["pt"] || {};
+  var _D = window.ENERGIAS_DESC || {};
+  var descs = _D[lang] || _D["pt"] || {};
   for (var i = 1; i <= 9; i++) {
     var nomeE = titulos[String(i)] || ("Energia " + i);
     var b = document.createElement("button");
@@ -899,7 +902,9 @@ function montarPassoEnergia(produto, lang) {
   var preEscolhida = (_modalDado && _modalDado.energia) ? parseInt(_modalDado.energia, 10) : 0;
   for (var i = 1; i <= 9; i++) {
     (function(n){
-      var nomeE = ([lang] && [lang][String(n)]) ? [lang][String(n)] : String(n);
+      var _T2 = window.ENERGIA_TITULOS || {};
+      var _nomes = _T2[lang] || _T2["pt"] || {};
+      var nomeE = _nomes[String(n)] || String(n);
       var b = document.createElement("button");
       b.type = "button";
       var marcado = (preEscolhida > 0) ? (n === preEscolhida) : (n === ideal);
@@ -1208,8 +1213,8 @@ function montarEnergias() {
   }
 
   // ===== 2. SELETORES DE ENERGIA NOS FORMULÁRIOS =====
-  var uiE = window.ENERGIA_UI[lang] || window.ENERGIA_UI.pt;
-  var lbl = document.getElementById('urnaEnergiaLabel');
+  var _UI = window.ENERGIA_UI || {};
+  var uiE = _UI[lang] || _UI.pt || { label: "Cargo + Energia Nome", dica: "Energia Ideal 8" };var lbl = document.getElementById('urnaEnergiaLabel');
   if(lbl) lbl.textContent = uiE.label;
   var dica = document.getElementById('urnaEnergiaDica');
   if(dica) dica.textContent = uiE.dica;
