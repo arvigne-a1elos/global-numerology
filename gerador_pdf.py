@@ -11,8 +11,22 @@ from dicionarios import PDF_TEXTS, PRODUTOS, TRAD
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 BASE_URL = os.getenv("BASE_URL", os.getenv("SITE_URL", "https://global-numerology.onrender.com"))
-from pdf_service import (pdf8, pdf17, pdf_urna, pdf_eleitoral, pdf_produto,
-                         pdf_casal, pdf_familia, pdf_equipe)
+def _opt(nome):
+    """Resolve um template só se existir no pdf_service. Nunca derruba o import."""
+    try:
+        import pdf_service
+        fn = getattr(pdf_service, nome, None)
+        if callable(fn):
+            return fn
+        logger.warning("Template ausente no pdf_service: %s", nome)
+    except Exception as e:
+        logger.warning("Falha ao resolver %s: %s", nome, e)
+    return None
+
+
+pdf_casal  = _opt("pdf_casal")
+pdf_familia = _opt("pdf_familia")
+pdf_equipe = _opt("pdf_equipe")
 
 # ===== SEMANTICA (energias, vidas, formas e cores) - IMPORT OPCIONAL =====
 # O gerador NUNCA quebra se o módulo ainda não existir.
@@ -208,15 +222,24 @@ def gerar_pdf(produto, dados, lang, nome, nascimento, dado="",
         )
         return pdf_produto("calendario", leitura, nome, nascimento, lang, dado)
 
-    # ---- 6. PRODUTOS DE RELAÇÃO (movidos para ANTES do genérico) ----
+        # ---- 6. PRODUTOS DE RELAÇÃO (usam template próprio se existir) ----
     if produto == "casal":
-        return pdf_casal(dados, lang)
+        if pdf_casal:
+            return pdf_casal(dados, lang)
+        logger.warning("pdf_casal ausente: usando pdf_produto generico")
+        return pdf_produto(produto, _enriquecer_semantica(dados, lang), nome, nascimento, lang, dado)
 
     if produto == "familia":
-        return pdf_familia(dados, lang)
+        if pdf_familia:
+            return pdf_familia(dados, lang)
+        logger.warning("pdf_familia ausente: usando pdf_produto generico")
+        return pdf_produto(produto, _enriquecer_semantica(dados, lang), nome, nascimento, lang, dado)
 
     if produto == "compatibilidade_equipes":
-        return pdf_equipe(dados, lang)
+        if pdf_equipe:
+            return pdf_equipe(dados, lang)
+        logger.warning("pdf_equipe ausente: usando pdf_produto generico")
+        return pdf_produto(produto, _enriquecer_semantica(dados, lang), nome, nascimento, lang, dado)
 
     # ---- 7. Demais produtos: template genérico com semântica ----
     data = _enriquecer_semantica(dados, lang)
