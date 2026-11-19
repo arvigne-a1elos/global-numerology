@@ -1198,8 +1198,10 @@ function montarEnergias() {
     || document.getElementById("energias")
     || document.querySelector(".energias-grid");
   if (container) {
-    var _T = window.ENERGIA_TRAD || window.ENERGIAS_TITULOS || {};
+    var _T = window.ENERGIA_TITULOS || window.ENERGIA_TRAD || {};
     var titulos = _T[lang] || _T["pt"] || {};
+    var _D = window.ENERGIAS_DESC || {};
+    var descs = _D[lang] || _D["pt"] || {};
     var btn = window.ENERGIAS_BTN[lang] || "Pesquisar";
     var html = "";
     for (var i = 1; i <= 9; i++) {
