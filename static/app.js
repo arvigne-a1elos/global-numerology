@@ -324,46 +324,35 @@ window.CONF_COLETA = window.CONF_COLETA || {
   nome_evento:  { tipos:["congresso","curso","festa","palestra"] }
 };
 
-// ===== COMPRAR (entrada dos 24 cards) =====
+// ===== COMPRAR (abre o modal do dado para os 7 produtos da IA Nomes) =====
 function comprar(produto) {
-  var lang = (typeof getLang === 'function') ? getLang() : 'pt';
-  var t = (typeof translations !== 'undefined') ? (translations[lang] || translations.pt) : {};
-
-  var lista = window.DADO_APLICA || ["nome_pet","nickname","nome_dominio","nome_canal","nome_equipe","nome_projeto","nome_evento"];
-  if (lista.indexOf(produto) !== -1) {
+  var lang = getLang();
+  var t = translations[lang] || translations.pt;
+  if (DADO_APLICA.indexOf(produto) !== -1) {
     abrirModalDado(produto, lang);
     return;
   }
-
   var nome = (document.getElementById("calcNome") ? document.getElementById("calcNome").value : "").trim();
-  var nasc = (typeof converterData === 'function')
-    ? converterData((document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim())
-    : ((document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim());
-
+  var nasc = converterData((document.getElementById("calcNasc") ? document.getElementById("calcNasc").value : "").trim());
   if (!nome || !nasc) {
     alert(t.preencha_dados || "Preencha nome e data de nascimento primeiro.");
     var sec = document.getElementById("calcSection") || document.getElementById("calculadora");
     if (sec) sec.scrollIntoView({ behavior: "smooth" });
     return;
   }
-
-  window.location.href = '/criar-checkout?lang=' + encodeURIComponent(lang)
-    + '&produto=' + encodeURIComponent(produto)
-    + '&nome=' + encodeURIComponent(nome)
-    + '&nascimento=' + encodeURIComponent(nasc);
+  window.location.href = '/criar-checkout?lang=' + lang + '&produto=' + produto
+    + '&nome=' + encodeURIComponent(nome) + '&nascimento=' + encodeURIComponent(nasc);
 }
 
 function selecionarOpcao(container, btn) {
   container.querySelectorAll(".coleta-opcao").forEach(function(b){ b.classList.remove("ativo"); });
   btn.classList.add("ativo");
 }
-
 function fecharModalColeta() {
   var o = document.getElementById("modalColeta");
   if (o) o.style.display = "none";
-  if (typeof coletaAtual !== 'undefined') coletaAtual = null;
+  coletaAtual = null;
 }
-
 // ===== MODAL ÚNICO DOS 7 PRODUTOS DA IA — NOME + ENERGIA + TIPO NA MESMA TELA =====
 function abrirModalDado(produto, lang) {
   var t = translations[lang] || translations.pt;
@@ -477,6 +466,59 @@ function _confirmarCamposIA(produto, lang, tipo, energia) {
     + '&tipo='  + encodeURIComponent(tipo || '')
     + '&energia=' + encodeURIComponent(energia || '');
 }
+    
+    // ===== TRADUÇÃO DOS BOTÕES Confirmar/Cancelar (14 idiomas) =====
+  var okBtn = document.getElementById("modalDadoOk");
+  var cancelBtn = document.getElementById("modalDadoCancel");
+  if (okBtn) {
+    okBtn.textContent = t.confirmar_btn || t.confirmar || "Confirmar";
+    okBtn.setAttribute("data-i18n", "confirmar_btn");
+  }
+  if (cancelBtn) {
+    cancelBtn.textContent = t.cancelar_btn || t.cancelar || "Cancelar";
+    cancelBtn.setAttribute("data-i18n", "cancelar_btn");
+  }
+  if (typeof traduzirFormularios === "function") traduzirFormularios();  
+  overlay.classList.add("active");
+}
+function fecharModalDado() {
+  var o = document.getElementById("modalDado");
+  if (o) o.classList.remove("active");
+}
+function confirmarModalDado(produto, lang) {
+  var dado1 = (document.getElementById("modalDadoInput") ? document.getElementById("modalDadoInput").value : "").trim();
+  var dado2 = (document.getElementById("modalDadoInput2") ? document.getElementById("modalDadoInput2").value : "").trim();
+  if (!dado1 && !dado2) {
+    alert((translations[lang] || translations.pt).preencha_dado || "Preencha o dado solicitado.");
+    return;
+  }
+  var tipo = _modalDado.tipo || "";
+  var energia = _modalDado.energia || "";
+  fecharModalDado();
+  window.location.href = '/criar-checkout?lang=' + lang + '&produto=' + produto
+    + '&dado=' + encodeURIComponent(dado1)
+    + '&dado2=' + encodeURIComponent(dado2)
+    + '&tipo=' + encodeURIComponent(tipo)
+    + '&energia=' + encodeURIComponent(energia);
+}
+function montarPassoTipo(produto, lang) {
+  var t = translations[lang] || translations.pt;
+  document.getElementById("modalPassoTipo").style.display = "block";
+  document.getElementById("modalPassoEnergia").style.display = "none";
+  document.getElementById("modalPassoNome").style.display = "none";
+  var conf = CONF_COLETA[produto] || {};
+  var label = (t.f_tipo || "Tipo") + ":";
+  document.getElementById("modalTipoLabel").textContent = label;
+  var box = document.getElementById("modalTipoOpcoes");
+  box.innerHTML = "";
+  (conf.tipos || []).forEach(function(ch) {
+    var b = document.createElement("button");
+    b.className = "btn btn-full";
+    b.textContent = tradOpcao(ch);
+    b.onclick = function(){ _modalDado.tipo = ch; montarPassoEnergia(produto, lang); };
+    box.appendChild(b);
+  });
+} 
   
 // ===== CONFIG DE DESCONTO DO BÔNUS COLETIVO — FONTE ÚNICA =====
 // Zona automática: até 2.000 unidades, o site calcula o desconto sozinho (10% a 50%).
