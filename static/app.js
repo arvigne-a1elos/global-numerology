@@ -324,6 +324,25 @@ window.CONF_COLETA = window.CONF_COLETA || {
   nome_evento:  { tipos:["congresso","curso","festa","palestra"] }
 };
 
+/* ===== IA NOMES — RÓTULOS EM 14 IDIOMAS ===== */
+window.IA_NOMES_UI = window.IA_NOMES_UI || {
+  pt: {n1:"Nome 1",n2:"Nome 2",n3:"Nome 3",energia:"Energia desejada",tipo:"Tipo",dica:"Informe até 3 nomes. Se nenhum atingir a energia escolhida, a IA sugere 1 nome com essa energia (4ª opção).",sugerido:"Sugestão da IA",escolhido:"Nome escolhido",energia_alvo:"Energia alvo",nenhum:"Nenhum nome atingiu a energia."},
+  en: {n1:"Name 1",n2:"Name 2",n3:"Name 3",energia:"Desired energy",tipo:"Type",dica:"Enter up to 3 names. If none reaches the chosen energy, the AI suggests 1 name with that energy (4th option).",sugerido:"AI suggestion",escolhido:"Chosen name",energia_alvo:"Target energy",nenhum:"No name reached the energy."},
+  es: {n1:"Nombre 1",n2:"Nombre 2",n3:"Nombre 3",energia:"Energía deseada",tipo:"Tipo",dica:"Informe hasta 3 nombres. Si ninguno alcanza la energía elegida, la IA sugiere 1 nombre con esa energía (4ª opción).",sugerido:"Sugerencia de la IA",escolhido:"Nombre elegido",energia_alvo:"Energía objetivo",nenhum:"Ningún nombre alcanzó la energía."},
+  it: {n1:"Nome 1",n2:"Nome 2",n3:"Nome 3",energia:"Energia desiderata",tipo:"Tipo",dica:"Inserisci fino a 3 nomi. Se nessuno raggiunge l'energia scelta, l'IA suggerisce 1 nome con quell'energia (4ª opzione).",sugerido:"Suggerimento IA",escolhido:"Nome scelto",energia_alvo:"Energia obiettivo",nenhum:"Nessun nome ha raggiunto l'energia."},
+  fr: {n1:"Nom 1",n2:"Nom 2",n3:"Nom 3",energia:"Énergie souhaitée",tipo:"Type",dica:"Saisissez jusqu'à 3 noms. Si aucun n'atteint l'énergie choisie, l'IA suggère 1 nom avec cette énergie (4e option).",sugerido:"Suggestion IA",escolhido:"Nom choisi",energia_alvo:"Énergie cible",nenhum:"Aucun nom n'a atteint l'énergie."},
+  de: {n1:"Name 1",n2:"Name 2",n3:"Name 3",energia:"Gewünschte Energie",tipo:"Typ",dica:"Geben Sie bis zu 3 Namen ein. Wenn keiner die gewählte Energie erreicht, schlägt die KI 1 Namen mit dieser Energie vor (4. Option).",sugerido:"KI-Vorschlag",escolhido:"Gewählter Name",energia_alvo:"Zielenergie",nenhum:"Kein Name erreichte die Energie."},
+  ja: {n1:"名前1",n2:"名前2",n3:"名前3",energia:"希望するエネルギー",tipo:"タイプ",dica:"最大3つの名前を入力してください。どれも選択したエネルギーに達しない場合、AIがそのエネルギーの名前を1つ提案します（4番目の選択肢）。",sugerido:"AIの提案",escolhido:"選ばれた名前",energia_alvo:"目標エネルギー",nenhum:"エネルギーに達した名前はありません。"},
+  zh: {n1:"名字1",n2:"名字2",n3:"名字3",energia:"所需能量",tipo:"类型",dica:"最多输入3个名字。如果没有一个达到所选能量，AI会建议1个具有该能量的名字（第4个选项）。",sugerido:"AI建议",escolhido:"选定的名字",energia_alvo:"目标能量",nenhum:"没有名字达到该能量。"},
+  ru: {n1:"Имя 1",n2:"Имя 2",n3:"Имя 3",energia:"Желаемая энергия",tipo:"Тип",dica:"Введите до 3 имён. Если ни одно не достигает выбранной энергии, ИИ предложит 1 имя с этой энергией (4-й вариант).",sugerido:"Предложение ИИ",escolhido:"Выбранное имя",energia_alvo:"Целевая энергия",nenhum:"Ни одно имя не достигло энергии."},
+  id: {n1:"Nama 1",n2:"Nama 2",n3:"Nama 3",energia:"Energi yang diinginkan",tipo:"Jenis",dica:"Masukkan hingga 3 nama. Jika tidak ada yang mencapai energi yang dipilih, AI menyarankan 1 nama dengan energi tersebut (opsi ke-4).",sugerido:"Saran AI",escolhido:"Nama terpilih",energia_alvo:"Energi target",nenhum:"Tidak ada nama yang mencapai energi."},
+  tr: {n1:"İsim 1",n2:"İsim 2",n3:"İsim 3",energia:"İstenen enerji",tipo:"Tür",dica:"En fazla 3 isim girin. Hiçbiri seçilen enerjiye ulaşmazsa, yapay zekâ o enerjiye sahip 1 isim önerir (4. seçenek).",sugerido:"AI önerisi",escolhido:"Seçilen isim",energia_alvo:"Hedef enerji",nenhum:"Hiçbir isim enerjiye ulaşmadı."},
+  vi: {n1:"Tên 1",n2:"Tên 2",n3:"Tên 3",energia:"Năng lượng mong muốn",tipo:"Loại",dica:"Nhập tối đa 3 tên. Nếu không tên nào đạt năng lượng đã chọn, AI sẽ gợi ý 1 tên với năng lượng đó (lựa chọn thứ 4).",sugerido:"Gợi ý AI",escolhido:"Tên được chọn",energia_alvo:"Năng lượng mục tiêu",nenhum:"Không tên nào đạt năng lượng."},
+  he: {n1:"שם 1",n2:"שם 2",n3:"שם 3",energia:"אנרגיה רצויה",tipo:"סוג",dica:"הזינו עד 3 שמות. אם אף אחד לא מגיע לאנרגיה שנבחרה, ה-AI יציע שם אחד עם האנרגיה הזו (אפשרות רביעית).",sugerido:"הצעת AI",escolhido:"השם הנבחר",energia_alvo:"אנרגיית יעד",nenhum:"אף שם לא הגיע לאנרגיה."},
+  ar: {n1:"الاسم 1",n2:"الاسم 2",n3:"الاسم 3",energia:"الطاقة المطلوبة",tipo:"النوع",dica:"أدخل حتى 3 أسماء. إذا لم يصل أي منها إلى الطاقة المختارة، سيقترح الذكاء الاصطناعي اسمًا واحدًا بهذه الطاقة (الخيار الرابع).",sugerido:"اقتراح الذكاء الاصطناعي",escolhido:"الاسم المختار",energia_alvo:"الطاقة المستهدفة",nenhum:"لم يصل أي اسم إلى الطاقة."}
+};
+
+
 // ===== COMPRAR (entrada dos 24 cards) =====
 function comprar(produto) {
   var lang = (typeof getLang === 'function') ? getLang() : 'pt';
@@ -358,6 +377,7 @@ function fecharModalColeta() {
 // ===== MODAL ÚNICO DOS 7 PRODUTOS DA IA =====
 function abrirModalDado(produto, lang) {
   var t  = (typeof translations !== 'undefined' && (translations[lang] || translations.pt)) || {};
+  var UI = (window.IA_NOMES_UI || {})[lang] || (window.IA_NOMES_UI || {}).pt || {};
   var DL = window.DADO_LABEL || { pt: {} };
   var PT = window.PRODUTOS_TRAD || {};
   var label  = (DL[lang] && DL[lang][produto]) ? DL[lang][produto] : ((DL.pt && DL.pt[produto]) || produto);
@@ -374,18 +394,13 @@ function abrirModalDado(produto, lang) {
     document.body.appendChild(overlay);
   }
 
-  var htmlEnergia = '<p style="color:#ccc;margin:12px 0 6px">'
-    + (t.energia_label || 'Energia desejada') + ' (1-9):</p>'
-    + '<div id="modalEnergiaOpcoes" class="energia-selector"></div>';
-
   var htmlTipo = '';
   if (tipos.length) {
-    htmlTipo = '<p style="color:#ccc;margin:12px 0 6px">' + (t.f_tipo || 'Tipo') + ':</p>'
+    htmlTipo = '<p style="color:#ccc;margin:12px 0 6px">' + (UI.tipo || 'Tipo') + ':</p>'
       + '<div id="modalTipoOpcoes" class="modal-grid">';
     for (var i = 0; i < tipos.length; i++) {
       var rotulo = (typeof tradOpcao === 'function') ? tradOpcao(tipos[i]) : tipos[i];
-      htmlTipo += '<button type="button" class="btn btn-full modal-tipo-btn" data-tipo="'
-        + tipos[i] + '">' + rotulo + '</button>';
+      htmlTipo += '<button type="button" class="btn btn-full modal-tipo-btn" data-tipo="' + tipos[i] + '">' + rotulo + '</button>';
     }
     htmlTipo += '</div>';
   }
@@ -394,10 +409,12 @@ function abrirModalDado(produto, lang) {
     + '<button type="button" id="modalDadoX" aria-label="Fechar" style="position:absolute;top:8px;right:14px;background:none;border:none;color:#C9A94E;font-size:26px;line-height:1;cursor:pointer;">&times;</button>'
     + '<h3 id="modalDadoTitulo" style="color:var(--gold);margin-bottom:4px">' + titulo + '</h3>'
     + '<p id="modalDadoLabel" style="color:#ccc;margin-bottom:8px">' + label + ':</p>'
-    + '<input id="modalDadoInput" type="text" class="modal-input" placeholder="Nome 1" autocomplete="off">'
-    + '<input id="modalDadoInput2" type="text" class="modal-input" placeholder="Nome 2 (opcional)" autocomplete="off" style="margin-top:8px">'
-    + '<p style="color:#888;font-size:.75rem;margin-top:6px">Informe até 2 nomes. Se nenhum atingir a energia escolhida, a IA sugere 1 nome com essa energia.</p>'
-    + htmlEnergia
+    + '<input id="modalDadoInput"  type="text" class="modal-input" placeholder="' + (UI.n1 || 'Nome 1') + '" autocomplete="off">'
+    + '<input id="modalDadoInput2" type="text" class="modal-input" placeholder="' + (UI.n2 || 'Nome 2') + '" autocomplete="off" style="margin-top:8px">'
+    + '<input id="modalDadoInput3" type="text" class="modal-input" placeholder="' + (UI.n3 || 'Nome 3') + '" autocomplete="off" style="margin-top:8px">'
+    + '<p style="color:#888;font-size:.75rem;margin-top:6px">' + (UI.dica || '') + '</p>'
+    + '<p style="color:#ccc;margin:12px 0 6px">' + (UI.energia || 'Energia desejada') + ' (1-9):</p>'
+    + '<div id="modalEnergiaOpcoes" class="energia-selector"></div>'
     + htmlTipo
     + '<div class="modal-actions">'
     + '<button type="button" id="modalDadoOk" class="btn">' + (t.confirmar_btn || t.confirmar || 'Confirmar') + '</button>'
@@ -447,12 +464,11 @@ function abrirModalDado(produto, lang) {
 }
 
 function _confirmarCamposIA(produto, lang, tipo, energia) {
-  var i1 = document.getElementById('modalDadoInput');
-  var i2 = document.getElementById('modalDadoInput2');
-  var d1 = i1 ? i1.value.trim() : '';
-  var d2 = i2 ? i2.value.trim() : '';
-  if (!d1 && !d2) {
-    alert(((translations[lang] || translations.pt) || {}).preencha_dado || "Preencha ao menos um nome.");
+  var v = function (id) { var e = document.getElementById(id); return e ? e.value.trim() : ''; };
+  var d1 = v('modalDadoInput'), d2 = v('modalDadoInput2'), d3 = v('modalDadoInput3');
+  if (!d1 && !d2 && !d3) {
+    var UI = (window.IA_NOMES_UI || {})[lang] || {};
+    alert(UI.nenhum ? UI.nenhum : "Informe ao menos um nome.");
     return;
   }
   fecharModalDado();
@@ -460,6 +476,7 @@ function _confirmarCamposIA(produto, lang, tipo, energia) {
     + '&produto=' + encodeURIComponent(produto)
     + '&dado='  + encodeURIComponent(d1)
     + '&dado2=' + encodeURIComponent(d2)
+    + '&dado3=' + encodeURIComponent(d3)
     + '&tipo='  + encodeURIComponent(tipo || '')
     + '&energia=' + encodeURIComponent(energia || '');
 }
