@@ -342,6 +342,22 @@ window.IA_NOMES_UI = window.IA_NOMES_UI || {
   ar: {n1:"الاسم 1",n2:"الاسم 2",n3:"الاسم 3",energia:"الطاقة المطلوبة",tipo:"النوع",dica:"أدخل حتى 3 أسماء. إذا لم يصل أي منها إلى الطاقة المختارة، سيقترح الذكاء الاصطناعي اسمًا واحدًا بهذه الطاقة (الخيار الرابع).",sugerido:"اقتراح الذكاء الاصطناعي",escolhido:"الاسم المختار",energia_alvo:"الطاقة المستهدفة",nenhum:"لم يصل أي اسم إلى الطاقة."}
 };
 
+window.IA_ROMAN = {
+  pt: "Os nomes são analisados em escrita latina porque a numerologia pitagórica atribui valor apenas às 26 letras A–Z. Nomes em outros alfabetos são romanizados antes do cálculo (ex.: メル → Meru, Иван → Ivan), garantindo que a energia seja sempre calculada.",
+  en: "Names are analyzed in Latin script because Pythagorean numerology assigns value only to the 26 letters A–Z. Names in other alphabets are romanized before calculation (e.g. メル → Meru, Иван → Ivan), ensuring the energy is always computed.",
+  es: "Los nombres se analizan en escritura latina porque la numerología pitagórica asigna valor solo a las 26 letras A–Z. Los nombres en otros alfabetos se romanizan antes del cálculo (ej.: メル → Meru, Иван → Ivan), garantizando que la energía siempre se calcule.",
+  it: "I nomi sono analizzati in scrittura latina perché la numerologia pitagorica assegna valore solo alle 26 lettere A–Z. I nomi in altri alfabeti vengono romanizzati prima del calcolo (es.: メル → Meru, Иван → Ivan), garantendo che l'energia sia sempre calcolata.",
+  fr: "Les noms sont analysés en écriture latine car la numérologie pythagoricienne n'attribue de valeur qu'aux 26 lettres A–Z. Les noms dans d'autres alphabets sont romanisés avant le calcul (ex. : メル → Meru, Иван → Ivan), garantissant que l'énergie soit toujours calculée.",
+  de: "Namen werden in lateinischer Schrift analysiert, da die pythagoreische Numerologie nur den 26 Buchstaben A–Z einen Wert zuweist. Namen in anderen Alphabeten werden vor der Berechnung romanisiert (z. B. メル → Meru, Иван → Ivan), damit die Energie immer berechnet wird.",
+  ja: "名前はラテン文字で分析されます。ピタゴラス数秘術はA–Zの26文字にのみ数値を割り当てるためです。他の文字体系の名前は計算前にローマ字化されます（例：メル → Meru、Иван → Ivan）。これによりエネルギーが常に算出されます。",
+  zh: "名字以拉丁字母分析，因为毕达哥拉斯数字学只为A–Z这26个字母赋予数值。其他文字系统的名字在计算前会被罗马化（例如：メル → Meru、Иван → Ivan），从而确保能量始终被计算。",
+  ru: "Имена анализируются в латинской записи, так как пифагорейская нумерология придаёт значение только 26 буквам A–Z. Имена в других алфавитах транслитерируются перед расчётом (напр.: メル → Meru, Иван → Ivan), чтобы энергия всегда вычислялась.",
+  id: "Nama dianalisis dalam aksara Latin karena numerologi Pythagoras hanya memberi nilai pada 26 huruf A–Z. Nama dalam aksara lain diromanisasi sebelum perhitungan (mis.: メル → Meru, Иван → Ivan), memastikan energi selalu dihitung.",
+  tr: "İsimler Latin alfabesinde analiz edilir çünkü Pisagor numerolojisi yalnızca A–Z arasındaki 26 harfe değer verir. Diğer alfabelerdeki isimler hesaplamadan önce romanize edilir (örn.: メル → Meru, Иван → Ivan); böylece enerji her zaman hesaplanır.",
+  vi: "Tên được phân tích bằng chữ Latinh vì thần số học Pythagoras chỉ gán giá trị cho 26 chữ cái A–Z. Tên trong bảng chữ cái khác được La-tinh hóa trước khi tính (vd: メル → Meru, Иван → Ivan), đảm bảo năng lượng luôn được tính.",
+  he: "השמות מנותחים בכתב לטיני מכיוון שהנומרולוגיה הפיתגורית מייחסת ערך רק ל-26 האותיות A–Z. שמות באלפבית אחר עוברים תעתיק לפני החישוב (למשל メル → Meru, Иван → Ivan), כדי שהאנרגיה תחושב תמיד.",
+  ar: "تُحلَّل الأسماء بالحرف اللاتيني لأن علم الأعداد الفيثاغوري يمنح قيمة للحروف الـ26 من A إلى Z فقط. تُحوَّل الأسماء بالأبجديات الأخرى إلى الحرف اللاتيني قبل الحساب (مثل メル ← Meru، Иван ← Ivan)، لضمان حساب الطاقة دائمًا."
+};
 
 // ===== COMPRAR (entrada dos 24 cards) =====
 function comprar(produto) {
