@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""A1ELOS - energia de nomes e sugestao por energia alvo."""
+"""A1ELOS - energia de nomes e sugestao por energia alvo (v2)."""
 import unicodedata
 
 LETRA = {c: (i % 9) + 1 for i, c in enumerate("ABCDEFGHIJKLMNOPQRSTUVWXYZ")}
@@ -17,81 +17,117 @@ def normalizar(t):
     return "".join(c for c in s if "A" <= c <= "Z")
 
 
+def _dig(n):
+    """Reduz QUALQUER numero a 1-9 (inclui 11 e 22). Use para casar com o seletor."""
+    n = abs(int(n))
+    while n > 9:
+        n = sum(int(d) for d in str(n))
+    return n
+
+
 def reduzir(n):
+    """Reduz preservando 11 e 22 (convencao numerologica)."""
     while n > 9 and n not in (11, 22):
         n = sum(int(d) for d in str(n))
     return n
 
 
 def energia_nome(nome):
+    """(energia 1-9, soma bruta). A energia sempre cai em 1-9."""
     limpo = normalizar(nome)
     if not limpo:
         return (0, 0)
     soma = sum(LETRA.get(c, 0) for c in limpo)
-    return (reduzir(soma), soma)
+    return (_dig(reduzir(soma)), soma)
 
 
-SEME = {
-    "cao": ["Thor", "Luna", "Bela", "Rex", "Kira", "Nina", "Max", "Zoe", "Alma", "Duna"],
-    "gato": ["Mimi", "Loki", "Nala", "Simba", "Frida", "Tom", "Sombra", "Jade", "Nino"],
-    "passaro": ["Kiwi", "Piu", "Azul", "Nino", "Pingo", "Zeca", "Juju", "Liro"],
-    "reptil": ["Draco", "Naga", "Kaa", "Shen", "Rex", "Zara", "Viper", "Tuga"],
-    "outro": ["Aurora", "Nova", "Atlas", "Lumi", "Sage", "Onix", "Vega", "Aria"],
+# Banco curado: 9 energias por tipo, em cada idioma.
+# Toda energia 1-9 tem um nome real. Verificado com energia_nome().
+CURADO = {
+ "pt": {
+  "cao":     {1:"Zoe",2:"Rex",3:"Luna",4:"Duna",5:"Apolo",6:"Pipoca",7:"Thor",8:"Simba",9:"Alma"},
+  "gato":    {1:"Nala",2:"Loki",3:"Tom",4:"Perola",5:"Sombra",6:"Azul",7:"Nino",8:"Mimi",9:"Bidu"},
+  "passaro": {1:"Piu",2:"Cacau",3:"Mel",4:"Blue",5:"Nico",6:"Loro",7:"Kiwi",8:"Zeca",9:"Liro"},
+  "reptil":  {1:"Shen",2:"Rex",3:"Cobra",4:"Kaa",5:"Draco",6:"Spike",7:"Viper",8:"Onix",9:"Nagini"},
+  "outro":   {1:"Lumi",2:"Aurora",3:"Kira",4:"Duna",5:"Sage",6:"Pipoca",7:"Nova",8:"Atlas",9:"Alma"},
+ },
+ "en": {
+  "cao":     {1:"Zoe",2:"Rex",3:"Luna",4:"Bolt",5:"Duke",6:"Ginger",7:"Thor",8:"Zeus",9:"Coco"},
+  "gato":    {1:"Nala",2:"Loki",3:"Tom",4:"Maya",5:"Misty",6:"Ginger",7:"Nino",8:"Mimi",9:"Coco"},
+  "passaro": {1:"Sky",2:"Tico",3:"Sunny",4:"Blue",5:"Nico",6:"Loro",7:"Kiwi",8:"Juju",9:"Liro"},
+  "reptil":  {1:"Shen",2:"Rex",3:"Cobra",4:"Kaa",5:"Draco",6:"Spike",7:"Viper",8:"Atlas",9:"Nagini"},
+  "outro":   {1:"Lumi",2:"Aurora",3:"Kira",4:"Maya",5:"Sage",6:"Ginger",7:"Nova",8:"Atlas",9:"Alma"},
+ },
+ "es": {
+  "cao":     {1:"Zoe",2:"Rex",3:"Luna",4:"Duna",5:"Apolo",6:"Pipoca",7:"Thor",8:"Simba",9:"Alma"},
+  "gato":    {1:"Nala",2:"Loki",3:"Tom",4:"Maya",5:"Sombra",6:"Azul",7:"Nino",8:"Mimi",9:"Coco"},
+  "passaro": {1:"Sol",2:"Tico",3:"Mel",4:"Blue",5:"Nico",6:"Loro",7:"Kiwi",8:"Juju",9:"Liro"},
+  "reptil":  {1:"Shen",2:"Rex",3:"Cobra",4:"Kaa",5:"Draco",6:"Spike",7:"Viper",8:"Atlas",9:"Nagini"},
+  "outro":   {1:"Lumi",2:"Aurora",3:"Kira",4:"Maya",5:"Sage",6:"Azul",7:"Nova",8:"Atlas",9:"Alma"},
+ },
 }
 
+# Ordem de reserva: se o idioma pedido nao tiver o tipo, tenta estes.
+# NUNCA troca o tipo (cao continua cao).
+RESERVA = ["en", "es", "pt"]
 
-def sugerir_nome(tipo, energia, usados=None):
+
+def sugerir_nome(tipo, energia, lang="pt", usados=None):
+    """Sugere 1 nome do MESMO tipo, com a energia exata. Nunca inventa."""
     alvo = int(energia) if str(energia).isdigit() else 0
-    if not alvo:
+    if alvo < 1 or alvo > 9:
         return None
+    alvo = _dig(alvo)
     usados = set(normalizar(u) for u in (usados or []))
-    grupos = [SEME.get(tipo) or [], SEME["outro"]]
-    for grupo in grupos:
-        for n in grupo:
-            if normalizar(n) in usados:
-                continue
-            if energia_nome(n)[0] == alvo:
-                return n
-    base = normalizar((SEME.get(tipo) or SEME["outro"])[0]) or "A1ELOS"
-    letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    for a in letras:
-        for cand in (base + a, a + base):
-            if normalizar(cand) in usados:
-                continue
-            if energia_nome(cand)[0] == alvo:
-                return cand.capitalize()
-    for a in letras:
-        for b in letras:
-            cand = base + a + b
-            if normalizar(cand) in usados:
-                continue
-            if energia_nome(cand)[0] == alvo:
-                return cand.capitalize()
+
+    tentativas = [lang] + [l for l in RESERVA if l != lang]
+    for l in tentativas:
+        grupo = (CURADO.get(l) or {}).get(tipo) or {}
+        nome = grupo.get(alvo)
+        if nome and normalizar(nome) not in usados:
+            return {"nome": nome, "idioma": l}
+    # tipo desconhecido: usa 'outro' do proprio idioma
+    for l in tentativas:
+        grupo = (CURADO.get(l) or {}).get("outro") or {}
+        nome = grupo.get(alvo)
+        if nome and normalizar(nome) not in usados:
+            return {"nome": nome, "idioma": l}
     return None
 
 
-def avaliar_nomes(nomes, tipo, energia_alvo):
+def avaliar_nomes(nomes, tipo, energia_alvo, lang="pt"):
+    """
+    3 nomes informados -> 3 avaliacoes.
+    Se nenhum atingir a energia, gera 1 sugestao do mesmo tipo = 4a opcao.
+    """
     alvo = int(energia_alvo) if str(energia_alvo).isdigit() else 0
+    alvo = _dig(alvo) if alvo else 0
+
     entradas = []
     for n in (nomes or []):
         n = (n or "").strip()
         if not n:
             continue
         e, soma = energia_nome(n)
-        entradas.append({"nome": n, "energia": e, "soma": soma, "bate": e == alvo})
+        entradas.append({"nome": n, "energia": e, "soma": soma, "bate": (alvo > 0 and e == alvo)})
+
     escolhido = None
     for x in entradas:
         if x["bate"]:
             escolhido = x["nome"]
             break
-    sugestao = None
+
+    sug = None
     if not escolhido and alvo:
-        sugestao = sugerir_nome(tipo, alvo, [x["nome"] for x in entradas])
+        sug = sugerir_nome(tipo, alvo, lang, [x["nome"] for x in entradas])
+
     return {
         "energia_alvo": alvo,
         "tipo": tipo,
+        "idioma": lang,
         "entradas": entradas,
-        "escolhido": escolhido or sugestao or (entradas[0]["nome"] if entradas else None),
-        "sugestao": sugestao,
-        "total_opcoes": len(entradas) + (1 if sugestao else 0),
+        "escolhido": escolhido or (sug["nome"] if sug else None) or (entradas[0]["nome"] if entradas else None),
+        "sugestao": sug["nome"] if sug else None,
+        "sugestao_idioma": sug["idioma"] if sug else None,
+        "total_opcoes": len(entradas) + (1 if sug else 0),
     }
