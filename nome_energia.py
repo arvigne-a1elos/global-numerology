@@ -125,6 +125,32 @@ SEEDS = {
         "outro":["Nur","Sama","Amal","Huda","Rami","Lina","Dina","Farah"]},
 }
 
+# Nomes reais que completam as energias ausentes nas sementes.
+# Aplicados sobre os SEEDS antes de gerar variantes.
+EXTRA = {
+ "pt": {
+   "cao":     {5:"Duque", 6:"Pandora", 8:"Estrela"},
+   "gato":    {4:"Amora", 6:"Pipoca", 9:"Zara"},
+   "passaro": {2:"Tico", 3:"Mel", 4:"Lira", 5:"Kiara"},
+   "reptil":  {3:"Naga", 6:"Tanin", 8:"Zeca", 9:"Draco"},
+   "outro":   {3:"Amora", 4:"Lira", 6:"Pandora", 9:"Zara"},
+ },
+ "en": {
+   "cao":     {5:"Duke", 6:"Pandora", 8:"Toby"},
+   "gato":    {4:"Amber", 6:"Pippa", 9:"Zara"},
+   "passaro": {2:"Tico", 3:"Sunny", 4:"Lira", 5:"Kiara"},
+   "reptil":  {3:"Naga", 6:"Tanin", 8:"Zack", 9:"Draco"},
+   "outro":   {3:"Amber", 4:"Lira", 6:"Pippa", 9:"Zara"},
+ },
+ "es": {
+   "cao":     {5:"Duque", 6:"Pandora", 8:"Estrella"},
+   "gato":    {4:"Amora", 6:"Pipoca", 9:"Zara"},
+   "passaro": {2:"Tico", 3:"Mel", 4:"Lira", 5:"Kiara"},
+   "reptil":  {3:"Naga", 6:"Tanin", 8:"Zeca", 9:"Draco"},
+   "outro":   {3:"Amora", 4:"Lira", 6:"Pandora", 9:"Zara"},
+ },
+}
+
 # Sufixos naturais usados SO para preencher energia faltante.
 SUFIXOS = ["", "a", "o", "i", "e", "ia", "io", "el", "ar", "in", "on", "is", "us"]
 
@@ -148,6 +174,28 @@ def _construir():
             tab[lang][tipo] = mapa
     return tab
 
+def _construir():
+    tab = {}
+    for lang, tipos in SEEDS.items():
+        tab[lang] = {}
+        ex_lang = EXTRA.get(lang, {})
+        for tipo, nomes in tipos.items():
+            mapa = {}
+            for n in nomes:                              # 1) nomes reais
+                e = energia_nome(n)[0]
+                if e and e not in mapa:
+                    mapa[e] = {"nome": n, "real": True}
+            for e, n in (ex_lang.get(tipo) or {}).items():   # 2) EXTRA reais
+                if e not in mapa and energia_nome(n)[0] == e:
+                    mapa[e] = {"nome": n, "real": True}
+            for n in nomes:                              # 3) variantes
+                for s in SUFIXOS[1:]:
+                    c = n + s
+                    e = energia_nome(c)[0]
+                    if e and e not in mapa:
+                        mapa[e] = {"nome": c, "real": False}
+            tab[lang][tipo] = mapa
+    return tab
 
 CURADO = _construir()
 RESERVA = ["en", "es", "pt"]
