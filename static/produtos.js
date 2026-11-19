@@ -1197,13 +1197,20 @@ function montarEnergias() {
   var container = document.getElementById("energiasGrid")
     || document.getElementById("energias")
     || document.querySelector(".energias-grid");
+
   if (container) {
-    var _T = window.ENERGIA_TITULOS || {};
+    var _T  = window.ENERGIA_TITULOS || {};
     var _Tb = window.ENERGIA_TRAD || {};
     var titulos = _T[lang] || _T["pt"] || _Tb[lang] || {};
+
     var _D = window.ENERGIAS_DESC || {};
     var descs = _D[lang] || _D["pt"] || {};
-    var btn = window.ENERGIAS_BTN[lang] || "Pesquisar";
+
+    var _B = window.ENERGIAS_BTN || {};
+    var btn = _B[lang] || _B["pt"] || "Pesquisar";
+
+    var html = "";                                   // ← a linha que faltava
+
     for (var i = 1; i <= 9; i++) {
       html += '<div class="energia-card">'
         + '<div class="energia-num">' + i + '</div>'
@@ -1217,22 +1224,25 @@ function montarEnergias() {
 
   // ===== 2. SELETORES DE ENERGIA NOS FORMULÁRIOS =====
   var _UI = window.ENERGIA_UI || {};
-  var uiE = _UI[lang] || _UI.pt || { label: "Cargo + Energia Nome", dica: "Energia Ideal 8" };var lbl = document.getElementById('urnaEnergiaLabel');
-  if(lbl) lbl.textContent = uiE.label;
+  var uiE = _UI[lang] || _UI.pt || { label: "Cargo + Energia Nome", dica: "Energia Ideal 8" };
+
+  var lbl = document.getElementById('urnaEnergiaLabel');
+  if (lbl) lbl.textContent = uiE.label;
   var dica = document.getElementById('urnaEnergiaDica');
-  if(dica) dica.textContent = uiE.dica;
-  montarSeletorEnergia('urnaEnergiaSel', atualizarDestaqueUrna, 8);        // Urna ★8
-  montarSeletorEnergia('eleitoralEnergiaSel', atualizarDestaqueEleitoral, 8); // Eleitoral ★8
-  montarSeletorEnergia('arteEnergiaSel', atualizarDestaqueArte, 2);        // Artístico ★2
-  montarSeletorEnergia('ongEnergiaSel', atualizarDestaqueOng, 6);          // ONG ★6
+  if (dica) dica.textContent = uiE.dica;
+
+  montarSeletorEnergia('urnaEnergiaSel', atualizarDestaqueUrna, 8);
+  montarSeletorEnergia('eleitoralEnergiaSel', atualizarDestaqueEleitoral, 8);
+  montarSeletorEnergia('arteEnergiaSel', atualizarDestaqueArte, 2);
+  montarSeletorEnergia('ongEnergiaSel', atualizarDestaqueOng, 6);
   montarSeletorEnergia('compEquipeEnergiaSel', function(n){ window._compEnergia = n; }, 8);
+
   var dicaCE = document.getElementById('compEquipeEnergiaDica');
-  if(dicaCE) dicaCE.textContent = uiE.dica;
-  // Amor: sem seletor, energia fixa 5
-  // Estudos: sem seletor, energia livre
-  for(var k=1;k<=5;k++){
-    var inpK = document.getElementById('urnaNome'+k);
-    if(inpK) inpK.addEventListener('input', atualizarDestaqueUrna);
+  if (dicaCE) dicaCE.textContent = uiE.dica;
+
+  for (var k = 1; k <= 5; k++) {
+    var inpK = document.getElementById('urnaNome' + k);
+    if (inpK) inpK.addEventListener('input', atualizarDestaqueUrna);
   }
   atualizarDestaqueUrna();
 }
