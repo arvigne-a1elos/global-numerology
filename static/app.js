@@ -352,8 +352,7 @@ function fecharModalColeta() {
   var o = document.getElementById("modalColeta");
   if (o) o.style.display = "none";
   coletaAtual = null;
-}
-// ===== MODAL ÚNICO DOS 7 PRODUTOS DA IA — NOME + ENERGIA + TIPO NA MESMA TELA =====
+}// ===== MODAL ÚNICO DOS 7 PRODUTOS DA IA — NOME + ENERGIA + TIPO NA MESMA TELA =====
 function abrirModalDado(produto, lang) {
   var t = translations[lang] || translations.pt;
   var label = (DADO_LABEL[lang] && DADO_LABEL[lang][produto]) ? DADO_LABEL[lang][produto] : DADO_LABEL.pt[produto];
@@ -518,7 +517,7 @@ function montarPassoTipo(produto, lang) {
     b.onclick = function(){ _modalDado.tipo = ch; montarPassoEnergia(produto, lang); };
     box.appendChild(b);
   });
-} 
+}
   
 // ===== CONFIG DE DESCONTO DO BÔNUS COLETIVO — FONTE ÚNICA =====
 // Zona automática: até 2.000 unidades, o site calcula o desconto sozinho (10% a 50%).
