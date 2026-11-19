@@ -16,10 +16,11 @@ window.SIMB = window.SIMB || {pt:'R$',en:'US$',es:'€',it:'€',fr:'€',de:'�
 if (!window.PRECO_DISPLAY) {
   window.PRECO_DISPLAY = {};
   Object.keys(window.PRECO_BASE).forEach(function(l){
-    var zero = (l==='ja'||l==='vi');
+    var zero = (l==='ja'||l==='vi'||l==='id');
     window.PRECO_DISPLAY[l] = window.PRECO_BASE[l].map(function(v){
-      var txt = zero ? String(v) : v.toFixed(2).replace('.', ',');
-      return SIMB[l]+' '+txt;
+      var virgula = (l==='pt'||l==='es'||l==='it'||l==='fr'||l==='de'||l==='tr'||l==='id'||l==='vi'||l==='ru');
+      var txt = zero ? String(v) : v.toFixed(2).replace('.', virgula ? ',' : '.');
+      return (SIMB[l] || '') + ' ' + txt;
     });
   });
 }
