@@ -479,7 +479,7 @@ function confirmarModalDado(produto, lang) {
 function montarPassoTipo(produto, lang) {
   abrirModalDado(produto, lang || ((typeof getLang === 'function') ? getLang() : 'pt'));
 }
-  
+
 // ===== CONFIG DE DESCONTO DO BÔNUS COLETIVO — FONTE ÚNICA =====
 // Zona automática: até 2.000 unidades, o site calcula o desconto sozinho (10% a 50%).
 // Acima disso: NÃO calcula — entra em "sob consulta" (negociação manual).
