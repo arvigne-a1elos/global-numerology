@@ -1440,7 +1440,6 @@ async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
                                 natureza: str = "ong", tipo_entidade: str = "",
                                 escopo: str = "nacional",
                                 energia: str = "", dado: str = "", dado2: str = "", dado3: str = "",
-                                tipo: str = "", numero_existente: str = "",
                                 tipo: str = "", numero_existente: str = "", sexo: str = "",
                                 area: str = "", detalhe: str = "", apelido: str = ""):    
     if not stripe.api_key:
