@@ -322,7 +322,7 @@ window.CONF_COLETA = window.CONF_COLETA || {
   nome_equipe:  { tipos:["esportiva","corporativa","criativa"] },
   nome_projeto: { tipos:["digital","social","comercial"] },
   nome_evento:  { tipos:["congresso","curso","festa","palestra"] },
-  nome_pet: { tipos:["cao","gato","passaro","outro"], sexos:["femea","macho","indef"] }  
+  nome_pet: { tipos:["cao","gato","passaro","outro"], sexos:["femea","macho"] }  
 };
 
 /* ===== IA NOMES — RÓTULOS EM 14 IDIOMAS ===== */
