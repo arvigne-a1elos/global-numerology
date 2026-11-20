@@ -159,19 +159,25 @@ def gerar_pdf(produto, dados, lang, nome, nascimento, dado="",
 
     # ---- 1. PRODUTOS DA IA DE NOMES: 3 nomes + sugestao (4a opcao) ----
     if produto in IA_NOMES:
-        
+
+        # sexo sempre definido: parâmetro -> dict -> vazio
+        sexo = (sexo or dados.get("sexo") or "").strip().lower()
+
         try:
             from nome_energia import avaliar_nomes, precisa_romanizar
         except Exception as e:
             logger.error(f"nome_energia indisponivel: {e}")
-            sexo = sexo or dados.get("sexo") or ""
             avaliar_nomes = None
             precisa_romanizar = None
 
         nomes = [n.strip() for n in (dado, dado2, dado3) if n and n.strip()]
 
         if avaliar_nomes:
-            res = avaliar_nomes(nomes, tipo or "outro", energia, lang, sexo)
+            try:
+                res = avaliar_nomes(nomes, tipo or "outro", energia, lang, sexo)
+            except TypeError:
+                # funcao antiga ainda ativa: cai para a assinatura de 4 argumentos
+                res = avaliar_nomes(nomes, tipo or "outro", energia, lang)
         else:
             # fallback: entrega os nomes sem calculo, marcando a falha
             res = {"energia_alvo": energia, "tipo": tipo, "idioma": lang,
@@ -186,6 +192,13 @@ def gerar_pdf(produto, dados, lang, nome, nascimento, dado="",
         dados["energia"] = energia
         dados["nomes_entrada"] = nomes
         dados["nome_escolhido"] = res.get("escolhido") or (nomes[0] if nomes else "")
+            # fallback: entrega os nomes sem calculo, marcando a falha
+            res = {"energia_alvo": energia, "tipo": tipo, "idioma": lang,
+                   "entradas": [{"nome": n, "energia": 0, "soma": 0,
+                                 "bate": False, "romanizar": False} for n in nomes],
+                   "escolhido": nomes[0] if nomes else "",
+                   "sugestao": None, "sugestao_idioma": None,
+                   "sugestao_real": None, "total_opcoes": len(nomes)}
 
         # nascimento nao existe nesses produtos: usa string vazia para nao
         # imprimir "2000-01-01" nem disparar calculo de data
