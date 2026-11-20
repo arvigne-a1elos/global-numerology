@@ -565,3 +565,20 @@ form button[type="submit"]:hover,
   content:" ✓";
   font-weight:800;
 }
+
+.energia-btn.selecionada {
+  background: #C9A94E !important;
+  color: #0a0a0a !important;
+  border-color: #C9A94E !important;
+  font-weight: 700;
+  box-shadow: 0 0 0 3px rgba(201,169,78,.35);
+  transform: scale(1.08);
+}
+.energia-btn.ideal::after {
+  content: "★";
+  position: absolute;
+  top: -6px; right: -4px;
+  font-size: .65rem;
+  color: #C9A94E;
+}
+.energia-btn { position: relative; transition: all .15s ease; }
