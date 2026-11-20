@@ -555,12 +555,19 @@ def _gerar_pdf_local(prod, data, lang, nome, bd, dado=""):
     return path
 
 # ===== DISPATCHER GERAR_PDF (restaurado 07/11/2026 — era perdido na edicao) =====
-def gerar_pdf(prod, data, lang, nome, bd, dado=""):
+def gerar_pdf(prod, data, lang, nome, bd, dado="",
+              dado2="", dado3="", energia=0, tipo=""):
     pf = None
     try:
         import gerador_pdf
-        pf = gerador_pdf.gerar_pdf(prod, data, lang, nome, bd, dado)
-    except Exception:
+        try:
+            pf = gerador_pdf.gerar_pdf(prod, data, lang, nome, bd, dado,
+                                       dado2=dado2, dado3=dado3,
+                                       energia=energia, tipo=tipo)
+        except TypeError:
+            pf = gerador_pdf.gerar_pdf(prod, data, lang, nome, bd, dado)
+    except Exception as e:
+        logger.error("gerador_pdf falhou em %s: %s", prod, e)
         pf = None
     if pf and os.path.exists(pf):
         return pf
@@ -1229,14 +1236,14 @@ def regenerar_pdf_por_meta(meta):
     dado = meta.get("dado", "")
     dado2 = meta.get("dado2", "")
     dado3 = meta.get("dado3", "")
+    energia = meta.get("energia", "")
     if not bd:
         bd = "2000-01-01"
-    energia = meta.get("energia", "")
     nome_exib = nome if prod == "calendario" else (dado or nome)
 
     def _analisar_nome_duplo():
-        nomes = [n for n in (dado, dado2) if n] or [nome]
-        res = analisar_nome(nomes[0], energia)
+        nomes = [n for n in (dado, dado2, dado3) if n] or ([nome] if nome else [])
+        res = analisar_nome(nomes[0], energia) if nomes else {}
         res["nomes"] = nomes
         res["sugestao_ia"] = gerar_sugestao_ia(prod, energia, lang)
         return res
@@ -1329,7 +1336,9 @@ def regenerar_pdf_por_meta(meta):
         if not pf or not os.path.exists(pf or ""):
             pf = gerar_pdf(prod, data, lang, nome_exib, bd, dado=dado)
     else:
-        pf = gerar_pdf(prod, data, lang, nome_exib, bd, dado=dado)
+        pf = gerar_pdf(prod, data, lang, nome_exib, bd, dado=dado,
+                       dado2=dado2, dado3=dado3,
+                       energia=energia, tipo=meta.get("subtipo", ""))
     return pf
     
 @app.get("/api/pay/urna-success")
@@ -1454,7 +1463,8 @@ async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
                 "natureza": natureza, "tipo_entidade": tipo_entidade,
                 "escopo": escopo}
     else:
-        meta = {"energia": energia, "dado": dado, "dado2": dado2, "dado3": dado3, "tipo": tipo,
+        meta = {"energia": energia, "dado": dado, "dado2": dado2, "dado3": dado3,
+                "subtipo": tipo,
                 "area": area, "detalhe": detalhe}
         if apelido:
             meta["nome"] = apelido          # apelido vira o nome de exibição
