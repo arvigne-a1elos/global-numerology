@@ -27,8 +27,8 @@ print("  escolhido:", r["escolhido"], "| sugestao:", r["sugestao"],
 
 print("\n=== 3. ORQUESTRADOR nome_pet ===")
 try:
-    p = gerar_pdf("nome_pet", {}, "pt", "", "",
-                  dado="Mel", dado2="Thor", dado3="Luna", energia=5, tipo="cao")
+    p = G.gerar_pdf("nome_pet", {}, "pt", "", "",
+                    dado="Mel", dado2="Thor", dado3="Luna", energia=5, tipo="cao")
     ok = bool(p) and os.path.exists(p)
     print("  PDF:", p, "| existe:", ok,
           "| bytes:", os.path.getsize(p) if ok else 0)
@@ -40,7 +40,7 @@ chamadas.clear()
 for prod in ("casal", "familia", "compatibilidade_equipes"):
     antes = len(chamadas)
     try:
-        gerar_pdf(prod, {}, "pt", "Teste", "01/01/1990")
+        G.gerar_pdf(prod, {}, "pt", "Teste", "01/01/1990")
     except Exception as e:
         pass
     usou = chamadas[antes:] or ["(nenhuma funcao registrada)"]
