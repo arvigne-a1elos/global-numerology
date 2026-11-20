@@ -556,14 +556,14 @@ def _gerar_pdf_local(prod, data, lang, nome, bd, dado=""):
 
 # ===== DISPATCHER GERAR_PDF (restaurado 07/11/2026 — era perdido na edicao) =====
 def gerar_pdf(prod, data, lang, nome, bd, dado="",
-              dado2="", dado3="", energia=0, tipo=""):
+              dado2="", dado3="", energia=0, tipo="", sexo=""):
     pf = None
     try:
         import gerador_pdf
         try:
             pf = gerador_pdf.gerar_pdf(prod, data, lang, nome, bd, dado,
                                        dado2=dado2, dado3=dado3,
-                                       energia=energia, tipo=tipo)
+                                       energia=energia, tipo=tipo, sexo=sexo)
         except TypeError:
             pf = gerador_pdf.gerar_pdf(prod, data, lang, nome, bd, dado)
     except Exception as e:
@@ -1090,6 +1090,7 @@ def api_relatorio(session_id: str, download: int = 0):
             return HTMLResponse("Pagamento nao confirmado", status_code=403)
 
         pf = regenerar_pdf_por_meta(meta)
+        sexo = meta.get("sexo", "")
         conteudo = None
         if pf and os.path.exists(pf):
             with open(pf, "rb") as f:
@@ -1338,7 +1339,8 @@ def regenerar_pdf_por_meta(meta):
     else:
         pf = gerar_pdf(prod, data, lang, nome_exib, bd, dado=dado,
                        dado2=dado2, dado3=dado3,
-                       energia=energia, tipo=meta.get("subtipo", ""))
+                       energia=energia, tipo=meta.get("subtipo", ""),
+                       sexo=sexo)
     return pf
     
 @app.get("/api/pay/urna-success")
@@ -1439,6 +1441,7 @@ async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
                                 escopo: str = "nacional",
                                 energia: str = "", dado: str = "", dado2: str = "", dado3: str = "",
                                 tipo: str = "", numero_existente: str = "",
+                                tipo: str = "", numero_existente: str = "", sexo: str = "",
                                 area: str = "", detalhe: str = "", apelido: str = ""):    
     if not stripe.api_key:
         raise HTTPException(503, "Stripe nao configurado")
@@ -1464,8 +1467,9 @@ async def criar_checkout_direto(lang: str = "pt", produto: str = "express",
                 "escopo": escopo}
     else:
         meta = {"energia": energia, "dado": dado, "dado2": dado2, "dado3": dado3,
-                "subtipo": tipo,
+                "subtipo": tipo, "sexo": sexo,
                 "area": area, "detalhe": detalhe}
+    
         if apelido:
             meta["nome"] = apelido          # apelido vira o nome de exibição
     meta["tipo"] = meta.get("tipo") or produto
