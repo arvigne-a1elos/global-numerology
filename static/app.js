@@ -1168,3 +1168,40 @@ window.pagarCompatibilidade = window.pagarCompatibilidade || function(){
     new MutationObserver(_blindar).observe(document.body, {childList: true, subtree: true});
   }
 })();
+
+/* ===== SEXO DO ANIMAL: seleção única + valor ===== */
+(function () {
+  var MAPA = {
+    "fêmea": "femea", "femea": "femea",
+    "macho": "macho",
+    "não sei": "indef", "nao sei": "indef", "indefinido": "indef"
+  };
+
+  function rotulo(b) {
+    return (b.textContent || "").replace(/✓/g, "").trim().toLowerCase();
+  }
+
+  function pintar(b, ativo) {
+    b.style.background = ativo ? "#C9A94E" : "transparent";
+    b.style.color      = ativo ? "#0a0a0a" : "#C9A94E";
+    b.style.border     = "1px solid #C9A94E";
+    b.style.fontWeight = ativo ? "700" : "400";
+    b.textContent = (b.textContent || "").replace(/\s*✓/g, "").trim() + (ativo ? " ✓" : "");
+  }
+
+  document.addEventListener("click", function (ev) {
+    var b = ev.target.closest && ev.target.closest("button");
+    if (!b) return;
+    var r = rotulo(b);
+    if (!MAPA[r]) return;
+
+    if (window._modalDado) window._modalDado.sexo = MAPA[r];
+
+    setTimeout(function () {
+      var irmaos = b.parentNode ? b.parentNode.querySelectorAll("button") : [b];
+      for (var i = 0; i < irmaos.length; i++) {
+        if (MAPA[rotulo(irmaos[i])]) pintar(irmaos[i], irmaos[i] === b);
+      }
+    }, 0);
+  }, false);
+})();
