@@ -155,6 +155,182 @@ EXTRA = {
 SUFIXOS = ["", "a", "o", "i", "e", "ia", "io", "el", "ar", "in", "on", "is", "us"]
 
 
+# ===== v4: SEXO DO ANIMAL / DO NOME =====
+# Banco curado com os 9 numeros para cada sexo. Nomes reais, verificados.
+BANCO_SEXO = {
+ "pt": {
+  "cao": {
+   "f": {1:"Zoe",2:"Bela",3:"Luna",4:"Duna",5:"Sombra",6:"Pandora",7:"Meg",8:"Estrela",9:"Alma"},
+   "m": {1:"Kiko",2:"Rex",3:"Tom",4:"Bolt",5:"Duque",6:"Kid",7:"Thor",8:"Simba",9:"Ciro"}},
+  "gato": {
+   "f": {1:"Nala",2:"Frida",3:"Luna",4:"Lia",5:"Sombra",6:"Pandora",7:"Meg",8:"Mimi",9:"Alma"},
+   "m": {1:"Kiko",2:"Loki",3:"Tom",4:"Xerife",5:"Tigre",6:"Kid",7:"Nino",8:"Simba",9:"Guto"}},
+  "passaro": {
+   "f": {1:"Piu",2:"Nina",3:"Mel",4:"Lira",5:"Kika",6:"Pipoca",7:"Kiwi",8:"Estrela",9:"Alma"},
+   "m": {1:"Kiko",2:"Tico",3:"Kai",4:"Robin",5:"Nico",6:"Loro",7:"Pingo",8:"Zeca",9:"Liro"}},
+  "reptil": {
+   "f": {1:"Shen",2:"Bela",3:"Cobra",4:"Kaa",5:"Naga",6:"Pandora",7:"Viper",8:"Onix",9:"Nagini"},
+   "m": {1:"Kiko",2:"Rex",3:"Kai",4:"Tuga",5:"Draco",6:"Kid",7:"Pingo",8:"Zeca",9:"Liro"}},
+  "outro": {
+   "f": {1:"Lumi",2:"Aurora",3:"Kira",4:"Duna",5:"Sombra",6:"Pandora",7:"Meg",8:"Estrela",9:"Alma"},
+   "m": {1:"Kiko",2:"Rex",3:"Tom",4:"Bolt",5:"Duque",6:"Kid",7:"Thor",8:"Simba",9:"Ciro"}},
+ },
+ "en": {
+  "cao": {
+   "f": {1:"Zoe",2:"Nina",3:"Luna",4:"Daisy",5:"Bella",6:"Pandora",7:"Meg",8:"Mimi",9:"Alma"},
+   "m": {1:"Arlo",2:"Rex",3:"Tom",4:"Bolt",5:"Duke",6:"Kid",7:"Thor",8:"Simba",9:"Ciro"}},
+  "gato": {
+   "f": {1:"Nala",2:"Nina",3:"Luna",4:"Daisy",5:"Bella",6:"Pandora",7:"Meg",8:"Mimi",9:"Alma"},
+   "m": {1:"Arlo",2:"Loki",3:"Tom",4:"Bolt",5:"Tiger",6:"Kid",7:"Nino",8:"Simba",9:"Guto"}},
+  "passaro": {
+   "f": {1:"Piu",2:"Nina",3:"Mel",4:"Lira",5:"Kika",6:"Pipoca",7:"Kiwi",8:"Stella",9:"Alma"},
+   "m": {1:"Kiko",2:"Tico",3:"Kai",4:"Robin",5:"Nico",6:"Loro",7:"Pingo",8:"Zack",9:"Liro"}},
+  "reptil": {
+   "f": {1:"Shen",2:"Bella",3:"Cobra",4:"Kaa",5:"Naga",6:"Pandora",7:"Viper",8:"Onyx",9:"Nagini"},
+   "m": {1:"Kiko",2:"Rex",3:"Kai",4:"Tuga",5:"Draco",6:"Kid",7:"Pingo",8:"Zack",9:"Liro"}},
+  "outro": {
+   "f": {1:"Lumi",2:"Aurora",3:"Kira",4:"Daisy",5:"Bella",6:"Pandora",7:"Meg",8:"Stella",9:"Alma"},
+   "m": {1:"Kiko",2:"Rex",3:"Tom",4:"Bolt",5:"Duke",6:"Kid",7:"Thor",8:"Simba",9:"Ciro"}},
+ },
+}
+
+FEMININOS = set("""ZOE LUNA BELA BELLA KIRA NINA ALMA DUNA PANDORA ESTRELA STELLA AMORA IRIS MIMI NALA
+FRIDA SOMBRA JADE ZARA MEL HANA YUKI MIO KURO SHIRO NEKO RIN TAMA MEI LAN XIN YU LIN WEN HUA MI
+MAO HEI BAI XIAO ANNA NATASHA LENA DASHA MURKA MASHA SONYA BOUGI RIKI NOA TAMAR MAYA SHIRA LAYLA
+YASMIN SALMA BELLE OMRA BAYANG BULAN BINTANG SAKURA MOMO PIPOCA GINGER MISTY POPPY AMBER DAISY
+LIA MEG KIKA LIRA PIU COCO NECA TITA BINA DORA PEROLA CACAU LILI TZIPOR OFI NURI TZIPPI PERI
+KANARIT DROR HIKARI NOZOMI KAEDE AKIRA YUI SVETA VERA NADEZHDA LADA ZARYA ISKRA VOLYA AMAL HUDA
+LINA DINA FARAH NUR SAMA AVIV MAYAAN SHIRA""".split())
+
+MASCULINOS = set("""THOR REX MAX DUQUE DUKE ARLO BOLT SIMBA ZEUS TITA PINGO LOKI TOM NINO KIKO DRACO NAGA
+KAA SHEN VIPER TUGA ONIX ONYX IVAN MISHA SASHA BORIS YURI VASYA BARSIK PUSHOK TIMKA RYZHIK KESHA
+ZACK ZECA LIRO TICO KAITO HARU RIKU SORA AOI TARO AKIRA HAO JUN BAO TORI TATSU ONI LONG SHE
+ARIEL YOSEF DAVID EITAN LAVI DOV OMAR AMIR NOUR KARIM ZAYN FARES RAMI ASLAN TIGRE TIGER KID
+XERIFE GUTO ROBIN KAI NICO LORO CIRO CAIRO JACK FINN CODY TOBY BUSTER""".split())
+
+
+def sexo_de(nome):
+    """'f', 'm' ou '' (indefinido). Heuristica final: -a feminino, -o masculino."""
+    n = normalizar(nome)
+    if not n:
+        return ""
+    if n in FEMININOS:
+        return "f"
+    if n in MASCULINOS:
+        return "m"
+    if n.endswith("A"):
+        return "f"
+    if n.endswith("O"):
+        return "m"
+    return ""
+
+
+def _inferir_sexo(nomes):
+    """Deduz o sexo a partir dos nomes digitados (maioria)."""
+    f = m = 0
+    for n in (nomes or []):
+        s = sexo_de(n)
+        if s == "f":
+            f += 1
+        elif s == "m":
+            m += 1
+    if f > m:
+        return "f"
+    if m > f:
+        return "m"
+    return ""
+
+
+def sugerir_nome(tipo, energia, lang="pt", usados=None, sexo=""):
+    """Sugere 1 nome do MESMO tipo, com a energia exata e o MESMO sexo."""
+    alvo = int(energia) if str(energia).isdigit() else 0
+    if not alvo:
+        return None
+    alvo = _dig(alvo)
+    usados = set(normalizar(u) for u in (usados or []))
+
+    ordens_lang = [lang] + [x for x in ("en", "pt") if x != lang]
+    ordens_sexo = [sexo] if sexo in ("f", "m") else ["f", "m", ""]
+
+    # 1) banco curado por sexo
+    for sx in ordens_sexo:
+        for l in ordens_lang:
+            g = ((BANCO_SEXO.get(l) or {}).get(tipo) or {}).get(sx or "")
+            nome = (g or {}).get(alvo)
+            if nome and normalizar(nome) not in usados:
+                return {"nome": nome, "idioma": l, "sexo": sx, "real": True}
+
+    # 2) banco antigo (CURADO), filtrado por sexo
+    for l in ordens_lang:
+        item = ((CURADO.get(l) or {}).get(tipo) or {}).get(alvo)
+        if not item:
+            continue
+        sx_item = sexo_de(item["nome"])
+        if sexo in ("f", "m") and sx_item and sx_item != sexo:
+            continue
+        if normalizar(item["nome"]) not in usados:
+            return {"nome": item["nome"], "idioma": l, "sexo": sx_item, "real": item["real"]}
+
+    # 3) variantes com sufixo coerente com o sexo
+    SUF_F = ["a", "ia", "ina", "ela", "ana", "ora", "ita"]
+    SUF_M = ["o", "el", "on", "us", "io", "ino", "aro"]
+    SUF_U = ["a", "o", "el", "in", "is"]
+    base_item = ((CURADO.get(lang) or {}).get(tipo) or {}).get(alvo)
+    fonte = base_item["nome"] if base_item else ((BANCO_SEXO.get("pt") or {}).get(tipo) or {}).get("f", {}).get(alvo, "A1ELOS")
+    suf = SUF_F if sexo == "f" else (SUF_M if sexo == "m" else SUF_U)
+    for s in suf:
+        cand = fonte + s
+        if normalizar(cand) in usados:
+            continue
+        if energia_nome(cand)[0] == alvo:
+            return {"nome": cand, "idioma": lang, "sexo": sexo, "real": False}
+    return None
+
+
+def avaliar_nomes(nomes, tipo, energia_alvo, lang="pt", sexo=""):
+    """3 nomes -> 3 avaliacoes; se nenhum bater, 1 sugestao = 4a opcao.
+    O sexo e respeitado; se nao vier, e deduzido dos nomes digitados."""
+    alvo = int(energia_alvo) if str(energia_alvo).isdigit() else 0
+    alvo = _dig(alvo) if alvo else 0
+
+    entradas = []
+    for n in (nomes or []):
+        n = (n or "").strip()
+        if not n:
+            continue
+        e, soma = energia_nome(n)
+        entradas.append({"nome": n, "energia": e, "soma": soma,
+                         "bate": (alvo > 0 and e == alvo),
+                         "sexo": sexo_de(n),
+                         "romanizar": precisa_romanizar(n)})
+
+    sx = sexo if sexo in ("f", "m") else _inferir_sexo([x["nome"] for x in entradas])
+
+    escolhido = None
+    for x in entradas:
+        if x["bate"]:
+            escolhido = x["nome"]
+            break
+
+    sug = None
+    if not escolhido and alvo:
+        sug = sugerir_nome(tipo, alvo, lang, [x["nome"] for x in entradas], sx)
+
+    return {
+        "energia_alvo": alvo,
+        "tipo": tipo,
+        "idioma": lang,
+        "sexo": sx,
+        "sexo_inferido": (sexo not in ("f", "m")),
+        "entradas": entradas,
+        "escolhido": escolhido or (sug["nome"] if sug else None) or (entradas[0]["nome"] if entradas else None),
+        "sugestao": sug["nome"] if sug else None,
+        "sugestao_idioma": sug["idioma"] if sug else None,
+        "sugestao_real": sug["real"] if sug else None,
+        "sugestao_sexo": sug["sexo"] if sug else None,
+        "total_opcoes": len(entradas) + (1 if sug else 0),
+    }
+
 def _construir():
     tab = {}
     for lang, tipos in SEEDS.items():
