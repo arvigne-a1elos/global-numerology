@@ -31,3 +31,9 @@ for t in ("Mel", "\u30e1\u30eb", "\u0418\u0432\u0430\u043d", "\u05e9\u05dc\u05d5
     print(repr(t), "precisa:", precisa_romanizar(t))
 
 print("TOTAL DE FALHAS:", falhas)
+
+from nome_energia import avaliar_nomes
+r = avaliar_nomes(["Mel", "Frida", "Memel"], "cao", 5, "pt")
+print("sexo:", r["sexo"], "| sugestao:", r["sugestao"])
+r2 = avaliar_nomes(["Thor", "Rex"], "cao", 5, "pt")
+print("sexo:", r2["sexo"], "| sugestao:", r2["sugestao"])
