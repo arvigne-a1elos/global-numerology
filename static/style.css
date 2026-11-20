@@ -538,3 +538,30 @@ form button[type="submit"]:hover,
   background: #0b7a3b !important;
   color: #fff !important;
 }
+
+/* ===== BOTÕES DE TIPO / SEXO — ESTADO SELECIONADO VISÍVEL ===== */
+.modal-tipo-btn{
+  background:#0a0a0a;
+  color:#C9A94E;
+  border:1px solid #C9A94E;
+  padding:12px 10px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:.95rem;
+  font-weight:600;
+  transition:background .15s ease, color .15s ease, box-shadow .15s ease;
+}
+.modal-tipo-btn:hover{ background:#1c1c1c; }
+.modal-tipo-btn:active{ transform:scale(.98); }
+
+.modal-tipo-btn.selecionado{
+  background:#C9A94E !important;
+  color:#0a0a0a !important;
+  border-color:#C9A94E !important;
+  font-weight:800;
+  box-shadow:0 0 0 3px rgba(201,169,78,.30);
+}
+.modal-tipo-btn.selecionado::after{
+  content:" ✓";
+  font-weight:800;
+}
