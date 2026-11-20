@@ -144,7 +144,7 @@ def gerar_pdf(produto, dados, lang, nome, nascimento, dado="",
     e devolve o caminho do PDF gerado."""
     lang = lang or "pt"
     dados = dict(dados or {})
-    dados["sexo"] = res.get("sexo", "")              
+    dados["sexo"] = sexo or dados.get("sexo") or ""              
 
     # tolera os dois formatos: parâmetro direto ou chave no dict
     dado    = dado    or dados.get("dado")    or ""
