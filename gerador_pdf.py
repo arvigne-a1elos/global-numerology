@@ -139,11 +139,12 @@ IA_NOMES = {
 
 # ===== FUNÇÃO ÚNICA DO ORQUESTRADOR =====
 def gerar_pdf(produto, dados, lang, nome, nascimento, dado="",
-              dado2="", dado3="", energia=0, tipo=""):
+              dado2="", dado3="", energia=0, tipo="", sexo=""):
     """Escolhe o template certo do pdf_service, enriquece com semântica (14 idiomas)
     e devolve o caminho do PDF gerado."""
     lang = lang or "pt"
     dados = dict(dados or {})
+    dados["sexo"] = res.get("sexo", "")              
 
     # tolera os dois formatos: parâmetro direto ou chave no dict
     dado    = dado    or dados.get("dado")    or ""
@@ -158,17 +159,19 @@ def gerar_pdf(produto, dados, lang, nome, nascimento, dado="",
 
     # ---- 1. PRODUTOS DA IA DE NOMES: 3 nomes + sugestao (4a opcao) ----
     if produto in IA_NOMES:
+        
         try:
             from nome_energia import avaliar_nomes, precisa_romanizar
         except Exception as e:
             logger.error(f"nome_energia indisponivel: {e}")
+            sexo = sexo or dados.get("sexo") or ""
             avaliar_nomes = None
             precisa_romanizar = None
 
         nomes = [n.strip() for n in (dado, dado2, dado3) if n and n.strip()]
 
         if avaliar_nomes:
-            res = avaliar_nomes(nomes, tipo or "outro", energia, lang)
+            res = avaliar_nomes(nomes, tipo or "outro", energia, lang, sexo)
         else:
             # fallback: entrega os nomes sem calculo, marcando a falha
             res = {"energia_alvo": energia, "tipo": tipo, "idioma": lang,
