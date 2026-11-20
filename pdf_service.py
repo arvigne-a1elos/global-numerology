@@ -360,10 +360,142 @@ def pdf_eleitoral(ss, cl, sugestoes, ne=None, lang="pt"):
     doc.build(e, onFirstPage=_cabecalho_pagina, onLaterPages=_cabecalho_pagina)
     return path
 
+# ===== PRODUTOS DA IA DE NOMES — 3 NOMES + 4a OPCAO (19/11/2026) =====
+IA_TXT = {
+ "pt": {"t":"Pesquisa IA de Nomes","ea":"Energia alvo","tp":"Tipo","nm":"Nome","en":"Energia",
+        "ok":"Atingiu a energia","no":"Nao atingiu","sg":"Sugestao da IA","es":"Nome escolhido",
+        "rm":"Os nomes sao analisados em escrita latina porque a numerologia pitagorica atribui valor apenas as 26 letras A-Z. Nomes em outros alfabetos sao romanizados antes do calculo."},
+ "en": {"t":"AI Name Search","ea":"Target energy","tp":"Type","nm":"Name","en":"Energy",
+        "ok":"Reached the energy","no":"Did not reach","sg":"AI suggestion","es":"Chosen name",
+        "rm":"Names are analyzed in Latin script because Pythagorean numerology assigns value only to the 26 letters A-Z. Names in other alphabets are romanized before calculation."},
+ "es": {"t":"Busqueda IA de Nombres","ea":"Energia objetivo","tp":"Tipo","nm":"Nombre","en":"Energia",
+        "ok":"Alcanzo la energia","no":"No alcanzo","sg":"Sugerencia de la IA","es":"Nombre elegido",
+        "rm":"Los nombres se analizan en escritura latina porque la numerologia pitagorica asigna valor solo a las 26 letras A-Z. Los nombres en otros alfabetos se romanizan antes del calculo."},
+ "it": {"t":"Ricerca IA Nomi","ea":"Energia obiettivo","tp":"Tipo","nm":"Nome","en":"Energia",
+        "ok":"Ha raggiunto l'energia","no":"Non ha raggiunto","sg":"Suggerimento IA","es":"Nome scelto",
+        "rm":"I nomi sono analizzati in scrittura latina perche la numerologia pitagorica assegna valore solo alle 26 lettere A-Z. I nomi in altri alfabeti vengono romanizzati prima del calcolo."},
+ "fr": {"t":"Recherche IA de Noms","ea":"Energie cible","tp":"Type","nm":"Nom","en":"Energie",
+        "ok":"A atteint l'energie","no":"N'a pas atteint","sg":"Suggestion IA","es":"Nom choisi",
+        "rm":"Les noms sont analyses en ecriture latine car la numerologie pythagoricienne n'attribue de valeur qu'aux 26 lettres A-Z. Les noms dans d'autres alphabets sont romanises avant le calcul."},
+ "de": {"t":"KI-Namenssuche","ea":"Zielenergie","tp":"Typ","nm":"Name","en":"Energie",
+        "ok":"Energie erreicht","no":"Nicht erreicht","sg":"KI-Vorschlag","es":"Gewahlter Name",
+        "rm":"Namen werden in lateinischer Schrift analysiert, da die pythagoreische Numerologie nur den 26 Buchstaben A-Z einen Wert zuweist. Namen in anderen Alphabeten werden vor der Berechnung romanisiert."},
+ "ja": {"t":"AI名前検索","ea":"目標エネルギー","tp":"タイプ","nm":"名前","en":"エネルギー",
+        "ok":"エネルギーに到達","no":"到達せず","sg":"AIの提案","es":"選ばれた名前",
+        "rm":"名前はラテン文字で分析されます。ピタゴラス数秘術はA-Zの26文字にのみ数値を割り当てるためです。他の文字体系の名前は計算前にローマ字化されます。"},
+ "zh": {"t":"AI名字搜索","ea":"目标能量","tp":"类型","nm":"名字","en":"能量",
+        "ok":"达到能量","no":"未达到","sg":"AI建议","es":"选定的名字",
+        "rm":"名字以拉丁字母分析，因为毕达哥拉斯数字学只为A-Z这26个字母赋予数值。其他文字系统的名字在计算前会被罗马化。"},
+ "ru": {"t":"ИИ-поиск имён","ea":"Целевая энергия","tp":"Тип","nm":"Имя","en":"Энергия",
+        "ok":"Достигнута энергия","no":"Не достигнута","sg":"Предложение ИИ","es":"Выбранное имя",
+        "rm":"Имена анализируются в латинской записи, так как пифагорейская нумерология придаёт значение только 26 буквам A-Z. Имена в других алфавитах транслитерируются перед расчётом."},
+ "id": {"t":"Pencarian Nama AI","ea":"Energi target","tp":"Jenis","nm":"Nama","en":"Energi",
+        "ok":"Mencapai energi","no":"Tidak mencapai","sg":"Saran AI","es":"Nama terpilih",
+        "rm":"Nama dianalisis dalam aksara Latin karena numerologi Pythagoras hanya memberi nilai pada 26 huruf A-Z. Nama dalam aksara lain diromanisasi sebelum perhitungan."},
+ "tr": {"t":"AI İsim Arama","ea":"Hedef enerji","tp":"Tür","nm":"İsim","en":"Enerji",
+        "ok":"Enerjiye ulaştı","no":"Ulaşmadı","sg":"AI önerisi","es":"Seçilen isim",
+        "rm":"İsimler Latin alfabesinde analiz edilir çünkü Pisagor numerolojisi yalnızca A-Z arasındaki 26 harfe değer verir. Diğer alfabelerdeki isimler hesaplamadan önce romanize edilir."},
+ "vi": {"t":"Tìm Kiếm Tên AI","ea":"Năng lượng mục tiêu","tp":"Loại","nm":"Tên","en":"Năng lượng",
+        "ok":"Đạt năng lượng","no":"Không đạt","sg":"Gợi ý AI","es":"Tên được chọn",
+        "rm":"Tên được phân tích bằng chữ Latinh vì thần số học Pythagoras chỉ gán giá trị cho 26 chữ cái A-Z. Tên trong bảng chữ cái khác được La-tinh hóa trước khi tính."},
+ "he": {"t":"חיפוש שמות AI","ea":"אנרגיית יעד","tp":"סוג","nm":"שם","en":"אנרגיה",
+        "ok":"הגיע לאנרגיה","no":"לא הגיע","sg":"הצעת AI","es":"השם הנבחר",
+        "rm":"השמות מנותחים בכתב לטיני מכיוון שהנומרולוגיה הפיתגורית מייחסת ערך רק ל-26 האותיות A-Z. שמות באלפבית אחר עוברים תעתיק לפני החישוב."},
+ "ar": {"t":"بحث الأسماء بالذكاء الاصطناعي","ea":"الطاقة المستهدفة","tp":"النوع","nm":"الاسم","en":"الطاقة",
+        "ok":"وصل إلى الطاقة","no":"لم يصل","sg":"اقتراح الذكاء الاصطناعي","es":"الاسم المختار",
+        "rm":"تُحلَّل الأسماء بالحرف اللاتيني لأن علم الأعداد الفيثاغوري يمنح قيمة للحروف الـ26 من A إلى Z فقط. تُحوَّل الأسماء بالأبجدية الأخرى إلى الحرف اللاتيني قبل الحساب."},
+}
+
+
+def _ia_fonte(lang):
+    """Fonte (regular, bold) para o idioma; cai em Helvetica se indisponivel."""
+    try:
+        mapa = {
+            "ja": ("HeiseiKakuGo-W5", "HeiseiKakuGo-W5"),
+            "zh": ("STSong-Light", "STSong-Light"),
+            "he": ("NotoSansHebrew", "NotoSansHebrew-Bold"),
+            "ar": ("NotoNaskhArabic", "NotoNaskhArabic-Bold"),
+        }
+        if lang in mapa:
+            return mapa[lang]
+        return ("DejaVu", "DejaVu-Bold")
+    except Exception:
+        return ("Helvetica", "Helvetica-Bold")
+
+
+def _pdf_ia_nomes(produto, dados, lang, ia):
+    """Desenha as 3 avaliacoes + a 4a opcao (sugestao) e devolve o caminho."""
+    import tempfile, uuid, os
+    from reportlab.lib.pagesizes import A4
+    from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
+    from reportlab.lib.styles import ParagraphStyle
+    from reportlab.lib import colors
+    from reportlab.lib.enums import TA_CENTER, TA_LEFT
+
+    T = IA_TXT.get(lang) or IA_TXT["pt"]
+    reg, bold = _ia_fonte(lang)
+    GOLD = colors.HexColor("#B8860B")
+    DARK = colors.HexColor("#222222")
+    GRAY = colors.HexColor("#777777")
+    LGRAY = colors.HexColor("#f0f0f0")
+
+    def est(tam, b=False, cor=DARK, alinh=TA_LEFT, depois=0):
+        return ParagraphStyle("e", fontName=(bold if b else reg), fontSize=tam,
+                              textColor=cor, alignment=alinh, spaceAfter=depois,
+                              leading=tam * 1.4)
+
+    path = os.path.join(tempfile.gettempdir(), "p_%s_%s.pdf" % (produto, uuid.uuid4().hex[:8]))
+    doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
+                            topMargin=40, bottomMargin=30)
+    e = []
+    e.append(Spacer(1, 12))
+    e.append(Paragraph(T["t"].upper(), est(17, True, GOLD, TA_CENTER, 4)))
+    e.append(Paragraph(str(ia.get("escolhido") or ""), est(13, True, DARK, TA_CENTER, 2)))
+    e.append(Paragraph("%s: %s &nbsp;|&nbsp; %s: %s" % (T["ea"], ia.get("energia_alvo", ""),
+                                                       T["tp"], ia.get("tipo", "")),
+                       est(9, False, GRAY, TA_CENTER, 10)))
+
+    linhas = [[ "#", T["nm"], T["en"], T["tp"] ]]
+    for i, x in enumerate(ia.get("entradas") or [], 1):
+        linhas.append([str(i), x.get("nome", ""), str(x.get("energia", "")),
+                       (T["ok"] if x.get("bate") else T["no"])])
+    sug = ia.get("sugestao")
+    if sug:
+        linhas.append(["4", sug, str(ia.get("energia_alvo", "")), T["sg"]])
+
+    if len(linhas) > 1:
+        tbl = Table(linhas, colWidths=[28, 200, 70, 180])
+        estilo = [
+            ("BACKGROUND", (0, 0), (-1, 0), GOLD),
+            ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+            ("FONTNAME", (0, 0), (-1, 0), bold),
+            ("FONTNAME", (0, 1), (-1, -1), reg),
+            ("FONTSIZE", (0, 0), (-1, -1), 9),
+            ("GRID", (0, 0), (-1, -1), 0.4, colors.grey),
+            ("BACKGROUND", (0, 1), (-1, -1), LGRAY),
+            ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+        ]
+        if sug:
+            estilo.append(("BACKGROUND", (0, len(linhas) - 1), (-1, len(linhas) - 1),
+                           colors.HexColor("#fdf3d7")))
+            estilo.append(("TEXTCOLOR", (3, len(linhas) - 1), (3, len(linhas) - 1), GOLD))
+        tbl.setStyle(TableStyle(estilo))
+        e.append(tbl)
+
+    e.append(Spacer(1, 14))
+    e.append(Paragraph(T["rm"], est(8, False, GRAY)))
+    e.append(Spacer(1, 10))
+    e.append(Paragraph("(c) A1ELOS", est(7, False, GRAY, TA_CENTER)))
+    doc.build(e)
+    return path
+
 # ═══════════════════════════════════════════
 # PRODUTOS GENÉRICOS (24 produtos, traduzido + conteúdo do livro)
 # ═══════════════════════════════════════════
 def pdf_produto(produto, dados, nome, bd_str, lang, dado=""):
+    _ia = (dados or {}).get("ia_nomes") if isinstance(dados, dict) else None
+    if _ia and (produto or "").startswith("nome_"):
+        return _pdf_ia_nomes(produto, dados, lang or "pt", _ia)
     T = PDF_TEXTS.get(lang, PDF_TEXTS["pt"])
     from dicionarios import get_sig, get_cam, get_compat
     from fontes import preparar_texto as _prep
