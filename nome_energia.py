@@ -373,7 +373,6 @@ def _construir():
             tab[lang][tipo] = mapa
     return tab
 
-CURADO = _construir()
 RESERVA = ["en", "es", "pt"]
 
 
