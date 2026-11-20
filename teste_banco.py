@@ -34,6 +34,6 @@ print("TOTAL DE FALHAS:", falhas)
 
 from nome_energia import avaliar_nomes
 r = avaliar_nomes(["Mel", "Frida", "Memel"], "cao", 5, "pt")
-print("sexo:", r["sexo"], "| sugestao:", r["sugestao"])
+print("sexo:", r.get("sexo", "-"), "| sugestao:", r.get("sugestao"))
 r2 = avaliar_nomes(["Thor", "Rex"], "cao", 5, "pt")
 print("sexo:", r2["sexo"], "| sugestao:", r2["sugestao"])
