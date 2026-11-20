@@ -1130,6 +1130,7 @@ def pay_success(request: Request):
         lang = meta.get("lang", "pt")
         dado = meta.get("dado", "")
         dado2 = meta.get("dado2", "")
+        sexo = (meta.get("sexo") or "").strip()
 
         # Data do cabeçalho: birth; se vazio, 1ª data de detalhe; senão fallback
         bd = meta.get("birth", "")
@@ -1230,6 +1231,7 @@ def pay_success(request: Request):
 def regenerar_pdf_por_meta(meta):
     """Gera o PDF do produto a partir dos metadados da sessão Stripe.
     Reutilizada pelo pay_success e pela rota permanente /api/relatorio/{session_id}."""
+    meta = dict(meta or {})
     nome = meta.get("nome", "Cliente")
     bd = meta.get("birth", "")
     prod = meta.get("tipo", "express")
@@ -1238,6 +1240,7 @@ def regenerar_pdf_por_meta(meta):
     dado2 = meta.get("dado2", "")
     dado3 = meta.get("dado3", "")
     energia = meta.get("energia", "")
+    sexo = (meta.get("sexo") or "").strip()
     if not bd:
         bd = "2000-01-01"
     nome_exib = nome if prod == "calendario" else (dado or nome)
