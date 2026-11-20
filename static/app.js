@@ -321,7 +321,8 @@ window.CONF_COLETA = window.CONF_COLETA || {
   nome_canal:   { tipos:["youtube","podcast","instagram","tiktok"] },
   nome_equipe:  { tipos:["esportiva","corporativa","criativa"] },
   nome_projeto: { tipos:["digital","social","comercial"] },
-  nome_evento:  { tipos:["congresso","curso","festa","palestra"] }
+  nome_evento:  { tipos:["congresso","curso","festa","palestra"] },
+  nome_pet: { tipos:["cao","gato","passaro","outro"], sexos:["femea","macho","indef"] }  
 };
 
 /* ===== IA NOMES — RÓTULOS EM 14 IDIOMAS ===== */
@@ -518,7 +519,7 @@ function _confirmarCamposIA(produto, lang, tipo, energia, sexo) {
     + '&dado3=' + encodeURIComponent(d3)
     + '&tipo='  + encodeURIComponent(tipo || '')
     + '&energia=' + encodeURIComponent(energia || '')
-    + '&sexo=' + encodeURIComponent(sexo || '');
+    + '&sexo=' + encodeURIComponent(sexo || '');    
 }
 
 function fecharModalDado() {
@@ -529,6 +530,7 @@ function fecharModalDado() {
 function confirmarModalDado(produto, lang) {
   var i1 = document.getElementById("modalDadoInput");
   var i2 = document.getElementById("modalDadoInput2");
+  var sexo = _modalDado.sexo || "";  
   if (!i1 && !i2) return;
   _confirmarCamposIA(produto, lang, (_modalDado && _modalDado.tipo) || '', (_modalDado && _modalDado.energia) || '');
 }
