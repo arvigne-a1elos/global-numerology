@@ -1455,17 +1455,34 @@ def _pdf_relacao(produto, dados, lang, contexto, tag):
     if membros:
         e.append(Paragraph(f"<b>{L['membros']}: {total}</b>",
                            _estilo("MT", fb, 12, GOLD, TA_LEFT, sa=LINHA * 0.6)))
-        linhas = [[L["membros"], L["papel"], L["energia"], L["vida"]]]
-        for m in membros:
-            papel = m.get("papel", "") or ""
-            papel_lbl = L.get(papel, papel) if papel else ""
-            linhas.append([
-                _rel_escape(m.get("membro", "")),
-                _rel_escape(papel_lbl),
-                str(m.get("energia", "") or ""),
-                str(m.get("caminho_vida") or "—"),
-            ])
-        e.append(_rel_tabela(linhas, [185, 110, 70, 130], fr))
+
+        # Coluna "Papel" só entra quando algum membro tem papel preenchido.
+        # Família não coleta papel no formulário  → tabela de 3 colunas.
+        # Equipes coleta (Chefe / Colaborador)    → tabela de 4 colunas.
+        tem_papel = any(str(m.get("papel") or "").strip() for m in membros)
+
+        if tem_papel:
+            linhas = [[L["membros"], L["papel"], L["energia"], L["vida"]]]
+            for m in membros:
+                papel = str(m.get("papel") or "").strip()
+                linhas.append([
+                    _rel_escape(m.get("membro", "")),
+                    _rel_escape(L.get(papel, papel) if papel else ""),
+                    str(m.get("energia", "") or ""),
+                    str(m.get("caminho_vida") or "—"),
+                ])
+            larguras = [185, 110, 70, 130]
+        else:
+            linhas = [[L["membros"], L["energia"], L["vida"]]]
+            for m in membros:
+                linhas.append([
+                    _rel_escape(m.get("membro", "")),
+                    str(m.get("energia", "") or ""),
+                    str(m.get("caminho_vida") or "—"),
+                ])
+            larguras = [265, 85, 145]
+
+        e.append(_rel_tabela(linhas, larguras, fr))
         e.append(Spacer(1, LINHA))
 
     pares = dados.get("pares") or []
