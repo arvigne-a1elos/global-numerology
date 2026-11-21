@@ -1373,6 +1373,7 @@ def pdf_casal(dados, lang="pt"):
     _rel_cabecalho(e, titulo, "", lang, fr, fb)
 
     linhas = [[L["titular"], L["energia"], L["nasc"]]]
+    energias = []
     for nm, en, ns in (
         (dados.get("nome1"), dados.get("energia_nome1", dados.get("energia1", "")), dados.get("nasc1", "")),
         (dados.get("nome2"), dados.get("energia_nome2", dados.get("energia2", "")), dados.get("nasc2", "")),
@@ -1380,10 +1381,28 @@ def pdf_casal(dados, lang="pt"):
         if not (nm or en or ns):
             continue
         linhas.append([_rel_escape(str(nm or "").upper()), str(en or ""), _rel_escape(ns or "")])
+        if en:
+            energias.append(str(en).strip())
 
     if len(linhas) > 1:
         e.append(_rel_tabela(linhas, [235, 80, 180], fr))
         e.append(Spacer(1, LINHA))
+
+    # Legenda das energias individuais
+    if energias:
+        try:
+            import energia_desc as _ed
+            pares, vistos = [], set()
+            for en in energias:
+                d = _ed.descrever(en, lang)
+                if d and d not in vistos:
+                    vistos.add(d)
+                    pares.append("<b>%s %s</b> — %s" % (L["energia"], _rel_escape(en), _rel_escape(d)))
+            if pares:
+                e.append(Paragraph(" · ".join(pares),
+                                   _estilo("CASAL_ED", fr, 9, GRAY, TA_LEFT, sa=LINHA * 0.8)))
+        except Exception:
+            pass
 
     comp = dados.get("compatibilidade")
     if comp is not None:
@@ -1398,17 +1417,26 @@ def pdf_casal(dados, lang="pt"):
         if dual:
             e.append(Paragraph(_rel_escape(dual),
                                _estilo("D", fr, 10, colors.HexColor("#8a6d1f"), TA_JUSTIFY, sa=LINHA)))
-    from referencia.relacao_conteudo import bloco
-    for titulo, itens in bloco(int(dados.get("compatibilidade") or 3), lang):
-        Story.append(Paragraph(f"<b>{titulo}</b>", S_H2))
-        for item in itens:
-            Story.append(Paragraph(f"• {item}", S_BODY))            
+
+        # Pontos fortes e desafios por grau
+        try:
+            from referencia import relacao_conteudo as _rc
+            grau_int = int(comp)
+            for tit, itens in _rc.bloco(grau_int, lang):
+                e.append(Spacer(1, LINHA * 0.8))
+                e.append(Paragraph("<b>%s</b>" % _rel_escape(tit),
+                                   _estilo("CASAL_FT", fb, 11, GOLD, TA_LEFT, sa=LINHA * 0.5)))
+                for it in itens:
+                    e.append(Paragraph("• %s" % _rel_escape(it),
+                                       _estilo("CASAL_FI", fr, 10, DARK, TA_JUSTIFY,
+                                               sa=LINHA * 0.35)))
+        except Exception:
+            pass
     else:
         e.append(Paragraph(L["sem_dados"], _estilo("ND", fr, 10, GRAY, TA_LEFT, sa=LINHA)))
 
     _rel_fecha(doc, e, lang, fr)
     return path
-
 # ---------- FAMÍLIA / EQUIPES ----------
 def _pdf_relacao(produto, dados, lang, contexto, tag):
     lang = lang or "pt"
