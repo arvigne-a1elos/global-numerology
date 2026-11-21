@@ -1398,6 +1398,11 @@ def pdf_casal(dados, lang="pt"):
         if dual:
             e.append(Paragraph(_rel_escape(dual),
                                _estilo("D", fr, 10, colors.HexColor("#8a6d1f"), TA_JUSTIFY, sa=LINHA)))
+    from referencia.relacao_conteudo import bloco
+    for titulo, itens in bloco(int(dados.get("compatibilidade") or 3), lang):
+        Story.append(Paragraph(f"<b>{titulo}</b>", S_H2))
+        for item in itens:
+            Story.append(Paragraph(f"• {item}", S_BODY))            
     else:
         e.append(Paragraph(L["sem_dados"], _estilo("ND", fr, 10, GRAY, TA_LEFT, sa=LINHA)))
 
