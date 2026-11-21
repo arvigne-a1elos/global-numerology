@@ -1205,3 +1205,185 @@ window.pagarCompatibilidade = window.pagarCompatibilidade || function(){
     }, 0);
   }, false);
 })();
+
+// ===== COLETOR ÚNICO — CASAL, FAMÍLIA E EQUIPES =====
+// Substitui pagarCasal / pagarFamilia / pagarCompatibilidade.
+// Lê pelos IDs corretos; se não existirem, lê o modal visível.
+(function () {
+  "use strict";
+
+  /* ---------- leitura de campos ---------- */
+  function _visivel(el) { return el && el.getClientRects().length > 0; }
+
+  function _campo(ids) {
+    var primeiro = null;
+    for (var i = 0; i < ids.length; i++) {
+      var nos = document.querySelectorAll('[id="' + ids[i] + '"]');
+      for (var j = 0; j < nos.length; j++) {
+        if (!primeiro) primeiro = nos[j];
+        if (_visivel(nos[j])) return nos[j];
+      }
+    }
+    return primeiro;
+  }
+
+  function _valor(ids) {
+    var el = _campo(ids);
+    return el ? String(el.value || "").trim() : "";
+  }
+
+  function _data(ids) {
+    var v = _valor(ids);
+    return (v && typeof converterData === "function") ? converterData(v) : v;
+  }
+
+  /* ---------- leitura do modal genérico ---------- */
+  function _inputsModal() {
+    var raiz = document.getElementById("modalDado") ||
+               document.getElementById("modalColeta") ||
+               document.querySelector(".modal-box");
+    if (!raiz) return [];
+    var todos = raiz.querySelectorAll("input");
+    var out = [];
+    for (var i = 0; i < todos.length; i++) {
+      if (todos[i].type === "hidden") continue;
+      if (!_visivel(todos[i])) continue;
+      out.push(todos[i]);
+    }
+    return out;
+  }
+
+  function _ehData(el) {
+    var ph = (el.getAttribute("placeholder") || "").toLowerCase();
+    var im = (el.getAttribute("inputmode") || "").toLowerCase();
+    var tp = (el.type || "").toLowerCase();
+    if (tp === "date") return true;
+    if (im === "numeric") return true;
+    return /data|nasc|date|birth/.test(ph);
+  }
+
+  function _coletarDoModal(qtd) {
+    var els = _inputsModal();
+    var nomes = [], datas = [];
+    for (var i = 0; i < els.length; i++) {
+      if (_ehData(els[i])) datas.push(els[i]); else nomes.push(els[i]);
+    }
+    var rn = [], rd = [];
+    for (var k = 0; k < qtd; k++) {
+      rn.push(nomes[k] ? String(nomes[k].value || "").trim() : "");
+      var vd = datas[k] ? String(datas[k].value || "").trim() : "";
+      rd.push((vd && typeof converterData === "function") ? converterData(vd) : vd);
+    }
+    return { nomes: rn, datas: rd };
+  }
+
+  /* ---------- configuração dos três produtos ---------- */
+  var CFG = {
+    casal: {
+      qtd: 2, minimo: 2,
+      mapa: [["casalNome1", "casalNasc1"], ["casalNome2", "casalNasc2"]],
+      extra: function () { return {}; }
+    },
+    familia: {
+      qtd: 2, minimo: 1,
+      principal: ["familiaPrincipalNome", "familiaPrincipalNasc"],
+      membro: ["familiaMembroNome", "familiaMembroNasc"],
+      extra: function () { return {}; }
+    },
+    compatibilidade_equipes: {
+      qtd: 2, minimo: 1,
+      principal: ["equipePrincipalNome", "equipePrincipalNasc"],
+      membro: ["equipeMembroNome", "equipeMembroNasc"],
+      extra: function () {
+        var e = (window._compEnergia && window._compEnergia !== "0") ? window._compEnergia : "8";
+        return { energia: e };
+      }
+    }
+  };
+
+  /* ---------- coleta por IDs ---------- */
+  function _porMapa(mapa) {
+    var nomes = [], datas = [];
+    for (var i = 0; i < mapa.length; i++) {
+      nomes.push(_valor([mapa[i][0]]));
+      datas.push(_data([mapa[i][1]]));
+    }
+    return { nomes: nomes, datas: datas };
+  }
+
+  function _porPrincipalMembro(principal, membro, max) {
+    var nomes = [_valor([principal[0]])];
+    var datas = [_data([principal[1]])];
+    for (var i = 1; i <= max; i++) {
+      var n = _valor([membro[0] + i]);
+      var d = _data([membro[1] + i]);
+      if (!n && !d) continue;
+      if (!n || !d) return { erro: "incompleto", idx: i };
+      nomes.push(n); datas.push(d);
+    }
+    return { nomes: nomes, datas: datas };
+  }
+
+  function _faltando(r, minimo) {
+    if (!r || r.erro) return true;
+    var ok = 0;
+    for (var i = 0; i < r.nomes.length; i++) {
+      if (r.nomes[i] && r.datas[i]) ok++;
+    }
+    return ok < minimo;
+  }
+
+  function _coletar(produto) {
+    var cfg = CFG[produto];
+    var r = cfg.mapa
+      ? _porMapa(cfg.mapa)
+      : _porPrincipalMembro(cfg.principal, cfg.membro, cfg.qtd);
+
+    if (_faltando(r, cfg.minimo)) {
+      var m = _coletarDoModal(cfg.qtd);
+      if (!_faltando(m, cfg.minimo)) r = m;
+    }
+    return r;
+  }
+
+  /* ---------- envio ---------- */
+  function _msgPreencha() {
+    var lang = (typeof getLang === "function") ? getLang() : "pt";
+    var t = (typeof translations !== "undefined" && translations[lang]) || {};
+    return t.preencha_dado || "Preencha os dados solicitados.";
+  }
+
+  function _enviar(produto, nomes, datas, extra) {
+    var lang = (typeof getLang === "function") ? getLang() : "pt";
+    var n = [], d = [];
+    for (var i = 0; i < nomes.length; i++) {
+      if (nomes[i] && datas[i]) { n.push(nomes[i]); d.push(datas[i]); }
+    }
+    var qs = "/criar-checkout?produto=" + encodeURIComponent(produto)
+      + "&nome=" + encodeURIComponent(n[0])
+      + "&nascimento=" + encodeURIComponent(d[0])
+      + "&dado=" + encodeURIComponent(n.join("|"))
+      + "&detalhe=" + encodeURIComponent(d.join("|"))
+      + "&lang=" + encodeURIComponent(lang);
+
+    var ex = extra || {};
+    for (var k in ex) {
+      if (Object.prototype.hasOwnProperty.call(ex, k) && ex[k] !== "" && ex[k] != null) {
+        qs += "&" + encodeURIComponent(k) + "=" + encodeURIComponent(ex[k]);
+      }
+    }
+    window.location.href = qs;
+  }
+
+  function _pagar(produto) {
+    var cfg = CFG[produto];
+    var r = _coletar(produto);
+    if (_faltando(r, cfg.minimo)) { alert(_msgPreencha()); return; }
+    _enviar(produto, r.nomes, r.datas, cfg.extra());
+  }
+
+  /* ---------- fachada pública ---------- */
+  window.pagarCasal           = function () { _pagar("casal"); };
+  window.pagarFamilia         = function () { _pagar("familia"); };
+  window.pagarCompatibilidade = function () { _pagar("compatibilidade_equipes"); };
+})();
