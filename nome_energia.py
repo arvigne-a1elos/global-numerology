@@ -376,7 +376,7 @@ def _construir():
 RESERVA = ["en", "es", "pt"]
 
 
-def sugerir_nome(tipo, energia, lang="pt", usados=None):
+def _sugerir_nome_antigo(tipo, energia, lang="pt", usados=None):
     alvo = int(energia) if str(energia).isdigit() else 0
     if not alvo:
         return None
@@ -396,7 +396,7 @@ def sugerir_nome(tipo, energia, lang="pt", usados=None):
     return None
 
 
-def avaliar_nomes(nomes, tipo, energia_alvo, lang="pt"):
+def _avaliar_nomes_antigo(nomes, tipo, energia_alvo, lang="pt"):
     alvo = int(energia_alvo) if str(energia_alvo).isdigit() else 0
     alvo = _dig(alvo) if alvo else 0
 
