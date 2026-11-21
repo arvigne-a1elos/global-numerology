@@ -1331,14 +1331,7 @@ def regenerar_pdf_por_meta(meta):
     elif prod == "nome_ong":
         pf = gerar_pdf_ong(data, lang, nome_exib)
     elif prod in ("casal", "familia", "compatibilidade_equipes"):
-        try:
-            from pdf_service import pdf_produto as _pdf_multi
-            pf = _pdf_multi(prod, data, nome_exib, bd, lang, dado=dado)
-        except Exception as _e:
-            logger.error(f"pdf_produto {prod}: {_e}", exc_info=True)
-            pf = None
-        if not pf or not os.path.exists(pf or ""):
-            pf = gerar_pdf(prod, data, lang, nome_exib, bd, dado=dado)
+        pf = gerar_pdf(prod, data, lang, nome_exib, bd, dado=dado)
     else:
         pf = gerar_pdf(prod, data, lang, nome_exib, bd, dado=dado,
                        dado2=dado2, dado3=dado3,
