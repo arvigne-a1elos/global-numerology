@@ -192,13 +192,6 @@ def gerar_pdf(produto, dados, lang, nome, nascimento, dado="",
         dados["energia"] = energia
         dados["nomes_entrada"] = nomes
         dados["nome_escolhido"] = res.get("escolhido") or (nomes[0] if nomes else "")
-            # fallback: entrega os nomes sem calculo, marcando a falha
-            res = {"energia_alvo": energia, "tipo": tipo, "idioma": lang,
-                   "entradas": [{"nome": n, "energia": 0, "soma": 0,
-                                 "bate": False, "romanizar": False} for n in nomes],
-                   "escolhido": nomes[0] if nomes else "",
-                   "sugestao": None, "sugestao_idioma": None,
-                   "sugestao_real": None, "total_opcoes": len(nomes)}
 
         # nascimento nao existe nesses produtos: usa string vazia para nao
         # imprimir "2000-01-01" nem disparar calculo de data
