@@ -1200,3 +1200,272 @@ def gerar_pdf_calendario(dados, lang="pt", nome_exib=""):
     e.append(Paragraph("(c) A1ELOS", _estilo("cal_foot", FONTE, 7, GRAY, TA_CENTER)))
     doc.build(e)
     return path
+
+# ═══════════════════════════════════════════
+# PRODUTOS DE RELAÇÃO — CASAL, FAMÍLIA, EQUIPES (21/11/2026)
+# Templates próprios. Assinatura: fn(dados, lang) -> caminho do PDF.
+# NÃO alteram as globais FONTE/FN: usam fonte local por idioma.
+# ═══════════════════════════════════════════
+try:
+    from xml.sax.saxutils import escape as _rel_escape
+except Exception:
+    def _rel_escape(v):
+        return str(v)
+
+REL_TXT = {
+    "pt": {"grau1": "Dissonância", "grau2": "Média — Acordo/Desacordo",
+           "grau3": "Acordo", "grau4": "Acordo perfeito", "energia": "Energia",
+           "compat": "Compatibilidade", "nasc": "Nascimento", "membros": "Membros",
+           "papel": "Papel", "chefe": "Chefe", "colaborador": "Colaborador",
+           "titular": "Titular", "vida": "Caminho de Vida",
+           "pares": "Compatibilidade entre Pares",
+           "sem_dados": "Dados insuficientes para gerar este relatório."},
+    "en": {"grau1": "Dissonance", "grau2": "Mixed — Agreement/Disagreement",
+           "grau3": "Agreement", "grau4": "Perfect agreement", "energia": "Energy",
+           "compat": "Compatibility", "nasc": "Birth", "membros": "Members",
+           "papel": "Role", "chefe": "Leader", "colaborador": "Team member",
+           "titular": "Holder", "vida": "Life Path",
+           "pares": "Compatibility between Pairs",
+           "sem_dados": "Insufficient data to generate this report."},
+    "es": {"grau1": "Disonancia", "grau2": "Media — Acuerdo/Desacuerdo",
+           "grau3": "Acuerdo", "grau4": "Acuerdo perfecto", "energia": "Energía",
+           "compat": "Compatibilidad", "nasc": "Nacimiento", "membros": "Miembros",
+           "papel": "Rol", "chefe": "Jefe", "colaborador": "Colaborador",
+           "titular": "Titular", "vida": "Camino de Vida",
+           "pares": "Compatibilidad entre Pares",
+           "sem_dados": "Datos insuficientes para generar este informe."},
+    "it": {"grau1": "Dissonanza", "grau2": "Media — Accordo/Disaccordo",
+           "grau3": "Accordo", "grau4": "Accordo perfetto", "energia": "Energia",
+           "compat": "Compatibilità", "nasc": "Nascita", "membros": "Membri",
+           "papel": "Ruolo", "chefe": "Capo", "colaborador": "Collaboratore",
+           "titular": "Titolare", "vida": "Percorso di Vita",
+           "pares": "Compatibilità tra Coppie",
+           "sem_dados": "Dati insufficienti per generare questo rapporto."},
+    "fr": {"grau1": "Dissonance", "grau2": "Moyenne — Accord/Désaccord",
+           "grau3": "Accord", "grau4": "Accord parfait", "energia": "Énergie",
+           "compat": "Compatibilité", "nasc": "Naissance", "membros": "Membres",
+           "papel": "Rôle", "chefe": "Responsable", "colaborador": "Collaborateur",
+           "titular": "Titulaire", "vida": "Chemin de Vie",
+           "pares": "Compatibilité entre Paires",
+           "sem_dados": "Données insuffisantes pour générer ce rapport."},
+    "de": {"grau1": "Dissonanz", "grau2": "Mittel — Einigkeit/Uneinigkeit",
+           "grau3": "Einigkeit", "grau4": "Perfekte Einigkeit", "energia": "Energie",
+           "compat": "Kompatibilität", "nasc": "Geburt", "membros": "Mitglieder",
+           "papel": "Rolle", "chefe": "Leitung", "colaborador": "Mitarbeitende",
+           "titular": "Inhaber", "vida": "Lebensweg",
+           "pares": "Kompatibilität zwischen Paaren",
+           "sem_dados": "Unzureichende Daten für diesen Bericht."},
+    "ja": {"grau1": "不協和", "grau2": "中間 — 一致/不一致",
+           "grau3": "一致", "grau4": "完全な一致", "energia": "エネルギー",
+           "compat": "相性", "nasc": "生年月日", "membros": "メンバー",
+           "papel": "役割", "chefe": "上司", "colaborador": "メンバー",
+           "titular": "対象者", "vida": "ライフパス",
+           "pares": "ペア間の相性",
+           "sem_dados": "このレポートを生成するにはデータが不足しています。"},
+    "zh": {"grau1": "不和谐", "grau2": "中等 — 契合/分歧",
+           "grau3": "契合", "grau4": "完美契合", "energia": "能量",
+           "compat": "兼容性", "nasc": "出生", "membros": "成员",
+           "papel": "角色", "chefe": "主管", "colaborador": "成员",
+           "titular": "持有人", "vida": "生命之路",
+           "pares": "成员之间的兼容性",
+           "sem_dados": "数据不足，无法生成本报告。"},
+    "ru": {"grau1": "Диссонанс", "grau2": "Средняя — Согласие/Разногласие",
+           "grau3": "Согласие", "grau4": "Идеальное согласие", "energia": "Энергия",
+           "compat": "Совместимость", "nasc": "Рождение", "membros": "Члены",
+           "papel": "Роль", "chefe": "Руководитель", "colaborador": "Сотрудник",
+           "titular": "Владелец", "vida": "Путь Жизни",
+           "pares": "Совместимость между парами",
+           "sem_dados": "Недостаточно данных для создания отчёта."},
+    "he": {"grau1": "אי-התאמה", "grau2": "בינוני — הסכמה/מחלוקת",
+           "grau3": "הסכמה", "grau4": "התאמה מושלמת", "energia": "אנרגיה",
+           "compat": "תאימות", "nasc": "לידה", "membros": "חברים",
+           "papel": "תפקיד", "chefe": "מנהל", "colaborador": "עובד",
+           "titular": "בעל המפה", "vida": "דרך החיים",
+           "pares": "תאימות בין זוגות",
+           "sem_dados": "אין מספיק נתונים להפקת הדוח."},
+    "ar": {"grau1": "تنافر", "grau2": "متوسط — اتفاق/اختلاف",
+           "grau3": "اتفاق", "grau4": "اتفاق تام", "energia": "الطاقة",
+           "compat": "التوافق", "nasc": "الميلاد", "membros": "الأعضاء",
+           "papel": "الدور", "chefe": "المدير", "colaborador": "عضو الفريق",
+           "titular": "صاحب الخريطة", "vida": "طريق الحياة",
+           "pares": "التوافق بين الأزواج",
+           "sem_dados": "بيانات غير كافية لإنشاء هذا التقرير."},
+    "id": {"grau1": "Disonansi", "grau2": "Sedang — Sepakat/Tidak sepakat",
+           "grau3": "Sepakat", "grau4": "Sepakat sempurna", "energia": "Energi",
+           "compat": "Kompatibilitas", "nasc": "Kelahiran", "membros": "Anggota",
+           "papel": "Peran", "chefe": "Atasan", "colaborador": "Anggota tim",
+           "titular": "Pemilik", "vida": "Jalur Hidup",
+           "pares": "Kompatibilitas antar Pasangan",
+           "sem_dados": "Data tidak cukup untuk membuat laporan ini."},
+    "tr": {"grau1": "Uyumsuzluk", "grau2": "Orta — Anlaşma/Anlaşmazlık",
+           "grau3": "Anlaşma", "grau4": "Kusursuz anlaşma", "energia": "Enerji",
+           "compat": "Uyum", "nasc": "Doğum", "membros": "Üyeler",
+           "papel": "Rol", "chefe": "Yönetici", "colaborador": "Ekip üyesi",
+           "titular": "Sahip", "vida": "Yaşam Yolu",
+           "pares": "Çiftler arası Uyum",
+           "sem_dados": "Bu raporu oluşturmak için veri yetersiz."},
+    "vi": {"grau1": "Bất hòa", "grau2": "Trung bình — Đồng thuận/Bất đồng",
+           "grau3": "Đồng thuận", "grau4": "Đồng thuận hoàn hảo", "energia": "Năng lượng",
+           "compat": "Tương hợp", "nasc": "Sinh", "membros": "Thành viên",
+           "papel": "Vai trò", "chefe": "Quản lý", "colaborador": "Nhân viên",
+           "titular": "Chủ sở hữu", "vida": "Đường đời",
+           "pares": "Tương hợp giữa các Cặp",
+           "sem_dados": "Không đủ dữ liệu để tạo báo cáo này."},
+}
+
+def _rel(lang):
+    return REL_TXT.get(lang) or REL_TXT["pt"]
+
+def _rel_grau(grau, lang):
+    k = {1: "grau1", 2: "grau2", 3: "grau3", 4: "grau4"}.get(grau)
+    return _rel(lang).get(k, "") if k else ""
+
+def _rel_path(tag):
+    return os.path.join(TMP, f"{tag}_{uuid.uuid4().hex[:8]}.pdf")
+
+def _rel_abre(produto, lang):
+    _fr, _fb = fonte_para(lang)
+    titulo = (PRODUTOS.get(lang, PRODUTOS["pt"]).get(produto) or produto).upper()
+    return _fr, _fb, titulo
+
+def _rel_cabecalho(e, titulo, nome_exib, lang, fr, fb):
+    e.append(Spacer(1, 20))
+    e.append(Paragraph(_rel_escape(titulo), _estilo("T", fb, 24, GOLD, TA_CENTER, sa=ET)))
+    e.append(Paragraph(t("seu_perfil", lang), _estilo("S", fr, 14, GOLD, TA_CENTER, sa=4)))
+    if nome_exib:
+        e.append(Paragraph(_rel_escape(str(nome_exib).upper()),
+                           _estilo("N", fb, 14, DARK, TA_CENTER, sa=4)))
+    e.append(Paragraph(BOAS_VINDAS.get(lang, BOAS_VINDAS["pt"]),
+                       _estilo("BV", fr, 10, DARK, TA_JUSTIFY, sa=LINHA)))
+
+def _rel_tabela(linhas, larguras, fr):
+    tbl = Table(linhas, colWidths=larguras)
+    tbl.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (-1, 0), GOLD),
+        ("TEXTCOLOR", (0, 0), (-1, 0), WHITE),
+        ("FONTSIZE", (0, 0), (-1, -1), 9),
+        ("FONTNAME", (0, 0), (-1, -1), fr),
+        ("GRID", (0, 0), (-1, -1), 0.5, colors.grey),
+        ("BACKGROUND", (0, 1), (-1, -1), LGRAY),
+        ("TEXTCOLOR", (0, 1), (-1, -1), DARK),
+        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+    ]))
+    return tbl
+
+def _rel_fecha(doc, e, lang, fr):
+    T = PDF_TEXTS.get(lang, PDF_TEXTS["pt"])
+    e.append(Spacer(1, LINHA))
+    e.append(Paragraph(T.get("entrega", ""), _estilo("J", fr, 8, GRAY, TA_CENTER, sa=6)))
+    e.append(Paragraph("© A1ELOS Assessoria e Consultoria",
+                       _estilo("F", fr, 8, GRAY, TA_CENTER)))
+    doc.build(e, onFirstPage=_cabecalho_pagina, onLaterPages=_cabecalho_pagina)
+
+# ---------- CASAL ----------
+def pdf_casal(dados, lang="pt"):
+    lang = lang or "pt"
+    dados = dict(dados or {})
+    L = _rel(lang)
+    fr, fb, titulo = _rel_abre("casal", lang)
+    path = _rel_path("casal")
+    doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
+                            topMargin=45, bottomMargin=45)
+    e = []
+    _rel_cabecalho(e, titulo, "", lang, fr, fb)
+
+    linhas = [[L["titular"], L["energia"], L["nasc"]]]
+    for nm, en, ns in (
+        (dados.get("nome1"), dados.get("energia_nome1", dados.get("energia1", "")), dados.get("nasc1", "")),
+        (dados.get("nome2"), dados.get("energia_nome2", dados.get("energia2", "")), dados.get("nasc2", "")),
+    ):
+        if not (nm or en or ns):
+            continue
+        linhas.append([_rel_escape(str(nm or "").upper()), str(en or ""), _rel_escape(ns or "")])
+
+    if len(linhas) > 1:
+        e.append(_rel_tabela(linhas, [235, 80, 180], fr))
+        e.append(Spacer(1, LINHA))
+
+    comp = dados.get("compatibilidade")
+    if comp is not None:
+        grau_txt = _rel_grau(comp, lang)
+        e.append(Paragraph(f"<b>{L['compat']}: {comp}</b> — {_rel_escape(grau_txt)}",
+                           _estilo("C", fb, 12, GOLD, TA_LEFT, sa=LINHA * 0.6)))
+        leitura = dados.get("leitura") or get_compat(comp, "casal", lang)
+        if leitura:
+            e.append(Paragraph(_rel_escape(leitura),
+                               _estilo("L", fr, 11, DARK, TA_JUSTIFY, sa=LINHA * 0.6)))
+        dual = get_dual(comp, "casal", lang)
+        if dual:
+            e.append(Paragraph(_rel_escape(dual),
+                               _estilo("D", fr, 10, colors.HexColor("#8a6d1f"), TA_JUSTIFY, sa=LINHA)))
+    else:
+        e.append(Paragraph(L["sem_dados"], _estilo("ND", fr, 10, GRAY, TA_LEFT, sa=LINHA)))
+
+    _rel_fecha(doc, e, lang, fr)
+    return path
+
+# ---------- FAMÍLIA / EQUIPES ----------
+def _pdf_relacao(produto, dados, lang, contexto, tag):
+    lang = lang or "pt"
+    dados = dict(dados or {})
+    L = _rel(lang)
+    fr, fb, titulo = _rel_abre(produto, lang)
+    path = _rel_path(tag)
+    doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
+                            topMargin=45, bottomMargin=45)
+    e = []
+    _rel_cabecalho(e, titulo, dados.get("titular") or dados.get("nome") or "", lang, fr, fb)
+
+    membros = dados.get("membros") or []
+    total = dados.get("total") or len(membros)
+
+    if membros:
+        e.append(Paragraph(f"<b>{L['membros']}: {total}</b>",
+                           _estilo("MT", fb, 12, GOLD, TA_LEFT, sa=LINHA * 0.6)))
+        linhas = [[L["membros"], L["papel"], L["energia"], L["vida"]]]
+        for m in membros:
+            papel = m.get("papel", "") or ""
+            papel_lbl = L.get(papel, papel) if papel else ""
+            linhas.append([
+                _rel_escape(m.get("membro", "")),
+                _rel_escape(papel_lbl),
+                str(m.get("energia", "") or ""),
+                str(m.get("caminho_vida") or "—"),
+            ])
+        e.append(_rel_tabela(linhas, [185, 110, 70, 130], fr))
+        e.append(Spacer(1, LINHA))
+
+    pares = dados.get("pares") or []
+    if pares:
+        e.append(Paragraph(f"<b>{L['pares']}</b>",
+                           _estilo("PR", fb, 12, GOLD, TA_LEFT, sb=LINHA, sa=LINHA * 0.6)))
+        for p in pares:
+            comp = p.get("compatibilidade")
+            grau_txt = _rel_grau(comp, lang) if comp is not None else ""
+            e.append(Paragraph(
+                f"<b>{_rel_escape(p.get('membro1', ''))} × {_rel_escape(p.get('membro2', ''))}</b>",
+                _estilo("P1", fb, 11, DARK, TA_LEFT, sa=2)))
+            e.append(Paragraph(f"{L['compat']}: <b>{comp if comp is not None else '—'}</b>"
+                               f" — {_rel_escape(grau_txt)}",
+                               _estilo("P2", fr, 10, DARK, TA_LEFT, sa=2)))
+            leitura = get_compat(comp, contexto, lang)
+            if leitura:
+                e.append(Paragraph(_rel_escape(leitura),
+                                   _estilo("P3", fr, 9, DARK, TA_JUSTIFY, sa=2)))
+            dual = get_dual(comp, contexto, lang)
+            if dual:
+                e.append(Paragraph(_rel_escape(dual),
+                                   _estilo("P4", fr, 9, colors.HexColor("#8a6d1f"),
+                                           TA_JUSTIFY, sa=LINHA * 0.5)))
+
+    if not membros and not pares:
+        e.append(Paragraph(L["sem_dados"], _estilo("ND", fr, 10, GRAY, TA_LEFT, sa=LINHA)))
+
+    _rel_fecha(doc, e, lang, fr)
+    return path
+
+def pdf_familia(dados, lang="pt"):
+    return _pdf_relacao("familia", dados, lang, "familia", "familia")
+
+def pdf_equipe(dados, lang="pt"):
+    return _pdf_relacao("compatibilidade_equipes", dados, lang, "equipe", "equipe")
