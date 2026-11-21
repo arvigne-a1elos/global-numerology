@@ -1502,3 +1502,20 @@ def pdf_familia(dados, lang="pt"):
 
 def pdf_equipe(dados, lang="pt"):
     return _pdf_relacao("compatibilidade_equipes", dados, lang, "equipe", "equipe")
+
+AVISO_QR = {
+    "pt": "Link do QRCode válido por 1 hora. Salve este PDF agora. Não armazenamos cópias.",
+    "en": "QRCode link valid for 1 hour. Save this PDF now. We do not store copies.",
+    "es": "Enlace del código QR válido por 1 hora. Guarde este PDF ahora. No almacenamos copias.",
+    "it": "Link del QRCode valido per 1 ora. Salva questo PDF ora. Non conserviamo copie.",
+    "fr": "Lien du QRCode valable 1 heure. Enregistrez ce PDF maintenant. Nous ne conservons aucune copie.",
+    "de": "QRCode-Link 1 Stunde gültig. Speichern Sie dieses PDF jetzt. Wir speichern keine Kopien.",
+    "ja": "QRコードのリンクは1時間有効です。今すぐこのPDFを保存してください。当社はコピーを保存しません。",
+    "zh": "二维码链接有效期 1 小时。请立即保存此 PDF。我们不保存副本。",
+    "ru": "Ссылка в QR-коде действует 1 час. Сохраните этот PDF сейчас. Мы не храним копии.",
+    "id": "Tautan QRCode berlaku 1 jam. Simpan PDF ini sekarang. Kami tidak menyimpan salinan.",
+    "tr": "QRCode bağlantısı 1 saat geçerlidir. Bu PDF'i şimdi kaydedin. Kopya saklamıyoruz.",
+    "vi": "Liên kết QRCode có hiệu lực 1 giờ. Hãy lưu PDF này ngay. Chúng tôi không lưu bản sao.",
+    "he": "קישור ה-QRCode תקף לשעה אחת. שמרו את ה-PDF הזה עכשיו. איננו שומרים עותקים.",
+    "ar": "رابط رمز QR صالح لمدة ساعة واحدة. احفظ هذا الملف الآن. نحن لا نحتفظ بنسخ.",
+}
