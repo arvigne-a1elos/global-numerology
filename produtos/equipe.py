@@ -5,6 +5,23 @@ import unicodedata
 from .mapa import reduzir, _LETRAS, calc_mapa
 from referencia.cissay import compatibilidade
 from itertools import combinations
+import re
+
+_DATA = re.compile(r"^\d{1,2}[/-]\d{1,2}[/-]\d{2,4}$")
+
+
+def _quebra(linha):
+    """Aceita 'Nome', 'Nome;data', 'Nome;data;Apelido' e 'Nome;Apelido;data'."""
+    sep = ";" if ";" in linha else ("," if "," in linha else None)
+    partes = [p.strip() for p in linha.split(sep)] if sep else [linha.strip()]
+    nome = partes[0] if partes else ""
+    nasc, apelido = "", ""
+    for p in partes[1:]:
+        if p and not nasc and _DATA.match(p):
+            nasc = p
+        elif p and not apelido:
+            apelido = p
+    return nome, apelido, nasc
 
 MAX_MEMBROS = 2
 
