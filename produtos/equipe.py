@@ -78,6 +78,7 @@ def analisar_equipe(texto, separador="|"):
             "energia": en, "energia_apelido": ea, "soma_apelido": sa,
             "caminho_vida": ev,
             "energia_combinada": _energia_combinada(en, ev),
+            "energia_combinada_apelido": (_energia_combinada(ea, ev) if apelido else None),
         })
 
     if len(pessoas) > MAX_MEMBROS + 1:
