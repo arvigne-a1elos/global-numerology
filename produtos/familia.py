@@ -73,11 +73,14 @@ def analisar_familia(texto, separador="|"):
         en, sn = _energia_nome(nome)
         ea, sa = (_energia_nome(apelido) if apelido else (None, 0))
         ev, sv = _caminho_vida(nasc)
+        comb_nome = _energia_combinada(en, ev)
+        comb_apel = _energia_combinada(ea, ev) if apelido else None
         pessoas.append({
             "membro": nome, "apelido": apelido, "nascimento": nasc, "soma": sn,
             "energia": en, "energia_apelido": ea, "soma_apelido": sa,
             "caminho_vida": ev,
-            "energia_combinada": _energia_combinada(en, ev),
+            "energia_combinada": comb_nome,
+            "energia_combinada_apelido": comb_apel,
         })
 
     if len(pessoas) > MAX_MEMBROS + 1:
