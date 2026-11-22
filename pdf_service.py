@@ -1470,13 +1470,40 @@ def pdf_casal(dados, lang="pt"):
     _rel_fecha(doc, e, lang, fr)
     return path
 
+_L_BLOCO = {
+    "pt": ("Compatibilidade pelo NOME COMPLETO", "Compatibilidade pelo NOME DE USO (APELIDO)",
+           "Síntese comparativa", "Apelido"),
+    "en": ("Compatibility by FULL NAME", "Compatibility by NAME IN USE (NICKNAME)",
+           "Comparative summary", "Nickname"),
+    "es": ("Compatibilidad por NOMBRE COMPLETO", "Compatibilidad por NOMBRE DE USO (APODO)",
+           "Síntesis comparativa", "Apodo"),
+    "it": ("Compatibilità per NOME COMPLETO", "Compatibilità per NOME D'USO (SOPRANNOME)",
+           "Sintesi comparativa", "Soprannome"),
+    "fr": ("Compatibilité par NOM COMPLET", "Compatibilité par NOM D'USAGE (SURNOM)",
+           "Synthèse comparative", "Surnom"),
+    "de": ("Kompatibilität nach VOLLEM NAMEN", "Kompatibilität nach RUFNAMEN",
+           "Vergleichende Übersicht", "Rufname"),
+    "ja": ("本名による相性", "呼び名による相性", "比較まとめ", "呼び名"),
+    "zh": ("全名兼容性", "称呼名兼容性", "对比总结", "称呼名"),
+    "ru": ("Совместимость по ПОЛНОМУ ИМЕНИ", "Совместимость по ИМЕНИ В ОБИХОДЕ",
+           "Сравнительная сводка", "Рабочее имя"),
+    "he": ("תאימות לפי שם מלא", "תאימות לפי שם בשימוש", "סיכום השוואתי", "שם בשימוש"),
+    "ar": ("التوافق بالاسم الكامل", "التوافق بالاسم المتداول", "ملخص مقارن", "الاسم المتداول"),
+    "id": ("Kompatibilitas berdasarkan NAMA LENGKAP", "Kompatibilitas berdasarkan NAMA PANGGILAN",
+           "Ringkasan perbandingan", "Nama panggilan"),
+    "tr": ("TAM AD ile Uyum", "KULLANILAN AD (TAKMA AD) ile Uyum",
+           "Karşılaştırmalı özet", "Takma ad"),
+    "vi": ("Tương hợp theo HỌ TÊN ĐẦY ĐỦ", "Tương hợp theo TÊN GỌI (BIỆT DANH)",
+           "Tóm tắt so sánh", "Tên gọi"),
+}
+
 
 # ---------- FAMÍLIA / EQUIPES ----------
 def _pdf_relacao(produto, dados, lang, contexto, tag):
     lang = lang or "pt"
     dados = dict(dados or {})
     L = _rel(lang)
-    _lbl_c, _lbl_n = (_LBL.get(lang) or _LBL["pt"])
+    _b_nome, _b_apel, _b_sint, _lbl_apel = _L_BLOCO.get(lang) or _L_BLOCO["pt"]
     fr, fb, titulo = _rel_abre(produto, lang)
     path = _rel_path(tag)
     doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
@@ -1499,108 +1526,141 @@ def _pdf_relacao(produto, dados, lang, contexto, tag):
             pass
 
     membros = dados.get("membros") or []
+    pares = dados.get("pares") or []
     total = dados.get("total") or len(membros)
+    tem_papel = any(str(m.get("papel") or "").strip() for m in membros)
 
-    def _celula_nome(m):
-        nome = _rel_escape(m.get("membro", ""))
+    def _cn(m):
+        return Paragraph(_rel_escape(m.get("membro", "")), _estilo("TC", fr, 9, DARK, TA_LEFT))
+
+    def _ca(m):
         ap = str(m.get("apelido") or "").strip()
-        txt = nome if not ap else "%s<br/><i>%s</i>" % (nome, _rel_escape(ap))
-        return Paragraph(txt, _estilo("TC", fr, 9, DARK, TA_LEFT))
-        
+        return Paragraph(_rel_escape(ap) if ap else "—", _estilo("TAp", fr, 9, DARK, TA_LEFT))
+
+    # ===== BLOCO 1 — NOME COMPLETO =====
     if membros:
-        e.append(Paragraph(f"<b>{L['membros']}: {total}</b>",
-                           _estilo("MT", fb, 12, GOLD, TA_LEFT, sa=LINHA * 0.6)))
-        tem_papel = any(str(m.get("papel") or "").strip() for m in membros)
+        e.append(PageBreak())
+        e.append(Paragraph(_rel_escape(_b_nome), _estilo("B1", fb, 15, GOLD, TA_LEFT, sa=LINHA * 0.5)))
+        e.append(Paragraph(f"{L['membros']}: {total}", _estilo("MT", fb, 11, DARK, TA_LEFT, sa=LINHA * 0.5)))
         if tem_papel:
             linhas = [[L["membros"], L["papel"], L["energia"], L["vida"]]]
             for m in membros:
                 papel = str(m.get("papel") or "").strip()
-                linhas.append([
-                    _celula_nome(m),
-                    _rel_escape(L.get(papel, papel) if papel else ""),
-                    str(m.get("energia", "") or ""),
-                    str(m.get("caminho_vida") or "—"),
-                ])
-            larguras = [175, 125, 70, 125]
+                linhas.append([_cn(m),
+                               _rel_escape(L.get(papel, papel) if papel else ""),
+                               str(m.get("energia", "") or ""),
+                               str(m.get("caminho_vida") or "—")])
+            larguras = [165, 115, 65, 105]
         else:
             linhas = [[L["membros"], L["energia"], L["vida"]]]
             for m in membros:
-                linhas.append([
-                    _celula_nome(m),
-                    str(m.get("energia", "") or ""),
-                    str(m.get("caminho_vida") or "—"),
-                ])
+                linhas.append([_cn(m),
+                               str(m.get("energia", "") or ""),
+                               str(m.get("caminho_vida") or "—")])
             larguras = [265, 85, 145]
         e.append(_rel_tabela(linhas, larguras, fr))
         e.append(Spacer(1, LINHA))
 
-    pares = dados.get("pares") or []
-    if pares:
-        e.append(Paragraph(f"<b>{L['pares']}</b>",
-                           _estilo("PR", fb, 12, GOLD, TA_LEFT, sb=LINHA, sa=LINHA * 0.6)))
-        for p in pares:
-            comp = p.get("compatibilidade")
-            comp_a = p.get("compatibilidade_apelido")
-            ap1 = (p.get("apelido1") or "").strip()
-            ap2 = (p.get("apelido2") or "").strip()
-            n1 = p.get("membro1", "")
-            n2 = p.get("membro2", "")
-
-            # Cabeçalho do par: apelido em destaque quando existir
-            if ap1 and ap2:
-                cab = "%s × %s" % (ap1, ap2)
-            else:
-                cab = "%s × %s" % (n1, n2)
-            e.append(Paragraph(f"<b>{_rel_escape(cab)}</b>",
-                               _estilo("P1", fb, 11, DARK, TA_LEFT, sa=2)))
-
-            # Camada do apelido (a energia do convívio)
-            if comp_a is not None and ap1 and ap2:
-                e.append(Paragraph(
-                    f"<b>{_rel_escape(_lbl_c)}</b> — {L['compat']}: "
-                    f"<b>{comp_a}</b> — {_rel_escape(_rel_grau(comp_a, lang))}",
-                    _estilo("A1", fb, 10, GOLD, TA_LEFT, sa=2)))
-                dual_a = p.get("dual_apelido") or ""
-                if dual_a:
-                    e.append(Paragraph(_rel_escape(dual_a),
-                                       _estilo("A2", fr, 9, colors.HexColor("#8a6d1f"),
-                                               TA_JUSTIFY, sa=2)))
-
-            # Camada do nome completo
-            grau_txt = _rel_grau(comp, lang) if comp is not None else ""
-            if ap1 and ap2:
-                rot = "%s: %s × %s" % (_lbl_n, n1, n2)
-                e.append(Paragraph(f"<b>{_rel_escape(rot)}</b>",
-                                   _estilo("N0", fb, 8, GRAY, TA_LEFT, sa=1)))
-            e.append(Paragraph(f"{L['compat']}: <b>{comp if comp is not None else '—'}</b>"
-                               f" — {_rel_escape(grau_txt)}",
-                               _estilo("P2", fr, 10, DARK, TA_LEFT, sa=2)))
-
-            leitura = get_compat(comp, contexto, lang)
-            if leitura:
-                e.append(Paragraph(_rel_escape(leitura),
-                                   _estilo("P3", fr, 9, DARK, TA_JUSTIFY, sa=2)))
-            dual = get_dual(comp, contexto, lang)
-            if dual:
-                e.append(Paragraph(_rel_escape(dual),
-                                   _estilo("P4", fr, 9, colors.HexColor("#8a6d1f"),
-                                           TA_JUSTIFY, sa=LINHA * 0.5)))
-
-            # Pontos fortes e desafios — só com grau real
-            if comp is None:
-                e.append(Spacer(1, LINHA * 0.4))
-                continue
+    for p in pares:
+        comp = p.get("compatibilidade")
+        e.append(Paragraph("<b>%s × %s</b>" % (_rel_escape(str(p.get("membro1", ""))),
+                                               _rel_escape(str(p.get("membro2", "")))),
+                           _estilo("P1", fb, 11, DARK, TA_LEFT, sa=2)))
+        e.append(Paragraph("%s: <b>%s</b> — %s" % (
+            L["compat"], comp if comp is not None else "—",
+            _rel_escape(_rel_grau(comp, lang) if comp is not None else "")),
+            _estilo("P2", fr, 10, DARK, TA_LEFT, sa=2)))
+        leitura = get_compat(comp, contexto, lang)
+        if leitura:
+            e.append(Paragraph(_rel_escape(leitura), _estilo("P3", fr, 9, DARK, TA_JUSTIFY, sa=2)))
+        dual = get_dual(comp, contexto, lang)
+        if dual:
+            e.append(Paragraph(_rel_escape(dual),
+                               _estilo("P4", fr, 9, colors.HexColor("#8a6d1f"), TA_JUSTIFY, sa=LINHA * 0.4)))
+        if comp is not None:
             try:
-                from referencia import relacao_dupla as _rc_par
-                for tit, itens in _rc_par.bloco(int(comp), lang):
-                    e.append(Spacer(1, LINHA * 0.6))
+                from referencia import relacao_dupla as _rc1
+                for tit, itens in _rc1.bloco(int(comp), lang):
+                    e.append(Spacer(1, LINHA * 0.5))
                     e.append(Paragraph("<b>%s</b>" % _rel_escape(tit),
-                                       _estilo("REL_FT", fb, 10, GOLD, TA_LEFT, sa=LINHA * 0.4)))
+                                       _estilo("RF1", fb, 10, GOLD, TA_LEFT, sa=LINHA * 0.3)))
                     for it in itens:
                         e.append(Paragraph("• %s" % _rel_escape(it),
-                                           _estilo("REL_FI", fr, 9, DARK, TA_JUSTIFY, sa=LINHA * 0.3)))
+                                           _estilo("RI1", fr, 9, DARK, TA_JUSTIFY, sa=LINHA * 0.25)))
             except Exception:
                 pass
+        e.append(Spacer(1, LINHA * 0.7))
+
+    # ===== BLOCO 2 — APELIDO =====
+    if any(str(m.get("apelido") or "").strip() for m in membros):
+        e.append(PageBreak())
+        e.append(Paragraph(_rel_escape(_b_apel), _estilo("B2", fb, 15, GOLD, TA_LEFT, sa=LINHA * 0.5)))
+        e.append(Paragraph(f"{L['membros']}: {total}", _estilo("MT2", fb, 11, DARK, TA_LEFT, sa=LINHA * 0.5)))
+        if tem_papel:
+            linhas = [[_lbl_apel, L["papel"], L["energia"], L["vida"]]]
+            for m in membros:
+                papel = str(m.get("papel") or "").strip()
+                linhas.append([_ca(m),
+                               _rel_escape(L.get(papel, papel) if papel else ""),
+                               str(m.get("energia_combinada_apelido") or "—"),
+                               str(m.get("caminho_vida") or "—")])
+            larguras = [165, 115, 65, 105]
+        else:
+            linhas = [[_lbl_apel, L["energia"], L["vida"]]]
+            for m in membros:
+                linhas.append([_ca(m),
+                               str(m.get("energia_combinada_apelido") or "—"),
+                               str(m.get("caminho_vida") or "—")])
+            larguras = [265, 85, 145]
+        e.append(_rel_tabela(linhas, larguras, fr))
+        e.append(Spacer(1, LINHA))
+
+        for p in pares:
+            ap1 = (p.get("apelido1") or "").strip()
+            ap2 = (p.get("apelido2") or "").strip()
+            if not (ap1 and ap2):
+                continue
+            comp_a = p.get("compatibilidade_apelido")
+            e.append(Paragraph("<b>%s × %s</b>" % (_rel_escape(ap1), _rel_escape(ap2)),
+                               _estilo("A1", fb, 11, DARK, TA_LEFT, sa=2)))
+            e.append(Paragraph("%s: <b>%s</b> — %s" % (
+                L["compat"], comp_a if comp_a is not None else "—",
+                _rel_escape(_rel_grau(comp_a, lang) if comp_a is not None else "")),
+                _estilo("A2", fr, 10, DARK, TA_LEFT, sa=2)))
+            if comp_a is not None:
+                lt = get_compat(comp_a, contexto, lang)
+                if lt:
+                    e.append(Paragraph(_rel_escape(lt), _estilo("A3", fr, 9, DARK, TA_JUSTIFY, sa=2)))
+                dl = p.get("dual_apelido") or get_dual(comp_a, contexto, lang)
+                if dl:
+                    e.append(Paragraph(_rel_escape(dl),
+                                       _estilo("A4", fr, 9, colors.HexColor("#8a6d1f"), TA_JUSTIFY, sa=LINHA * 0.4)))
+                try:
+                    from referencia import relacao_dupla as _rc2
+                    for tit, itens in _rc2.bloco(int(comp_a), lang):
+                        e.append(Spacer(1, LINHA * 0.5))
+                        e.append(Paragraph("<b>%s</b>" % _rel_escape(tit),
+                                           _estilo("RF2", fb, 10, GOLD, TA_LEFT, sa=LINHA * 0.3)))
+                        for it in itens:
+                            e.append(Paragraph("• %s" % _rel_escape(it),
+                                               _estilo("RI2", fr, 9, DARK, TA_JUSTIFY, sa=LINHA * 0.25)))
+                except Exception:
+                    pass
+            e.append(Spacer(1, LINHA * 0.7))
+
+        # ===== BLOCO 3 — SÍNTESE =====
+        linhas_s = [[L["pares"], _b_nome, _b_apel]]
+        for p in pares:
+            ap1 = (p.get("apelido1") or "").strip()
+            ap2 = (p.get("apelido2") or "").strip()
+            rot = "%s × %s" % (ap1 or p.get("membro1", ""), ap2 or p.get("membro2", ""))
+            linhas_s.append([_rel_escape(rot),
+                             str(p.get("compatibilidade")) if p.get("compatibilidade") is not None else "—",
+                             str(p.get("compatibilidade_apelido")) if p.get("compatibilidade_apelido") is not None else "—"])
+        if len(linhas_s) > 1:
+            e.append(Spacer(1, LINHA))
+            e.append(Paragraph(_rel_escape(_b_sint), _estilo("B3", fb, 13, GOLD, TA_LEFT, sa=LINHA * 0.5)))
+            e.append(_rel_tabela(linhas_s, [235, 130, 130], fr))
 
     if not membros and not pares:
         e.append(Paragraph(L["sem_dados"], _estilo("ND", fr, 10, GRAY, TA_LEFT, sa=LINHA)))
