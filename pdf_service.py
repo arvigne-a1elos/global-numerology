@@ -1440,7 +1440,7 @@ def pdf_casal(dados, lang="pt"):
 
         # Pontos fortes e desafios por grau
         try:
-            from referencia import relacao_conteudo as _rc
+            from referencia import relacao_dupla as _rc
             grau_int = int(comp)
             for tit, itens in _rc.bloco(grau_int, lang):
                 e.append(Spacer(1, LINHA * 0.8))
