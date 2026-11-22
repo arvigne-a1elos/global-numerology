@@ -72,6 +72,7 @@ def analisar_familia(texto, separador="|"):
             nasc = f"{aa}-{mm}-{dd}"
         en, sn = _energia_nome(nome)
         ea, sa = (_energia_nome(apelido) if apelido else (None, 0))
+        ev, sv = _caminho_vida(nasc)
         pessoas.append({
             "membro": nome, "apelido": apelido, "nascimento": nasc, "soma": sn,
             "energia": en, "energia_apelido": ea, "soma_apelido": sa,
