@@ -93,7 +93,7 @@ FORTES = {
             "I conflitti appaiono, ma tendono a risolversi dentro la coppia, senza escalare.",
             "Complementarità funzionale: ognuno copre ciò che l'altro non copre, senza disputa di ruolo.",
             "I progetti a medio termine tendono a concludersi — c'è costanza."],
-          "fr": {
+    "fr": {
         1: ["La différence est réelle et visible : pas d'illusion que les deux fonctionnent pareil.",
             "Chacun préserve sa propre nature, sans se plier à l'autre.",
             "La tension force l'apprentissage ; rien ne peut être tenu pour acquis.",
@@ -275,7 +275,7 @@ FORTES = {
     },
 }
 
-  DESAFIOS = {
+DESAFIOS = {
     "pt": {
         1: ["Cada um lê o outro pela própria medida, e conclui má intenção onde há apenas diferença.",
             "O convívio gasta energia: conversas simples sobre rotina viram negociação.",
