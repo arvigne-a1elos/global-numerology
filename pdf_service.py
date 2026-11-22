@@ -1425,67 +1425,43 @@ def pdf_casal(dados, lang="pt"):
         e.append(_rel_tabela(linhas, [235, 80, 180], fr))
         e.append(Spacer(1, LINHA))
 
-            linhas.append([
-            nome_cell,
-            str(m.get("energia", "") or ""),
-            str(m.get("caminho_vida") or "—"),
-        ])
-
-    # Legenda das energias individuais
     if energias:
         try:
             import energia_desc as _ed
-            pares, vistos = [], set()
+            descs, vistos = [], set()
             for en in energias:
                 d = _ed.descrever(en, lang)
                 if d and d not in vistos:
                     vistos.add(d)
-                    pares.append("<b>%s %s</b> — %s" % (L["energia"], _rel_escape(en), _rel_escape(d)))
-            if pares:
-                e.append(Paragraph(" · ".join(pares),
+                    descs.append("<b>%s %s</b> — %s" % (L["energia"], _rel_escape(en), _rel_escape(d)))
+            if descs:
+                e.append(Paragraph(" · ".join(descs),
                                    _estilo("CASAL_ED", fr, 9, GRAY, TA_LEFT, sa=LINHA * 0.8)))
         except Exception:
             pass
 
-            # Par de apelidos em destaque: é a energia do convívio
-            comp_a = p.get("compatibilidade_apelido")
-            ap1 = p.get("apelido1") or ""
-            ap2 = p.get("apelido2") or ""
-            if comp_a is not None and ap1 and ap2:
-                e.append(Spacer(1, LINHA * 0.4))
-                e.append(Paragraph(f"<b>{_rel_escape(_lbl_c)}</b>",
-                                   _estilo("A0", fb, 9, GRAY, TA_LEFT, sa=1)))
-                e.append(Paragraph(
-                    f"<b>{_rel_escape(ap1)} × {_rel_escape(ap2)}</b>",
-                    _estilo("A1", fb, 11, GOLD, TA_LEFT, sa=2)))
-                e.append(Paragraph(
-                    f"{L['compat']}: <b>{comp_a}</b> — {_rel_escape(p.get('rotulo_apelido') or '')}",
-                    _estilo("A2", fr, 10, DARK, TA_LEFT, sa=2)))
-                dual_a = p.get("dual_apelido") or ""
-                if dual_a:
-                    e.append(Paragraph(_rel_escape(dual_a),
-                                       _estilo("A3", fr, 9, colors.HexColor("#8a6d1f"),
-                                               TA_JUSTIFY, sa=LINHA * 0.3)))
-                e.append(Paragraph(f"<b>{_rel_escape(_lbl_n)}</b>",
-                                   _estilo("N0", fb, 8, GRAY, TA_LEFT, sa=1)))
-                e.append(Paragraph(
-                    f"{comp if comp is not None else '—'} — "
-                    f"{_rel_escape(grau_txt)} · {_rel_escape(p.get('nome1','') or '')} × "
-                    f"{_rel_escape(p.get('nome2','') or '')}",
-                    _estilo("N1", fr, 9, GRAY, TA_LEFT, sa=2)))
-        
-        # Pontos fortes e desafios por grau
+    comp = dados.get("compatibilidade")
+    if comp is not None:
+        grau_txt = _rel_grau(comp, lang)
+        e.append(Paragraph(f"<b>{L['compat']}: {comp}</b> — {_rel_escape(grau_txt)}",
+                           _estilo("C", fb, 12, GOLD, TA_LEFT, sa=LINHA * 0.6)))
+        leitura = dados.get("leitura") or get_compat(comp, "casal", lang)
+        if leitura:
+            e.append(Paragraph(_rel_escape(leitura),
+                               _estilo("L", fr, 11, DARK, TA_JUSTIFY, sa=LINHA * 0.6)))
+        dual = get_dual(comp, "casal", lang)
+        if dual:
+            e.append(Paragraph(_rel_escape(dual),
+                               _estilo("D", fr, 10, colors.HexColor("#8a6d1f"), TA_JUSTIFY, sa=LINHA)))
         try:
             from referencia import relacao_dupla as _rc
-            grau_int = int(comp)
-            for tit, itens in _rc.bloco(grau_int, lang):
+            for tit, itens in _rc.bloco(int(comp), lang):
                 e.append(Spacer(1, LINHA * 0.8))
                 e.append(Paragraph("<b>%s</b>" % _rel_escape(tit),
                                    _estilo("CASAL_FT", fb, 11, GOLD, TA_LEFT, sa=LINHA * 0.5)))
                 for it in itens:
                     e.append(Paragraph("• %s" % _rel_escape(it),
-                                       _estilo("CASAL_FI", fr, 10, DARK, TA_JUSTIFY,
-                                               sa=LINHA * 0.35)))
+                                       _estilo("CASAL_FI", fr, 10, DARK, TA_JUSTIFY, sa=LINHA * 0.35)))
         except Exception:
             pass
     else:
@@ -1493,18 +1469,21 @@ def pdf_casal(dados, lang="pt"):
 
     _rel_fecha(doc, e, lang, fr)
     return path
+
+
 # ---------- FAMÍLIA / EQUIPES ----------
 def _pdf_relacao(produto, dados, lang, contexto, tag):
     lang = lang or "pt"
     dados = dict(dados or {})
     L = _rel(lang)
-    _lbl_c, _lbl_n = (_LBL.get(lang) or _LBL["pt"])    
+    _lbl_c, _lbl_n = (_LBL.get(lang) or _LBL["pt"])
     fr, fb, titulo = _rel_abre(produto, lang)
     path = _rel_path(tag)
     doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
                             topMargin=45, bottomMargin=45)
     e = []
     _rel_cabecalho(e, titulo, dados.get("titular") or dados.get("nome") or "", lang, fr, fb)
+
     if produto == "compatibilidade_equipes":
         try:
             from referencia import relacao_dupla as _rd
@@ -1514,29 +1493,31 @@ def _pdf_relacao(produto, dados, lang, contexto, tag):
                 for _par in txt.split("\n"):
                     if _par.strip():
                         e.append(Paragraph(_rel_escape(_par),
-                                           _estilo("EXP", fr, 9, DARK, TA_JUSTIFY,
-                                                   sa=LINHA * 0.4)))
+                                           _estilo("EXP", fr, 9, DARK, TA_JUSTIFY, sa=LINHA * 0.4)))
                 e.append(Spacer(1, LINHA * 0.8))
         except Exception:
             pass
+
     membros = dados.get("membros") or []
     total = dados.get("total") or len(membros)
+
+    def _celula_nome(m):
+        cel = _rel_escape(m.get("membro", ""))
+        ap = str(m.get("apelido") or "").strip()
+        if ap:
+            cel += "<br/><i>%s</i>" % _rel_escape(ap)
+        return cel
 
     if membros:
         e.append(Paragraph(f"<b>{L['membros']}: {total}</b>",
                            _estilo("MT", fb, 12, GOLD, TA_LEFT, sa=LINHA * 0.6)))
-
-        # Coluna "Papel" só entra quando algum membro tem papel preenchido.
-        # Família não coleta papel no formulário  → tabela de 3 colunas.
-        # Equipes coleta (Chefe / Colaborador)    → tabela de 4 colunas.
         tem_papel = any(str(m.get("papel") or "").strip() for m in membros)
-
         if tem_papel:
             linhas = [[L["membros"], L["papel"], L["energia"], L["vida"]]]
             for m in membros:
                 papel = str(m.get("papel") or "").strip()
                 linhas.append([
-                    _rel_escape(m.get("membro", "")),
+                    _celula_nome(m),
                     _rel_escape(L.get(papel, papel) if papel else ""),
                     str(m.get("energia", "") or ""),
                     str(m.get("caminho_vida") or "—"),
@@ -1546,12 +1527,11 @@ def _pdf_relacao(produto, dados, lang, contexto, tag):
             linhas = [[L["membros"], L["energia"], L["vida"]]]
             for m in membros:
                 linhas.append([
-                    _rel_escape(m.get("membro", "")),
+                    _celula_nome(m),
                     str(m.get("energia", "") or ""),
                     str(m.get("caminho_vida") or "—"),
                 ])
             larguras = [265, 85, 145]
-
         e.append(_rel_tabela(linhas, larguras, fr))
         e.append(Spacer(1, LINHA))
 
@@ -1561,13 +1541,42 @@ def _pdf_relacao(produto, dados, lang, contexto, tag):
                            _estilo("PR", fb, 12, GOLD, TA_LEFT, sb=LINHA, sa=LINHA * 0.6)))
         for p in pares:
             comp = p.get("compatibilidade")
+            comp_a = p.get("compatibilidade_apelido")
+            ap1 = (p.get("apelido1") or "").strip()
+            ap2 = (p.get("apelido2") or "").strip()
+            n1 = p.get("membro1", "")
+            n2 = p.get("membro2", "")
+
+            # Cabeçalho do par: apelido em destaque quando existir
+            if ap1 and ap2:
+                cab = "%s × %s" % (ap1, ap2)
+            else:
+                cab = "%s × %s" % (n1, n2)
+            e.append(Paragraph(f"<b>{_rel_escape(cab)}</b>",
+                               _estilo("P1", fb, 11, DARK, TA_LEFT, sa=2)))
+
+            # Camada do apelido (a energia do convívio)
+            if comp_a is not None and ap1 and ap2:
+                e.append(Paragraph(
+                    f"<b>{_rel_escape(_lbl_c)}</b> — {L['compat']}: "
+                    f"<b>{comp_a}</b> — {_rel_escape(_rel_grau(comp_a, lang))}",
+                    _estilo("A1", fb, 10, GOLD, TA_LEFT, sa=2)))
+                dual_a = p.get("dual_apelido") or ""
+                if dual_a:
+                    e.append(Paragraph(_rel_escape(dual_a),
+                                       _estilo("A2", fr, 9, colors.HexColor("#8a6d1f"),
+                                               TA_JUSTIFY, sa=2)))
+
+            # Camada do nome completo
             grau_txt = _rel_grau(comp, lang) if comp is not None else ""
-            e.append(Paragraph(
-                f"<b>{_rel_escape(p.get('membro1', ''))} × {_rel_escape(p.get('membro2', ''))}</b>",
-                _estilo("P1", fb, 11, DARK, TA_LEFT, sa=2)))
+            if ap1 and ap2:
+                rot = "%s: %s × %s" % (_lbl_n, n1, n2)
+                e.append(Paragraph(f"<b>{_rel_escape(rot)}</b>",
+                                   _estilo("N0", fb, 8, GRAY, TA_LEFT, sa=1)))
             e.append(Paragraph(f"{L['compat']}: <b>{comp if comp is not None else '—'}</b>"
                                f" — {_rel_escape(grau_txt)}",
                                _estilo("P2", fr, 10, DARK, TA_LEFT, sa=2)))
+
             leitura = get_compat(comp, contexto, lang)
             if leitura:
                 e.append(Paragraph(_rel_escape(leitura),
@@ -1578,37 +1587,27 @@ def _pdf_relacao(produto, dados, lang, contexto, tag):
                                    _estilo("P4", fr, 9, colors.HexColor("#8a6d1f"),
                                            TA_JUSTIFY, sa=LINHA * 0.5)))
 
-            nome_cell = _rel_escape(m.get("membro", ""))
-            if str(m.get("apelido") or "").strip():
-                nome_cell += "<br/><i>%s</i>" % _rel_escape(m["apelido"])
-            
-            # Pontos fortes e desafios da dupla, por par
+            # Pontos fortes e desafios — só com grau real
+            if comp is None:
+                e.append(Spacer(1, LINHA * 0.4))
+                continue
             try:
                 from referencia import relacao_dupla as _rc_par
-                grau_par = int(comp) if comp is not None else 3
-                for tit, itens in _rc_par.bloco(grau_par, lang):
+                for tit, itens in _rc_par.bloco(int(comp), lang):
                     e.append(Spacer(1, LINHA * 0.6))
                     e.append(Paragraph("<b>%s</b>" % _rel_escape(tit),
-                                       _estilo("REL_FT", fb, 10, GOLD, TA_LEFT,
-                                               sa=LINHA * 0.4)))
+                                       _estilo("REL_FT", fb, 10, GOLD, TA_LEFT, sa=LINHA * 0.4)))
                     for it in itens:
                         e.append(Paragraph("• %s" % _rel_escape(it),
-                                           _estilo("REL_FI", fr, 9, DARK, TA_JUSTIFY,
-                                                   sa=LINHA * 0.3)))
+                                           _estilo("REL_FI", fr, 9, DARK, TA_JUSTIFY, sa=LINHA * 0.3)))
             except Exception:
                 pass
-    
+
     if not membros and not pares:
         e.append(Paragraph(L["sem_dados"], _estilo("ND", fr, 10, GRAY, TA_LEFT, sa=LINHA)))
 
     _rel_fecha(doc, e, lang, fr)
     return path
-
-def pdf_familia(dados, lang="pt"):
-    return _pdf_relacao("familia", dados, lang, "familia", "familia")
-
-def pdf_equipe(dados, lang="pt"):
-    return _pdf_relacao("compatibilidade_equipes", dados, lang, "equipe", "equipe")
 
 AVISO_QR = {
     "pt": "Link do QRCode válido por 1 hora. Salve este PDF agora. Não armazenamos cópias.",
