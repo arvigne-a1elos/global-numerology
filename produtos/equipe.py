@@ -87,37 +87,38 @@ def analisar_equipe(texto, separador="|"):
     if chefe:
         chefe["papel"] = "chefe"
 
-    pares = []
-    if chefe:
-        for m in pessoas[1:]:
-            m["papel"] = "colaborador"
-            c = compatibilidade(chefe["energia_combinada"],
-                                m["energia_combinada"])
+    def _par(x, y, papel_x, papel_y):
+        c = compatibilidade(x["energia_combinada"], y["energia_combinada"])
         ca = None
-        if a.get("energia_combinada_apelido") and b.get("energia_combinada_apelido"):
-            ca = compatibilidade(a["energia_combinada_apelido"],
-                                 b["energia_combinada_apelido"])
-            pares.append({
-                "membro1": chefe["membro"], "papel1": "chefe",
-                "membro2": m["membro"], "papel2": "colaborador",
-                "energia1": chefe["energia_combinada"],
-                "energia2": m["energia_combinada"],
-                "compatibilidade": c["grau"], "rotulo": c["rotulo"],
-                "dual": c["dual"], "alerta_dualidade": c["alerta_dualidade"],
-            })
-
-    # Pares entre colaboradores (o card promete "membros × membros")
-    colaboradores = pessoas[1:] if len(pessoas) > 1 else []
-    for a, b in combinations(colaboradores, 2):
-        c = compatibilidade(a["energia_combinada"], b["energia_combinada"])
-        pares.append({
-            "membro1": a["membro"], "papel1": "colaborador",
-            "membro2": b["membro"], "papel2": "colaborador",
-            "energia1": a["energia_combinada"],
-            "energia2": b["energia_combinada"],
+        if x.get("energia_combinada_apelido") and y.get("energia_combinada_apelido"):
+            ca = compatibilidade(x["energia_combinada_apelido"],
+                                 y["energia_combinada_apelido"])
+        return {
+            "membro1": x["membro"], "papel1": papel_x,
+            "membro2": y["membro"], "papel2": papel_y,
+            "apelido1": x.get("apelido") or "",
+            "apelido2": y.get("apelido") or "",
+            "energia1": x["energia_combinada"],
+            "energia2": y["energia_combinada"],
             "compatibilidade": c["grau"], "rotulo": c["rotulo"],
             "dual": c["dual"], "alerta_dualidade": c["alerta_dualidade"],
-        })
-    
+            "energia1_apelido": x.get("energia_combinada_apelido"),
+            "energia2_apelido": y.get("energia_combinada_apelido"),
+            "compatibilidade_apelido": ca["grau"] if ca else None,
+            "rotulo_apelido": ca["rotulo"] if ca else "",
+            "dual_apelido": ca["dual"] if ca else "",
+            "alerta_dualidade_apelido": ca["alerta_dualidade"] if ca else "",
+        }
+
+    pares = []
+    for m in pessoas[1:]:
+        m["papel"] = "colaborador"
+        if chefe:
+            pares.append(_par(chefe, m, "chefe", "colaborador"))
+
+    colaboradores = pessoas[1:] if len(pessoas) > 1 else []
+    for a, b in combinations(colaboradores, 2):
+        pares.append(_par(a, b, "colaborador", "colaborador"))
+
     return {"chefe": chefe, "membros": pessoas,
             "total": len(pessoas), "pares": pares}
