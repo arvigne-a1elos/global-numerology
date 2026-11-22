@@ -3,6 +3,23 @@
 import unicodedata
 from .mapa import reduzir, _LETRAS, calc_mapa
 from referencia.cissay import compatibilidade
+import re
+
+_DATA = re.compile(r"^\d{1,2}[/-]\d{1,2}[/-]\d{2,4}$")
+
+
+def _quebra(linha):
+    """Aceita 'Nome', 'Nome;data', 'Nome;data;Apelido' e 'Nome;Apelido;data'."""
+    sep = ";" if ";" in linha else ("," if "," in linha else None)
+    partes = [p.strip() for p in linha.split(sep)] if sep else [linha.strip()]
+    nome = partes[0] if partes else ""
+    nasc, apelido = "", ""
+    for p in partes[1:]:
+        if p and not nasc and _DATA.match(p):
+            nasc = p
+        elif p and not apelido:
+            apelido = p
+    return nome, apelido, nasc
 
 MAX_MEMBROS = 2
 
@@ -49,22 +66,16 @@ def analisar_familia(texto, separador="|"):
 
     pessoas = []
     for linha in linhas:
-        if ";" in linha:
-            partes = [p.strip() for p in linha.split(";", 1)]
-        elif "," in linha:
-            partes = [p.strip() for p in linha.split(",", 1)]
-        else:
-            partes = [linha]
-        nome = partes[0]
-        nasc = partes[1] if len(partes) > 1 else ""
+        nome, apelido, nasc = _quebra(linha)
         if nasc and "/" in nasc:
             dd, mm, aa = nasc.split("/")
             nasc = f"{aa}-{mm}-{dd}"
         en, sn = _energia_nome(nome)
-        ev, sv = _caminho_vida(nasc)
+        ea, sa = (_energia_nome(apelido) if apelido else (None, 0))
         pessoas.append({
-            "membro": nome, "nascimento": nasc, "soma": sn,
-            "energia": en, "caminho_vida": ev,
+            "membro": nome, "apelido": apelido, "nascimento": nasc, "soma": sn,
+            "energia": en, "energia_apelido": ea, "soma_apelido": sa,
+            "caminho_vida": ev,
             "energia_combinada": _energia_combinada(en, ev),
         })
 
