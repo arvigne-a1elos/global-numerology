@@ -1323,10 +1323,30 @@ def _rel_grau(grau, lang):
 def _rel_path(tag):
     return os.path.join(TMP, f"{tag}_{uuid.uuid4().hex[:8]}.pdf")
 
+# Títulos de produtos que ainda não estão no dicionário PRODUTOS.
+TITULOS_EXTRA = {
+    "pt": {"compatibilidade_equipes": "Compatibilidade de Equipes"},
+    "en": {"compatibilidade_equipes": "Team Compatibility"},
+    "es": {"compatibilidade_equipes": "Compatibilidad de Equipos"},
+    "it": {"compatibilidade_equipes": "Compatibilità di Squadra"},
+    "fr": {"compatibilidade_equipes": "Compatibilité d'Équipe"},
+    "de": {"compatibilidade_equipes": "Team-Kompatibilität"},
+    "ja": {"compatibilidade_equipes": "チーム相性"},
+    "zh": {"compatibilidade_equipes": "团队兼容性"},
+    "ru": {"compatibilidade_equipes": "Совместимость команды"},
+    "id": {"compatibilidade_equipes": "Kompatibilitas Tim"},
+    "tr": {"compatibilidade_equipes": "Ekip Uyumu"},
+    "vi": {"compatibilidade_equipes": "Tương Thích Đội Ngũ"},
+    "he": {"compatibilidade_equipes": "התאמת צוות"},
+    "ar": {"compatibilidade_equipes": "توافق الفريق"},
+}
+
 def _rel_abre(produto, lang):
     _fr, _fb = fonte_para(lang)
-    titulo = (PRODUTOS.get(lang, PRODUTOS["pt"]).get(produto) or produto).upper()
-    return _fr, _fb, titulo
+    bruto = (PRODUTOS.get(lang, PRODUTOS["pt"]).get(produto)
+             or TITULOS_EXTRA.get(lang, {}).get(produto)
+             or str(produto).replace("_", " ").title())
+    return _fr, _fb, bruto.upper()
 
 def _rel_cabecalho(e, titulo, nome_exib, lang, fr, fb):
     e.append(Spacer(1, 20))
