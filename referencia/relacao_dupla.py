@@ -93,6 +93,11 @@ FORTES = {
             "I conflitti appaiono, ma tendono a risolversi dentro la coppia, senza escalare.",
             "Complementarità funzionale: ognuno copre ciò che l'altro non copre, senza disputa di ruolo.",
             "I progetti a medio termine tendono a concludersi — c'è costanza."],
+        4: ["Ognuno potenzia il meglio dell'altro; il risultato della coppia supera la somma delle parti.",
+            "Le decisioni scorrono senza lunghe negoziazioni — entrambi arrivano alla stessa conclusione per strade diverse.",
+            "Sotto pressione, la coppia si stringe attorno al problema invece di voltarsi contro.",
+            "C'è spazio per i progetti individuali senza che questo minacci la relazione."],
+    },
     "fr": {
         1: ["La différence est réelle et visible : pas d'illusion que les deux fonctionnent pareil.",
             "Chacun préserve sa propre nature, sans se plier à l'autre.",
