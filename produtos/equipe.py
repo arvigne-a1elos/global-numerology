@@ -93,6 +93,10 @@ def analisar_equipe(texto, separador="|"):
             m["papel"] = "colaborador"
             c = compatibilidade(chefe["energia_combinada"],
                                 m["energia_combinada"])
+        ca = None
+        if a.get("energia_combinada_apelido") and b.get("energia_combinada_apelido"):
+            ca = compatibilidade(a["energia_combinada_apelido"],
+                                 b["energia_combinada_apelido"])
             pares.append({
                 "membro1": chefe["membro"], "papel1": "chefe",
                 "membro2": m["membro"], "papel2": "colaborador",
