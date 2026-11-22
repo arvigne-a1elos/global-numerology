@@ -558,8 +558,3 @@ def bloco(grau, lang="pt"):
     """Retorna [(titulo, [itens]), (titulo, [itens])] pronto para o template."""
     f, d = rotulos(lang)
     return [(f, fortes(grau, lang)), (d, desafios(grau, lang))]
-        4: ["Ognuno potenzia il meglio dell'altro; il risultato della coppia supera la somma delle parti.",
-            "Le decisioni scorrono senza lunghe negoziazioni — entrambi arrivano alla stessa conclusione per strade diverse.",
-            "Sotto pressione, la coppia si stringe attorno al problema invece di voltarsi contro.",
-            "C'è spazio per i progetti individuali senza che questo minacci la relazione."],
-    },
