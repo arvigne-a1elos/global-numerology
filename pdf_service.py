@@ -1518,7 +1518,20 @@ def _pdf_relacao(produto, dados, lang, contexto, tag):
                             topMargin=45, bottomMargin=45)
     e = []
     _rel_cabecalho(e, titulo, dados.get("titular") or dados.get("nome") or "", lang, fr, fb)
-
+    if produto == "compatibilidade_equipes":
+        try:
+            from referencia import relacao_dupla as _rd
+            txt = _rd.explicacao(lang)
+            if txt:
+                e.append(Spacer(1, LINHA * 0.8))
+                for _par in txt.split("\n"):
+                    if _par.strip():
+                        e.append(Paragraph(_rel_escape(_par),
+                                           _estilo("EXP", fr, 9, DARK, TA_JUSTIFY,
+                                                   sa=LINHA * 0.4)))
+                e.append(Spacer(1, LINHA * 0.8))
+        except Exception:
+            pass
     membros = dados.get("membros") or []
     total = dados.get("total") or len(membros)
 
