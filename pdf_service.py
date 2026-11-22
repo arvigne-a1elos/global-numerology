@@ -1441,20 +1441,32 @@ def pdf_casal(dados, lang="pt"):
             comp_a = p.get("compatibilidade_apelido")
             ap1 = p.get("apelido1") or ""
             ap2 = p.get("apelido2") or ""
+
             if comp_a is not None and ap1 and ap2:
+                # Apelido em destaque: é a energia que conta no convívio
                 e.append(Spacer(1, LINHA * 0.5))
+                e.append(Paragraph(f"<b>{L['como_chamado']}</b>",
+                                   _estilo("A0", fb, 9, GRAY, TA_LEFT, sa=1)))
                 e.append(Paragraph(
                     f"<b>{_rel_escape(ap1)} × {_rel_escape(ap2)}</b>",
-                    _estilo("A1", fb, 10, DARK, TA_LEFT, sa=2)))
-                rot_a = p.get("rotulo_apelido") or ""
+                    _estilo("A1", fb, 11, GOLD, TA_LEFT, sa=2)))
                 e.append(Paragraph(
-                    f"{L['compat']}: <b>{comp_a}</b> — {_rel_escape(rot_a)}",
-                    _estilo("A2", fr, 9, DARK, TA_LEFT, sa=2)))
+                    f"{L['compat']}: <b>{comp_a}</b> — {_rel_escape(p.get('rotulo_apelido') or '')}",
+                    _estilo("A2", fr, 10, DARK, TA_LEFT, sa=2)))
                 dual_a = p.get("dual_apelido") or ""
                 if dual_a:
                     e.append(Paragraph(_rel_escape(dual_a),
                                        _estilo("A3", fr, 9, colors.HexColor("#8a6d1f"),
                                                TA_JUSTIFY, sa=LINHA * 0.35)))
+                # Nome completo em segundo plano: identidade formal
+                e.append(Spacer(1, LINHA * 0.35))
+                e.append(Paragraph(f"<b>{L['nome_formal']}</b>",
+                                   _estilo("N0", fb, 8, GRAY, TA_LEFT, sa=1)))
+                e.append(Paragraph(
+                    f"{comp if comp is not None else '—'} — "
+                    f"{_rel_escape(grau_txt)} · {_rel_escape(p.get('nome1','') or '')} × "
+                    f"{_rel_escape(p.get('nome2','') or '')}",
+                    _estilo("N1", fr, 9, GRAY, TA_LEFT, sa=2)))
         
         # Pontos fortes e desafios por grau
         try:
