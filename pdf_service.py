@@ -1330,9 +1330,6 @@ _LBL = {
     "ar": ("ثنائي الأسماء المتداولة", "ثنائي الأسماء الكاملة"),
 }
 
-    lbl = _LBL.get(lang) or _LBL["pt"]
-    L["como_chamado"], L["nome_formal"] = lbl
-
 def _rel(lang):
     return REL_TXT.get(lang) or REL_TXT["pt"]
 
@@ -1428,6 +1425,12 @@ def pdf_casal(dados, lang="pt"):
         e.append(_rel_tabela(linhas, [235, 80, 180], fr))
         e.append(Spacer(1, LINHA))
 
+            linhas.append([
+            nome_cell,
+            str(m.get("energia", "") or ""),
+            str(m.get("caminho_vida") or "—"),
+        ])
+
     # Legenda das energias individuais
     if energias:
         try:
@@ -1444,28 +1447,13 @@ def pdf_casal(dados, lang="pt"):
         except Exception:
             pass
 
-    comp = dados.get("compatibilidade")
-    if comp is not None:
-        grau_txt = _rel_grau(comp, lang)
-        e.append(Paragraph(f"<b>{L['compat']}: {comp}</b> — {_rel_escape(grau_txt)}",
-                           _estilo("C", fb, 12, GOLD, TA_LEFT, sa=LINHA * 0.6)))
-        leitura = dados.get("leitura") or get_compat(comp, "casal", lang)
-        if leitura:
-            e.append(Paragraph(_rel_escape(leitura),
-                               _estilo("L", fr, 11, DARK, TA_JUSTIFY, sa=LINHA * 0.6)))
-        dual = get_dual(comp, "casal", lang)
-        if dual:
-            e.append(Paragraph(_rel_escape(dual),
-                               _estilo("D", fr, 10, colors.HexColor("#8a6d1f"), TA_JUSTIFY, sa=LINHA)))
-
+            # Par de apelidos em destaque: é a energia do convívio
             comp_a = p.get("compatibilidade_apelido")
             ap1 = p.get("apelido1") or ""
             ap2 = p.get("apelido2") or ""
-
             if comp_a is not None and ap1 and ap2:
-                # Apelido em destaque: é a energia que conta no convívio
-                e.append(Spacer(1, LINHA * 0.5))
-                e.append(Paragraph(f"<b>{L['como_chamado']}</b>",
+                e.append(Spacer(1, LINHA * 0.4))
+                e.append(Paragraph(f"<b>{_rel_escape(_lbl_c)}</b>",
                                    _estilo("A0", fb, 9, GRAY, TA_LEFT, sa=1)))
                 e.append(Paragraph(
                     f"<b>{_rel_escape(ap1)} × {_rel_escape(ap2)}</b>",
@@ -1477,10 +1465,8 @@ def pdf_casal(dados, lang="pt"):
                 if dual_a:
                     e.append(Paragraph(_rel_escape(dual_a),
                                        _estilo("A3", fr, 9, colors.HexColor("#8a6d1f"),
-                                               TA_JUSTIFY, sa=LINHA * 0.35)))
-                # Nome completo em segundo plano: identidade formal
-                e.append(Spacer(1, LINHA * 0.35))
-                e.append(Paragraph(f"<b>{L['nome_formal']}</b>",
+                                               TA_JUSTIFY, sa=LINHA * 0.3)))
+                e.append(Paragraph(f"<b>{_rel_escape(_lbl_n)}</b>",
                                    _estilo("N0", fb, 8, GRAY, TA_LEFT, sa=1)))
                 e.append(Paragraph(
                     f"{comp if comp is not None else '—'} — "
@@ -1512,6 +1498,7 @@ def _pdf_relacao(produto, dados, lang, contexto, tag):
     lang = lang or "pt"
     dados = dict(dados or {})
     L = _rel(lang)
+    _lbl_c, _lbl_n = (_LBL.get(lang) or _LBL["pt"])    
     fr, fb, titulo = _rel_abre(produto, lang)
     path = _rel_path(tag)
     doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
@@ -1591,6 +1578,10 @@ def _pdf_relacao(produto, dados, lang, contexto, tag):
                                    _estilo("P4", fr, 9, colors.HexColor("#8a6d1f"),
                                            TA_JUSTIFY, sa=LINHA * 0.5)))
 
+            nome_cell = _rel_escape(m.get("membro", ""))
+            if str(m.get("apelido") or "").strip():
+                nome_cell += "<br/><i>%s</i>" % _rel_escape(m["apelido"])
+            
             # Pontos fortes e desafios da dupla, por par
             try:
                 from referencia import relacao_dupla as _rc_par
