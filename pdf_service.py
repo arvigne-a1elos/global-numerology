@@ -1313,6 +1313,26 @@ REL_TXT = {
            "sem_dados": "Không đủ dữ liệu để tạo báo cáo này."},
 }
 
+_LBL = {
+    "pt": ("Par de apelidos", "Par de nomes"),
+    "en": ("Nickname pair", "Full-name pair"),
+    "es": ("Par de apodos", "Par de nombres"),
+    "it": ("Coppia di soprannomi", "Coppia di nomi"),
+    "fr": ("Duo de surnoms", "Duo de noms"),
+    "de": ("Rufnamen-Paar", "Namenspaar"),
+    "ja": ("呼び名のペア", "本名のペア"),
+    "zh": ("称呼名组合", "全名组合"),
+    "ru": ("Пара рабочих имён", "Пара полных имён"),
+    "id": ("Pasangan nama panggilan", "Pasangan nama lengkap"),
+    "tr": ("Takma ad ikilisi", "Tam ad ikilisi"),
+    "vi": ("Cặp tên gọi", "Cặp họ tên"),
+    "he": ("צמד שמות בשימוש", "צמד שמות מלאים"),
+    "ar": ("ثنائي الأسماء المتداولة", "ثنائي الأسماء الكاملة"),
+}
+
+    lbl = _LBL.get(lang) or _LBL["pt"]
+    L["como_chamado"], L["nome_formal"] = lbl
+
 def _rel(lang):
     return REL_TXT.get(lang) or REL_TXT["pt"]
 
