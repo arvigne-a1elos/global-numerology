@@ -1254,7 +1254,8 @@ def regenerar_pdf_por_meta(meta):
 
     def _analisar_casal_com_datas():
         nomes = [x.strip() for x in (dado or nome).split("|")[:2]]
-        datas = [x.strip() for x in (meta.get("detalhe", "") or "").split("|")[:2]]
+        partes = [x.strip() for x in (meta.get("detalhe", "") or "").split("|")[:2]]
+        datas = [p.split(";")[0] for p in partes]
         n1 = nomes[0] if len(nomes) > 0 else ""
         n2 = nomes[1] if len(nomes) > 1 else ""
         d1 = datas[0] if len(datas) > 0 else ""
@@ -1330,8 +1331,18 @@ def regenerar_pdf_por_meta(meta):
         pf = gerar_pdf_calendario(data, lang, nome_exib)
     elif prod == "nome_ong":
         pf = gerar_pdf_ong(data, lang, nome_exib)
-    elif prod in ("casal", "familia", "compatibilidade_equipes"):
+    elif prod == "casal":
         pf = gerar_pdf(prod, data, lang, nome_exib, bd, dado=dado)
+    elif prod in ("familia", "compatibilidade_equipes"):
+        pf = None
+        try:
+            import pdf_service as _ps
+            _fn = _ps.pdf_familia if prod == "familia" else _ps.pdf_equipe
+            pf = _fn(data, lang)
+        except Exception as _e:
+            logger.error("pdf_service direto %s: %s", prod, _e)
+        if not (pf and os.path.exists(pf)):
+            pf = gerar_pdf(prod, data, lang, nome_exib, bd, dado=dado)
     else:
         pf = gerar_pdf(prod, data, lang, nome_exib, bd, dado=dado,
                        dado2=dado2, dado3=dado3,
