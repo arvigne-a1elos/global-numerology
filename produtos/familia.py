@@ -3,6 +3,7 @@
 import unicodedata
 from .mapa import reduzir, _LETRAS, calc_mapa
 from referencia.cissay import compatibilidade
+from itertools import combinations
 import re
 
 _DATA = re.compile(r"^\d{1,4}[/-]\d{1,2}[/-]\d{1,4}$")
@@ -54,9 +55,7 @@ def _energia_combinada(energia_nome, caminho_vida):
 
 
 def analisar_familia(texto, separador="|"):
-    """Aceita nomes separados por | e datas separadas por |."""
     bruto = str(texto or "")
-    # primeiro tenta quebra de linha, depois o separador recebido
     if "\n" in bruto:
         linhas = [l.strip() for l in bruto.splitlines() if l.strip()]
     elif separador in bruto:
@@ -73,8 +72,6 @@ def analisar_familia(texto, separador="|"):
         en, sn = _energia_nome(nome)
         ea, sa = (_energia_nome(apelido) if apelido else (None, 0))
         ev, sv = _caminho_vida(nasc)
-        comb_nome = _energia_combinada(en, ev)
-        comb_apel = _energia_combinada(ea, ev) if apelido else None
         pessoas.append({
             "membro": nome, "apelido": apelido, "nascimento": nasc, "soma": sn,
             "energia": en, "energia_apelido": ea, "soma_apelido": sa,
@@ -86,30 +83,30 @@ def analisar_familia(texto, separador="|"):
     if len(pessoas) > MAX_MEMBROS + 1:
         pessoas = pessoas[:MAX_MEMBROS + 1]
 
+    def _par(x, y):
+        c = compatibilidade(x["energia_combinada"], y["energia_combinada"])
+        ca = None
+        if x.get("energia_combinada_apelido") and y.get("energia_combinada_apelido"):
+            ca = compatibilidade(x["energia_combinada_apelido"],
+                                 y["energia_combinada_apelido"])
+        return {
+            "membro1": x["membro"], "membro2": y["membro"],
+            "apelido1": x.get("apelido") or "",
+            "apelido2": y.get("apelido") or "",
+            "energia1": x["energia_combinada"],
+            "energia2": y["energia_combinada"],
+            "compatibilidade": c["grau"], "rotulo": c["rotulo"],
+            "dual": c["dual"], "alerta_dualidade": c["alerta_dualidade"],
+            "energia1_apelido": x.get("energia_combinada_apelido"),
+            "energia2_apelido": y.get("energia_combinada_apelido"),
+            "compatibilidade_apelido": ca["grau"] if ca else None,
+            "rotulo_apelido": ca["rotulo"] if ca else "",
+            "dual_apelido": ca["dual"] if ca else "",
+            "alerta_dualidade_apelido": ca["alerta_dualidade"] if ca else "",
+        }
+
+    pares = [_par(a, b) for a, b in combinations(pessoas, 2)]
     principal = pessoas[0] if pessoas else None
-    pares = []
-    if principal:
-        for m in pessoas[1:]:
-            c = compatibilidade(principal["energia_combinada"], m["energia_combinada"])
-            ca = None
-            if principal.get("energia_combinada_apelido") and m.get("energia_combinada_apelido"):
-                ca = compatibilidade(principal["energia_combinada_apelido"],
-                                     m["energia_combinada_apelido"])
-            pares.append({
-                "membro1": principal["membro"], "membro2": m["membro"],
-                "apelido1": principal.get("apelido") or "",
-                "apelido2": m.get("apelido") or "",
-                "energia1": principal["energia_combinada"],
-                "energia2": m["energia_combinada"],
-                "compatibilidade": c["grau"], "rotulo": c["rotulo"],
-                "dual": c["dual"], "alerta_dualidade": c["alerta_dualidade"],
-                "energia1_apelido": principal.get("energia_combinada_apelido"),
-                "energia2_apelido": m.get("energia_combinada_apelido"),
-                "compatibilidade_apelido": ca["grau"] if ca else None,
-                "rotulo_apelido": ca["rotulo"] if ca else "",
-                "dual_apelido": ca["dual"] if ca else "",
-                "alerta_dualidade_apelido": ca["alerta_dualidade"] if ca else "",
-            })
 
     return {"principal": principal, "membros": pessoas,
             "total": len(pessoas), "pares": pares}
