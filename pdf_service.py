@@ -1438,6 +1438,24 @@ def pdf_casal(dados, lang="pt"):
             e.append(Paragraph(_rel_escape(dual),
                                _estilo("D", fr, 10, colors.HexColor("#8a6d1f"), TA_JUSTIFY, sa=LINHA)))
 
+            comp_a = p.get("compatibilidade_apelido")
+            ap1 = p.get("apelido1") or ""
+            ap2 = p.get("apelido2") or ""
+            if comp_a is not None and ap1 and ap2:
+                e.append(Spacer(1, LINHA * 0.5))
+                e.append(Paragraph(
+                    f"<b>{_rel_escape(ap1)} × {_rel_escape(ap2)}</b>",
+                    _estilo("A1", fb, 10, DARK, TA_LEFT, sa=2)))
+                rot_a = p.get("rotulo_apelido") or ""
+                e.append(Paragraph(
+                    f"{L['compat']}: <b>{comp_a}</b> — {_rel_escape(rot_a)}",
+                    _estilo("A2", fr, 9, DARK, TA_LEFT, sa=2)))
+                dual_a = p.get("dual_apelido") or ""
+                if dual_a:
+                    e.append(Paragraph(_rel_escape(dual_a),
+                                       _estilo("A3", fr, 9, colors.HexColor("#8a6d1f"),
+                                               TA_JUSTIFY, sa=LINHA * 0.35)))
+        
         # Pontos fortes e desafios por grau
         try:
             from referencia import relacao_dupla as _rc
