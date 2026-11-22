@@ -33,15 +33,33 @@ _ROTULO = {
 }
 
 
-def analisar_casal(nome1, nasc1, nome2, nasc2):
+def analisar_casal(nome1, nasc1, nome2, nasc2, apelido1="", apelido2=""):
     n1 = numero_pessoa(nome1, nasc1)
     n2 = numero_pessoa(nome2, nasc2)
     if n1 is None or n2 is None:
-        return {
-            "erro": "dados insuficientes",
-            "nome1": nome1,
-            "nome2": nome2,
-        }
+        return {"erro": "dados insuficientes", "nome1": nome1, "nome2": nome2}
+
+    comp = MATRIZ[n1][n2]
+    rotulo = _ROTULO.get(comp, "")
+
+    a1 = numero_pessoa(apelido1, nasc1) if apelido1 else None
+    a2 = numero_pessoa(apelido2, nasc2) if apelido2 else None
+    comp_a = MATRIZ[a1][a2] if (a1 is not None and a2 is not None) else None
+
+    return {
+        "nome1": nome1, "nasc1": nasc1, "numero1": n1,
+        "energia1": n1, "energia_nome1": n1,
+        "nome2": nome2, "nasc2": nasc2, "numero2": n2,
+        "energia2": n2, "energia_nome2": n2,
+        "compatibilidade": comp,
+        "rotulo": rotulo,
+        "rotulo_nome": rotulo,
+        "leitura": get_compat(comp, "casal"),
+        "apelido1": apelido1, "apelido2": apelido2,
+        "numero1_apelido": a1, "numero2_apelido": a2,
+        "compatibilidade_apelido": comp_a,
+        "rotulo_apelido": _ROTULO.get(comp_a, "") if comp_a is not None else "",
+    }
 
     # ordem fixada no método: primeiro nome ocupa a LINHA
     comp = MATRIZ[n1][n2]
