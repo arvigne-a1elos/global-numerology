@@ -1609,6 +1609,13 @@ def _pdf_relacao(produto, dados, lang, contexto, tag):
     _rel_fecha(doc, e, lang, fr)
     return path
 
+def pdf_familia(dados, lang="pt"):
+    return _pdf_relacao("familia", dados, lang, "familia", "familia")
+
+
+def pdf_equipe(dados, lang="pt"):
+    return _pdf_relacao("compatibilidade_equipes", dados, lang, "equipe", "equipe")
+
 AVISO_QR = {
     "pt": "Link do QRCode válido por 1 hora. Salve este PDF agora. Não armazenamos cópias.",
     "en": "QRCode link valid for 1 hour. Save this PDF now. We do not store copies.",
