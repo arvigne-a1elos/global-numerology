@@ -535,6 +535,184 @@ DESAFIOS = {
     },
 }
 
+EXPLICACAO = {
+    "pt": (
+        "Qual conta? O nome mais usado. O princípio da energia é simples: quanto mais "
+        "um nome é repetido, mais a sua vibração se afirma. No ambiente de trabalho, o "
+        "nome que circula em corredores, reuniões e chamadas informais é o apelido — e é "
+        "ele que descreve o comportamento real da pessoa na equipe.\n"
+        "O nome completo não pode ser alterado: é a identidade de registro. O apelido, "
+        "sim: pode ser escolhido, testado e ajustado até encontrar a energia que melhor "
+        "representa a forma como a pessoa é chamada.\n"
+        "Títulos como Dr., Sr., Sra. ou Seu também somam. Se a pessoa é chamada de "
+        "\"Seu Antônio\" ou \"Dr. Tonho\", escreva o apelido exatamente assim — o "
+        "tratamento faz parte do nome de uso e entra no cálculo."
+    ),
+    "en": (
+        "Which one counts? The name most used. The principle of energy is simple: the "
+        "more a name is repeated, the more its vibration asserts itself. In the workplace, "
+        "the name that circulates in corridors, meetings and informal calls is the "
+        "nickname — and it is the one that describes the person's real behaviour in the "
+        "team.\n"
+        "A full name cannot be altered: it is the identity of record. The nickname can: "
+        "it may be chosen, tested and adjusted until it carries the energy that best "
+        "represents how the person is actually addressed.\n"
+        "Titles such as Dr., Mr., Mrs. or \"Seu\" also add up. If someone is called "
+        "\"Seu Antônio\" or \"Dr. Tonho\", write the nickname exactly that way — the form "
+        "of address is part of the working name and enters the calculation."
+    ),
+    "es": (
+        "¿Cuál cuenta? El nombre más usado. El principio de la energía es simple: cuanto "
+        "más se repite un nombre, más se afirma su vibración. En el ambiente de trabajo, "
+        "el nombre que circula en los pasillos, las reuniones y las llamadas informales es "
+        "el apodo — y es ese el que describe el comportamiento real de la persona en el "
+        "equipo.\n"
+        "El nombre completo no puede alterarse: es la identidad de registro. El apodo, sí: "
+        "puede elegirse, probarse y ajustarse hasta encontrar la energía que mejor "
+        "representa la forma en que se llama a la persona.\n"
+        "Los títulos como Dr., Sr., Sra. o Seu también suman. Si a alguien se le llama "
+        "\"Seu Antônio\" o \"Dr. Tonho\", escriba el apodo exactamente así — el tratamiento "
+        "forma parte del nombre de uso y entra en el cálculo."
+    ),
+    "it": (
+        "Quale conta? Il nome più usato. Il principio dell'energia è semplice: più un nome "
+        "viene ripetuto, più la sua vibrazione si afferma. Nell'ambiente di lavoro, il nome "
+        "che circola nei corridoi, nelle riunioni e nelle chiamate informali è il "
+        "soprannome — ed è quello che descrive il comportamento reale della persona nella "
+        "squadra.\n"
+        "Il nome completo non si può modificare: è l'identità di registro. Il soprannome, "
+        "sì: può essere scelto, provato e adattato fino a trovare l'energia che meglio "
+        "rappresenta il modo in cui la persona viene chiamata.\n"
+        "Anche i titoli come Dott., Sig., Sig.ra o Seu contano. Se qualcuno viene chiamato "
+        "\"Seu Antônio\" o \"Dott. Tonho\", scriva il soprannome esattamente così — il "
+        "trattamento fa parte del nome d'uso ed entra nel calcolo."
+    ),
+    "fr": (
+        "Lequel compte ? Le nom le plus utilisé. Le principe de l'énergie est simple : plus "
+        "un nom est répété, plus sa vibration s'affirme. Dans le milieu professionnel, le "
+        "nom qui circule dans les couloirs, les réunions et les appels informels est le "
+        "surnom — et c'est lui qui décrit le comportement réel de la personne dans "
+        "l'équipe.\n"
+        "Le nom complet ne peut pas être modifié : c'est l'identité d'état civil. Le "
+        "surnom, lui, le peut : il peut être choisi, testé et ajusté jusqu'à trouver "
+        "l'énergie qui représente le mieux la façon dont la personne est appelée.\n"
+        "Les titres comme Dr, M., Mme ou Seu comptent aussi. Si quelqu'un est appelé "
+        "\"Seu Antônio\" ou \"Dr Tonho\", écrivez le surnom exactement ainsi — le "
+        "traitement fait partie du nom d'usage et entre dans le calcul."
+    ),
+    "de": (
+        "Welcher zählt? Der meistgebrauchte Name. Das Prinzip der Energie ist einfach: Je "
+        "häufiger ein Name wiederholt wird, desto stärker behauptet sich seine Schwingung. "
+        "Im Arbeitsumfeld ist der Name, der in Fluren, Besprechungen und informellen "
+        "Gesprächen zirkuliert, der Rufname — und er beschreibt das tatsächliche Verhalten "
+        "der Person im Team.\n"
+        "Der vollständige Name lässt sich nicht ändern: Er ist die Identität im Register. "
+        "Der Rufname schon: Er kann gewählt, getestet und angepasst werden, bis er die "
+        "Energie trägt, die der Art und Weise entspricht, wie die Person tatsächlich "
+        "angesprochen wird.\n"
+        "Auch Titel wie Dr., Hr., Fr. oder Seu zählen. Wird jemand \"Seu Antônio\" oder "
+        "\"Dr. Tonho\" genannt, schreiben Sie den Rufnamen genau so — die Anrede gehört "
+        "zum Gebrauchsnamen und fließt in die Berechnung ein."
+    ),
+    "ja": (
+        "どちらが優先されるのか。最も使われている名前です。エネルギーの原理は単純です。"
+        "名前は繰り返されるほど、その波動が強く定着します。職場では、廊下や会議、"
+        "日常の呼びかけで交わされる名前が呼び名であり、その呼び名こそがチーム内での"
+        "実際の振る舞いを表します。\n"
+        "本名は変えられません。それは登録上の身元だからです。呼び名は変えられます。"
+        "どう呼ばれているかを最もよく表すエネルギーが見つかるまで、選び、試し、"
+        "調整することができます。\n"
+        "Dr.、Mr.、Sra.、Seu といった敬称も加算されます。「Seu Antônio」や"
+        "「Dr. Tonho」と呼ばれている場合は、呼び名をそのまま記入してください。"
+        "敬称は使用名の一部であり、計算に含まれます。"
+    ),
+    "zh": (
+        "哪一个作数？使用最多的那个名字。能量的原理很简单：一个名字被重复得越多，"
+        "它的振动就越被确立。在职场中，在走廊、会议和日常招呼里流传的那个名字就是"
+        "称呼名——正是这个称呼名，描述了这个人在团队中真实的行为方式。\n"
+        "全名无法更改：它是登记身份。称呼名则可以：可以选择、测试、调整，直到找到"
+        "最能代表这个人实际被如何称呼的能量。\n"
+        "Dr.、先生、女士或 Seu 这类称谓同样计入。如果有人被称为「Seu Antônio」或"
+        "「Dr. Tonho」，请完全按这个写法填写称呼名——称谓是使用名的一部分，"
+        "会进入计算。"
+    ),
+    "ru": (
+        "Что считается? Имя, которое используется чаще. Принцип энергии прост: чем чаще "
+        "повторяется имя, тем сильнее утверждается его вибрация. В рабочей среде имя, "
+        "которое звучит в коридорах, на совещаниях и в неформальных обращениях, — это "
+        "рабочее имя, и именно оно описывает реальное поведение человека в команде.\n"
+        "Полное имя изменить нельзя: это идентичность записи. Рабочее имя — можно: его "
+        "выбирают, проверяют и корректируют, пока оно не обретёт энергию, лучше всего "
+        "отражающую то, как к человеку действительно обращаются.\n"
+        "Титулы и обращения — Dr., г-н, г-жа, Seu — тоже учитываются. Если человека зовут "
+        "\"Seu Antônio\" или \"Dr. Tonho\", напишите рабочее имя именно так: обращение "
+        "является частью используемого имени и входит в расчёт."
+    ),
+    "id": (
+        "Mana yang berlaku? Nama yang paling sering dipakai. Prinsip energi sederhana: "
+        "semakin sering sebuah nama diulang, semakin kuat getarannya menegaskan diri. Di "
+        "lingkungan kerja, nama yang beredar di koridor, rapat dan panggilan sehari-hari "
+        "adalah nama panggilan — dan nama itulah yang menggambarkan perilaku nyata orang "
+        "tersebut di dalam tim.\n"
+        "Nama lengkap tidak dapat diubah: itu identitas resmi. Nama panggilan bisa: dipilih, "
+        "diuji dan disesuaikan sampai ditemukan energi yang paling mewakili cara orang itu "
+        "benar-benar dipanggil.\n"
+        "Gelar seperti Dr., Bpk., Ibu atau Seu juga ikut dihitung. Jika seseorang dipanggil "
+        "\"Seu Antônio\" atau \"Dr. Tonho\", tulis nama panggilan persis seperti itu — "
+        "sapaan adalah bagian dari nama yang dipakai dan masuk ke dalam perhitungan."
+    ),
+    "tr": (
+        "Hangisi geçerli? En çok kullanılan isim. Enerjinin ilkesi basittir: bir isim ne "
+        "kadar çok tekrarlanırsa titreşimi o kadar güçlenir. İş ortamında koridorlarda, "
+        "toplantılarda ve gündelik seslenişlerde dolaşan isim takma addır — ve kişinin "
+        "ekip içindeki gerçek davranışını tanımlayan da o addır.\n"
+        "Tam ad değiştirilemez: kayıt kimliğidir. Takma ad değiştirilebilir: kişinin "
+        "gerçekten nasıl çağrıldığını en iyi temsil eden enerji bulunana kadar seçilebilir, "
+        "denenebilir ve ayarlanabilir.\n"
+        "Dr., Bay, Bayan veya Seu gibi unvanlar da toplanır. Biri \"Seu Antônio\" ya da "
+        "\"Dr. Tonho\" diye çağrılıyorsa, takma adı tam olarak böyle yazın — hitap, "
+        "kullanılan adın parçasıdır ve hesaba girer."
+    ),
+    "vi": (
+        "Tên nào được tính? Tên được dùng nhiều nhất. Nguyên lý của năng lượng rất đơn "
+        "giản: một cái tên càng được lặp lại nhiều, rung động của nó càng được khẳng "
+        "định. Trong môi trường làm việc, cái tên lưu hành nơi hành lang, trong các cuộc "
+        "họp và những lời gọi thường ngày chính là tên gọi — và chính nó mô tả hành vi "
+        "thực sự của người đó trong đội ngũ.\n"
+        "Họ tên đầy đủ không thể thay đổi: đó là danh tính đăng ký. Tên gọi thì có thể: "
+        "được chọn, thử nghiệm và điều chỉnh cho đến khi tìm ra năng lượng phản ánh đúng "
+        "nhất cách người ta thực sự gọi người đó.\n"
+        "Các chức danh như Dr., Ông, Bà hay Seu cũng được cộng vào. Nếu ai đó được gọi là "
+        "\"Seu Antônio\" hay \"Dr. Tonho\", hãy viết tên gọi đúng như vậy — cách xưng hô "
+        "là một phần của tên đang dùng và có mặt trong phép tính."
+    ),
+    "he": (
+        "מה נחשב? השם שבו משתמשים יותר. עקרון האנרגיה פשוט: ככל ששם חוזר יותר, כך התנודה "
+        "שלו מתבססת יותר. בסביבת העבודה, השם שמסתובב במסדרונות, בישיבות ובפניות יומיומיות "
+        "הוא שם השימוש — והוא זה שמתאר את ההתנהגות האמיתית של האדם בתוך הצוות.\n"
+        "שם מלא אי אפשר לשנות: זו הזהות הרשומה. שם השימוש כן: אפשר לבחור, לנסות ולכוונן "
+        "אותו עד שיימצא האנרגיה שמייצגת בצורה הטובה ביותר את האופן שבו באמת פונים לאדם.\n"
+        "גם תארים כמו ד\"ר, אדון, גברת או Seu נספרים. אם פונים למישהו ב\"Seu Antônio\" "
+        "או \"Dr. Tonho\", כתבו את שם השימוש בדיוק כך — הפנייה היא חלק מהשם הנמצא "
+        "בשימוש ונכנסת לחישוב."
+    ),
+    "ar": (
+        "أيٌّ منهما يُحتسب؟ الاسم الأكثر استخدامًا. مبدأ الطاقة بسيط: كلما تكرر الاسم أكثر، "
+        "ترسّخ ذبذبه أقوى. في بيئة العمل، الاسم الذي يدور في الممرات والاجتماعات "
+        "والنداءات اليومية هو اسم الاستخدام — وهو الذي يصف السلوك الحقيقي للشخص داخل "
+        "الفريق.\n"
+        "الاسم الكامل لا يمكن تغييره: فهو الهوية المسجَّلة. أما اسم الاستخدام فنعم: يمكن "
+        "اختياره واختباره وضبطه حتى يُعثر على الطاقة التي تمثّل على أفضل وجه الطريقة التي "
+        "يُنادى بها الشخص فعلًا.\n"
+        "الألقاب مثل الدكتور والسيد والسيدة أو Seu تُحتسب أيضًا. إذا كان أحدهم يُنادى "
+        "بـ«Seu Antônio» أو «Dr. Tonho»، فاكتب اسم الاستخدام بهذا الشكل تمامًا — فاللقب "
+        "جزء من الاسم المستخدم ويدخل في الحساب."
+    ),
+}
+
+
+def explicacao(lang="pt"):
+    return EXPLICACAO.get(_lang(lang)) or EXPLICACAO["pt"]
 
 def _lang(lang):
     return lang if lang in ROTULOS else "pt"
