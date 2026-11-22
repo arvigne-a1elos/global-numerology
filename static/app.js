@@ -610,35 +610,6 @@ if (!cfg) {
   return { modo: 'auto', pct: melhor, qtd: qtd, teto: cfg.teto_automatico };
 }
 
-    familia: {
-      qtd: 2, minimo: 1,
-      principal: ["familiaPrincipalNome", "familiaPrincipalNasc", "familiaPrincipalApelido"],
-      membro: ["familiaMembroNome", "familiaMembroNasc", "familiaMembroApelido"],
-      extra: function () { return {}; }
-    },
-<input id="familiaPrincipalApelido" type="text" maxlength="30"
-       placeholder="Como é chamado(a) em família? (Tio Tonho, Seu Antônio…)">
-<input id="familiaMembroApelido1" type="text" maxlength="30"
-       placeholder="Apelido do membro 2">
-<input id="familiaMembroApelido2" type="text" maxlength="30"
-       placeholder="Apelido do membro 3">
-
-    compatibilidade_equipes: {
-      qtd: 2, minimo: 1,
-      principal: ["equipePrincipalNome", "equipePrincipalNasc", "equipePrincipalApelido"],
-      membro: ["equipeMembroNome", "equipeMembroNasc", "equipeMembroApelido"],
-      extra: function () {
-        var e = (window._compEnergia && window._compEnergia !== "0") ? window._compEnergia : "8";
-        return { energia: e };
-      }
-    },
-<input id="equipePrincipalApelido" type="text" maxlength="30"
-       placeholder="Como é chamado no trabalho? (inclua o tratamento: Dr., Seu…)">
-<input id="equipeMembroApelido1" type="text" maxlength="30"
-       placeholder="Como é chamado no trabalho?">
-<input id="equipeMembroApelido2" type="text" maxlength="30"
-       placeholder="Como é chamado no trabalho?">
-
 // True quando a quantidade exige negociação manual (acima de 2.000)
 function bcSobConsulta(qtd) {
   return calcDescontoBC(qtd).modo === 'consulta';
@@ -1321,11 +1292,12 @@ window.pagarCompatibilidade = window.pagarCompatibilidade || function(){
       var vd = datas[k] ? String(datas[k].value || "").trim() : "";
       rd.push((vd && typeof converterData === "function") ? converterData(vd) : vd);
     }
-    return { nomes: rn, datas: rd };
+     return { nomes: rn, datas: rd, apelidos: [] };
   }
 
   /* ---------- configuração dos três produtos ---------- */
-  var CFG = {
+
+      var CFG = {
     casal: {
       qtd: 2, minimo: 2,
       mapa: [["casalNome1", "casalNasc1"], ["casalNome2", "casalNasc2"]],
@@ -1333,14 +1305,14 @@ window.pagarCompatibilidade = window.pagarCompatibilidade || function(){
     },
     familia: {
       qtd: 2, minimo: 1,
-      principal: ["familiaPrincipalNome", "familiaPrincipalNasc"],
-      membro: ["familiaMembroNome", "familiaMembroNasc"],
+      principal: ["familiaPrincipalNome", "familiaPrincipalNasc", "familiaPrincipalApelido"],
+      membro: ["familiaMembroNome", "familiaMembroNasc", "familiaMembroApelido"],
       extra: function () { return {}; }
     },
     compatibilidade_equipes: {
       qtd: 2, minimo: 1,
-      principal: ["equipePrincipalNome", "equipePrincipalNasc"],
-      membro: ["equipeMembroNome", "equipeMembroNasc"],
+      principal: ["equipePrincipalNome", "equipePrincipalNasc", "equipePrincipalApelido"],
+      membro: ["equipeMembroNome", "equipeMembroNasc", "equipeMembroApelido"],
       extra: function () {
         var e = (window._compEnergia && window._compEnergia !== "0") ? window._compEnergia : "8";
         return { energia: e };
@@ -1348,27 +1320,19 @@ window.pagarCompatibilidade = window.pagarCompatibilidade || function(){
     }
   };
 
-  /* ---------- coleta por IDs ---------- */
-  function _porMapa(mapa) {
-    var nomes = [], datas = [];
-    for (var i = 0; i < mapa.length; i++) {
-      nomes.push(_valor([mapa[i][0]]));
-      datas.push(_data([mapa[i][1]]));
-    }
-    return { nomes: nomes, datas: datas };
-  }
-
   function _porPrincipalMembro(principal, membro, max) {
     var nomes = [_valor([principal[0]])];
     var datas = [_data([principal[1]])];
+    var apelidos = [principal[2] ? _valor([principal[2]]).replace(/[;|]/g, "") : ""];
     for (var i = 1; i <= max; i++) {
       var n = _valor([membro[0] + i]);
       var d = _data([membro[1] + i]);
-      if (!n && !d) continue;
+      var a = membro[2] ? _valor([membro[2] + i]).replace(/[;|]/g, "") : "";
+      if (!n && !d && !a) continue;
       if (!n || !d) return { erro: "incompleto", idx: i };
-      nomes.push(n); datas.push(d);
+      nomes.push(n); datas.push(d); apelidos.push(a);
     }
-    return { nomes: nomes, datas: datas };
+    return { nomes: nomes, datas: datas, apelidos: apelidos };
   }
 
   function _faltando(r, minimo) {
@@ -1400,17 +1364,21 @@ window.pagarCompatibilidade = window.pagarCompatibilidade || function(){
     return t.preencha_dado || "Preencha os dados solicitados.";
   }
 
-  function _enviar(produto, nomes, datas, extra) {
+  function _enviar(produto, nomes, datas, extra, apelidos) {
     var lang = (typeof getLang === "function") ? getLang() : "pt";
-    var n = [], d = [];
+    var ap = apelidos || [];
+    var n = [], det = [];
     for (var i = 0; i < nomes.length; i++) {
-      if (nomes[i] && datas[i]) { n.push(nomes[i]); d.push(datas[i]); }
+      if (nomes[i] && datas[i]) {
+        n.push(nomes[i]);
+        det.push(ap[i] ? (datas[i] + ";" + ap[i]) : datas[i]);
+      }
     }
     var qs = "/criar-checkout?produto=" + encodeURIComponent(produto)
       + "&nome=" + encodeURIComponent(n[0])
-      + "&nascimento=" + encodeURIComponent(d[0])
+      + "&nascimento=" + encodeURIComponent(det[0].split(";")[0])
       + "&dado=" + encodeURIComponent(n.join("|"))
-      + "&detalhe=" + encodeURIComponent(d.join("|"))
+      + "&detalhe=" + encodeURIComponent(det.join("|"))
       + "&lang=" + encodeURIComponent(lang);
 
     var ex = extra || {};
@@ -1426,7 +1394,7 @@ window.pagarCompatibilidade = window.pagarCompatibilidade || function(){
     var cfg = CFG[produto];
     var r = _coletar(produto);
     if (_faltando(r, cfg.minimo)) { alert(_msgPreencha()); return; }
-    _enviar(produto, r.nomes, r.datas, cfg.extra());
+    _enviar(produto, r.nomes, r.datas, cfg.extra(), r.apelidos);
   }
 
   /* ---------- fachada pública ---------- */
