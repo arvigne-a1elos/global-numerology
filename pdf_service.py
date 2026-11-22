@@ -1502,12 +1502,11 @@ def _pdf_relacao(produto, dados, lang, contexto, tag):
     total = dados.get("total") or len(membros)
 
     def _celula_nome(m):
-        cel = _rel_escape(m.get("membro", ""))
+        nome = _rel_escape(m.get("membro", ""))
         ap = str(m.get("apelido") or "").strip()
-        if ap:
-            cel += "<br/><i>%s</i>" % _rel_escape(ap)
-        return cel
-
+        txt = nome if not ap else "%s<br/><i>%s</i>" % (nome, _rel_escape(ap))
+        return Paragraph(txt, _estilo("TC", fr, 9, DARK, TA_LEFT))
+        
     if membros:
         e.append(Paragraph(f"<b>{L['membros']}: {total}</b>",
                            _estilo("MT", fb, 12, GOLD, TA_LEFT, sa=LINHA * 0.6)))
@@ -1522,7 +1521,7 @@ def _pdf_relacao(produto, dados, lang, contexto, tag):
                     str(m.get("energia", "") or ""),
                     str(m.get("caminho_vida") or "—"),
                 ])
-            larguras = [185, 110, 70, 130]
+            larguras = [175, 125, 70, 125]
         else:
             linhas = [[L["membros"], L["energia"], L["vida"]]]
             for m in membros:
