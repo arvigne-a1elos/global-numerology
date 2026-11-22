@@ -1528,6 +1528,22 @@ def _pdf_relacao(produto, dados, lang, contexto, tag):
                                    _estilo("P4", fr, 9, colors.HexColor("#8a6d1f"),
                                            TA_JUSTIFY, sa=LINHA * 0.5)))
 
+            # Pontos fortes e desafios da dupla, por par
+            try:
+                from referencia import relacao_dupla as _rc_par
+                grau_par = int(comp) if comp is not None else 3
+                for tit, itens in _rc_par.bloco(grau_par, lang):
+                    e.append(Spacer(1, LINHA * 0.6))
+                    e.append(Paragraph("<b>%s</b>" % _rel_escape(tit),
+                                       _estilo("REL_FT", fb, 10, GOLD, TA_LEFT,
+                                               sa=LINHA * 0.4)))
+                    for it in itens:
+                        e.append(Paragraph("• %s" % _rel_escape(it),
+                                           _estilo("REL_FI", fr, 9, DARK, TA_JUSTIFY,
+                                                   sa=LINHA * 0.3)))
+            except Exception:
+                pass
+    
     if not membros and not pares:
         e.append(Paragraph(L["sem_dados"], _estilo("ND", fr, 10, GRAY, TA_LEFT, sa=LINHA)))
 
