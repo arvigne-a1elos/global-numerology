@@ -181,21 +181,41 @@ function pagarCasal(){
 
 // ===== FAMÍLIA: principal + até 4 membros =====
 function _coletarPares(prefixoP, prefixoM, qtdMax) {
-  var elN = document.getElementById(prefixoP + 'Nome');
-  var elD = document.getElementById(prefixoP + 'Nasc');
-  var principal = { nome: elN ? elN.value.trim() : '', nasc: elD ? converterData(elD.value.trim()) : '' };
+  function _val(id) {
+    var el = document.getElementById(id);
+    return el ? String(el.value || '').trim() : '';
+  }
+  function _apelido(id) {
+    return _val(id).replace(/[;|]/g, '').trim();
+  }
+  function _data(id) {
+    var v = _val(id);
+    return (v && typeof converterData === 'function') ? converterData(v) : v;
+  }
+
+  var principal = {
+    nome: _val(prefixoP + 'Nome'),
+    apelido: _apelido(prefixoP + 'Apelido'),
+    nasc: _data(prefixoP + 'Nasc')
+  };
   if (!principal.nome || !principal.nasc) return { erro: 'principal' };
+
   var membros = [];
   for (var i = 1; i <= qtdMax; i++) {
-    var mn = document.getElementById(prefixoM + 'Nome' + i);
-    var md = document.getElementById(prefixoM + 'Nasc' + i);
-    var vn = mn ? mn.value.trim() : '';
-    var vd = md ? converterData(md.value.trim()) : '';
-    if (!vn && !vd) continue;                    // linha vazia: ignora
-    if (!vn || !vd) return { erro: 'incompleto', idx: i };  // meia linha: bloqueia
-    membros.push({ nome: vn, nasc: vd });
+    var vn = _val(prefixoM + 'Nome' + i);
+    var vd = _data(prefixoM + 'Nasc' + i);
+    var va = _apelido(prefixoM + 'Apelido' + i);
+    if (!vn && !vd && !va) continue;
+    if (!vn || !vd) return { erro: 'incompleto', idx: i };
+    membros.push({ nome: vn, apelido: va, nasc: vd });
   }
   return { principal: principal, membros: membros };
+}
+
+function _detalheComApelido(r) {
+  return [r.principal].concat(r.membros).map(function (m) {
+    return m.apelido ? (m.nasc + ';' + m.apelido) : m.nasc;
+  }).join('|');
 }
 
 function pagarFamilia(){
@@ -207,8 +227,7 @@ function pagarFamilia(){
     return;
   }
   var dado = [r.principal.nome].concat(r.membros.map(function(m){ return m.nome; })).join('|');
-  var det  = [r.principal.nasc].concat(r.membros.map(function(m){ return m.nasc; })).join('|');
-  location.href = '/criar-checkout?produto=familia'
+  var det  = _detalheComApelido(r);
     + '&nome=' + encodeURIComponent(r.principal.nome)
     + '&nascimento=' + encodeURIComponent(r.principal.nasc)
     + '&dado=' + encodeURIComponent(dado)
@@ -225,8 +244,7 @@ function pagarCompatibilidade(){
     return;
   }
   var dado = [r.principal.nome].concat(r.membros.map(function(m){ return m.nome; })).join('|');
-  var det  = [r.principal.nasc].concat(r.membros.map(function(m){ return m.nasc; })).join('|');
-  var energia = (window._compEnergia && window._compEnergia !== '0') ? window._compEnergia : '8';
+  var det  = _detalheComApelido(r);
   location.href = '/criar-checkout?produto=compatibilidade_equipes'
     + '&nome=' + encodeURIComponent(r.principal.nome)
     + '&nascimento=' + encodeURIComponent(r.principal.nasc)
@@ -591,6 +609,35 @@ if (!cfg) {
   }
   return { modo: 'auto', pct: melhor, qtd: qtd, teto: cfg.teto_automatico };
 }
+
+    familia: {
+      qtd: 2, minimo: 1,
+      principal: ["familiaPrincipalNome", "familiaPrincipalNasc", "familiaPrincipalApelido"],
+      membro: ["familiaMembroNome", "familiaMembroNasc", "familiaMembroApelido"],
+      extra: function () { return {}; }
+    },
+<input id="familiaPrincipalApelido" type="text" maxlength="30"
+       placeholder="Como é chamado(a) em família? (Tio Tonho, Seu Antônio…)">
+<input id="familiaMembroApelido1" type="text" maxlength="30"
+       placeholder="Apelido do membro 2">
+<input id="familiaMembroApelido2" type="text" maxlength="30"
+       placeholder="Apelido do membro 3">
+
+    compatibilidade_equipes: {
+      qtd: 2, minimo: 1,
+      principal: ["equipePrincipalNome", "equipePrincipalNasc", "equipePrincipalApelido"],
+      membro: ["equipeMembroNome", "equipeMembroNasc", "equipeMembroApelido"],
+      extra: function () {
+        var e = (window._compEnergia && window._compEnergia !== "0") ? window._compEnergia : "8";
+        return { energia: e };
+      }
+    },
+<input id="equipePrincipalApelido" type="text" maxlength="30"
+       placeholder="Como é chamado no trabalho? (inclua o tratamento: Dr., Seu…)">
+<input id="equipeMembroApelido1" type="text" maxlength="30"
+       placeholder="Como é chamado no trabalho?">
+<input id="equipeMembroApelido2" type="text" maxlength="30"
+       placeholder="Como é chamado no trabalho?">
 
 // True quando a quantidade exige negociação manual (acima de 2.000)
 function bcSobConsulta(qtd) {
