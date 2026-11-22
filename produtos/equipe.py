@@ -49,17 +49,17 @@ def analisar_equipe(texto, separador="|"):
 
     pessoas = []
     for linha in linhas:
-        partes = [p.strip() for p in linha.split(";", 1)] if ";" in linha else [linha]
-        nome = partes[0]
-        nasc = partes[1] if len(partes) > 1 else ""
+        nome, apelido, nasc = _quebra(linha)
         if nasc and "/" in nasc:
             dd, mm, aa = nasc.split("/")
             nasc = f"{aa}-{mm}-{dd}"
         en, sn = _energia_nome(nome)
+        ea, sa = (_energia_nome(apelido) if apelido else (None, 0))
         ev, sv = _caminho_vida(nasc)
         pessoas.append({
-            "membro": nome, "nascimento": nasc, "soma": sn,
-            "energia": en, "caminho_vida": ev,
+            "membro": nome, "apelido": apelido, "nascimento": nasc, "soma": sn,
+            "energia": en, "energia_apelido": ea, "soma_apelido": sa,
+            "caminho_vida": ev,
             "energia_combinada": _energia_combinada(en, ev),
         })
 
