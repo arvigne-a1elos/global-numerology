@@ -1300,7 +1300,7 @@ window.pagarCompatibilidade = window.pagarCompatibilidade || function(){
       var CFG = {
     casal: {
       qtd: 2, minimo: 2,
-      mapa: [["casalNome1", "casalNasc1"], ["casalNome2", "casalNasc2"]],
+      mapa: [["casalNome1", "casalNasc1", "casalApelido1"], ["casalNome2", "casalNasc2", "casalApelido2"]],
       extra: function () { return {}; }
     },
     familia: {
