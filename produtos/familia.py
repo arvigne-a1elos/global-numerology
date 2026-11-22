@@ -87,14 +87,25 @@ def analisar_familia(texto, separador="|"):
     pares = []
     if principal:
         for m in pessoas[1:]:
-            c = compatibilidade(principal["energia_combinada"],
-                                m["energia_combinada"])
+            c = compatibilidade(principal["energia_combinada"], m["energia_combinada"])
+            ca = None
+            if principal.get("energia_combinada_apelido") and m.get("energia_combinada_apelido"):
+                ca = compatibilidade(principal["energia_combinada_apelido"],
+                                     m["energia_combinada_apelido"])
             pares.append({
                 "membro1": principal["membro"], "membro2": m["membro"],
+                "apelido1": principal.get("apelido") or "",
+                "apelido2": m.get("apelido") or "",
                 "energia1": principal["energia_combinada"],
                 "energia2": m["energia_combinada"],
                 "compatibilidade": c["grau"], "rotulo": c["rotulo"],
                 "dual": c["dual"], "alerta_dualidade": c["alerta_dualidade"],
+                "energia1_apelido": principal.get("energia_combinada_apelido"),
+                "energia2_apelido": m.get("energia_combinada_apelido"),
+                "compatibilidade_apelido": ca["grau"] if ca else None,
+                "rotulo_apelido": ca["rotulo"] if ca else "",
+                "dual_apelido": ca["dual"] if ca else "",
+                "alerta_dualidade_apelido": ca["alerta_dualidade"] if ca else "",
             })
 
     return {"principal": principal, "membros": pessoas,
