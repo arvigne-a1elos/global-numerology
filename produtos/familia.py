@@ -5,7 +5,7 @@ from .mapa import reduzir, _LETRAS, calc_mapa
 from referencia.cissay import compatibilidade
 import re
 
-_DATA = re.compile(r"^\d{1,2}[/-]\d{1,2}[/-]\d{2,4}$")
+_DATA = re.compile(r"^\d{1,4}[/-]\d{1,2}[/-]\d{1,4}$")
 
 
 def _quebra(linha):
