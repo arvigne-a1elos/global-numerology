@@ -1319,7 +1319,16 @@ window.pagarCompatibilidade = window.pagarCompatibilidade || function(){
       }
     }
   };
-
+  function _porMapa(mapa) {
+    var nomes = [], datas = [], apelidos = [];
+    for (var i = 0; i < mapa.length; i++) {
+      nomes.push(_valor([mapa[i][0]]));
+      datas.push(_data([mapa[i][1]]));
+      apelidos.push(mapa[i][2] ? _valor([mapa[i][2]]).replace(/[;|]/g, "") : "");
+    }
+    return { nomes: nomes, datas: datas, apelidos: apelidos };
+  }
+    
   function _porPrincipalMembro(principal, membro, max) {
     var nomes = [_valor([principal[0]])];
     var datas = [_data([principal[1]])];
