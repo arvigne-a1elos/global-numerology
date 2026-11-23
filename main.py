@@ -1344,12 +1344,8 @@ def regenerar_pdf_por_meta(meta):
         except Exception as _e:
             logger.error("pdf_service direto %s: %s", prod, _e)
         if not (pf and os.path.exists(pf)):
-            pf = gerar_pdf(prod, data, lang, nome_exib, bd, dado=dado)
-    else:
-        pf = gerar_pdf(prod, data, lang, nome_exib, bd, dado=dado,
-                       dado2=dado2, dado3=dado3,
-                       energia=energia, tipo=meta.get("subtipo", ""),
-                       sexo=sexo)
+            logger.error("fallback generico em %s", prod)
+            pf = gerar_pdf(prod, data, lang, nome_exib, bd, dado=dado) 
     return pf
     
 @app.get("/api/pay/urna-success")
