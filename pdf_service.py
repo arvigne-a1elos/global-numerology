@@ -1358,6 +1358,44 @@ TITULOS_EXTRA = {
     "ar": {"compatibilidade_equipes": "توافق الفريق"},
 }
 
+from reportlab.pdfgen import canvas as _rl_canvas
+
+
+class _NumCanvas(_rl_canvas.Canvas):
+    """Numera 'N de TOTAL' no rodapé."""
+
+    def __init__(self, *args, **kwargs):
+        _rl_canvas.Canvas.__init__(self, *args, **kwargs)
+        self._estados = []
+
+    def showPage(self):
+        self._estados.append(dict(self.__dict__))
+        self._startPage()
+
+    def save(self):
+        total = len(self._estados)
+        for st in self._estados:
+            self.__dict__.update(st)
+            self.setFont(FONTE, 7)
+            self.setFillColor(GOLD)
+            self.drawRightString(A4[0] - 50, 22, "%d de %d" % (self._pageNumber, total))
+            _rl_canvas.Canvas.showPage(self)
+        _rl_canvas.Canvas.save(self)
+
+
+def _cabecalho_rel(canvas, doc):
+    """Marca d'água e assinatura, SEM número — o número vem do _NumCanvas."""
+    canvas.saveState()
+    canvas.setFillColor(GOLD)
+    canvas.setFillAlpha(0.15)
+    canvas.setFont(FONTE, 58)
+    canvas.drawCentredString(A4[0] / 2.0, A4[1] / 2.0, "A1ELOS")
+    canvas.setFillAlpha(1.0)
+    canvas.setFont(FONTE, 7)
+    canvas.setFillColor(GOLD)
+    canvas.drawString(50, 22, "A1ELOS Assessoria e Consultoria")
+    canvas.restoreState()
+
 def _rel_abre(produto, lang):
     _fr, _fb = fonte_para(lang)
     bruto = (PRODUTOS.get(lang, PRODUTOS["pt"]).get(produto)
@@ -1390,12 +1428,12 @@ def _rel_tabela(linhas, larguras, fr):
     return tbl
 def _rel_fecha(doc, e, lang, fr):
     T = PDF_TEXTS.get(lang, PDF_TEXTS["pt"])
-    e.append(Spacer(1, LINHA))
+    e.append(Spacer(1, LINHA * 1.5))
     e.append(Paragraph(T.get("entrega", ""), _estilo("J", fr, 8, GRAY, TA_CENTER, sa=6)))
     e.append(Paragraph("© A1ELOS Assessoria e Consultoria",
                        _estilo("F", fr, 8, GRAY, TA_CENTER)))
-    doc.build(e, onFirstPage=_cabecalho_pagina, onLaterPages=_cabecalho_pagina)
-
+    doc.build(e, onFirstPage=_cabecalho_rel, onLaterPages=_cabecalho_rel,
+              canvasmaker=_NumCanvas)
 # ---------- CASAL ----------
 def pdf_casal(dados, lang="pt"):
     lang = lang or "pt"
@@ -1529,6 +1567,16 @@ _L_BLOCO = {
            "Tóm tắt so sánh", "Tên gọi"),
 }
 
+def _rel_separador(e, titulo, fb):
+    e.append(Spacer(1, LINHA * 2))
+    tbl = Table([[""]], colWidths=[495], rowHeights=[1])
+    tbl.setStyle(TableStyle([("BACKGROUND", (0, 0), (-1, -1), GOLD),
+                             ("TOPPADDING", (0, 0), (-1, -1), 0),
+                             ("BOTTOMPADDING", (0, 0), (-1, -1), 0)]))
+    e.append(tbl)
+    e.append(Spacer(1, LINHA))
+    e.append(Paragraph(_rel_escape(titulo),
+                       _estilo("BLK", fb, 13, GOLD, TA_LEFT, sa=LINHA * 0.5)))
 
 # ---------- FAMÍLIA / EQUIPES ----------
 def _pdf_relacao(produto, dados, lang, contexto, tag):
@@ -1571,8 +1619,8 @@ def _pdf_relacao(produto, dados, lang, contexto, tag):
 
     # ===== BLOCO 1 — NOME COMPLETO =====
     if membros:
-        e.append(PageBreak())
-        e.append(Paragraph(_rel_escape(_b_nome), _estilo("B1", fb, 15, GOLD, TA_LEFT, sa=LINHA * 0.5)))
+        e.append(Spacer(1, LINHA * 1.5))
+        e.append(Paragraph(_rel_escape(_b_nome), _estilo("B1", fb, 14, GOLD, TA_LEFT, sa=LINHA * 0.5)))
         e.append(Paragraph(f"{L['membros']}: {total}", _estilo("MT", fb, 11, DARK, TA_LEFT, sa=LINHA * 0.5)))
         if tem_papel:
             linhas = [[L["membros"], L["papel"], L["energia"], L["vida"]]]
@@ -1625,8 +1673,7 @@ def _pdf_relacao(produto, dados, lang, contexto, tag):
 
     # ===== BLOCO 2 — APELIDO =====
     if any(str(m.get("apelido") or "").strip() for m in membros):
-        e.append(PageBreak())
-        e.append(Paragraph(_rel_escape(_b_apel), _estilo("B2", fb, 15, GOLD, TA_LEFT, sa=LINHA * 0.5)))
+        _rel_separador(e, _b_apel, fb)
         e.append(Paragraph(f"{L['membros']}: {total}", _estilo("MT2", fb, 11, DARK, TA_LEFT, sa=LINHA * 0.5)))
         if tem_papel:
             linhas = [[_lbl_apel, L["papel"], L["energia"], L["vida"]]]
@@ -1690,8 +1737,7 @@ def _pdf_relacao(produto, dados, lang, contexto, tag):
                              str(p.get("compatibilidade")) if p.get("compatibilidade") is not None else "—",
                              str(p.get("compatibilidade_apelido")) if p.get("compatibilidade_apelido") is not None else "—"])
         if len(linhas_s) > 1:
-            e.append(Spacer(1, LINHA))
-            e.append(Paragraph(_rel_escape(_b_sint), _estilo("B3", fb, 13, GOLD, TA_LEFT, sa=LINHA * 0.5)))
+            _rel_separador(e, _b_sint, fb)
             e.append(_rel_tabela(linhas_s, [235, 130, 130], fr))
 
     if not membros and not pares:
