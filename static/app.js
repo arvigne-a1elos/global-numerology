@@ -616,23 +616,16 @@ function bcSobConsulta(qtd) {
 }
 function precoUnitarioBC(id) {
   var lang = (typeof getLang === 'function') ? getLang() : 'pt';
-  var faixa = (typeof PRODUTO_FAIXA !== 'undefined' && PRODUTO_FAIXA[id] !== undefined) ? PRODUTO_FAIXA[id] : null;
-  if (faixa === null || faixa === undefined) return 0;
-  var servidor = (typeof PRECO_VALORES !== 'undefined' && PRECO_VALORES[lang]);
-  var base = servidor ? PRECO_VALORES[lang]
+  var faixa = (typeof PRODUTO_FAIXA !== 'undefined' && PRODUTO_FAIXA[id] !== undefined)
+            ? PRODUTO_FAIXA[id] : null;
+  if (faixa === null) return 0;
+
+  var base = (typeof PRECO_VALORES !== 'undefined' && PRECO_VALORES[lang])
+           ? PRECO_VALORES[lang]
            : (typeof PRECO_BASE !== 'undefined' ? (PRECO_BASE[lang] || PRECO_BASE.pt) : null);
   if (!base) return 0;
-  var unit = parseInt(base[faixa], 10) || 0;
-  if (servidor) unit = Math.round(unit / 100);
-  return unit;
-}
-function usarPlanoPronto(qExpress, qVida, qIa, qCompleto) {
-  var mapa = { express: qExpress, vida: qVida, ia: qIa, completo: qCompleto };
-  document.querySelectorAll("#bcTabelaCorpo input[data-prod]").forEach(function(inp) {
-    var prod = inp.getAttribute("data-prod");
-    inp.value = mapa[prod] || 0;
-  });
-  atualizarResumoBC();
+
+  return valorMaior(lang, base[faixa]);
 }
 // ===== CALCULADORA GRATUITA (5 números) =====
 function r1Num(n) {
@@ -987,12 +980,26 @@ if (document.readyState === "loading") {
   iniciarSeguro();
 }
 
-// ===== ATUALIZAR PREÇOS DOS CARDS — FONTE ÚNICA: /api/precos =====
-// Busca a tabela de referência do servidor (referencia/precos.py).
-// Não altera a tabela; apenas lê dela. Respeita moeda local.
-function formatarValor(centavos) {
-  var v = (centavos / 100).toFixed(0);
-  return v.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+// ===== MOEDA: unidades menores → unidades maiores =====
+// Espelho de referencia/precos.py. 0 casas: JPY, IDR, VND.
+var _CASAS_LOCAL = { ja: 0, id: 0, vi: 0 };
+
+function casasMoeda(lang) {
+  var mapa = window.PRECO_CASAS || _CASAS_LOCAL;
+  var c = mapa[lang];
+  return (typeof c === 'number') ? c : 2;
+}
+
+// Converte o valor da tabela (o que o Stripe cobra) para o valor exibido.
+function valorMaior(lang, valorTabela) {
+  var n = parseInt(valorTabela, 10) || 0;
+  var casas = casasMoeda(lang);
+  return casas === 0 ? n : Math.round(n / Math.pow(10, casas));
+}
+
+function formatarValor(lang, valorTabela) {
+  return String(valorMaior(lang, valorTabela))
+    .replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 }
 
 // ===== SOMAR SOB MEDIDA NA MOEDA DO IDIOMA =====
@@ -1008,7 +1015,7 @@ function atualizarSomaSobMedida(lang, precos) {
     var el = sel[i];
     var faixa = parseInt(el.getAttribute('data-preco') || el.getAttribute('data-faixa'), 10);
     if (!isNaN(faixa) && precos[faixa]) {
-      soma += parseInt(precos[faixa], 10);
+      soma += valorMaior(lang, precos[faixa]);
     }
   }
   var alvo = document.getElementById('soma-sob-medida');
@@ -1018,39 +1025,55 @@ function atualizarSomaSobMedida(lang, precos) {
 function atualizarPrecos() {
   var lang = getLang();
   var t = translations[lang] || translations.pt;
-  // Se os dados ainda não chegaram do servidor, sai sem erro.
-  // O fetch('/api/precos') no final do arquivo chama atualizarPrecos() de novo quando chegar.
-  if (typeof PRECO_VALORES === 'undefined' || typeof PRODUTO_FAIXA === 'undefined') return;
-  var precos = PRECO_VALORES[lang] || PRECO_VALORES.pt;
+
+  if (typeof PRODUTO_FAIXA === 'undefined') return;
+
+  var precos  = (typeof PRECO_VALORES !== 'undefined' && PRECO_VALORES[lang]) || null;
+  var display = (window.PRECO_DISPLAY && (window.PRECO_DISPLAY[lang] || window.PRECO_DISPLAY.pt)) || null;
   var simbolo = (typeof SIMBOLO !== 'undefined' && SIMBOLO[lang]) ? SIMBOLO[lang] : 'R$';
-  if (!precos) return;
+
+  if (!precos && !display) return;
+
   var cards = document.querySelectorAll('.product-card[data-prod]');
   for (var i = 0; i < cards.length; i++) {
     var prod = cards[i].getAttribute('data-prod');
     var el = cards[i].querySelector('.prod-preco');
     if (!el) continue;
+
     if (prod === 'coletivo') {
       el.textContent = t.sob_consulta || 'Sob consulta';
       continue;
     }
+
     var faixa = PRODUTO_FAIXA[prod];
-    if (typeof faixa === 'undefined' || !precos[faixa]) continue;
-    el.textContent = simbolo + ' ' + formatarValor(precos[faixa]);
+    if (typeof faixa === 'undefined') continue;
+
+    // O servidor já manda o texto pronto. Só calculamos se ele faltar.
+    var txt = display && display[faixa];
+    if (!txt) {
+      if (!precos || !precos[faixa]) continue;
+      txt = simbolo + ' ' + formatarValor(lang, precos[faixa]);
+    }
+    el.textContent = txt;
   }
+
   try {
-    if (typeof atualizarSomaSobMedida === 'function') {
+    if (typeof atualizarSomaSobMedida === 'function' && precos) {
       atualizarSomaSobMedida(lang, precos);
     }
   } catch (err) {
     console.error('[A1ELOS] erro em atualizarSomaSobMedida:', err);
   }
 }
+
 // ===== CARREGA PREÇOS DO SERVIDOR (fonte única: /api/precos) =====
 fetch('/api/precos')
   .then(function(r){ if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
   .then(function(d){
     window.PRECO_VALORES = d.valores || {};
-    window.SIMBOLO = d.simbolo || {};
+    window.PRECO_DISPLAY = d.display || {};
+    window.PRECO_CASAS   = d.casas   || {};
+    window.SIMBOLO       = d.simbolo || {};
     if (d.faixa) window.PRODUTO_FAIXA = d.faixa;
     if (typeof atualizarPrecos === 'function') atualizarPrecos();
   })
