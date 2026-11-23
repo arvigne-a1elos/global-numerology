@@ -1388,41 +1388,6 @@ def _rel_tabela(linhas, larguras, fr):
         ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
     ]))
     return tbl
-
-    comp_a = dados.get("compatibilidade_apelido")
-    ap1 = (dados.get("apelido1") or "").strip()
-    ap2 = (dados.get("apelido2") or "").strip()
-    if comp_a is not None and ap1 and ap2:
-        _b_nome_c, _b_apel_c, _b_sint_c, _lbl_apel_c = _L_BLOCO.get(lang) or _L_BLOCO["pt"]
-        e.append(PageBreak())
-        e.append(Paragraph(_rel_escape(_b_apel_c), _estilo("CB2", fb, 15, GOLD, TA_LEFT, sa=LINHA * 0.5)))
-        linhas = [[_lbl_apel_c, L["energia"], L["nasc"]]]
-        for nm, en in ((ap1, dados.get("numero1_apelido")), (ap2, dados.get("numero2_apelido"))):
-            linhas.append([_rel_escape(nm), str(en or "—"), ""])
-        e.append(_rel_tabela(linhas, [235, 80, 180], fr))
-        e.append(Spacer(1, LINHA))
-        e.append(Paragraph("<b>%s: %s</b> — %s" % (
-            L["compat"], comp_a, _rel_escape(_rel_grau(comp_a, lang))),
-            _estilo("CB3", fb, 12, GOLD, TA_LEFT, sa=LINHA * 0.6)))
-        lt = get_compat(comp_a, "casal", lang)
-        if lt:
-            e.append(Paragraph(_rel_escape(lt), _estilo("CB4", fr, 11, DARK, TA_JUSTIFY, sa=LINHA * 0.6)))
-        dl = get_dual(comp_a, "casal", lang)
-        if dl:
-            e.append(Paragraph(_rel_escape(dl),
-                               _estilo("CB5", fr, 10, colors.HexColor("#8a6d1f"), TA_JUSTIFY, sa=LINHA)))
-        try:
-            from referencia import relacao_dupla as _rc_c
-            for tit, itens in _rc_c.bloco(int(comp_a), lang):
-                e.append(Spacer(1, LINHA * 0.8))
-                e.append(Paragraph("<b>%s</b>" % _rel_escape(tit),
-                                   _estilo("CBF", fb, 11, GOLD, TA_LEFT, sa=LINHA * 0.5)))
-                for it in itens:
-                    e.append(Paragraph("• %s" % _rel_escape(it),
-                                       _estilo("CBI", fr, 10, DARK, TA_JUSTIFY, sa=LINHA * 0.35)))
-        except Exception:
-            pass
-
 def _rel_fecha(doc, e, lang, fr):
     T = PDF_TEXTS.get(lang, PDF_TEXTS["pt"])
     e.append(Spacer(1, LINHA))
@@ -1500,6 +1465,39 @@ def pdf_casal(dados, lang="pt"):
             pass
     else:
         e.append(Paragraph(L["sem_dados"], _estilo("ND", fr, 10, GRAY, TA_LEFT, sa=LINHA)))
+    comp_a = dados.get("compatibilidade_apelido")
+    ap1 = (dados.get("apelido1") or "").strip()
+    ap2 = (dados.get("apelido2") or "").strip()
+    if comp_a is not None and ap1 and ap2:
+        _bn, _ba, _bs, _la = _L_BLOCO.get(lang) or _L_BLOCO["pt"]
+        e.append(PageBreak())
+        e.append(Paragraph(_rel_escape(_ba), _estilo("CB2", fb, 15, GOLD, TA_LEFT, sa=LINHA * 0.5)))
+        linhas = [[_la, L["energia"], L["nasc"]]]
+        for nm, en in ((ap1, dados.get("numero1_apelido")), (ap2, dados.get("numero2_apelido"))):
+            linhas.append([_rel_escape(nm), str(en or "—"), ""])
+        e.append(_rel_tabela(linhas, [235, 80, 180], fr))
+        e.append(Spacer(1, LINHA))
+        e.append(Paragraph("<b>%s: %s</b> — %s" % (
+            L["compat"], comp_a, _rel_escape(_rel_grau(comp_a, lang))),
+            _estilo("CB3", fb, 12, GOLD, TA_LEFT, sa=LINHA * 0.6)))
+        lt = get_compat(comp_a, "casal", lang)
+        if lt:
+            e.append(Paragraph(_rel_escape(lt), _estilo("CB4", fr, 11, DARK, TA_JUSTIFY, sa=LINHA * 0.6)))
+        dl = get_dual(comp_a, "casal", lang)
+        if dl:
+            e.append(Paragraph(_rel_escape(dl),
+                               _estilo("CB5", fr, 10, colors.HexColor("#8a6d1f"), TA_JUSTIFY, sa=LINHA)))
+        try:
+            from referencia import relacao_dupla as _rc_c
+            for tit, itens in _rc_c.bloco(int(comp_a), lang):
+                e.append(Spacer(1, LINHA * 0.8))
+                e.append(Paragraph("<b>%s</b>" % _rel_escape(tit),
+                                   _estilo("CBF", fb, 11, GOLD, TA_LEFT, sa=LINHA * 0.5)))
+                for it in itens:
+                    e.append(Paragraph("• %s" % _rel_escape(it),
+                                       _estilo("CBI", fr, 10, DARK, TA_JUSTIFY, sa=LINHA * 0.35)))
+        except Exception:
+            pass
 
     _rel_fecha(doc, e, lang, fr)
     return path
