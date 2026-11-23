@@ -106,6 +106,7 @@ def analisar_familia(texto, separador="|"):
         }
 
     pares = [_par(a, b) for a, b in combinations(pessoas, 2)]
-
+    principal = pessoas[0] if pessoas else None
+    
     return {"principal": principal, "membros": pessoas,
             "total": len(pessoas), "pares": pares}
