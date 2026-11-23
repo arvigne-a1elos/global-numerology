@@ -1388,18 +1388,44 @@ class _NumCanvas(_rl_canvas.Canvas):
             _rl_canvas.Canvas.showPage(self)
         _rl_canvas.Canvas.save(self)
 
-def _cabecalho_rel(canvas, doc):
-    """Marca d'água e assinatura, SEM número — o número vem do _NumCanvas."""
+def _cabecalho_rel(canvas, doc, entrega=""):
+    """Marca d'água, assinatura, fecho e copyright — fixos no rodapé.
+
+    O fecho NÃO é flowable: assim não gera página órfã quando o conteúdo
+    termina no fim da última folha.
+    """
     canvas.saveState()
     canvas.setFillColor(GOLD)
     canvas.setFillAlpha(0.15)
     canvas.setFont(FONTE, 58)
     canvas.drawCentredString(A4[0] / 2.0, A4[1] / 2.0, "A1ELOS")
     canvas.setFillAlpha(1.0)
-    canvas.setFont(FONTE, 7)
     canvas.setFillColor(GOLD)
+    canvas.setFont(FONTE, 7)
     canvas.drawString(50, 22, "A1ELOS Assessoria e Consultoria")
+    canvas.setFont(FONTE, 6.5)
+    canvas.setFillColor(GRAY)
+    if entrega:
+        canvas.drawCentredString(A4[0] / 2.0, 38, entrega)
+    canvas.drawCentredString(A4[0] / 2.0, 29, "© A1ELOS Assessoria e Consultoria")
     canvas.restoreState()
+
+_L_SINT = {
+    "pt": ("Nome completo", "Nome de uso"),
+    "en": ("Full name", "Name in use"),
+    "es": ("Nombre completo", "Nombre de uso"),
+    "it": ("Nome completo", "Nome d'uso"),
+    "fr": ("Nom complet", "Nom d'usage"),
+    "de": ("Voller Name", "Rufname"),
+    "ja": ("本名", "呼び名"),
+    "zh": ("全名", "称呼名"),
+    "ru": ("Полное имя", "Имя в обиходе"),
+    "he": ("שם מלא", "שם בשימוש"),
+    "ar": ("الاسم الكامل", "الاسم المتداول"),
+    "id": ("Nama lengkap", "Nama panggilan"),
+    "tr": ("Tam ad", "Kullanılan ad"),
+    "vi": ("Họ tên đầy đủ", "Tên gọi"),
+}
 
 def _rel_separador(e, titulo, fb):
     """Traço dourado + título. Substitui a quebra de página entre blocos."""
@@ -1446,11 +1472,12 @@ def _rel_tabela(linhas, larguras, fr):
     
 def _rel_fecha(doc, e, lang, fr):
     T = PDF_TEXTS.get(lang, PDF_TEXTS["pt"])
-    e.append(Spacer(1, LINHA * 1.5))
-    e.append(Paragraph(T.get("entrega", ""), _estilo("J", fr, 8, GRAY, TA_CENTER, sa=6)))
-    e.append(Paragraph("© A1ELOS Assessoria e Consultoria",
-                       _estilo("F", fr, 8, GRAY, TA_CENTER)))
-    doc.build(e, onFirstPage=_cabecalho_rel, onLaterPages=_cabecalho_rel,
+    entrega = T.get("entrega", "")
+
+    def _pagina(canvas, doc_):
+        _cabecalho_rel(canvas, doc_, entrega)
+
+    doc.build(e, onFirstPage=_pagina, onLaterPages=_pagina,
               canvasmaker=_NumCanvas)
     
 # ---------- CASAL ----------
@@ -1800,8 +1827,8 @@ def _pdf_relacao(produto, dados, lang, contexto, tag):
             e.append(Spacer(1, LINHA * 0.7))
 
         # ===== BLOCO 3 — SÍNTESE =====
-        linhas_s = [[L["pares"], _b_nome, _b_apel]]
-        for p in pares:
+        _l_nome, _l_uso = _L_SINT.get(lang) or _L_SINT["pt"]
+        linhas_s = [[L["pares"], _l_nome, _l_uso]]
             ap1 = (p.get("apelido1") or "").strip()
             ap2 = (p.get("apelido2") or "").strip()
             rot = "%s × %s" % (ap1 or p.get("membro1", ""), ap2 or p.get("membro2", ""))
