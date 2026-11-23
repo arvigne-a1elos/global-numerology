@@ -1384,7 +1384,7 @@ class _NumCanvas(_rl_canvas.Canvas):
             self.__dict__.update(st)
             self.setFont(FONTE, 7)
             self.setFillColor(GOLD)
-            self.drawRightString(A4[0] - 50, 22, "%d de %d" % (self._pageNumber, total))
+            self.drawRightString(A4[0] - 50, 22, "%d %s %d" % (self._pageNumber, _PAG_DE.get(_LANG_PAG, "de"), total))
             _rl_canvas.Canvas.showPage(self)
         _rl_canvas.Canvas.save(self)
 
@@ -1469,13 +1469,24 @@ def _rel_tabela(linhas, larguras, fr):
         ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
     ]))
     return tbl
-    
+
+# Rótulo de paginação por idioma — 23/11/2026
+_LANG_PAG = "pt"
+_PAG_DE = {
+    "pt": "de", "en": "of", "es": "de", "it": "di", "fr": "sur",
+    "de": "von", "ja": "/", "zh": "/", "ru": "из", "id": "dari",
+    "tr": "/", "vi": "/", "he": "מתוך", "ar": "من",
+}
+
 def _rel_fecha(doc, e, lang, fr):
     T = PDF_TEXTS.get(lang, PDF_TEXTS["pt"])
     entrega = T.get("entrega", "")
 
     def _pagina(canvas, doc_):
         _cabecalho_rel(canvas, doc_, entrega)
+
+    global _LANG_PAG
+    _LANG_PAG = lang
 
     doc.build(e, onFirstPage=_pagina, onLaterPages=_pagina,
               canvasmaker=_NumCanvas)
