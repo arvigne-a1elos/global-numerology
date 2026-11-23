@@ -59,7 +59,7 @@ for rel in VIGIADOS:
                     continue
                 if not re.search(regex, linha):
                     continue
-                if RECEBE_API.search(linha):
+                if RECEBE_API.search(linha):               
                     continue
                 problemas.append(
                     "  %s:%d  %s\n     %s" % (rel, n, desc, linha.strip()[:88]))
