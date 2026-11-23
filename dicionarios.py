@@ -3921,6 +3921,78 @@ COMPAT_TXT_EQUIPE = {
         "acordo": "In the team, the pace is compatible. Cooperation is natural and the group tends to deliver well when goals are aligned.",
         "acordo_perfeito": "In the team, the combination is high performance: each amplifies the other and the result exceeds the sum of the parts.",
     },
+    "es": {
+        "dissonancia": "En el ambiente laboral, las energías chocan. La divergencia de ritmo y de método exige roles claros para que el trabajo avance.",
+        "media": "En el equipo, la colaboración funciona por ciclos: hay sinergia en los proyectos y roce en la rutina. Los roles definidos resuelven la mayor parte.",
+        "acordo": "En el equipo, el ritmo es compatible. Hay cooperación natural y el grupo tiende a entregar bien cuando los objetivos están alineados.",
+        "acordo_perfeito": "En el equipo, la combinación es de alto rendimiento: uno potencia al otro y el resultado supera la suma de las partes."
+    },
+    "it": {
+        "dissonancia": "Nell'ambiente di lavoro le energie si scontrano. La differenza di ritmo e di metodo richiede ruoli chiari perché il lavoro proceda.",
+        "media": "Nella squadra, la collaborazione funziona a cicli: c'è sinergia nei progetti e attrito nella routine. I ruoli definiti risolvono la maggior parte.",
+        "acordo": "Nella squadra, il ritmo è compatibile. C'è cooperazione naturale e il gruppo tende a rendere bene quando gli obiettivi sono allineati.",
+        "acordo_perfeito": "Nella squadra, la combinazione è ad alte prestazioni: uno potenzia l'altro e il risultato supera la somma delle parti."
+    },
+    "fr": {
+        "dissonancia": "Dans l'environnement de travail, les énergies s'affrontent. La divergence de rythme et de méthode exige des rôles clairs pour que le travail avance.",
+        "media": "Dans l'équipe, la collaboration fonctionne par cycles : il y a synergie sur les projets et friction dans la routine. Des rôles définis règlent l'essentiel.",
+        "acordo": "Dans l'équipe, le rythme est compatible. La coopération est naturelle et le groupe livre bien quand les objectifs sont alignés.",
+        "acordo_perfeito": "Dans l'équipe, la combinaison est performante : chacun amplifie l'autre et le résultat dépasse la somme des parties."
+    },
+    "de": {
+        "dissonancia": "Im Arbeitsumfeld prallen die Energien aufeinander. Unterschiedliches Tempo und unterschiedliche Methoden verlangen klare Rollen, damit die Arbeit vorankommt.",
+        "media": "Im Team funktioniert Zusammenarbeit in Zyklen: Synergie bei Projekten, Reibung im Alltag. Klare Rollen lösen das meiste.",
+        "acordo": "Im Team ist das Tempo stimmig. Es gibt natürliche Kooperation, und die Gruppe liefert gut, wenn die Ziele abgestimmt sind.",
+        "acordo_perfeito": "Im Team ist die Kombination hochleistungsfähig: Einer verstärkt den anderen, und das Ergebnis übertrifft die Summe der Teile."
+    },
+    "ja": {
+        "dissonancia": "職場ではエネルギーがぶつかり合います。リズムと方法の違いは、仕事を前に進めるために明確な役割を必要とします。",
+        "media": "チーム内の協力は循環します。プロジェクトでは相乗効果があり、日常では摩擦が生じます。役割を明確にすれば大半は解決します。",
+        "acordo": "チームのリズムは適合しています。自然な協力があり、目標が揃えばグループはよく成果を出します。",
+        "acordo_perfeito": "チームの組み合わせは高性能です。互いを高め合い、成果は部分の総和を超えます。"
+    },
+    "zh": {
+        "dissonancia": "职场中能量相互碰撞。节奏与方法的差异需要明确的角色分工，工作才能推进。",
+        "media": "团队协作呈周期性：项目中有协同，日常中有摩擦。明确角色可解决大部分问题。",
+        "acordo": "团队节奏契合。合作自然，目标一致时团队往往交付良好。",
+        "acordo_perfeito": "团队组合高效：彼此放大，成果超过部分之和。"
+    },
+    "ru": {
+        "dissonancia": "В рабочей среде энергии сталкиваются. Разница в темпе и методе требует чётких ролей, чтобы работа продвигалась.",
+        "media": "В команде сотрудничество идёт циклами: есть синергия в проектах и трение в рутине. Чёткие роли решают большую часть.",
+        "acordo": "В команде совместимый ритм. Есть естественное сотрудничество, и группа хорошо работает при согласованных целях.",
+        "acordo_perfeito": "В команде сочетание высокоэффективно: один усиливает другого, и результат превосходит сумму частей."
+    },
+    "id": {
+        "dissonancia": "Di lingkungan kerja, energi saling berbenturan. Perbedaan ritme dan metode menuntut peran yang jelas agar pekerjaan berjalan.",
+        "media": "Dalam tim, kolaborasi bekerja dalam siklus: ada sinergi dalam proyek dan gesekan dalam rutinitas. Peran yang jelas menyelesaikan sebagian besar.",
+        "acordo": "Dalam tim, ritmenya cocok. Ada kerja sama alami dan kelompok cenderung bekerja baik saat tujuan selaras.",
+        "acordo_perfeito": "Dalam tim, kombinasinya berperforma tinggi: satu memperkuat yang lain dan hasilnya melampaui jumlah bagiannya."
+    },
+    "tr": {
+        "dissonancia": "İş ortamında enerjiler çatışır. Ritim ve yöntem farklılığı, işin ilerlemesi için net roller gerektirir.",
+        "media": "Ekipte işbirliği döngülerle işler: projelerde sinerji, rutinde sürtüşme vardır. Net roller çoğunu çözer.",
+        "acordo": "Ekipte ritim uyumlu. Doğal bir işbirliği var ve hedefler hizalıyken grup iyi teslim eder.",
+        "acordo_perfeito": "Ekipte kombinasyon yüksek performanslı: biri diğerini güçlendirir ve sonuç parçaların toplamını aşar."
+    },
+    "vi": {
+        "dissonancia": "Trong môi trường làm việc, các nguồn năng lượng xung đột. Khác biệt về nhịp độ và phương pháp đòi hỏi vai trò rõ ràng để công việc tiến triển.",
+        "media": "Trong đội, sự hợp tác vận hành theo chu kỳ: có cộng hưởng trong dự án và ma sát trong công việc thường ngày. Vai trò rõ ràng giải quyết phần lớn.",
+        "acordo": "Trong đội, nhịp độ tương thích. Có sự hợp tác tự nhiên và nhóm thường hoàn thành tốt khi mục tiêu đồng nhất.",
+        "acordo_perfeito": "Trong đội, sự kết hợp có hiệu suất cao: mỗi người khuếch đại người kia và kết quả vượt tổng các phần."
+    },
+    "he": {
+        "dissonancia": "בסביבת העבודה האנרגיות מתנגשות. פער בקצב ובשיטה דורש תפקידים ברורים כדי שהעבודה תתקדם.",
+        "media": "בצוות, שיתוף הפעולה פועל במחזורים: יש סינרגיה בפרויקטים וחיכוך בשגרה. תפקידים מוגדרים פותרים את רוב זה.",
+        "acordo": "בצוות הקצב תואם. יש שיתוף פעולה טבעי והקבוצה נוטה לספק היטב כשהמטרות מיושרות.",
+        "acordo_perfeito": "בצוות השילוב בעל ביצועים גבוהים: כל אחד מעצים את האחר והתוצאה עולה על סכום החלקים."
+    },
+    "ar": {
+        "dissonancia": "في بيئة العمل تتصادم الطاقات. اختلاف الإيقاع والأسلوب يتطلب أدوارًا واضحة حتى يسير العمل.",
+        "media": "في الفريق، يعمل التعاون بدورات: هناك تناغم في المشاريع واحتكاك في الروتين. الأدوار المحددة تحل معظم ذلك.",
+        "acordo": "في الفريق، الإيقاع متوافق. هناك تعاون طبيعي ويميل الفريق إلى الأداء الجيد عندما تكون الأهداف متوافقة.",
+        "acordo_perfeito": "في الفريق، التركيبة عالية الأداء: كل طرف يعزز الآخر والنتيجة تتجاوز مجموع الأجزاء."
+    },
 }
 
 _COMPAT_MAPA = {
