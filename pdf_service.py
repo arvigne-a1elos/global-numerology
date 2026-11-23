@@ -1788,7 +1788,6 @@ def _pdf_relacao(produto, dados, lang, contexto, tag):
             larguras = [265, 85, 145]
         e.append(_rel_tabela(linhas, larguras, fr))
         e.append(Spacer(1, LINHA))
-
         for p in pares:
             ap1 = (p.get("apelido1") or "").strip()
             ap2 = (p.get("apelido2") or "").strip()
@@ -1829,6 +1828,7 @@ def _pdf_relacao(produto, dados, lang, contexto, tag):
         # ===== BLOCO 3 — SÍNTESE =====
         _l_nome, _l_uso = _L_SINT.get(lang) or _L_SINT["pt"]
         linhas_s = [[L["pares"], _l_nome, _l_uso]]
+        for p in pares:
             ap1 = (p.get("apelido1") or "").strip()
             ap2 = (p.get("apelido2") or "").strip()
             rot = "%s × %s" % (ap1 or p.get("membro1", ""), ap2 or p.get("membro2", ""))
