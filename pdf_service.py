@@ -1826,36 +1826,6 @@ def _pdf_relacao(produto, dados, lang, contexto, tag):
         e.append(_rel_tabela(linhas, larguras, fr))
         e.append(Spacer(1, LINHA))
 
-    for p in pares:
-        comp = p.get("compatibilidade")
-        e.append(Paragraph("<b>%s × %s</b>" % (_rel_escape(str(p.get("membro1", ""))),
-                                               _rel_escape(str(p.get("membro2", "")))),
-                           _estilo("P1", fb, 11, DARK, TA_LEFT, sa=2)))
-        e.append(Paragraph("%s: <b>%s</b> — %s" % (
-            L["compat"], comp if comp is not None else "—",
-            _rel_escape(_rel_grau(comp, lang) if comp is not None else "")),
-            _estilo("P2", fr, 10, DARK, TA_LEFT, sa=2)))
-        leitura = get_compat(comp, contexto, lang)
-        if leitura:
-            e.append(Paragraph(_rel_escape(leitura), _estilo("P3", fr, 9, DARK, TA_JUSTIFY, sa=2)))
-        dual = get_dual(comp, contexto, lang)
-        if dual:
-            e.append(Paragraph(_rel_escape(dual),
-                               _estilo("P4", fr, 9, colors.HexColor("#8a6d1f"), TA_JUSTIFY, sa=LINHA * 0.4)))
-        if comp is not None:
-            try:
-                from referencia import relacao_dupla as _rc1
-                for tit, itens in _rc1.bloco(int(comp), lang):
-                    e.append(Spacer(1, LINHA * 0.5))
-                    e.append(Paragraph("<b>%s</b>" % _rel_escape(tit),
-                                       _estilo("RF1", fb, 10, GOLD, TA_LEFT, sa=LINHA * 0.3)))
-                    for it in itens:
-                        e.append(Paragraph("• %s" % _rel_escape(it),
-                                           _estilo("RI1", fr, 9, DARK, TA_JUSTIFY, sa=LINHA * 0.25)))
-            except Exception:
-                pass
-        e.append(Spacer(1, LINHA * 0.7))
-
     # ===== BLOCO 2 — APELIDO =====
     if any(str(m.get("apelido") or "").strip() for m in membros):
         _rel_separador(e, _b_apel, fb)
