@@ -1506,13 +1506,19 @@ def pdf_casal(dados, lang="pt"):
     comp_a = dados.get("compatibilidade_apelido")
     ap1 = (dados.get("apelido1") or "").strip()
     ap2 = (dados.get("apelido2") or "").strip()
-    if comp_a is not None and ap1 and ap2:
-        _bn, _ba, _bs, _la = _L_BLOCO.get(lang) or _L_BLOCO["pt"]
-        e.append(PageBreak())
-        e.append(Paragraph(_rel_escape(_ba), _estilo("CB2", fb, 15, GOLD, TA_LEFT, sa=LINHA * 0.5)))
-        linhas = [[_la, L["energia"], L["nasc"]]]
-        for nm, en in ((ap1, dados.get("numero1_apelido")), (ap2, dados.get("numero2_apelido"))):
-            linhas.append([_rel_escape(nm), str(en or "—"), ""])
+        if comp_a == 1:
+            e.append(Paragraph(_rel_escape(_sugestao_grau1(lang, "casal")),
+                               _estilo("SUG2", fr, 9, colors.HexColor("#8a6d1f"),
+                                       TA_JUSTIFY, sa=LINHA * 0.4)))    
+        if comp_a is not None and ap1 and ap2:
+            _bn, _ba, _bs, _la = _L_BLOCO.get(lang) or _L_BLOCO["pt"]
+            _rel_separador(e, _ba, fb)
+            linhas = [[_la, L["energia"], L["nasc"]]]
+            for nm, en, ns in (
+            (ap1, dados.get("numero1_apelido"), dados.get("nasc1")),
+            (ap2, dados.get("numero2_apelido"), dados.get("nasc2")),
+        ):
+            linhas.append([_rel_escape(nm), str(en or "—"), _rel_escape(str(ns or ""))])
         e.append(_rel_tabela(linhas, [235, 80, 180], fr))
         e.append(Spacer(1, LINHA))
         e.append(Paragraph("<b>%s: %s</b> — %s" % (
@@ -1577,6 +1583,48 @@ def _rel_separador(e, titulo, fb):
     e.append(Spacer(1, LINHA))
     e.append(Paragraph(_rel_escape(titulo),
                        _estilo("BLK", fb, 13, GOLD, TA_LEFT, sa=LINHA * 0.5)))
+
+SUGESTAO_GRAU1 = {
+    "pt": "Sugestão: a dissonância no nome de uso pede ajuste. Registrar o apelido com o tratamento (Seu, Dona, Dr.) ou acrescentar uma letra desloca a energia e pode mudar o grau. Teste {ctx} e adote o nome de uso que melhor sustenta a convivência.",
+    "en": "Suggestion: dissonance in the name in use calls for adjustment. Adding the form of address (Mr., Mrs., Dr.) or one letter shifts the energy and may change the grade. Test it {ctx} and adopt the name in use that best sustains the relationship.",
+    "es": "Sugerencia: la disonancia en el nombre de uso pide ajuste. Añadir el tratamiento (Don, Doña, Dr.) o una letra desplaza la energía y puede cambiar el grado. Pruébalo {ctx} y adopta el nombre de uso que mejor sostiene la convivencia.",
+    "it": "Suggerimento: la dissonanza nel nome d'uso richiede un aggiustamento. Aggiungere il trattamento (Signor, Signora, Dott.) o una lettera sposta l'energia e può cambiare il grado. Provalo {ctx} e adotta il nome d'uso che meglio sostiene la convivenza.",
+    "fr": "Suggestion : la dissonance du nom d'usage demande un ajustement. Ajouter le traitement (M., Mme, Dr) ou une lettre déplace l'énergie et peut changer le degré. Testez {ctx} et adoptez le nom d'usage qui soutient le mieux la relation.",
+    "de": "Hinweis: Die Dissonanz beim Rufnamen verlangt eine Anpassung. Anrede (Herr, Frau, Dr.) oder ein zusätzlicher Buchstabe verschiebt die Energie und kann den Grad ändern. Testen Sie es {ctx}.",
+    "ja": "提案：呼び名の不協和は調整が必要です。敬称や文字を一つ加えるとエネルギーが移り、評価が変わる場合があります。{ctx}でお試しください。",
+    "zh": "建议：称呼名的失谐需要调整。加上称谓或一个字母就能改变能量，也可能改变评级。请在{ctx}试用。",
+    "ru": "Совет: диссонанс рабочего имени требует корректировки. Обращение или одна буква смещают энергию и могут изменить степень. Проверьте {ctx}.",
+    "he": "הצעה: אי-ההתאמה בשם בשימוש דורשת התאמה. תואר או אות אחת משנים את האנרגיה ועשויים לשנות את הדרגה. נסו {ctx}.",
+    "ar": "اقتراح: التنافر في الاسم المتداول يستدعي تعديلًا. إضافة اللقب أو حرف واحد يغيّر الطاقة وقد يغيّر الدرجة. جرّب {ctx}.",
+    "id": "Saran: disonansi pada nama panggilan perlu disesuaikan. Sapaan atau satu huruf menggeser energi dan dapat mengubah tingkat. Ujilah {ctx}.",
+    "tr": "Öneri: kullanılan addaki uyumsuzluk düzeltme gerektirir. Hitap veya bir harf eklemek enerjiyi kaydırır. {ctx} deneyin.",
+    "vi": "Gợi ý: sự bất hòa ở tên gọi cần điều chỉnh. Thêm cách xưng hô hoặc một chữ cái sẽ dịch chuyển năng lượng. Hãy thử {ctx}.",
+}
+
+_CTX1 = {
+    "pt": ("em casa", "no trabalho", "em família"),
+    "en": ("at home", "at work", "in the family"),
+    "es": ("en casa", "en el trabajo", "en familia"),
+    "it": ("a casa", "al lavoro", "in famiglia"),
+    "fr": ("à la maison", "au travail", "en famille"),
+    "de": ("zu Hause", "bei der Arbeit", "in der Familie"),
+    "ja": ("家庭で", "職場で", "家族の中で"),
+    "zh": ("在家中", "在工作中", "在家庭中"),
+    "ru": ("дома", "на работе", "в семье"),
+    "he": ("בבית", "בעבודה", "במשפחה"),
+    "ar": ("في المنزل", "في العمل", "في العائلة"),
+    "id": ("di rumah", "di tempat kerja", "di keluarga"),
+    "tr": ("evde", "işte", "ailede"),
+    "vi": ("ở nhà", "ở nơi làm việc", "trong gia đình"),
+}
+
+_CTX_IDX = {"casal": 0, "compatibilidade_equipes": 1, "familia": 2}
+
+
+def _sugestao_grau1(lang, produto):
+    txt = SUGESTAO_GRAU1.get(lang) or SUGESTAO_GRAU1["pt"]
+    ctx = (_CTX1.get(lang) or _CTX1["pt"])[_CTX_IDX.get(produto, 0)]
+    return txt.replace("{ctx}", ctx)
 
 # ---------- FAMÍLIA / EQUIPES ----------
 def _pdf_relacao(produto, dados, lang, contexto, tag):
@@ -1706,6 +1754,10 @@ def _pdf_relacao(produto, dados, lang, contexto, tag):
                 L["compat"], comp_a if comp_a is not None else "—",
                 _rel_escape(_rel_grau(comp_a, lang) if comp_a is not None else "")),
                 _estilo("A2", fr, 10, DARK, TA_LEFT, sa=2)))
+            if comp_a == 1:
+                e.append(Paragraph(_rel_escape(_sugestao_grau1(lang, produto)),
+                                   _estilo("SUG1", fr, 9, colors.HexColor("#8a6d1f"),
+                                           TA_JUSTIFY, sa=LINHA * 0.4)))
             if comp_a is not None:
                 lt = get_compat(comp_a, contexto, lang)
                 if lt:
