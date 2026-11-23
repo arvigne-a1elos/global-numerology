@@ -1517,14 +1517,14 @@ def pdf_casal(dados, lang="pt"):
     comp_a = dados.get("compatibilidade_apelido")
     ap1 = (dados.get("apelido1") or "").strip()
     ap2 = (dados.get("apelido2") or "").strip()
+    if comp_a is not None and ap1 and ap2:
+        _bn, _ba, _bs, _la = _L_BLOCO.get(lang) or _L_BLOCO["pt"]
+        _rel_separador(e, _ba, fb)
         if comp_a == 1:
             e.append(Paragraph(_rel_escape(_sugestao_grau1(lang, "casal")),
                                _estilo("SUG2", fr, 9, colors.HexColor("#8a6d1f"),
-                                       TA_JUSTIFY, sa=LINHA * 0.4)))    
-        if comp_a is not None and ap1 and ap2:
-            _bn, _ba, _bs, _la = _L_BLOCO.get(lang) or _L_BLOCO["pt"]
-            _rel_separador(e, _ba, fb)
-            linhas = [[_la, L["energia"], L["nasc"]]]
+                                       TA_JUSTIFY, sa=LINHA * 0.4)))
+        linhas = [[_la, L["energia"], L["nasc"]]]
         for nm, en, ns in (
             (ap1, dados.get("numero1_apelido"), dados.get("nasc1")),
             (ap2, dados.get("numero2_apelido"), dados.get("nasc2")),
@@ -1537,11 +1537,13 @@ def pdf_casal(dados, lang="pt"):
             _estilo("CB3", fb, 12, GOLD, TA_LEFT, sa=LINHA * 0.6)))
         lt = get_compat(comp_a, "casal", lang)
         if lt:
-            e.append(Paragraph(_rel_escape(lt), _estilo("CB4", fr, 11, DARK, TA_JUSTIFY, sa=LINHA * 0.6)))
+            e.append(Paragraph(_rel_escape(lt),
+                               _estilo("CB4", fr, 11, DARK, TA_JUSTIFY, sa=LINHA * 0.6)))
         dl = get_dual(comp_a, "casal", lang)
         if dl:
             e.append(Paragraph(_rel_escape(dl),
-                               _estilo("CB5", fr, 10, colors.HexColor("#8a6d1f"), TA_JUSTIFY, sa=LINHA)))
+                               _estilo("CB5", fr, 10, colors.HexColor("#8a6d1f"),
+                                       TA_JUSTIFY, sa=LINHA)))
         try:
             from referencia import relacao_dupla as _rc_c
             for tit, itens in _rc_c.bloco(int(comp_a), lang):
@@ -1553,7 +1555,6 @@ def pdf_casal(dados, lang="pt"):
                                        _estilo("CBI", fr, 10, DARK, TA_JUSTIFY, sa=LINHA * 0.35)))
         except Exception:
             pass
-
     _rel_fecha(doc, e, lang, fr)
     return path
 
