@@ -14,6 +14,7 @@ import dateutil.parser as dp
 from calc_service import reduzir, calc_grid, calc_ciclos, calc_desafios, calc_realizacoes
 from dicionarios import SIG, CAM, DES, VIB, t, PRODUTOS, PDF_TEXTS, PDF_SECOES, BOAS_VINDAS, PERIODOS, REALIZ_HEAD
 from dicionarios import get_sig, get_cam, get_compat, get_dual
+from reportlab.pdfgen import canvas as _rl_canvas
 
 # ---- Identidade visual (Padrão Mínimo de Qualidade Total) ----
 GOLD = colors.HexColor("#C9A94E")
@@ -1358,9 +1359,6 @@ TITULOS_EXTRA = {
     "ar": {"compatibilidade_equipes": "توافق الفريق"},
 }
 
-from reportlab.pdfgen import canvas as _rl_canvas
-
-
 class _NumCanvas(_rl_canvas.Canvas):
     """Numera 'N de TOTAL' no rodapé."""
 
@@ -1382,7 +1380,6 @@ class _NumCanvas(_rl_canvas.Canvas):
             _rl_canvas.Canvas.showPage(self)
         _rl_canvas.Canvas.save(self)
 
-
 def _cabecalho_rel(canvas, doc):
     """Marca d'água e assinatura, SEM número — o número vem do _NumCanvas."""
     canvas.saveState()
@@ -1396,6 +1393,18 @@ def _cabecalho_rel(canvas, doc):
     canvas.drawString(50, 22, "A1ELOS Assessoria e Consultoria")
     canvas.restoreState()
 
+def _rel_separador(e, titulo, fb):
+    """Traço dourado + título. Substitui a quebra de página entre blocos."""
+    e.append(Spacer(1, LINHA * 2))
+    tbl = Table([[""]], colWidths=[495], rowHeights=[1])
+    tbl.setStyle(TableStyle([("BACKGROUND", (0, 0), (-1, -1), GOLD),
+                             ("TOPPADDING", (0, 0), (-1, -1), 0),
+                             ("BOTTOMPADDING", (0, 0), (-1, -1), 0)]))
+    e.append(tbl)
+    e.append(Spacer(1, LINHA))
+    e.append(Paragraph(_rel_escape(titulo),
+                       _estilo("BLK", fb, 13, GOLD, TA_LEFT, sa=LINHA * 0.5)))
+    
 def _rel_abre(produto, lang):
     _fr, _fb = fonte_para(lang)
     bruto = (PRODUTOS.get(lang, PRODUTOS["pt"]).get(produto)
@@ -1426,6 +1435,7 @@ def _rel_tabela(linhas, larguras, fr):
         ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
     ]))
     return tbl
+    
 def _rel_fecha(doc, e, lang, fr):
     T = PDF_TEXTS.get(lang, PDF_TEXTS["pt"])
     e.append(Spacer(1, LINHA * 1.5))
@@ -1434,6 +1444,7 @@ def _rel_fecha(doc, e, lang, fr):
                        _estilo("F", fr, 8, GRAY, TA_CENTER)))
     doc.build(e, onFirstPage=_cabecalho_rel, onLaterPages=_cabecalho_rel,
               canvasmaker=_NumCanvas)
+    
 # ---------- CASAL ----------
 def pdf_casal(dados, lang="pt"):
     lang = lang or "pt"
@@ -1514,7 +1525,7 @@ def pdf_casal(dados, lang="pt"):
             _bn, _ba, _bs, _la = _L_BLOCO.get(lang) or _L_BLOCO["pt"]
             _rel_separador(e, _ba, fb)
             linhas = [[_la, L["energia"], L["nasc"]]]
-            for nm, en, ns in (
+        for nm, en, ns in (
             (ap1, dados.get("numero1_apelido"), dados.get("nasc1")),
             (ap2, dados.get("numero2_apelido"), dados.get("nasc2")),
         ):
