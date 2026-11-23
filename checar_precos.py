@@ -27,7 +27,7 @@ PADROES = [
     (r"^\s*(?:const\s+|let\s+|var\s+)?(?:window\.)?PRODUTO_FAIXA\s*=", "declara PRODUTO_FAIXA"),
     (r"^\s*ZERO_DECIMAL\s*=",                                          "declara ZERO_DECIMAL (use CASAS)"),
     (r"^\s*VALORES\s*=",                                               "declara VALORES"),
-    (r"^\s*PRICE_IDS\s*=",                                             "declara PRICE_IDS"),
+    (r"^\s*PRICE_IDS\s*=",                                             "declara PRICE_IDS", "main.py"),
 ]
 
 # Linhas que apenas RECEBEM o dado da API sao legitimas.
