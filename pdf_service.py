@@ -1208,11 +1208,19 @@ def gerar_pdf_calendario(dados, lang="pt", nome_exib=""):
 # NÃO alteram as globais FONTE/FN: usam fonte local por idioma.
 # ═══════════════════════════════════════════
 try:
-    from xml.sax.saxutils import escape as _rel_escape
+    from xml.sax.saxutils import escape as _escape_xml
 except Exception:
-    def _rel_escape(v):
-        return str(v)
+    _escape_xml = lambda v: str(v)
 
+
+def _rel_escape(v):
+    """Escapa para XML e blinda contra bool, None e números.
+
+    xml.sax.saxutils.escape() chama .replace() no argumento; um booleano
+    derruba o PDF inteiro com "'bool' object has no attribute 'replace'".
+    """
+    return _escape_xml("" if v is None else str(v))
+    
 REL_TXT = {
     "pt": {"grau1": "Dissonância", "grau2": "Média — Acordo/Desacordo",
            "grau3": "Acordo", "grau4": "Acordo perfeito", "energia": "Energia",
@@ -1774,7 +1782,7 @@ def _pdf_relacao(produto, dados, lang, contexto, tag):
                 lt = get_compat(comp_a, contexto, lang)
                 if lt:
                     e.append(Paragraph(_rel_escape(lt), _estilo("A3", fr, 9, DARK, TA_JUSTIFY, sa=2)))
-                dl = p.get("dual_apelido") or get_dual(comp_a, contexto, lang)
+                dl = get_dual(comp_a, contexto, lang)
                 if dl:
                     e.append(Paragraph(_rel_escape(dl),
                                        _estilo("A4", fr, 9, colors.HexColor("#8a6d1f"), TA_JUSTIFY, sa=LINHA * 0.4)))
