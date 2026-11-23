@@ -50,11 +50,17 @@ for rel in VIGIADOS:
     cam = os.path.join(RAIZ, rel)
     if not os.path.exists(cam):
         continue
-    for n, linha in enumerate(open(cam, encoding="utf-8", errors="replace"), 1):
-        for pat, desc in PADROES:
-            if re.search(pat, linha):
+    with open(cam, encoding="utf-8", errors="replace") as fh:
+        for n, linha in enumerate(fh, 1):
+            for pat in PADROES:
+                regex, desc = pat[0], pat[1]
+                permitido = pat[2] if len(pat) > 2 else None
+                if permitido == rel:
+                    continue
+                if not re.search(regex, linha):
+                    continue
                 if RECEBE_API.search(linha):
-                    continue  # recebe da API: legitimo
+                    continue
                 problemas.append(
                     "  %s:%d  %s\n     %s" % (rel, n, desc, linha.strip()[:88]))
                 break
