@@ -1673,6 +1673,93 @@ def _sugestao_grau1(lang, produto):
     ctx = (_CTX1.get(lang) or _CTX1["pt"])[_CTX_IDX.get(produto, 0)]
     return txt.replace("{ctx}", ctx)
 
+ABERTURA_RELACAO = {
+    "pt": [
+        "Qual conta? O nome mais usado. O princípio da energia é simples: quanto mais um nome é repetido, mais a sua vibração se afirma. No ambiente de trabalho, o nome que circula em corredores, reuniões e chamadas informais é o apelido — e é ele que descreve o comportamento real da pessoa na equipe.",
+        "Tudo pode ser medido em energia — inclusive o som que emitimos ao nos comunicar. A palavra tem poder. Palavra escrita e falada: no momento em que damos valor de número às letras, esse poder se torna calculável. Pouco já muda: não é preciso um nome muito diferente para que a energia se desloque.",
+        "O nome completo não pode ser alterado: é a identidade de registro. O apelido, sim: pode ser escolhido, testado e ajustado até encontrar a energia que melhor representa a forma como a pessoa é chamada. Por isso fica fácil entender por que a energia muda quando mudamos algum elemento de um processo — essa é a magia da matemática no som: pura energia calculável.",
+        "Títulos como Dr., Sr., Sra. ou Seu também somam. Se a pessoa é chamada de \"Seu Antônio\" ou \"Dr. Tonho\", escreva o apelido exatamente assim — o tratamento faz parte do nome de uso e entra no cálculo.",
+    ],
+    "en": [
+        "Which name counts? The most used one. The principle of energy is simple: the more a name is repeated, the more its vibration takes hold. In the workplace, the name that circulates in corridors, meetings and informal calls is the nickname — and it is the one that describes how the person actually behaves in the team.",
+        "Everything can be measured in energy — including the sound we emit when we communicate. The word has power. Written and spoken word: the moment we assign a number value to letters, that power becomes calculable. A small change is enough: the name does not need to differ much for the energy to shift.",
+        "The full name cannot be altered: it is the identity of record. The nickname can: it may be chosen, tested and adjusted until it finds the energy that best represents the way the person is called. That is why it becomes easy to understand why energy changes when we change any element of a process — this is the magic of mathematics in sound: pure calculable energy.",
+        "Titles such as Dr., Mr., Mrs. or Seu also add up. If the person is called \"Seu Antônio\" or \"Dr. Tonho\", write the nickname exactly like that — the form of address is part of the name in use and enters the calculation.",
+    ],
+    "es": [
+        "¿Qué nombre cuenta? El más usado. El principio de la energía es simple: cuanto más se repite un nombre, más se afirma su vibración. En el ambiente de trabajo, el nombre que circula en pasillos, reuniones y llamadas informales es el apodo — y es él el que describe el comportamiento real de la persona en el equipo.",
+        "Todo puede medirse en energía — incluso el sonido que emitimos al comunicarnos. La palabra tiene poder. Palabra escrita y hablada: en el momento en que damos valor de número a las letras, ese poder se vuelve calculable. Poco ya cambia: no hace falta un nombre muy diferente para que la energía se desplace.",
+        "El nombre completo no puede alterarse: es la identidad de registro. El apodo, sí: puede elegirse, probarse y ajustarse hasta encontrar la energía que mejor representa la forma en que se llama a la persona. Por eso resulta fácil entender por qué la energía cambia cuando cambiamos cualquier elemento de un proceso — esa es la magia de las matemáticas en el sonido: pura energía calculable.",
+        "Los tratamientos como Dr., Sr., Sra. o Don también suman. Si a la persona se le llama \"Don Antonio\" o \"Dr. Tonho\", escriba el apodo exactamente así — el tratamiento forma parte del nombre de uso y entra en el cálculo.",
+    ],
+    "it": [
+        "Quale nome conta? Quello più usato. Il principio dell'energia è semplice: più un nome viene ripetuto, più la sua vibrazione si afferma. Nell'ambiente di lavoro, il nome che circola nei corridoi, nelle riunioni e nelle chiamate informali è il soprannome — ed è lui che descrive il comportamento reale della persona nella squadra.",
+        "Tutto può essere misurato in energia — incluso il suono che emettiamo comunicando. La parola ha potere. Parola scritta e parlata: nel momento in cui diamo valore numerico alle lettere, quel potere diventa calcolabile. Poco basta: non serve un nome molto diverso perché l'energia si sposti.",
+        "Il nome completo non può essere modificato: è l'identità di registro. Il soprannome, sì: può essere scelto, provato e adattato fino a trovare l'energia che meglio rappresenta il modo in cui la persona viene chiamata. Per questo è facile capire perché l'energia cambia quando cambiamo un qualsiasi elemento di un processo — questa è la magia della matematica nel suono: pura energia calcolabile.",
+        "Anche i titoli come Dott., Sig., Sig.ra o Seu si sommano. Se la persona viene chiamata \"Seu Antônio\" o \"Dott. Tonho\", scriva il soprannome esattamente così — il trattamento fa parte del nome d'uso ed entra nel calcolo.",
+    ],
+    "fr": [
+        "Quel nom compte ? Le plus utilisé. Le principe de l'énergie est simple : plus un nom est répété, plus sa vibration s'affirme. Dans le milieu professionnel, le nom qui circule dans les couloirs, les réunions et les appels informels est le surnom — et c'est lui qui décrit le comportement réel de la personne dans l'équipe.",
+        "Tout peut se mesurer en énergie — y compris le son que nous émettons en communiquant. Le mot a du pouvoir. Mot écrit et parlé : au moment où nous donnons une valeur de nombre aux lettres, ce pouvoir devient calculable. Peu suffit : il n'est pas nécessaire qu'un nom soit très différent pour que l'énergie se déplace.",
+        "Le nom complet ne peut pas être modifié : c'est l'identité d'enregistrement. Le surnom, oui : il peut être choisi, testé et ajusté jusqu'à trouver l'énergie qui représente le mieux la façon dont la personne est appelée. C'est pourquoi il devient facile de comprendre pourquoi l'énergie change quand nous changeons un quelconque élément d'un processus — c'est la magie des mathématiques dans le son : pure énergie calculable.",
+        "Les titres comme Dr, M., Mme ou Seu s'additionnent aussi. Si la personne est appelée « Seu Antônio » ou « Dr Tonho », écrivez le surnom exactement ainsi — le traitement fait partie du nom d'usage et entre dans le calcul.",
+    ],
+    "de": [
+        "Welcher Name zählt? Der am häufigsten verwendete. Das Prinzip der Energie ist einfach: Je öfter ein Name wiederholt wird, desto mehr setzt sich seine Schwingung durch. Am Arbeitsplatz ist der Name, der in Fluren, Besprechungen und informellen Gesprächen kursiert, der Rufname — und er beschreibt, wie sich die Person im Team tatsächlich verhält.",
+        "Alles lässt sich in Energie messen — auch der Schall, den wir beim Kommunizieren aussenden. Das Wort hat Macht. Geschriebenes und gesprochenes Wort: In dem Moment, in dem wir den Buchstaben einen Zahlenwert geben, wird diese Macht berechenbar. Wenig genügt: Der Name muss sich nicht stark unterscheiden, damit sich die Energie verschiebt.",
+        "Der vollständige Name lässt sich nicht ändern: Er ist die Identität der Registrierung. Der Rufname schon: Er kann gewählt, getestet und angepasst werden, bis er die Energie findet, die die Art und Weise, wie die Person genannt wird, am besten widerspiegelt. Deshalb ist leicht zu verstehen, warum sich die Energie ändert, wenn wir irgendein Element eines Prozesses ändern — das ist die Magie der Mathematik im Klang: reine berechenbare Energie.",
+        "Auch Titel wie Dr., Herr, Frau oder Seu zählen mit. Wenn die Person „Seu Antônio\" oder „Dr. Tonho\" genannt wird, schreiben Sie den Rufnamen genau so — die Anrede gehört zum Gebrauchsnamen und fließt in die Berechnung ein.",
+    ],
+    "ja": [
+        "どの名前が優先されるのか。最も使われている名前です。エネルギーの原理は単純です。名前は繰り返されるほど、その波動が強く定着します。職場では、廊下や会議、日常の呼びかけで交わされる名前が呼び名であり、その呼び名こそがチーム内での実際の振る舞いを表します。",
+        "すべてはエネルギーで測ることができます。私たちがコミュニケーションで発する音も含まれます。言葉には力があります。書かれた言葉も話された言葉も、文字に数の値を与えた瞬間、その力は計算可能になります。わずかな違いで十分です。名前が大きく異なる必要はなく、エネルギーは動きます。",
+        "本名は変えられません。それは登録上の身元だからです。呼び名は変えられます。どう呼ばれているかを最もよく表すエネルギーが見つかるまで、選び、試し、調整することができます。だからこそ、あるプロセスの要素を一つ変えるだけでエネルギーが変わる理由が容易に理解できます。これが音の中の数学の魔法、計算できる純粋なエネルギーです。",
+        "Dr.、Mr.、Sra.、Seu といった敬称も加算されます。「Seu Antônio」や「Dr. Tonho」と呼ばれている場合は、呼び名をそのまま記入してください。敬称は使用名の一部であり、計算に含まれます。",
+    ],
+    "zh": [
+        "哪个名字算数？最常用的那个。能量的原理很简单：一个名字被重复得越多，它的振动就越牢固。在工作环境中，在走廊、会议和日常称呼中流传的名字就是称呼名——正是它描述了此人在团队中的真实表现。",
+        "一切都可以用能量来衡量——包括我们交流时发出的声音。词语有力量。无论是书写的还是说出的词语，当我们赋予字母数值的那一刻，这种力量就变得可以计算。一点点差异就足够：名字不必差别很大，能量就会移动。",
+        "全名无法更改：它是登记的身份。称呼名可以：可以选择、测试和调整，直到找到最能代表此人被称呼方式的能量。因此很容易理解，为什么改变一个流程中的任何要素，能量就会改变——这就是声音中数学的魔力：纯粹可计算的能量。",
+        "Dr.、先生、女士或 Seu 之类的称谓也会累加。如果此人被称为“Seu Antônio”或“Dr. Tonho”，请完全按照这样填写称呼名——称谓是使用名的一部分，会进入计算。",
+    ],
+    "ru": [
+        "Какое имя считается? То, которое используется чаще. Принцип энергии прост: чем чаще повторяется имя, тем сильнее утверждается его вибрация. В рабочей среде имя, которое звучит в коридорах, на совещаниях и в неформальных разговорах, — это имя в обиходе, и именно оно описывает реальное поведение человека в команде.",
+        "Всё можно измерить в энергии — включая звук, который мы издаём при общении. Слово обладает силой. Слово написанное и произнесённое: в тот момент, когда мы придаём буквам числовое значение, эта сила становится вычислимой. Достаточно малого: имя не должно сильно отличаться, чтобы энергия сместилась.",
+        "Полное имя изменить нельзя: это идентичность записи. Имя в обиходе — можно: его выбирают, проверяют и корректируют, пока не найдётся энергия, которая лучше всего отражает то, как человека называют. Поэтому легко понять, почему энергия меняется, когда мы меняем любой элемент процесса, — это магия математики в звуке: чистая вычислимая энергия.",
+        "Титулы вроде Dr., г-н, г-жа или Seu тоже суммируются. Если человека называют «Seu Antônio» или «Dr. Tonho», напишите имя в обиходе именно так — обращение является частью используемого имени и входит в расчёт.",
+    ],
+    "he": [
+        "איזה שם נחשב? זה שבשימוש הרב ביותר. עקרון האנרגיה פשוט: ככל ששם חוזר יותר, כך התנודה שלו מתבססת. בסביבת העבודה, השם שמסתובב במסדרונות, בפגישות ובפניות יומיומיות הוא שם בשימוש — והוא מתאר את ההתנהגות בפועל של האדם בצוות.",
+        "הכול ניתן למדוד באנרגיה — כולל הצליל שאנו מפיקים בתקשורת. למילה יש כוח. מילה כתובה ומילה מדוברת: ברגע שאנו נותנים לאותיות ערך מספרי, הכוח הזה הופך לישים לחישוב. מעט כבר משנה: השם לא צריך להיות שונה מאוד כדי שהאנרגיה תזוז.",
+        "את השם המלא אי אפשר לשנות: זו הזהות הרשומה. את השם בשימוש כן: אפשר לבחור, לנסות ולכוונן עד שנמצא האנרגיה שמייצגת בצורה הטובה ביותר את האופן שבו האדם נקרא. לכן קל להבין מדוע האנרגיה משתנה כשמשנים מרכיב כלשהו בתהליך — זהו הקסם של המתמטיקה בצליל: אנרגיה טהורה שניתנת לחישוב.",
+        "גם תארים כמו Dr., מר, גב' או Seu מצטרפים. אם האדם נקרא \"Seu Antônio\" או \"Dr. Tonho\", כתבו את השם בשימוש בדיוק כך — התואר הוא חלק מהשם בשימוש ונכנס לחישוב.",
+    ],
+    "ar": [
+        "أي اسم يُحتسب؟ الأكثر استخدامًا. مبدأ الطاقة بسيط: كلما تكرر الاسم أكثر، ترسّخ ذبذبه أقوى. في بيئة العمل، الاسم الذي يدور في الممرات والاجتماعات والنداءات اليومية هو الاسم المتداول — وهو الذي يصف السلوك الفعلي للشخص داخل الفريق.",
+        "كل شيء يمكن قياسه بالطاقة — بما في ذلك الصوت الذي نصدره عند التواصل. للكلمة سلطة. الكلمة المكتوبة والمنطوقة: في اللحظة التي نمنح فيها الحروف قيمة عددية، تصبح هذه السلطة قابلة للحساب. القليل يكفي: لا يحتاج الاسم إلى اختلاف كبير حتى تتحرك الطاقة.",
+        "لا يمكن تغيير الاسم الكامل: فهو هوية التسجيل. أما الاسم المتداول فنعم: يمكن اختياره واختباره وتعديله حتى يُعثر على الطاقة التي تمثّل على أفضل وجه الطريقة التي يُنادى بها الشخص. ولهذا يسهل فهم سبب تغيّر الطاقة عندما نغيّر أي عنصر في أي عملية — هذا هو سحر الرياضيات في الصوت: طاقة خالصة قابلة للحساب.",
+        "الألقاب مثل Dr. والسيد والسيدة وSeu تُجمع أيضًا. إذا كان الشخص يُنادى بـ\"Seu Antônio\" أو \"Dr. Tonho\"، فاكتب الاسم المتداول بهذا الشكل تمامًا — فاللقب جزء من الاسم المستخدم ويدخل في الحساب.",
+    ],
+    "id": [
+        "Nama mana yang dihitung? Yang paling sering dipakai. Prinsip energinya sederhana: semakin sering sebuah nama diulang, semakin kuat getarannya mengendap. Di lingkungan kerja, nama yang beredar di lorong, rapat, dan sapaan sehari-hari adalah nama panggilan — dan itulah yang menggambarkan perilaku nyata orang tersebut di tim.",
+        "Segala sesuatu dapat diukur dengan energi — termasuk bunyi yang kita keluarkan saat berkomunikasi. Kata memiliki kekuatan. Kata tertulis dan terucap: saat kita memberi nilai angka pada huruf-hurufnya, kekuatan itu menjadi dapat dihitung. Sedikit saja sudah cukup: nama tidak perlu berbeda jauh agar energinya bergeser.",
+        "Nama lengkap tidak dapat diubah: itu identitas resmi. Nama panggilan bisa: dapat dipilih, diuji, dan disesuaikan hingga menemukan energi yang paling mewakili cara orang itu dipanggil. Karena itu mudah dipahami mengapa energi berubah ketika kita mengubah salah satu unsur dalam suatu proses — inilah keajaiban matematika dalam bunyi: energi murni yang dapat dihitung.",
+        "Sapaan seperti Dr., Bapak, Ibu, atau Seu juga dijumlahkan. Jika orang tersebut dipanggil \"Seu Antônio\" atau \"Dr. Tonho\", tulis nama panggilannya persis seperti itu — sapaan adalah bagian dari nama yang dipakai dan masuk ke dalam perhitungan.",
+    ],
+    "tr": [
+        "Hangi ad sayılır? En çok kullanılan. Enerjinin ilkesi basittir: bir ad ne kadar çok tekrarlanırsa titreşimi o kadar güçlü yerleşir. İş ortamında koridorlarda, toplantılarda ve günlük seslenişlerde dolaşan ad takma addır — ve kişinin ekipte gerçekte nasıl davrandığını da o anlatır.",
+        "Her şey enerjiyle ölçülebilir — iletişim kurarken çıkardığımız ses de buna dahil. Sözün gücü vardır. Yazılı ve sözlü söz: harflere sayı değeri verdiğimiz anda bu güç hesaplanabilir hale gelir. Az da yeter: enerjinin kayması için adın çok farklı olması gerekmez.",
+        "Tam ad değiştirilemez: kayıt kimliğidir. Takma ad ise değişebilir: kişinin nasıl çağrıldığını en iyi temsil eden enerji bulunana kadar seçilebilir, denenebilir ve ayarlanabilir. Bu yüzden bir süreçteki herhangi bir öğeyi değiştirdiğimizde enerjinin neden değiştiğini anlamak kolaylaşır — sesin içindeki matematiğin büyüsü budur: saf, hesaplanabilir enerji.",
+        "Dr., Bay, Bayan veya Seu gibi unvanlar da toplanır. Kişi \"Seu Antônio\" ya da \"Dr. Tonho\" diye çağrılıyorsa, takma adı tam olarak böyle yazın — unvan kullanılan adın parçasıdır ve hesaba girer.",
+    ],
+    "vi": [
+        "Cái tên nào được tính? Tên được dùng nhiều nhất. Nguyên lý của năng lượng rất đơn giản: một cái tên càng được lặp lại nhiều, dao động của nó càng bám rễ vững. Trong môi trường làm việc, cái tên lưu hành ở hành lang, trong các cuộc họp và những lời gọi thường ngày chính là tên gọi — và chính nó mô tả cách hành xử thật sự của người đó trong đội ngũ.",
+        "Mọi thứ đều có thể đo bằng năng lượng — kể cả âm thanh chúng ta phát ra khi giao tiếp. Ngôn từ có sức mạnh. Ngôn từ viết và ngôn từ nói: ngay khi ta gán giá trị số cho các chữ cái, sức mạnh đó trở nên có thể tính toán. Chỉ một chút cũng đủ: cái tên không cần khác biệt nhiều để năng lượng dịch chuyển.",
+        "Họ tên đầy đủ không thể thay đổi: đó là danh tính đăng ký. Tên gọi thì có thể: có thể chọn, thử và điều chỉnh cho đến khi tìm được năng lượng thể hiện đúng nhất cách người đó được gọi. Vì thế, thật dễ hiểu vì sao năng lượng thay đổi khi ta thay đổi bất kỳ yếu tố nào trong một quá trình — đó là phép màu của toán học trong âm thanh: năng lượng thuần túy có thể tính được.",
+        "Các danh xưng như Dr., Ông, Bà hay Seu cũng được cộng vào. Nếu người đó được gọi là \"Seu Antônio\" hoặc \"Dr. Tonho\", hãy viết tên gọi đúng như vậy — danh xưng là một phần của tên đang dùng và đi vào phép tính.",
+    ],
+}
+
 # ---------- FAMÍLIA / EQUIPES ----------
 def _pdf_relacao(produto, dados, lang, contexto, tag):
     lang = lang or "pt"
@@ -1685,7 +1772,10 @@ def _pdf_relacao(produto, dados, lang, contexto, tag):
                             topMargin=45, bottomMargin=45)
     e = []
     _rel_cabecalho(e, titulo, dados.get("titular") or dados.get("nome") or "", lang, fr, fb)
-
+    for _ab in ABERTURA_RELACAO.get(lang) or ABERTURA_RELACAO["pt"]:
+        e.append(Paragraph(_rel_escape(_ab),
+                           _estilo("ABERT", fr, 9, DARK, TA_JUSTIFY, sa=LINHA * 0.6)))
+    e.append(Spacer(1, LINHA))  
     if produto == "compatibilidade_equipes":
         try:
             from referencia import relacao_dupla as _rd
