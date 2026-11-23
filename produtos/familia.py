@@ -82,7 +82,7 @@ def analisar_familia(texto, separador="|"):
 
     if len(pessoas) > MAX_MEMBROS + 1:
         pessoas = pessoas[:MAX_MEMBROS + 1]
-
+   
     def _par(x, y):
         c = compatibilidade(x["energia_combinada"], y["energia_combinada"])
         ca = None
@@ -106,7 +106,6 @@ def analisar_familia(texto, separador="|"):
         }
 
     pares = [_par(a, b) for a, b in combinations(pessoas, 2)]
-    principal = pessoas[0] if pessoas else None
 
     return {"principal": principal, "membros": pessoas,
             "total": len(pessoas), "pares": pares}
