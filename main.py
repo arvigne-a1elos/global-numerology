@@ -46,7 +46,9 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from produtos.calendario import analisar_periodo
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse, Response
-from referencia.precos import VALORES, SIMBOLO, PRECO_DISPLAY, PRODUTO_FAIXA, preco_local, preco_display
+from referencia.precos import (VALORES, SIMBOLO, PRECO_DISPLAY,
+                               PRODUTO_FAIXA, CASAS,
+                               preco_local, preco_display)
 # ===== FONTES CJK (ja/zh) — restaura glifos kanji nos PDFs (07/11/2026) =====
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.cidfonts import UnicodeCIDFont
@@ -1066,12 +1068,13 @@ async def criar_checkout_coletivo(lang: str = "pt", items: str = "[]"):
 
 @app.get("/api/precos")
 async def api_precos():
- return {
-   "valores": VALORES,
-   "simbolo": SIMBOLO,
-   "display": PRECO_DISPLAY,
-   "faixa": PRODUTO_FAIXA,
- }   
+    return {
+        "valores": VALORES,
+        "simbolo": SIMBOLO,
+        "display": PRECO_DISPLAY,
+        "faixa": PRODUTO_FAIXA,
+        "casas": CASAS,
+    }
 
 # ===== REDIRECIONADOR CURTO PARA O QR CODE =====
 @app.get("/r/{sid}")
