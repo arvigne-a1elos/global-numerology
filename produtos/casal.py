@@ -5,7 +5,7 @@ from referencia.cissay import compatibilidade, numero_pessoa
 from dicionarios import get_compat
 
 
-def analisar_casal(nome1, nasc1, nome2, nasc2, apelido1="", apelido2=""):
+def analisar_casal(nome1, nasc1, nome2, nasc2, apelido1="", apelido2="", lang="pt"):
     n1 = numero_pessoa(nome1, nasc1)
     n2 = numero_pessoa(nome2, nasc2)
     if n1 is None or n2 is None:
@@ -28,7 +28,7 @@ def analisar_casal(nome1, nasc1, nome2, nasc2, apelido1="", apelido2=""):
         "rotulo": comp["rotulo"], "rotulo_nome": comp["rotulo"],
         "dual": comp.get("dual", False),
         "alerta_dualidade": comp.get("alerta_dualidade"),
-        "leitura": get_compat(g, "casal") if g is not None else comp["rotulo"],
+        "leitura": get_compat(g, "casal", lang) if g is not None else comp["rotulo"],
         "apelido1": apelido1, "apelido2": apelido2,
         "numero1_apelido": a1, "numero2_apelido": a2,
         "compatibilidade_apelido": ga,
