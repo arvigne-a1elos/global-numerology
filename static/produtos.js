@@ -127,7 +127,7 @@ window.PRODUTO_FAIXA = window.PRODUTO_FAIXA || {
 
 /* ===== FEAT_TRAD v1 — FEATURES DOS 24 CARDS EM 14 IDIOMAS ===== */
 window.FEAT_TRAD = window.FEAT_TRAD || {};
-if (!FEAT_TRAD.pt) {
+if (!window.FEAT_TRAD.pt) {
   (function () {
     var F = {
       pt: {
@@ -496,9 +496,9 @@ if (!FEAT_TRAD.pt) {
     
     Object.keys(F).forEach(function (lang) {
       var f = F[lang];
-      FEAT_TRAD[lang] = {};
+      window.FEAT_TRAD[lang] = {};
       Object.keys(M).forEach(function (prod) {
-        FEAT_TRAD[lang][prod] = M[prod].map(function (k) { return f[k] || F.pt[k]; });
+      window.FEAT_TRAD[lang][prod] = M[prod].map(function (k) { return f[k] || F.pt[k]; });
       });
     });
   })();
@@ -558,12 +558,12 @@ window.ENERGIA_TRAD = window.ENERGIA_TRAD || {
   vi:{ e1:"Lãnh đạo", e2:"Nhà ngoại giao", e3:"Sáng tạo", e4:"Cấu trúc", e5:"Tự do", e6:"Hòa hợp", e7:"Tâm linh", e8:"Sức mạnh", e9:"Nhân đạo" }
 };
 window.ENERGIA_TITULOS = window.ENERGIA_TITULOS || {};
-if (!ENERGIA_TITULOS.pt) {
+if (!window.ENERGIA_TITULOS.pt) {
   Object.keys(ENERGIA_TRAD).forEach(function(l) {
     var src = ENERGIA_TRAD[l];
     var out = {};
     for (var k in src) { out[k.replace(/^e/, '')] = src[k]; }  // converte "e1" em "1"
-    ENERGIA_TITULOS[l] = out;
+    window.ENERGIA_TITULOS[l] = out;
   });
 }
 window.ENERGIAS_DESC = window.ENERGIAS_DESC || {};
