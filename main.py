@@ -94,12 +94,11 @@ ADMIN_EMAIL = "arvigne@gmail.com"
 if STRIPE_KEY:
     stripe.api_key = STRIPE_KEY
 
-# ===== CONFIG DE DESCONTO DO BÔNUS COLETIVO (espelho documental do app.js) =====
-# ATENÇÃO: este dicionário é APENAS documentação de referência.
-# O frontend (app.js) NÃO consulta estes valores, e o backend NÃO os usa
-# para calcular desconto. A fonte de verdade em tempo de execução é o
-# window.CONFIG_DESCONTO do app.js.
-# Se alterar as faixas aqui, altere também no app.js — e vice-versa.
+# ===== CONFIG DE DESCONTO DO BÔNUS COLETIVO =====
+# Usado por /criar-checkout-coletivo: "teto_automatico" recusa acima de 2.000
+# unidades e "faixas" limita o desconto a 50%. O app.js mantém cópia própria
+# para calcular na tela. As duas concordam hoje por disciplina, não por
+# construção. A unificação vem em referencia/descontos.py.
 CONFIG_DESCONTO = {
     "faixas": [
         {"min": 10, "pct": 10}, {"min": 50, "pct": 15}, {"min": 100, "pct": 20},
@@ -1082,6 +1081,8 @@ async def api_precos():
         "display": PRECO_DISPLAY,
         "faixa": PRODUTO_FAIXA,
         "casas": CASAS,
+        "nomes": PRODUTOS,
+        "energia_ideal": IDEAL_ENERGIA,
     }
 
 # ===== REDIRECIONADOR CURTO PARA O QR CODE =====
@@ -1522,8 +1523,6 @@ def calculate(req: PayReq):
         raise HTTPException(status_code=500, detail="Erro ao gerar a apresentação.")
     finally:
         db.close()
-
-ZERO_DECIMAL = {"ja", "vi"}  # moedas sem centavos no Stripe
 
 @app.post("/calculate/urna")
 def calc_urna(req: UrnaPayReq):
