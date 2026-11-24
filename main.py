@@ -328,6 +328,13 @@ PRODUTOS = {
         "nome_ong": "Tên Tổ Chức, Hiệp Hội, Viện hoặc Quỹ", "compatibilidade_equipes": "Tương hợp đội nhóm"}     
     }
 
+# Espelha a "INJEÇÃO FINAL" que produtos.js e translations.js já executam.
+# Idempotente: reexecutar não duplica o sufixo.
+for _l in PRODUTOS:
+    _n = PRODUTOS[_l].get("compatibilidade_equipes", "")
+    if _n and not _n.endswith("(RH)"):
+        PRODUTOS[_l]["compatibilidade_equipes"] = _n + " (RH)"
+
 # ===== PRICE IDS STRIPE (24 produtos, 14 idiomas) =====
 PRICE_IDS = {
     "pt": {"express": "price_1UYwFBBMLa84bVJ0hg3okec9", "completo": "price_1UYwFHBMLa84bVJ0lSkkfPio", "urna": "price_1UYwFIBMLa84bVJ03wsbVVic", "eleitoral": "price_1UYwFJBMLa84bVJ0BkuErjgP", "vida": "price_1UYwFBBMLa84bVJ0vg0EjgNN", "ia": "price_1UYwFCBMLa84bVJ0P0nZ4pFB", "nickname": "price_1UYwFDBMLa84bVJ0QJi6PCgw", "nome_pet": "price_1UYwFDBMLa84bVJ0sOD7h3T9", "nome_dominio": "price_1UYwFEBMLa84bVJ0j2LlhqbU", "nome_canal": "price_1UYwFEBMLa84bVJ0bF6qXCKu", "nome_equipe": "price_1UYwFFBMLa84bVJ0Shpkyw96", "nome_projeto": "price_1UYwFGBMLa84bVJ0XdBqUTrp", "nome_evento": "price_1UYwFGBMLa84bVJ0QfuJBUl0", "calendario": "price_1UYwFIBMLa84bVJ0crXpzaiH", "imovel": "price_1UYwFJBMLa84bVJ0AA2X3uUE", "nome_ong": "price_1UYwFKBMLa84bVJ08siEYga5", "artistico": "price_1UYwFLBMLa84bVJ0J4L8W9Zu", "bebe": "price_1UYwFLBMLa84bVJ0vqTuXTTk", "assinatura": "price_1UYwFMBMLa84bVJ0ZZ3Cb47M", "negocio": "price_1UYwFNBMLa84bVJ01Gq3Mh9v", "casal": "price_1UYwFNBMLa84bVJ0aDUxjZpS", "familia": "price_1UYwFOBMLa84bVJ0w7bMvX9g", "compatibilidade_equipes": "price_1UYwFOBMLa84bVJ0m2TQVP84", "diagnostico": "price_1UYwFPBMLa84bVJ04gkCuwW2"},
