@@ -327,12 +327,27 @@ PRODUTOS = {
         "nome_ong": "Tên Tổ Chức, Hiệp Hội, Viện hoặc Quỹ", "compatibilidade_equipes": "Tương hợp đội nhóm"}     
     }
 
-# Espelha a "INJEÇÃO FINAL" que produtos.js e translations.js já executam.
-# Idempotente: reexecutar não duplica o sufixo.
-for _l in PRODUTOS:
-    _n = PRODUTOS[_l].get("compatibilidade_equipes", "")
-    if _n and not _n.endswith("(RH)"):
-        PRODUTOS[_l]["compatibilidade_equipes"] = _n + " (RH)"
+# Espelha a "INJEÇÃO FINAL" do JS: o sufixo de RH é localizado por idioma.
+# Substitui o nome completo, sem derivar: reexecutar dá sempre o mesmo valor.
+_RH_NOME = {
+    "pt": "Compatibilidade de Equipes (RH)",
+    "en": "Team Compatibility (HR)",
+    "es": "Compatibilidad de Equipos (RRHH)",
+    "it": "Compatibilità di Squadre (HR)",
+    "fr": "Compatibilité des Équipes (RH)",
+    "de": "Teamkompatibilität (HR)",
+    "ja": "チーム相性（人事）",
+    "zh": "团队兼容性（人力资源）",
+    "ru": "Совместимость команд (HR)",
+    "he": "תאימות צוות",
+    "ar": "توافق الفريق",
+    "id": "Kompatibilitas Tim (HR)",
+    "tr": "Ekip Uyumu (İK)",
+    "vi": "Tương Hợp Đội Nhóm (Nhân sự)",
+}
+for _l, _nome_rh in _RH_NOME.items():
+    if _l in PRODUTOS:
+        PRODUTOS[_l]["compatibilidade_equipes"] = _nome_rh
 
 # ===== PRICE IDS STRIPE (24 produtos, 14 idiomas) =====
 PRICE_IDS = {
