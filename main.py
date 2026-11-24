@@ -901,7 +901,6 @@ def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=No
         meta["energia"] = IDEAL_ENERGIA[produto]
     elif produto in ENERGIA_FIXA and not meta.get("energia"):
         meta["energia"] = ENERGIA_FIXA[produto]
-    pay_types = ["card", "boleto"] if MOEDA.get(lang, "brl") == "brl" else ["card"]
     locale = lang if lang in ["pt", "en", "es", "fr", "de", "it", "ja", "zh", "id", "tr", "vi"] else "auto"
 
     if produto == "urna":
@@ -1061,7 +1060,6 @@ async def criar_checkout_coletivo(lang: str = "pt", items: str = "[]"):
             "unit_amount": unit}, "quantity": qtd})
     if not line_items:
         raise HTTPException(400, "Itens invalidos")
-    pay_types = ["card", "boleto"] if MOEDA.get(lang, "brl") == "brl" else ["card"]
     locale = lang if lang in ["pt", "en", "es", "fr", "de", "it", "ja", "zh", "id", "tr", "vi"] else "auto"
     session = stripe.checkout.Session.create(
         mode="payment", 
@@ -1083,6 +1081,7 @@ async def api_precos():
         "casas": CASAS,
         "nomes": PRODUTOS,
         "energia_ideal": IDEAL_ENERGIA,
+        "desconto": CONFIG_DESCONTO,
     }
 
 # ===== REDIRECIONADOR CURTO PARA O QR CODE =====
@@ -1519,8 +1518,8 @@ def calculate(req: PayReq):
     except HTTPException:
         raise
     except Exception as e:
-        logger.exception("Falha ao gerar apresentacao: %s", e)
-        raise HTTPException(status_code=500, detail="Erro ao gerar a apresentação.")
+        logger.exception("Falha em /calculate: %s", e)
+        raise HTTPException(status_code=500, detail="Erro ao calcular o mapa. Tente novamente.")
     finally:
         db.close()
 
