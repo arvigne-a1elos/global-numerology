@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # main.py - A1ELOS Global Numerology API
-# VERSÃO CONSOLIDADA CORRIGIDA - TODAS AS ROTAS DOS 23 PRODUTOS
+# VERSÃO CONSOLIDADA CORRIGIDA - TODAS AS ROTAS DOS 24 PRODUTOS
 import stripe
 import tempfile
 import os, json, uuid, logging, secrets, string, base64, traceback, time, io
@@ -1289,7 +1289,7 @@ def regenerar_pdf_por_meta(meta):
         d2 = datas[1] if len(datas) > 1 else ""
         a1 = partes[0].split(";")[1] if len(partes) > 0 and ";" in partes[0] else ""
         a2 = partes[1].split(";")[1] if len(partes) > 1 and ";" in partes[1] else ""
-        return analisar_casal(n1, d1, n2, d2, a1, a2)
+        return analisar_casal(n1, d1, n2, d2, lang=lang)
 
     def _analisar_multi_com_datas(fn, dado, detalhe, nome):
         nomes = [x.strip() for x in (dado or nome).split("|")]
