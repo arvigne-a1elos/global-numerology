@@ -327,8 +327,9 @@ PRODUTOS = {
         "nome_ong": "Tên Tổ Chức, Hiệp Hội, Viện hoặc Quỹ", "compatibilidade_equipes": "Tương hợp đội nhóm"}     
     }
 
-# Espelha a "INJEÇÃO FINAL" do JS: o sufixo de RH é localizado por idioma.
-# Substitui o nome completo, sem derivar: reexecutar dá sempre o mesmo valor.
+# Espelha a "INJEÇÃO FINAL" dos dois JS: o sufixo de RH é localizado por idioma.
+# Atribui o valor final em vez de derivar do que já existe, então rodar duas
+# vezes dá sempre o mesmo resultado. Fonte: bloco NOMES de produtos.js.
 _RH_NOME = {
     "pt": "Compatibilidade de Equipes (RH)",
     "en": "Team Compatibility (HR)",
