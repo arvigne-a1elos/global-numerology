@@ -1289,8 +1289,8 @@ def regenerar_pdf_por_meta(meta):
         d2 = datas[1] if len(datas) > 1 else ""
         a1 = partes[0].split(";")[1] if len(partes) > 0 and ";" in partes[0] else ""
         a2 = partes[1].split(";")[1] if len(partes) > 1 and ";" in partes[1] else ""
-        return analisar_casal(n1, d1, n2, d2, lang=lang)
-
+        return analisar_casal(n1, d1, n2, d2, apelido1=a1, apelido2=a2, lang=lang)
+        
     def _analisar_multi_com_datas(fn, dado, detalhe, nome):
         nomes = [x.strip() for x in (dado or nome).split("|")]
         nomes = [n for n in nomes if n][:3]
