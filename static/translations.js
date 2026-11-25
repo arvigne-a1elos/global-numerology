@@ -4237,20 +4237,34 @@ const FEAT_TRAD = {
 
 // ===== DESCRIÇÃO DO CARD COLETIVO =====
 const DESC_COLETIVO = {
-    pt: "Contrate brindes numerológicos para seus clientes ou funcionários. Descontos de 10% a 70%.",
-    en: "Hire numerology gifts for your clients or employees. Discounts from 10% to 70%.",
-    es: "Contrata regalos numerológicos para tus clientes o empleados. Descuentos del 10% al 70%.",
-    it: "Assumi regali numerologici per i tuoi clienti o dipendenti. Sconti dal 10% al 70%.",
-    fr: "Engagez des cadeaux numérologiques pour vos clients ou employés. Réductions de 10% à 70%.",
-    de: "Engagieren Sie numerologische Geschenke für Ihre Kunden oder Mitarbeiter. Rabatte von 10% bis 70%.",
-    ja: "顧客や従業員向けの数秘術ギフトを手配します。10%〜70%の割引。",
-    zh: "为您的客户或员工安排数字命理礼物。折扣从10%到70%。",
-    ru: "Закажите нумерологические подарки для клиентов или сотрудников. Скидки от 10% до 70%.",
-    he: "הזמינו מתנות נומרולוגיות ללקוחות או לעובדים שלכם. הנחות מ-10% עד 70%.",
-    ar: "اطلب هدايا الأعداد لعملائك أو موظفيك. خصومات من 10% إلى 70%.",
-    id: "Pesan hadis numerologi untuk klien atau karyawan Anda. Diskon dari 10% hingga 70%.",
-    tr: "Müşterilerin veya çalışanlarınız için numeroloji hediyeleri sipariş edin. %10 ile %70 arasında indirim.",
-    vi: "Đặt mua quà tặng thần số học cho khách hàng hoặc nhân viên của bạn. Giảm giá từ 10% đến 70%."
+// pt
+"Contrate brindes numerológicos para seus clientes ou funcionários. Descontos de 10% a 50%."
+// en
+"Hire numerology gifts for your clients or employees. Discounts from 10% to 50%."
+// es
+"Contrata regalos numerológicos para tus clientes o empleados. Descuentos del 10% al 50%."
+// it
+"Assumi regali numerologici per i tuoi clienti o dipendenti. Sconti dal 10% al 50%."
+// fr
+"Engagez des cadeaux numérologiques pour vos clients ou employés. Réductions de 10% à 50%."
+// de
+"Engagieren Sie numerologische Geschenke für Ihre Kunden oder Mitarbeiter. Rabatte von 10% bis 50%."
+// ja
+"顧客や従業員向けに数秘術ギフトをご用意。10%〜50%の割引。"
+// zh
+"为您的客户或员工安排数字命理礼物。折扣从10%到50%。"
+// ru
+"Закажите нумерологические подарки для клиентов или сотрудников. Скидки от 10% до 50%."
+// he
+"הזמינו מתנות נומרולוגיות ללקוחות או לעובדים שלכם. הנחות מ-10% עד 50%."
+// ar
+"اطلب هدايا الأعداد لعملائك أو موظفيك. خصومات من 10% إلى 50%."
+// id
+"Pesan hadiah numerologi untuk klien atau karyawan Anda. Diskon dari 10% hingga 50%."
+// tr
+"Müşterileriniz veya çalışanlarınız için numeroloji hediyeleri sipariş edin. %10 ile %50 arasında indirim."
+// vi
+"Đặt mua quà tặng thần số học cho khách hàng hoặc nhân viên của bạn. Giảm giá từ 10% đến 50%."
 };
 
 // ===== TEXTO DA QUANTIDADE TOTAL (tabela BC, 14 idiomas) =====
