@@ -126,7 +126,7 @@ def pdf17(data, nome, bd_str, lang="pt"):
     T = PDF_TEXTS.get(lang, PDF_TEXTS["pt"])
     _fr, _fb = fonte_para(lang)
     FONTE, FN = _fr, _fb
-    from dicionarios import get_sig, get_cam
+    from dicionarios import get_sig, get_cam, get_sig_full, get_des, get_vib
     from fontes import preparar_texto as _prep
     S = PDF_SECOES.get(lang, PDF_SECOES["pt"])
     P = PERIODOS.get(lang, PERIODOS["pt"])
@@ -160,7 +160,7 @@ def pdf17(data, nome, bd_str, lang="pt"):
     linhas = [[t("numero", lang), t("significado", lang), t("valor", lang)]]
     for k, lbl in chaves:
         v = data.get(k, 0)
-        sig = get_sig(v, lang)
+        nm, pos, neg, licao = get_sig_full(v, lang)
         linhas.append([t(lbl, lang), sig[0], str(v)])
     tbl = Table(linhas, colWidths=[180, 220, 80])  # 480pt <= 495pt
     tbl.setStyle(TableStyle([
@@ -239,8 +239,9 @@ def pdf17(data, nome, bd_str, lang="pt"):
     ]))
     e.append(tbl4)
     e.append(Spacer(1, LINHA))
-    if DES.get(dp_):
-        e.append(Paragraph(f"<b>{t('licao', lang)}:</b> {DES.get(dp_)}",
+    _des_txt = get_des(dp_, lang)
+    if _des_txt:
+        e.append(Paragraph(f"<b>{t('licao', lang)}:</b> {_des_txt}",
                            _estilo("J", FONTE, 10, DARK, TA_JUSTIFY, sa=LINHA)))
     e.append(Paragraph(f"<b>{t('realizacoes', lang)}</b>",
                        _estilo("BL", FN, 11, GOLD, TA_LEFT, sb=LINHA, sa=LINHA)))
@@ -290,8 +291,9 @@ def pdf17(data, nome, bd_str, lang="pt"):
     try:
         dt = dp.parse(bd_str)
         vib_dia = reduzir(dt.day)
-        if VIB.get(vib_dia):
-            e.append(Paragraph(f"<b>{t('vibracao', lang)}: {vib_dia}</b> — {VIB.get(vib_dia)}",
+        vib_txt = get_vib(vib_dia, lang)
+        if vib_txt:
+            e.append(Paragraph(f"<b>{t('vibracao', lang)}: {vib_dia}</b> — {vib_txt}",
                                _estilo("J", FONTE, 10, DARK, TA_JUSTIFY, sa=LINHA)))
     except Exception:
         pass
