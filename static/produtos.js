@@ -984,7 +984,7 @@ function traduzirTudo() {
     }
     document.querySelectorAll('[data-i18n-ph]').forEach(function(el) {
       var k = el.getAttribute('data-i18n-ph');
-      var v = t[k] || t.calc_nome;
+      var v = t[k];
       if (v) el.placeholder = v;
     });
     document.querySelectorAll('.product-card[data-prod]').forEach(function(card) {
