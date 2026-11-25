@@ -1017,7 +1017,7 @@ function traduzirTudo() {
     });
     document.querySelectorAll('[data-i18n-bc]').forEach(function(el) {
       var k = el.getAttribute('data-i18n-bc');
-      var mapa = { servico: t.bc_servico || "Serviço", preco: t.bc_preco || "Preço", qtd: t.bc_qtd || "Quantidade" };
+      var mapa = { servico: t.bc_tbl_service, preco: t.bc_tbl_price, qtd: t.bc_tbl_qty };
       if (mapa[k]) el.innerText = mapa[k];
     });
     if (typeof atualizarLinkInvestidores === "function") {
