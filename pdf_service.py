@@ -15,6 +15,8 @@ from calc_service import reduzir, calc_grid, calc_ciclos, calc_desafios, calc_re
 from dicionarios import SIG, CAM, DES, VIB, t, PRODUTOS, PDF_TEXTS, PDF_SECOES, BOAS_VINDAS, PERIODOS, REALIZ_HEAD
 from dicionarios import get_sig, get_cam, get_compat, get_dual
 from reportlab.pdfgen import canvas as _rl_canvas
+from dicionarios import get_sig, get_cam, get_compat, get_dual
+from dicionarios import get_sig_full, get_des, get_vib
 
 # ---- Identidade visual (Padrão Mínimo de Qualidade Total) ----
 GOLD = colors.HexColor("#C9A94E")
