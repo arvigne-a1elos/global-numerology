@@ -160,7 +160,7 @@ def pdf17(data, nome, bd_str, lang="pt"):
     linhas = [[t("numero", lang), t("significado", lang), t("valor", lang)]]
     for k, lbl in chaves:
         v = data.get(k, 0)
-        nm, pos, neg, licao = get_sig_full(v, lang)
+        sig = get_sig(v, lang)        
         linhas.append([t(lbl, lang), sig[0], str(v)])
     tbl = Table(linhas, colWidths=[180, 220, 80])  # 480pt <= 495pt
     tbl.setStyle(TableStyle([
