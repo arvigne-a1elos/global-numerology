@@ -4,28 +4,10 @@
 // "Identifier has already been declared", mesmo se colado 2x.
 
 /* ===== PREÇOS GLOBAIS ===== */
-window.PRECO_BASE = window.PRECO_BASE || {
-  pt:[8,17,26,35,44,98], en:[20,44,71,89,116,251], es:[11,26,35,53,62,134],
-  it:[11,26,35,53,62,134], fr:[11,26,35,53,62,134], de:[11,26,35,53,62,134],
-  ja:[1400,3000,4600,6200,7700,17000], zh:[26,53,71,98,125,260],
-  ru:[440,800,1250,1700,2150,4400], id:[11000,23000,36000,48000,60000,134000],
-  tr:[58,123,188,254,319,710], vi:[25000,53000,81000,109000,137000,305000],
-  he:[44,98,143,197,242,530], ar:[35,71,107,143,170,377]
-};
+/* Preço, exibição, faixa, casas e símbolo vêm de /api/precos.
+   Fonte única: referencia/precos.py. Aqui fica apenas o mapa de símbolos
+   como reserva, para o caso de a API não responder. */
 window.SIMB = window.SIMB || {pt:'R$',en:'US$',es:'€',it:'€',fr:'€',de:'€',ja:'¥',zh:'¥',ru:'₽',id:'Rp',tr:'₺',vi:'₫',he:'₪',ar:'﷼'};
-if (!window.PRECO_DISPLAY) {
-  window.PRECO_DISPLAY = {};
-  Object.keys(window.PRECO_BASE).forEach(function(l){
-    var zero = (l==='ja'||l==='vi'||l==='id');
-    window.PRECO_DISPLAY[l] = window.PRECO_BASE[l].map(function(v){
-      var virgula = (l==='pt'||l==='es'||l==='it'||l==='fr'||l==='de'||l==='tr'||l==='id'||l==='vi'||l==='ru');
-      var txt = zero ? String(v) : v.toFixed(2).replace('.', virgula ? ',' : '.');
-      return (SIMB[l] || '') + ' ' + txt;
-    });
-  });
-}
-
-window._traduzindo = window._traduzindo || false;
 window.BC_QUANTIDADES = window.BC_QUANTIDADES || {};
 
 /* ===== CONF_COLETA ===== */
@@ -65,15 +47,16 @@ function pesquisar(produto) {
 
 function precoUnitarioBC(id) {
   var lang = (typeof getLang === 'function') ? getLang() : 'pt';
-  var servidor = (typeof PRECO_VALORES !== 'undefined' && PRECO_VALORES[lang]);
-  var base = servidor ? PRECO_VALORES[lang]
-           : (typeof PRECO_BASE !== 'undefined' ? (PRECO_BASE[lang] || PRECO_BASE.pt) : null);
+  if (typeof PRODUTO_FAIXA === 'undefined' || PRODUTO_FAIXA[id] === undefined) return 0;
+  var faixa = PRODUTO_FAIXA[id];
+  var base = (typeof PRECO_VALORES !== 'undefined' && PRECO_VALORES[lang]) ? PRECO_VALORES[lang] : null;
   if (!base) return 0;
-  var faixa = (typeof PRODUTO_FAIXA !== 'undefined' && PRODUTO_FAIXA[id] !== undefined) ? PRODUTO_FAIXA[id] : null;
-  if (faixa === null || faixa === undefined) return 0;
-  var unit = parseInt(base[faixa], 10) || 0;
-  if (servidor) unit = Math.round(unit / 100); // servidor manda em centavos
-  return unit;
+  // app.js já converte respeitando as casas da moeda. Usar a dele quando existir.
+  if (typeof valorMaior === 'function') return valorMaior(lang, base[faixa]);
+  var casas = (typeof casasMoeda === 'function') ? casasMoeda(lang)
+            : ((window.PRECO_CASAS && typeof window.PRECO_CASAS[lang] === 'number') ? window.PRECO_CASAS[lang] : 2);
+  var n = parseInt(base[faixa], 10) || 0;
+  return casas === 0 ? n : Math.round(n / Math.pow(10, casas));
 }
 
 function atualizarResumoBC() {
@@ -144,7 +127,7 @@ window.PRODUTO_FAIXA = window.PRODUTO_FAIXA || {
 
 /* ===== FEAT_TRAD v1 — FEATURES DOS 24 CARDS EM 14 IDIOMAS ===== */
 window.FEAT_TRAD = window.FEAT_TRAD || {};
-if (!FEAT_TRAD.pt) {
+if (!window.FEAT_TRAD.pt) {
   (function () {
     var F = {
       pt: {
@@ -513,9 +496,9 @@ if (!FEAT_TRAD.pt) {
     
     Object.keys(F).forEach(function (lang) {
       var f = F[lang];
-      FEAT_TRAD[lang] = {};
+      window.FEAT_TRAD[lang] = {};
       Object.keys(M).forEach(function (prod) {
-        FEAT_TRAD[lang][prod] = M[prod].map(function (k) { return f[k] || F.pt[k]; });
+      window.FEAT_TRAD[lang][prod] = M[prod].map(function (k) { return f[k] || F.pt[k]; });
       });
     });
   })();
@@ -575,12 +558,12 @@ window.ENERGIA_TRAD = window.ENERGIA_TRAD || {
   vi:{ e1:"Lãnh đạo", e2:"Nhà ngoại giao", e3:"Sáng tạo", e4:"Cấu trúc", e5:"Tự do", e6:"Hòa hợp", e7:"Tâm linh", e8:"Sức mạnh", e9:"Nhân đạo" }
 };
 window.ENERGIA_TITULOS = window.ENERGIA_TITULOS || {};
-if (!ENERGIA_TITULOS.pt) {
+if (!window.ENERGIA_TITULOS.pt) {
   Object.keys(ENERGIA_TRAD).forEach(function(l) {
     var src = ENERGIA_TRAD[l];
     var out = {};
     for (var k in src) { out[k.replace(/^e/, '')] = src[k]; }  // converte "e1" em "1"
-    ENERGIA_TITULOS[l] = out;
+    window.ENERGIA_TITULOS[l] = out;
   });
 }
 window.ENERGIAS_DESC = window.ENERGIAS_DESC || {};
@@ -699,11 +682,9 @@ function montarTabelaBC() {
     // Moeda
     var simb = (typeof SIMBOLO !== 'undefined' && SIMBOLO[lang]) ? SIMBOLO[lang]
              : ((typeof SIMB !== 'undefined' && SIMB[lang]) ? SIMB[lang]
-             : ((MOEDAS && MOEDAS[lang]) ? MOEDAS[lang] : 'R$'));
+             : ((typeof MOEDAS !== 'undefined' && MOEDAS[lang]) ? MOEDAS[lang] : 'R$'));
     // Base de preços
-    var servidor = (typeof PRECO_VALORES !== 'undefined' && PRECO_VALORES[lang]);
-    var base = servidor ? PRECO_VALORES[lang]
-             : (typeof PRECO_BASE !== 'undefined' ? (PRECO_BASE[lang] || PRECO_BASE.pt) : null);
+    var base = (typeof PRECO_VALORES !== 'undefined' && PRECO_VALORES[lang]) ? PRECO_VALORES[lang] : null;
     if (!base) return;
     // Traduções de nomes
     var t  = (PRODUTOS_TRAD && PRODUTOS_TRAD[lang]) ? PRODUTOS_TRAD[lang] : {};
@@ -745,8 +726,7 @@ function montarTabelaBC() {
     produtos.forEach(function(prod) {
       var faixa = (PRODUTO_FAIXA && PRODUTO_FAIXA[prod] !== undefined) ? PRODUTO_FAIXA[prod] : null;
       if (faixa === null) return;
-      var precoUnit = parseInt(base[faixa], 10) || 0;
-      if (servidor) precoUnit = Math.round(precoUnit / 100); // servidor manda em centavos
+      var precoUnit = precoUnitarioBC(prod);
       var nome = t[prod] || tp[prod] || prod;
       var tr = document.createElement('tr');
       tr.innerHTML = '<td>' + nome + '</td>'
@@ -1004,7 +984,7 @@ function traduzirTudo() {
     }
     document.querySelectorAll('[data-i18n-ph]').forEach(function(el) {
       var k = el.getAttribute('data-i18n-ph');
-      var v = t[k] || t.calc_nome;
+      var v = t[k];
       if (v) el.placeholder = v;
     });
     document.querySelectorAll('.product-card[data-prod]').forEach(function(card) {
@@ -1037,7 +1017,7 @@ function traduzirTudo() {
     });
     document.querySelectorAll('[data-i18n-bc]').forEach(function(el) {
       var k = el.getAttribute('data-i18n-bc');
-      var mapa = { servico: t.bc_servico || "Serviço", preco: t.bc_preco || "Preço", qtd: t.bc_qtd || "Quantidade" };
+      var mapa = { servico: t.bc_tbl_service, preco: t.bc_tbl_price, qtd: t.bc_tbl_qty };
       if (mapa[k]) el.innerText = mapa[k];
     });
     if (typeof atualizarLinkInvestidores === "function") {
@@ -1623,78 +1603,5 @@ window.montarSeletorEnergia = window.montarSeletorEnergia || function(containerI
   for (var l in NOMES) {
     if (!window.PRODUTOS_TRAD[l]) window.PRODUTOS_TRAD[l] = {};
     window.PRODUTOS_TRAD[l].compatibilidade_equipes = NOMES[l];
-  }
-})();
-// ===== INÍCIO DO BLOCO 22: PONTE DO PREÇO UNITÁRIO DO MONTAR SOB MEDIDA =====
-(function(){
-  function instalar(){
-    if (typeof window.precoUnitarioBC !== "function") return false;
-    if (window._bcPrecoPonte) return true;
-    window._bcPrecoPonte = true;
-    var orig = window.precoUnitarioBC;
-    window.precoUnitarioBC = function(chave){
-      var v = 0;
-      try { v = orig(chave); } catch(e){ v = 0; }
-      if (typeof v !== "number" || !v || v <= 0) {
-        v = 0;
-        try {
-          var lista = window.BC_PRODUTOS || [];
-          for (var i = 0; i < lista.length; i++) {
-            if (lista[i] && lista[i][0] === chave && typeof lista[i][2] === "number") { v = lista[i][2]; break; }
-          }
-        } catch(e){}
-      }
-      return v;
-    };
-    try { if (typeof window.montarTabelaBC === "function") window.montarTabelaBC(); } catch(e){}
-    // dentro do instalar(), antes do return true:
-    if (typeof window.descontoBC !== "function") {
-      console.warn("[BC] descontoBC indisponível — app.js pode não ter carregado antes de produtos.js");
-  }
-    return true;
-  }
-  try { instalar(); } catch(e){}
-  var t = setInterval(function(){ try { if (instalar()) clearInterval(t); } catch(e){} }, 150);
-  setTimeout(function(){ try { clearInterval(t); } catch(e){} }, 5000);
-})();
-// ===== FIM DO BLOCO 22 =====
-
-// ===== BLOCO 13 — insere o 24º produto na tabela do Montar Sob Medida =====
-// Posição: logo após o Mapa Família Premium (entre Família e Bônus Coletivo).
-// Clona a linha do 'familia' e troca apenas slug e ícone: herda o valor numérico
-// do campo de preço/faixa e quaisquer colunas extras, em qualquer formato.
-(function(){
-  if (typeof BC_PRODUTOS === 'undefined' || !BC_PRODUTOS || !BC_PRODUTOS.length) return;
-  for (var i = 0; i < BC_PRODUTOS.length; i++) {
-    if (BC_PRODUTOS[i] && BC_PRODUTOS[i][0] === 'compatibilidade_equipes') return; // já existe
-  }
-  var idxFam = -1;
-  for (var j = 0; j < BC_PRODUTOS.length; j++) {
-    if (BC_PRODUTOS[j] && BC_PRODUTOS[j][0] === 'familia') { idxFam = j; break; }
-  }
-  if (idxFam < 0) return;
-  var linha = BC_PRODUTOS[idxFam].slice();
-  linha[0] = 'compatibilidade_equipes';
-  linha[1] = '🏢';
-  BC_PRODUTOS.splice(idxFam + 1, 0, linha);
-})();
-
-// ===== BLOCO 13b — garante faixa e preço do 24º produto em todos os idiomas =====
-// Clona por idioma o valor do Mapa Família (mesma faixa 5), sem inventar valores.
-// É o que faz a capa do card trocar valor e moeda conforme o idioma.
-(function(){
-  function clonarPreco(base){
-    if (!base) return;
-    for (var lang in base) {
-      var d = base[lang];
-      if (d && typeof d === 'object' && d['familia'] != null && d['compatibilidade_equipes'] == null) {
-        d['compatibilidade_equipes'] = d['familia'];
-      }
-    }
-  }
-  if (typeof PRECO_BASE !== 'undefined') clonarPreco(PRECO_BASE);
-  if (typeof window.PRECO_VALORES !== 'undefined') clonarPreco(window.PRECO_VALORES);
-  if (typeof PRODUTO_FAIXA !== 'undefined' && PRODUTO_FAIXA['compatibilidade_equipes'] == null) {
-    PRODUTO_FAIXA['compatibilidade_equipes'] = (PRODUTO_FAIXA['familia'] != null) ? PRODUTO_FAIXA['familia'] : 5;
   }
 })();

@@ -71,6 +71,12 @@ PRODUTO_FAIXA = {
     "casal": 4, "familia": 5, "compatibilidade_equipes": 5, "coletivo": 5, 
 }
 
+# Casas decimais da moeda — o Stripe cobra em unidades menores.
+# 2 casas: o valor da tabela é o inteiro multiplicado por 100.
+# 0 casas: o valor da tabela JÁ É o inteiro (JPY, IDR, VND).
+CASAS = {lang: 2 for lang in IDIOMAS}
+CASAS.update({"ja": 0, "id": 0, "vi": 0})
+
 def preco_local(produto, lang):
     """Retorna o valor em unidades menores (o que o Stripe cobra)."""
     lang = lang if lang in VALORES else "en"

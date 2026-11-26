@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # main.py - A1ELOS Global Numerology API
-# VERSÃO CONSOLIDADA CORRIGIDA - TODAS AS ROTAS DOS 23 PRODUTOS
+# VERSÃO CONSOLIDADA CORRIGIDA - TODAS AS ROTAS DOS 24 PRODUTOS
 import stripe
 import tempfile
 import os, json, uuid, logging, secrets, string, base64, traceback, time, io
@@ -46,7 +46,9 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from produtos.calendario import analisar_periodo
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse, Response
-from referencia.precos import VALORES, SIMBOLO, PRECO_DISPLAY, PRODUTO_FAIXA, preco_local, preco_display
+from referencia.precos import (VALORES, SIMBOLO, PRECO_DISPLAY,
+                               PRODUTO_FAIXA, CASAS,
+                               preco_local, preco_display)
 # ===== FONTES CJK (ja/zh) — restaura glifos kanji nos PDFs (07/11/2026) =====
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.cidfonts import UnicodeCIDFont
@@ -92,12 +94,11 @@ ADMIN_EMAIL = "arvigne@gmail.com"
 if STRIPE_KEY:
     stripe.api_key = STRIPE_KEY
 
-# ===== CONFIG DE DESCONTO DO BÔNUS COLETIVO (espelho documental do app.js) =====
-# ATENÇÃO: este dicionário é APENAS documentação de referência.
-# O frontend (app.js) NÃO consulta estes valores, e o backend NÃO os usa
-# para calcular desconto. A fonte de verdade em tempo de execução é o
-# window.CONFIG_DESCONTO do app.js.
-# Se alterar as faixas aqui, altere também no app.js — e vice-versa.
+# ===== CONFIG DE DESCONTO DO BÔNUS COLETIVO =====
+# Usado por /criar-checkout-coletivo: "teto_automatico" recusa acima de 2.000
+# unidades e "faixas" limita o desconto a 50%. O app.js mantém cópia própria
+# para calcular na tela. As duas concordam hoje por disciplina, não por
+# construção. A unificação vem em referencia/descontos.py.
 CONFIG_DESCONTO = {
     "faixas": [
         {"min": 10, "pct": 10}, {"min": 50, "pct": 15}, {"min": 100, "pct": 20},
@@ -185,14 +186,15 @@ IDIOMAS_RTL = {'he', 'ar'}
 # ===== NOMES DOS 24 PRODUTOS (14 IDIOMAS) =====
 PRODUTOS = {
     "pt": {"express": "Mapa Express", "vida": "Qual Vida/Ano", "completo": "Mapa Completo",
-        "ia": "Pesquisa IA de Nomes", "urna": "Validacao Nome de Urna", "eleitoral": "Numero Eleitoral",
-        "imovel": "Numero do Imovel", "calendario": "Calendario Mensal Energetico",
-        "artistico": "Validacao Nome Artistico", "bebe": "Planejamento Nome de Bebe",
-        "assinatura": "Validacao de Assinaturas", "negocio": "Nome para Negocio/Produto",
-        "casal": "Mapa do Casal", "familia": "Mapa Familia Premium", "coletivo": "Bonus Coletivo/Empresarial",
-        "nome_pet": "Nome do Pet", "nickname": "Nickname Digital", "nome_dominio": "Nome do Dominio",
-        "nome_canal": "Nome do Canal", "nome_equipe": "Nome da Equipe", 
-        "nome_ong": "Nome de ONG, Associacao, Instituto ou Fundacao", "compatibilidade_equipes": "Compatibilidade de Equipes",
+        "ia": "Pesquisa IA de Nomes", "urna": "Validação Nome de Urna", "eleitoral": "Número Eleitoral",
+        "imovel": "Número do Imóvel", "calendario": "Calendário Mensal Energético",
+        "artistico": "Validação Nome Artístico", "bebe": "Planejamento Nome de Bebê",
+        "assinatura": "Validação de Assinaturas", "negocio": "Nome para Negócio/Produto",
+        "casal": "Mapa do Casal", "familia": "Mapa Família Premium", "coletivo": "Bônus Coletivo/Empresarial",
+        "nome_pet": "Nome do Pet", "nickname": "Nickname Digital", "nome_dominio": "Nome do Domínio",
+        "nome_canal": "Nome do Canal", "nome_equipe": "Nome da Equipe",
+        "nome_ong": "Nome de ONG, Associação, Instituto ou Fundação",
+        "compatibilidade_equipes": "Compatibilidade de Equipes",
         "nome_projeto": "Nome do Projeto", "nome_evento": "Nome do Evento"},
     "en": {"express": "Express Map", "vida": "Life Phase & Year", "completo": "Complete Map",
         "ia": "AI Name Search", "urna": "Ballot Name Validation", "eleitoral": "Electoral Number",
@@ -324,6 +326,29 @@ PRODUTOS = {
         "nome_projeto": "Tên Dự Án", "nome_evento": "Tên Sự Kiện",
         "nome_ong": "Tên Tổ Chức, Hiệp Hội, Viện hoặc Quỹ", "compatibilidade_equipes": "Tương hợp đội nhóm"}     
     }
+
+# Espelha a "INJEÇÃO FINAL" dos dois JS: o sufixo de RH é localizado por idioma.
+# Atribui o valor final em vez de derivar do que já existe, então rodar duas
+# vezes dá sempre o mesmo resultado. Fonte: bloco NOMES de produtos.js.
+_RH_NOME = {
+    "pt": "Compatibilidade de Equipes (RH)",
+    "en": "Team Compatibility (HR)",
+    "es": "Compatibilidad de Equipos (RRHH)",
+    "it": "Compatibilità di Squadre (HR)",
+    "fr": "Compatibilité des Équipes (RH)",
+    "de": "Teamkompatibilität (HR)",
+    "ja": "チーム相性（人事）",
+    "zh": "团队兼容性（人力资源）",
+    "ru": "Совместимость команд (HR)",
+    "he": "תאימות צוות",
+    "ar": "توافق الفريق",
+    "id": "Kompatibilitas Tim (HR)",
+    "tr": "Ekip Uyumu (İK)",
+    "vi": "Tương Hợp Đội Nhóm (Nhân sự)",
+}
+for _l, _nome_rh in _RH_NOME.items():
+    if _l in PRODUTOS:
+        PRODUTOS[_l]["compatibilidade_equipes"] = _nome_rh
 
 # ===== PRICE IDS STRIPE (24 produtos, 14 idiomas) =====
 PRICE_IDS = {
@@ -892,7 +917,6 @@ def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=No
         meta["energia"] = IDEAL_ENERGIA[produto]
     elif produto in ENERGIA_FIXA and not meta.get("energia"):
         meta["energia"] = ENERGIA_FIXA[produto]
-    pay_types = ["card", "boleto"] if MOEDA.get(lang, "brl") == "brl" else ["card"]
     locale = lang if lang in ["pt", "en", "es", "fr", "de", "it", "ja", "zh", "id", "tr", "vi"] else "auto"
 
     if produto == "urna":
@@ -1052,7 +1076,6 @@ async def criar_checkout_coletivo(lang: str = "pt", items: str = "[]"):
             "unit_amount": unit}, "quantity": qtd})
     if not line_items:
         raise HTTPException(400, "Itens invalidos")
-    pay_types = ["card", "boleto"] if MOEDA.get(lang, "brl") == "brl" else ["card"]
     locale = lang if lang in ["pt", "en", "es", "fr", "de", "it", "ja", "zh", "id", "tr", "vi"] else "auto"
     session = stripe.checkout.Session.create(
         mode="payment", 
@@ -1066,12 +1089,16 @@ async def criar_checkout_coletivo(lang: str = "pt", items: str = "[]"):
 
 @app.get("/api/precos")
 async def api_precos():
- return {
-   "valores": VALORES,
-   "simbolo": SIMBOLO,
-   "display": PRECO_DISPLAY,
-   "faixa": PRODUTO_FAIXA,
- }   
+    return {
+        "valores": VALORES,
+        "simbolo": SIMBOLO,
+        "display": PRECO_DISPLAY,
+        "faixa": PRODUTO_FAIXA,
+        "casas": CASAS,
+        "nomes": PRODUTOS,
+        "energia_ideal": IDEAL_ENERGIA,
+        "desconto": CONFIG_DESCONTO,
+    }
 
 # ===== REDIRECIONADOR CURTO PARA O QR CODE =====
 @app.get("/r/{sid}")
@@ -1254,13 +1281,16 @@ def regenerar_pdf_por_meta(meta):
 
     def _analisar_casal_com_datas():
         nomes = [x.strip() for x in (dado or nome).split("|")[:2]]
-        datas = [x.strip() for x in (meta.get("detalhe", "") or "").split("|")[:2]]
+        partes = [x.strip() for x in (meta.get("detalhe", "") or "").split("|")[:2]]
+        datas = [p.split(";")[0] for p in partes]
         n1 = nomes[0] if len(nomes) > 0 else ""
         n2 = nomes[1] if len(nomes) > 1 else ""
         d1 = datas[0] if len(datas) > 0 else ""
         d2 = datas[1] if len(datas) > 1 else ""
-        return analisar_casal(n1, d1, n2, d2)
-
+        a1 = partes[0].split(";")[1] if len(partes) > 0 and ";" in partes[0] else ""
+        a2 = partes[1].split(";")[1] if len(partes) > 1 and ";" in partes[1] else ""
+        return analisar_casal(n1, d1, n2, d2, apelido1=a1, apelido2=a2, lang=lang)
+        
     def _analisar_multi_com_datas(fn, dado, detalhe, nome):
         nomes = [x.strip() for x in (dado or nome).split("|")]
         nomes = [n for n in nomes if n][:3]
@@ -1327,16 +1357,27 @@ def regenerar_pdf_por_meta(meta):
         data["dado"] = dado or ""           
     logger.info(f"PDF dados {prod}: {list((data or {}).keys())}")
     if prod == "calendario":
-        pf = gerar_pdf_calendario(data, lang, nome_exib)
+        try:
+            from pdf_service import pdf_produto as _pdf_produto
+            pf = _pdf_produto("calendario", data, nome_exib, bd, lang, dado)
+        except Exception as _e_cal:
+            logger.error("calendario traduzido falhou (%s); usando rota antiga", _e_cal)
+            pf = gerar_pdf_calendario(data, lang, nome_exib)
     elif prod == "nome_ong":
         pf = gerar_pdf_ong(data, lang, nome_exib)
-    elif prod in ("casal", "familia", "compatibilidade_equipes"):
+    elif prod == "casal":
         pf = gerar_pdf(prod, data, lang, nome_exib, bd, dado=dado)
-    else:
-        pf = gerar_pdf(prod, data, lang, nome_exib, bd, dado=dado,
-                       dado2=dado2, dado3=dado3,
-                       energia=energia, tipo=meta.get("subtipo", ""),
-                       sexo=sexo)
+    elif prod in ("familia", "compatibilidade_equipes"):
+        pf = None
+        try:
+            import pdf_service as _ps
+            _fn = _ps.pdf_familia if prod == "familia" else _ps.pdf_equipe
+            pf = _fn(data, lang)
+        except Exception as _e:
+            logger.error("pdf_service direto %s: %s", prod, _e)
+        if not (pf and os.path.exists(pf)):
+            logger.error("fallback generico em %s", prod)
+            pf = gerar_pdf(prod, data, lang, nome_exib, bd, dado=dado) 
     return pf
     
 @app.get("/api/pay/urna-success")
@@ -1498,12 +1539,10 @@ def calculate(req: PayReq):
     except HTTPException:
         raise
     except Exception as e:
-        logger.exception("Falha ao gerar apresentacao: %s", e)
-        raise HTTPException(status_code=500, detail="Erro ao gerar a apresentação.")
+        logger.exception("Falha em /calculate: %s", e)
+        raise HTTPException(status_code=500, detail="Erro ao calcular o mapa. Tente novamente.")
     finally:
         db.close()
-
-ZERO_DECIMAL = {"ja", "vi"}  # moedas sem centavos no Stripe
 
 @app.post("/calculate/urna")
 def calc_urna(req: UrnaPayReq):

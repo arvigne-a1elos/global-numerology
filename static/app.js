@@ -181,21 +181,41 @@ function pagarCasal(){
 
 // ===== FAMÍLIA: principal + até 4 membros =====
 function _coletarPares(prefixoP, prefixoM, qtdMax) {
-  var elN = document.getElementById(prefixoP + 'Nome');
-  var elD = document.getElementById(prefixoP + 'Nasc');
-  var principal = { nome: elN ? elN.value.trim() : '', nasc: elD ? converterData(elD.value.trim()) : '' };
+  function _val(id) {
+    var el = document.getElementById(id);
+    return el ? String(el.value || '').trim() : '';
+  }
+  function _apelido(id) {
+    return _val(id).replace(/[;|]/g, '').trim();
+  }
+  function _data(id) {
+    var v = _val(id);
+    return (v && typeof converterData === 'function') ? converterData(v) : v;
+  }
+
+  var principal = {
+    nome: _val(prefixoP + 'Nome'),
+    apelido: _apelido(prefixoP + 'Apelido'),
+    nasc: _data(prefixoP + 'Nasc')
+  };
   if (!principal.nome || !principal.nasc) return { erro: 'principal' };
+
   var membros = [];
   for (var i = 1; i <= qtdMax; i++) {
-    var mn = document.getElementById(prefixoM + 'Nome' + i);
-    var md = document.getElementById(prefixoM + 'Nasc' + i);
-    var vn = mn ? mn.value.trim() : '';
-    var vd = md ? converterData(md.value.trim()) : '';
-    if (!vn && !vd) continue;                    // linha vazia: ignora
-    if (!vn || !vd) return { erro: 'incompleto', idx: i };  // meia linha: bloqueia
-    membros.push({ nome: vn, nasc: vd });
+    var vn = _val(prefixoM + 'Nome' + i);
+    var vd = _data(prefixoM + 'Nasc' + i);
+    var va = _apelido(prefixoM + 'Apelido' + i);
+    if (!vn && !vd && !va) continue;
+    if (!vn || !vd) return { erro: 'incompleto', idx: i };
+    membros.push({ nome: vn, apelido: va, nasc: vd });
   }
   return { principal: principal, membros: membros };
+}
+
+function _detalheComApelido(r) {
+  return [r.principal].concat(r.membros).map(function (m) {
+    return m.apelido ? (m.nasc + ';' + m.apelido) : m.nasc;
+  }).join('|');
 }
 
 function pagarFamilia(){
@@ -207,8 +227,7 @@ function pagarFamilia(){
     return;
   }
   var dado = [r.principal.nome].concat(r.membros.map(function(m){ return m.nome; })).join('|');
-  var det  = [r.principal.nasc].concat(r.membros.map(function(m){ return m.nasc; })).join('|');
-  location.href = '/criar-checkout?produto=familia'
+  var det  = _detalheComApelido(r);
     + '&nome=' + encodeURIComponent(r.principal.nome)
     + '&nascimento=' + encodeURIComponent(r.principal.nasc)
     + '&dado=' + encodeURIComponent(dado)
@@ -225,8 +244,7 @@ function pagarCompatibilidade(){
     return;
   }
   var dado = [r.principal.nome].concat(r.membros.map(function(m){ return m.nome; })).join('|');
-  var det  = [r.principal.nasc].concat(r.membros.map(function(m){ return m.nasc; })).join('|');
-  var energia = (window._compEnergia && window._compEnergia !== '0') ? window._compEnergia : '8';
+  var det  = _detalheComApelido(r);
   location.href = '/criar-checkout?produto=compatibilidade_equipes'
     + '&nome=' + encodeURIComponent(r.principal.nome)
     + '&nascimento=' + encodeURIComponent(r.principal.nasc)
@@ -598,23 +616,16 @@ function bcSobConsulta(qtd) {
 }
 function precoUnitarioBC(id) {
   var lang = (typeof getLang === 'function') ? getLang() : 'pt';
-  var faixa = (typeof PRODUTO_FAIXA !== 'undefined' && PRODUTO_FAIXA[id] !== undefined) ? PRODUTO_FAIXA[id] : null;
-  if (faixa === null || faixa === undefined) return 0;
-  var servidor = (typeof PRECO_VALORES !== 'undefined' && PRECO_VALORES[lang]);
-  var base = servidor ? PRECO_VALORES[lang]
+  var faixa = (typeof PRODUTO_FAIXA !== 'undefined' && PRODUTO_FAIXA[id] !== undefined)
+            ? PRODUTO_FAIXA[id] : null;
+  if (faixa === null) return 0;
+
+  var base = (typeof PRECO_VALORES !== 'undefined' && PRECO_VALORES[lang])
+           ? PRECO_VALORES[lang]
            : (typeof PRECO_BASE !== 'undefined' ? (PRECO_BASE[lang] || PRECO_BASE.pt) : null);
   if (!base) return 0;
-  var unit = parseInt(base[faixa], 10) || 0;
-  if (servidor) unit = Math.round(unit / 100);
-  return unit;
-}
-function usarPlanoPronto(qExpress, qVida, qIa, qCompleto) {
-  var mapa = { express: qExpress, vida: qVida, ia: qIa, completo: qCompleto };
-  document.querySelectorAll("#bcTabelaCorpo input[data-prod]").forEach(function(inp) {
-    var prod = inp.getAttribute("data-prod");
-    inp.value = mapa[prod] || 0;
-  });
-  atualizarResumoBC();
+
+  return valorMaior(lang, base[faixa]);
 }
 // ===== CALCULADORA GRATUITA (5 números) =====
 function r1Num(n) {
@@ -969,12 +980,26 @@ if (document.readyState === "loading") {
   iniciarSeguro();
 }
 
-// ===== ATUALIZAR PREÇOS DOS CARDS — FONTE ÚNICA: /api/precos =====
-// Busca a tabela de referência do servidor (referencia/precos.py).
-// Não altera a tabela; apenas lê dela. Respeita moeda local.
-function formatarValor(centavos) {
-  var v = (centavos / 100).toFixed(0);
-  return v.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+// ===== MOEDA: unidades menores → unidades maiores =====
+// Espelho de referencia/precos.py. 0 casas: JPY, IDR, VND.
+var _CASAS_LOCAL = { ja: 0, id: 0, vi: 0 };
+
+function casasMoeda(lang) {
+  var mapa = window.PRECO_CASAS || _CASAS_LOCAL;
+  var c = mapa[lang];
+  return (typeof c === 'number') ? c : 2;
+}
+
+// Converte o valor da tabela (o que o Stripe cobra) para o valor exibido.
+function valorMaior(lang, valorTabela) {
+  var n = parseInt(valorTabela, 10) || 0;
+  var casas = casasMoeda(lang);
+  return casas === 0 ? n : Math.round(n / Math.pow(10, casas));
+}
+
+function formatarValor(lang, valorTabela) {
+  return String(valorMaior(lang, valorTabela))
+    .replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 }
 
 // ===== SOMAR SOB MEDIDA NA MOEDA DO IDIOMA =====
@@ -990,7 +1015,7 @@ function atualizarSomaSobMedida(lang, precos) {
     var el = sel[i];
     var faixa = parseInt(el.getAttribute('data-preco') || el.getAttribute('data-faixa'), 10);
     if (!isNaN(faixa) && precos[faixa]) {
-      soma += parseInt(precos[faixa], 10);
+      soma += valorMaior(lang, precos[faixa]);
     }
   }
   var alvo = document.getElementById('soma-sob-medida');
@@ -1000,39 +1025,55 @@ function atualizarSomaSobMedida(lang, precos) {
 function atualizarPrecos() {
   var lang = getLang();
   var t = translations[lang] || translations.pt;
-  // Se os dados ainda não chegaram do servidor, sai sem erro.
-  // O fetch('/api/precos') no final do arquivo chama atualizarPrecos() de novo quando chegar.
-  if (typeof PRECO_VALORES === 'undefined' || typeof PRODUTO_FAIXA === 'undefined') return;
-  var precos = PRECO_VALORES[lang] || PRECO_VALORES.pt;
+
+  if (typeof PRODUTO_FAIXA === 'undefined') return;
+
+  var precos  = (typeof PRECO_VALORES !== 'undefined' && PRECO_VALORES[lang]) || null;
+  var display = (window.PRECO_DISPLAY && (window.PRECO_DISPLAY[lang] || window.PRECO_DISPLAY.pt)) || null;
   var simbolo = (typeof SIMBOLO !== 'undefined' && SIMBOLO[lang]) ? SIMBOLO[lang] : 'R$';
-  if (!precos) return;
+
+  if (!precos && !display) return;
+
   var cards = document.querySelectorAll('.product-card[data-prod]');
   for (var i = 0; i < cards.length; i++) {
     var prod = cards[i].getAttribute('data-prod');
     var el = cards[i].querySelector('.prod-preco');
     if (!el) continue;
+
     if (prod === 'coletivo') {
       el.textContent = t.sob_consulta || 'Sob consulta';
       continue;
     }
+
     var faixa = PRODUTO_FAIXA[prod];
-    if (typeof faixa === 'undefined' || !precos[faixa]) continue;
-    el.textContent = simbolo + ' ' + formatarValor(precos[faixa]);
+    if (typeof faixa === 'undefined') continue;
+
+    // O servidor já manda o texto pronto. Só calculamos se ele faltar.
+    var txt = display && display[faixa];
+    if (!txt) {
+      if (!precos || !precos[faixa]) continue;
+      txt = simbolo + ' ' + formatarValor(lang, precos[faixa]);
+    }
+    el.textContent = txt;
   }
+
   try {
-    if (typeof atualizarSomaSobMedida === 'function') {
+    if (typeof atualizarSomaSobMedida === 'function' && precos) {
       atualizarSomaSobMedida(lang, precos);
     }
   } catch (err) {
     console.error('[A1ELOS] erro em atualizarSomaSobMedida:', err);
   }
 }
+
 // ===== CARREGA PREÇOS DO SERVIDOR (fonte única: /api/precos) =====
 fetch('/api/precos')
   .then(function(r){ if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
   .then(function(d){
     window.PRECO_VALORES = d.valores || {};
-    window.SIMBOLO = d.simbolo || {};
+    window.PRECO_DISPLAY = d.display || {};
+    window.PRECO_CASAS   = d.casas   || {};
+    window.SIMBOLO       = d.simbolo || {};
     if (d.faixa) window.PRODUTO_FAIXA = d.faixa;
     if (typeof atualizarPrecos === 'function') atualizarPrecos();
   })
@@ -1274,54 +1315,56 @@ window.pagarCompatibilidade = window.pagarCompatibilidade || function(){
       var vd = datas[k] ? String(datas[k].value || "").trim() : "";
       rd.push((vd && typeof converterData === "function") ? converterData(vd) : vd);
     }
-    return { nomes: rn, datas: rd };
+     return { nomes: rn, datas: rd, apelidos: [] };
   }
 
   /* ---------- configuração dos três produtos ---------- */
-  var CFG = {
+
+      var CFG = {
     casal: {
       qtd: 2, minimo: 2,
-      mapa: [["casalNome1", "casalNasc1"], ["casalNome2", "casalNasc2"]],
+      mapa: [["casalNome1", "casalNasc1", "casalApelido1"], ["casalNome2", "casalNasc2", "casalApelido2"]],
       extra: function () { return {}; }
     },
     familia: {
       qtd: 2, minimo: 1,
-      principal: ["familiaPrincipalNome", "familiaPrincipalNasc"],
-      membro: ["familiaMembroNome", "familiaMembroNasc"],
+      principal: ["familiaPrincipalNome", "familiaPrincipalNasc", "familiaPrincipalApelido"],
+      membro: ["familiaMembroNome", "familiaMembroNasc", "familiaMembroApelido"],
       extra: function () { return {}; }
     },
     compatibilidade_equipes: {
       qtd: 2, minimo: 1,
-      principal: ["equipePrincipalNome", "equipePrincipalNasc"],
-      membro: ["equipeMembroNome", "equipeMembroNasc"],
+      principal: ["equipePrincipalNome", "equipePrincipalNasc", "equipePrincipalApelido"],
+      membro: ["equipeMembroNome", "equipeMembroNasc", "equipeMembroApelido"],
       extra: function () {
         var e = (window._compEnergia && window._compEnergia !== "0") ? window._compEnergia : "8";
         return { energia: e };
       }
     }
   };
-
-  /* ---------- coleta por IDs ---------- */
   function _porMapa(mapa) {
-    var nomes = [], datas = [];
+    var nomes = [], datas = [], apelidos = [];
     for (var i = 0; i < mapa.length; i++) {
       nomes.push(_valor([mapa[i][0]]));
       datas.push(_data([mapa[i][1]]));
+      apelidos.push(mapa[i][2] ? _valor([mapa[i][2]]).replace(/[;|]/g, "") : "");
     }
-    return { nomes: nomes, datas: datas };
+    return { nomes: nomes, datas: datas, apelidos: apelidos };
   }
-
+    
   function _porPrincipalMembro(principal, membro, max) {
     var nomes = [_valor([principal[0]])];
     var datas = [_data([principal[1]])];
+    var apelidos = [principal[2] ? _valor([principal[2]]).replace(/[;|]/g, "") : ""];
     for (var i = 1; i <= max; i++) {
       var n = _valor([membro[0] + i]);
       var d = _data([membro[1] + i]);
-      if (!n && !d) continue;
+      var a = membro[2] ? _valor([membro[2] + i]).replace(/[;|]/g, "") : "";
+      if (!n && !d && !a) continue;
       if (!n || !d) return { erro: "incompleto", idx: i };
-      nomes.push(n); datas.push(d);
+      nomes.push(n); datas.push(d); apelidos.push(a);
     }
-    return { nomes: nomes, datas: datas };
+    return { nomes: nomes, datas: datas, apelidos: apelidos };
   }
 
   function _faltando(r, minimo) {
@@ -1353,17 +1396,21 @@ window.pagarCompatibilidade = window.pagarCompatibilidade || function(){
     return t.preencha_dado || "Preencha os dados solicitados.";
   }
 
-  function _enviar(produto, nomes, datas, extra) {
+  function _enviar(produto, nomes, datas, extra, apelidos) {
     var lang = (typeof getLang === "function") ? getLang() : "pt";
-    var n = [], d = [];
+    var ap = apelidos || [];
+    var n = [], det = [];
     for (var i = 0; i < nomes.length; i++) {
-      if (nomes[i] && datas[i]) { n.push(nomes[i]); d.push(datas[i]); }
+      if (nomes[i] && datas[i]) {
+        n.push(nomes[i]);
+        det.push(ap[i] ? (datas[i] + ";" + ap[i]) : datas[i]);
+      }
     }
     var qs = "/criar-checkout?produto=" + encodeURIComponent(produto)
       + "&nome=" + encodeURIComponent(n[0])
-      + "&nascimento=" + encodeURIComponent(d[0])
+      + "&nascimento=" + encodeURIComponent(det[0].split(";")[0])
       + "&dado=" + encodeURIComponent(n.join("|"))
-      + "&detalhe=" + encodeURIComponent(d.join("|"))
+      + "&detalhe=" + encodeURIComponent(det.join("|"))
       + "&lang=" + encodeURIComponent(lang);
 
     var ex = extra || {};
@@ -1379,7 +1426,7 @@ window.pagarCompatibilidade = window.pagarCompatibilidade || function(){
     var cfg = CFG[produto];
     var r = _coletar(produto);
     if (_faltando(r, cfg.minimo)) { alert(_msgPreencha()); return; }
-    _enviar(produto, r.nomes, r.datas, cfg.extra());
+    _enviar(produto, r.nomes, r.datas, cfg.extra(), r.apelidos);
   }
 
   /* ---------- fachada pública ---------- */

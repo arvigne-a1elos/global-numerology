@@ -73,7 +73,7 @@
                 </ul>
                 <button class="btn btn-full" onclick="comprar('nome_pet')" data-i18n="pesquisar_btn">pesquisar</button>
                 <form id="form-nome_pet" class="hidden" onsubmit="return false">    
-                 <label data-i18n-form="f_nome_pet">Nome do Pet</label>
+                 <label data-i18n-form="nome_pet">Nome do Pet</label>
                  <input id="nomePetNome" type="text" data-i18n-ph="ph_nome_pet" placeholder="Nome do pet">
                  <label id="nomePetEnergiaLabel" class="urna-label" data-i18n-form="f_energia">Energia desejada</label>
                  <p id="nomePetEnergiaDica" class="urna-dica"></p>
@@ -96,7 +96,7 @@
                 </ul>
                 <button class="btn btn-full" onclick="comprar('nickname')" data-i18n="pesquisar_btn">pesquisar</button>
                 <form id="form-nickname" class="hidden" onsubmit="return false">    
-                 <label data-i18n-form="f_nickname">Nickname Digital</label>
+                 <label data-i18n-form="nickname">Nickname Digital</label>
                  <input id="nicknameNome" type="text" data-i18n-ph="ph_nickname" placeholder="Seu nickname">
                  <label id="nicknameEnergiaLabel" class="urna-label" data-i18n-form="f_energia">Energia desejada</label>
                  <p id="nicknameEnergiaDica" class="urna-dica"></p>
@@ -119,7 +119,7 @@
                 </ul>
                 <button class="btn btn-full" onclick="comprar('nome_dominio')" data-i18n="pesquisar_btn">pesquisar</button>
                 <form id="form-nome_dominio" class="hidden" onsubmit="return false">    
-                 <label data-i18n-form="f_nome_dominio">Nome do Domínio</label>
+                 <label data-i18n-form="nome_dominio">Nome do Domínio</label>
                  <input id="dominioNome" type="text" data-i18n-ph="ph_dominio" placeholder="meusite.com.br">
                  <label id="dominioEnergiaLabel" class="urna-label" data-i18n-form="f_energia">Energia desejada</label>
                  <p id="dominioEnergiaDica" class="urna-dica"></p>
@@ -142,7 +142,7 @@
                 </ul>
                 <button class="btn btn-full" onclick="comprar('nome_canal')" data-i18n="pesquisar_btn">pesquisar</button>
                 <form id="form-nome_canal" class="hidden" onsubmit="return false">    
-                 <label data-i18n-form="f_nome_canal">Nome do Canal</label>
+                 <label data-i18n-form="nome_canal">Nome do Canal</label>
                  <input id="canalNome" type="text" data-i18n-ph="ph_canal" placeholder="Nome do canal">
                  <label id="canalEnergiaLabel" class="urna-label" data-i18n-form="f_energia">Energia desejada</label>
                  <p id="canalEnergiaDica" class="urna-dica"></p>
@@ -165,7 +165,7 @@
                 </ul>
                 <button class="btn btn-full" onclick="comprar('nome_equipe')" data-i18n="pesquisar_btn">pesquisar</button>
                 <form id="form-nome_equipe" class="hidden" onsubmit="return false">    
-                 <label data-i18n-form="f_nome_equipe">Nome da Equipe</label>
+                 <label data-i18n-form="nome_equipe">Nome da Equipe</label>
                  <input id="equipeNome" type="text" data-i18n-ph="ph_equipe" placeholder="Nome da equipe">
                  <label id="equipeEnergiaLabel" class="urna-label" data-i18n-form="f_energia">Energia desejada</label>
                  <p id="equipeEnergiaDica" class="urna-dica"></p>
@@ -188,7 +188,7 @@
                 </ul>
                 <button class="btn btn-full" onclick="comprar('nome_projeto')" data-i18n="pesquisar_btn">pesquisar</button>
                 <form id="form-nome_projeto" class="hidden" onsubmit="return false">    
-                 <label data-i18n-form="f_nome_projeto">Nome do Projeto</label>
+                 <label data-i18n-form="nome_projeto">Nome do Projeto</label>
                  <input id="projetoNome" type="text" data-i18n-ph="ph_projeto" placeholder="Nome do projeto">
                  <label id="projetoEnergiaLabel" class="urna-label" data-i18n-form="f_energia">Energia desejada</label>
                  <p id="projetoEnergiaDica" class="urna-dica"></p>
@@ -211,7 +211,7 @@
                 </ul>
                 <button class="btn btn-full" onclick="comprar('nome_evento')" data-i18n="pesquisar_btn">pesquisar</button>
                 <form id="form-nome_evento" class="hidden" onsubmit="return false">    
-                 <label data-i18n-form="f_nome_evento">Nome do Evento</label>
+                 <label data-i18n-form="nome_evento">Nome do Evento</label>
                  <input id="eventoNome" type="text" data-i18n-ph="ph_evento" placeholder="Nome do evento">
                  <label id="eventoEnergiaLabel" class="urna-label" data-i18n-form="f_energia">Energia desejada</label>
                  <p id="eventoEnergiaDica" class="urna-dica"></p>
@@ -606,6 +606,10 @@
                     <input id="casalNasc1" type="date">
                     <label data-i18n-form="f_nasc2">Data de nascimento da segunda pessoa</label>
                     <input id="casalNasc2" type="date">
+                    <label data-i18n-form="f_apelido1">Como a primeira pessoa é chamada?</label>
+                    <input id="casalApelido1" type="text" maxlength="30" placeholder="Apelido ou nome de uso (ex.: Tonho, Dr. Tonho)">
+                    <label data-i18n-form="f_apelido2">Como a segunda pessoa é chamada?</label>
+                    <input id="casalApelido2" type="text" maxlength="30" placeholder="Apelido ou nome de uso (ex.: Val, Dra. Valéria)">
                     <button class="btn btn-full" onclick="pagarCasal()" data-i18n-form="pesquisar_btn">Pesquisar</button>
                 </form>
             </div>
@@ -629,14 +633,17 @@
                     <label class="lbl-pessoa" data-i18n-form="f_principal">Pessoa principal</label>
                     <input id="familiaPrincipalNome" type="text" data-i18n-ph="ph_nome_completo" placeholder="Nome completo">
                     <input id="familiaPrincipalNasc" type="date">
+                    <input id="familiaPrincipalApelido" type="text" maxlength="30" placeholder="Como é chamado(a) em família? Ex.: Tio Tonho, Seu Antônio">
                     <label class="lbl-pessoa" data-i18n-form="f_membros">Membros da família</label>
                     <div class="bloco-membro">
                         <input id="familiaMembroNome1" type="text" data-i18n-ph="ph_nome_completo" placeholder="Nome completo">
                         <input id="familiaMembroNasc1" type="date">
+                        <input id="familiaMembroApelido1" type="text" maxlength="30" placeholder="Como é chamado(a) em família?">                         
                     </div>
                      <div class="bloco-membro">
                         <input id="familiaMembroNome2" type="text" data-i18n-ph="ph_nome_completo" placeholder="Nome completo">
                         <input id="familiaMembroNasc2" type="date">
+                        <input id="familiaMembroApelido2" type="text" maxlength="30" placeholder="Como é chamado(a) em família?"> 
                     </div>
                     <button class="btn btn-full" onclick="pagarFamilia()" data-i18n-form="pesquisar_btn">Pesquisar</button>
                 </form>
@@ -659,14 +666,17 @@
     <label class="lbl-pessoa" data-i18n-form="f_principal_rh">Chefe / Gestor</label>
     <input id="equipePrincipalNome" type="text" data-i18n-ph="ph_nome_completo" placeholder="Nome completo">
     <input id="equipePrincipalNasc" type="date">
+    <input id="equipePrincipalApelido" type="text" maxlength="30" placeholder="Como é chamado no trabalho? Inclua o tratamento: Dr., Sr., Seu…">
     <label class="lbl-pessoa" data-i18n-form="f_membros_rh">Colaboradores</label>
     <div class="bloco-membro">
         <input id="equipeMembroNome1" type="text" data-i18n-ph="ph_nome_completo" placeholder="Nome completo">
         <input id="equipeMembroNasc1" type="date">
+        <input id="equipeMembroApelido1" type="text" maxlength="30" placeholder="Como é chamado no trabalho?">
     </div>
     <div class="bloco-membro">
         <input id="equipeMembroNome2" type="text" data-i18n-ph="ph_nome_completo" placeholder="Nome completo">
         <input id="equipeMembroNasc2" type="date">
+        <input id="equipeMembroApelido2" type="text" maxlength="30" placeholder="Como é chamado no trabalho?">
     </div>
     <button class="btn btn-full" onclick="pagarCompatibilidade()" data-i18n-form="pesquisar_btn">Pesquisar</button>
 </form>

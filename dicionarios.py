@@ -3866,20 +3866,7 @@ def get_vib(n, lang="pt"):
 # COMPAT_TXT — 4 graus × 3 contextos (12 matrizes curtas)
 # Aplicado APÓS o cruzamento da matriz. Sem citação de fonte.
 # ============================================================
-COMPAT_TXT = {
-    "pt": {
-        "dissonancia": "As energias se chocam. Cada um puxa para um lado e o atrito é constante. Exige paciência e limites claros para não desgastar o vínculo.",
-        "media": "Há dias de sintonia e dias de ruído. O convívio alterna entre encontro e desencontro — funciona quando há disposição para negociar.",
-        "acordo": "As energias conversam bem. Existe base para construir junto, com pontos de atenção que não ameaçam a relação.",
-        "acordo_perfeito": "As energias se completam com naturalidade. É a combinação que flui sem esforço e sustenta o vínculo ao longo do tempo.",
-    },
-    "en": {
-        "dissonancia": "The energies clash. Each pulls in a different direction and friction is constant. It demands patience and clear boundaries to avoid wearing the bond down.",
-        "media": "Some days flow, some days clash. Life together alternates between connection and friction — it works when both are willing to negotiate.",
-        "acordo": "The energies speak well to each other. There is a foundation to build on together, with points of attention that do not threaten the bond.",
-        "acordo_perfeito": "The energies complete each other naturally. This is the combination that flows effortlessly and sustains the bond over time.",
-    },
-}
+
 COMPAT_TXT_CASAL = {
     "pt": {
         "dissonancia": "Como casal, a atração existe mas a convivência cobra caro: ciúme, controle e discussões repetidas pedem acordos explícitos.",
@@ -3893,7 +3880,80 @@ COMPAT_TXT_CASAL = {
         "acordo": "As a couple, there is alignment of values and rhythm. The relationship tends to mature through dialogue and respect for each other's space.",
         "acordo_perfeito": "As a couple, the combination is complementary: where one is lacking, the other covers. A long-term relationship with little wear.",
     },
+    "es": {
+        "dissonancia": "Como pareja, la atracción existe pero la convivencia cobra caro: celos, control y discusiones repetidas exigen acuerdos explícitos.",
+        "media": "Como pareja, la relación oscila entre entrega y retirada. El vínculo se sostiene en la conversación franca y en la disposición de ceder por ambas partes.",
+        "acordo": "Como pareja, hay sintonía de valores y ritmo. La relación tiende a madurar con diálogo y respeto al espacio de cada uno.",
+        "acordo_perfeito": "Como pareja, la combinación es de complemento: donde uno falta, el otro cubre. Relación de largo plazo con poco desgaste.",
+    },
+    "it": {
+        "dissonancia": "Come coppia, l'attrazione esiste ma la convivenza costa caro: gelosia, controllo e discussioni ripetute richiedono accordi espliciti.",
+        "media": "Come coppia, la relazione oscilla tra apertura e ritirata. Il legame si regge sul dialogo franco e sulla disponibilità a cedere da entrambe le parti.",
+        "acordo": "Come coppia, c'è sintonia di valori e ritmo. La relazione tende a maturare con il dialogo e il rispetto dello spazio di ciascuno.",
+        "acordo_perfeito": "Come coppia, la combinazione è di complemento: dove uno manca, l'altro copre. Relazione di lungo periodo con poca usura.",
+    },
+    "fr": {
+        "dissonancia": "En couple, l'attirance existe mais la vie commune coûte cher : jalousie, contrôle et disputes répétées exigent des accords explicites.",
+        "media": "En couple, la relation oscille entre engagement et retrait. Le lien tient grâce à une conversation franche et à la volonté de céder des deux côtés.",
+        "acordo": "En couple, il y a une harmonie de valeurs et de rythme. La relation tend à mûrir par le dialogue et le respect de l'espace de chacun.",
+        "acordo_perfeito": "En couple, la combinaison est complémentaire : là où l'un manque, l'autre couvre. Relation de long terme avec peu d'usure.",
+    },
+    "de": {
+        "dissonancia": "Als Paar ist die Anziehung da, doch der Alltag fordert seinen Preis: Eifersucht, Kontrolle und wiederkehrende Streitigkeiten verlangen ausdrückliche Absprachen.",
+        "media": "Als Paar schwankt die Beziehung zwischen Hingabe und Rückzug. Der Bund hält durch offenes Gespräch und die Bereitschaft beider Seiten nachzugeben.",
+        "acordo": "Als Paar gibt es Übereinstimmung in Werten und Rhythmus. Die Beziehung reift durch Dialog und den Respekt für den Raum des anderen.",
+        "acordo_perfeito": "Als Paar ergänzt sich die Kombination: Wo der eine fehlt, deckt der andere ab. Langfristige Beziehung mit wenig Verschleiß.",
+    },
+    "ja": {
+        "dissonancia": "カップルとして、魅力はあるものの日常は代償を伴います。嫉妬、支配、繰り返す口論には明確な取り決めが必要です。",
+        "media": "カップルとして、関係は歩み寄りと引き返しの間を揺れ動きます。率直な対話と双方の譲る姿勢が絆を支えます。",
+        "acordo": "カップルとして、価値観とリズムが合っています。対話と互いの領域への尊重で関係は成熟していきます。",
+        "acordo_perfeito": "カップルとして、互いを補い合う組み合わせです。一方が欠けるところを他方が埋めます。消耗の少ない長期の関係です。",
+    },
+    "zh": {
+        "dissonancia": "作为情侣，吸引力存在，但日常相处代价高昂：嫉妒、控制与反复争吵需要明确的约定。",
+        "media": "作为情侣，关系在投入与退缩之间摇摆。坦诚的对话与双方愿意退让支撑着这段纽带。",
+        "acordo": "作为情侣，价值观与节奏相合。关系会在对话与尊重彼此空间中趋于成熟。",
+        "acordo_perfeito": "作为情侣，这是互补的组合：一方所缺，另一方补足。低消耗的长期关系。",
+    },
+    "ru": {
+        "dissonancia": "Как пара, вы испытываете притяжение, но совместная жизнь дорого обходится: ревность, контроль и повторяющиеся ссоры требуют прямых договорённостей.",
+        "media": "Как пара, отношения колеблются между сближением и отступлением. Связь держится на честном разговоре и готовности уступать с обеих сторон.",
+        "acordo": "Как пара, есть согласие в ценностях и ритме. Отношения взрослеют через диалог и уважение к личному пространству каждого.",
+        "acordo_perfeito": "Как пара, это дополняющая комбинация: где одного не хватает, другой восполняет. Долгие отношения с малым износом.",
+    },
+    "he": {
+        "dissonancia": "כזוג, המשיכה קיימת אך חיי היום־יום גובים מחיר: קנאה, שליטה וויכוחים חוזרים דורשים הסכמות מפורשות.",
+        "media": "כזוג, הקשר מתנדנד בין התקרבות לנסיגה. הקשר נשען על שיחה כנה ועל נכונות לוותר משני הצדדים.",
+        "acordo": "כזוג, יש התאמה של ערכים וקצב. הקשר נוטה להתבגר דרך דיאלוג וכיבוד המרחב של כל אחד.",
+        "acordo_perfeito": "כזוג, השילוב משלים: במקום שאחד חסר, השני מכסה. קשר ארוך טווח עם שחיקה מועטה.",
+    },
+    "ar": {
+        "dissonancia": "كثنائي، الانجذاب موجود لكن العشرة تكلّف غاليًا: الغيرة والسيطرة والخلافات المتكررة تتطلب اتفاقات صريحة.",
+        "media": "كثنائي، تتأرجح العلاقة بين الإقبال والتراجع. يستمر الرابط بالحوار الصريح والاستعداد للتنازل من الطرفين.",
+        "acordo": "كثنائي، هناك تناغم في القيم والإيقاع. تميل العلاقة إلى النضج بالحوار واحترام مساحة كل طرف.",
+        "acordo_perfeito": "كثنائي، التركيبة تكاملية: حيث ينقص أحدهما يكمل الآخر. علاقة طويلة الأمد باستهلاك قليل.",
+    },
+    "id": {
+        "dissonancia": "Sebagai pasangan, daya tarik ada tetapi kehidupan bersama menuntut harga: cemburu, kontrol, dan pertengkaran berulang menuntut kesepakatan yang jelas.",
+        "media": "Sebagai pasangan, hubungan berayun antara keterbukaan dan penarikan diri. Ikatan bertahan lewat percakapan jujur dan kesediaan mengalah dari kedua pihak.",
+        "acordo": "Sebagai pasangan, ada keselarasan nilai dan ritme. Hubungan cenderung matang lewat dialog dan penghormatan atas ruang masing-masing.",
+        "acordo_perfeito": "Sebagai pasangan, kombinasinya saling melengkapi: saat satu kurang, yang lain menutupi. Hubungan jangka panjang dengan sedikit pengurasan.",
+    },
+    "tr": {
+        "dissonancia": "Çift olarak çekim vardır ama birlikte yaşam pahalıya mal olur: kıskançlık, kontrol ve tekrarlayan tartışmalar açık mutabakatlar gerektirir.",
+        "media": "Çift olarak ilişki yakınlaşma ile geri çekilme arasında salınır. Bağ, dürüst konuşma ve iki tarafın da geri adım atma isteğiyle ayakta kalır.",
+        "acordo": "Çift olarak değerlerde ve ritimde uyum vardır. İlişki, diyalog ve her birinin alanına saygı ile olgunlaşma eğilimindedir.",
+        "acordo_perfeito": "Çift olarak kombinasyon tamamlayıcıdır: birinin eksik kaldığı yeri diğeri kapatır. Az yıpranan uzun vadeli bir ilişki.",
+    },
+    "vi": {
+        "dissonancia": "Là một cặp, sức hút có nhưng cuộc sống chung đòi giá đắt: ghen tuông, kiểm soát và những cuộc cãi vã lặp lại đòi hỏi những thỏa thuận rõ ràng.",
+        "media": "Là một cặp, mối quan hệ dao động giữa gần gũi và rút lui. Sợi dây gắn bó được giữ bằng đối thoại thẳng thắn và sự sẵn lòng nhường nhịn của cả hai.",
+        "acordo": "Là một cặp, có sự đồng điệu về giá trị và nhịp độ. Mối quan hệ có xu hướng chín muồi nhờ đối thoại và tôn trọng không gian của mỗi người.",
+        "acordo_perfeito": "Là một cặp, sự kết hợp mang tính bổ sung: chỗ này thiếu thì người kia lấp vào. Mối quan hệ dài lâu với ít hao mòn.",
+    },
 }
+
 COMPAT_TXT_FAMILIA = {
     "pt": {
         "dissonancia": "No núcleo familiar, as energias se confrontam. Há tensão entre gerações ou papéis e o ambiente pede mediação constante.",
@@ -3907,7 +3967,80 @@ COMPAT_TXT_FAMILIA = {
         "acordo": "In the family, bonds strengthen through cooperation. Each member finds their place and the home tends toward stability.",
         "acordo_perfeito": "In the family, synergy is natural: members support each other effortlessly and the home becomes a solid foundation for all.",
     },
+    "es": {
+        "dissonancia": "En el núcleo familiar, las energías se confrontan. Hay tensión entre generaciones o roles y el ambiente exige mediación constante.",
+        "media": "En la familia, la convivencia alterna entre cercanía y distancia. Funciona cuando hay espacio para cada uno y límites bien definidos.",
+        "acordo": "En la familia, los vínculos se fortalecen en la cooperación. Cada miembro encuentra su lugar y la casa tiende a la estabilidad.",
+        "acordo_perfeito": "En la familia, la sinergia es natural: los miembros se apoyan sin esfuerzo y el hogar se vuelve base sólida para todos.",
+    },
+    "it": {
+        "dissonancia": "Nel nucleo familiare le energie si confrontano. C'è tensione tra generazioni o ruoli e l'ambiente richiede mediazione costante.",
+        "media": "In famiglia, la convivenza alterna vicinanza e distanza. Funziona quando c'è spazio per ciascuno e confini ben definiti.",
+        "acordo": "In famiglia, i legami si rafforzano nella cooperazione. Ogni membro trova il proprio posto e la casa tende alla stabilità.",
+        "acordo_perfeito": "In famiglia, la sinergia è naturale: i membri si sostengono senza sforzo e la casa diventa una base solida per tutti.",
+    },
+    "fr": {
+        "dissonancia": "Au sein de la famille, les énergies se confrontent. Il y a des tensions entre générations ou rôles et l'environnement exige une médiation constante.",
+        "media": "Dans la famille, la vie commune alterne proximité et distance. Cela fonctionne quand il y a de la place pour chacun et des limites bien définies.",
+        "acordo": "Dans la famille, les liens se renforcent dans la coopération. Chaque membre trouve sa place et le foyer tend à la stabilité.",
+        "acordo_perfeito": "Dans la famille, la synergie est naturelle : les membres se soutiennent sans effort et le foyer devient une base solide pour tous.",
+    },
+    "de": {
+        "dissonancia": "Im Familienkern prallen die Energien aufeinander. Es gibt Spannung zwischen Generationen oder Rollen, und das Umfeld verlangt ständige Vermittlung.",
+        "media": "In der Familie wechselt das Zusammenleben zwischen Nähe und Distanz. Es funktioniert, wenn jeder seinen Raum hat und die Grenzen klar sind.",
+        "acordo": "In der Familie stärken sich die Bindungen durch Kooperation. Jedes Mitglied findet seinen Platz, und das Zuhause strebt nach Stabilität.",
+        "acordo_perfeito": "In der Familie ist die Synergie natürlich: Die Mitglieder stützen einander mühelos, und das Zuhause wird für alle zu einem soliden Fundament.",
+    },
+    "ja": {
+        "dissonancia": "家族の核ではエネルギーがぶつかり合います。世代や役割の間に緊張があり、環境は絶え間ない仲介を求めます。",
+        "media": "家族では、暮らしは親密さと距離の間を揺れ動きます。各自の居場所と明確な境界があれば機能します。",
+        "acordo": "家族では、絆は協力の中で強まります。各メンバーが居場所を見つけ、家は安定へと向かいます。",
+        "acordo_perfeito": "家族では、相乗効果は自然です。メンバーは力を入れずに支え合い、家庭はすべてにとって堅固な基盤となります。",
+    },
+    "zh": {
+        "dissonancia": "在家庭核心中，能量相互对峙。代际或角色之间存在紧张，环境需要持续的调解。",
+        "media": "在家庭中，相处在亲近与疏离之间交替。当每个人都有空间且界限明确时，便能运作。",
+        "acordo": "在家庭中，纽带在合作中得以加强。每位成员都找到自己的位置，家趋于稳定。",
+        "acordo_perfeito": "在家庭中，协同是自然的：成员无需费力地相互支持，家成为所有人的坚实基础。",
+    },
+    "ru": {
+        "dissonancia": "В семейном ядре энергии противостоят друг другу. Есть напряжение между поколениями или ролями, и среда требует постоянного посредничества.",
+        "media": "В семье совместная жизнь чередует близость и дистанцию. Это работает, когда у каждого есть пространство и чёткие границы.",
+        "acordo": "В семье связи крепнут в сотрудничестве. Каждый находит своё место, и дом стремится к стабильности.",
+        "acordo_perfeito": "В семье синергия естественна: члены поддерживают друг друга без усилий, и дом становится прочной основой для всех.",
+    },
+    "he": {
+        "dissonancia": "בגרעין המשפחתי האנרגיות מתעמתות. יש מתח בין דורות או תפקידים והסביבה דורשת תיווך מתמיד.",
+        "media": "במשפחה, החיים המשותפים מתנדנדים בין קרבה לריחוק. זה עובד כשיש מרחב לכל אחד וגבולות ברורים.",
+        "acordo": "במשפחה, הקשרים מתחזקים בשיתוף פעולה. כל חבר מוצא את מקומו והבית נוטה ליציבות.",
+        "acordo_perfeito": "במשפחה, הסינרגיה טבעית: החברים תומכים זה בזה בלי מאמץ והבית הופך לבסיס מוצק לכולם.",
+    },
+    "ar": {
+        "dissonancia": "في نواة الأسرة تتصادم الطاقات. هناك توتر بين الأجيال أو الأدوار والبيئة تتطلب وساطة دائمة.",
+        "media": "في الأسرة، تتبادل العشرة بين القرب والبعد. تعمل عندما يكون لكل فرد مساحته والحدود واضحة.",
+        "acordo": "في الأسرة، تتقوى الروابط بالتعاون. كل عضو يجد مكانه والبيت يميل إلى الاستقرار.",
+        "acordo_perfeito": "في الأسرة، التآزر طبيعي: الأعضاء يدعمون بعضهم بلا جهد والبيت يصبح أساسًا صلبًا للجميع.",
+    },
+    "id": {
+        "dissonancia": "Di inti keluarga, energi saling berhadapan. Ada ketegangan antar generasi atau peran dan lingkungan menuntut mediasi terus-menerus.",
+        "media": "Dalam keluarga, hidup bersama bergantian antara kedekatan dan jarak. Berhasil bila ada ruang bagi setiap orang dan batas yang jelas.",
+        "acordo": "Dalam keluarga, ikatan menguat dalam kerja sama. Setiap anggota menemukan tempatnya dan rumah cenderung stabil.",
+        "acordo_perfeito": "Dalam keluarga, sinerginya alami: anggota saling mendukung tanpa usaha dan rumah menjadi fondasi kokoh bagi semua.",
+    },
+    "tr": {
+        "dissonancia": "Aile çekirdeğinde enerjiler karşı karşıya gelir. Kuşaklar veya roller arasında gerilim vardır ve ortam sürekli arabuluculuk gerektirir.",
+        "media": "Ailede birlikte yaşam yakınlık ile mesafe arasında gider gelir. Herkesin alanı ve sınırlar net olduğunda işler.",
+        "acordo": "Ailede bağlar işbirliğiyle güçlenir. Her üye yerini bulur ve yuva istikrara yönelir.",
+        "acordo_perfeito": "Ailede sinerji doğaldır: üyeler zahmetsizce birbirini destekler ve yuva herkes için sağlam bir temel olur.",
+    },
+    "vi": {
+        "dissonancia": "Trong hạt nhân gia đình, các nguồn năng lượng đối đầu nhau. Có căng thẳng giữa các thế hệ hoặc vai trò và môi trường đòi hỏi sự hòa giải liên tục.",
+        "media": "Trong gia đình, cuộc sống chung xen kẽ giữa gần gũi và xa cách. Nó vận hành khi mỗi người có không gian và ranh giới rõ ràng.",
+        "acordo": "Trong gia đình, các mối liên kết mạnh lên nhờ hợp tác. Mỗi thành viên tìm được vị trí của mình và ngôi nhà hướng tới ổn định.",
+        "acordo_perfeito": "Trong gia đình, sự cộng hưởng là tự nhiên: các thành viên nâng đỡ nhau không chút gắng sức và ngôi nhà trở thành nền tảng vững chắc cho tất cả.",
+    },
 }
+
 COMPAT_TXT_EQUIPE = {
     "pt": {
         "dissonancia": "No ambiente de trabalho, as energias se atritam. Divergência de ritmo e de método exige papéis claros e metas objetivas para não travar a entrega.",
@@ -3920,6 +4053,78 @@ COMPAT_TXT_EQUIPE = {
         "media": "In the team, collaboration works in cycles: synergy on projects, friction in the routine. Defined roles resolve most of it.",
         "acordo": "In the team, the pace is compatible. Cooperation is natural and the group tends to deliver well when goals are aligned.",
         "acordo_perfeito": "In the team, the combination is high performance: each amplifies the other and the result exceeds the sum of the parts.",
+    },
+    "es": {
+        "dissonancia": "En el ambiente laboral, las energías chocan. La divergencia de ritmo y de método exige roles claros para que el trabajo avance.",
+        "media": "En el equipo, la colaboración funciona por ciclos: hay sinergia en los proyectos y roce en la rutina. Los roles definidos resuelven la mayor parte.",
+        "acordo": "En el equipo, el ritmo es compatible. Hay cooperación natural y el grupo tiende a entregar bien cuando los objetivos están alineados.",
+        "acordo_perfeito": "En el equipo, la combinación es de alto rendimiento: uno potencia al otro y el resultado supera la suma de las partes."
+    },
+    "it": {
+        "dissonancia": "Nell'ambiente di lavoro le energie si scontrano. La differenza di ritmo e di metodo richiede ruoli chiari perché il lavoro proceda.",
+        "media": "Nella squadra, la collaborazione funziona a cicli: c'è sinergia nei progetti e attrito nella routine. I ruoli definiti risolvono la maggior parte.",
+        "acordo": "Nella squadra, il ritmo è compatibile. C'è cooperazione naturale e il gruppo tende a rendere bene quando gli obiettivi sono allineati.",
+        "acordo_perfeito": "Nella squadra, la combinazione è ad alte prestazioni: uno potenzia l'altro e il risultato supera la somma delle parti."
+    },
+    "fr": {
+        "dissonancia": "Dans l'environnement de travail, les énergies s'affrontent. La divergence de rythme et de méthode exige des rôles clairs pour que le travail avance.",
+        "media": "Dans l'équipe, la collaboration fonctionne par cycles : il y a synergie sur les projets et friction dans la routine. Des rôles définis règlent l'essentiel.",
+        "acordo": "Dans l'équipe, le rythme est compatible. La coopération est naturelle et le groupe livre bien quand les objectifs sont alignés.",
+        "acordo_perfeito": "Dans l'équipe, la combinaison est performante : chacun amplifie l'autre et le résultat dépasse la somme des parties."
+    },
+    "de": {
+        "dissonancia": "Im Arbeitsumfeld prallen die Energien aufeinander. Unterschiedliches Tempo und unterschiedliche Methoden verlangen klare Rollen, damit die Arbeit vorankommt.",
+        "media": "Im Team funktioniert Zusammenarbeit in Zyklen: Synergie bei Projekten, Reibung im Alltag. Klare Rollen lösen das meiste.",
+        "acordo": "Im Team ist das Tempo stimmig. Es gibt natürliche Kooperation, und die Gruppe liefert gut, wenn die Ziele abgestimmt sind.",
+        "acordo_perfeito": "Im Team ist die Kombination hochleistungsfähig: Einer verstärkt den anderen, und das Ergebnis übertrifft die Summe der Teile."
+    },
+    "ja": {
+        "dissonancia": "職場ではエネルギーがぶつかり合います。リズムと方法の違いは、仕事を前に進めるために明確な役割を必要とします。",
+        "media": "チーム内の協力は循環します。プロジェクトでは相乗効果があり、日常では摩擦が生じます。役割を明確にすれば大半は解決します。",
+        "acordo": "チームのリズムは適合しています。自然な協力があり、目標が揃えばグループはよく成果を出します。",
+        "acordo_perfeito": "チームの組み合わせは高性能です。互いを高め合い、成果は部分の総和を超えます。"
+    },
+    "zh": {
+        "dissonancia": "职场中能量相互碰撞。节奏与方法的差异需要明确的角色分工，工作才能推进。",
+        "media": "团队协作呈周期性：项目中有协同，日常中有摩擦。明确角色可解决大部分问题。",
+        "acordo": "团队节奏契合。合作自然，目标一致时团队往往交付良好。",
+        "acordo_perfeito": "团队组合高效：彼此放大，成果超过部分之和。"
+    },
+    "ru": {
+        "dissonancia": "В рабочей среде энергии сталкиваются. Разница в темпе и методе требует чётких ролей, чтобы работа продвигалась.",
+        "media": "В команде сотрудничество идёт циклами: есть синергия в проектах и трение в рутине. Чёткие роли решают большую часть.",
+        "acordo": "В команде совместимый ритм. Есть естественное сотрудничество, и группа хорошо работает при согласованных целях.",
+        "acordo_perfeito": "В команде сочетание высокоэффективно: один усиливает другого, и результат превосходит сумму частей."
+    },
+    "id": {
+        "dissonancia": "Di lingkungan kerja, energi saling berbenturan. Perbedaan ritme dan metode menuntut peran yang jelas agar pekerjaan berjalan.",
+        "media": "Dalam tim, kolaborasi bekerja dalam siklus: ada sinergi dalam proyek dan gesekan dalam rutinitas. Peran yang jelas menyelesaikan sebagian besar.",
+        "acordo": "Dalam tim, ritmenya cocok. Ada kerja sama alami dan kelompok cenderung bekerja baik saat tujuan selaras.",
+        "acordo_perfeito": "Dalam tim, kombinasinya berperforma tinggi: satu memperkuat yang lain dan hasilnya melampaui jumlah bagiannya."
+    },
+    "tr": {
+        "dissonancia": "İş ortamında enerjiler çatışır. Ritim ve yöntem farklılığı, işin ilerlemesi için net roller gerektirir.",
+        "media": "Ekipte işbirliği döngülerle işler: projelerde sinerji, rutinde sürtüşme vardır. Net roller çoğunu çözer.",
+        "acordo": "Ekipte ritim uyumlu. Doğal bir işbirliği var ve hedefler hizalıyken grup iyi teslim eder.",
+        "acordo_perfeito": "Ekipte kombinasyon yüksek performanslı: biri diğerini güçlendirir ve sonuç parçaların toplamını aşar."
+    },
+    "vi": {
+        "dissonancia": "Trong môi trường làm việc, các nguồn năng lượng xung đột. Khác biệt về nhịp độ và phương pháp đòi hỏi vai trò rõ ràng để công việc tiến triển.",
+        "media": "Trong đội, sự hợp tác vận hành theo chu kỳ: có cộng hưởng trong dự án và ma sát trong công việc thường ngày. Vai trò rõ ràng giải quyết phần lớn.",
+        "acordo": "Trong đội, nhịp độ tương thích. Có sự hợp tác tự nhiên và nhóm thường hoàn thành tốt khi mục tiêu đồng nhất.",
+        "acordo_perfeito": "Trong đội, sự kết hợp có hiệu suất cao: mỗi người khuếch đại người kia và kết quả vượt tổng các phần."
+    },
+    "he": {
+        "dissonancia": "בסביבת העבודה האנרגיות מתנגשות. פער בקצב ובשיטה דורש תפקידים ברורים כדי שהעבודה תתקדם.",
+        "media": "בצוות, שיתוף הפעולה פועל במחזורים: יש סינרגיה בפרויקטים וחיכוך בשגרה. תפקידים מוגדרים פותרים את רוב זה.",
+        "acordo": "בצוות הקצב תואם. יש שיתוף פעולה טבעי והקבוצה נוטה לספק היטב כשהמטרות מיושרות.",
+        "acordo_perfeito": "בצוות השילוב בעל ביצועים גבוהים: כל אחד מעצים את האחר והתוצאה עולה על סכום החלקים."
+    },
+    "ar": {
+        "dissonancia": "في بيئة العمل تتصادم الطاقات. اختلاف الإيقاع والأسلوب يتطلب أدوارًا واضحة حتى يسير العمل.",
+        "media": "في الفريق، يعمل التعاون بدورات: هناك تناغم في المشاريع واحتكاك في الروتين. الأدوار المحددة تحل معظم ذلك.",
+        "acordo": "في الفريق، الإيقاع متوافق. هناك تعاون طبيعي ويميل الفريق إلى الأداء الجيد عندما تكون الأهداف متوافقة.",
+        "acordo_perfeito": "في الفريق، التركيبة عالية الأداء: كل طرف يعزز الآخر والنتيجة تتجاوز مجموع الأجزاء."
     },
 }
 
