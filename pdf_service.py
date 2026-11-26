@@ -892,12 +892,14 @@ def pdf_produto(produto, dados, nome, bd_str, lang, dado=""):
     try:
         dt = dp.parse(bd_str)
         vib_dia = reduzir(dt.day)
-        if VIB.get(vib_dia):
+        vib_txt = get_vib(vib_dia, lang)
+        if vib_txt:
             e.append(Spacer(1, LINHA))
-            e.append(Paragraph(f"<b>{t('vibracao', lang)}: {vib_dia}</b> — {VIB.get(vib_dia)}",
+            e.append(Paragraph(f"<b>{t('vibracao', lang)}: {vib_dia}</b> — {vib_txt}",
                                _estilo("J", FONTE, 10, DARK, TA_JUSTIFY, sa=LINHA)))
     except Exception:
         pass
+        
     e.append(Spacer(1, LINHA))
     e.append(Paragraph(T.get("entrega", ""), _estilo("J", FONTE, 8, GRAY, TA_CENTER, sa=6)))
     e.append(Paragraph("© A1ELOS Assessoria e Consultoria",
