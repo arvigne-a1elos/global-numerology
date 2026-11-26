@@ -1357,7 +1357,12 @@ def regenerar_pdf_por_meta(meta):
         data["dado"] = dado or ""           
     logger.info(f"PDF dados {prod}: {list((data or {}).keys())}")
     if prod == "calendario":
-        pf = gerar_pdf_calendario(data, lang, nome_exib)
+        try:
+            from pdf_service import pdf_produto as _pdf_produto
+            pf = _pdf_produto("calendario", data, nome_exib, bd, lang, dado)
+        except Exception as _e_cal:
+            logger.error("calendario traduzido falhou (%s); usando rota antiga", _e_cal)
+            pf = gerar_pdf_calendario(data, lang, nome_exib)
     elif prod == "nome_ong":
         pf = gerar_pdf_ong(data, lang, nome_exib)
     elif prod == "casal":
