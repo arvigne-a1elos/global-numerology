@@ -446,7 +446,6 @@ function abrirModalDado(produto, lang) {
       + '<div id="modalSexoOpcoes" class="modal-grid">'
       + '<button type="button" class="btn btn-full modal-sexo-btn" data-sexo="f">' + (UI.femea || 'Fêmea') + '</button>'
       + '<button type="button" class="btn btn-full modal-sexo-btn" data-sexo="m">' + (UI.macho || 'Macho') + '</button>'
-      + '<button type="button" class="btn btn-full modal-sexo-btn" data-sexo="">' + (UI.indef || 'Indefinido') + '</button>'
       + '</div>';
   }
     
