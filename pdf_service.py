@@ -546,7 +546,7 @@ def pdf_produto(produto, dados, nome, bd_str, lang, dado=""):
     if _ia and (produto or "").startswith("nome_"):
         return _pdf_ia_nomes(produto, dados, lang or "pt", _ia)
     T = PDF_TEXTS.get(lang, PDF_TEXTS["pt"])
-    from dicionarios import get_sig, get_cam, get_compat
+    from dicionarios import get_sig, get_cam, get_compat, get_sig_full, get_vib
     from fontes import preparar_texto as _prep
     path = os.path.join(TMP, f"p_{uuid.uuid4().hex[:8]}.pdf")
     doc = SimpleDocTemplate(path, pagesize=A4, leftMargin=50, rightMargin=50,
