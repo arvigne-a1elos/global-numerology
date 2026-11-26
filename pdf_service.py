@@ -871,7 +871,7 @@ def pdf_produto(produto, dados, nome, bd_str, lang, dado=""):
     e.append(Paragraph(t("analise", lang), _estilo("SEC", FN, 18, GOLD, TA_LEFT, sb=LINHA, sa=LINHA)))
     for k, lbl in chaves:
         v = dados.get(k, 0)
-        nm, pos, neg, licao = SIG.get(v, (t("nenhum", lang), "", "", ""))
+        nm, pos, neg, licao = get_sig_full(v, lang)
         e.append(Paragraph(f"<b>{t(lbl, lang)} {v} — {nm}</b>",
                            _estilo("BL", FN, 10, DARK, TA_LEFT, sa=3)))
         if pos:
