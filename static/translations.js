@@ -3409,7 +3409,7 @@ const translations = {
         ph_canal: "Kanal adı", ph_equipe: "Ekip adı", ph_projeto: "Proje adı", ph_evento: "Etkinlik adı",
         ph_sua_mensagem: "Önerinizi veya şikayetinizi buraya yazın...",
         feat_coletivo: ["✅ Hazır planlar", "✅ Özel oluşturma", "✅ Kademeli indirimler", "✅ Hediye kodları"],
-        desc_coletivo: "Müşterileriniz veya çalışanlarınız için numeroloji hediyeleri sipariş edin. %10 ile %70 arası indirimler.",
+        desc_coletivo: "Müşterileriniz veya çalışanlarınız için numeroloji hediyeleri sipariş edin. %10 ile %50 arası indirimler.",
         confirmar: "Onayla",
         cancelar: "İptal",
         fechar: "Kapat",
