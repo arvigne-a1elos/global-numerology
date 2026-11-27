@@ -20,3 +20,13 @@ Thumbs.db
 desktop.ini
 numerologia.db
 *.db
+*.bak_*
+verificar.cmd
+verificacao.txt
+corrigir_70.py
+fix_tr.py
+fix_tr2.py
+ajustar_50.py
+recuperar_bak.py
+restaurar.py
+{const*
