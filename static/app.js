@@ -1326,13 +1326,13 @@ window.pagarCompatibilidade = window.pagarCompatibilidade || function(){
       extra: function () { return {}; }
     },
     familia: {
-      qtd: 2, minimo: 1,
+      qtd: 2, minimo: 3,
       principal: ["familiaPrincipalNome", "familiaPrincipalNasc", "familiaPrincipalApelido"],
       membro: ["familiaMembroNome", "familiaMembroNasc", "familiaMembroApelido"],
       extra: function () { return {}; }
     },
     compatibilidade_equipes: {
-      qtd: 2, minimo: 1,
+      qtd: 2, minimo: 3,
       principal: ["equipePrincipalNome", "equipePrincipalNasc", "equipePrincipalApelido"],
       membro: ["equipeMembroNome", "equipeMembroNasc", "equipeMembroApelido"],
       extra: function () {
