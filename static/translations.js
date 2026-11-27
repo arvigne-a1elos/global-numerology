@@ -1161,11 +1161,11 @@ const translations = {
         sig_alma: "Ciò che il tuo cuore desidera di più e ciò che nutre la tua essenza.",
         sig_personalidade: "Come gli altri ti vedono e l'impressione che susciti.",
         sig_destino: "Dove le tue scelte e il tuo potenziale possono portarti in futuro.",
-        }   ,
         investidores_subtitulo: "Scarica la presentazione aziendale",
         inv_card_titulo: "📄 Presentazione Aziendale",
         inv_card_texto: "Presentazione per Investitori e Partner",
         download: "Scarica PDF",
+        }   
     },
     fr: {
         hero_title: "CARTE NUMÉROLOGIQUE",
