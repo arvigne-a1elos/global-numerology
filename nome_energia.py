@@ -241,7 +241,7 @@ def _inferir_sexo(nomes):
     return ""
 
 
-TIPOS_BANCO = ("cao", "gato", "passaro", "reptil", "outro")
+tipo = _normalizar_tipo(tipo)
 
 def sugerir_nome(tipo, energia, lang="pt", usados=None, sexo=""):
     """Sugere 1 nome do MESMO tipo, com a energia exata e o MESMO sexo."""
