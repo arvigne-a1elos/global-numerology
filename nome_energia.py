@@ -434,3 +434,97 @@ def _avaliar_nomes_antigo(nomes, tipo, energia_alvo, lang="pt"):
         "sugestao_real": sug["real"] if sug else None,
         "total_opcoes": len(entradas) + (1 if sug else 0),
     }
+
+# ===== BANCO_SEXO AUTOMATICO =====
+# 14 idiomas x (5 tipos de semente + 7 tipos reais) x 2 sexos x 9 energias.
+# Nomes vem de SEEDS; lacunas de energia sao completadas com variantes de sufixo.
+
+TIPOS_SEMENTE = ("cao", "gato", "passaro", "reptil", "outro")
+TIPOS_REAIS = ("nome_pet", "nickname", "nome_dominio", "nome_canal",
+               "nome_equipe", "nome_projeto", "nome_evento")
+
+_ORIGEM_TIPO = {
+    "nome_pet": "cao", "nickname": "outro", "nome_dominio": "outro",
+    "nome_canal": "outro", "nome_equipe": "outro",
+    "nome_projeto": "outro", "nome_evento": "outro",
+}
+
+_ALIAS_TIPO = {
+    "cachorro": "cao", "cao": "cao", "gato": "gato",
+    "passaro": "passaro", "reptil": "reptil",
+    "youtube": "nome_canal", "podcast": "nome_canal",
+    "tiktok": "nome_canal", "twitch": "nome_canal",
+    "show": "nome_evento", "congresso": "nome_evento",
+    "festa": "nome_evento", "curso": "nome_evento", "palestra": "nome_evento",
+    "pessoal": "nome_projeto", "social": "nome_projeto",
+    "cultural": "nome_projeto", "empresarial": "nome_projeto",
+    "banda": "nome_equipe", "esportiva": "nome_equipe",
+    "loja": "nome_dominio", "empresa": "nome_dominio",
+    "blog": "nome_dominio", "portfolio": "nome_dominio",
+    "gamer": "nickname", "profissional": "nickname",
+    "criador": "nickname", "artista": "nickname",
+}
+
+_SUF_F = ("a", "ia", "ina", "ela", "ana", "ora", "ita")
+_SUF_M = ("o", "el", "on", "us", "io", "ino", "aro")
+
+
+def _normalizar_tipo(tipo):
+    t = (tipo or "").strip().lower()
+    if not t:
+        return "outro"
+    if t in TIPOS_SEMENTE or t in TIPOS_REAIS:
+        return t
+    return _ALIAS_TIPO.get(t, "outro")
+
+
+def _mapa_do_sexo(sementes, sexo_alvo):
+    mapa = {}
+    for n in sementes:
+        e = energia_nome(n)[0]
+        if not e or e in mapa:
+            continue
+        sx = sexo_de(n)
+        if sx and sx != sexo_alvo:
+            continue
+        mapa[e] = n
+    if len(mapa) < 9:
+        suf = _SUF_F if sexo_alvo == "f" else _SUF_M
+        for base in sementes:
+            for s in suf:
+                if len(mapa) >= 9:
+                    break
+                cand = base + s
+                e = energia_nome(cand)[0]
+                if e and e not in mapa:
+                    mapa[e] = cand
+    return mapa
+
+
+def _construir_banco_sexo():
+    banco = {}
+    for lang, tipos in SEEDS.items():
+        banco[lang] = {}
+        for tipo in TIPOS_SEMENTE:
+            sementes = tipos.get(tipo) or []
+            banco[lang][tipo] = {sx: _mapa_do_sexo(sementes, sx) for sx in ("f", "m")}
+        for prod in TIPOS_REAIS:
+            origem = _ORIGEM_TIPO[prod]
+            banco[lang][prod] = {
+                sx: dict(banco[lang][origem][sx]) for sx in ("f", "m")
+            }
+    return banco
+
+
+def _mesclar_banco(gerado, manual):
+    for lang, tipos in (manual or {}).items():
+        alvo_lang = gerado.setdefault(lang, {})
+        for tipo, sexos in tipos.items():
+            alvo_tipo = alvo_lang.setdefault(tipo, {})
+            for sx, mapa in (sexos or {}).items():
+                alvo_tipo.setdefault(sx, {}).update(mapa)
+    return gerado
+
+
+_BANCO_SEXO_MANUAL = BANCO_SEXO
+BANCO_SEXO = _mesclar_banco(_construir_banco_sexo(), _BANCO_SEXO_MANUAL)
