@@ -241,18 +241,22 @@ def _inferir_sexo(nomes):
     return ""
 
 
+TIPOS_BANCO = ("cao", "gato", "passaro", "reptil", "outro")
+
 def sugerir_nome(tipo, energia, lang="pt", usados=None, sexo=""):
     """Sugere 1 nome do MESMO tipo, com a energia exata e o MESMO sexo."""
     alvo = int(energia) if str(energia).isdigit() else 0
     if not alvo:
         return None
     alvo = _dig(alvo)
+    # 1) tipo fora do banco (youtube, gamer, loja...) cai em "outro"
+    if tipo not in TIPOS_BANCO:
+        tipo = "outro"
     usados = set(normalizar(u) for u in (usados or []))
-
     ordens_lang = [lang] + [x for x in ("en", "pt") if x != lang]
     ordens_sexo = [sexo] if sexo in ("f", "m") else ["f", "m", ""]
 
-    # 1) banco curado por sexo
+    # 2) banco curado por sexo
     for sx in ordens_sexo:
         for l in ordens_lang:
             g = ((BANCO_SEXO.get(l) or {}).get(tipo) or {}).get(sx or "")
@@ -260,7 +264,7 @@ def sugerir_nome(tipo, energia, lang="pt", usados=None, sexo=""):
             if nome and normalizar(nome) not in usados:
                 return {"nome": nome, "idioma": l, "sexo": sx, "real": True}
 
-    # 2) banco antigo (CURADO), filtrado por sexo
+    # 3) banco CURADO
     for l in ordens_lang:
         item = ((CURADO.get(l) or {}).get(tipo) or {}).get(alvo)
         if not item:
@@ -271,12 +275,21 @@ def sugerir_nome(tipo, energia, lang="pt", usados=None, sexo=""):
         if normalizar(item["nome"]) not in usados:
             return {"nome": item["nome"], "idioma": l, "sexo": sx_item, "real": item["real"]}
 
-    # 3) variantes com sufixo coerente com o sexo
+    # 4) variantes — só a partir de um nome REAL, nunca de um valor de reserva
+    base_item = ((CURADO.get(lang) or {}).get(tipo) or {}).get(alvo)
+    if not base_item:
+        g = (BANCO_SEXO.get(lang) or BANCO_SEXO.get("pt") or {}).get(tipo) or {}
+        for k in ("f", "m", ""):
+            if (g.get(k) or {}).get(alvo):
+                base_item = {"nome": g[k][alvo], "real": True}
+                break
+    if not base_item:
+        return None          # <-- sem fonte real, não inventa nome
+
+    fonte = base_item["nome"]
     SUF_F = ["a", "ia", "ina", "ela", "ana", "ora", "ita"]
     SUF_M = ["o", "el", "on", "us", "io", "ino", "aro"]
     SUF_U = ["a", "o", "el", "in", "is"]
-    base_item = ((CURADO.get(lang) or {}).get(tipo) or {}).get(alvo)
-    fonte = base_item["nome"] if base_item else ((BANCO_SEXO.get("pt") or {}).get(tipo) or {}).get("f", {}).get(alvo, "A1ELOS")
     suf = SUF_F if sexo == "f" else (SUF_M if sexo == "m" else SUF_U)
     for s in suf:
         cand = fonte + s
