@@ -3807,14 +3807,6 @@ const translations = {
       },  
     };
 
-/* ===== PONTE: expõe no window o que foi declarado com const =====
-   const cria binding global por nome, mas NÃO cria propriedade em window.
-   Vários scripts leem window.PRECO_DISPLAY / window.ENERGIAS_DESC e
-   recebiam undefined. Esta ponte corrige sem alterar os pontos de uso. */
-window.PRECO_DISPLAY = PRECO_DISPLAY;
-window.FEAT_TRAD     = FEAT_TRAD;
-window.ENERGIAS_DESC = ENERGIAS_DESC;
-
 PRODUTO_FAIXA = {
     "express": 0, "vida": 0, "ia": 0, "completo": 1,
     "urna": 2, "eleitoral": 2, "imovel": 2, "calendario": 2,
@@ -4552,3 +4544,10 @@ window.NEGOCIACAO_TRAD = window.NEGOCIACAO_TRAD || {
  tr:{titulo:"Kurumsal Toplu Bonus — Talep Üzerine",sub:"Tablonun üzerinde ek indirim, inceleme sonrası.",intro:"Otomatik tablo %50'ye kadar çıkar. Üzerinde her durumu ayrı değerlendirir ve %70'e kadar ulaşabiliriz. Bilgileri doldurun, teklifi gönderelim.",sec_dados:"Bilgileriniz",sec_pedido:"Siparişiniz",sec_condicoes:"Koşullar",nome:"Talep edenin adı",empresa:"Kurum",doc:"Vergi no / kimlik",email:"Teklif için e-posta",fone:"WhatsApp (isteğe bağlı)",pais:"Ülke / dil",produtos:"İstenen ürünler",qtd:"Adet",qtd_total:"Toplam adet",finalidade:"Kullanım amacı",prazo:"İstenen teslim tarihi",faixa:"Hedef aralık",obs:"Notlar (isteğe bağlı)",fin:["Etkinlik","İnsan Kaynakları","Yeniden satış","Kişisel kullanım","Kampanya","Diğer"],aviso:"2.000 adedin üzerinde otomatik hesaplama devre dışı kalır — bu talep incelemeye gider.",envio:"Talebi gönder",ok:"Talep gönderildi. 2 iş günü içinde dönüş yapıyoruz.",erro:"Gönderilemedi. Tekrar deneyin.",sigilo:"Bu verilerin yalnızca bu teklifin incelenmesi için kullanılmasına izin veriyorum.",resposta:"2 iş günü içinde yanıt"},
  vi:{titulo:"Thưởng Tập Thể — Theo Yêu Cầu",sub:"Giảm giá bổ sung ngoài bảng giá, sau khi xem xét.",intro:"Bảng tự động lên đến 50%. Trên mức đó chúng tôi xem xét từng trường hợp và có thể lên đến 70%. Vui lòng điền thông tin, chúng tôi sẽ gửi báo giá.",sec_dados:"Thông tin của bạn",sec_pedido:"Đơn hàng của bạn",sec_condicoes:"Điều kiện",nome:"Tên người yêu cầu",empresa:"Tổ chức",doc:"Mã số thuế / giấy tờ",email:"Email nhận báo giá",fone:"WhatsApp (không bắt buộc)",pais:"Quốc gia / ngôn ngữ",produtos:"Sản phẩm mong muốn",qtd:"Số lượng",qtd_total:"Tổng số lượng",finalidade:"Mục đích sử dụng",prazo:"Ngày giao hàng mong muốn",faixa:"Khoảng mong muốn",obs:"Ghi chú (không bắt buộc)",fin:["Sự kiện","Nhân sự","Bán lại","Dùng cá nhân","Chiến dịch","Khác"],aviso:"Trên 2.000 đơn vị, tính tự động bị tắt — yêu cầu này chuyển sang xem xét.",envio:"Gửi yêu cầu",ok:"Đã gửi yêu cầu. Chúng tôi phản hồi trong 2 ngày làm việc.",erro:"Không gửi được. Vui lòng thử lại.",sigilo:"Tôi đồng ý cho dùng dữ liệu này chỉ để xem xét báo giá này.",resposta:"Phản hồi trong 2 ngày làm việc"}
 };
+
+/* ===== PONTE (fim do arquivo): ENERGIAS_DESC foi declarado com const e não
+   cria window.ENERGIAS_DESC. montarEnergias() em produtos.js lê
+   window.ENERGIAS_DESC e recebia undefined — os 9 cards saíam sem descrição. */
+if (typeof window.ENERGIAS_DESC === "undefined") {
+  window.ENERGIAS_DESC = ENERGIAS_DESC;
+}
