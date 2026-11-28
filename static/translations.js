@@ -4307,7 +4307,7 @@ function traduzirTabelaBC() {
             nomeEl.innerText = PRODUTOS_TRAD[lang][prod];
         }
         var precoEl = tr.querySelector(".bc-prod-preco");
-        if (precoEl && PRODUTO_FAIXA[prod] !== undefined && PRECO_DISPLAY[lang]) {
+        if (precoEl && PRODUTO_FAIXA[prod] !== undefined && window.PRECO_DISPLAY?.[lang]) {
             precoEl.innerText = window.PRECO_DISPLAY[lang][PRODUTO_FAIXA[prod]];
         }
     });
