@@ -240,11 +240,9 @@ def _inferir_sexo(nomes):
         return "m"
     return ""
 
-
-tipo = _normalizar_tipo(tipo)
-
 def sugerir_nome(tipo, energia, lang="pt", usados=None, sexo=""):
     """Sugere 1 nome do MESMO tipo, com a energia exata e o MESMO sexo."""
+    tipo = _normalizar_tipo(tipo)
     alvo = int(energia) if str(energia).isdigit() else 0
     if not alvo:
         return None
@@ -442,6 +440,7 @@ def _avaliar_nomes_antigo(nomes, tipo, energia_alvo, lang="pt"):
 TIPOS_SEMENTE = ("cao", "gato", "passaro", "reptil", "outro")
 TIPOS_REAIS = ("nome_pet", "nickname", "nome_dominio", "nome_canal",
                "nome_equipe", "nome_projeto", "nome_evento")
+TIPOS_BANCO = tuple(TIPOS_SEMENTE) + tuple(TIPOS_REAIS)
 
 _ORIGEM_TIPO = {
     "nome_pet": "cao", "nickname": "outro", "nome_dominio": "outro",
