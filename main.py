@@ -917,7 +917,7 @@ def _criar_sessao(produto, lang="pt", email="", nome="", birth="", meta_extra=No
         meta["energia"] = IDEAL_ENERGIA[produto]
     elif produto in ENERGIA_FIXA and not meta.get("energia"):
         meta["energia"] = ENERGIA_FIXA[produto]
-    locale = lang if lang in ["pt", "en", "es", "fr", "de", "it", "ja", "zh", "id", "tr", "vi"] else "auto"
+    locale = lang if lang in ["pt", "en", "es", "fr", "de", "it", "ja", "zh", "ru", "he", "ar", "id", "tr", "vi"] else "auto"
 
     if produto == "urna":
         success_url = f"{BASE_URL}/api/pay/urna-success?session_id={{CHECKOUT_SESSION_ID}}"
