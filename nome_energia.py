@@ -5,6 +5,15 @@ so atribui valor a A-Z). O banco e construido e verificado no import.
 """
 import unicodedata
 
+CURADO = _construir()
+_faltando = [(l, t, e) for l in SEEDS for t in SEEDS[l]
+             for e in range(1, 10)
+             if e not in ((CURADO.get(l) or {}).get(t) or {})]
+if _faltando:
+    import logging
+    logging.getLogger(__name__).warning(
+        "nome_energia: %d combinacoes idioma/tipo/energia sem nome curado", len(_faltando))
+
 LETRA = {c: (i % 9) + 1 for i, c in enumerate("ABCDEFGHIJKLMNOPQRSTUVWXYZ")}
 ESP = {"\u00c6": "AE", "\u0152": "OE", "\u00d8": "O", "\u0110": "D",
        "\u0141": "L", "\u00de": "TH", "\u00d0": "D", "\u0126": "H",
@@ -330,25 +339,6 @@ def avaliar_nomes(nomes, tipo, energia_alvo, lang="pt", sexo=""):
         "sugestao_sexo": sug["sexo"] if sug else None,
         "total_opcoes": len(entradas) + (1 if sug else 0),
     }
-
-def _construir():
-    tab = {}
-    for lang, tipos in SEEDS.items():
-        tab[lang] = {}
-        for tipo, nomes in tipos.items():
-            mapa = {}
-            for n in nomes:                              # 1) nomes reais
-                e = energia_nome(n)[0]
-                if e and e not in mapa:
-                    mapa[e] = {"nome": n, "real": True}
-            for n in nomes:                              # 2) variantes
-                for s in SUFIXOS[1:]:
-                    c = n + s
-                    e = energia_nome(c)[0]
-                    if e and e not in mapa:
-                        mapa[e] = {"nome": c, "real": False}
-            tab[lang][tipo] = mapa
-    return tab
 
 def _construir():
     tab = {}
