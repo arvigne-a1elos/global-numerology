@@ -241,13 +241,17 @@ def _inferir_sexo(nomes):
     return ""
 
 
+tipo = _normalizar_tipo(tipo)
+
 def sugerir_nome(tipo, energia, lang="pt", usados=None, sexo=""):
     """Sugere 1 nome do MESMO tipo, com a energia exata e o MESMO sexo."""
-    tipo = _normalizar_tipo(tipo)
     alvo = int(energia) if str(energia).isdigit() else 0
     if not alvo:
         return None
     alvo = _dig(alvo)
+    # 1) tipo fora do banco (youtube, gamer, loja...) cai em "outro"
+    if tipo not in TIPOS_BANCO:
+        tipo = "outro"
     usados = set(normalizar(u) for u in (usados or []))
     ordens_lang = [lang] + [x for x in ("en", "pt") if x != lang]
     ordens_sexo = [sexo] if sexo in ("f", "m") else ["f", "m", ""]
