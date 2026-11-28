@@ -5,15 +5,6 @@ so atribui valor a A-Z). O banco e construido e verificado no import.
 """
 import unicodedata
 
-CURADO = _construir()
-_faltando = [(l, t, e) for l in SEEDS for t in SEEDS[l]
-             for e in range(1, 10)
-             if e not in ((CURADO.get(l) or {}).get(t) or {})]
-if _faltando:
-    import logging
-    logging.getLogger(__name__).warning(
-        "nome_energia: %d combinacoes idioma/tipo/energia sem nome curado", len(_faltando))
-
 LETRA = {c: (i % 9) + 1 for i, c in enumerate("ABCDEFGHIJKLMNOPQRSTUVWXYZ")}
 ESP = {"\u00c6": "AE", "\u0152": "OE", "\u00d8": "O", "\u0110": "D",
        "\u0141": "L", "\u00de": "TH", "\u00d0": "D", "\u0126": "H",
@@ -365,6 +356,15 @@ def _construir():
 
 RESERVA = ["en", "es", "pt"]
 
+# ===== CONSTRUCAO DO BANCO (precisa vir depois de SEEDS, EXTRA e _construir) =====
+CURADO = _construir()
+_faltando = [(l, t, e) for l in SEEDS for t in SEEDS[l]
+             for e in range(1, 10)
+             if e not in ((CURADO.get(l) or {}).get(t) or {})]
+if _faltando:
+    import logging
+    logging.getLogger(__name__).warning(
+        "nome_energia: %d combinacoes idioma/tipo/energia sem nome curado", len(_faltando))
 
 def _sugerir_nome_antigo(tipo, energia, lang="pt", usados=None):
     alvo = int(energia) if str(energia).isdigit() else 0
