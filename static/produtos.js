@@ -673,8 +673,7 @@ window.BC_PRODUTOS = window.BC_PRODUTOS || [
   // --- Faixa R$ 98 ---
   ["familia", "Mapa Família Premium", 98, "🌟"],
   ["compatibilidade_equipes", "Compatibilidade de Equipes", 98, "🏢"],
-  ["coletivo", "Bônus Coletivo", 98, "🎁"],          // o Bônus
-];
+  ];
 
 function montarTabelaBC() {
   var lang = (typeof getLang === 'function') ? getLang() : 'pt';
@@ -976,10 +975,11 @@ function traduzirTudo() {
       var k = el.getAttribute('data-i18n');
       if (t[k]) el.innerText = t[k];
     });
+    if (typeof atualizarMesesData === "function") atualizarMesesData();
+    if (typeof montarTabelaBC === "function") montarTabelaBC();
+    if (typeof montarEnergias === "function") montarEnergias();
+
     if (typeof renderizarNumeros === 'function' && typeof ultimosNumeros !== 'undefined' && ultimosNumeros && ultimosNumeros.length) {
-    if (typeof atualizarMesesData === "function") atualizarMesesData(); 
-    if (typeof montarTabelaBC === "function") montarTabelaBC();  
-    if (typeof montarEnergias === "function") montarEnergias();  
       renderizarNumeros();
     }
     document.querySelectorAll('[data-i18n-ph]').forEach(function(el) {
