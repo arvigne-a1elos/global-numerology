@@ -3807,6 +3807,14 @@ const translations = {
       },  
     };
 
+/* ===== PONTE: expõe no window o que foi declarado com const =====
+   const cria binding global por nome, mas NÃO cria propriedade em window.
+   Vários scripts leem window.PRECO_DISPLAY / window.ENERGIAS_DESC e
+   recebiam undefined. Esta ponte corrige sem alterar os pontos de uso. */
+window.PRECO_DISPLAY = PRECO_DISPLAY;
+window.FEAT_TRAD     = FEAT_TRAD;
+window.ENERGIAS_DESC = ENERGIAS_DESC;
+
 PRODUTO_FAIXA = {
     "express": 0, "vida": 0, "ia": 0, "completo": 1,
     "urna": 2, "eleitoral": 2, "imovel": 2, "calendario": 2,
@@ -4307,7 +4315,7 @@ function traduzirTabelaBC() {
             nomeEl.innerText = PRODUTOS_TRAD[lang][prod];
         }
         var precoEl = tr.querySelector(".bc-prod-preco");
-        if (precoEl && PRODUTO_FAIXA[prod] !== undefined && window.PRECO_DISPLAY?.[lang]) {
+        if (precoEl && PRODUTO_FAIXA[prod] !== undefined && PRECO_DISPLAY[lang]) {
             precoEl.innerText = window.PRECO_DISPLAY[lang][PRODUTO_FAIXA[prod]];
         }
     });
